@@ -7,6 +7,21 @@
     "noEmit": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "strict": true
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "domain/*": [
+        "./src/domain/*"
+      ],
+      "domain": [
+        "./src/domain"
+      ],
+      "primitives/*": [
+        "./src/primitives/*"
+      ],
+      "primitives": [
+        "./src/primitives"
+      ]
+    }
   }
 }
