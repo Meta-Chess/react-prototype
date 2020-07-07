@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { PieceType, PopUpMeta } from "domain/types";
 import { PromotionPiece } from "./components";
+import { View } from "react-native";
 
 interface Props {
   meta: PopUpMeta;
@@ -9,7 +10,7 @@ interface Props {
 const Promotion: FC<Props> = ({ meta }) => {
   if (!meta.piece) return null;
   return (
-    <div style={{ flexDirection: "row", display: "flex" }}>
+    <View style={{ flexDirection: "row", display: "flex" }}>
       <PromotionPiece
         piece={meta.piece}
         promoteTo={PieceType.Queen}
@@ -30,7 +31,7 @@ const Promotion: FC<Props> = ({ meta }) => {
         promoteTo={PieceType.Knight}
         size={100}
       />
-    </div>
+    </View>
   );
 };
 

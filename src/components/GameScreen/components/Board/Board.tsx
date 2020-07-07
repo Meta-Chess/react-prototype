@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Square } from "./components";
 import { GameContext } from "domain/gameState";
 import { PopUp } from "domain/elements/PopUp";
-import {View} from "react-native";
+import { View } from "react-native";
 
 interface Props {
   maxWidth: number;
@@ -64,10 +64,9 @@ const BoardContainer = styled(View)`
 `;
 
 const SquaresContainer = styled(View)`
-  background: green;
+  flex-direction: row;
   display: flex;
   height: 100%;
-  box-sizing: border-box;
 `;
 
 const ColumnContainer = styled(View)`

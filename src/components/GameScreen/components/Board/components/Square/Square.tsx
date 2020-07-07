@@ -4,7 +4,7 @@ import { Coordinates } from "domain/types";
 import { GridArrangement, Piece } from "./components";
 import { GameContext, livePiecesAt } from "domain/gameState";
 import { onClickSquare, squareColor } from "domain/elements";
-import {TouchableOpacity} from "react-native";
+import { TouchableOpacity } from "react-native";
 
 interface Props {
   location: Coordinates;

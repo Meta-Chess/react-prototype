@@ -3,34 +3,51 @@ import { Board } from "./components";
 import styled from "styled-components";
 import { GameStateProvider } from "domain/gameState";
 import { Clocks } from "./components";
-import {View} from "react-native";
+import { View, Text, Linking, useWindowDimensions } from "react-native";
 
 const GameScreen: FC = () => {
   const padding = 12;
-  const windowSize = [400, 400]
+  const { width, height } = useWindowDimensions();
 
   const pieceCreditLink = (
-    <a href="https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces">
+    <Text
+      style={{ color: "blue" }}
+      onPress={() =>
+        Linking.openURL(
+          "https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces"
+        )
+      }
+    >
       here
-    </a>
+    </Text>
   );
+
   const creatorCreditLink = (
-    <a href="https://en.wikipedia.org/wiki/User:Cburnett">User:Cburnett</a>
+    <Text
+      style={{ color: "blue" }}
+      onPress={() =>
+        Linking.openURL("https://en.wikipedia.org/wiki/User:Cburnett")
+      }
+    >
+      User:Cburnett
+    </Text>
   );
 
   return (
     <ScreenContainer style={{ padding }}>
       <GameStateProvider>
-        <Clocks  />
+        <Clocks />
         <Board
-          maxHeight={windowSize[0] - 2 * padding}
-          maxWidth={windowSize[1] - 2 * padding}
+          maxHeight={height - 2 * padding}
+          maxWidth={width - 2 * padding}
         />
       </GameStateProvider>
-      <div style={{ color: "white", fontSize: 12 }}>
-        Chess pieces originally by {creatorCreditLink} under creative commons
-        license, found {pieceCreditLink}.
-      </div>
+      <View style={{ backgroundColor: "white" }}>
+        <Text>
+          Chess pieces originally by {creatorCreditLink} under creative commons
+          license, found {pieceCreditLink}.
+        </Text>
+      </View>
     </ScreenContainer>
   );
 };
@@ -38,9 +55,7 @@ const GameScreen: FC = () => {
 const ScreenContainer = styled(View)`
   display: flex;
   flex-direction: column;
-  height: 100vh;
   background: #232323;
-  box-sizing: border-box;
 `;
 
 export { GameScreen };
