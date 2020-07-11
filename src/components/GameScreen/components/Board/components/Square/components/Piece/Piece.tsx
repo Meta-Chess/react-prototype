@@ -1,13 +1,11 @@
 import React, { FC, useContext } from "react";
 import { PieceImage, PieceHighlight } from "primitives";
 import { GameContext } from "domain/gameState";
-import { Piece as PieceType } from "domain/types";
-import { onClickPiece } from "domain/elements";
 import styled from "styled-components";
-import {TouchableOpacity, View} from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 interface Props {
-  piece: PieceType;
+  piece: any; //TODO: FIX
   size: number;
 }
 
@@ -17,7 +15,7 @@ const Piece: FC<Props> = ({ piece, size }) => {
   return (
     <TouchableOpacity
       style={{ height: size, width: size, position: "relative" }}
-      onPress={onClickPiece(gameState, setGameState, piece)}
+      onPress={() => {}}
     >
       {piece.active && (
         <Container>

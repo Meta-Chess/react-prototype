@@ -6,7 +6,7 @@ import { Clocks } from "./components";
 import { View, Text, Linking, useWindowDimensions } from "react-native";
 
 const GameScreen: FC = () => {
-  const padding = 12;
+  const padding = 24;
   const { width, height } = useWindowDimensions();
 
   const pieceCreditLink = (
@@ -34,7 +34,7 @@ const GameScreen: FC = () => {
   );
 
   return (
-    <ScreenContainer style={{ padding }}>
+    <ScreenContainer style={{ padding, width, height }}>
       <GameStateProvider>
         <Clocks />
         <Board
@@ -55,6 +55,8 @@ const GameScreen: FC = () => {
 const ScreenContainer = styled(View)`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   background: #232323;
 `;
 

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Coordinates } from "domain/types";
 import { GridArrangement, Piece } from "./components";
 import { GameContext, livePiecesAt } from "domain/gameState";
-import { onClickSquare, squareColor } from "domain/elements";
 import { TouchableOpacity } from "react-native";
 
 interface Props {
@@ -23,7 +22,7 @@ const Square: FC<Props> = ({ location, size }) => {
   return (
     <SquareDiv
       style={{ maxWidth: size, maxHeight: size, backgroundColor }}
-      onPress={onClickSquare(gameState, setGameState, { location })}
+      onPress={() => {}}
     >
       <GridArrangement>
         {piecesOnSquare.map((piece) => (
@@ -39,3 +38,8 @@ const SquareDiv = styled(TouchableOpacity)`
 `;
 
 export { Square };
+
+export const squareColor = (location: Coordinates) =>
+  isBlackSquare(location) ? "#41787c" : "#e4e0d3";
+
+const isBlackSquare = ({ x, y }: Coordinates): boolean => (x - y) % 2 === 0;

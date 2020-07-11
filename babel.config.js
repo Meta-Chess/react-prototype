@@ -11,6 +11,8 @@ module.exports = function (api) {
             domain: "./src/domain",
             "primitives/*": "./src/primitives/*",
             primitives: "./src/primitives",
+            "ui/*": "./src/ui/*",
+            ui: "./src/ui",
           },
         },
       ],

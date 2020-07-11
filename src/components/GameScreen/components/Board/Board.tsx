@@ -2,7 +2,6 @@ import React, { FC, useContext } from "react";
 import styled from "styled-components";
 import { Square } from "./components";
 import { GameContext } from "domain/gameState";
-import { PopUp } from "domain/elements/PopUp";
 import { View } from "react-native";
 
 interface Props {

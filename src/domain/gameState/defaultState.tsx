@@ -1,6 +1,5 @@
 import React from "react";
 import { Color, PieceType, State } from "domain/types";
-import { Phase } from "../gamePhase";
 
 export const defaultState: State = {
   pieces: [
@@ -260,15 +259,6 @@ export const defaultState: State = {
       active: false,
       alive: true,
     },
-  ],
-  phase: Phase.WhiteSelect,
-  phases: [
-    Phase.WhiteSelect,
-    Phase.WhiteMove,
-    Phase.WhitePromotion,
-    Phase.BlackSelect,
-    Phase.BlackMove,
-    Phase.BlackPromotion,
   ],
   popUp: undefined,
 };

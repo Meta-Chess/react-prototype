@@ -1,20 +1,20 @@
-import { Square } from "./Square";
+import {
+  PieceInterface,
+  SquareInterface,
+  PieceType,
+  MoveGenerator,
+  Player,
+  PieceAttributes,
+} from "./types";
 
-export class Piece {
+class Piece implements PieceInterface {
   constructor(
-    private location: Square,
-    private type: PieceType,
-    private moves: Move[],
-    private owner: Player,
-    private attributes: PieceAttributes
+    public location: SquareInterface,
+    public type: PieceType,
+    public moveGenerators: MoveGenerator[],
+    public owner: Player,
+    public attributes: PieceAttributes
   ) {}
 }
 
-enum PieceType {
-  Pawn,
-  Rook,
-  King,
-  Queen,
-  Bishop,
-  Knight,
-}
+export { Piece };

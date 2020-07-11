@@ -1,8 +1,6 @@
-import { Piece } from "./Piece";
-import { Square } from "./Square";
 import { Variant } from "domain/state/Variants";
 
-export class State {
+export class GameState {
   constructor(
     private pieces: Piece[],
     private squares: Square[],
@@ -11,6 +9,9 @@ export class State {
   ) // private history: GameHistory
   {}
 }
+
+import { Piece } from "./Piece";
+import { Square } from "./Square";
 
 enum Format {
   default,

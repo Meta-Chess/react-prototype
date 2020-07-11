@@ -10,18 +10,12 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "domain/*": [
-        "./src/domain/*"
-      ],
-      "domain": [
-        "./src/domain"
-      ],
-      "primitives/*": [
-        "./src/primitives/*"
-      ],
-      "primitives": [
-        "./src/primitives"
-      ]
+      "domain/*": ["./src/domain/*"],
+      "domain": ["./src/domain"],
+      "primitives/*": ["./src/primitives/*"],
+      "primitives": ["./src/primitives"],
+      "ui/*": ["./src/ui/*"],
+      "ui": ["./src/ui"]
     }
   }
 }
