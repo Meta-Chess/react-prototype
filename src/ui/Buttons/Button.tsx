@@ -1,4 +1,5 @@
-import React, { FC } from "react";
+import React from "react";
+import { SFC } from "primitives";
 import { TouchableOpacity, Text } from "react-native";
 import styled from "styled-components/native";
 
@@ -7,9 +8,9 @@ interface Props {
   onPress: () => void;
 }
 
-export const Button: FC<Props> = ({ text, onPress }) => {
+export const Button: SFC<Props> = ({ style, text, onPress }) => {
   return (
-    <BaseButton onPress={onPress}>
+    <BaseButton onPress={onPress} style={style}>
       <Text style={{ color: "#e4e0d3", fontWeight: "600" }}>{text}</Text>
     </BaseButton>
   );

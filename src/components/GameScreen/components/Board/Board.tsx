@@ -1,4 +1,5 @@
-import React, { FC, useContext } from "react";
+import React, { useContext } from "react";
+import { SFC } from "primitives";
 import styled from "styled-components/native";
 import { Square } from "./components";
 import { GameContext } from "domain/gameState";
@@ -14,12 +15,12 @@ const boardDetails = {
   height: 8,
 };
 
-const Board: FC<Props> = (props) => {
+const Board: SFC<Props> = ({ style, maxWidth, maxHeight }) => {
   const padding = 16;
 
   const squareSize = Math.min(
-    (props.maxWidth - 2 * padding) / boardDetails.width,
-    (props.maxHeight - 2 * padding) / boardDetails.height,
+    (maxWidth - 2 * padding) / boardDetails.width,
+    (maxHeight - 2 * padding) / boardDetails.height,
     100
   );
 
@@ -27,11 +28,14 @@ const Board: FC<Props> = (props) => {
 
   return (
     <BoardContainer
-      style={{
-        height: squareSize * boardDetails.height,
-        width: squareSize * boardDetails.width,
-        padding,
-      }}
+      style={[
+        style,
+        {
+          height: squareSize * boardDetails.height,
+          width: squareSize * boardDetails.width,
+          padding,
+        },
+      ]}
     >
       <SquaresContainer>
         {coordinateRow.map((x) => (

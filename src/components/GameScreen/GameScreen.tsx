@@ -5,7 +5,7 @@ import { GameStateProvider } from "domain/gameState";
 import { Clocks } from "./components";
 import { View, Text, Linking, useWindowDimensions } from "react-native";
 
-const GameScreen: FC = () => {
+const GameScreen = () => {
   const padding = 24;
   const { width, height } = useWindowDimensions();
 

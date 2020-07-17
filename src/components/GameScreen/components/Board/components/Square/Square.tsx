@@ -1,16 +1,17 @@
-import React, { FC, useContext } from "react";
+import React, { useContext } from "react";
+import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
+import { SFC } from "primitives";
 import { Coordinates } from "domain/types";
 import { GridArrangement, Piece } from "./components";
 import { GameContext, livePiecesAt } from "domain/gameState";
-import { TouchableOpacity } from "react-native";
 
 interface Props {
   location: Coordinates;
   size: number;
 }
 
-const Square: FC<Props> = ({ location, size }) => {
+const Square: SFC<Props> = ({ style, location, size }) => {
   const backgroundColor = squareColor(location);
 
   const { gameState, setGameState } = useContext(GameContext);
@@ -21,7 +22,7 @@ const Square: FC<Props> = ({ location, size }) => {
 
   return (
     <SquareDiv
-      style={{ maxWidth: size, maxHeight: size, backgroundColor }}
+      style={[style, { maxWidth: size, maxHeight: size, backgroundColor }]}
       onPress={() => {}}
     >
       <GridArrangement>

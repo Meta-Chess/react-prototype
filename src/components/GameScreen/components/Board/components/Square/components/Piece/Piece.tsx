@@ -1,4 +1,5 @@
-import React, { FC, useContext } from "react";
+import React, { useContext } from "react";
+import { SFC } from "primitives";
 import { PieceImage, PieceHighlight } from "primitives";
 import { GameContext } from "domain/gameState";
 import styled from "styled-components/native";
@@ -9,12 +10,12 @@ interface Props {
   size: number;
 }
 
-const Piece: FC<Props> = ({ piece, size }) => {
+const Piece: SFC<Props> = ({ style, piece, size }) => {
   const { gameState, setGameState } = useContext(GameContext);
 
   return (
     <TouchableOpacity
-      style={{ height: size, width: size, position: "relative" }}
+      style={[style, { height: size, width: size, position: "relative" }]}
       onPress={() => {}}
     >
       {piece.active && (

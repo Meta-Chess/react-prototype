@@ -260,5 +260,4 @@ export const defaultState: State = {
       alive: true,
     },
   ],
-  popUp: undefined,
 };
