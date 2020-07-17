@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import styled from "styled-components";
+import styled from "styled-components/native";
 import { Timer } from "./components";
-import {View} from "react-native";
+import { View } from "react-native";
 
 const Clocks: FC = () => {
   return (

@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import styled from "styled-components";
+import styled from "styled-components/native";
 import moment from "moment";
 import { View, Text } from "react-native";
 

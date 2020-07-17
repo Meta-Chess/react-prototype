@@ -1,12 +1,6 @@
 import React, { FC, useContext } from "react";
-import styled from "styled-components";
-import {
-  View,
-  Text,
-  Linking,
-  useWindowDimensions,
-  TouchableOpacity,
-} from "react-native";
+import styled from "styled-components/native";
+import { View, useWindowDimensions } from "react-native";
 import { Button } from "ui";
 import { BigBoolContext } from "../../../App";
 
@@ -30,9 +24,9 @@ const StartScreen: FC = () => {
 const ScreenContainer = styled(View)`
   display: flex;
   flex-direction: column;
-  height: 200px;
-  width: 200px;
-  background: #232323;
+  height: 300px;
+  width: 300px;
+  background-color: #232323;
   align-items: center;
   justify-content: center;
 `;

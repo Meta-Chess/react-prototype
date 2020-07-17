@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import styled from "styled-components";
-import {View} from "react-native";
+import styled from "styled-components/native";
+import { View } from "react-native";
 
 const GridArrangement: FC = ({ children }) => {
   const elements = React.Children.toArray(children);

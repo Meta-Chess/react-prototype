@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Board } from "./components";
-import styled from "styled-components";
+import styled from "styled-components/native";
 import { GameStateProvider } from "domain/gameState";
 import { Clocks } from "./components";
 import { View, Text, Linking, useWindowDimensions } from "react-native";

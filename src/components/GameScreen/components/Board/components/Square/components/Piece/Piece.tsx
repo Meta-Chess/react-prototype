@@ -1,7 +1,7 @@
 import React, { FC, useContext } from "react";
 import { PieceImage, PieceHighlight } from "primitives";
 import { GameContext } from "domain/gameState";
-import styled from "styled-components";
+import styled from "styled-components/native";
 import { TouchableOpacity, View } from "react-native";
 
 interface Props {

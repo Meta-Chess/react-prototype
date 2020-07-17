@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { TouchableOpacity, Text } from "react-native";
-import styled from "styled-components";
+import styled from "styled-components/native";
 
 interface Props {
   text: string;

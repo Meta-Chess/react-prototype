@@ -1,5 +1,5 @@
 import React, { FC, useContext } from "react";
-import styled from "styled-components";
+import styled from "styled-components/native";
 import { Coordinates } from "domain/types";
 import { GridArrangement, Piece } from "./components";
 import { GameContext, livePiecesAt } from "domain/gameState";

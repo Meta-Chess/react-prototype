@@ -1,5 +1,5 @@
 import React, { FC, useContext } from "react";
-import styled from "styled-components";
+import styled from "styled-components/native";
 import { Square } from "./components";
 import { GameContext } from "domain/gameState";
 import { View } from "react-native";
@@ -46,9 +46,6 @@ const Board: FC<Props> = (props) => {
           </ColumnContainer>
         ))}
       </SquaresContainer>
-      {gameState.popUp && (
-        <PopUp popUp={gameState.popUp?.component} meta={gameState.popUp.meta} />
-      )}
     </BoardContainer>
   );
 };
