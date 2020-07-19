@@ -15,16 +15,23 @@ const Piece: SFC<Props> = ({ style, piece, size }) => {
 
   return (
     <TouchableOpacity
-      style={[style, { height: size, width: size, position: "relative" }]}
+      style={[
+        style,
+        {
+          height: size,
+          width: size,
+          position: "relative",
+        },
+      ]}
       onPress={() => {}}
     >
-      {piece.active && (
+      {/* {piece.active && (
         <Container>
           <PieceHighlight type={piece.type} color={piece.active} size={size} />
         </Container>
-      )}
+      )} */}
       <Container>
-        <PieceImage type={piece.type} color={piece.color} size={size} />
+        <PieceImage type={piece.type} color={piece.owner} size={size} />
       </Container>
     </TouchableOpacity>
   );

@@ -31,10 +31,13 @@ export interface PieceDelta {
 
 export enum MovePatternType {}
 
-export enum Player {}
+export enum Player {
+  Black = "#404040",
+  White = "#FFFFFF",
+}
 
 export type Adjacencies = {
-  [key in Direction]?: SquareInterface[];
+  [key in Direction]?: string[]; // TODO: Make location type
 };
 
 export enum PieceType {

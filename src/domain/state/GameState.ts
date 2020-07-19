@@ -1,17 +1,21 @@
-import { Variant } from "domain/state/Variants";
+import { Variant } from "domain/State/Variants";
+import { Board } from "./Board";
 
 export class GameState {
   constructor(
-    private pieces: Piece[],
-    private squares: Square[],
-    private variants: Variant[],
-    private format: Format
-  ) // private history: GameHistory
-  {}
-}
+    public board: Board,
+    public variants: Variant[],
+    public format: Format // private history: GameHistory
+  ) {}
 
-import { Piece } from "./Piece";
-import { Square } from "./Square";
+  static createEmptyGameState() {
+    return new GameState(Board.createEmptyBoard(), [], Format.default);
+  }
+
+  static createBasicGameState() {
+    return new GameState(Board.createBasicBoard(), [], Format.default);
+  }
+}
 
 enum Format {
   default,
