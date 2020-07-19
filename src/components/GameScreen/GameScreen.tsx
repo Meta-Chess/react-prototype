@@ -1,54 +1,24 @@
-import React, { FC } from "react";
+import React, { FC, useState, createContext } from "react";
 import { Board } from "./components";
 import styled from "styled-components/native";
-import { GameStateProvider } from "domain/gameState";
-import { Clocks } from "./components";
-import { View, Text, Linking, useWindowDimensions } from "react-native";
+import { GameStateProvider } from "domain/State";
+import { PieceCredit } from "./components";
+import { View, useWindowDimensions } from "react-native";
 
 const GameScreen = () => {
   const padding = 24;
   const { width, height } = useWindowDimensions();
 
-  const pieceCreditLink = (
-    <Text
-      style={{ color: "blue" }}
-      onPress={() =>
-        Linking.openURL(
-          "https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces"
-        )
-      }
-    >
-      here
-    </Text>
-  );
-
-  const creatorCreditLink = (
-    <Text
-      style={{ color: "blue" }}
-      onPress={() =>
-        Linking.openURL("https://en.wikipedia.org/wiki/User:Cburnett")
-      }
-    >
-      User:Cburnett
-    </Text>
-  );
-
   return (
-    <ScreenContainer style={{ padding, width, height }}>
-      <GameStateProvider>
-        <Clocks />
+    <GameStateProvider>
+      <ScreenContainer style={{ padding, width, height }}>
         <Board
           maxHeight={height - 2 * padding}
           maxWidth={width - 2 * padding}
         />
-      </GameStateProvider>
-      <View style={{ backgroundColor: "white" }}>
-        <Text>
-          Chess pieces originally by {creatorCreditLink} under creative commons
-          license, found {pieceCreditLink}.
-        </Text>
-      </View>
-    </ScreenContainer>
+        <PieceCredit />
+      </ScreenContainer>
+    </GameStateProvider>
   );
 };
 

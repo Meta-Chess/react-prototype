@@ -1,20 +1,21 @@
 import {
-  PieceInterface,
-  SquareInterface,
   PieceType,
   MoveGenerator,
   Player,
   PieceAttributes,
-} from "./types";
+} from "domain/State/types";
 
-class Piece implements PieceInterface {
+class Piece {
+  id: number;
   constructor(
-    public location: SquareInterface,
+    public location: string,
     public type: PieceType,
     public moveGenerators: MoveGenerator[],
     public owner: Player,
     public attributes: PieceAttributes
-  ) {}
+  ) {
+    this.id = Math.random();
+  }
 }
 
 export { Piece };

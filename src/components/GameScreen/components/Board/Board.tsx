@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { SFC } from "primitives";
 import styled from "styled-components/native";
 import { Square } from "./components";
-import { GameContext } from "domain/gameState";
+import { GameContext } from "domain/State";
 import { View } from "react-native";
 
 interface Props {
@@ -10,13 +10,30 @@ interface Props {
   maxHeight: number;
 }
 
-const boardDetails = {
-  width: 8,
-  height: 8,
-};
-
 const Board: SFC<Props> = ({ style, maxWidth, maxHeight }) => {
-  const padding = 16;
+  const padding = 8;
+  const { gameState } = useContext(GameContext);
+
+  const squares = Object.values(gameState.board.squares);
+
+  const minRank = Math.min(...squares.map((s) => s.coordinates.rank));
+  const maxRank = Math.max(...squares.map((s) => s.coordinates.rank));
+  const minFile = Math.min(...squares.map((s) => s.coordinates.file));
+  const maxFile = Math.max(...squares.map((s) => s.coordinates.file));
+  const numberOfRanks = maxRank - minRank + 1;
+  const numberOfFiles = maxFile - minFile + 1;
+
+  const boardDetails = {
+    width: numberOfFiles,
+    height: numberOfRanks,
+  };
+
+  const fileCoordinates = Array.from(Array(boardDetails.width).keys()).map(
+    (n) => n + minFile
+  );
+  const rankCoordinates = Array.from(Array(boardDetails.height).keys()).map(
+    (n) => n + minRank
+  );
 
   const squareSize = Math.min(
     (maxWidth - 2 * padding) / boardDetails.width,
@@ -24,27 +41,25 @@ const Board: SFC<Props> = ({ style, maxWidth, maxHeight }) => {
     100
   );
 
-  const { gameState } = useContext(GameContext);
-
   return (
     <BoardContainer
       style={[
         style,
         {
-          height: squareSize * boardDetails.height,
-          width: squareSize * boardDetails.width,
+          height: squareSize * boardDetails.height + 2 * padding,
+          width: squareSize * boardDetails.width + 2 * padding,
           padding,
         },
       ]}
     >
       <SquaresContainer>
-        {coordinateRow.map((x) => (
-          <ColumnContainer style={{ maxWidth: squareSize }} key={x}>
-            {coordinateCol.map((y) => (
+        {fileCoordinates.map((file) => (
+          <ColumnContainer style={{ maxWidth: squareSize }} key={file}>
+            {rankCoordinates.map((rank) => (
               <Square
                 size={squareSize}
-                location={{ x, y }}
-                key={JSON.stringify([x, y])}
+                squares={gameState.board.squaresWithRankAndFile({ rank, file })}
+                key={JSON.stringify([rank, file])}
               />
             ))}
           </ColumnContainer>
@@ -53,9 +68,6 @@ const Board: SFC<Props> = ({ style, maxWidth, maxHeight }) => {
     </BoardContainer>
   );
 };
-
-const coordinateRow = Array.from(Array(boardDetails.width).keys());
-const coordinateCol = Array.from(Array(boardDetails.height).keys());
 
 const BoardContainer = styled(View)`
   position: relative;

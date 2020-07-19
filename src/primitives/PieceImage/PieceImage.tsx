@@ -1,25 +1,26 @@
 import React, { FC } from "react";
+import { PieceType } from "domain/State/types";
 import { Bishop, King, Knight, Pawn, Queen, Rook } from "./sprites";
 
 interface Props {
-  type: string;
+  type: PieceType;
   color: string;
   size: number;
 }
 
 const PieceImage: FC<Props> = ({ type, color, size }) => {
   switch (type) {
-    case "Pawn":
+    case PieceType.Pawn:
       return <Pawn size={size} color={color} active={false} />;
-    case "Rook":
+    case PieceType.Rook:
       return <Rook size={size} color={color} active={false} />;
-    case "Knight":
+    case PieceType.Knight:
       return <Knight size={size} color={color} active={false} />;
-    case "Bishop":
+    case PieceType.Bishop:
       return <Bishop size={size} color={color} active={false} />;
-    case "King":
+    case PieceType.King:
       return <King size={size} color={color} active={false} />;
-    case "Queen":
+    case PieceType.Queen:
       return <Queen size={size} color={color} active={false} />;
     default:
       return null;
