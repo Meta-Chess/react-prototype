@@ -1,7 +1,7 @@
-import React, { FC, useContext } from "react";
+import React, { FC } from "react";
 import styled from "styled-components/native";
 import { View, useWindowDimensions } from "react-native";
-import { Button } from "ui";
+import { StartButton } from "./components";
 
 const StartScreen: FC = () => {
   const padding = 12;
@@ -9,7 +9,7 @@ const StartScreen: FC = () => {
 
   return (
     <ScreenContainer style={{ padding, width, height }}>
-      <Button onPress={() => {}} text={"m-Chess"} />
+      <StartButton />
     </ScreenContainer>
   );
 };

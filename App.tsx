@@ -1,16 +1,11 @@
 import React, { useState, createContext } from "react";
-import { GameScreen, StartScreen } from "./src/components";
-
-export const BigBoolContext = createContext({
-  setBigBool: (bigBool: boolean): void => {},
-});
+import { NavigationContainer } from "@react-navigation/native";
+import { RootStackNavigator } from "./src/components";
 
 export default function App() {
-  const [bigBool, setBigBool] = useState(false); // TODO: PURGE!
-
   return (
-    <BigBoolContext.Provider value={{ setBigBool }}>
-      {bigBool ? <GameScreen /> : <StartScreen />}
-    </BigBoolContext.Provider>
+    <NavigationContainer>
+      <RootStackNavigator />
+    </NavigationContainer>
   );
 }

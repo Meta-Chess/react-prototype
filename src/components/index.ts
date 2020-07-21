@@ -1,2 +1,1 @@
-export * from "./GameScreen";
-export * from "./StartScreen";
+export * from "./RootStackNavigator";
