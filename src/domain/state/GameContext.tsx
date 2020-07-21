@@ -12,7 +12,9 @@ const GameStateProvider: FC = ({ children }) => {
     updateThing(!thing);
   };
 
-  const [gameState, setGameState] = useState(GameState.createBasicGameState());
+  const [gameState, setGameState] = useState(
+    GameState.createStandardGameState()
+  );
 
   return (
     <GameContext.Provider value={{ gameState, setGameState }}>

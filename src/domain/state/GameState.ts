@@ -15,6 +15,10 @@ export class GameState {
   static createBasicGameState() {
     return new GameState(Board.createBasicBoard(), [], Format.default);
   }
+
+  static createStandardGameState() {
+    return new GameState(Board.createStandardBoard(), [], Format.default);
+  }
 }
 
 enum Format {
