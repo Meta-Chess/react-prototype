@@ -1,23 +1,20 @@
 import React, { FC, useState, createContext } from "react";
 import { GameState } from "./GameState";
+import { Renderer } from "./Renderer";
 
 const GameContext = createContext({
-  gameState: GameState.createEmptyGameState(),
-  setGameState: (newGameState: GameState) => {},
+  gameState: GameState.createEmptyGameState(new Renderer((val: number) => {})),
 });
 
 const GameStateProvider: FC = ({ children }) => {
-  const [thing, updateThing] = useState(false);
-  const forceUpdate = () => {
-    updateThing(!thing);
-  };
+  const [updateCounter, setUpdateCounter] = useState(0);
 
   const [gameState, setGameState] = useState(
-    GameState.createStandardGameState()
+    GameState.createStandardGameState(new Renderer(setUpdateCounter))
   );
 
   return (
-    <GameContext.Provider value={{ gameState, setGameState }}>
+    <GameContext.Provider value={{ gameState }}>
       {children}
     </GameContext.Provider>
   );

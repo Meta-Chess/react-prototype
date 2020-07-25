@@ -1,23 +1,44 @@
 import { Variant } from "domain/State/Variants";
 import { Board } from "./Board";
+import { Renderer } from "./Renderer";
 
 export class GameState {
   constructor(
     public board: Board,
     public variants: Variant[],
-    public format: Format // private history: GameHistory
+    public format: Format,
+    public renderer: Renderer
   ) {}
 
-  static createEmptyGameState() {
-    return new GameState(Board.createEmptyBoard(), [], Format.default);
+  static createEmptyGameState(renderer: Renderer): GameState {
+    return new GameState(
+      Board.createEmptyBoard(),
+      [],
+      Format.default,
+      renderer
+    );
   }
 
-  static createBasicGameState() {
-    return new GameState(Board.createBasicBoard(), [], Format.default);
+  static createBasicGameState(renderer: Renderer): GameState {
+    return new GameState(
+      Board.createBasicBoard(),
+      [],
+      Format.default,
+      renderer
+    );
   }
 
-  static createStandardGameState() {
-    return new GameState(Board.createStandardBoard(), [], Format.default);
+  static createStandardGameState(renderer: Renderer): GameState {
+    return new GameState(
+      Board.createStandardBoard(),
+      [],
+      Format.default,
+      renderer
+    );
+  }
+
+  render() {
+    this.renderer.render();
   }
 }
 

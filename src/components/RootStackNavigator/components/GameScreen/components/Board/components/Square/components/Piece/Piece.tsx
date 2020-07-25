@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { SFC } from "primitives";
 import { PieceImage, PieceHighlight } from "primitives";
-import { GameContext } from "domain/gameState";
+import { GameContext } from "domain/State";
 import styled from "styled-components/native";
 import { TouchableOpacity, View } from "react-native";
 
@@ -11,7 +11,12 @@ interface Props {
 }
 
 const Piece: SFC<Props> = ({ style, piece, size }) => {
-  const { gameState, setGameState } = useContext(GameContext);
+  const { gameState } = useContext(GameContext);
+
+  const onPress = () => {
+    piece.active = !piece.active;
+    gameState.render();
+  };
 
   return (
     <TouchableOpacity
@@ -23,7 +28,7 @@ const Piece: SFC<Props> = ({ style, piece, size }) => {
           position: "relative",
         },
       ]}
-      onPress={() => {}}
+      onPress={onPress}
     >
       {/* {piece.active && (
         <Container>
@@ -31,7 +36,9 @@ const Piece: SFC<Props> = ({ style, piece, size }) => {
         </Container>
       )} */}
       <Container>
-        <PieceImage type={piece.type} color={piece.owner} size={size} />
+        {piece.active || (
+          <PieceImage type={piece.type} color={piece.owner} size={size} />
+        )}
       </Container>
     </TouchableOpacity>
   );
