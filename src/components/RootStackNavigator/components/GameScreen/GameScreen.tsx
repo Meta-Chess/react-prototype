@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Board } from "./components";
 import styled from "styled-components/native";
 import { GameStateProvider } from "domain/State";
-import { PieceCredit } from "./components";
+import { PieceCredit, Clocks } from "./components";
 import { View, useWindowDimensions } from "react-native";
 
 const GameScreen: FC = () => {
@@ -12,9 +12,11 @@ const GameScreen: FC = () => {
   return (
     <GameStateProvider>
       <ScreenContainer style={{ padding, width, height }}>
+        <Clocks />
         <Board
           maxHeight={height - 2 * padding}
           maxWidth={width - 2 * padding}
+          style={{ marginTop: padding }}
         />
         <PieceCredit />
       </ScreenContainer>

@@ -22,11 +22,18 @@ export class Map<K extends string | number | symbol, V> {
   }
 
   pushAll(pairs: Array<{ key: K; value: V }>) {
-    const asDictionary = pairs.reduce((acc, pair) => ({ ...acc, ...pair }));
+    const asDictionary = pairs.reduce((acc, pair) => ({
+      ...acc,
+      [pair.key]: pair.value,
+    }));
     return new Map<K, V>({ ...this.dictionary, ...asDictionary });
   }
 
   get(key: K) {
     return this.dictionary[key];
+  }
+
+  keys(): K[] {
+    return Object.keys(this.dictionary) as K[];
   }
 }

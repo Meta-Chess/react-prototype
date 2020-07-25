@@ -12,6 +12,8 @@
     "paths": {
       "domain/*": ["./src/domain/*"],
       "domain": ["./src/domain"],
+      "utilities/*": ["./src/utilities/*"],
+      "utilities": ["./src/utilities"],
       "navigation/*": ["./src/navigation/*"],
       "navigation": ["./src/navigation"],
       "primitives/*": ["./src/primitives/*"],

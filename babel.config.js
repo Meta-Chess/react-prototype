@@ -15,6 +15,8 @@ module.exports = function (api) {
             primitives: "./src/primitives",
             "ui/*": "./src/ui/*",
             ui: "./src/ui",
+            "utilities/*": "./src/utilities/*",
+            utilities: "./src/utilities",
           },
         },
       ],
