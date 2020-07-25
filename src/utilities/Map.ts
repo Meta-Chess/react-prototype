@@ -1,0 +1,32 @@
+export class Map<K extends string | number | symbol, V> {
+  private dictionary: { [key in K]?: V };
+
+  constructor(dictionary?: { [key in K]?: V }) {
+    this.dictionary = dictionary || {};
+  }
+
+  static fromKeyArrayWithValueGenerator<K extends string | number | symbol, V>({
+    keys,
+    valueGenerator,
+  }: {
+    keys: Array<K>;
+    valueGenerator: (k: K) => V;
+  }) {
+    return new Map<K, V>().pushAll(
+      keys.map((key) => ({ key, value: valueGenerator(key) }))
+    );
+  }
+
+  push({ key, value }: { key: K; value: V }) {
+    return new Map<K, V>({ ...this.dictionary, [key]: value });
+  }
+
+  pushAll(pairs: Array<{ key: K; value: V }>) {
+    const asDictionary = pairs.reduce((acc, pair) => ({ ...acc, ...pair }));
+    return new Map<K, V>({ ...this.dictionary, ...asDictionary });
+  }
+
+  get(key: K) {
+    return this.dictionary[key];
+  }
+}
