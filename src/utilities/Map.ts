@@ -11,17 +11,17 @@ export class Map<K extends string | number | symbol, V> {
   }: {
     keys: Array<K>;
     valueGenerator: (k: K) => V;
-  }) {
+  }): Map<K, V> {
     return new Map<K, V>().pushAll(
       keys.map((key) => ({ key, value: valueGenerator(key) }))
     );
   }
 
-  push({ key, value }: { key: K; value: V }) {
+  push({ key, value }: { key: K; value: V }): Map<K, V> {
     return new Map<K, V>({ ...this.dictionary, [key]: value });
   }
 
-  pushAll(pairs: Array<{ key: K; value: V }>) {
+  pushAll(pairs: Array<{ key: K; value: V }>): Map<K, V> {
     const asDictionary = pairs.reduce(
       (acc, pair) => ({
         ...acc,
@@ -32,7 +32,7 @@ export class Map<K extends string | number | symbol, V> {
     return new Map<K, V>({ ...this.dictionary, ...asDictionary });
   }
 
-  get(key: K) {
+  get(key: K): V {
     return this.dictionary[key];
   }
 

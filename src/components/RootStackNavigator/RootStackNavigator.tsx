@@ -1,4 +1,4 @@
-import React, { FC, useState, createContext } from "react";
+import React, { FC } from "react";
 import { GameScreen, StartScreen } from "./components";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Screens } from "navigation/Screens";

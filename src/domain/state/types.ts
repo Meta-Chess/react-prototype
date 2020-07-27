@@ -15,9 +15,9 @@ export interface SquareInterface {
   attributes: SquareAttributes;
 }
 
-export type PieceAttributes = object;
+export type PieceAttributes = null;
 
-export type SquareAttributes = object;
+export type SquareAttributes = null;
 
 export type MoveGenerator = (gameState: GameState) => Move[]; // TODO: change to a map from end square to move, maybe via other things
 

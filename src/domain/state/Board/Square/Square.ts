@@ -6,10 +6,10 @@ export class Square {
     public adjacencies: Adjacencies,
     public pieces: Piece[],
     public coordinates: { rank: number; file: number }, // TODO: Generalise coordinates to accept things other than rank and file
-    public attributes?: object
+    public attributes?: null // This will be mroe interesting later...
   ) {}
 
-  getColorIndex() {
+  getColorIndex(): number {
     return (this.coordinates.rank + this.coordinates.file) % 2;
   }
 }

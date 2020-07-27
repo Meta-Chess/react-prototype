@@ -4,7 +4,7 @@ export class Renderer {
     this.updateCount = 0;
   }
 
-  render() {
+  render(): void {
     this.updateCount++;
     this.setACounter(this.updateCount);
   }

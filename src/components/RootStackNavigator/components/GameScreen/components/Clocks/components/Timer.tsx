@@ -14,16 +14,16 @@ const Timer: SFC<Props> = ({ style, player }) => {
   const { gameState } = useContext(GameContext);
   const clock = gameState.clock.getPlayerTimer(player);
 
-  if (!clock) return null; // Consider returning error?
-
-  const { time: displayTime, validFor } = clock.getFormattedTime();
+  const { time: displayTime, validFor } = clock?.getFormattedTime();
 
   const [dummy, setDummy] = useState(false);
   if (validFor !== Number.POSITIVE_INFINITY) {
     setTimeout(() => {
       setDummy(!dummy);
-    }, validFor);
+    }, validFor || 10000); // TODO: think about default
   }
+
+  if (!clock) return null; // Consider returning error?
 
   return (
     <Container

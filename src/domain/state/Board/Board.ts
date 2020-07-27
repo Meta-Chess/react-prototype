@@ -1,6 +1,4 @@
 import { Square } from "./Square";
-import { Piece } from "./Square/Piece";
-import { PieceType, Player } from "domain/State/types";
 import { standardSetup, minimalSetup } from "./Setups";
 
 interface LocationMap {
@@ -27,15 +25,15 @@ class Board {
     return this.squares[location];
   }
 
-  static createEmptyBoard() {
+  static createEmptyBoard(): Board {
     return new Board({});
   }
 
-  static createBasicBoard() {
+  static createBasicBoard(): Board {
     return new Board(minimalSetup);
   }
 
-  static createStandardBoard() {
+  static createStandardBoard(): Board {
     return new Board(standardSetup);
   }
 }

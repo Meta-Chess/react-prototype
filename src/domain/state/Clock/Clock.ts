@@ -1,7 +1,6 @@
 import { Player } from "domain/State/types";
 import { Timer } from "./Timer";
 import { Map } from "utilities";
-import moment, { Moment } from "moment";
 
 export class Clock {
   private timers: Map<Player, Timer>;
@@ -13,18 +12,17 @@ export class Clock {
     });
   }
 
-  setActivePlayers(players: Player[]) {
+  setActivePlayers(players: Player[]): void {
     this.timers.keys().forEach((player) => {
       if (players.includes(player)) {
         this.timers.get(player)?.start();
       } else {
-        console.log(this.timers.get(player));
         this.timers.get(player)?.stop();
       }
     });
   }
 
-  getPlayerTimer(player: Player) {
+  getPlayerTimer(player: Player): Timer {
     return this.timers.get(player);
   }
 

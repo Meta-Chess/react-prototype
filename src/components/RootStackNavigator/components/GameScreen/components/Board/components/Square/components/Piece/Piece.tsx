@@ -1,19 +1,20 @@
 import React, { useContext } from "react";
 import { SFC } from "primitives";
-import { PieceImage, PieceHighlight } from "primitives";
+import { PieceImage } from "primitives";
 import { GameContext } from "domain/State";
+import { Piece as PieceType } from "domain/State/Board/Square/Piece";
 import styled from "styled-components/native";
 import { TouchableOpacity, View } from "react-native";
 
 interface Props {
-  piece: any; //TODO: FIX
+  piece: PieceType; //TODO: FIX
   size: number;
 }
 
 const Piece: SFC<Props> = ({ style, piece, size }) => {
   const { gameState } = useContext(GameContext);
 
-  const onPress = () => {
+  const onPress = (): void => {
     piece.active = !piece.active;
     gameState.render();
   };

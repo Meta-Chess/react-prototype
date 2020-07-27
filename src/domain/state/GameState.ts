@@ -46,7 +46,7 @@ export class GameState {
     );
   }
 
-  render() {
+  render(): void {
     this.renderer.render();
   }
 }

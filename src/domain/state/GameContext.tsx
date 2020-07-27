@@ -3,13 +3,17 @@ import { GameState } from "./GameState";
 import { Renderer } from "./Renderer";
 
 const GameContext = createContext({
-  gameState: GameState.createEmptyGameState(new Renderer((val: number) => {})),
+  gameState: GameState.createEmptyGameState(
+    new Renderer((val: number): void => {
+      throw new Error(`This code should never be reached (val = ${val})`);
+    })
+  ),
 });
 
 const GameStateProvider: FC = ({ children }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [updateCounter, setUpdateCounter] = useState(0);
-
-  const [gameState, setGameState] = useState(
+  const [gameState] = useState(
     GameState.createStandardGameState(new Renderer(setUpdateCounter))
   );
 

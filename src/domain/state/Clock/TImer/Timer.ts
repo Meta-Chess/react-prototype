@@ -5,7 +5,7 @@ export class Timer {
   private timer: number[];
   private startTime: Moment;
   private stopTime: Moment;
-  private running: boolean = false;
+  private running = false;
 
   constructor(allowance: number) {
     this.timer = [allowance];
@@ -16,8 +16,8 @@ export class Timer {
   stop(): void {
     if (this.running) {
       this.stopTime = moment();
-      var interval = this.stopTime.diff(this.startTime);
-      var allowance = this.timer[this.timer.length - 1];
+      const interval = this.stopTime.diff(this.startTime);
+      const allowance = this.timer[this.timer.length - 1];
       this.timer.push(allowance - interval);
       this.running = false;
     }
