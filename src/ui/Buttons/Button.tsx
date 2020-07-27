@@ -16,6 +16,7 @@ export const Button: SFC<Props> = ({ style, text, onPress }) => {
   );
 };
 
+// TODO: This should probably be a button underneath for accessibility reasons
 const BaseButton = styled(TouchableOpacity)`
   padding: 12px 32px;
   background-color: #41787c;

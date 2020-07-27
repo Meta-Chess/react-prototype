@@ -1,4 +1,6 @@
-export const formatMillis = (millis: number) => {
+export const formatMillis = (
+  millis: number
+): { time: string; validFor: number } => {
   const sign = millis < 0 ? "-" : "";
   millis = Math.max(-millis, millis);
   const days = Math.floor(millis / 24 / 60 / 60 / 1000);
@@ -8,14 +10,52 @@ export const formatMillis = (millis: number) => {
   const tenths = Math.floor(millis / 100) % 10;
   const hundredths = Math.floor(millis / 10) % 10;
 
-  if (days > 2) return sign + `${days} days`;
-  if (days > 0) return sign + `${days} days ${hours} hours`;
-  if (hours > 11) return sign + `${hours} hours`;
-  if (hours > 0) return sign + `${hours} hours ${minutes} minutes`;
-  if (minutes > 0) return sign + `${minutes} minutes ${seconds.pad(2)} seconds`;
-  if (seconds > 9) return sign + `${seconds} seconds`;
-  if (seconds > 2) return sign + `${seconds}.${tenths} seconds`;
-  return sign + `${seconds}.${tenths}${hundredths} seconds`;
+  const day = 1000 * 60 * 60 * 24;
+  const hour = 1000 * 60 * 60;
+  const minute = 1000 * 60;
+  const second = 1000;
+  const tenth = 100;
+  const hundredth = 10;
+
+  if (days > 2)
+    return {
+      time: sign + `${days} days`,
+      validFor: day,
+    };
+  if (days > 0)
+    return {
+      time: sign + `${days} days ${hours} hours`,
+      validFor: hour,
+    };
+  if (hours > 11)
+    return {
+      time: sign + `${hours} hours`,
+      validFor: hour,
+    };
+  if (hours > 0)
+    return {
+      time: sign + `${hours} hours ${minutes} minutes`,
+      validFor: minute,
+    };
+  if (minutes > 0)
+    return {
+      time: sign + `${minutes} minutes ${seconds.pad(2)} seconds`,
+      validFor: second,
+    };
+  if (seconds > 9)
+    return {
+      time: sign + `${seconds} seconds`,
+      validFor: second,
+    };
+  if (seconds > 2)
+    return {
+      time: sign + `${seconds}.${tenths} seconds`,
+      validFor: tenth,
+    };
+  return {
+    time: sign + `${seconds}.${tenths}${hundredths} seconds`,
+    validFor: hundredth,
+  };
 };
 
 declare global {

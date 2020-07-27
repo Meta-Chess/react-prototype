@@ -1,33 +1,42 @@
 import React, { useState, useContext } from "react";
 import { View, Text } from "react-native";
 import styled from "styled-components/native";
-import moment from "moment";
 import { SFC } from "primitives";
 import { GameContext } from "domain/State";
 import { Player } from "domain/State/types";
-import { formatMillis } from "utilities";
+import { contrast } from "utilities";
 
-const Timer: SFC = ({ style }) => {
+interface Props {
+  player: Player;
+}
+
+const Timer: SFC<Props> = ({ style, player }) => {
   const { gameState } = useContext(GameContext);
-  const clock = gameState.clock.getPlayerClock(Player.Black);
+  const clock = gameState.clock.getPlayerTimer(player);
 
-  if (!clock) throw new Error("Insufficient information to render clock");
-  const timeSinceCorrect = moment().diff(clock.atTime);
-  const timeRemaining = timeSinceCorrect
-    ? clock.timeRemaining - timeSinceCorrect
-    : clock.timeRemaining;
-  const display = formatMillis(Math.max(timeRemaining * 10000, 0));
+  if (!clock) return null; // Consider returning error?
+
+  const { time: displayTime, validFor } = clock.getFormattedTime();
 
   const [dummy, setDummy] = useState(false);
-  setInterval(
-    () => {
+  if (validFor !== Number.POSITIVE_INFINITY) {
+    setTimeout(() => {
       setDummy(!dummy);
-    },
-    17 //timeRemaining > 11000 ? 1000 : 100 // TODO: improve
-  );
+    }, validFor);
+  }
+
   return (
-    <Container style={style}>
-      <Text style={{ color: "white" }}>{display}</Text>
+    <Container
+      style={[
+        style,
+        {
+          backgroundColor: player,
+          borderColor: contrast(player),
+          borderWidth: 2,
+        },
+      ]}
+    >
+      <Text style={{ color: contrast(player) }}>{displayTime}</Text>
     </Container>
   );
 };
@@ -35,7 +44,6 @@ const Timer: SFC = ({ style }) => {
 const Container = styled(View)`
   padding: 8px 12px;
   border-radius: 8px;
-  background: #0a0a0a;
 `;
 
 export { Timer };

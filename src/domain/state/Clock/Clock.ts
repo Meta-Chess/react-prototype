@@ -16,15 +16,19 @@ export class Clock {
   setActivePlayers(players: Player[]) {
     this.timers.keys().forEach((player) => {
       if (players.includes(player)) {
-        this.timers.get(player)?.play();
+        this.timers.get(player)?.start();
       } else {
         console.log(this.timers.get(player));
-        // this.timers.get(player)?.pause();
+        this.timers.get(player)?.stop();
       }
     });
   }
 
-  getPlayerClock(player: Player) {
-    return this.timers.get(player)?.getClock();
+  getPlayerTimer(player: Player) {
+    return this.timers.get(player);
+  }
+
+  getInactivePlayers(): Player[] {
+    return this.timers.keys().filter((p) => !this.timers.get(p)?.isRunning());
   }
 }

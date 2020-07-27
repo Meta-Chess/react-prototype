@@ -6,6 +6,7 @@ import { Player } from "./types";
 
 export class GameState {
   public clock: Clock;
+  public players: Player[];
 
   constructor(
     public board: Board,
@@ -15,6 +16,7 @@ export class GameState {
   ) {
     this.clock = new Clock([Player.White, Player.Black], 20000);
     this.clock.setActivePlayers([Player.Black]);
+    this.players = [Player.White, Player.Black];
   }
 
   static createEmptyGameState(renderer: Renderer): GameState {
