@@ -35,6 +35,9 @@ const Timer: SFC<Props> = ({ style, player }) => {
           backgroundColor: player,
           borderColor: contrast(player),
           borderWidth: 2,
+          shadowRadius: 12,
+          shadowColor:
+            clock.getTimeRemaining() <= 0 ? "#FF0000" : "transparent",
         },
       ]}
     >

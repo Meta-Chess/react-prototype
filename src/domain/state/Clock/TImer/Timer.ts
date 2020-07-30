@@ -51,10 +51,14 @@ export class Timer {
     this.timer[this.timer.length - 1] = adjustedTime;
   }
 
-  getFormattedTime(): { time: string; validFor: number } {
-    const timeRemaining = this.running
+  getTimeRemaining(): number {
+    return this.running
       ? this.getAllowance() - moment().diff(this.getStartTime())
       : this.getAllowance();
+  }
+
+  getFormattedTime(): { time: string; validFor: number } {
+    const timeRemaining = this.getTimeRemaining();
 
     if (timeRemaining <= 0)
       return { ...formatMillis(0), validFor: Number.POSITIVE_INFINITY };
