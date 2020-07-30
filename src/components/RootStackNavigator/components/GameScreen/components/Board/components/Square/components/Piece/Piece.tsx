@@ -7,7 +7,7 @@ import styled from "styled-components/native";
 import { TouchableOpacity, View } from "react-native";
 
 interface Props {
-  piece: PieceType; //TODO: FIX THIS
+  piece: PieceType; //TODO: FIX
   size: number;
 }
 
