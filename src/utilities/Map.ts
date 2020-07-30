@@ -32,7 +32,7 @@ export class Map<K extends string | number | symbol, V> {
     return new Map<K, V>({ ...this.dictionary, ...asDictionary });
   }
 
-  get(key: K): V {
+  get(key: K): V | undefined {
     return this.dictionary[key];
   }
 

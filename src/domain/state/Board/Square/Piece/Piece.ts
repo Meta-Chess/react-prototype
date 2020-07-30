@@ -12,7 +12,8 @@ class Piece {
     public type: PieceType,
     public moveGenerators: MoveGenerator[],
     public owner: Player,
-    public attributes: PieceAttributes
+    public attributes?: PieceAttributes,
+    public active = false
   ) {
     this.id = Math.random();
   }

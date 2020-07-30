@@ -1,7 +1,7 @@
 import React from "react";
-import { SFC } from "primitives";
-import { TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
+import { SFC, Text } from "primitives";
 
 interface Props {
   text: string;
@@ -11,7 +11,9 @@ interface Props {
 export const Button: SFC<Props> = ({ style, text, onPress }) => {
   return (
     <BaseButton onPress={onPress} style={style}>
-      <Text style={{ color: "#e4e0d3", fontWeight: "600" }}>{text}</Text>
+      <Text.BodyM color="#e4e0d3" weight="heavy">
+        {text}
+      </Text.BodyM>
     </BaseButton>
   );
 };
@@ -19,6 +21,7 @@ export const Button: SFC<Props> = ({ style, text, onPress }) => {
 // TODO: This should probably be a button underneath for accessibility reasons
 const BaseButton = styled(TouchableOpacity)`
   padding: 12px 32px;
+  min-height: 40px;
   background-color: #41787c;
   border: 2px #e4e0d3;
   border-radius: 50px;
