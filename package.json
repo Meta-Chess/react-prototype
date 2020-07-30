@@ -47,6 +47,7 @@
     "eslint-plugin-react": "^7.20.4",
     "eslint-plugin-react-hooks": "^4.0.8",
     "html-webpack-plugin": "^4.3.0",
+    "husky": "^4.2.5",
     "prettier": "^2.0.5",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
     "typescript": "~3.9.5",
@@ -57,7 +58,7 @@
   "husky": {
     "hooks": {
       "post-merge": "yarn install",
-      "pre-push": "sh -c '[ $(git rev-parse --abbrev-ref HEAD) != \"master\" ] || (echo \"\u001b[0;31mTo push your code, please run ./push.sh instead. \u001b[0m\"; exit 1)'"
+      "pre-push": "./check"
     }
   }
 }
