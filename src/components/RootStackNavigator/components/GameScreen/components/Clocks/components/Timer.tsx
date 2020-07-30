@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import styled from "styled-components/native";
-import { SFC } from "primitives";
+import { SFC, Text } from "primitives";
 import { GameContext } from "domain/State";
 import { Player } from "domain/State/types";
 import { contrast } from "utilities";
@@ -41,7 +41,9 @@ const Timer: SFC<Props> = ({ style, player }) => {
         },
       ]}
     >
-      <Text style={{ color: contrast(player) }}>{displayTime}</Text>
+      <Text.DisplayS color={contrast(player)} monospaceNumbers={true}>
+        {displayTime}
+      </Text.DisplayS>
     </Container>
   );
 };

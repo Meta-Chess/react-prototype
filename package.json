@@ -11,6 +11,7 @@
     "format": "prettier '**/*.{js,jsx,ts,tsx}' --write"
   },
   "dependencies": {
+    "@expo-google-fonts/roboto-mono": "^0.1.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.7.1",
     "@react-navigation/stack": "^5.7.1",
@@ -27,7 +28,7 @@
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",
     "react-native-svg": "^12.1.0",
-    "react-native-web": "^0.13.3",
+    "react-native-web": "^0.13.4",
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
