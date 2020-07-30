@@ -3,11 +3,11 @@ import { Piece } from "../Square/Piece";
 import { PieceType, Player } from "domain/State/types";
 import { Direction } from "domain/State/Direction";
 
-const square = (
-  rank: number,
-  file: number,
-  piece: Piece
-): { [string]: Square } => {
+interface SquareMap {
+  [key: string]: Square;
+}
+
+const square = (rank: number, file: number, piece: Piece): SquareMap => {
   const adjacencies = {
     [Direction.N]: [`R${rank + 1}F${file}`],
     [Direction.NE]: [`R${rank + 1}F${file + 1}`],
@@ -19,96 +19,96 @@ const square = (
     [Direction.NW]: [`R${rank + 1}F${file - 1}`],
   };
   return {
-    [`R${rank}F${file}`]: new Square(adjacencies, [piece], { rank, file }, {}),
+    [`R${rank}F${file}`]: new Square(adjacencies, [piece], { rank, file }),
   };
 };
 
-const whitePawn = (rank: number, file: number): { [string]: Square } =>
+const whitePawn = (rank: number, file: number): SquareMap =>
   square(
     rank,
     file,
-    new Piece(`R${rank}F${file}`, PieceType.Pawn, [], Player.White, {})
+    new Piece(`R${rank}F${file}`, PieceType.Pawn, [], Player.White)
   );
 
-const whiteRook = (rank: number, file: number): { [string]: Square } =>
+const whiteRook = (rank: number, file: number): SquareMap =>
   square(
     rank,
     file,
-    new Piece(`R${rank}F${file}`, PieceType.Rook, [], Player.White, {})
+    new Piece(`R${rank}F${file}`, PieceType.Rook, [], Player.White)
   );
 
-const whiteKnight = (rank: number, file: number): { [string]: Square } =>
+const whiteKnight = (rank: number, file: number): SquareMap =>
   square(
     rank,
     file,
-    new Piece(`R${rank}F${file}`, PieceType.Knight, [], Player.White, {})
+    new Piece(`R${rank}F${file}`, PieceType.Knight, [], Player.White)
   );
 
-const whiteBishop = (rank: number, file: number): { [string]: Square } =>
+const whiteBishop = (rank: number, file: number): SquareMap =>
   square(
     rank,
     file,
-    new Piece(`R${rank}F${file}`, PieceType.Bishop, [], Player.White, {})
+    new Piece(`R${rank}F${file}`, PieceType.Bishop, [], Player.White)
   );
 
-const whiteKing = (rank: number, file: number): { [string]: Square } =>
+const whiteKing = (rank: number, file: number): SquareMap =>
   square(
     rank,
     file,
-    new Piece(`R${rank}F${file}`, PieceType.King, [], Player.White, {})
+    new Piece(`R${rank}F${file}`, PieceType.King, [], Player.White)
   );
 
-const whiteQueen = (rank: number, file: number): { [string]: Square } =>
+const whiteQueen = (rank: number, file: number): SquareMap =>
   square(
     rank,
     file,
-    new Piece(`R${rank}F${file}`, PieceType.Queen, [], Player.White, {})
+    new Piece(`R${rank}F${file}`, PieceType.Queen, [], Player.White)
   );
 
-const blackPawn = (rank: number, file: number): { [string]: Square } =>
+const blackPawn = (rank: number, file: number): SquareMap =>
   square(
     rank,
     file,
-    new Piece(`R${rank}F${file}`, PieceType.Pawn, [], Player.Black, {})
+    new Piece(`R${rank}F${file}`, PieceType.Pawn, [], Player.Black)
   );
 
-const blackRook = (rank: number, file: number): { [string]: Square } =>
+const blackRook = (rank: number, file: number): SquareMap =>
   square(
     rank,
     file,
-    new Piece(`R${rank}F${file}`, PieceType.Rook, [], Player.Black, {})
+    new Piece(`R${rank}F${file}`, PieceType.Rook, [], Player.Black)
   );
 
-const blackKnight = (rank: number, file: number): { [string]: Square } =>
+const blackKnight = (rank: number, file: number): SquareMap =>
   square(
     rank,
     file,
-    new Piece(`R${rank}F${file}`, PieceType.Knight, [], Player.Black, {})
+    new Piece(`R${rank}F${file}`, PieceType.Knight, [], Player.Black)
   );
 
-const blackBishop = (rank: number, file: number): { [string]: Square } =>
+const blackBishop = (rank: number, file: number): SquareMap =>
   square(
     rank,
     file,
-    new Piece(`R${rank}F${file}`, PieceType.Bishop, [], Player.Black, {})
+    new Piece(`R${rank}F${file}`, PieceType.Bishop, [], Player.Black)
   );
 
-const blackKing = (rank: number, file: number): { [string]: Square } =>
+const blackKing = (rank: number, file: number): SquareMap =>
   square(
     rank,
     file,
-    new Piece(`R${rank}F${file}`, PieceType.King, [], Player.Black, {})
+    new Piece(`R${rank}F${file}`, PieceType.King, [], Player.Black)
   );
 
-const blackQueen = (rank: number, file: number): { [string]: Square } =>
+const blackQueen = (rank: number, file: number): SquareMap =>
   square(
     rank,
     file,
-    new Piece(`R${rank}F${file}`, PieceType.Queen, [], Player.Black, {})
+    new Piece(`R${rank}F${file}`, PieceType.Queen, [], Player.Black)
   );
 
-const emptySquare = (rank: number, file: number): { [string]: Square } => ({
-  [`R${rank}F${file}`]: new Square({}, [], { rank, file }, {}),
+const emptySquare = (rank: number, file: number): SquareMap => ({
+  [`R${rank}F${file}`]: new Square({}, [], { rank, file }),
 });
 
 const ranks = Array.from(Array(8).keys()).map((n) => n + 1);

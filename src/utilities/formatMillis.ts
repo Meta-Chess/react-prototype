@@ -65,7 +65,7 @@ declare global {
 }
 
 Number.prototype.pad = function (length: number): string {
-  const s = String(this);
+  let s = String(this);
   while (s.length < length) s = "0" + s;
   return s;
 };

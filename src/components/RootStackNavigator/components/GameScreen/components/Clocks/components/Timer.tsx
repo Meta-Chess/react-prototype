@@ -14,7 +14,9 @@ const Timer: SFC<Props> = ({ style, player }) => {
   const { gameState } = useContext(GameContext);
   const clock = gameState.clock.getPlayerTimer(player);
 
-  const { time: displayTime, validFor } = clock?.getFormattedTime();
+  const formattedTime = clock?.getFormattedTime();
+  const displayTime = formattedTime?.time;
+  const validFor = formattedTime?.validFor;
 
   const [dummy, setDummy] = useState(false);
   if (validFor !== Number.POSITIVE_INFINITY) {

@@ -22,7 +22,7 @@ export class Clock {
     });
   }
 
-  getPlayerTimer(player: Player): Timer {
+  getPlayerTimer(player: Player): Timer | undefined {
     return this.timers.get(player);
   }
 

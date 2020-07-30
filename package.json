@@ -7,7 +7,8 @@
     "web": "yarn start --web",
     "eject": "expo eject",
     "type-check": "tsc --noEmit",
-    "lint": "eslint --max-warnings 0 src"
+    "lint": "eslint --max-warnings 0 src",
+    "format": "prettier '**/*.{js,jsx,ts,tsx}' --write"
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.10",
@@ -52,5 +53,11 @@
     "webpack": "^4.43.0",
     "webpack-dev-server": "^3.11.0"
   },
-  "private": true
+  "private": true,
+  "husky": {
+    "hooks": {
+      "post-merge": "yarn install",
+      "pre-push": "sh -c '[ $(git rev-parse --abbrev-ref HEAD) != \"master\" ] || (echo \"\u001b[0;31mTo push your code, please run ./push.sh instead. \u001b[0m\"; exit 1)'"
+    }
+  }
 }

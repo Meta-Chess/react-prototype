@@ -4,11 +4,11 @@ import { View, Text, Linking } from "react-native";
 const pieceCreditLink = (
   <Text
     style={{ color: "blue" }}
-    onPress={(): void =>
+    onPress={(): void => {
       Linking.openURL(
         "https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces"
-      )
-    }
+      );
+    }}
   >
     here
   </Text>
@@ -17,9 +17,9 @@ const pieceCreditLink = (
 const creatorCreditLink = (
   <Text
     style={{ color: "blue" }}
-    onPress={(): void =>
-      Linking.openURL("https://en.wikipedia.org/wiki/User:Cburnett")
-    }
+    onPress={(): void => {
+      Linking.openURL("https://en.wikipedia.org/wiki/User:Cburnett");
+    }}
   >
     User:Cburnett
   </Text>
