@@ -21,12 +21,12 @@ const Piece: SFC<Props> = ({ style, piece, size }) => {
 
   return (
     <TouchableOpacity
+      key={piece.location}
       style={[
         style,
         {
           height: size,
           width: size,
-          position: "relative",
         },
       ]}
       onPress={onPress}
@@ -49,8 +49,6 @@ const Container = styled(View)`
   position: absolute;
   left: 0;
   top: 0;
-  width: 100px;
-  height: 100px;
 `;
 
 export { Piece };
