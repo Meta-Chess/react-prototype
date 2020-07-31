@@ -40,6 +40,7 @@ module.exports = {
       },
     ],
     "no-console": "warn",
+    "linebreak-style": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
   },
