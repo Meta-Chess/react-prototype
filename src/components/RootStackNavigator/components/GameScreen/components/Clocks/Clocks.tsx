@@ -32,7 +32,7 @@ const Container = styled(View)`
 const RedButton = styled(Button)`
   border: none;
   background-color: #900;
-  padding: 20px;
+  padding: 24px;
 `;
 
 export { Clocks };
