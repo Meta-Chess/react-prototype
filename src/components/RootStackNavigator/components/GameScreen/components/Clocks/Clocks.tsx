@@ -17,7 +17,7 @@ const Clocks: SFC = ({ style }) => {
   return (
     <Container style={style}>
       {gameState.players.map((player) => (
-        <Timer style={{ marginRight: 8 }} player={player} key={player} />
+        <Timer style={{ marginRight: 12 }} player={player} key={player} />
       ))}
       <RedButton text={""} onPress={nextTurn} />
     </Container>

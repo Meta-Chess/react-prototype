@@ -1,16 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { SFC } from "primitives";
 import styled from "styled-components/native";
 import { Square } from "./components";
 import { GameContext } from "domain/State";
 import { View } from "react-native";
 
-interface Props {
-  maxWidth: number;
-  maxHeight: number;
-}
+const Board: SFC = ({ style }) => {
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-const Board: SFC<Props> = ({ style, maxWidth, maxHeight }) => {
   const padding = 8;
   const { gameState } = useContext(GameContext);
 
@@ -36,38 +33,56 @@ const Board: SFC<Props> = ({ style, maxWidth, maxHeight }) => {
   );
 
   const squareSize = Math.min(
-    (maxWidth - 2 * padding) / boardDetails.width,
-    (maxHeight - 2 * padding) / boardDetails.height,
+    (dimensions.width - 2 * padding) / boardDetails.width,
+    (dimensions.height - 2 * padding) / boardDetails.height,
     100
   );
 
   return (
-    <BoardContainer
-      style={[
-        style,
-        {
-          height: squareSize * boardDetails.height + 2 * padding,
-          width: squareSize * boardDetails.width + 2 * padding,
-          padding,
-        },
-      ]}
+    <SizeContainer
+      onLayout={(event): void => {
+        const { width, height } = event.nativeEvent.layout;
+        if (dimensions.width !== width || dimensions.height !== height)
+          setDimensions({ width, height });
+      }}
+      style={style}
     >
-      <SquaresContainer>
-        {fileCoordinates.map((file) => (
-          <ColumnContainer style={{ maxWidth: squareSize }} key={file}>
-            {rankCoordinates.map((rank) => (
-              <Square
-                size={squareSize}
-                squares={gameState.board.squaresWithRankAndFile({ rank, file })}
-                key={JSON.stringify([rank, file])}
-              />
-            ))}
-          </ColumnContainer>
-        ))}
-      </SquaresContainer>
-    </BoardContainer>
+      <BoardContainer
+        style={[
+          {
+            height: squareSize * boardDetails.height + 2 * padding,
+            width: squareSize * boardDetails.width + 2 * padding,
+            padding,
+          },
+        ]}
+      >
+        <SquaresContainer>
+          {fileCoordinates.map((file) => (
+            <ColumnContainer style={{ maxWidth: squareSize }} key={file}>
+              {rankCoordinates.map((rank) => (
+                <Square
+                  size={squareSize}
+                  squares={gameState.board.squaresWithRankAndFile({
+                    rank,
+                    file,
+                  })}
+                  key={JSON.stringify([rank, file])}
+                />
+              ))}
+            </ColumnContainer>
+          ))}
+        </SquaresContainer>
+      </BoardContainer>
+    </SizeContainer>
   );
 };
+
+const SizeContainer = styled(View)`
+  flex: 1;
+  align-self: stretch;
+  margin: 24px;
+  align-items: center;
+`;
 
 const BoardContainer = styled(View)`
   position: relative;

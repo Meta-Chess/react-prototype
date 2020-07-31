@@ -1,23 +1,15 @@
 import React, { FC } from "react";
-import { Board } from "./components";
+import { View } from "react-native";
 import styled from "styled-components/native";
 import { GameStateProvider } from "domain/State";
-import { PieceCredit, Clocks } from "./components";
-import { View, useWindowDimensions } from "react-native";
+import { Board, Clocks, PieceCredit } from "./components";
 
 const GameScreen: FC = () => {
-  const padding = 24;
-  const { width, height } = useWindowDimensions();
-
   return (
     <GameStateProvider>
-      <ScreenContainer style={{ padding, width, height }}>
-        <Clocks />
-        <Board
-          maxHeight={height - 2 * padding}
-          maxWidth={width - 2 * padding}
-          style={{ marginTop: padding }}
-        />
+      <ScreenContainer>
+        <Clocks style={{ marginTop: 16 }} />
+        <Board style={{ margin: 16 }} />
         <PieceCredit />
       </ScreenContainer>
     </GameStateProvider>
@@ -30,6 +22,8 @@ const ScreenContainer = styled(View)`
   justify-content: space-between;
   align-items: center;
   background: #232323;
+  width: 100%;
+  height: 100%;
 `;
 
 export { GameScreen };
