@@ -2,7 +2,6 @@ import React, { FC } from "react";
 import styled from "styled-components/native";
 import { View, useWindowDimensions } from "react-native";
 import { StartButton } from "./components";
-import { Skeleton } from "primitives";
 
 const StartScreen: FC = () => {
   const padding = 12;
@@ -11,7 +10,6 @@ const StartScreen: FC = () => {
   return (
     <ScreenContainer style={{ padding, width, height }}>
       <StartButton />
-      <Skeleton style={{ height: 30, width: 180, marginTop: 40 }} />
     </ScreenContainer>
   );
 };
