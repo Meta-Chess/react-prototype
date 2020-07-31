@@ -15,11 +15,12 @@ const Piece: SFC<Props> = ({ style, piece, size }) => {
   const { gameState } = useContext(GameContext);
 
   const onPress = (): void => {
-    piece.active = !piece.active;
-    gameState.render();
+    //piece.active = !piece.active;
+    //gameState.render();
   };
 
   return (
+    /*
     <TouchableOpacity
       key={piece.location}
       style={[
@@ -31,17 +32,19 @@ const Piece: SFC<Props> = ({ style, piece, size }) => {
       ]}
       onPress={onPress}
     >
-      {/* {piece.active && (
+    */
+    /* {piece.active && (
         <Container>
           <PieceHighlight type={piece.type} color={piece.active} size={size} />
         </Container>
-      )} */}
-      <Container>
-        {piece.active || (
-          <PieceImage type={piece.type} color={piece.owner} size={size} />
-        )}
-      </Container>
-    </TouchableOpacity>
+      )} */
+    <Container>
+      {piece.active || (
+        <PieceImage type={piece.type} color={piece.owner} size={size} />
+      )}
+    </Container>
+
+    // </TouchableOpacity>
   );
 };
 

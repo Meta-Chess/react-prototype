@@ -9,6 +9,10 @@ export class Square {
     public attributes?: null // This will be more interesting later...
   ) {}
 
+  getPieceArray(): Piece[] {
+    return this.pieces;
+  }
+
   getColorIndex(): number {
     return (this.coordinates.rank + this.coordinates.file) % 2;
   }

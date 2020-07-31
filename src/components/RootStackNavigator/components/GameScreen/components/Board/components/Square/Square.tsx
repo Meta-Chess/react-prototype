@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { SFC } from "primitives";
 import { GridArrangement, Piece } from "./components";
-
+import { GameContext } from "domain/State";
 import { Square } from "domain/State/Board/Square";
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 const squareColors = ["#41787c", "#e4e0d3"];
 
 const SquareComponent: SFC<Props> = ({ style, squares, size }) => {
-  // const { gameState } = useContext(GameContext);
+  const { gameState } = useContext(GameContext);
 
   const square = squares[0]; // TODO: How do we want to draw two squares in the same location
   if (!square) return <View style={[style, { width: size, height: size }]} />;
@@ -25,10 +25,29 @@ const SquareComponent: SFC<Props> = ({ style, squares, size }) => {
   const dimension = Math.ceil(Math.sqrt(piecesOnSquare.length));
   const pieceSize = size / dimension;
 
+  const onPress = (): void => {
+    const board = gameState.board;
+    const pieces = square.getPieceArray();
+    const squares = [square];
+
+    board.updateAdminMove(pieces, squares);
+    gameState.render();
+
+    /* make piece invisible 
+    if (pieces.length !== 0) {
+      pieces[0].active = !pieces[0].active;
+    } else {
+      return;
+    }
+    */
+  };
+
   return (
     <TouchableOpacity
       style={[style, { width: size, height: size, backgroundColor }]}
-      onPress={(): void => {}} /*eslint-disable-line @typescript-eslint/no-empty-function*/
+      onPress={
+        onPress
+      } /*eslint-disable-line @typescript-eslint/no-empty-function*/
     >
       <GridArrangement>
         {piecesOnSquare.map((piece) => (
