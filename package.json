@@ -22,7 +22,7 @@
     "moment": "^2.27.0",
     "react": "next",
     "react-dom": "next",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.1.tar.gz",
+    "react-native": "^0.63.2",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-reanimated": "~1.9.0",
     "react-native-safe-area-context": "~3.0.7",

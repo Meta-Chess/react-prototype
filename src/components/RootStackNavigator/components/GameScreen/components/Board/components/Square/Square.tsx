@@ -31,23 +31,21 @@ const SquareComponent: SFC<Props> = ({ style, squares, size }) => {
     const squares = [square];
 
     board.updateAdminMove(pieces, squares);
-    gameState.render();
-
-    /* make piece invisible 
+    /*
     if (pieces.length !== 0) {
       pieces[0].active = !pieces[0].active;
     } else {
-      return;
+      //do nothing
     }
     */
+    gameState.render();
   };
 
   return (
     <TouchableOpacity
       style={[style, { width: size, height: size, backgroundColor }]}
-      onPress={
-        onPress
-      } /*eslint-disable-line @typescript-eslint/no-empty-function*/
+      onPress={onPress}
+      activeOpacity={1}
     >
       <GridArrangement>
         {piecesOnSquare.map((piece) => (
