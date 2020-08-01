@@ -16,9 +16,6 @@ interface Move {
 class Board {
   constructor(
     public squares: LocationMap,
-    //fix extra variable with interface/object logic
-    //adminMove: Move
-    public adminMove: { pieces: Piece[]; squares: Square[] },
     public adminPieces: Piece[] = [],
     public adminSquares: Square[] = []
   ) {}

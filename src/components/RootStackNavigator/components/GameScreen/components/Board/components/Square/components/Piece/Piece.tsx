@@ -1,50 +1,21 @@
-import React, { useContext } from "react";
-import { SFC } from "primitives";
+import React, { FC } from "react";
 import { PieceImage } from "primitives";
-import { GameContext } from "domain/State";
 import { Piece as PieceType } from "domain/State/Board/Square/Piece";
 import styled from "styled-components/native";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 
 interface Props {
   piece: PieceType; //TODO: FIX
   size: number;
 }
 
-const Piece: SFC<Props> = ({ style, piece, size }) => {
-  const { gameState } = useContext(GameContext);
-
-  const onPress = (): void => {
-    //piece.active = !piece.active;
-    //gameState.render();
-  };
-
+const Piece: FC<Props> = ({ piece, size }) => {
   return (
-    /*
-    <TouchableOpacity
-      key={piece.location}
-      style={[
-        style,
-        {
-          height: size,
-          width: size,
-        },
-      ]}
-      onPress={onPress}
-    >
-    */
-    /* {piece.active && (
-        <Container>
-          <PieceHighlight type={piece.type} color={piece.active} size={size} />
-        </Container>
-      )} */
     <Container>
       {piece.active || (
         <PieceImage type={piece.type} color={piece.owner} size={size} />
       )}
     </Container>
-
-    // </TouchableOpacity>
   );
 };
 

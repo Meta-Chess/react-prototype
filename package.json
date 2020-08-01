@@ -8,7 +8,7 @@
     "eject": "expo eject",
     "type-check": "tsc --noEmit",
     "lint": "eslint --max-warnings 0 src",
-    "format": "prettier '**/*.{js,jsx,ts,tsx}' --write"
+    "format": "prettier ./src --write"
   },
   "dependencies": {
     "@expo-google-fonts/roboto-mono": "^0.1.0",
