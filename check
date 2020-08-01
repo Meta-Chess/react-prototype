@@ -1,13 +1,10 @@
 #!/bin/bash
-failure() {
-  local lineno=$1
-  local msg=$2
-  local code=$3
-  echo "Failed at $lineno: $msg"
-  exit "$code"
-}
-trap 'failure ${LINENO} "$BASH_COMMAND" $?' ERR
 
-yarn format
-yarn lint
-yarn type-check
+die() {
+	echo $1
+	exit 1
+}
+
+yarn format || die "format failed"
+yarn lint || die "lint failed"
+yarn type-check || die "type-check failed"
