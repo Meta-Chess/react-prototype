@@ -1,6 +1,4 @@
 #!/bin/bash
-set -euo pipefail
-
 failure() {
   local lineno=$1
   local msg=$2
