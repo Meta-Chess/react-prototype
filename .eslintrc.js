@@ -43,6 +43,7 @@ module.exports = {
     "linebreak-style": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
+    "prettier/prettier": ["error", { endOfLine: "auto" }],
   },
   settings: { react: { version: "detect" } },
 };
