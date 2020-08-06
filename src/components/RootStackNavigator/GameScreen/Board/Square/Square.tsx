@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { SFC } from "primitives";
-import { GridArrangement, Piece } from "./components";
+import { Piece } from "./Piece";
+import { GridArrangement } from "./GridArrangement";
 import { GameContext } from "domain/Game";
 import { Square } from "domain/Game/Board/Square";
 

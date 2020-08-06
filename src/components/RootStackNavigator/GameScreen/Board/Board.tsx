@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { SFC } from "primitives";
 import styled from "styled-components/native";
-import { Square } from "./components";
+import { Square } from "./Square";
 import { GameContext } from "domain/Game";
 import { View } from "react-native";
 

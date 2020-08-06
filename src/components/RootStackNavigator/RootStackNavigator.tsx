@@ -1,5 +1,6 @@
 import React, { FC } from "react";
-import { GameScreen, StartScreen } from "./components";
+import { GameScreen } from "./GameScreen";
+import { StartScreen } from "./StartScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Screens } from "navigation/Screens";
 

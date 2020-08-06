@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import { SFC } from "primitives";
 import { GameContext } from "domain/Game";
 import { Button } from "ui";
-import { Timer } from "./components";
+import { Timer } from "./Timer";
 
 const Clocks: SFC = ({ style }) => {
   const { game } = useContext(GameContext);

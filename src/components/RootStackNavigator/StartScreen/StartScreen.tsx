@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components/native";
 import { View, useWindowDimensions } from "react-native";
-import { StartButton } from "./components";
+import { StartButton } from "./StartButton";
 
 const StartScreen: FC = () => {
   const padding = 12;
