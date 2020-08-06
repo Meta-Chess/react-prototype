@@ -6,6 +6,7 @@
     "ios": "yarn start --ios",
     "web": "yarn start --web",
     "eject": "expo eject",
+    "test": "jest",
     "type-check": "tsc --noEmit",
     "lint": "eslint --max-warnings 0 src",
     "format": "prettier ./src --write"
@@ -35,6 +36,7 @@
     "@babel/core": "^7.8.6",
     "@expo/webpack-config": "^0.12.17",
     "@types/color": "^3.0.1",
+    "@types/jest": "^26.0.8",
     "@types/react": "~16.9.41",
     "@types/react-native": "~0.62.13",
     "@types/styled-components": "^5.1.0",
@@ -50,6 +52,7 @@
     "eslint-plugin-react-hooks": "^4.0.8",
     "html-webpack-plugin": "^4.3.0",
     "husky": "^4.2.5",
+    "jest": "^26.2.2",
     "prettier": "^2.0.5",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
     "typescript": "~3.9.5",

@@ -1,5 +1,5 @@
 export class Map<K extends string | number | symbol, V> {
-  private dictionary: { [key in K]?: V };
+  public dictionary: { [key in K]?: V };
 
   constructor(dictionary?: { [key in K]?: V }) {
     this.dictionary = dictionary || {};
