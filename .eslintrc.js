@@ -26,7 +26,7 @@ module.exports = {
     semi: ["error", "always"],
     "react/prop-types": "off",
     "@typescript-eslint/explicit-function-return-type": "error",
-    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/ban-types": [
       "error",
       {
@@ -43,7 +43,7 @@ module.exports = {
     "linebreak-style": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "prettier/prettier": ["error", { endOfLine: "auto" }],
+    "prettier/prettier": ["warn", { endOfLine: "auto" }],
   },
   settings: { react: { version: "detect" } },
 };
