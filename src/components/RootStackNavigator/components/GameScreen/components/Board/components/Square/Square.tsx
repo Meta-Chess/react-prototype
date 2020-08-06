@@ -2,8 +2,8 @@ import React, { useContext } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { SFC } from "primitives";
 import { GridArrangement, Piece } from "./components";
-import { GameContext } from "domain/State";
-import { Square } from "domain/State/Board/Square";
+import { GameContext } from "domain/Game";
+import { Square } from "domain/Game/Board/Square";
 
 interface Props {
   squares: Square[];
@@ -13,7 +13,7 @@ interface Props {
 const squareColors = ["#41787c", "#e4e0d3"];
 
 const SquareComponent: SFC<Props> = ({ style, squares, size }) => {
-  const { gameState } = useContext(GameContext);
+  const { game } = useContext(GameContext);
 
   const square = squares[0]; // TODO: How do we want to draw two squares in the same location
   if (!square) return <View style={[style, { width: size, height: size }]} />;
@@ -26,7 +26,7 @@ const SquareComponent: SFC<Props> = ({ style, squares, size }) => {
   const pieceSize = size / dimension;
 
   const onPress = (): void => {
-    const board = gameState.board;
+    const board = game.board;
     const pieces = square.getPieceArray();
     const squares = [square];
 
@@ -38,7 +38,7 @@ const SquareComponent: SFC<Props> = ({ style, squares, size }) => {
       //do nothing
     }
     */
-    gameState.render();
+    game.render();
   };
 
   return (

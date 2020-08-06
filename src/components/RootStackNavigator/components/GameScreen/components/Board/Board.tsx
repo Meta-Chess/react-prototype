@@ -2,16 +2,16 @@ import React, { useContext, useState } from "react";
 import { SFC } from "primitives";
 import styled from "styled-components/native";
 import { Square } from "./components";
-import { GameContext } from "domain/State";
+import { GameContext } from "domain/Game";
 import { View } from "react-native";
 
 const Board: SFC = ({ style }) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   const padding = 8;
-  const { gameState } = useContext(GameContext);
+  const { game } = useContext(GameContext);
 
-  const squares = Object.values(gameState.board.squares);
+  const squares = Object.values(game.board.squares);
 
   const minRank = Math.min(...squares.map((s) => s.coordinates.rank));
   const maxRank = Math.max(...squares.map((s) => s.coordinates.rank));
@@ -62,7 +62,7 @@ const Board: SFC = ({ style }) => {
               {rankCoordinates.map((rank) => (
                 <Square
                   size={squareSize}
-                  squares={gameState.board.squaresWithRankAndFile({
+                  squares={game.board.squaresWithRankAndFile({
                     rank,
                     file,
                   })}

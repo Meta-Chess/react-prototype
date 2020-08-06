@@ -1,7 +1,7 @@
 import { Square } from "../Square";
 import { Piece } from "../Square/Piece";
-import { PieceType, Player } from "domain/State/types";
-import { Direction } from "domain/State/Direction";
+import { PieceType, Player } from "domain/Game/types";
+import { Direction } from "domain/Game/Direction";
 
 interface SquareMap {
   [key: string]: Square;

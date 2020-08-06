@@ -3,7 +3,7 @@ import {
   MoveGenerator,
   Player,
   PieceAttributes,
-} from "domain/State/types";
+} from "domain/Game/types";
 
 class Piece {
   id: number;

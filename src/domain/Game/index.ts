@@ -1,2 +1,2 @@
-export * from "./GameState";
+export * from "./Game";
 export * from "./GameContext";

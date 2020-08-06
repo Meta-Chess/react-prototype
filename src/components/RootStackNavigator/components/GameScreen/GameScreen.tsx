@@ -1,18 +1,18 @@
 import React, { FC } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
-import { GameStateProvider } from "domain/State";
+import { GameProvider } from "domain/Game";
 import { Board, Clocks, PieceCredit } from "./components";
 
 const GameScreen: FC = () => {
   return (
-    <GameStateProvider>
+    <GameProvider>
       <ScreenContainer>
         <Clocks style={{ marginTop: 16 }} />
         <Board style={{ margin: 16 }} />
         <PieceCredit />
       </ScreenContainer>
-    </GameStateProvider>
+    </GameProvider>
   );
 };
 

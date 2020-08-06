@@ -2,21 +2,21 @@ import React, { useContext } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC } from "primitives";
-import { GameContext } from "domain/State";
+import { GameContext } from "domain/Game";
 import { Button } from "ui";
 import { Timer } from "./components";
 
 const Clocks: SFC = ({ style }) => {
-  const { gameState } = useContext(GameContext);
+  const { game } = useContext(GameContext);
 
   const nextTurn = (): void => {
-    gameState.clock.setActivePlayers(gameState.clock.getInactivePlayers());
-    gameState.render();
+    game.clock.setActivePlayers(game.clock.getInactivePlayers());
+    game.render();
   };
 
   return (
     <Container style={style}>
-      {gameState.players.map((player) => (
+      {game.players.map((player) => (
         <Timer style={{ marginRight: 12 }} player={player} key={player} />
       ))}
       <RedButton text={""} onPress={nextTurn} />

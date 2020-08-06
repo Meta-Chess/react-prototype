@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { PieceImage } from "primitives";
-import { Piece as PieceType } from "domain/State/Board/Square/Piece";
+import { Piece as PieceType } from "domain/Game/Board/Square/Piece";
 import styled from "styled-components/native";
 import { View } from "react-native";
 

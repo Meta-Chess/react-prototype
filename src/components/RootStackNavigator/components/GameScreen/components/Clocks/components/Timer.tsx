@@ -2,8 +2,8 @@ import React, { useState, useContext } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text } from "primitives";
-import { GameContext } from "domain/State";
-import { Player } from "domain/State/types";
+import { GameContext } from "domain/Game";
+import { Player } from "domain/Game/types";
 import { contrast } from "utilities";
 
 interface Props {
@@ -11,8 +11,8 @@ interface Props {
 }
 
 const Timer: SFC<Props> = ({ style, player }) => {
-  const { gameState } = useContext(GameContext);
-  const clock = gameState.clock.getPlayerTimer(player);
+  const { game } = useContext(GameContext);
+  const clock = game.clock.getPlayerTimer(player);
 
   const formattedTime = clock?.getFormattedTime();
   const displayTime = formattedTime?.time;

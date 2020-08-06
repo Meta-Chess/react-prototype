@@ -1,5 +1,5 @@
 import { Direction } from "./Direction";
-import { GameState } from "./GameState";
+import { Game } from "./Game";
 
 export interface PieceInterface {
   location: SquareInterface;
@@ -19,7 +19,7 @@ export type PieceAttributes = null;
 
 export type SquareAttributes = null;
 
-export type MoveGenerator = (gameState: GameState) => Move[]; // TODO: change to a map from end square to move, maybe via other things
+export type MoveGenerator = (game: Game) => Move[]; // TODO: change to a map from end square to move, maybe via other things
 
 export type Move = PieceDelta[];
 

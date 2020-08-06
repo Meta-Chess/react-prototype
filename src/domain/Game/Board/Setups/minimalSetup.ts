@@ -1,6 +1,6 @@
 import { Square } from "../Square";
 import { Piece } from "../Square/Piece";
-import { PieceType, Player } from "domain/State/types";
+import { PieceType, Player } from "domain/Game/types";
 
 export const minimalSetup = {
   Blah: new Square({}, [], { rank: 5, file: 5 }),

@@ -1,5 +1,5 @@
 import { Piece } from "./Piece";
-import { Adjacencies } from "domain/State/types";
+import { Adjacencies } from "domain/Game/types";
 
 export class Square {
   constructor(

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { PieceType } from "domain/State/types";
+import { PieceType } from "domain/Game/types";
 import { Bishop, King, Knight, Pawn, Queen, Rook } from "./sprites";
 
 interface Props {
