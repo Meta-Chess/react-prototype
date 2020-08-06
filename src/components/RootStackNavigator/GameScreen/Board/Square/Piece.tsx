@@ -1,21 +1,23 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { PieceImage } from "primitives";
 import { opacify } from "utilities";
-import { Piece as PieceClass } from "domain/Game/Board/Square/Piece";
-import { PieceType } from "domain/Game/types";
+import { GameContext } from "domain/Game";
+import { Piece as PieceClass } from "domain/Game/Board";
 import styled from "styled-components/native";
 import { View } from "react-native";
 
 interface Props {
-  piece: PieceClass; //TODO: FIX
+  piece: PieceClass;
   size: number;
 }
 
 const Piece: FC<Props> = ({ piece, size }) => {
+  const { game } = useContext(GameContext);
+  const isHighlighted = game.selectedPieces.map((p) => p.id).includes(piece.id);
   return (
     <>
       <Container>
-        {piece.type === PieceType.Queen && (
+        {isHighlighted && (
           <Highlight
             style={{
               width: size,
@@ -33,7 +35,7 @@ const Piece: FC<Props> = ({ piece, size }) => {
 };
 
 const Highlight = styled(View)`
-  background-color: ${opacify("#999", 0.4)};
+  background-color: ${opacify("#D55", 0.4)};
   border: 1px solid ${opacify("#666", 0.8)};
 `;
 

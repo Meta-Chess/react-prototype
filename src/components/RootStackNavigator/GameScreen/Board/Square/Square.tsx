@@ -4,7 +4,7 @@ import { SFC } from "primitives";
 import { Piece } from "./Piece";
 import { GridArrangement } from "./GridArrangement";
 import { GameContext } from "domain/Game";
-import { Square } from "domain/Game/Board/Square";
+import { Square } from "domain/Game/Board";
 
 interface Props {
   squares: Square[];
@@ -12,6 +12,7 @@ interface Props {
 }
 
 const squareColors = ["#41787c", "#e4e0d3"];
+const highlightedSquareColors = ["#41C87C", "#C4FFC3"];
 
 const SquareComponent: SFC<Props> = ({ style, squares, size }) => {
   const { game } = useContext(GameContext);
@@ -19,7 +20,11 @@ const SquareComponent: SFC<Props> = ({ style, squares, size }) => {
   const square = squares[0]; // TODO: How do we want to draw two squares in the same location
   if (!square) return <View style={[style, { width: size, height: size }]} />;
 
-  const backgroundColor = squareColors[square.getColorIndex()];
+  const isHighlighted = game.allowableLocations.includes(square.location);
+
+  const backgroundColor = isHighlighted
+    ? highlightedSquareColors[square.getColorIndex()]
+    : squareColors[square.getColorIndex()];
 
   const piecesOnSquare = square.pieces;
 
@@ -27,19 +32,20 @@ const SquareComponent: SFC<Props> = ({ style, squares, size }) => {
   const pieceSize = size / dimension;
 
   const onPress = (): void => {
-    const board = game.board;
-    const pieces = square.getPieceArray();
-    const squares = [square];
+    game.onPress(square);
+    // const board = game.board;
+    // const pieces = square.getPieceArray();
+    // const squares = [square];
 
-    board.updateAdminMove(pieces, squares);
-    /*
-    if (pieces.length !== 0) {
-      pieces[0].active = !pieces[0].active;
-    } else {
-      //do nothing
-    }
-    */
-    game.render();
+    // board.updateAdminMove(pieces, squares);
+    // /*
+    // if (pieces.length !== 0) {
+    //   pieces[0].active = !pieces[0].active;
+    // } else {
+    //   //do nothing
+    // }
+    // */
+    // game.render();
   };
 
   return (

@@ -1,5 +1,5 @@
 import { Square } from "../Square";
-import { Piece } from "../Square/Piece";
+import { Piece } from "../Piece";
 import { PieceType, Player } from "domain/Game/types";
 import { Direction } from "domain/Game/Direction";
 
@@ -19,7 +19,10 @@ const square = (rank: number, file: number, piece: Piece): SquareMap => {
     [Direction.NW]: [`R${rank + 1}F${file - 1}`],
   };
   return {
-    [`R${rank}F${file}`]: new Square(adjacencies, [piece], { rank, file }),
+    [`R${rank}F${file}`]: new Square(adjacencies, [piece], `R${rank}F${file}`, {
+      rank,
+      file,
+    }),
   };
 };
 
@@ -108,7 +111,7 @@ const blackQueen = (rank: number, file: number): SquareMap =>
   );
 
 const emptySquare = (rank: number, file: number): SquareMap => ({
-  [`R${rank}F${file}`]: new Square({}, [], { rank, file }),
+  [`R${rank}F${file}`]: new Square({}, [], `R${rank}F${file}`, { rank, file }),
 });
 
 const ranks = Array.from(Array(8).keys()).map((n) => n + 1);

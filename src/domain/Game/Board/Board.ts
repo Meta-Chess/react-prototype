@@ -1,4 +1,4 @@
-import { Piece } from "./Square/Piece";
+import { Piece } from "./Piece";
 import { Square } from "./Square";
 import { standardSetup, minimalSetup } from "./Setups";
 
