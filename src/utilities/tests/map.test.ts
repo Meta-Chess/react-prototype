@@ -57,6 +57,4 @@ describe("Map", () => {
       expect(map.get("pumpkin")).toEqual("vegetable");
     });
   });
-
-  describe("fromKeyArrayWithValueGenerator", () => {});
 });
