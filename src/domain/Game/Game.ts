@@ -45,10 +45,24 @@ export class Game {
   }
 
   onPress(square: Square): void {
-    this.selectedPieces = square.pieces;
-    this.allowableLocations = flatMap(this.selectedPieces, (p: Piece) =>
-      this.pather.path(p)
-    );
+    // The onPress method should delegate to methods like adminMove (the body of which
+    // is here) based on game phase and other settings (like admin move "on").
+    if (this.selectedPieces.length === 0) {
+      // select piece
+      this.selectedPieces = square.pieces;
+      this.allowableLocations = flatMap(this.selectedPieces, (p: Piece) =>
+        this.pather.path(p)
+      );
+    } else {
+      // move pieces
+      this.board.killPiecesAt(square.location);
+      this.selectedPieces.map((piece) =>
+        this.board.displace({ piece, destination: square.location })
+      );
+      this.selectedPieces = [];
+      this.allowableLocations = [];
+    }
+
     this.render();
   }
 }

@@ -33,36 +33,23 @@ class Board {
     );
   }
 
-  updateAdminMove(pieces: Piece[], squares: Square[]): void {
-    const square = squares[0];
+  displace({
+    piece,
+    destination,
+  }: {
+    piece: Piece;
+    destination: string;
+  }): void {
+    this.squares[piece.location].pieces = this.squares[
+      piece.location
+    ].pieces.filter((p) => p.id != piece.id);
+    piece.location = destination;
+    this.squares[destination].pieces.push(piece);
+  }
 
-    if (this.adminPieces.length === 0 && this.adminSquares.length === 0) {
-      if (pieces.length === 0) {
-        //do nothing
-      } else {
-        this.adminPieces = pieces;
-        this.adminSquares = [square];
-      }
-    } else {
-      if (pieces.length === 0) {
-        this.adminSquares[0].pieces = [];
-        square.pieces = this.adminPieces;
-
-        this.adminPieces = [];
-        this.adminSquares = [];
-      } else {
-        if (pieces === this.adminPieces) {
-          this.adminPieces = [];
-          this.adminSquares = [];
-        } else {
-          this.adminSquares[0].pieces = [];
-          square.pieces = this.adminPieces;
-
-          this.adminPieces = [];
-          this.adminSquares = [];
-        }
-      }
-    }
+  killPiecesAt(location: string): void {
+    // TODO: This should actually move the pieces to a special square
+    this.squares[location].pieces = [];
   }
 
   squareAt(location: string): Square {
