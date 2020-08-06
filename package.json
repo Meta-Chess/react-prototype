@@ -9,7 +9,8 @@
     "test": "jest",
     "type-check": "tsc --noEmit",
     "lint": "eslint --max-warnings 0 src",
-    "format": "prettier ./src --write"
+    "format": "prettier ./src --write",
+    "format:check": "prettier ./src"
   },
   "dependencies": {
     "@expo-google-fonts/roboto-mono": "^0.1.0",
@@ -63,7 +64,7 @@
   "husky": {
     "hooks": {
       "post-merge": "yarn install",
-      "pre-push": "concurrently yarn:lint yarn:format yarn:type-check"
+      "pre-push": "concurrently yarn:lint yarn:format:check yarn:type-check"
     }
   }
 }
