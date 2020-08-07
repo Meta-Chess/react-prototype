@@ -1,10 +1,9 @@
 import { Direction } from "./Direction";
-import { Game } from "./Game";
 
 export interface PieceInterface {
   location: SquareInterface;
   type: PieceType;
-  moveGenerators: MoveGenerator[];
+  movePatterns: MovePattern[];
   owner: Player;
   attributes: PieceAttributes;
 }
@@ -19,7 +18,10 @@ export type PieceAttributes = null;
 
 export type SquareAttributes = null;
 
-export type MoveGenerator = (game: Game) => Move[]; // TODO: change to a map from end square to move, maybe via other things
+export interface MovePattern {
+  pattern: Direction[];
+  repeats?: boolean;
+}
 
 export type Move = PieceDelta[];
 

@@ -34,11 +34,7 @@ const whitePawn = (rank: number, file: number): SquareMap =>
   );
 
 const whiteRook = (rank: number, file: number): SquareMap =>
-  square(
-    rank,
-    file,
-    new Piece(`R${rank}F${file}`, PieceType.Rook, [], Player.White)
-  );
+  square(rank, file, Piece.createRook(`R${rank}F${file}`, Player.White));
 
 const whiteKnight = (rank: number, file: number): SquareMap =>
   square(

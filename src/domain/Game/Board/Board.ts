@@ -52,8 +52,8 @@ class Board {
     this.squares[location].pieces = [];
   }
 
-  squareAt(location: string): Square {
-    return this.squares[location];
+  squareAt(location?: string): Square | undefined {
+    return location ? this.squares[location] : undefined;
   }
 
   static createEmptyBoard(): Board {

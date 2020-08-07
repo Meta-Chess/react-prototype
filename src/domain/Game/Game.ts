@@ -50,8 +50,8 @@ export class Game {
     if (this.selectedPieces.length === 0) {
       // select piece
       this.selectedPieces = square.pieces;
-      this.allowableLocations = flatMap(this.selectedPieces, (p: Piece) =>
-        this.pather.path(p)
+      this.allowableLocations = flatMap(this.selectedPieces, (piece: Piece) =>
+        this.pather.path({ piece, board: this.board })
       );
     } else {
       // move pieces
