@@ -7,16 +7,16 @@ export const minimalSetup = {
   Foo: new Square(
     {},
     [
-      new Piece("Blah", PieceType.Pawn, [], Player.Black),
-      new Piece("Blah", PieceType.King, [], Player.White),
-      new Piece("Blah", PieceType.Knight, [], Player.Black),
+      new Piece("Blah", PieceType.Pawn, () => [], Player.Black),
+      new Piece("Blah", PieceType.King, () => [], Player.White),
+      new Piece("Blah", PieceType.Knight, () => [], Player.Black),
     ],
     "Foo",
     { rank: 1, file: 2 }
   ),
   Bar: new Square(
     {},
-    [new Piece("Blah", PieceType.Queen, [], Player.White)],
+    [new Piece("Blah", PieceType.Queen, () => [], Player.White)],
     "Bar",
     {
       rank: 2,

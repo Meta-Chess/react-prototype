@@ -21,30 +21,20 @@ class Board {
   ) {}
 
   //TODO: PURGE
-  squaresWithRankAndFile({
-    rank,
-    file,
-  }: {
-    rank: number;
-    file: number;
-  }): Square[] {
+  squaresWithRankAndFile({ rank, file }: { rank: number; file: number }): Square[] {
     return Object.values(this.squares).filter(
       (s) => s.coordinates.rank === rank && s.coordinates.file === file
     );
   }
 
-  displace({
-    piece,
-    destination,
-  }: {
-    piece: Piece;
-    destination: string;
-  }): void {
-    this.squares[piece.location].pieces = this.squares[
-      piece.location
-    ].pieces.filter((p) => p.id != piece.id);
-    piece.location = destination;
-    this.squares[destination].pieces.push(piece);
+  displace({ piece, destination }: { piece: Piece; destination: string }): void {
+    const startSquare = this.squareAt(piece.location);
+    const endSquare = this.squareAt(destination);
+    if (startSquare && endSquare) {
+      startSquare.pieces = startSquare.pieces.filter((p) => p.id != piece.id);
+      piece.location = destination;
+      endSquare.pieces.push(piece);
+    }
   }
 
   killPiecesAt(location: string): void {

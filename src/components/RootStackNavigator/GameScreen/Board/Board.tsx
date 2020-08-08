@@ -86,7 +86,7 @@ const SizeContainer = styled(View)`
 
 const BoardContainer = styled(View)`
   position: relative;
-  background: #88888c;
+  background: #333333;
   box-shadow: 2px 1px 16px #151515;
 `;
 

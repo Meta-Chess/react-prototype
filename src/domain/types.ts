@@ -31,7 +31,7 @@ export enum PieceType {
 }
 
 export enum Color {
-  Black = "#404040",
+  Black = "#202020",
   White = "#fcfcfc",
 }
 

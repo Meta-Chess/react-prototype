@@ -12,31 +12,32 @@ interface Props {
   size: number;
 }
 
+const squareColors = ["#a4b9cc", "#e8e5e5"];
 const highlightedSquareColors = ["#41C87C", "#C4FFC3"];
 
 const SquareComponent: SFC<Props> = ({ style, squares, size }) => {
-  const fullLight = [100, 200, 175];
-  const fullDark = [0, 150, 250];
-  const lightMixer = [180, 180, 180];
-  const darkMixer = [130, 130, 130];
-  const [deg, setDeg] = useState(0);
-  setTimeout(() => {
-    setDeg(deg + 1);
-  }, 80);
+  // const fullLight = [100, 200, 175];
+  // const fullDark = [0, 150, 250];
+  // const lightMixer = [180, 180, 180];
+  // const darkMixer = [130, 130, 130];
+  // const [deg, setDeg] = useState(0);
+  // setTimeout(() => {
+  //   setDeg(deg + 1);
+  // }, 80);
 
-  const mix = 0.9;
-  const dark = Color.rgb(
-    [0, 1, 2].map((i) => (1 - mix) * fullDark[i] + mix * darkMixer[i])
-  )
-    .rotate(deg)
-    .string();
-  const light = Color.rgb(
-    [0, 1, 2].map((i) => (1 - mix) * fullLight[i] + mix * lightMixer[i])
-  )
-    .rotate(deg)
-    .string();
+  // const mix = 0.9;
+  // const dark = Color.rgb(
+  //   [0, 1, 2].map((i) => (1 - mix) * fullDark[i] + mix * darkMixer[i])
+  // )
+  //   .rotate(deg)
+  //   .string();
+  // const light = Color.rgb(
+  //   [0, 1, 2].map((i) => (1 - mix) * fullLight[i] + mix * lightMixer[i])
+  // )
+  //   .rotate(deg)
+  //   .string();
 
-  const squareColors = [dark, light];
+  // const squareColors = [dark, light];
 
   const { game } = useContext(GameContext);
 

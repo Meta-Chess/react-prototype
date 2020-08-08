@@ -12,7 +12,6 @@ export class Game {
   public players: Player[];
   public selectedPieces: Piece[];
   public allowableLocations: string[];
-  public pather: Pather;
 
   constructor(
     public board: Board,
@@ -25,7 +24,6 @@ export class Game {
     this.players = [Player.White, Player.Black];
     this.selectedPieces = [];
     this.allowableLocations = [];
-    this.pather = new Pather();
   }
 
   static createEmptyGame(renderer: Renderer): Game {
@@ -45,18 +43,19 @@ export class Game {
   }
 
   onPress(square: Square): void {
+    console.log("square", square, "board", this.board);
     // The onPress method should delegate to methods like adminMove (the body of which
     // is here) based on game phase and other settings (like admin move "on").
     if (this.selectedPieces.length === 0) {
       // select piece
       this.selectedPieces = square.pieces;
       this.allowableLocations = flatMap(this.selectedPieces, (piece: Piece) =>
-        this.pather.path({ piece, board: this.board })
+        new Pather(this.board, piece).findPaths()
       );
     } else {
       // move pieces
       this.board.killPiecesAt(square.location);
-      this.selectedPieces.map((piece) =>
+      this.selectedPieces.forEach((piece) =>
         this.board.displace({ piece, destination: square.location })
       );
       this.selectedPieces = [];
