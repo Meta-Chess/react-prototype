@@ -1,5 +1,5 @@
 import { Piece } from "./Piece";
-import { Adjacencies } from "domain/Game/types";
+import { Adjacencies, Player } from "domain/Game/types";
 
 export class Square {
   constructor(
@@ -12,6 +12,14 @@ export class Square {
 
   getPieceArray(): Piece[] {
     return this.pieces;
+  }
+
+  hasPiece(): boolean {
+    return this.pieces.length !== 0;
+  }
+
+  hasPieceBelongingTo(owner: Player): boolean {
+    return this.pieces.some((piece) => piece.owner === owner);
   }
 
   getColorIndex(): number {

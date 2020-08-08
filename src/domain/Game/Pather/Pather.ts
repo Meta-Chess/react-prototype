@@ -4,7 +4,7 @@ import { Gait } from "../types";
 import { Direction } from "../Direction";
 import { flatMap } from "lodash";
 
-const MAX_STEPS = 4; // TODO: find a good number or something
+const MAX_STEPS = 64; // TODO: find a good number or something
 
 export class Pather {
   constructor(private board: Board, private piece: Piece) {
@@ -88,11 +88,14 @@ export class Pather {
     return true;
   }
 
-  canStay(_displacement: HypotheticalDisplacement): boolean {
+  canStay({ square, gait, remainingSteps }: HypotheticalDisplacement): boolean {
+    if (!gait.interuptable && remainingSteps.length > 1) return false;
+    if (square.hasPieceBelongingTo(this.piece.owner)) return false;
     return true;
   }
 
-  canContinue(_displacement: HypotheticalDisplacement): boolean {
+  canContinue({ gait, square }: HypotheticalDisplacement): boolean {
+    if (square.hasPiece() && !gait.nonBlocking) return false;
     return true;
   }
 

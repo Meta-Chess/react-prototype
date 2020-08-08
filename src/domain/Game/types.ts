@@ -7,6 +7,8 @@ export type SquareAttributes = null;
 export interface Gait {
   pattern: Direction[];
   repeats?: boolean;
+  interuptable?: boolean;
+  nonBlocking?: boolean;
 }
 
 export enum Player {
