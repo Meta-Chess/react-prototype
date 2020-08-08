@@ -1,6 +1,7 @@
 import React, { FC } from "react";
-import styled from "styled-components/native";
 import { View, useWindowDimensions } from "react-native";
+import styled from "styled-components/native";
+import { Colors } from "primitives";
 import { StartButton } from "./StartButton";
 
 const StartScreen: FC = () => {
@@ -19,7 +20,7 @@ const ScreenContainer = styled(View)`
   flex-direction: column;
   height: 300px;
   width: 300px;
-  background-color: #232323;
+  background-color: ${Colors.DARKEST.string()};
   align-items: center;
   justify-content: center;
 `;

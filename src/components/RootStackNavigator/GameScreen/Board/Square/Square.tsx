@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { SFC } from "primitives";
+import Color from "color";
+import styled from "styled-components/native";
+import { SFC, Colors } from "primitives";
 import { Piece } from "./Piece";
 import { GridArrangement } from "./GridArrangement";
 import { GameContext } from "domain/Game";
@@ -11,72 +13,35 @@ interface Props {
   size: number;
 }
 
-const squareColors = ["#a4b9cc", "#e8e5e5"];
-const highlightedSquareColors = ["#41C87C", "#C4FFC3"];
-
 const SquareComponent: SFC<Props> = ({ style, squares, size }) => {
-  // const fullLight = [100, 200, 175];
-  // const fullDark = [0, 150, 250];
-  // const lightMixer = [180, 180, 180];
-  // const darkMixer = [130, 130, 130];
-  // const [deg, setDeg] = useState(0);
-  // setTimeout(() => {
-  //   setDeg(deg + 1);
-  // }, 80);
-
-  // const mix = 0.9;
-  // const dark = Color.rgb(
-  //   [0, 1, 2].map((i) => (1 - mix) * fullDark[i] + mix * darkMixer[i])
-  // )
-  //   .rotate(deg)
-  //   .string();
-  // const light = Color.rgb(
-  //   [0, 1, 2].map((i) => (1 - mix) * fullLight[i] + mix * lightMixer[i])
-  // )
-  //   .rotate(deg)
-  //   .string();
-
-  // const squareColors = [dark, light];
-
   const { game } = useContext(GameContext);
 
   const square = squares[0]; // TODO: How do we want to draw two squares in the same location
   if (!square) return <View style={[style, { width: size, height: size }]} />;
 
   const isHighlighted = game.allowableLocations.includes(square.location);
-
-  const backgroundColor = isHighlighted
-    ? highlightedSquareColors[square.getColorIndex()]
-    : squareColors[square.getColorIndex()];
+  const backgroundColor = Colors.SQUARE[square.getColorIndex()].string();
 
   const piecesOnSquare = square.pieces;
 
   const dimension = Math.ceil(Math.sqrt(piecesOnSquare.length));
-  const pieceSize = size / dimension;
+  const pieceSize = (0.88 * size) / dimension;
 
   const onPress = (): void => {
     game.onPress(square);
-    // const board = game.board;
-    // const pieces = square.getPieceArray();
-    // const squares = [square];
-
-    // board.updateAdminMove(pieces, squares);
-    // /*
-    // if (pieces.length !== 0) {
-    //   pieces[0].active = !pieces[0].active;
-    // } else {
-    //   //do nothing
-    // }
-    // */
-    // game.render();
   };
 
   return (
     <TouchableOpacity
-      style={[style, { width: size, height: size, backgroundColor }]}
+      style={[style, { width: size, height: size, backgroundColor, padding: "6%" }]}
       onPress={onPress}
       activeOpacity={1}
     >
+      {isHighlighted && (
+        <Highlight
+          color={square.hasPiece() ? Colors.HIGHLIGHT.ERROR : Colors.HIGHLIGHT.SUCCESS}
+        />
+      )}
       <GridArrangement>
         {piecesOnSquare.map((piece) => (
           <Piece piece={piece} size={pieceSize} key={piece.id} />
@@ -85,5 +50,19 @@ const SquareComponent: SFC<Props> = ({ style, squares, size }) => {
     </TouchableOpacity>
   );
 };
+
+interface HighlightProps {
+  color: Color;
+}
+
+const Highlight = styled(View)<HighlightProps>`
+  background-color: ${({ color }): string => color.fade(0.6).string()};
+  position: absolute;
+  border-radius: 12px
+  top: 8%;
+  right: 8%;
+  bottom: 8%;
+  left: 8%;
+`;
 
 export { SquareComponent as Square };

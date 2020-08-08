@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Animated, Platform } from "react-native";
 import { SFC } from "./SFC";
+import { Colors } from "./Colors";
 
 let running = false;
 const opacity = new Animated.Value(0.2);
@@ -31,7 +32,7 @@ export const Skeleton: SFC = ({ style }) => {
 
   return (
     <Animated.View
-      style={[style, { opacity, backgroundColor: "#888", borderRadius: 4 }]}
+      style={[style, { opacity, backgroundColor: Colors.GREY.string(), borderRadius: 4 }]}
     />
   );
 };

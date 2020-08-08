@@ -14,7 +14,7 @@ export class Clock {
 
   setActivePlayers(players: Player[]): void {
     this.timers.keys().forEach((player) => {
-      if (players.includes(player)) {
+      if (players.some((p) => p == player)) {
         this.timers.get(player)?.start();
       } else {
         this.timers.get(player)?.stop();

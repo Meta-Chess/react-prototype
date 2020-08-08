@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { Svg, Path } from "react-native-svg";
+import { Colors } from "primitives";
 
 interface Props {
   color: string;
@@ -9,9 +10,10 @@ interface Props {
 
 const Pawn: FC<Props> = ({ color, active, size }) => {
   const primary = color;
-  const secondary = active ? color : "#000000";
+
+  const secondary = active ? color : Colors.DARKEST.string();
   const glowalpha = [0.2, 0.2, 0.2, 0.2, 0.2];
-  const glowcolor = "#FF0000";
+  const glowcolor = Colors.HIGHLIGHT.ERROR.string();
 
   return (
     <Svg width={size} height={size} viewBox="0 0 45 45">

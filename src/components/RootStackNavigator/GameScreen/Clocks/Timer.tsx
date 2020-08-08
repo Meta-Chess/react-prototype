@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
-import { SFC, Text } from "primitives";
+import { SFC, Text, Colors } from "primitives";
 import { GameContext } from "domain/Game";
 import { Player } from "domain/Game/types";
 import { contrast } from "utilities";
@@ -32,15 +32,19 @@ const Timer: SFC<Props> = ({ style, player }) => {
       style={[
         style,
         {
-          backgroundColor: player,
-          borderColor: contrast(player),
+          backgroundColor: Colors.PLAYER[player].string(),
+          borderColor: contrast(Colors.PLAYER[player].string()),
           borderWidth: 2,
           shadowRadius: 12,
-          shadowColor: clock.getTimeRemaining() <= 0 ? "#FF0000" : "transparent",
+          shadowColor:
+            clock.getTimeRemaining() <= 0 ? Colors.ERROR.string() : "transparent",
         },
       ]}
     >
-      <Text.DisplayS color={contrast(player)} monospaceNumbers={true}>
+      <Text.DisplayS
+        color={contrast(Colors.PLAYER[player].string())}
+        monospaceNumbers={true}
+      >
         {displayTime}
       </Text.DisplayS>
     </Container>

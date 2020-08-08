@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
-import { SFC } from "primitives";
+import { SFC, Colors } from "primitives";
 import { GameContext } from "domain/Game";
 import { Button } from "ui";
 import { Timer } from "./Timer";
@@ -27,11 +27,12 @@ const Clocks: SFC = ({ style }) => {
 const Container = styled(View)`
   display: flex;
   flex-direction: row;
+  height: 48px;
 `;
 
 const RedButton = styled(Button)`
   border: none;
-  background-color: #900;
+  background-color: ${Colors.MCHESS.string()};
   padding: 24px;
 `;
 

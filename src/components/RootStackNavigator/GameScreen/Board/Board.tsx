@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import { SFC } from "primitives";
 import styled from "styled-components/native";
+import { SFC, Colors } from "primitives";
 import { Square } from "./Square";
 import { GameContext } from "domain/Game";
 import { View } from "react-native";
@@ -86,8 +86,8 @@ const SizeContainer = styled(View)`
 
 const BoardContainer = styled(View)`
   position: relative;
-  background: #333333;
-  box-shadow: 2px 1px 16px #151515;
+  background: ${Colors.DARK.string()};
+  box-shadow: 2px 1px 16px ${Colors.SHADOW.string()};
 `;
 
 const SquaresContainer = styled(View)`

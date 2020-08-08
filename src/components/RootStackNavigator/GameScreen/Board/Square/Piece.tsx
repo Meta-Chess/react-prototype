@@ -1,6 +1,5 @@
 import React, { FC, useContext } from "react";
-import { PieceImage } from "primitives";
-import { opacify } from "utilities";
+import { PieceImage, Colors } from "primitives";
 import { GameContext } from "domain/Game";
 import { Piece as PieceClass } from "domain/Game/Board";
 import styled from "styled-components/native";
@@ -28,15 +27,19 @@ const Piece: FC<Props> = ({ piece, size }) => {
       </Container>
 
       <Container>
-        <PieceImage type={piece.type} color={piece.owner} size={size} />
+        <PieceImage
+          type={piece.type}
+          color={Colors.PLAYER[piece.owner].string()}
+          size={size}
+        />
       </Container>
     </>
   );
 };
 
 const Highlight = styled(View)`
-  background-color: ${opacify("#D55", 0.4)};
-  border: 1px solid ${opacify("#666", 0.8)};
+  background-color: ${Colors.HIGHLIGHT.WARNING.fade(0.6).string()};
+  border-radius: 12px;
 `;
 
 const Container = styled(View)`

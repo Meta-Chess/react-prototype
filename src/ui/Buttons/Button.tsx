@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
-import { SFC, Text } from "primitives";
+import { SFC, Text, Colors } from "primitives";
 
 interface Props {
   text: string;
@@ -11,9 +11,7 @@ interface Props {
 export const Button: SFC<Props> = ({ style, text, onPress }) => {
   return (
     <BaseButton onPress={onPress} style={style}>
-      <Text.BodyM color="#e4e0d3" weight="heavy">
-        {text}
-      </Text.BodyM>
+      <Text.DisplayL weight="heavy">{text}</Text.DisplayL>
     </BaseButton>
   );
 };
@@ -22,7 +20,7 @@ export const Button: SFC<Props> = ({ style, text, onPress }) => {
 const BaseButton = styled(TouchableOpacity)`
   padding: 12px 32px;
   min-height: 40px;
-  background-color: #41787c;
-  border: 2px #e4e0d3;
+  background-color: ${Colors.MCHESS.string()};
   border-radius: 50px;
+  box-shadow: 0px 0px 4px ${Colors.SHADOW.fade(0.5).string()};
 `;

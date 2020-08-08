@@ -2,6 +2,7 @@ import React from "react";
 import { Text as NativeText, View } from "react-native";
 import { randomInt } from "utilities";
 import { Skeleton } from "./Skeleton";
+import { Colors } from "./Colors";
 import { RobotoMono_400Regular, useFonts } from "@expo-google-fonts/roboto-mono";
 
 interface BaseTextProps {
@@ -18,7 +19,7 @@ function Text({
   size,
   lineHeight,
   children,
-  color = "#000000",
+  color = Colors.TEXT.DARK.string(),
   fontWeight = "normal",
   monospaceNumbers = false,
   loading = false,

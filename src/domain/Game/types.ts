@@ -12,8 +12,8 @@ export interface Gait {
 }
 
 export enum Player {
-  Black = "#606060",
-  White = "#FFFFFF",
+  White,
+  Black,
 }
 
 export type Adjacencies = {
