@@ -52,11 +52,13 @@ export class Game {
         new Pather(this.board, piece).findPaths()
       );
     } else {
-      // move pieces
-      this.board.killPiecesAt(square.location);
-      this.selectedPieces.forEach((piece) =>
-        this.board.displace({ piece, destination: square.location })
-      );
+      if (this.allowableLocations.includes(square.location)) {
+        // move pieces
+        this.board.killPiecesAt(square.location);
+        this.selectedPieces.forEach((piece) =>
+          this.board.displace({ piece, destination: square.location })
+        );
+      }
       this.selectedPieces = [];
       this.allowableLocations = [];
     }
