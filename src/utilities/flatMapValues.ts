@@ -13,10 +13,7 @@ export function flatMapValues<T, O extends { [key in string]: any[] }>(
   return objects.reduce((acc, object) => concatenateValues(acc, object));
 }
 
-export function concatenateValues<O extends { [key in string]: any[] }>(
-  a: O,
-  b: O
-): O {
+export function concatenateValues<O extends { [key in string]: any[] }>(a: O, b: O): O {
   return Object.keys(a).reduce(
     (acc, key) => ({
       ...acc,

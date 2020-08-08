@@ -13,13 +13,9 @@ const GameContext = createContext({
 const GameProvider: FC = ({ children }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [updateCounter, setUpdateCounter] = useState(0);
-  const [game] = useState(
-    Game.createStandardGame(new Renderer(setUpdateCounter))
-  );
+  const [game] = useState(Game.createStandardGame(new Renderer(setUpdateCounter)));
 
-  return (
-    <GameContext.Provider value={{ game }}>{children}</GameContext.Provider>
-  );
+  return <GameContext.Provider value={{ game }}>{children}</GameContext.Provider>;
 };
 
 export { GameProvider, GameContext };

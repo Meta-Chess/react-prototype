@@ -43,7 +43,6 @@ export class Game {
   }
 
   onPress(square: Square): void {
-    console.log("square", square, "board", this.board);
     // The onPress method should delegate to methods like adminMove (the body of which
     // is here) based on game phase and other settings (like admin move "on").
     if (this.selectedPieces.length === 0) {

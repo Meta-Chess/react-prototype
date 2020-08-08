@@ -1,6 +1,4 @@
-export const formatMillis = (
-  millis: number
-): { time: string; validFor: number } => {
+export const formatMillis = (millis: number): { time: string; validFor: number } => {
   const sign = millis < 0 ? "-" : "";
   millis = Math.max(-millis, millis);
   const days = Math.floor(millis / 24 / 60 / 60 / 1000);

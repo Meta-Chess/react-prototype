@@ -5,9 +5,7 @@ const pieceCreditLink = (
   <Text
     style={{ color: "blue" }}
     onPress={(): void => {
-      Linking.openURL(
-        "https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces"
-      );
+      Linking.openURL("https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces");
     }}
   >
     here
@@ -29,8 +27,8 @@ export const PieceCredit: FC = () => {
   return (
     <View style={{ backgroundColor: "white" }}>
       <Text>
-        Chess pieces originally by {creatorCreditLink} under creative commons
-        license, found {pieceCreditLink}.
+        Chess pieces originally by {creatorCreditLink} under creative commons license,
+        found {pieceCreditLink}.
       </Text>
     </View>
   );

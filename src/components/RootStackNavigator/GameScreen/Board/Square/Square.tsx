@@ -1,11 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { SFC } from "primitives";
 import { Piece } from "./Piece";
 import { GridArrangement } from "./GridArrangement";
 import { GameContext } from "domain/Game";
 import { Square } from "domain/Game/Board";
-import Color from "color";
 
 interface Props {
   squares: Square[];

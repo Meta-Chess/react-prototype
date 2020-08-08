@@ -2,10 +2,7 @@ import React from "react";
 import { Text as NativeText, View } from "react-native";
 import { randomInt } from "utilities";
 import { Skeleton } from "./Skeleton";
-import {
-  RobotoMono_400Regular,
-  useFonts,
-} from "@expo-google-fonts/roboto-mono";
+import { RobotoMono_400Regular, useFonts } from "@expo-google-fonts/roboto-mono";
 
 interface BaseTextProps {
   children: React.ReactNode;
