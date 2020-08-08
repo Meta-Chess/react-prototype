@@ -1,6 +1,6 @@
 import { Square } from "../Square";
 import { Piece } from "../Piece";
-import { PieceType, Player } from "domain/Game/types";
+import { Player } from "domain/Game/types";
 import { Direction } from "domain/Game/Direction";
 import * as pieceFactory from "../Piece/pieceFactory";
 
