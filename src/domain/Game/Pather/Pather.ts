@@ -1,20 +1,25 @@
 import { isPresent } from "utilities";
 import { Piece, Square, Board } from "../Board";
-import { Gait } from "../types";
+import { Gait, GaitParams, PieceType } from "../types";
 import { Direction } from "../Direction";
 import { flatMap } from "lodash";
 
 const MAX_STEPS = 64; // TODO: find a good number or something
 
 export class Pather {
+  private gaitParams: GaitParams;
+
   constructor(private board: Board, private piece: Piece) {
-    // TODO: add variants
+    this.gaitParams = {};
+    if (piece.type === PieceType.Pawn) {
+      this.gaitParams.doubleStep = piece?.attributes?.doubleStep;
+    }
   }
 
   findPaths(): string[] {
     const currentSquare = this.board.squareAt(this.piece.location);
     if (!currentSquare) return [];
-    return flatMap(this.piece.generateGaits(), (gait) =>
+    return flatMap(this.piece.generateGaits(this.gaitParams), (gait) =>
       this.path({ currentSquare, gait })
     ).map((square) => square.location);
   }

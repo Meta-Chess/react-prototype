@@ -24,6 +24,24 @@ export function createKing(location: string, owner: Player): Piece {
 
 export function createPawn(location: string, owner: Player): Piece {
   return owner === Player.White
-    ? new Piece(location, PieceType.Pawn, () => gaits.WHITE_PAWN_GATES, owner)
-    : new Piece(location, PieceType.Pawn, () => gaits.BLACK_PAWN_GATES, owner);
+    ? new Piece(
+        location,
+        PieceType.Pawn,
+        (p) => [
+          ...gaits.WHITE_PAWN_GAITS,
+          ...(p?.doubleStep ? gaits.WHITE_PAWN_DS_GAITS : []),
+        ],
+        owner,
+        { doubleStep: true }
+      )
+    : new Piece(
+        location,
+        PieceType.Pawn,
+        (p) => [
+          ...gaits.BLACK_PAWN_GAITS,
+          ...(p?.doubleStep ? gaits.BLACK_PAWN_DS_GAITS : []),
+        ],
+        owner,
+        { doubleStep: true }
+      );
 }

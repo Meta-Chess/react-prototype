@@ -2,7 +2,7 @@ import { Variant } from "domain/Game/Variants";
 import { Board } from "./Board";
 import { Renderer } from "./Renderer";
 import { Clock } from "./Clock";
-import { Player } from "./types";
+import { Player, PieceType } from "./types";
 import { Square, Piece } from "./Board";
 import { Pather } from "./Pather";
 import { flatMap } from "lodash";
@@ -55,9 +55,10 @@ export class Game {
       if (this.allowableLocations.includes(square.location)) {
         // move pieces
         this.board.killPiecesAt(square.location);
-        this.selectedPieces.forEach((piece) =>
-          this.board.displace({ piece, destination: square.location })
-        );
+        this.selectedPieces.forEach((piece) => {
+          this.board.displace({ piece, destination: square.location });
+          if (piece.type === PieceType.Pawn) piece.attributes.doubleStep = false; //TODO: Move into some post move event
+        });
       }
       this.selectedPieces = [];
       this.allowableLocations = [];

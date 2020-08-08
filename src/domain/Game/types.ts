@@ -1,6 +1,8 @@
 import { Direction } from "./Direction";
 
-export type PieceAttributes = null;
+export type PieceAttributes = {
+  doubleStep?: boolean;
+};
 
 export type SquareAttributes = null;
 
@@ -27,4 +29,8 @@ export enum PieceType {
   Queen,
   Bishop,
   Knight,
+}
+
+export interface GaitParams {
+  doubleStep?: boolean;
 }
