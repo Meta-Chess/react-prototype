@@ -12,14 +12,6 @@ class Piece {
   ) {
     this.id = Math.random();
   }
-
-  static createPawn(location: string, owner: Player): Piece {
-    return new Piece(location, PieceType.Pawn, () => [], owner);
-  }
-
-  static createKing(location: string, owner: Player): Piece {
-    return new Piece(location, PieceType.King, () => [], owner);
-  }
 }
 
 export { Piece };

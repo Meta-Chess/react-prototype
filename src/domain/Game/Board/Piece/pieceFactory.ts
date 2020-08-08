@@ -17,3 +17,13 @@ export function createQueen(location: string, owner: Player): Piece {
 export function createKnight(location: string, owner: Player): Piece {
   return new Piece(location, PieceType.Knight, () => gaits.KNIGHT_GAITS, owner);
 }
+
+export function createKing(location: string, owner: Player): Piece {
+  return new Piece(location, PieceType.King, () => gaits.KING_GAITS, owner);
+}
+
+export function createPawn(location: string, owner: Player): Piece {
+  return owner === Player.White
+    ? new Piece(location, PieceType.Pawn, () => gaits.WHITE_PAWN_GATES, owner)
+    : new Piece(location, PieceType.Pawn, () => gaits.BLACK_PAWN_GATES, owner);
+}

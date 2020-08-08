@@ -34,3 +34,18 @@ export const KNIGHT_GAITS: Gait[] = [
 ];
 
 export const QUEEN_GAITS: Gait[] = [...ROOK_GAITS, ...BISHOP_GAITS];
+
+export const KING_GAITS: Gait[] = [
+  { pattern: [Direction.N] },
+  { pattern: [Direction.NE] },
+  { pattern: [Direction.E] },
+  { pattern: [Direction.SE] },
+  { pattern: [Direction.S] },
+  { pattern: [Direction.SW] },
+  { pattern: [Direction.W] },
+  { pattern: [Direction.NW] },
+];
+
+export const WHITE_PAWN_GATES: Gait[] = [{ pattern: [Direction.N] }];
+
+export const BLACK_PAWN_GATES: Gait[] = [{ pattern: [Direction.S] }];
