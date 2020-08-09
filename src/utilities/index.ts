@@ -1,3 +1,4 @@
+export * from "./applyInSequence";
 export * from "./color";
 export * from "./isPresent";
 export * from "./flatMapValues";

@@ -54,7 +54,7 @@ export class Game {
       // select piece
       this.selectedPieces = square.pieces;
       this.allowableLocations = flatMap(this.selectedPieces, (piece: Piece) =>
-        new Pather(this.board, piece).findPaths()
+        new Pather(this.board, piece, this.variants).findPaths()
       );
     } else {
       if (this.allowableLocations.includes(square.location)) {
@@ -62,7 +62,6 @@ export class Game {
         this.board.killPiecesAt(square.location);
         this.selectedPieces.forEach((piece) => {
           this.board.displace({ piece, destination: square.location });
-          // if (piece.type === PieceType.Pawn) piece.attributes.doubleStep = false; //TODO: Move into some post move event
         });
         this.variants.forEach((v) => {
           v.postMove?.({ piecesMoved: this.selectedPieces });

@@ -2,7 +2,7 @@ import { Direction } from "./Direction";
 import { Piece } from "./Board";
 
 export type PieceAttributes = {
-  doubleStep?: boolean;
+  pawnDoubleStep?: boolean;
 };
 
 export type SquareAttributes = null;
@@ -17,9 +17,14 @@ export interface Gait {
 interface PostMoveInput {
   piecesMoved: Piece[];
 }
+interface OnGateGenerateInput {
+  gaits: Gait[];
+  piece: Piece;
+}
 
 export interface Variant {
   postMove?: ({ piecesMoved }: PostMoveInput) => void;
+  onGaitGenerate?: (input: OnGateGenerateInput) => OnGateGenerateInput;
 }
 
 export enum Player {
@@ -41,5 +46,5 @@ export enum PieceType {
 }
 
 export interface GaitParams {
-  doubleStep?: boolean;
+  pawnDoubleStep?: boolean;
 }
