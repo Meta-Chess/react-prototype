@@ -12,6 +12,8 @@ export interface Gait {
   repeats?: boolean;
   interuptable?: boolean;
   nonBlocking?: boolean;
+  mustNotCapture?: boolean;
+  mustCapture?: boolean;
 }
 
 interface PostMoveInput {

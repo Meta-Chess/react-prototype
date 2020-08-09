@@ -46,8 +46,20 @@ export const KING_GAITS: Gait[] = [
   { pattern: [Direction.NW] },
 ];
 
-export const WHITE_PAWN_GAITS: Gait[] = [{ pattern: [Direction.N] }];
-export const WHITE_PAWN_DS_GAITS: Gait[] = [{ pattern: [Direction.N, Direction.N] }];
+export const WHITE_PAWN_GAITS: Gait[] = [
+  { pattern: [Direction.N], mustNotCapture: true },
+  { pattern: [Direction.NE], mustCapture: true },
+  { pattern: [Direction.NW], mustCapture: true },
+];
+export const WHITE_PAWN_DS_GAITS: Gait[] = [
+  { pattern: [Direction.N, Direction.N], mustNotCapture: true },
+];
 
-export const BLACK_PAWN_GAITS: Gait[] = [{ pattern: [Direction.S] }];
-export const BLACK_PAWN_DS_GAITS: Gait[] = [{ pattern: [Direction.S, Direction.S] }];
+export const BLACK_PAWN_GAITS: Gait[] = [
+  { pattern: [Direction.S], mustNotCapture: true },
+  { pattern: [Direction.SE], mustCapture: true },
+  { pattern: [Direction.SW], mustCapture: true },
+];
+export const BLACK_PAWN_DS_GAITS: Gait[] = [
+  { pattern: [Direction.S, Direction.S], mustNotCapture: true },
+];

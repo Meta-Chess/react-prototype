@@ -22,6 +22,10 @@ export class Square {
     return this.pieces.some((piece) => piece.owner === owner);
   }
 
+  hasPieceNotBelongingTo(owner: Player): boolean {
+    return this.pieces.some((piece) => piece.owner !== owner);
+  }
+
   getColorIndex(): number {
     return (this.coordinates.rank + this.coordinates.file) % 2;
   }

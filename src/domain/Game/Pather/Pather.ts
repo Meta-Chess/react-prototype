@@ -103,6 +103,12 @@ export class Pather {
   canStay({ square, gait, remainingSteps }: HypotheticalDisplacement): boolean {
     if (!gait.interuptable && remainingSteps.length > 1) return false;
     if (square.hasPieceBelongingTo(this.piece.owner)) return false;
+    if (square.hasPieceNotBelongingTo(this.piece.owner)) {
+      // TODO: change this out for "hasCapturablePiece method"
+      if (gait.mustNotCapture) return false;
+    } else {
+      if (gait.mustCapture) return false;
+    }
     return true;
   }
 
