@@ -1,10 +1,10 @@
-import { Variant } from "domain/Game/Variants";
 import { Board } from "./Board";
 import { Renderer } from "./Renderer";
 import { Clock } from "./Clock";
-import { Player, PieceType } from "./types";
+import { Player, Variant } from "./types";
 import { Square, Piece } from "./Board";
 import { Pather } from "./Pather";
+import { PawnDoubleStep } from "./Variants";
 import { flatMap } from "lodash";
 
 export class Game {
@@ -35,7 +35,12 @@ export class Game {
   }
 
   static createStandardGame(renderer: Renderer): Game {
-    return new Game(Board.createStandardBoard(), [], Format.default, renderer);
+    return new Game(
+      Board.createStandardBoard(),
+      [PawnDoubleStep],
+      Format.default,
+      renderer
+    );
   }
 
   render(): void {
@@ -57,7 +62,10 @@ export class Game {
         this.board.killPiecesAt(square.location);
         this.selectedPieces.forEach((piece) => {
           this.board.displace({ piece, destination: square.location });
-          if (piece.type === PieceType.Pawn) piece.attributes.doubleStep = false; //TODO: Move into some post move event
+          // if (piece.type === PieceType.Pawn) piece.attributes.doubleStep = false; //TODO: Move into some post move event
+        });
+        this.variants.forEach((v) => {
+          v.postMove?.({ piecesMoved: this.selectedPieces });
         });
       }
       this.selectedPieces = [];

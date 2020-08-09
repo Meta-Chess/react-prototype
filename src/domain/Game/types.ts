@@ -1,4 +1,5 @@
 import { Direction } from "./Direction";
+import { Piece } from "./Board";
 
 export type PieceAttributes = {
   doubleStep?: boolean;
@@ -11,6 +12,14 @@ export interface Gait {
   repeats?: boolean;
   interuptable?: boolean;
   nonBlocking?: boolean;
+}
+
+interface PostMoveInput {
+  piecesMoved: Piece[];
+}
+
+export interface Variant {
+  postMove?: ({ piecesMoved }: PostMoveInput) => void;
 }
 
 export enum Player {

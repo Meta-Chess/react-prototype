@@ -1,1 +1,1 @@
-export * from "./Variant";
+export * from "./PawnDoubleStep";
