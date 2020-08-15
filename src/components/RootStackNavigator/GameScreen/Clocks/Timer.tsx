@@ -25,7 +25,7 @@ const Timer: SFC<Props> = ({ style, player }) => {
     }, validFor || 10000); // TODO: think about default
   }
 
-  if (!clock) return null; // Consider returning error?
+  if (!clock) return null; // Consider throwing an error?
 
   return (
     <Container

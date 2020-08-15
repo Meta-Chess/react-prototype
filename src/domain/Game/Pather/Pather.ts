@@ -1,7 +1,6 @@
 import { isPresent, applyInSequence } from "utilities";
 import { Piece, Square, Board } from "../Board";
-import { Gait, Variant } from "../types";
-import { Direction } from "../Direction";
+import { Gait, Variant, Direction } from "../types";
 import { flatMap } from "lodash";
 
 const MAX_STEPS = 64; // TODO: find a good number or something
@@ -89,7 +88,6 @@ export class Pather {
 
   canLand(_displacement: HypotheticalDisplacement): boolean {
     // TODO: Check for valid key once keys exist
-    // TODO: Check if there's a piece here and check stepment rights
     return true;
   }
 
@@ -112,7 +110,8 @@ export class Pather {
 
   go({ from, direction }: { from: Square; direction: Direction }): Square[] {
     return (
-      from.adjacencies[direction]
+      from.adjacencies
+        .go(direction)
         ?.map((location) => this.board.squareAt(location))
         .filter(isPresent) || []
     );

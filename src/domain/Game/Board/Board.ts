@@ -1,24 +1,41 @@
 import { Piece } from "./Piece";
 import { Square } from "./Square";
-import { standardSetup, minimalSetup } from "./Setups";
+import { standardSetup } from "./Setups";
+import { Adjacency } from "./Adjacencies";
 
 interface LocationMap {
   [key: string]: Square;
 }
 
-/*
-interface Move {
-  pieceArray: Piece[];
-  destArray: Square[];
-}
-*/
-
 class Board {
-  constructor(
-    public squares: LocationMap,
-    public adminPieces: Piece[] = [],
-    public adminSquares: Square[] = []
-  ) {}
+  constructor(public squares: LocationMap = {}) {}
+
+  addSquare({ location, square }: { location: string; square: Square }): void {
+    this.squares = { ...this.squares, [location]: square };
+  }
+
+  addSquares(squares: { location: string; square: Square }[]): void {
+    squares.forEach((s) => this.addSquare(s));
+  }
+
+  addAdjacenciesByRule(rule: (square: Square) => Adjacency[]): void {
+    const locations = Object.keys(this.squares);
+    const squares = Object.values(this.squares);
+    squares.forEach((square) => {
+      const desiredAdjacencies = rule(square);
+      const newAdjacencies = desiredAdjacencies.filter((adjacency) =>
+        locations.includes(adjacency.location)
+      );
+      square.addAdjacencies(newAdjacencies);
+    });
+  }
+
+  addPiecesByRule(rule: (square: Square) => Piece[]): void {
+    const squares = Object.values(this.squares);
+    squares.forEach((square) => {
+      square.addPieces(rule(square));
+    });
+  }
 
   //TODO: PURGE
   squaresWithRankAndFile({ rank, file }: { rank: number; file: number }): Square[] {
@@ -50,12 +67,13 @@ class Board {
     return new Board({});
   }
 
-  static createBasicBoard(): Board {
-    return new Board(minimalSetup);
-  }
-
   static createStandardBoard(): Board {
-    return new Board(standardSetup);
+    const board = new Board();
+    board.addSquares(standardSetup.squares);
+    board.addAdjacenciesByRule(standardSetup.adjacenciesRule);
+    // board.addAdjacenciesByRule(cylindricalAdjacenciesRule);
+    board.addPiecesByRule(standardSetup.piecesRule);
+    return board;
   }
 }
 

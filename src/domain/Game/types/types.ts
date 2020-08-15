@@ -1,5 +1,4 @@
 import { Direction } from "./Direction";
-import { Piece } from "./Board";
 
 export type SquareAttributes = null;
 
@@ -12,23 +11,12 @@ export interface Gait {
   mustCapture?: boolean;
 }
 
-type Chainable<T> = (input: T) => T;
-type Action<T> = (input: T) => void;
-
-export interface Variant {
-  postMove?: Action<{ piecesMoved: Piece[] }>;
-  onGaitsGeneratedModify?: Chainable<{ gaits: Gait[]; piece: Piece }>;
-  onPieceGeneratedModify?: Chainable<{ piece: Piece }>;
-}
-
 export enum Player {
   White,
   Black,
 }
 
-export type Adjacencies = {
-  [key in Direction]?: string[]; // TODO: Make location type
-};
+export type Location = string;
 
 export enum PieceType {
   Pawn,

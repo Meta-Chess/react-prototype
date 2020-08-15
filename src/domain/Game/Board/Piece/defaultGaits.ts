@@ -1,5 +1,5 @@
 import { Gait } from "domain/Game/types";
-import { Direction } from "domain/Game/Direction";
+import { Direction } from "domain/Game/types";
 
 export const ROOK_GAITS: Gait[] = [
   { pattern: [Direction.N], repeats: true },

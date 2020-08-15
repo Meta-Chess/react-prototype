@@ -12,13 +12,9 @@ export class Game {
   public players: Player[];
   public selectedPieces: Piece[];
   public allowableLocations: string[];
+  public renderer: Renderer | undefined;
 
-  constructor(
-    public board: Board,
-    public variants: Variant[],
-    public format: Format,
-    public renderer: Renderer
-  ) {
+  constructor(public board: Board, public variants: Variant[], public format: Format) {
     this.clock = new Clock([Player.White, Player.Black], 20000);
     this.clock.setActivePlayers([Player.Black]);
     this.players = [Player.White, Player.Black];
@@ -26,25 +22,20 @@ export class Game {
     this.allowableLocations = [];
   }
 
-  static createEmptyGame(renderer: Renderer): Game {
-    return new Game(Board.createEmptyBoard(), [], Format.default, renderer);
+  static createEmptyGame(): Game {
+    return new Game(Board.createEmptyBoard(), [], Format.default);
   }
 
-  static createBasicGame(renderer: Renderer): Game {
-    return new Game(Board.createBasicBoard(), [], Format.default, renderer);
+  static createStandardGame(): Game {
+    return new Game(Board.createStandardBoard(), [PawnDoubleStep], Format.default);
   }
 
-  static createStandardGame(renderer: Renderer): Game {
-    return new Game(
-      Board.createStandardBoard(),
-      [PawnDoubleStep],
-      Format.default,
-      renderer
-    );
+  giveRenderer(renderer: Renderer): void {
+    if (!this.renderer) this.renderer = renderer;
   }
 
   render(): void {
-    this.renderer.render();
+    this.renderer?.render();
   }
 
   onPress(square: Square): void {

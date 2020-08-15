@@ -1,2 +1,2 @@
 export * from "./standardSetup";
-export * from "./minimalSetup";
+export * from "./cylindricalAdjacenciesRule";
