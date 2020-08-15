@@ -25,6 +25,7 @@ export const PawnDoubleStep: Variant = {
     return { piece };
   },
   // TODO: On piece generation, set pawnDoubleStep = true
+  //this is a trivial change
 };
 
 const pawnDoubleStepToken: Token = {
