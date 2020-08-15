@@ -1,10 +1,6 @@
 import { Direction } from "./Direction";
 import { Piece } from "./Board";
 
-export type PieceAttributes = {
-  pawnDoubleStep?: boolean;
-};
-
 export type SquareAttributes = null;
 
 export interface Gait {
@@ -16,17 +12,13 @@ export interface Gait {
   mustCapture?: boolean;
 }
 
-interface PostMoveInput {
-  piecesMoved: Piece[];
-}
-interface OnGateGenerateInput {
-  gaits: Gait[];
-  piece: Piece;
-}
+type Chainable<T> = (input: T) => T;
+type Action<T> = (input: T) => void;
 
 export interface Variant {
-  postMove?: ({ piecesMoved }: PostMoveInput) => void;
-  onGaitGenerate?: (input: OnGateGenerateInput) => OnGateGenerateInput;
+  postMove?: Action<{ piecesMoved: Piece[] }>;
+  onGaitsGeneratedModify?: Chainable<{ gaits: Gait[]; piece: Piece }>;
+  onPieceGeneratedModify?: Chainable<{ piece: Piece }>;
 }
 
 export enum Player {
@@ -48,5 +40,20 @@ export enum PieceType {
 }
 
 export interface GaitParams {
-  pawnDoubleStep?: boolean;
+  tokens: Token[];
+}
+
+export interface Token {
+  name: TokenName;
+  validTo: { player: Player; playerTurn: number } | undefined;
+  data: undefined | MoveHistoryData;
+}
+
+export enum TokenName {
+  PawnDoubleStep,
+  MoveHistory,
+}
+
+export interface MoveHistoryData {
+  history: string[];
 }

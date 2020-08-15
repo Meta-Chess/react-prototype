@@ -1,28 +1,21 @@
 import { isPresent, applyInSequence } from "utilities";
 import { Piece, Square, Board } from "../Board";
-import { Gait, GaitParams, PieceType, Variant } from "../types";
+import { Gait, Variant } from "../types";
 import { Direction } from "../Direction";
 import { flatMap } from "lodash";
 
 const MAX_STEPS = 64; // TODO: find a good number or something
 
 export class Pather {
-  private gaitParams: GaitParams;
-
-  constructor(private board: Board, private piece: Piece, private variants: Variant[]) {
-    this.gaitParams = {};
-    if (piece.type === PieceType.Pawn) {
-      this.gaitParams.pawnDoubleStep = piece?.attributes?.pawnDoubleStep;
-    }
-  }
+  constructor(private board: Board, private piece: Piece, private variants: Variant[]) {}
 
   findPaths(): string[] {
     const currentSquare = this.board.squareAt(this.piece.location);
     if (!currentSquare) return [];
     const { gaits } = applyInSequence(
-      this.variants?.map((v) => v?.onGaitGenerate),
+      this.variants?.map((v) => v?.onGaitsGeneratedModify),
       {
-        gaits: this.piece.generateGaits(this.gaitParams),
+        gaits: this.piece.generateGaits(),
         piece: this.piece,
       }
     );

@@ -1,6 +1,6 @@
 import * as gaits from "./defaultGaits";
 import { Piece } from "./Piece";
-import { PieceType, Player } from "domain/Game/types";
+import { PieceType, Player, TokenName } from "domain/Game/types";
 
 export function createRook(location: string, owner: Player): Piece {
   return new Piece(location, PieceType.Rook, () => gaits.ROOK_GAITS, owner);
@@ -24,10 +24,10 @@ export function createKing(location: string, owner: Player): Piece {
 
 export function createPawn(location: string, owner: Player): Piece {
   return owner === Player.White
-    ? new Piece(location, PieceType.Pawn, () => gaits.WHITE_PAWN_GAITS, owner, {
-        pawnDoubleStep: true,
-      })
-    : new Piece(location, PieceType.Pawn, () => gaits.BLACK_PAWN_GAITS, owner, {
-        pawnDoubleStep: true,
-      });
+    ? new Piece(location, PieceType.Pawn, () => gaits.WHITE_PAWN_GAITS, owner, [
+        { name: TokenName.PawnDoubleStep, validTo: undefined, data: undefined },
+      ])
+    : new Piece(location, PieceType.Pawn, () => gaits.BLACK_PAWN_GAITS, owner, [
+        { name: TokenName.PawnDoubleStep, validTo: undefined, data: undefined },
+      ]);
 }
