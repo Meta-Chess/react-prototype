@@ -7,6 +7,7 @@ import { Piece } from "./Piece";
 import { GridArrangement } from "./GridArrangement";
 import { GameContext } from "domain/Game";
 import { Square } from "domain/Game/Board";
+import { TokenName } from "domain/Game/types";
 
 interface Props {
   squares: Square[];
@@ -17,6 +18,7 @@ const SquareComponent: SFC<Props> = ({ style, squares, size }) => {
   const { game } = useContext(GameContext);
 
   const square = squares[0]; // TODO: How do we want to draw two squares in the same location. Answer: we don't - this shouldn't return a list.
+  if (square.hasTokenWithName(TokenName.InvisibilityToken)) return null;
   if (!square) return <View style={[style, { width: size, height: size }]} />;
 
   const isHighlighted = game.allowableLocations.includes(square.location);

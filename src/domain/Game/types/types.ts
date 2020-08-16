@@ -1,11 +1,9 @@
 import { Direction } from "./Direction";
 
-export type SquareAttributes = null;
-
 export interface Gait {
   pattern: Direction[];
   repeats?: boolean;
-  interuptable?: boolean;
+  interruptable?: boolean;
   nonBlocking?: boolean;
   mustNotCapture?: boolean;
   mustCapture?: boolean;
@@ -39,9 +37,18 @@ export interface Token {
 
 export enum TokenName {
   PawnDoubleStep,
+  PolarToken,
   MoveHistory,
+  InvisibilityToken,
 }
 
 export interface MoveHistoryData {
   history: string[];
+}
+
+export interface RankAndFileBounds {
+  minRank: number;
+  maxRank: number;
+  minFile: number;
+  maxFile: number;
 }

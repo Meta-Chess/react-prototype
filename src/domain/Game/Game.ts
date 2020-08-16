@@ -4,7 +4,6 @@ import { Clock } from "./Clock";
 import { Player, Variant } from "./types";
 import { Square, Piece } from "./Board";
 import { Pather } from "./Pather";
-import { PawnDoubleStep } from "./Variants";
 import { flatMap } from "lodash";
 
 export class Game {
@@ -26,8 +25,8 @@ export class Game {
     return new Game(Board.createEmptyBoard(), [], Format.default);
   }
 
-  static createStandardGame(): Game {
-    return new Game(Board.createStandardBoard(), [PawnDoubleStep], Format.default);
+  static createGame(variants: Variant[]): Game {
+    return new Game(Board.createBoard(variants), variants, Format.default);
   }
 
   giveRenderer(renderer: Renderer): void {

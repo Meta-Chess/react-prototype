@@ -1,9 +1,11 @@
 import React, { useContext, useState } from "react";
+import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
-import { Square } from "./Square";
+import { objectMatches } from "utilities";
 import { GameContext } from "domain/Game";
-import { View } from "react-native";
+import { TokenName } from "domain/Game/types";
+import { Square } from "./Square";
 
 const Board: SFC = ({ style }) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -11,12 +13,10 @@ const Board: SFC = ({ style }) => {
   const padding = 8;
   const { game } = useContext(GameContext);
 
-  const squares = Object.values(game.board.squares);
+  const { minRank, maxRank, minFile, maxFile } = game.board.rankAndFileBoundsWithFilter(
+    (square) => !square.hasTokenWithName(TokenName.InvisibilityToken)
+  );
 
-  const minRank = Math.min(...squares.map((s) => s.coordinates.rank));
-  const maxRank = Math.max(...squares.map((s) => s.coordinates.rank));
-  const minFile = Math.min(...squares.map((s) => s.coordinates.file));
-  const maxFile = Math.max(...squares.map((s) => s.coordinates.file));
   const numberOfRanks = maxRank - minRank + 1;
   const numberOfFiles = maxFile - minFile + 1;
 
@@ -62,10 +62,12 @@ const Board: SFC = ({ style }) => {
               {rankCoordinates.map((rank) => (
                 <Square
                   size={squareSize}
-                  squares={game.board.squaresWithRankAndFile({
-                    rank,
-                    file,
-                  })}
+                  squares={game.board.squaresByCondition((square) =>
+                    objectMatches({
+                      rank,
+                      file,
+                    })(square.coordinates)
+                  )}
                   key={JSON.stringify([rank, file])}
                 />
               ))}

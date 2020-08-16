@@ -46,14 +46,19 @@ export class Pather {
 
     return [
       ...allowableSquares,
-      ...flatMap(continuingSquares, (square) =>
-        this.path({
+      ...flatMap(continuingSquares, (square) => {
+        ({ gait, remainingSteps, currentSquare } = applyInSequence(
+          this.variants?.map((v) => v.afterStepModify),
+          { gait, remainingSteps, currentSquare: square }
+        ));
+
+        return this.path({
           gait,
-          currentSquare: square,
+          currentSquare,
           remainingSteps,
           stepAllowance: stepAllowance - 1,
-        })
-      ),
+        });
+      }),
     ];
   }
 
@@ -92,7 +97,7 @@ export class Pather {
   }
 
   canStay({ square, gait, remainingSteps }: HypotheticalDisplacement): boolean {
-    if (!gait.interuptable && remainingSteps.length > 1) return false;
+    if (!gait.interruptable && remainingSteps.length > 1) return false;
     if (square.hasPieceBelongingTo(this.piece.owner)) return false;
     if (square.hasPieceNotBelongingTo(this.piece.owner)) {
       // TODO: change this out for "hasCapturablePiece method"

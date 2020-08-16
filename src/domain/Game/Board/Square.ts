@@ -1,6 +1,6 @@
 import { Piece } from "./Piece";
 import { Adjacencies, Adjacency } from "./Adjacencies";
-import { Player } from "domain/Game/types";
+import { Player, Token, TokenName } from "domain/Game/types";
 
 interface Coordinates {
   rank: number;
@@ -11,9 +11,9 @@ export class Square {
   constructor(
     public location: string,
     public coordinates: Coordinates, // TODO: Generalise coordinates to accept things other than rank and file
-    public pieces: Piece[] = [],
+    public tokens: Token[] = [],
     public adjacencies: Adjacencies = new Adjacencies(),
-    public attributes?: null // This will be more interesting later...
+    public pieces: Piece[] = []
   ) {}
 
   getPieceArray(): Piece[] {
@@ -46,5 +46,34 @@ export class Square {
 
   getColorIndex(): number {
     return (this.coordinates.rank + this.coordinates.file) % 2;
+  }
+
+  // Token stuff - should probably extract to a superclass of square and piece
+  addToken(token: Token): void {
+    this.tokens.push(token);
+  }
+
+  private filterTokensByRule(rule: (token: Token) => boolean): void {
+    this.tokens = this.tokens.filter(rule);
+  }
+
+  removeTokensByName(name: TokenName): void {
+    this.filterTokensByRule((token) => token.name !== name);
+  }
+
+  private firstTokenSatisfyingRule(rule: (token: Token) => boolean): Token | undefined {
+    return this.tokens.find(rule);
+  }
+
+  firstTokenWithName(name: TokenName): Token | undefined {
+    return this.firstTokenSatisfyingRule((token) => token.name === name);
+  }
+
+  private hasTokenSatisfyingRule(rule: (token: Token) => boolean): boolean {
+    return this.tokens.some(rule);
+  }
+
+  hasTokenWithName(name: TokenName): boolean {
+    return this.hasTokenSatisfyingRule((token) => token.name === name);
   }
 }

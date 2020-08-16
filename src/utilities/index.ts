@@ -5,6 +5,8 @@ export * from "./flatMapValues";
 export * from "./formatMillis";
 export * from "./isPresent";
 export * from "./Map";
+export * from "./objectMatches";
 export * from "./random";
 export * from "./range";
 export * from "./range2";
+export * from "./wrapToCylinder";

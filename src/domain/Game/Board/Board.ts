@@ -2,6 +2,8 @@ import { Piece } from "./Piece";
 import { Square } from "./Square";
 import { standardSetup } from "./Setups";
 import { Adjacency } from "./Adjacencies";
+import { Variant, RankAndFileBounds } from "domain/Game/types";
+import { applyInSequence } from "utilities";
 
 interface LocationMap {
   [key: string]: Square;
@@ -14,11 +16,12 @@ class Board {
     this.squares = { ...this.squares, [location]: square };
   }
 
-  addSquares(squares: { location: string; square: Square }[]): void {
-    squares.forEach((s) => this.addSquare(s));
+  addSquares(squares: { location: string; square: Square }[] | undefined): void {
+    squares?.forEach((s) => this.addSquare(s));
   }
 
-  addAdjacenciesByRule(rule: (square: Square) => Adjacency[]): void {
+  addAdjacenciesByRule(rule: ((square: Square) => Adjacency[]) | undefined): void {
+    if (!rule) return;
     const locations = Object.keys(this.squares);
     const squares = Object.values(this.squares);
     squares.forEach((square) => {
@@ -37,11 +40,24 @@ class Board {
     });
   }
 
-  //TODO: PURGE
-  squaresWithRankAndFile({ rank, file }: { rank: number; file: number }): Square[] {
-    return Object.values(this.squares).filter(
-      (s) => s.coordinates.rank === rank && s.coordinates.file === file
-    );
+  rankAndFileBounds(): RankAndFileBounds {
+    return this.rankAndFileBoundsWithFilter(() => true);
+  }
+
+  rankAndFileBoundsWithFilter(filter: (s: Square) => boolean): RankAndFileBounds {
+    const squares = Object.values(this.squares).filter(filter);
+    const ranks = squares.map((s) => s.coordinates.rank);
+    const files = squares.map((s) => s.coordinates.file);
+    return {
+      minRank: Math.min(...ranks),
+      maxRank: Math.max(...ranks),
+      minFile: Math.min(...files),
+      maxFile: Math.max(...files),
+    };
+  }
+
+  squaresByCondition(condition: (s: Square) => boolean): Square[] {
+    return Object.values(this.squares).filter(condition);
   }
 
   displace({ piece, destination }: { piece: Piece; destination: string }): void {
@@ -67,12 +83,17 @@ class Board {
     return new Board({});
   }
 
-  static createStandardBoard(): Board {
-    const board = new Board();
+  static createBoard(variants: Variant[]): Board {
+    let board = new Board();
     board.addSquares(standardSetup.squares);
     board.addAdjacenciesByRule(standardSetup.adjacenciesRule);
-    // board.addAdjacenciesByRule(cylindricalAdjacenciesRule);
     board.addPiecesByRule(standardSetup.piecesRule);
+
+    ({ board } = applyInSequence(
+      variants.map((v) => v?.onBoardCreatedModify),
+      { board }
+    ));
+
     return board;
   }
 }
