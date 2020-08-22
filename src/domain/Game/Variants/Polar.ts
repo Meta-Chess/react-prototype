@@ -1,6 +1,5 @@
 import { Adjacency, Square } from "../Board";
 import { Variant, Direction, TokenName, RankAndFileBounds } from "domain/Game/types";
-import { Setup } from "../Board/Setups";
 import { range, wrapToCylinder } from "utilities";
 
 export const Polar: Variant = {
@@ -49,7 +48,10 @@ const generatePolarSetup = ({
   maxRank,
   minFile,
   maxFile,
-}: RankAndFileBounds): Setup => ({
+}: RankAndFileBounds): {
+  squares: { location: string; square: Square }[];
+  adjacenciesRule: (square: Square) => Adjacency[];
+} => ({
   squares: [
     ...range(minFile, maxFile).map((x) => {
       const location = `PR${maxRank + 1}F${x}`;
@@ -72,7 +74,7 @@ const generatePolarSetup = ({
       };
     }),
   ],
-  adjacenciesRule: (square: Square): Adjacency[] => {
+  adjacenciesRule: (square): Adjacency[] => {
     const { rank, file } = square.getCoordinates();
     const wrap = wrapToCylinder(minRank, maxRank);
     return rank === minRank - 1

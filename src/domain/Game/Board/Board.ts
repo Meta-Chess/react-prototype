@@ -1,6 +1,5 @@
 import { Piece } from "./Piece";
 import { Square } from "./Square";
-import { standardSetup } from "./Setups";
 import { Adjacency } from "./Adjacencies";
 import { Variant, RankAndFileBounds } from "domain/Game/types";
 import { applyInSequence } from "utilities";
@@ -85,9 +84,11 @@ class Board {
 
   static createBoard(variants: Variant[]): Board {
     let board = new Board();
-    board.addSquares(standardSetup.squares);
-    board.addAdjacenciesByRule(standardSetup.adjacenciesRule);
-    board.addPiecesByRule(standardSetup.piecesRule);
+
+    ({ board } = applyInSequence(
+      variants.map((v) => v?.forSquareGenerationModify),
+      { board }
+    ));
 
     ({ board } = applyInSequence(
       variants.map((v) => v?.onBoardCreatedModify),

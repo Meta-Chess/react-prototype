@@ -1,9 +1,9 @@
 import React, { FC, useState, createContext } from "react";
 import { Game } from "./Game";
 import { Renderer } from "./Renderer";
-import { PawnDoubleStep, Polar, Cylindrical } from "./Variants";
+import { Standard, PawnDoubleStep, Polar, Cylindrical } from "./Variants";
 
-const standardGame = Game.createGame([PawnDoubleStep, Polar, Cylindrical]);
+const standardGame = Game.createGame([Standard, PawnDoubleStep, Polar, Cylindrical]);
 
 const GameContext = createContext({
   game: Game.createEmptyGame(),

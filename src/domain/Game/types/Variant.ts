@@ -15,4 +15,5 @@ export interface Variant {
     currentSquare: Square;
   }>;
   onBoardCreatedModify?: Chainable<{ board: Board }>;
+  forSquareGenerationModify?: Chainable<{ board: Board }>;
 }
