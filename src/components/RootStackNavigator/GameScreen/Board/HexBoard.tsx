@@ -1,0 +1,106 @@
+import React, { useContext, useState } from "react";
+import { View } from "react-native";
+import styled from "styled-components/native";
+import { SFC, Colors } from "primitives";
+import { objectMatches } from "utilities";
+import { GameContext } from "domain/Game";
+import { TokenName, SquareShape } from "domain/Game/types";
+import { Square } from "./Square";
+
+const HexBoard: SFC = ({ style }) => {
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+  const padding = 8;
+  const { game } = useContext(GameContext);
+
+  const { minRank, maxRank, minFile, maxFile } = game.board.rankAndFileBoundsWithFilter(
+    (square) => !square.hasTokenWithName(TokenName.InvisibilityToken)
+  );
+
+  const numberOfRanks = maxRank - minRank + 1;
+  const numberOfFiles = maxFile - minFile + 1;
+
+  const boardDetails = {
+    width: numberOfFiles,
+    height: (Math.ceil(numberOfRanks / 2) * 2) / Math.sqrt(3),
+  };
+
+  const fileCoordinates = Array.from(Array(numberOfFiles).keys()).map((n) => n + minFile);
+  const rankCoordinates = Array.from(Array(numberOfRanks).keys()).map((n) => n + minRank);
+
+  const squareSize = Math.min(
+    (dimensions.width - 2 * padding) / boardDetails.width,
+    (dimensions.height - 2 * padding) / boardDetails.height,
+    100
+  );
+
+  return (
+    <SizeContainer
+      onLayout={(event): void => {
+        const { width, height } = event.nativeEvent.layout;
+        if (dimensions.width !== width || dimensions.height !== height)
+          setDimensions({ width, height });
+      }}
+      style={style}
+    >
+      <BoardContainer
+        style={[
+          {
+            height: squareSize * boardDetails.height + 2 * padding,
+            width: squareSize * boardDetails.width + 2 * padding,
+            padding,
+          },
+        ]}
+      >
+        <SquaresContainer>
+          {fileCoordinates.map((file) => (
+            <ColumnContainer style={{ maxWidth: squareSize }} key={file}>
+              {rankCoordinates.map((rank) => (
+                <Square
+                  size={squareSize}
+                  squares={game.board.squaresByCondition((square) =>
+                    objectMatches({
+                      rank,
+                      file,
+                    })(square.coordinates)
+                  )}
+                  shape={SquareShape.Hex}
+                  key={JSON.stringify([rank, file])}
+                />
+              ))}
+            </ColumnContainer>
+          ))}
+        </SquaresContainer>
+      </BoardContainer>
+    </SizeContainer>
+  );
+};
+
+const SizeContainer = styled(View)`
+  flex: 1;
+  align-self: stretch;
+  margin: 24px;
+  align-items: center;
+`;
+
+const BoardContainer = styled(View)`
+  position: relative;
+  background: ${Colors.DARK.string()};
+  box-shadow: 2px 1px 16px ${Colors.SHADOW.string()};
+`;
+
+const SquaresContainer = styled(View)`
+  flex-direction: row;
+  display: flex;
+  height: 100%;
+  align-items: center;
+`;
+
+const ColumnContainer = styled(View)`
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  flex: 1;
+  display: flex;
+`;
+
+export { HexBoard };

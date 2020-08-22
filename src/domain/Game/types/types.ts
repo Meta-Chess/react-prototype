@@ -52,3 +52,8 @@ export interface RankAndFileBounds {
   minFile: number;
   maxFile: number;
 }
+
+export enum SquareShape {
+  Square,
+  Hex,
+}
