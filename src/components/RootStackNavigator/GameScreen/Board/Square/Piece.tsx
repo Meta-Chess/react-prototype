@@ -28,7 +28,7 @@ const Piece: FC<Props> = ({ piece, size }) => {
 
       <Container>
         <PieceImage
-          type={piece.type}
+          type={piece.name}
           color={Colors.PLAYER[piece.owner].string()}
           size={size}
         />

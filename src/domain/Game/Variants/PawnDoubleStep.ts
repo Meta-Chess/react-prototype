@@ -1,11 +1,11 @@
-import { PieceType, Player, Variant, Token, TokenName } from "../types";
+import { PieceName, Player, Variant, Token, TokenName } from "../types";
 import { Piece } from "../Board";
 import * as defaultGaits from "../Board/Piece";
 
 export const PawnDoubleStep: Variant = {
   postMove: ({ piecesMoved }) => {
     piecesMoved.forEach((piece: Piece) => {
-      if (piece.type === PieceType.Pawn)
+      if (piece.name === PieceName.Pawn)
         piece.removeTokensByName(TokenName.PawnDoubleStep);
     });
   },

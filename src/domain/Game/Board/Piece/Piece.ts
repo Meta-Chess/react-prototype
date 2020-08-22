@@ -1,10 +1,10 @@
-import { PieceType, Player, Token, TokenName, Gait, GaitParams } from "domain/Game/types";
+import { PieceName, Player, Token, TokenName, Gait, GaitParams } from "domain/Game/types";
 
 class Piece {
   id: number;
   constructor(
     public location: string,
-    public type: PieceType,
+    public name: PieceName,
     public generateGaits: (_?: GaitParams) => Gait[],
     public owner: Player,
     public tokens: Token[] = []

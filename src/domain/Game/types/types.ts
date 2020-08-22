@@ -16,7 +16,7 @@ export enum Player {
 
 export type Location = string;
 
-export enum PieceType {
+export enum PieceName {
   Pawn,
   Rook,
   King,

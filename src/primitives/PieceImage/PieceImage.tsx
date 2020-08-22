@@ -1,11 +1,11 @@
 import React, { FC } from "react";
-import { PieceType } from "domain/Game/types";
+import { PieceName } from "domain/Game/types";
 import { Svg, G } from "react-native-svg";
 import { Colors } from "primitives";
 import { Bishop, King, Knight, Pawn, Queen, Rook } from "./sprites";
 
 interface Props {
-  type: PieceType;
+  type: PieceName;
   color: string;
   size: number;
   glowColor?: string;
@@ -15,15 +15,15 @@ const PieceImage: FC<Props> = ({ type, color, size, glowColor }) => {
   const primary = color;
   const secondary = Colors.DARKEST.string();
   const paths =
-    type === PieceType.Pawn ? (
+    type === PieceName.Pawn ? (
       <Pawn />
-    ) : type === PieceType.Bishop ? (
+    ) : type === PieceName.Bishop ? (
       <Bishop />
-    ) : type === PieceType.Knight ? (
+    ) : type === PieceName.Knight ? (
       <Knight />
-    ) : type === PieceType.Rook ? (
+    ) : type === PieceName.Rook ? (
       <Rook />
-    ) : type === PieceType.Queen ? (
+    ) : type === PieceName.Queen ? (
       <Queen />
     ) : (
       <King />
