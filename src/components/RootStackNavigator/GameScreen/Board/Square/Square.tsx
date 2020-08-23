@@ -27,7 +27,6 @@ const SquareComponent: SFC<Props> = ({ style, squares, size, shape }) => {
   }
   if (square.hasTokenWithName(TokenName.InvisibilityToken)) return null;
 
-  const isHighlighted = game.allowableLocations.includes(square.location);
   const backgroundColor = Colors.SQUARE[
     colorIndex({ ...square.getCoordinates(), shape })
   ].string();
@@ -35,38 +34,46 @@ const SquareComponent: SFC<Props> = ({ style, squares, size, shape }) => {
   const piecesOnSquare = square.pieces;
 
   const dimension = Math.ceil(Math.sqrt(piecesOnSquare.length));
-  const pieceSize = (0.88 * size) / dimension;
+  const pieceScaleFactor = shape === SquareShape.Hex ? 0.9 : 1; // TODO: this will cause problems with chess plus and hex.
+  const pieceSize = (pieceScaleFactor * size) / dimension;
 
   const onPress = (): void => {
     game.onPress(square);
   };
 
+  const Highlight = game.allowableLocations.includes(square.location) ? (
+    square.hasPiece() ? (
+      <FullHighlight color={Colors.HIGHLIGHT.ERROR} />
+    ) : (
+      <CenterHighlight color={Colors.HIGHLIGHT.SUCCESS} />
+    )
+  ) : square.hasPieceOf(game.selectedPieces) ? (
+    <FullHighlight color={Colors.HIGHLIGHT.WARNING} />
+  ) : null;
+
   return (
-    <TouchableOpacity
+    <PressableContainer
       style={[
         style,
         {
           width: size,
           height: size,
           backgroundColor,
-          padding: "6%",
           borderRadius: shape === SquareShape.Hex ? 50 : 0,
         },
       ]}
       onPress={onPress}
       activeOpacity={1}
     >
-      {isHighlighted && (
-        <Highlight
-          color={square.hasPiece() ? Colors.HIGHLIGHT.ERROR : Colors.HIGHLIGHT.SUCCESS}
-        />
-      )}
-      <GridArrangement>
-        {piecesOnSquare.map((piece) => (
-          <Piece piece={piece} size={pieceSize} key={piece.id} />
-        ))}
-      </GridArrangement>
-    </TouchableOpacity>
+      {Highlight}
+      <PositioningContainer size={pieceScaleFactor * size}>
+        <GridArrangement>
+          {piecesOnSquare.map((piece) => (
+            <Piece piece={piece} size={pieceSize} key={piece.id} />
+          ))}
+        </GridArrangement>
+      </PositioningContainer>
+    </PressableContainer>
   );
 };
 
@@ -79,22 +86,42 @@ const colorIndex = ({
   file: number;
   shape?: SquareShape;
 }): number => {
-  return shape === SquareShape.Hex ? rank % 3 : (rank + file) % 3;
+  return shape === SquareShape.Hex ? rank % 3 : (rank + file) % 2;
 };
 
 interface HighlightProps {
   color: Color;
-  shape?: SquareShape;
 }
 
-const Highlight = styled(View)<HighlightProps>`
+const FullHighlight = styled(View)<HighlightProps>`
   background-color: ${({ color }): string => color.fade(0.6).string()};
   position: absolute;
-  border-radius: ${({ shape }): string => (shape === SquareShape.Hex ? "300px" : "12px")}
-  top: 8%;
-  right: 8%;
-  bottom: 8%;
-  left: 8%;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+`;
+
+const CenterHighlight = styled(View)<HighlightProps>`
+  background-color: ${({ color }): string => color.fade(0.6).string()};
+  position: absolute;
+  top: 30%;
+  right: 30%;
+  bottom: 30%;
+  left: 30%;
+  border-radius: 50px;
+`;
+
+const PressableContainer = styled(TouchableOpacity)`
+  overflow: hidden;
+`;
+
+const PositioningContainer = styled(View)<{ size: number }>`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: ${({ size }): number => -size / 2}px;
+  margin-top: ${({ size }): number => -size / 2}px;
 `;
 
 export { SquareComponent as Square };

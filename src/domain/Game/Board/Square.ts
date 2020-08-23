@@ -36,6 +36,11 @@ export class Square {
     return this.pieces.length !== 0;
   }
 
+  hasPieceOf(pieces: Piece[]): boolean {
+    const ids = pieces.map((p) => p.id);
+    return this.pieces.some((piece) => ids.includes(piece.id));
+  }
+
   hasPieceBelongingTo(owner: Player): boolean {
     return this.pieces.some((piece) => piece.owner === owner);
   }

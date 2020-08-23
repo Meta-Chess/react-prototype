@@ -1,7 +1,15 @@
 import { range } from "utilities";
 import { Adjacency, Square, Piece } from "../Board";
-import * as pieceFactory from "../Board/Piece/pieceFactory";
-import { Variant, Player, Direction, RankAndFileBounds } from "domain/Game/types";
+import { createPiece, PieceSet } from "../Board/Piece/pieceFactory";
+import {
+  Variant,
+  Player,
+  Direction,
+  RankAndFileBounds,
+  PieceName,
+  SquareShape,
+  TokenName,
+} from "domain/Game/types";
 
 export const Hex: Variant = {
   forSquareGenerationModify: ({ board }) => {
@@ -12,8 +20,15 @@ export const Hex: Variant = {
     const bounds = board.rankAndFileBounds();
     board.addAdjacenciesByRule(standardAdjacencies(bounds));
     board.addPiecesByRule(standardPiecesRule);
+    board.addToken(hexShapeToken);
     return { board };
   },
+};
+
+const hexShapeToken = {
+  name: TokenName.Shape,
+  validTo: undefined,
+  data: { shape: SquareShape.Hex },
 };
 
 const hexSquares = range(1, 11)
@@ -47,30 +62,35 @@ const standardAdjacencies = (_bounds: RankAndFileBounds) => (
 
 const standardPiecesRule = (square: Square): Piece[] => {
   const { rank, file } = square.getCoordinates();
+  const location = `R${rank}F${file}`;
+  const owner = rank > 10 ? Player.Black : Player.White;
+  const set = PieceSet.HexStandard;
+
   if ([1, 3, 5].includes(rank) && file === 6)
-    return [pieceFactory.createBishop(`R${rank}F${file}`, Player.White)];
+    return [createPiece({ location, owner, name: PieceName.Bishop, set })];
   if (rank === 2 && file === 5)
-    return [pieceFactory.createQueen(`R${rank}F${file}`, Player.White)];
+    return [createPiece({ location, owner, name: PieceName.Queen, set })];
   if (rank === 2 && file === 7)
-    return [pieceFactory.createKing(`R${rank}F${file}`, Player.White)];
+    return [createPiece({ location, owner, name: PieceName.King, set })];
   if (rank === 3 && [4, 8].includes(file))
-    return [pieceFactory.createKnight(`R${rank}F${file}`, Player.White)];
+    return [createPiece({ location, owner, name: PieceName.Knight, set })];
   if (rank === 4 && [3, 9].includes(file))
-    return [pieceFactory.createRook(`R${rank}F${file}`, Player.White)];
+    return [createPiece({ location, owner, name: PieceName.Rook, set })];
   if (rank === 9 - Math.abs(file - 6))
-    return [pieceFactory.createPawn(`R${rank}F${file}`, Player.White)];
+    return [createPiece({ location, owner, name: PieceName.Pawn, set })];
 
   if ([21, 19, 17].includes(rank) && file === 6)
-    return [pieceFactory.createBishop(`R${rank}F${file}`, Player.Black)];
+    return [createPiece({ location, owner, name: PieceName.Bishop, set })];
   if (rank === 20 && file === 5)
-    return [pieceFactory.createQueen(`R${rank}F${file}`, Player.Black)];
+    return [createPiece({ location, owner, name: PieceName.Queen, set })];
   if (rank === 20 && file === 7)
-    return [pieceFactory.createKing(`R${rank}F${file}`, Player.Black)];
+    return [createPiece({ location, owner, name: PieceName.King, set })];
   if (rank === 19 && [4, 8].includes(file))
-    return [pieceFactory.createKnight(`R${rank}F${file}`, Player.Black)];
+    return [createPiece({ location, owner, name: PieceName.Knight, set })];
   if (rank === 18 && [3, 9].includes(file))
-    return [pieceFactory.createRook(`R${rank}F${file}`, Player.Black)];
+    return [createPiece({ location, owner, name: PieceName.Rook, set })];
   if (rank === 13 + Math.abs(file - 6))
-    return [pieceFactory.createPawn(`R${rank}F${file}`, Player.Black)];
+    return [createPiece({ location, owner, name: PieceName.Pawn, set })];
+
   return [];
 };

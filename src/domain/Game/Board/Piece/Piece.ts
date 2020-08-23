@@ -16,6 +16,10 @@ class Piece {
     this.tokens.push(token);
   }
 
+  addTokens(tokens: Token[]): void {
+    this.tokens.push(...tokens);
+  }
+
   private filterTokensByRule(rule: (token: Token) => boolean): void {
     this.tokens = this.tokens.filter(rule);
   }

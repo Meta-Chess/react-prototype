@@ -32,7 +32,7 @@ export interface GaitParams {
 export interface Token {
   name: TokenName;
   validTo: { player: Player; playerTurn: number } | undefined;
-  data: undefined | MoveHistoryData;
+  data: undefined | TokenData;
 }
 
 export enum TokenName {
@@ -40,10 +40,12 @@ export enum TokenName {
   PolarToken,
   MoveHistory,
   InvisibilityToken,
+  Shape,
 }
 
-export interface MoveHistoryData {
-  history: string[];
+interface TokenData {
+  history?: string[];
+  shape?: SquareShape;
 }
 
 export interface RankAndFileBounds {

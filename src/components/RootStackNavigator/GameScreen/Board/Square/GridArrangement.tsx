@@ -9,7 +9,7 @@ const GridArrangement: SFC = ({ style, children }) => {
   const dimensionArray = Array.from(Array(dimension).keys());
 
   return (
-    <OuterContainer style={style}>
+    <OuterContainer style={[style]}>
       {dimensionArray.map((y) => (
         <RowContainer key={y}>
           {dimensionArray.map((x) => elements[x + dimension * y])}

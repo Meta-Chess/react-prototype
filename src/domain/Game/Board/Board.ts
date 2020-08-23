@@ -1,7 +1,7 @@
 import { Piece } from "./Piece";
 import { Square } from "./Square";
 import { Adjacency } from "./Adjacencies";
-import { Variant, RankAndFileBounds } from "domain/Game/types";
+import { Variant, RankAndFileBounds, Token, TokenName } from "domain/Game/types";
 import { applyInSequence } from "utilities";
 
 interface LocationMap {
@@ -9,7 +9,47 @@ interface LocationMap {
 }
 
 class Board {
-  constructor(public squares: LocationMap = {}) {}
+  constructor(public squares: LocationMap = {}, public tokens: Token[] = []) {}
+
+  // TODO: consider making this a "property" or whatever it's called?
+  pieces(): Piece[] {
+    return Object.values(this.squares)
+      .map((square) => square.pieces)
+      .flat();
+  }
+
+  // TODO: Clean up all methods, particularly token methods with extension
+  addToken(token: Token): void {
+    this.tokens.push(token);
+  }
+
+  addTokens(tokens: Token[]): void {
+    this.tokens.push(...tokens);
+  }
+
+  private filterTokensByRule(rule: (token: Token) => boolean): void {
+    this.tokens = this.tokens.filter(rule);
+  }
+
+  removeTokensByName(name: TokenName): void {
+    this.filterTokensByRule((token) => token.name !== name);
+  }
+
+  private firstTokenSatisfyingRule(rule: (token: Token) => boolean): Token | undefined {
+    return this.tokens.find(rule);
+  }
+
+  firstTokenWithName(name: TokenName): Token | undefined {
+    return this.firstTokenSatisfyingRule((token) => token.name === name);
+  }
+
+  private hasTokenSatisfyingRule(rule: (token: Token) => boolean): boolean {
+    return this.tokens.some(rule);
+  }
+
+  hasTokenWithName(name: TokenName): boolean {
+    return this.hasTokenSatisfyingRule((token) => token.name === name);
+  }
 
   addSquare({ location, square }: { location: string; square: Square }): void {
     this.squares = { ...this.squares, [location]: square };
@@ -37,6 +77,10 @@ class Board {
     squares.forEach((square) => {
       square.addPieces(rule(square));
     });
+  }
+
+  addPieceTokensByRule(rule: (piece: Piece) => Token[]): void {
+    this.pieces().forEach((piece) => piece.addTokens(rule(piece)));
   }
 
   rankAndFileBounds(): RankAndFileBounds {

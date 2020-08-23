@@ -1,7 +1,13 @@
 import { range2 } from "utilities";
 import { Adjacency, Square, Piece } from "../Board";
-import * as pieceFactory from "../Board/Piece/pieceFactory";
-import { Variant, Player, Direction, RankAndFileBounds } from "domain/Game/types";
+import { createPiece } from "../Board/Piece/pieceFactory";
+import {
+  Variant,
+  Player,
+  Direction,
+  RankAndFileBounds,
+  PieceName,
+} from "domain/Game/types";
 
 export const Standard: Variant = {
   forSquareGenerationModify: ({ board }) => {
@@ -42,27 +48,32 @@ const standardAdjacencies = (_bounds: RankAndFileBounds) => (
 
 const standardPiecesRule = (square: Square): Piece[] => {
   const { rank, file } = square.getCoordinates();
-  if (rank === 2) return [pieceFactory.createPawn(`R${rank}F${file}`, Player.White)];
-  if (rank === 7) return [pieceFactory.createPawn(`R${rank}F${file}`, Player.Black)];
+  const location = `R${rank}F${file}`;
+  const owner = rank > 4 ? Player.Black : Player.White;
+
+  if (rank === 2) return [createPiece({ location, owner, name: PieceName.Pawn })];
   if (rank === 1) {
     if (file === 1 || file === 8)
-      return [pieceFactory.createRook(`R${rank}F${file}`, Player.White)];
+      return [createPiece({ location, owner, name: PieceName.Rook })];
     if (file === 2 || file === 7)
-      return [pieceFactory.createKnight(`R${rank}F${file}`, Player.White)];
+      return [createPiece({ location, owner, name: PieceName.Knight })];
     if (file === 3 || file === 6)
-      return [pieceFactory.createBishop(`R${rank}F${file}`, Player.White)];
-    if (file === 4) return [pieceFactory.createQueen(`R${rank}F${file}`, Player.White)];
-    if (file === 5) return [pieceFactory.createKing(`R${rank}F${file}`, Player.White)];
+      return [createPiece({ location, owner, name: PieceName.Bishop })];
+    if (file === 4) return [createPiece({ location, owner, name: PieceName.Queen })];
+    if (file === 5) return [createPiece({ location, owner, name: PieceName.King })];
   }
+
+  if (rank === 7) return [createPiece({ location, owner, name: PieceName.Pawn })];
   if (rank === 8) {
     if (file === 1 || file === 8)
-      return [pieceFactory.createRook(`R${rank}F${file}`, Player.Black)];
+      return [createPiece({ location, owner, name: PieceName.Rook })];
     if (file === 2 || file === 7)
-      return [pieceFactory.createKnight(`R${rank}F${file}`, Player.Black)];
+      return [createPiece({ location, owner, name: PieceName.Knight })];
     if (file === 3 || file === 6)
-      return [pieceFactory.createBishop(`R${rank}F${file}`, Player.Black)];
-    if (file === 4) return [pieceFactory.createQueen(`R${rank}F${file}`, Player.Black)];
-    if (file === 5) return [pieceFactory.createKing(`R${rank}F${file}`, Player.Black)];
+      return [createPiece({ location, owner, name: PieceName.Bishop })];
+    if (file === 4) return [createPiece({ location, owner, name: PieceName.Queen })];
+    if (file === 5) return [createPiece({ location, owner, name: PieceName.King })];
   }
+
   return [];
 };

@@ -1,62 +1,53 @@
-import * as gaits from "./defaultGaits";
+import * as standardGaits from "./defaultGaits";
+import * as hexGaits from "./hexGaits";
 import { Piece } from "./Piece";
-import { Gait, PieceName, Player, TokenName, Token, GaitParams } from "domain/Game/types";
+import { Gait, PieceName, Player, Token, GaitParams } from "domain/Game/types";
 
-export function createRook(location: string, owner: Player): Piece {
-  return new Piece(location, PieceName.Rook, () => gaits.ROOK_GAITS, owner);
+type GaitGenerator = (p?: GaitParams) => Gait[];
+
+export enum PieceSet {
+  Standard,
+  HexStandard,
 }
 
-export function createBishop(location: string, owner: Player): Piece {
-  return new Piece(location, PieceName.Bishop, () => gaits.BISHOP_GAITS, owner);
-}
-
-export function createQueen(location: string, owner: Player): Piece {
-  return new Piece(location, PieceName.Queen, () => gaits.QUEEN_GAITS, owner);
-}
-
-export function createKnight(location: string, owner: Player): Piece {
-  return new Piece(location, PieceName.Knight, () => gaits.KNIGHT_GAITS, owner);
-}
-
-export function createKing(location: string, owner: Player): Piece {
-  return new Piece(location, PieceName.King, () => gaits.KING_GAITS, owner);
-}
-
-export function createPawn(location: string, owner: Player): Piece {
-  return owner === Player.White
-    ? new Piece(location, PieceName.Pawn, () => gaits.WHITE_PAWN_GAITS, owner, [
-        { name: TokenName.PawnDoubleStep, validTo: undefined, data: undefined },
-      ])
-    : new Piece(location, PieceName.Pawn, () => gaits.BLACK_PAWN_GAITS, owner, [
-        { name: TokenName.PawnDoubleStep, validTo: undefined, data: undefined },
-      ]);
-}
-
-export function createPiece(input: {
+interface PieceCreationInput {
   location: string;
   owner: Player;
   name: PieceName;
   gaits?: Gait[];
-  gaitGenerators?: (() => Gait[])[];
+  gaitGenerators?: GaitGenerator[];
   tokens?: Token[];
-}): Piece {
-  const gaitGenerators = [
-    ...(input.gaitGenerators || []),
-    ...(input.gaits ? [(): Gait[] => input.gaits] : []),
-  ];
-  const gaitGenerator =
-    gaitGenerators === []
-      ? defaultGaitGenerator({ name, owner: input.owner })
-      : (p: GaitParams): Gait[] => gaitGenerators.map((generator) => generator(p)).flat();
+  set?: PieceSet;
 }
+
+export function createPiece(input: PieceCreationInput): Piece {
+  const { location, owner, name, tokens } = input;
+  const gaitGenerator = determineGaitGenerator(input);
+  return new Piece(location, name, gaitGenerator, owner, tokens);
+}
+
+const determineGaitGenerator = (input: PieceCreationInput): GaitGenerator => {
+  const gaitGenerators = input.gaitGenerators || [];
+  const gaits = input.gaits;
+  if (gaits) gaitGenerators.push(() => gaits);
+
+  return gaitGenerators.length === 0
+    ? defaultGaitGenerator({ name: input.name, owner: input.owner, set: input.set })
+    : (params: GaitParams | undefined): Gait[] =>
+        gaitGenerators.map((generator) => generator(params)).flat();
+};
 
 const defaultGaitGenerator = ({
   name,
   owner,
+  set,
 }: {
   name: PieceName;
   owner: Player;
+  set: PieceSet | undefined;
 }): (() => Gait[]) => {
+  const gaits = set !== undefined ? allGaits[set] : allGaits[PieceSet.Standard];
+
   if (name === PieceName.Pawn) {
     if (owner === Player.White) return (): Gait[] => gaits.WHITE_PAWN_GAITS;
     if (owner === Player.Black) return (): Gait[] => gaits.BLACK_PAWN_GAITS;
@@ -69,4 +60,9 @@ const defaultGaitGenerator = ({
   throw new Error(
     `No default gait generator for this piece name ${name} and owner ${owner}`
   );
+};
+
+const allGaits = {
+  [PieceSet.Standard]: standardGaits,
+  [PieceSet.HexStandard]: hexGaits,
 };

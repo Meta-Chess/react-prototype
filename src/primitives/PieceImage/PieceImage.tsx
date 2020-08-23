@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { PieceName } from "domain/Game/types";
 import { Svg, G } from "react-native-svg";
-import { Colors } from "primitives";
+import { Colors } from "../Colors";
 import { Bishop, King, Knight, Pawn, Queen, Rook } from "./sprites";
 
 interface Props {

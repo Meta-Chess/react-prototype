@@ -1,24 +1,6 @@
 import { Gait } from "domain/Game/types";
 import { Direction } from "domain/Game/types";
 
-export const ROOK_GAITS: Gait[] = [
-  { pattern: [Direction.H2], repeats: true },
-  { pattern: [Direction.H4], repeats: true },
-  { pattern: [Direction.H6], repeats: true },
-  { pattern: [Direction.H8], repeats: true },
-  { pattern: [Direction.H10], repeats: true },
-  { pattern: [Direction.H12], repeats: true },
-];
-
-export const BISHOP_GAITS: Gait[] = [
-  { pattern: [Direction.H1], repeats: true },
-  { pattern: [Direction.H3], repeats: true },
-  { pattern: [Direction.H5], repeats: true },
-  { pattern: [Direction.H7], repeats: true },
-  { pattern: [Direction.H9], repeats: true },
-  { pattern: [Direction.H11], repeats: true },
-];
-
 const NonDiagonalDirections = [
   Direction.H2,
   Direction.H4,
@@ -27,8 +9,47 @@ const NonDiagonalDirections = [
   Direction.H10,
   Direction.H12,
 ];
+
+const DiagonalDirections = [
+  Direction.H1,
+  Direction.H3,
+  Direction.H5,
+  Direction.H7,
+  Direction.H9,
+  Direction.H11,
+];
+
+const knightTurnDirections = (A: Direction): Direction[] => {
+  switch (A) {
+    case Direction.H2:
+      return [Direction.H12, Direction.H4];
+    case Direction.H4:
+      return [Direction.H2, Direction.H6];
+    case Direction.H6:
+      return [Direction.H4, Direction.H8];
+    case Direction.H8:
+      return [Direction.H6, Direction.H10];
+    case Direction.H10:
+      return [Direction.H8, Direction.H12];
+    case Direction.H12:
+      return [Direction.H10, Direction.H2];
+    default:
+      throw new Error("Invalid knight direction");
+  }
+};
+
+export const ROOK_GAITS: Gait[] = NonDiagonalDirections.map((A) => ({
+  pattern: [A],
+  repeats: true,
+}));
+
+export const BISHOP_GAITS: Gait[] = DiagonalDirections.map((A) => ({
+  pattern: [A],
+  repeats: true,
+}));
+
 export const KNIGHT_GAITS: Gait[] = NonDiagonalDirections.map((A) =>
-  NonDiagonalDirections.map((B) => [
+  knightTurnDirections(A).map((B) => [
     { pattern: [A, A, B], nonBlocking: true },
     { pattern: [B, A, A], nonBlocking: true },
   ])

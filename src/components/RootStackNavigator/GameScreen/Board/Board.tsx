@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { SFC } from "primitives";
+import { GameContext } from "domain/Game";
+import { TokenName, SquareShape } from "domain/Game/types";
 import { HexBoard } from "./HexBoard";
+import { SquareBoard } from "./SquareBoard";
 
 const Board: SFC = ({ style }) => {
-  return <HexBoard style={style} />;
+  const { game } = useContext(GameContext);
+  const shapeToken = game.board.firstTokenWithName(TokenName.Shape);
+
+  if (shapeToken?.data?.shape === SquareShape.Hex) return <HexBoard style={style} />;
+
+  return <SquareBoard style={style} />;
 };
 
 export { Board };
