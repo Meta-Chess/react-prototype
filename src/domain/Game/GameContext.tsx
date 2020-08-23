@@ -3,17 +3,17 @@ import { Game } from "./Game";
 import { Renderer } from "./Renderer";
 
 import {
-  // Standard,
-  // Polar,
-  // Cylindrical,
-  // PawnDoubleStep,
-  Hex,
-  HexPawnDoubleStep,
-  HexCylindrical,
+  Standard,
+  Polar,
+  Cylindrical,
+  PawnDoubleStep,
+  // Hex,
+  // HexPawnDoubleStep,
+  // HexCylindrical,
 } from "./Variants";
 
-const standardGame = Game.createGame([Hex, HexPawnDoubleStep, HexCylindrical]);
-// const standardGame = Game.createGame([Standard, Polar, Cylindrical, PawnDoubleStep]);
+// const standardGame = Game.createGame([Hex, HexPawnDoubleStep, HexCylindrical]);
+const standardGame = Game.createGame([Standard, Polar, Cylindrical, PawnDoubleStep]);
 
 const GameContext = createContext({
   game: Game.createEmptyGame(),
