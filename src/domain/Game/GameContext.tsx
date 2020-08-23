@@ -1,10 +1,18 @@
 import React, { FC, useState, createContext } from "react";
 import { Game } from "./Game";
 import { Renderer } from "./Renderer";
-import { Hex, HexPawnDoubleStep, Cylindrical } from "./Variants";
-// import { Standard, Polar, Cylindrical, PawnDoubleStep } from "./Variants";
 
-const standardGame = Game.createGame([Hex, HexPawnDoubleStep, Cylindrical]);
+import {
+  // Standard,
+  // Polar,
+  // Cylindrical,
+  // PawnDoubleStep,
+  Hex,
+  HexPawnDoubleStep,
+  HexCylindrical,
+} from "./Variants";
+
+const standardGame = Game.createGame([Hex, HexPawnDoubleStep, HexCylindrical]);
 // const standardGame = Game.createGame([Standard, Polar, Cylindrical, PawnDoubleStep]);
 
 const GameContext = createContext({
