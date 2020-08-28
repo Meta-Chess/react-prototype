@@ -1,8 +1,8 @@
-import { PieceName, Player, Variant, Token, TokenName } from "../types";
+import { PieceName, Player, Rule, Token, TokenName } from "../types";
 import { Piece } from "../Board";
 import * as hexGaits from "../Board/Piece/hexGaits";
 
-export const HexPawnDoubleStep: Variant = {
+export const HexPawnDoubleStep: Rule = {
   postMove: ({ piecesMoved }) => {
     piecesMoved.forEach((piece: Piece) => {
       if (piece.name === PieceName.Pawn)

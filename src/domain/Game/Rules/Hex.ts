@@ -1,17 +1,17 @@
 import { range } from "utilities";
-import { Adjacency, Square, Piece } from "../Board";
+import { Adjacency, Piece, Square } from "../Board";
 import { createPiece, PieceSet } from "../Board/Piece/pieceFactory";
 import {
-  Variant,
-  Player,
   Direction,
-  RankAndFileBounds,
   PieceName,
+  Player,
+  RankAndFileBounds,
+  Rule,
   SquareShape,
   TokenName,
 } from "domain/Game/types";
 
-export const Hex: Variant = {
+export const Hex: Rule = {
   forSquareGenerationModify: ({ board }) => {
     board.addSquares(hexSquares);
     return { board };

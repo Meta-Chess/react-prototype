@@ -1,8 +1,7 @@
-import { Board } from "./Board";
+import { Board, Piece, Square } from "./Board";
 import { Renderer } from "./Renderer";
 import { Clock } from "./Clock";
-import { Player, Variant } from "./types";
-import { Square, Piece } from "./Board";
+import { Player, Rule } from "./types";
 import { Pather } from "./Pather";
 import { flatMap } from "lodash";
 
@@ -13,7 +12,7 @@ export class Game {
   public allowableLocations: string[];
   public renderer: Renderer | undefined;
 
-  constructor(public board: Board, public variants: Variant[], public format: Format) {
+  constructor(public board: Board, public variants: Rule[], public format: Format) {
     this.clock = new Clock([Player.White, Player.Black], 20000);
     this.clock.setActivePlayers([Player.Black]);
     this.players = [Player.White, Player.Black];
@@ -25,7 +24,7 @@ export class Game {
     return new Game(Board.createEmptyBoard(), [], Format.default);
   }
 
-  static createGame(variants: Variant[]): Game {
+  static createGame(variants: Rule[]): Game {
     return new Game(Board.createBoard(variants), variants, Format.default);
   }
 

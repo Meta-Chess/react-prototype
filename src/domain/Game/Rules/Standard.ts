@@ -1,15 +1,8 @@
 import { range2 } from "utilities";
-import { Adjacency, Square, Piece } from "../Board";
-import { createPiece } from "../Board/Piece/pieceFactory";
-import {
-  Variant,
-  Player,
-  Direction,
-  RankAndFileBounds,
-  PieceName,
-} from "domain/Game/types";
+import { Adjacency, createPiece, Piece, Square } from "domain/Game/Board";
+import { Direction, PieceName, Player, RankAndFileBounds, Rule } from "domain/Game/types";
 
-export const Standard: Variant = {
+export const Standard: Rule = {
   forSquareGenerationModify: ({ board }) => {
     board.addSquares(standardSquares);
     return { board };

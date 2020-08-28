@@ -1,19 +1,11 @@
-import React, { FC, useState, createContext } from "react";
+import React, { createContext, FC, useState } from "react";
 import { Game } from "./Game";
 import { Renderer } from "./Renderer";
 
-import {
-  Standard,
-  Polar,
-  Cylindrical,
-  PawnDoubleStep,
-  // Hex,
-  // HexPawnDoubleStep,
-  // HexCylindrical,
-} from "./Variants";
+import { Hex, HexPawnDoubleStep } from "./Rules";
 
-// const standardGame = Game.createGame([Hex, HexPawnDoubleStep, HexCylindrical]);
-const standardGame = Game.createGame([Standard, Polar, Cylindrical, PawnDoubleStep]);
+const standardGame = Game.createGame([Hex, HexPawnDoubleStep]);
+// const standardGame = Game.createGame([Standard, Polar, Cylindrical, PawnDoubleStep]);
 
 const GameContext = createContext({
   game: Game.createEmptyGame(),
@@ -21,7 +13,7 @@ const GameContext = createContext({
 
 const GameProvider: FC = ({ children }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [updateCounter, setUpdateCounter] = useState(0);
+  const [_updateCounter, setUpdateCounter] = useState(0);
   standardGame.giveRenderer(new Renderer(setUpdateCounter));
   const [game] = useState(standardGame);
 

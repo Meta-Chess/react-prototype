@@ -1,8 +1,8 @@
-import { PieceName, Player, Variant, Token, TokenName } from "../types";
+import { PieceName, Player, Rule, Token, TokenName } from "../types";
 import { Piece } from "../Board";
 import * as defaultGaits from "../Board/Piece/defaultGaits";
 
-export const PawnDoubleStep: Variant = {
+export const PawnDoubleStep: Rule = {
   postMove: ({ piecesMoved }) => {
     piecesMoved.forEach((piece: Piece) => {
       if (piece.name === PieceName.Pawn)

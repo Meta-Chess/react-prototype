@@ -1,8 +1,8 @@
 import { Adjacency, Square } from "../Board";
-import { Variant, Direction, TokenName, RankAndFileBounds } from "domain/Game/types";
+import { Direction, RankAndFileBounds, Rule, TokenName } from "domain/Game/types";
 import { range, wrapToCylinder } from "utilities";
 
-export const Polar: Variant = {
+export const Polar: Rule = {
   afterStepModify: ({ gait, remainingSteps, currentSquare }) => {
     return currentSquare.hasTokenWithName(TokenName.PolarToken)
       ? {

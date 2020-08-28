@@ -1,7 +1,7 @@
 import { Piece } from "./Piece";
 import { Square } from "./Square";
 import { Adjacency } from "./Adjacencies";
-import { Variant, RankAndFileBounds, Token, TokenName } from "domain/Game/types";
+import { RankAndFileBounds, Rule, Token, TokenName } from "domain/Game/types";
 import { applyInSequence } from "utilities";
 
 interface LocationMap {
@@ -126,7 +126,7 @@ class Board {
     return new Board({});
   }
 
-  static createBoard(variants: Variant[]): Board {
+  static createBoard(variants: Rule[]): Board {
     let board = new Board();
 
     ({ board } = applyInSequence(

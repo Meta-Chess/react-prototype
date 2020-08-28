@@ -1,12 +1,12 @@
-import { isPresent, applyInSequence } from "utilities";
-import { Piece, Square, Board } from "../Board";
-import { Gait, Variant, Direction } from "../types";
+import { applyInSequence, isPresent } from "utilities";
+import { Board, Piece, Square } from "../Board";
+import { Direction, Gait, Rule } from "../types";
 import { flatMap } from "lodash";
 
 const MAX_STEPS = 64; // TODO: find a good number or something
 
 export class Pather {
-  constructor(private board: Board, private piece: Piece, private variants: Variant[]) {}
+  constructor(private board: Board, private piece: Piece, private variants: Rule[]) {}
 
   findPaths(): string[] {
     const currentSquare = this.board.squareAt(this.piece.location);
