@@ -94,7 +94,7 @@ interface HighlightProps {
 }
 
 const FullHighlight = styled(View)<HighlightProps>`
-  background-color: ${({ color }): string => color.fade(0.6).string()};
+  background-color: ${({ color }): string => color.fade(0.5).string()};
   position: absolute;
   top: 0px;
   right: 0px;
@@ -103,7 +103,7 @@ const FullHighlight = styled(View)<HighlightProps>`
 `;
 
 const CenterHighlight = styled(View)<HighlightProps>`
-  background-color: ${({ color }): string => color.fade(0.6).string()};
+  background-color: ${({ color }): string => color.fade(0.3).string()};
   position: absolute;
   top: 30%;
   right: 30%;

@@ -11,11 +11,15 @@ export class Game {
   public selectedPieces: Piece[];
   public allowableLocations: string[];
   public renderer: Renderer | undefined;
+  public currentPlayer: Player;
+  public currentTurn: number;
 
   constructor(public board: Board, public variants: Rule[], public format: Format) {
     this.clock = new Clock([Player.White, Player.Black], 20000);
     this.clock.setActivePlayers([Player.Black]);
     this.players = [Player.White, Player.Black];
+    this.currentPlayer = Player.White;
+    this.currentTurn = 1;
     this.selectedPieces = [];
     this.allowableLocations = [];
   }
@@ -42,6 +46,9 @@ export class Game {
     if (this.selectedPieces.length === 0) {
       // select piece
       this.selectedPieces = square.pieces;
+
+      if (this.currentPlayer !== square.pieces[0].owner) return;
+
       this.allowableLocations = flatMap(this.selectedPieces, (piece: Piece) =>
         new Pather(this.board, piece, this.variants).findPaths()
       );
@@ -55,6 +62,12 @@ export class Game {
         this.variants.forEach((v) => {
           v.postMove?.({ piecesMoved: this.selectedPieces });
         });
+
+        // change turn
+        const currentIndex = this.players.indexOf(this.currentPlayer);
+        this.players.length - 1 === currentIndex
+          ? (this.currentPlayer = this.players[0])
+          : (this.currentPlayer = this.players[currentIndex + 1]);
       }
       this.selectedPieces = [];
       this.allowableLocations = [];
