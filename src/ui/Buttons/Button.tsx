@@ -23,4 +23,5 @@ const BaseButton = styled(TouchableOpacity)`
   background-color: ${Colors.MCHESS.string()};
   border-radius: 50px;
   box-shadow: 0px 0px 4px ${Colors.SHADOW.fade(0.5).string()};
+  align-items: center;
 `;

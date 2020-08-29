@@ -1,18 +1,19 @@
-import React, { FC } from "react";
+import React from "react";
 import { Screens, useNavigation } from "navigation";
 import { Button } from "ui";
 import { VariantName } from "game";
+import { SFC } from "primitives";
 
 interface Props {
   variant: VariantName;
 }
-const StartButton: FC<Props> = ({ variant }) => {
+const StartButton: SFC<Props> = ({ variant, style }) => {
   const navigation = useNavigation();
   const onPress = (): void => {
     navigation.navigate<Screens.GameScreen>(Screens.GameScreen, { variant });
   };
 
-  return <Button onPress={onPress} text={"m-Chess"} />;
+  return <Button onPress={onPress} text={"Play"} style={style} />;
 };
 
 export { StartButton };

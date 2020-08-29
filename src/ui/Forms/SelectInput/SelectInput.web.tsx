@@ -1,35 +1,34 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { View } from "react-native";
-import Select, { IndicatorProps, components } from "react-select";
+import Select, { IndicatorProps, components, Theme } from "react-select";
 import { Colors, Text, SFC } from "primitives";
-import styled from "styled-components/native";
 import { DownCaretIcon } from "primitives";
-
-export interface Option {
-  label: string;
-  value: any;
-}
+import { Option } from "./types";
 
 interface Props {
   options: Option[];
-  onChange?: (value?: Option) => void;
+  onChange?: (value?: any) => void; //eslint-disable-line @typescript-eslint/no-explicit-any
+  placeholder?: string;
 }
 
 export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
   return (
     <View style={[style]}>
       <Select
-        onChange={(option): void => {
-          if (Array.isArray(option))
+        onChange={(optionSelection): void => {
+          if (Array.isArray(optionSelection))
             throw new Error("Multiple option selection not supported");
-          if (option) onChange?.(option as Option); // TODO: Think about type safety
+          if (optionSelection) {
+            const option = optionSelection as Option; // TODO: Think about type safety
+            onChange?.(option.value);
+          }
         }}
         options={options}
         components={{ DropdownIndicator }}
         formatOptionLabel={OptionLabel}
         defaultValue={options[0]}
         searchable={false}
-        theme={(theme) => ({
+        theme={(theme): Theme => ({
           ...theme,
           colors: {
             ...theme.colors,
@@ -39,7 +38,7 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
           },
         })}
         styles={{
-          control: (baseStyle, { isFocused }) => ({
+          control: (baseStyle, { isFocused }): CSSProperties => ({
             ...baseStyle,
             width: 240,
             borderRadius: 4,
@@ -47,11 +46,11 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
             backgroundColor: Colors.DARKEST.toString(),
             boxShadow: isFocused ? "0" : "0",
           }),
-          menu: (baseStyle) => ({
+          menu: (baseStyle): CSSProperties => ({
             ...baseStyle,
             backgroundColor: Colors.DARK.toString(),
           }),
-          option: (baseStyle, { isFocused, isSelected }) => ({
+          option: (baseStyle, { isFocused, isSelected }): CSSProperties => ({
             ...baseStyle,
             backgroundColor: isSelected
               ? Colors.GREY.fade(0.8).toString()
@@ -59,7 +58,7 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
               ? Colors.GREY.fade(0.9).toString()
               : Colors.DARK.toString(),
           }),
-          indicatorSeparator: (baseStyle) => ({
+          indicatorSeparator: (baseStyle): CSSProperties => ({
             ...baseStyle,
             display: "none",
           }),
@@ -73,6 +72,7 @@ const OptionLabel: React.FC<Option> = ({ label }) => {
   return <Text.BodyL color={Colors.TEXT.LIGHT.toString()}>{label}</Text.BodyL>;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const DropdownIndicator: React.FC<IndicatorProps<any>> = (props: IndicatorProps<any>) => {
   return (
     <components.DropdownIndicator {...props}>
@@ -80,7 +80,3 @@ const DropdownIndicator: React.FC<IndicatorProps<any>> = (props: IndicatorProps<
     </components.DropdownIndicator>
   );
 };
-
-const StyledSelect = styled(Select)`
-  border-radius: 4 border;
-`;

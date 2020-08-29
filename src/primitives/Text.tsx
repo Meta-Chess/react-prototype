@@ -1,5 +1,5 @@
 import React from "react";
-import { Text as NativeText, View } from "react-native";
+import { StyleProp, Text as NativeText, TextStyle, View } from "react-native";
 import { randomInt } from "utilities";
 import { Skeleton } from "./Skeleton";
 import { Colors } from "./Colors";
@@ -8,21 +8,23 @@ import { RobotoMono_400Regular, useFonts } from "@expo-google-fonts/roboto-mono"
 interface BaseTextProps {
   children: React.ReactNode;
   size: number;
-  lineHeight: number;
+  lineHeight?: number;
   color?: string;
   fontWeight?: "normal" | "heavy";
   monospaceNumbers?: boolean;
   loading?: boolean;
+  style?: StyleProp<TextStyle>;
 }
 
 function Text({
   size,
-  lineHeight,
+  lineHeight = size,
   children,
   color = Colors.TEXT.DARK.string(),
   fontWeight = "normal",
   monospaceNumbers = false,
   loading = false,
+  style,
 }: BaseTextProps): React.ReactElement {
   const [fontsLoaded] = useFonts({ RobotoMono_400Regular });
   if (loading || !fontsLoaded)
@@ -49,6 +51,7 @@ function Text({
             fontWeight={fontWeight}
             key={index}
             monospaceNumbers={true}
+            style={style}
           >
             {char}
           </Text>
@@ -63,13 +66,16 @@ function Text({
 
   return (
     <NativeText
-      style={{
-        fontSize: size,
-        lineHeight,
-        color: color,
-        fontWeight: fontWeight === "normal" ? "normal" : "500",
-        fontFamily: fontFamily,
-      }}
+      style={[
+        {
+          fontSize: size,
+          lineHeight,
+          color: color,
+          fontWeight: fontWeight === "normal" ? "normal" : "500",
+          fontFamily: fontFamily,
+        },
+        style,
+      ]}
     >
       {children}
     </NativeText>

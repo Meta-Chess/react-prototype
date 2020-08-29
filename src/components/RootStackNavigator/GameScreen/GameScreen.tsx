@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { Screens, useRoute } from "navigation";
-import { GameProvider, variants } from "game";
+import { GameProvider } from "game";
 import { Colors } from "primitives";
 import { Board } from "./Board";
 import { Clocks } from "./Clocks";

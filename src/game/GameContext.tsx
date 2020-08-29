@@ -1,7 +1,7 @@
 import React, { createContext, FC, useState } from "react";
 import { Game } from "./Game";
 import { Renderer } from "./Renderer";
-import { variants, VariantName } from "game/variants";
+import { VariantName } from "game/variants";
 
 const game = Game.createEmptyGame();
 
