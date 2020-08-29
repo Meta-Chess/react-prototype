@@ -1,15 +1,18 @@
 import React, { FC } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
-import { GameProvider } from "game";
+import { Screens, useRoute } from "navigation";
+import { GameProvider, variants } from "game";
 import { Colors } from "primitives";
 import { Board } from "./Board";
 import { Clocks } from "./Clocks";
 import { PieceCredit } from "./PieceCredit";
 
 const GameScreen: FC = () => {
+  const { params } = useRoute<Screens.GameScreen>();
+
   return (
-    <GameProvider>
+    <GameProvider variant={params.variant}>
       <ScreenContainer>
         <Clocks style={{ marginTop: 16 }} />
         <Board style={{ margin: 16 }} />

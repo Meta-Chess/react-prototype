@@ -3,6 +3,7 @@ import { Square } from "./Square";
 import { Adjacency } from "./Adjacencies";
 import { RankAndFileBounds, Rule, Token, TokenName } from "game/types";
 import { applyInSequence } from "utilities";
+import * as _ from "lodash";
 
 interface LocationMap {
   [key: string]: Square;
@@ -122,20 +123,24 @@ class Board {
     return location ? this.squares[location] : undefined;
   }
 
+  isEmpty(): boolean {
+    return _.isEmpty(this.squares);
+  }
+
   static createEmptyBoard(): Board {
     return new Board({});
   }
 
-  static createBoard(variants: Rule[]): Board {
+  static createBoard(rules: Rule[]): Board {
     let board = new Board();
 
     ({ board } = applyInSequence(
-      variants.map((v) => v?.forSquareGenerationModify),
+      rules.map((r) => r?.forSquareGenerationModify),
       { board }
     ));
 
     ({ board } = applyInSequence(
-      variants.map((v) => v?.onBoardCreatedModify),
+      rules.map((r) => r?.onBoardCreatedModify),
       { board }
     ));
 

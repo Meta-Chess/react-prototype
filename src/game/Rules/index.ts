@@ -5,3 +5,4 @@ export * from "./Standard";
 export * from "./Hex";
 export * from "./HexPawnDoubleStep";
 export * from "./HexCylindrical";
+export * from "./types";

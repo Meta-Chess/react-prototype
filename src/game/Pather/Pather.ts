@@ -6,13 +6,13 @@ import { flatMap } from "lodash";
 const MAX_STEPS = 64; // TODO: find a good number or something
 
 export class Pather {
-  constructor(private board: Board, private piece: Piece, private variants: Rule[]) {}
+  constructor(private board: Board, private piece: Piece, private rules: Rule[]) {}
 
   findPaths(): string[] {
     const currentSquare = this.board.squareAt(this.piece.location);
     if (!currentSquare) return [];
     const { gaits } = applyInSequence(
-      this.variants?.map((v) => v?.onGaitsGeneratedModify),
+      this.rules?.map((r) => r?.onGaitsGeneratedModify),
       {
         gaits: this.piece.generateGaits(),
         piece: this.piece,
@@ -48,7 +48,7 @@ export class Pather {
       ...allowableSquares,
       ...flatMap(continuingSquares, (square) => {
         ({ gait, remainingSteps, currentSquare } = applyInSequence(
-          this.variants?.map((v) => v.afterStepModify),
+          this.rules?.map((r) => r.afterStepModify),
           { gait, remainingSteps, currentSquare: square }
         ));
 

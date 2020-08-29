@@ -1,23 +1,26 @@
 import React, { createContext, FC, useState } from "react";
 import { Game } from "./Game";
 import { Renderer } from "./Renderer";
+import { variants, VariantName } from "game/variants";
 
-import { Hex, HexPawnDoubleStep } from "./Rules";
-
-const standardGame = Game.createGame([Hex, HexPawnDoubleStep]);
-// const standardGame = Game.createGame([Standard, Polar, Cylindrical, PawnDoubleStep]);
+const game = Game.createEmptyGame();
 
 const GameContext = createContext({
-  game: Game.createEmptyGame(),
+  game,
 });
 
-const GameProvider: FC = ({ children }) => {
+interface Props {
+  variant: VariantName;
+}
+
+const GameProvider: FC<Props> = ({ children, variant }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_updateCounter, setUpdateCounter] = useState(0);
-  standardGame.giveRenderer(new Renderer(setUpdateCounter));
-  const [game] = useState(standardGame);
+  game.giveRenderer(new Renderer(setUpdateCounter));
+  game.setVariant(variant);
+  const [g] = useState(game);
 
-  return <GameContext.Provider value={{ game }}>{children}</GameContext.Provider>;
+  return <GameContext.Provider value={{ game: g }}>{children}</GameContext.Provider>;
 };
 
 export { GameProvider, GameContext };

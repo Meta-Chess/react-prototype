@@ -4,6 +4,7 @@ import { Clock } from "./Clock";
 import { Player, Rule } from "./types";
 import { Pather } from "./Pather";
 import { flatMap } from "lodash";
+import { VariantName, variants } from "game/variants";
 
 export class Game {
   public clock: Clock;
@@ -14,7 +15,7 @@ export class Game {
   public currentPlayer: Player;
   public currentTurn: number;
 
-  constructor(public board: Board, public variants: Rule[], public format: Format) {
+  constructor(public board: Board, public rules: Rule[], public format: Format) {
     this.clock = new Clock([Player.White, Player.Black], 20000);
     this.clock.setActivePlayers([Player.Black]);
     this.players = [Player.White, Player.Black];
@@ -28,8 +29,8 @@ export class Game {
     return new Game(Board.createEmptyBoard(), [], Format.default);
   }
 
-  static createGame(variants: Rule[]): Game {
-    return new Game(Board.createBoard(variants), variants, Format.default);
+  static createGame(rules: Rule[]): Game {
+    return new Game(Board.createBoard(rules), rules, Format.default);
   }
 
   giveRenderer(renderer: Renderer): void {
@@ -38,6 +39,13 @@ export class Game {
 
   render(): void {
     this.renderer?.render();
+  }
+
+  setVariant(variant: VariantName): void {
+    this.rules = variants[variant].rules;
+    if (this.board.isEmpty()) {
+      this.board = Board.createBoard(this.rules);
+    }
   }
 
   onPress(square: Square): void {
@@ -50,7 +58,7 @@ export class Game {
       if (this.currentPlayer !== square.pieces[0].owner) return;
 
       this.allowableLocations = flatMap(this.selectedPieces, (piece: Piece) =>
-        new Pather(this.board, piece, this.variants).findPaths()
+        new Pather(this.board, piece, this.rules).findPaths()
       );
     } else {
       if (this.allowableLocations.includes(square.location)) {
@@ -59,7 +67,7 @@ export class Game {
         this.selectedPieces.forEach((piece) => {
           this.board.displace({ piece, destination: square.location });
         });
-        this.variants.forEach((v) => {
+        this.rules.forEach((v) => {
           v.postMove?.({ piecesMoved: this.selectedPieces });
         });
 
