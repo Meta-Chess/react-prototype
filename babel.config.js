@@ -7,8 +7,8 @@ module.exports = function (api) {
         "module-resolver",
         {
           alias: {
-            "domain/*": "./src/domain/*",
-            domain: "./src/domain",
+            "game/*": "./src/game/*",
+            game: "./src/game",
             "navigation/*": "./src/navigation/*",
             navigation: "./src/navigation",
             "primitives/*": "./src/primitives/*",
