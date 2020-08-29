@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { objectMatches } from "utilities";
@@ -10,7 +10,7 @@ import { Square } from "./Square";
 const SquareBoard: SFC = ({ style }) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-  const padding = 8;
+  const padding = Platform.OS === "web" ? 8 : 0;
   const { game } = useContext(GameContext);
 
   const { minRank, maxRank, minFile, maxFile } = game.board.rankAndFileBoundsWithFilter(
@@ -82,14 +82,13 @@ const SquareBoard: SFC = ({ style }) => {
 const SizeContainer = styled(View)`
   flex: 1;
   align-self: stretch;
-  margin: 24px;
   align-items: center;
 `;
 
 const BoardContainer = styled(View)`
   position: relative;
   background: ${Colors.DARK.string()};
-  box-shadow: 2px 1px 16px ${Colors.SHADOW.string()};
+  box-shadow: 2px 1px 8px ${Colors.SHADOW.fade(0.8).string()};
 `;
 
 const SquaresContainer = styled(View)`

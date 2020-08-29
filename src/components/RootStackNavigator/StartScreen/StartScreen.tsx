@@ -14,10 +14,11 @@ const StartScreen: FC = () => {
 
   return (
     <ScreenContainer style={{ padding, width, height }}>
-      <MChessLogo />
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <MChessLogo scaleFactor={0.7} style={{ margin: 24 }} />
+      </View>
       <ControlsContainer>
-        <View style={{ flex: 1 }} />
-        <View style={{ flex: 3 }}>
+        <View style={{ flex: 7, justifyContent: "flex-start" }}>
           <StartButton variant={variant} />
           <SelectInput
             options={options}
@@ -25,7 +26,6 @@ const StartScreen: FC = () => {
               setVariant(value);
             }}
             style={{ marginTop: 32 }}
-            placeholder={"Select a game type..."}
           />
         </View>
       </ControlsContainer>

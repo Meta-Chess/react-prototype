@@ -20,6 +20,6 @@ export const Colors = {
     ERROR: Color("#ff1900"),
   },
   PLAYER: [Color("#FCFCFC"), Color("#606060")],
-  SQUARE: [Color("#5189B1"), Color("#e8e5e5"), Color("#a4b9cc")],
+  SQUARE: [Color("#e8e5e5"), Color("#a4b9cc"), Color("#5189B1")],
   MCHESS: Color("#f26100"),
 };

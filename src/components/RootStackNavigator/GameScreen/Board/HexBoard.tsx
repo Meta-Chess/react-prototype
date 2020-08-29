@@ -79,7 +79,6 @@ const HexBoard: SFC = ({ style }) => {
 const SizeContainer = styled(View)`
   flex: 1;
   align-self: stretch;
-  margin: 24px;
   align-items: center;
 `;
 

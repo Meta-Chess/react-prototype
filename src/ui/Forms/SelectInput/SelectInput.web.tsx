@@ -8,7 +8,6 @@ import { Option } from "./types";
 interface Props {
   options: Option[];
   onChange?: (value?: any) => void; //eslint-disable-line @typescript-eslint/no-explicit-any
-  placeholder?: string;
 }
 
 export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
