@@ -45,6 +45,8 @@ export class Game {
     this.rules = variants[variant].rules;
     if (this.board.isEmpty()) {
       this.board = Board.createBoard(this.rules);
+      this.clock = new Clock([Player.White, Player.Black], 20000);
+      this.clock.setActivePlayers([Player.White]);
     }
   }
 
