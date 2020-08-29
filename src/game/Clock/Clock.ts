@@ -1,4 +1,4 @@
-import { Player } from "domain/Game/types";
+import { Player } from "game/types";
 import { Timer } from "./Timer";
 import { Map } from "utilities";
 

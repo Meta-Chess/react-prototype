@@ -1,6 +1,5 @@
 import { range } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
-import { createPiece, PieceSet } from "../Board/Piece/pieceFactory";
 import {
   Direction,
   PieceName,
@@ -9,7 +8,8 @@ import {
   Rule,
   SquareShape,
   TokenName,
-} from "domain/Game/types";
+} from "game/types";
+import { createPiece, PieceSet } from "./utilities";
 
 export const Hex: Rule = {
   forSquareGenerationModify: ({ board }) => {

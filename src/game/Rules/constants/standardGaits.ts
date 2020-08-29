@@ -1,20 +1,20 @@
-import { Gait } from "domain/Game/types";
-import { Direction } from "domain/Game/types";
+import { Gait } from "game/types";
+import { Direction } from "game/types";
 
-export const ROOK_GAITS: Gait[] = [
+const ROOK_GAITS: Gait[] = [
   { pattern: [Direction.N], repeats: true },
   { pattern: [Direction.E], repeats: true },
   { pattern: [Direction.S], repeats: true },
   { pattern: [Direction.W], repeats: true },
 ];
 
-export const BISHOP_GAITS: Gait[] = [
+const BISHOP_GAITS: Gait[] = [
   { pattern: [Direction.NE], repeats: true },
   { pattern: [Direction.SE], repeats: true },
   { pattern: [Direction.SW], repeats: true },
   { pattern: [Direction.NW], repeats: true },
 ];
-export const KNIGHT_GAITS: Gait[] = [
+const KNIGHT_GAITS: Gait[] = [
   { pattern: [Direction.N, Direction.N, Direction.E], nonBlocking: true },
   { pattern: [Direction.E, Direction.N, Direction.N], nonBlocking: true },
   { pattern: [Direction.N, Direction.N, Direction.W], nonBlocking: true },
@@ -33,9 +33,9 @@ export const KNIGHT_GAITS: Gait[] = [
   { pattern: [Direction.N, Direction.W, Direction.W], nonBlocking: true },
 ];
 
-export const QUEEN_GAITS: Gait[] = [...ROOK_GAITS, ...BISHOP_GAITS];
+const QUEEN_GAITS: Gait[] = [...ROOK_GAITS, ...BISHOP_GAITS];
 
-export const KING_GAITS: Gait[] = [
+const KING_GAITS: Gait[] = [
   { pattern: [Direction.N] },
   { pattern: [Direction.NE] },
   { pattern: [Direction.E] },
@@ -46,20 +46,32 @@ export const KING_GAITS: Gait[] = [
   { pattern: [Direction.NW] },
 ];
 
-export const WHITE_PAWN_GAITS: Gait[] = [
+const WHITE_PAWN_GAITS: Gait[] = [
   { pattern: [Direction.N], mustNotCapture: true },
   { pattern: [Direction.NE], mustCapture: true },
   { pattern: [Direction.NW], mustCapture: true },
 ];
-export const WHITE_PAWN_DS_GAITS: Gait[] = [
+const WHITE_PAWN_DS_GAITS: Gait[] = [
   { pattern: [Direction.N, Direction.N], mustNotCapture: true },
 ];
 
-export const BLACK_PAWN_GAITS: Gait[] = [
+const BLACK_PAWN_GAITS: Gait[] = [
   { pattern: [Direction.S], mustNotCapture: true },
   { pattern: [Direction.SE], mustCapture: true },
   { pattern: [Direction.SW], mustCapture: true },
 ];
-export const BLACK_PAWN_DS_GAITS: Gait[] = [
+const BLACK_PAWN_DS_GAITS: Gait[] = [
   { pattern: [Direction.S, Direction.S], mustNotCapture: true },
 ];
+
+export const standardGaits = {
+  ROOK_GAITS,
+  BISHOP_GAITS,
+  KNIGHT_GAITS,
+  QUEEN_GAITS,
+  KING_GAITS,
+  WHITE_PAWN_GAITS,
+  WHITE_PAWN_DS_GAITS,
+  BLACK_PAWN_GAITS,
+  BLACK_PAWN_DS_GAITS,
+};

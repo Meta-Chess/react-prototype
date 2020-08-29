@@ -1,5 +1,5 @@
 import { Board, Piece, Square } from "../Board";
-import { Direction } from "domain/Game/types";
+import { Direction } from "game/types";
 import { Gait } from "../types/types";
 
 type Chainable<T> = (input: T) => T;

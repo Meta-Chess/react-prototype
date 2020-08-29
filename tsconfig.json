@@ -10,8 +10,8 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "domain/*": ["./src/domain/*"],
-      "domain": ["./src/domain"],
+      "game/*": ["./src/game/*"],
+      "game": ["./src/game"],
       "utilities/*": ["./src/utilities/*"],
       "utilities": ["./src/utilities"],
       "navigation/*": ["./src/navigation/*"],

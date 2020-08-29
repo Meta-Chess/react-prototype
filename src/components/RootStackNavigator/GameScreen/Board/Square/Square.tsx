@@ -5,9 +5,9 @@ import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { Piece } from "./Piece";
 import { GridArrangement } from "./GridArrangement";
-import { GameContext } from "domain/Game";
-import { Square } from "domain/Game/Board";
-import { TokenName, SquareShape } from "domain/Game/types";
+import { GameContext } from "game";
+import { Square } from "game/Board";
+import { TokenName, SquareShape } from "game/types";
 
 interface Props {
   squares: Square[];

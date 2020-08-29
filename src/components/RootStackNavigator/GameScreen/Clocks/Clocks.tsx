@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
-import { GameContext } from "domain/Game";
+import { GameContext } from "game";
 import { Button } from "ui";
 import { Timer } from "./Timer";
 

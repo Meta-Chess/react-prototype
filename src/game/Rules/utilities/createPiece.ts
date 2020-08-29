@@ -1,7 +1,6 @@
-import * as standardGaits from "./defaultGaits";
-import * as hexGaits from "./hexGaits";
-import { Piece } from "./Piece";
-import { Gait, PieceName, Player, Token, GaitParams } from "domain/Game/types";
+import { standardGaits, hexGaits } from "../constants";
+import { Piece } from "game/Board";
+import { Gait, PieceName, Player, Token, GaitParams } from "game/types";
 
 type GaitGenerator = (p?: GaitParams) => Gait[];
 

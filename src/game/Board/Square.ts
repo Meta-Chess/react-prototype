@@ -1,6 +1,6 @@
 import { Piece } from "./Piece";
 import { Adjacencies, Adjacency } from "./Adjacencies";
-import { Player, Token, TokenName } from "domain/Game/types";
+import { Player, Token, TokenName } from "game/types";
 
 interface Coordinates {
   rank: number;

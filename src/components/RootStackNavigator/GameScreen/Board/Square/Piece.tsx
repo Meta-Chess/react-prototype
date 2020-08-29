@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { PieceImage, Colors } from "primitives";
-import { Piece as PieceClass } from "domain/Game/Board";
+import { Piece as PieceClass } from "game/Board";
 
 interface Props {
   piece: PieceClass;

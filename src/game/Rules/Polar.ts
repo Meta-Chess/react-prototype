@@ -1,5 +1,5 @@
 import { Adjacency, Square } from "../Board";
-import { Direction, RankAndFileBounds, Rule, TokenName } from "domain/Game/types";
+import { Direction, RankAndFileBounds, Rule, TokenName } from "game/types";
 import { range, wrapToCylinder } from "utilities";
 
 export const Polar: Rule = {

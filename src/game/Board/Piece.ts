@@ -1,4 +1,4 @@
-import { PieceName, Player, Token, TokenName, Gait, GaitParams } from "domain/Game/types";
+import { PieceName, Player, Token, TokenName, Gait, GaitParams } from "game/types";
 
 class Piece {
   id: number;

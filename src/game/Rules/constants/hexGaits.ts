@@ -1,5 +1,5 @@
-import { Gait } from "domain/Game/types";
-import { Direction } from "domain/Game/types";
+import { Gait } from "game/types";
+import { Direction } from "game/types";
 
 const NonDiagonalDirections = [
   Direction.H2,
@@ -38,17 +38,17 @@ const knightTurnDirections = (A: Direction): Direction[] => {
   }
 };
 
-export const ROOK_GAITS: Gait[] = NonDiagonalDirections.map((A) => ({
+const ROOK_GAITS: Gait[] = NonDiagonalDirections.map((A) => ({
   pattern: [A],
   repeats: true,
 }));
 
-export const BISHOP_GAITS: Gait[] = DiagonalDirections.map((A) => ({
+const BISHOP_GAITS: Gait[] = DiagonalDirections.map((A) => ({
   pattern: [A],
   repeats: true,
 }));
 
-export const KNIGHT_GAITS: Gait[] = NonDiagonalDirections.map((A) =>
+const KNIGHT_GAITS: Gait[] = NonDiagonalDirections.map((A) =>
   knightTurnDirections(A).map((B) => [
     { pattern: [A, A, B], nonBlocking: true },
     { pattern: [B, A, A], nonBlocking: true },
@@ -57,24 +57,36 @@ export const KNIGHT_GAITS: Gait[] = NonDiagonalDirections.map((A) =>
   .flat()
   .flat();
 
-export const QUEEN_GAITS: Gait[] = [...ROOK_GAITS, ...BISHOP_GAITS];
+const QUEEN_GAITS: Gait[] = [...ROOK_GAITS, ...BISHOP_GAITS];
 
-export const KING_GAITS: Gait[] = NonDiagonalDirections.map((A) => ({ pattern: [A] }));
+const KING_GAITS: Gait[] = NonDiagonalDirections.map((A) => ({ pattern: [A] }));
 
-export const WHITE_PAWN_GAITS: Gait[] = [
+const WHITE_PAWN_GAITS: Gait[] = [
   { pattern: [Direction.H12], mustNotCapture: true },
   { pattern: [Direction.H2], mustCapture: true },
   { pattern: [Direction.H10], mustCapture: true },
 ];
-export const WHITE_PAWN_DS_GAITS: Gait[] = [
+const WHITE_PAWN_DS_GAITS: Gait[] = [
   { pattern: [Direction.H12, Direction.H12], mustNotCapture: true },
 ];
 
-export const BLACK_PAWN_GAITS: Gait[] = [
+const BLACK_PAWN_GAITS: Gait[] = [
   { pattern: [Direction.H6], mustNotCapture: true },
   { pattern: [Direction.H4], mustCapture: true },
   { pattern: [Direction.H8], mustCapture: true },
 ];
-export const BLACK_PAWN_DS_GAITS: Gait[] = [
+const BLACK_PAWN_DS_GAITS: Gait[] = [
   { pattern: [Direction.H6, Direction.H6], mustNotCapture: true },
 ];
+
+export const hexGaits = {
+  ROOK_GAITS,
+  BISHOP_GAITS,
+  KNIGHT_GAITS,
+  QUEEN_GAITS,
+  KING_GAITS,
+  WHITE_PAWN_GAITS,
+  WHITE_PAWN_DS_GAITS,
+  BLACK_PAWN_GAITS,
+  BLACK_PAWN_DS_GAITS,
+};

@@ -1,8 +1,8 @@
 import { PieceName, Player, Rule, Token, TokenName } from "../types";
 import { Piece } from "../Board";
-import * as hexGaits from "../Board/Piece/hexGaits";
+import { standardGaits } from "./constants";
 
-export const HexPawnDoubleStep: Rule = {
+export const PawnDoubleStep: Rule = {
   postMove: ({ piecesMoved }) => {
     piecesMoved.forEach((piece: Piece) => {
       if (piece.name === PieceName.Pawn)
@@ -14,8 +14,8 @@ export const HexPawnDoubleStep: Rule = {
       ...gaits,
       ...(piece.hasTokenWithName(TokenName.PawnDoubleStep)
         ? piece.owner === Player.White
-          ? hexGaits.WHITE_PAWN_DS_GAITS
-          : hexGaits.BLACK_PAWN_DS_GAITS
+          ? standardGaits.WHITE_PAWN_DS_GAITS
+          : standardGaits.BLACK_PAWN_DS_GAITS
         : []),
     ],
     piece,

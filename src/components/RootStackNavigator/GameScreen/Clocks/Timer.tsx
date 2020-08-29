@@ -2,8 +2,8 @@ import React, { useState, useContext } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
-import { GameContext } from "domain/Game";
-import { Player } from "domain/Game/types";
+import { GameContext } from "game";
+import { Player } from "game/types";
 import { contrast } from "utilities";
 
 interface Props {

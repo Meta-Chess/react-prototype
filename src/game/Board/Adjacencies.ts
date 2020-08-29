@@ -1,4 +1,4 @@
-import { Direction, Location } from "domain/Game/types";
+import { Direction, Location } from "game/types";
 
 export interface Adjacency {
   direction: Direction;

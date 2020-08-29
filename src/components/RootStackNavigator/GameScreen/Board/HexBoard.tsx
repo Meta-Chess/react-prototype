@@ -3,8 +3,8 @@ import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { objectMatches } from "utilities";
-import { GameContext } from "domain/Game";
-import { TokenName, SquareShape } from "domain/Game/types";
+import { GameContext } from "game";
+import { TokenName, SquareShape } from "game/types";
 import { Square } from "./Square";
 
 const HexBoard: SFC = ({ style }) => {

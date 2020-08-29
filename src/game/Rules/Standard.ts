@@ -1,6 +1,7 @@
 import { range2 } from "utilities";
-import { Adjacency, createPiece, Piece, Square } from "domain/Game/Board";
-import { Direction, PieceName, Player, RankAndFileBounds, Rule } from "domain/Game/types";
+import { Adjacency, Piece, Square } from "game/Board";
+import { Direction, PieceName, Player, RankAndFileBounds, Rule } from "game/types";
+import { createPiece } from "./utilities";
 
 export const Standard: Rule = {
   forSquareGenerationModify: ({ board }) => {

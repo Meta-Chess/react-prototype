@@ -1,7 +1,7 @@
 import { Piece } from "./Piece";
 import { Square } from "./Square";
 import { Adjacency } from "./Adjacencies";
-import { RankAndFileBounds, Rule, Token, TokenName } from "domain/Game/types";
+import { RankAndFileBounds, Rule, Token, TokenName } from "game/types";
 import { applyInSequence } from "utilities";
 
 interface LocationMap {

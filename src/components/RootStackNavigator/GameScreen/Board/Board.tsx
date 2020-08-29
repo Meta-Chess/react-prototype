@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { SFC } from "primitives";
-import { GameContext } from "domain/Game";
-import { TokenName, SquareShape } from "domain/Game/types";
+import { GameContext } from "game";
+import { TokenName, SquareShape } from "game/types";
 import { HexBoard } from "./HexBoard";
 import { SquareBoard } from "./SquareBoard";
 

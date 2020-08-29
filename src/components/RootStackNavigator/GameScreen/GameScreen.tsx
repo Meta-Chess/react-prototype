@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
-import { GameProvider } from "domain/Game";
+import { GameProvider } from "game";
 import { Colors } from "primitives";
 import { Board } from "./Board";
 import { Clocks } from "./Clocks";
