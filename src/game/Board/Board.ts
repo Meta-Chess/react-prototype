@@ -10,7 +10,6 @@ import {
   TokenName,
 } from "game/types";
 import { applyInSequence, isPresent } from "utilities";
-import * as _ from "lodash";
 
 interface LocationMap {
   [key: string]: Square;

@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { TouchableOpacity, View } from "react-native";
-import Color from "color";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { Piece } from "./Piece";
@@ -8,6 +7,7 @@ import { GridArrangement } from "./GridArrangement";
 import { GameContext } from "game";
 import { Square } from "game/Board";
 import { TokenName, SquareShape } from "game/types";
+import { Highlight } from "./Highlight";
 
 interface Props {
   squares: Square[];
@@ -42,32 +42,6 @@ const SquareComponent: SFC<Props> = ({ style, squares, size, shape }) => {
     game.onPress(square);
   };
 
-  // TODO: Refactor into getHighlight function
-  const selectedPieceOwner = game.selectedPieces[0]?.owner;
-  const Highlight = game.allowableMoves
-    .map((m) => m.location)
-    .includes(square.location) ? (
-    selectedPieceOwner === game.currentPlayer ? (
-      square.hasPieceNotBelongingTo(selectedPieceOwner) ? (
-        <FullHighlight color={Colors.HIGHLIGHT.ERROR} />
-      ) : square.hasPieceBelongingTo(selectedPieceOwner) ? (
-        <FullHighlight color={Colors.HIGHLIGHT.SUCCESS} />
-      ) : (
-        <CenterHighlight color={Colors.HIGHLIGHT.SUCCESS} />
-      )
-    ) : square.hasPiece() ? (
-      <FullHighlight color={Colors.HIGHLIGHT.INFO} />
-    ) : (
-      <CenterHighlight color={Colors.HIGHLIGHT.INFO} />
-    )
-  ) : square.hasPieceOf(game.selectedPieces) ? (
-    game.selectedPieces[0].owner === game.currentPlayer ? (
-      <FullHighlight color={Colors.HIGHLIGHT.WARNING} />
-    ) : (
-      <FullHighlight color={Colors.HIGHLIGHT.INFO} />
-    )
-  ) : null;
-
   return (
     <PressableContainer
       style={[
@@ -82,7 +56,7 @@ const SquareComponent: SFC<Props> = ({ style, squares, size, shape }) => {
       onPress={onPress}
       activeOpacity={1}
     >
-      {Highlight}
+      <Highlight game={game} square={square} />
       <PositioningContainer size={pieceScaleFactor * size}>
         <GridArrangement>
           {piecesOnSquare.map((piece) => (
@@ -105,29 +79,6 @@ const colorIndex = ({
 }): number => {
   return shape === SquareShape.Hex ? rank % 3 : (rank + file) % 2;
 };
-
-interface HighlightProps {
-  color: Color;
-}
-
-const FullHighlight = styled(View)<HighlightProps>`
-  background-color: ${({ color }): string => color.fade(0.3).string()};
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-`;
-
-const CenterHighlight = styled(View)<HighlightProps>`
-  background-color: ${({ color }): string => color.fade(0.3).string()};
-  position: absolute;
-  top: 30%;
-  right: 30%;
-  bottom: 30%;
-  left: 30%;
-  border-radius: 50px;
-`;
 
 const PressableContainer = styled(TouchableOpacity)`
   overflow: hidden;

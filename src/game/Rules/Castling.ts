@@ -1,4 +1,3 @@
-import uniqBy from "lodash/uniqBy";
 import { PieceName, Rule, TokenName } from "../types";
 import { Piece } from "../Board";
 import { activeCastlingToken, passiveCastlingToken } from "./constants";

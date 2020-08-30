@@ -1,7 +1,6 @@
-import { applyInSequence, isPresent } from "utilities";
+import { isPresent } from "utilities";
 import { Board, Piece, Square } from "../Board";
-import { Direction, Gait, Move, Rule } from "../types";
-import { flatMap } from "lodash";
+import { Direction } from "../types";
 
 const MAX_STEPS = 64; // TODO: find a good number or something
 
@@ -17,7 +16,7 @@ export class Scanner {
     currentSquare = this.board.squareAt(this.piece.location),
     remainingSteps = pattern,
     stepAllowance = MAX_STEPS,
-    pieceMatcher = () => true,
+    pieceMatcher = (): boolean => true,
   }: {
     pattern: Direction[];
     currentSquare?: Square;
