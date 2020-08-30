@@ -20,10 +20,6 @@ export const PawnDoubleStep: Rule = {
     ],
     piece,
   }),
-  onPieceGeneratedModify: ({ piece }) => {
-    piece.addToken(pawnDoubleStepToken);
-    return { piece };
-  },
   onBoardCreatedModify: ({ board }) => {
     board.addPieceTokensByRule((piece: Piece) =>
       piece.name === PieceName.Pawn ? [pawnDoubleStepToken] : []
