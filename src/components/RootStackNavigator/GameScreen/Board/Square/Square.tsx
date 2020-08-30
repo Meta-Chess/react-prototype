@@ -43,13 +43,23 @@ const SquareComponent: SFC<Props> = ({ style, squares, size, shape }) => {
   };
 
   const Highlight = game.allowableLocations.includes(square.location) ? (
-    square.hasPiece() ? (
-      <FullHighlight color={Colors.HIGHLIGHT.ERROR} />
+    game.selectedPieces[0].owner === game.currentPlayer ? (
+      square.hasPiece() ? (
+        <FullHighlight color={Colors.HIGHLIGHT.ERROR} />
+      ) : (
+        <CenterHighlight color={Colors.HIGHLIGHT.SUCCESS} />
+      )
+    ) : square.hasPiece() ? (
+      <FullHighlight color={Colors.HIGHLIGHT.INFO} />
     ) : (
-      <CenterHighlight color={Colors.HIGHLIGHT.SUCCESS} />
+      <CenterHighlight color={Colors.HIGHLIGHT.INFO} />
     )
   ) : square.hasPieceOf(game.selectedPieces) ? (
-    <FullHighlight color={Colors.HIGHLIGHT.WARNING} />
+    game.selectedPieces[0].owner === game.currentPlayer ? (
+      <FullHighlight color={Colors.HIGHLIGHT.WARNING} />
+    ) : (
+      <FullHighlight color={Colors.HIGHLIGHT.INFO} />
+    )
   ) : null;
 
   return (
@@ -95,7 +105,7 @@ interface HighlightProps {
 }
 
 const FullHighlight = styled(View)<HighlightProps>`
-  background-color: ${({ color }): string => color.fade(0.5).string()};
+  background-color: ${({ color }): string => color.fade(0.3).string()};
   position: absolute;
   top: 0px;
   right: 0px;
