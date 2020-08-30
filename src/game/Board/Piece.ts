@@ -28,6 +28,10 @@ class Piece {
     this.filterTokensByRule((token) => token.name !== name);
   }
 
+  removeTokensByNames(names: TokenName[]): void {
+    this.filterTokensByRule((token) => !names.includes(token.name));
+  }
+
   private firstTokenSatisfyingRule(rule: (token: Token) => boolean): Token | undefined {
     return this.tokens.find(rule);
   }

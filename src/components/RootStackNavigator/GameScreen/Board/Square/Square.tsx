@@ -42,7 +42,10 @@ const SquareComponent: SFC<Props> = ({ style, squares, size, shape }) => {
     game.onPress(square);
   };
 
-  const Highlight = game.allowableLocations.includes(square.location) ? (
+  // TODO: Refactor into getHighlight function
+  const Highlight = game.allowableMoves
+    .map((m) => m.location)
+    .includes(square.location) ? (
     game.selectedPieces[0].owner === game.currentPlayer ? (
       square.hasPiece() ? (
         <FullHighlight color={Colors.HIGHLIGHT.ERROR} />

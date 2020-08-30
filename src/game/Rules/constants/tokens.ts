@@ -1,6 +1,6 @@
-import { Token, TokenName } from "game/types";
+import { TokenName } from "game/types";
 
-// NOTE: ALL tokens should live here (probably)
+// TODO: Move tokens here
 
 export const polarToken = {
   name: TokenName.PolarToken,
@@ -14,8 +14,20 @@ export const invisibilityToken = {
   data: undefined,
 };
 
-export const pawnDoubleStepToken: Token = {
+export const pawnDoubleStepToken = {
   name: TokenName.PawnDoubleStep,
+  validTo: undefined,
+  data: undefined,
+};
+
+export const activeCastlingToken = {
+  name: TokenName.ActiveCastling,
+  validTo: undefined,
+  data: undefined,
+};
+
+export const passiveCastlingToken = {
+  name: TokenName.PassiveCastling,
   validTo: undefined,
   data: undefined,
 };

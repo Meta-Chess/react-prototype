@@ -1,7 +1,7 @@
 import { Piece } from "./Piece";
 import { Square } from "./Square";
 import { Adjacency } from "./Adjacencies";
-import { RankAndFileBounds, Rule, Token, TokenName } from "game/types";
+import { PieceDelta, RankAndFileBounds, Rule, Token, TokenName } from "game/types";
 import { applyInSequence } from "utilities";
 import * as _ from "lodash";
 
@@ -145,6 +145,13 @@ class Board {
     ));
 
     return board;
+  }
+
+  displacePieces(pieceDeltas: PieceDelta[]): void {
+    pieceDeltas.forEach((pieceDelta) => {
+      this.killPiecesAt(pieceDelta.destination);
+      this.displace(pieceDelta);
+    });
   }
 }
 

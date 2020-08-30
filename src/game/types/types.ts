@@ -1,4 +1,5 @@
 import { Direction } from "./Direction";
+import { Piece } from "game";
 
 export interface Gait {
   pattern: Direction[];
@@ -9,12 +10,20 @@ export interface Gait {
   mustCapture?: boolean;
 }
 
+export interface Move {
+  location: string;
+  pieceDeltas: PieceDelta[];
+}
+
+export interface PieceDelta {
+  piece: Piece;
+  destination: string;
+}
+
 export enum Player {
   White,
   Black,
 }
-
-export type Location = string;
 
 export enum PieceName {
   Pawn,
@@ -41,6 +50,8 @@ export enum TokenName {
   MoveHistory,
   InvisibilityToken,
   Shape,
+  ActiveCastling,
+  PassiveCastling,
 }
 
 interface TokenData {

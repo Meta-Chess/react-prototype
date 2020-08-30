@@ -1,6 +1,6 @@
 import { applyInSequence, isPresent } from "utilities";
 import { Board, Piece, Square } from "../Board";
-import { Direction, Gait, Rule } from "../types";
+import { Direction, Gait, Move, Rule } from "../types";
 import { flatMap } from "lodash";
 
 const MAX_STEPS = 64; // TODO: find a good number or something
@@ -8,9 +8,10 @@ const MAX_STEPS = 64; // TODO: find a good number or something
 export class Pather {
   constructor(private board: Board, private piece: Piece, private rules: Rule[]) {}
 
-  findPaths(): string[] {
+  findPaths(): Move[] {
     const currentSquare = this.board.squareAt(this.piece.location);
     if (!currentSquare) return [];
+
     const { gaits } = applyInSequence(
       this.rules?.map((r) => r?.onGaitsGeneratedModify),
       {
@@ -18,9 +19,18 @@ export class Pather {
         piece: this.piece,
       }
     );
-    return flatMap(gaits, (gait) => this.path({ currentSquare, gait })).map(
-      (square) => square.location
+    const moves = flatMap(gaits, (gait) => this.path({ currentSquare, gait })).map(
+      (square) => ({
+        location: square.location,
+        pieceDeltas: [{ piece: this.piece, destination: square.location }],
+      })
     );
+
+    // const specialMoves = this.rules?.flatMap((r) =>
+    //   r ? r.findSpecialMoves({ board, piece }) : []
+    // );
+
+    return moves;
   }
 
   path({

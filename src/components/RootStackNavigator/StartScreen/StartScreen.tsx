@@ -16,7 +16,7 @@ const StartScreen: FC = () => {
     <ScreenContainer style={{ padding, width, height }}>
       <View style={{ flex: 1, justifyContent: "center" }}>
         <MChessLogo
-          scaleFactor={Platform.OS === "web" ? 1 : 0.7}
+          scaleFactor={Platform.OS === "web" ? 0.8 : 0.7}
           style={{ margin: 24 }}
         />
       </View>

@@ -1,18 +1,18 @@
-import { Direction, Location } from "game/types";
+import { Direction } from "game/types";
 
 export interface Adjacency {
   direction: Direction;
-  location: Location;
+  location: string;
 }
 
 export class Adjacencies {
   constructor(
     private adjacencies: {
-      [key in Direction]?: Location[];
+      [key in Direction]?: string[];
     } = {}
   ) {}
 
-  go(direction: Direction): Location[] | undefined {
+  go(direction: Direction): string[] | undefined {
     return this.adjacencies[direction];
   }
 

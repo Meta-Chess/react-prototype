@@ -1,7 +1,7 @@
 import { Board, Piece, Square } from "./Board";
 import { Renderer } from "./Renderer";
 import { Clock } from "./Clock";
-import { Player, Rule } from "./types";
+import { Move, Player, Rule } from "./types";
 import { Pather } from "./Pather";
 import { flatMap } from "lodash";
 import { VariantName, variants } from "game/variants";
@@ -10,7 +10,7 @@ export class Game {
   public clock: Clock;
   public players: Player[];
   public selectedPieces: Piece[];
-  public allowableLocations: string[];
+  public allowableMoves: Move[];
   public currentPlayer: Player;
   public currentTurn: number;
 
@@ -26,7 +26,7 @@ export class Game {
     this.currentPlayer = Player.White;
     this.currentTurn = 1;
     this.selectedPieces = [];
-    this.allowableLocations = [];
+    this.allowableMoves = [];
   }
 
   static createGame(input: { variant: VariantName; renderer: Renderer }): Game {
@@ -39,38 +39,44 @@ export class Game {
   }
 
   onPress(square: Square): void {
-    // The onPress method should delegate to methods like adminMove (the body of which
-    // is here) based on game phase and other settings (like admin move "on").
     if (this.selectedPieces.length === 0) {
-      // select piece
-      this.selectedPieces = square.pieces;
-
-      this.allowableLocations = flatMap(this.selectedPieces, (piece: Piece) =>
-        new Pather(this.board, piece, this.rules).findPaths()
-      );
+      this.selectPieces(square);
     } else {
-      if (this.allowableLocations.includes(square.location)) {
-        if (this.currentPlayer == this.selectedPieces[0].owner) {
-          // move pieces
-          this.board.killPiecesAt(square.location);
-          this.selectedPieces.forEach((piece) => {
-            this.board.displace({ piece, destination: square.location });
-          });
-          this.rules.forEach((v) => {
-            v.postMove?.({ piecesMoved: this.selectedPieces });
-          });
-
-          // change turn
-          const currentIndex = this.players.indexOf(this.currentPlayer);
-          this.currentPlayer = this.players[(currentIndex + 1) % this.players.length];
-          this.clock.setActivePlayers([this.currentPlayer]);
-        }
+      if (this.currentPlayer == this.selectedPieces[0].owner) {
+        this.doMove(this.allowableMoves.find((m) => m.location === square.location));
       }
-      this.selectedPieces = [];
-      this.allowableLocations = [];
+      this.unselectAllPieces();
     }
-
     this.render();
+  }
+
+  selectPieces(square: Square): void {
+    this.selectedPieces = square.pieces;
+    this.allowableMoves = flatMap(this.selectedPieces, (piece: Piece) =>
+      new Pather(this.board, piece, this.rules).findPaths()
+    );
+  }
+  unselectAllPieces(): void {
+    this.selectedPieces = [];
+    this.allowableMoves = [];
+  }
+
+  doMove(move?: Move): void {
+    if (!move) return;
+
+    this.board.displacePieces(move.pieceDeltas);
+
+    this.rules.forEach((v) => {
+      v.postMove?.({ piecesMoved: this.selectedPieces });
+    });
+
+    this.nextTurn();
+  }
+
+  nextTurn(): void {
+    const currentIndex = this.players.indexOf(this.currentPlayer);
+    this.currentPlayer = this.players[(currentIndex + 1) % this.players.length];
+    this.clock.setActivePlayers([this.currentPlayer]);
   }
 }
 
