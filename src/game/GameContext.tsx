@@ -25,7 +25,6 @@ const GameProvider: FC<Props> = ({ children, variant, gameId }) => {
     setG(newGame);
   }, [gameId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  console.log("rendering", g, gameId);
   return <GameContext.Provider value={{ game: g }}>{children}</GameContext.Provider>;
 };
 

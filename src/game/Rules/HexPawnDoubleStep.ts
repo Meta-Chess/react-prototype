@@ -1,4 +1,4 @@
-import { PieceName, Player, Rule, Token, TokenName } from "../types";
+import { PieceName, Player, Rule, TokenName } from "../types";
 import { Piece } from "../Board";
 import { hexGaits, pawnDoubleStepToken } from "./constants";
 

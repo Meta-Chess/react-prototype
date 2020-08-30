@@ -5,7 +5,6 @@ import { createPiece } from "./utilities";
 
 export const Standard: Rule = {
   forSquareGenerationModify: ({ board }) => {
-    console.log("addingSquares");
     board.addSquares(generateStandardSquares());
     return { board };
   },

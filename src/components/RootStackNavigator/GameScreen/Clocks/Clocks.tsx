@@ -1,19 +1,13 @@
 import React, { useContext } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
-import { SFC, Colors } from "primitives";
+import { SFC } from "primitives";
 import { GameContext } from "game";
-import { Button } from "ui";
 import { Timer } from "./Timer";
 
 const Clocks: SFC = ({ style }) => {
   const { game } = useContext(GameContext);
   if (!game) return null;
-
-  const nextTurn = (): void => {
-    game.clock.setActivePlayers(game.clock.getInactivePlayers());
-    game.render();
-  };
 
   return (
     <Container style={style}>

@@ -1,6 +1,6 @@
 import { Adjacency, Square } from "../Board";
 import { Direction, RankAndFileBounds, Rule } from "game/types";
-import { range, wrapToCylinder } from "utilities";
+import { range } from "utilities";
 import { invisibilityToken } from "./constants";
 
 export const HexCylindrical: Rule = {
