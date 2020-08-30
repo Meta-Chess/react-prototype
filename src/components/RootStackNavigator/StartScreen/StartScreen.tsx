@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { View, useWindowDimensions } from "react-native";
+import { View, useWindowDimensions, Platform } from "react-native";
 import styled from "styled-components/native";
 import { Colors, MChessLogo } from "primitives";
 import { SelectInput } from "ui";
@@ -15,7 +15,10 @@ const StartScreen: FC = () => {
   return (
     <ScreenContainer style={{ padding, width, height }}>
       <View style={{ flex: 1, justifyContent: "center" }}>
-        <MChessLogo scaleFactor={0.7} style={{ margin: 24 }} />
+        <MChessLogo
+          scaleFactor={Platform.OS === "web" ? 1 : 0.7}
+          style={{ margin: 24 }}
+        />
       </View>
       <ControlsContainer>
         <View style={{ flex: 7, justifyContent: "flex-start" }}>
