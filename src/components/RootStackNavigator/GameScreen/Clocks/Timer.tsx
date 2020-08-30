@@ -12,6 +12,7 @@ interface Props {
 
 const Timer: SFC<Props> = ({ style, player }) => {
   const { game } = useContext(GameContext);
+  if (!game) return null;
   const clock = game.clock.getPlayerTimer(player);
 
   const formattedTime = clock?.getFormattedTime();
@@ -22,7 +23,7 @@ const Timer: SFC<Props> = ({ style, player }) => {
   if (validFor !== Number.POSITIVE_INFINITY) {
     setTimeout(() => {
       setDummy(!dummy);
-    }, validFor || 10000); // TODO: think about default
+    }, validFor || 1000); // TODO: think about default
   }
 
   if (!clock) return null; // Consider throwing an error?

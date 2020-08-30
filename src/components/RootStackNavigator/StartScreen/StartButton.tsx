@@ -10,7 +10,10 @@ interface Props {
 const StartButton: SFC<Props> = ({ variant, style }) => {
   const navigation = useNavigation();
   const onPress = (): void => {
-    navigation.navigate<Screens.GameScreen>(Screens.GameScreen, { variant });
+    navigation.navigate<Screens.GameScreen>(Screens.GameScreen, {
+      variant,
+      gameId: Math.random(),
+    });
   };
 
   return <Button onPress={onPress} text={"Play"} style={style} />;

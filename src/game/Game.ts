@@ -11,13 +11,17 @@ export class Game {
   public players: Player[];
   public selectedPieces: Piece[];
   public allowableLocations: string[];
-  public renderer: Renderer | undefined;
   public currentPlayer: Player;
   public currentTurn: number;
 
-  constructor(public board: Board, public rules: Rule[], public format: Format) {
-    this.clock = new Clock([Player.White, Player.Black], 20000);
-    this.clock.setActivePlayers([Player.Black]);
+  constructor(
+    public board: Board,
+    public rules: Rule[],
+    public format: Format,
+    public renderer: Renderer
+  ) {
+    this.clock = new Clock([Player.White, Player.Black], 300000);
+    this.clock.setActivePlayers([Player.White]);
     this.players = [Player.White, Player.Black];
     this.currentPlayer = Player.White;
     this.currentTurn = 1;
@@ -25,29 +29,13 @@ export class Game {
     this.allowableLocations = [];
   }
 
-  static createEmptyGame(): Game {
-    return new Game(Board.createEmptyBoard(), [], Format.default);
-  }
-
-  static createGame(rules: Rule[]): Game {
-    return new Game(Board.createBoard(rules), rules, Format.default);
-  }
-
-  giveRenderer(renderer: Renderer): void {
-    if (!this.renderer) this.renderer = renderer;
+  static createGame(input: { variant: VariantName; renderer: Renderer }): Game {
+    const rules = variants[input.variant].rules;
+    return new Game(Board.createBoard(rules), rules, Format.default, input.renderer);
   }
 
   render(): void {
-    this.renderer?.render();
-  }
-
-  setVariant(variant: VariantName): void {
-    this.rules = variants[variant].rules;
-    if (this.board.isEmpty()) {
-      this.board = Board.createBoard(this.rules);
-      this.clock = new Clock([Player.White, Player.Black], 20000);
-      this.clock.setActivePlayers([Player.White]);
-    }
+    this.renderer.render();
   }
 
   onPress(square: Square): void {
@@ -57,27 +45,26 @@ export class Game {
       // select piece
       this.selectedPieces = square.pieces;
 
-      if (this.currentPlayer !== square.pieces[0].owner) return;
-
       this.allowableLocations = flatMap(this.selectedPieces, (piece: Piece) =>
         new Pather(this.board, piece, this.rules).findPaths()
       );
     } else {
       if (this.allowableLocations.includes(square.location)) {
-        // move pieces
-        this.board.killPiecesAt(square.location);
-        this.selectedPieces.forEach((piece) => {
-          this.board.displace({ piece, destination: square.location });
-        });
-        this.rules.forEach((v) => {
-          v.postMove?.({ piecesMoved: this.selectedPieces });
-        });
+        if (this.currentPlayer == this.selectedPieces[0].owner) {
+          // move pieces
+          this.board.killPiecesAt(square.location);
+          this.selectedPieces.forEach((piece) => {
+            this.board.displace({ piece, destination: square.location });
+          });
+          this.rules.forEach((v) => {
+            v.postMove?.({ piecesMoved: this.selectedPieces });
+          });
 
-        // change turn
-        const currentIndex = this.players.indexOf(this.currentPlayer);
-        this.players.length - 1 === currentIndex
-          ? (this.currentPlayer = this.players[0])
-          : (this.currentPlayer = this.players[currentIndex + 1]);
+          // change turn
+          const currentIndex = this.players.indexOf(this.currentPlayer);
+          this.currentPlayer = this.players[(currentIndex + 1) % this.players.length];
+          this.clock.setActivePlayers([this.currentPlayer]);
+        }
       }
       this.selectedPieces = [];
       this.allowableLocations = [];

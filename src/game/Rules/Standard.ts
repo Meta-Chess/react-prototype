@@ -5,7 +5,8 @@ import { createPiece } from "./utilities";
 
 export const Standard: Rule = {
   forSquareGenerationModify: ({ board }) => {
-    board.addSquares(standardSquares);
+    console.log("addingSquares");
+    board.addSquares(generateStandardSquares());
     return { board };
   },
   onBoardCreatedModify: ({ board }) => {
@@ -16,12 +17,13 @@ export const Standard: Rule = {
   },
 };
 
-const standardSquares = range2(1, 8, 1, 8)
-  .flat()
-  .map(({ x, y }) => {
-    const location = `R${y}F${x}`;
-    return { location, square: new Square(location, { rank: y, file: x }) };
-  });
+const generateStandardSquares = (): { location: string; square: Square }[] =>
+  range2(1, 8, 1, 8)
+    .flat()
+    .map(({ x, y }) => {
+      const location = `R${y}F${x}`;
+      return { location, square: new Square(location, { rank: y, file: x }) };
+    });
 
 // TODO: Generalise to nxn by paying attention to bounds. Possibly extract
 const standardAdjacencies = (_bounds: RankAndFileBounds) => (

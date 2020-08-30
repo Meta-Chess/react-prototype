@@ -93,10 +93,10 @@ class Board {
     const ranks = squares.map((s) => s.coordinates.rank);
     const files = squares.map((s) => s.coordinates.file);
     return {
-      minRank: Math.min(...ranks),
-      maxRank: Math.max(...ranks),
-      minFile: Math.min(...files),
-      maxFile: Math.max(...files),
+      minRank: ranks.length === 0 ? 0 : Math.min(...ranks),
+      maxRank: ranks.length === 0 ? 0 : Math.max(...ranks),
+      minFile: files.length === 0 ? 0 : Math.min(...files),
+      maxFile: files.length === 0 ? 0 : Math.max(...files),
     };
   }
 

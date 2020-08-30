@@ -8,6 +8,7 @@ import { Timer } from "./Timer";
 
 const Clocks: SFC = ({ style }) => {
   const { game } = useContext(GameContext);
+  if (!game) return null;
 
   const nextTurn = (): void => {
     game.clock.setActivePlayers(game.clock.getInactivePlayers());
@@ -19,7 +20,6 @@ const Clocks: SFC = ({ style }) => {
       {game.players.map((player) => (
         <Timer style={{ marginRight: 12 }} player={player} key={player} />
       ))}
-      <RedButton text={""} onPress={nextTurn} />
     </Container>
   );
 };
@@ -28,12 +28,6 @@ const Container = styled(View)`
   display: flex;
   flex-direction: row;
   height: 48px;
-`;
-
-const RedButton = styled(Button)`
-  border: none;
-  background-color: ${Colors.MCHESS.string()};
-  padding: 24px;
 `;
 
 export { Clocks };

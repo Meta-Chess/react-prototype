@@ -18,6 +18,7 @@ interface Props {
 const SquareComponent: SFC<Props> = ({ style, squares, size, shape }) => {
   const HEX_SQUARE_EMPTY_RATIO = 2 / Math.sqrt(3) - 1;
   const { game } = useContext(GameContext);
+  if (!game) return null;
 
   const square = squares[0]; // TODO: How do we want to draw two squares in the same location. Answer: we don't - this shouldn't return a list.
 

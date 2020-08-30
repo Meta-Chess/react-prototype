@@ -12,6 +12,7 @@ const HexBoard: SFC = ({ style }) => {
 
   const padding = 8;
   const { game } = useContext(GameContext);
+  if (!game) return null;
 
   const { minRank, maxRank, minFile, maxFile } = game.board.rankAndFileBoundsWithFilter(
     (square) => !square.hasTokenWithName(TokenName.InvisibilityToken)
@@ -31,7 +32,7 @@ const HexBoard: SFC = ({ style }) => {
   const squareSize = Math.min(
     (dimensions.width - 2 * padding) / boardDetails.width,
     (dimensions.height - 2 * padding) / boardDetails.height,
-    100
+    120
   );
 
   return (

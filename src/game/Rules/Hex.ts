@@ -13,7 +13,7 @@ import { createPiece, PieceSet } from "./utilities";
 
 export const Hex: Rule = {
   forSquareGenerationModify: ({ board }) => {
-    board.addSquares(hexSquares);
+    board.addSquares(generateHexSquares());
     return { board };
   },
   onBoardCreatedModify: ({ board }) => {
@@ -31,13 +31,16 @@ const hexShapeToken = {
   data: { shape: SquareShape.Hex },
 };
 
-const hexSquares = range(1, 11)
-  .map((x) => range(1 + Math.abs(x - 6), 11 - Math.abs(x - 6), 2).map((y) => ({ x, y })))
-  .flat()
-  .map(({ x, y }) => {
-    const location = `R${y}F${x}`;
-    return { location, square: new Square(location, { rank: y, file: x }) };
-  });
+const generateHexSquares = (): { location: string; square: Square }[] =>
+  range(1, 11)
+    .map((x) =>
+      range(1 + Math.abs(x - 6), 11 - Math.abs(x - 6), 2).map((y) => ({ x, y }))
+    )
+    .flat()
+    .map(({ x, y }) => {
+      const location = `R${y}F${x}`;
+      return { location, square: new Square(location, { rank: y, file: x }) };
+    });
 
 // TODO: Generalise to nxn by paying attention to bounds. Possibly extract
 const standardAdjacencies = (_bounds: RankAndFileBounds) => (

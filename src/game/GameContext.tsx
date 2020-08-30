@@ -1,25 +1,31 @@
-import React, { createContext, FC, useState } from "react";
+import React, { createContext, FC, useState, useEffect } from "react";
 import { Game } from "./Game";
 import { Renderer } from "./Renderer";
 import { VariantName } from "game/variants";
 
-const game = Game.createEmptyGame();
-
-const GameContext = createContext({
-  game,
-});
+const GameContext = createContext<{ game?: Game }>({});
 
 interface Props {
   variant: VariantName;
+  gameId: number;
 }
 
-const GameProvider: FC<Props> = ({ children, variant }) => {
+const GameProvider: FC<Props> = ({ children, variant, gameId }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_updateCounter, setUpdateCounter] = useState(0);
-  game.giveRenderer(new Renderer(setUpdateCounter));
-  game.setVariant(variant);
-  const [g] = useState(game);
+  const [g, setG] = useState<Game | undefined>();
 
+  useEffect(() => {
+    const newGame = variant
+      ? Game.createGame({
+          variant,
+          renderer: new Renderer(setUpdateCounter),
+        })
+      : undefined;
+    setG(newGame);
+  }, [gameId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  console.log("rendering", g, gameId);
   return <GameContext.Provider value={{ game: g }}>{children}</GameContext.Provider>;
 };
 
