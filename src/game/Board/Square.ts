@@ -32,6 +32,10 @@ export class Square {
     return this.coordinates;
   }
 
+  getLocation(): string {
+    return this.location;
+  }
+
   hasPiece(): boolean {
     return this.pieces.length !== 0;
   }
@@ -47,10 +51,6 @@ export class Square {
 
   hasPieceNotBelongingTo(owner: Player): boolean {
     return this.pieces.some((piece) => piece.owner !== owner);
-  }
-
-  getColorIndex(): number {
-    return (this.coordinates.rank + this.coordinates.file) % 2;
   }
 
   // Token stuff - should probably extract to a superclass of square and piece

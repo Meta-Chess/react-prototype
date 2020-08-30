@@ -1,6 +1,7 @@
 import { Adjacency, Square } from "../Board";
 import { Direction, RankAndFileBounds, Rule, TokenName } from "game/types";
 import { range, wrapToCylinder } from "utilities";
+import { polarToken, invisibilityToken } from "./constants";
 
 export const Polar: Rule = {
   afterStepModify: ({ gait, remainingSteps, currentSquare }) => {
@@ -160,11 +161,4 @@ const generatePolarSetup = ({
         : [];
     },
   };
-};
-
-const polarToken = { name: TokenName.PolarToken, validTo: undefined, data: undefined };
-const invisibilityToken = {
-  name: TokenName.InvisibilityToken,
-  validTo: undefined,
-  data: undefined,
 };

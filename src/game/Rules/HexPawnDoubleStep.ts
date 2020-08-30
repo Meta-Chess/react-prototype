@@ -1,6 +1,6 @@
 import { PieceName, Player, Rule, Token, TokenName } from "../types";
 import { Piece } from "../Board";
-import { hexGaits } from "./constants";
+import { hexGaits, pawnDoubleStepToken } from "./constants";
 
 export const HexPawnDoubleStep: Rule = {
   postMove: ({ piecesMoved }) => {
@@ -30,10 +30,4 @@ export const HexPawnDoubleStep: Rule = {
     );
     return { board };
   },
-};
-
-const pawnDoubleStepToken: Token = {
-  name: TokenName.PawnDoubleStep,
-  validTo: undefined,
-  data: undefined,
 };

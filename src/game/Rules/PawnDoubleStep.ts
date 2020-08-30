@@ -1,6 +1,6 @@
-import { PieceName, Player, Rule, Token, TokenName } from "../types";
+import { PieceName, Player, Rule, TokenName } from "../types";
 import { Piece } from "../Board";
-import { standardGaits } from "./constants";
+import { standardGaits, pawnDoubleStepToken } from "./constants";
 
 export const PawnDoubleStep: Rule = {
   postMove: ({ piecesMoved }) => {
@@ -30,10 +30,4 @@ export const PawnDoubleStep: Rule = {
     );
     return { board };
   },
-};
-
-const pawnDoubleStepToken: Token = {
-  name: TokenName.PawnDoubleStep,
-  validTo: undefined,
-  data: undefined,
 };
