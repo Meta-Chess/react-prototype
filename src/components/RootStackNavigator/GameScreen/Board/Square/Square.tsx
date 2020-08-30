@@ -43,12 +43,15 @@ const SquareComponent: SFC<Props> = ({ style, squares, size, shape }) => {
   };
 
   // TODO: Refactor into getHighlight function
+  const selectedPieceOwner = game.selectedPieces[0]?.owner;
   const Highlight = game.allowableMoves
     .map((m) => m.location)
     .includes(square.location) ? (
-    game.selectedPieces[0].owner === game.currentPlayer ? (
-      square.hasPiece() ? (
+    selectedPieceOwner === game.currentPlayer ? (
+      square.hasPieceNotBelongingTo(selectedPieceOwner) ? (
         <FullHighlight color={Colors.HIGHLIGHT.ERROR} />
+      ) : square.hasPieceBelongingTo(selectedPieceOwner) ? (
+        <FullHighlight color={Colors.HIGHLIGHT.SUCCESS} />
       ) : (
         <CenterHighlight color={Colors.HIGHLIGHT.SUCCESS} />
       )

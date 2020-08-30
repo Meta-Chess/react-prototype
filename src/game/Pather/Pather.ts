@@ -19,6 +19,7 @@ export class Pather {
         piece: this.piece,
       }
     );
+
     const moves = flatMap(gaits, (gait) => this.path({ currentSquare, gait })).map(
       (square) => ({
         location: square.location,
@@ -26,11 +27,16 @@ export class Pather {
       })
     );
 
-    // const specialMoves = this.rules?.flatMap((r) =>
-    //   r ? r.findSpecialMoves({ board, piece }) : []
-    // );
+    const specialMoves = this.rules?.flatMap(
+      (r) =>
+        r?.generateSpecialMoves?.({
+          board: this.board,
+          piece: this.piece,
+          rules: this.rules,
+        }) || []
+    );
 
-    return moves;
+    return moves.concat(specialMoves);
   }
 
   path({

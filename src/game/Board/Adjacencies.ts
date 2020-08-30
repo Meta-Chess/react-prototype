@@ -12,8 +12,8 @@ export class Adjacencies {
     } = {}
   ) {}
 
-  go(direction: Direction): string[] | undefined {
-    return this.adjacencies[direction];
+  go(direction: Direction): string[] {
+    return this.adjacencies[direction] || [];
   }
 
   addAdjacency({ direction, location }: Adjacency): void {

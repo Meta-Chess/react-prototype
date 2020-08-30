@@ -1,8 +1,15 @@
 import { Piece } from "./Piece";
 import { Square } from "./Square";
 import { Adjacency } from "./Adjacencies";
-import { PieceDelta, RankAndFileBounds, Rule, Token, TokenName } from "game/types";
-import { applyInSequence } from "utilities";
+import {
+  Direction,
+  PieceDelta,
+  RankAndFileBounds,
+  Rule,
+  Token,
+  TokenName,
+} from "game/types";
+import { applyInSequence, isPresent } from "utilities";
 import * as _ from "lodash";
 
 interface LocationMap {
@@ -114,6 +121,13 @@ class Board {
     }
   }
 
+  displacePieces(pieceDeltas: PieceDelta[]): void {
+    pieceDeltas.forEach((pieceDelta) => {
+      this.killPiecesAt(pieceDelta.destination);
+      this.displace(pieceDelta);
+    });
+  }
+
   killPiecesAt(location: string): void {
     // TODO: This should actually move the pieces to a special square
     this.squares[location].pieces = [];
@@ -123,8 +137,16 @@ class Board {
     return location ? this.squares[location] : undefined;
   }
 
-  isEmpty(): boolean {
-    return _.isEmpty(this.squares);
+  go({ from, path }: { from: string; path: Direction[] }): Square[] {
+    let currentSquares = [this.squareAt(from)];
+
+    path.forEach((direction) => {
+      currentSquares = currentSquares.flatMap((square) =>
+        square?.go(direction).map((location) => this.squareAt(location))
+      );
+    });
+
+    return currentSquares.filter(isPresent);
   }
 
   static createEmptyBoard(): Board {
@@ -145,13 +167,6 @@ class Board {
     ));
 
     return board;
-  }
-
-  displacePieces(pieceDeltas: PieceDelta[]): void {
-    pieceDeltas.forEach((pieceDelta) => {
-      this.killPiecesAt(pieceDelta.destination);
-      this.displace(pieceDelta);
-    });
   }
 }
 

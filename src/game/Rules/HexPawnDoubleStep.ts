@@ -3,7 +3,8 @@ import { Piece } from "../Board";
 import { hexGaits, pawnDoubleStepToken } from "./constants";
 
 export const HexPawnDoubleStep: Rule = {
-  postMove: ({ piecesMoved }) => {
+  postMove: ({ move }) => {
+    const piecesMoved = move.pieceDeltas.map((delta) => delta.piece);
     piecesMoved.forEach((piece: Piece) => {
       if (piece.name === PieceName.Pawn)
         piece.removeTokensByName(TokenName.PawnDoubleStep);

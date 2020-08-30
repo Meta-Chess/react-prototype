@@ -67,7 +67,7 @@ export class Game {
     this.board.displacePieces(move.pieceDeltas);
 
     this.rules.forEach((v) => {
-      v.postMove?.({ piecesMoved: this.selectedPieces });
+      v.postMove?.({ move });
     });
 
     this.nextTurn();

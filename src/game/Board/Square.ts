@@ -1,6 +1,6 @@
 import { Piece } from "./Piece";
 import { Adjacencies, Adjacency } from "./Adjacencies";
-import { Player, Token, TokenName } from "game/types";
+import { Direction, Player, Token, TokenName } from "game/types";
 
 interface Coordinates {
   rank: number;
@@ -16,8 +16,8 @@ export class Square {
     public pieces: Piece[] = []
   ) {}
 
-  getPieceArray(): Piece[] {
-    return this.pieces;
+  go(direction: Direction): string[] {
+    return this.adjacencies.go(direction);
   }
 
   addPieces(pieces: Piece[]): void {
@@ -51,6 +51,10 @@ export class Square {
 
   hasPieceNotBelongingTo(owner: Player): boolean {
     return this.pieces.some((piece) => piece.owner !== owner);
+  }
+
+  findPiecesByRule(rule: (p: Piece) => boolean): Piece[] {
+    return this.pieces.filter(rule);
   }
 
   // Token stuff - should probably extract to a superclass of square and piece

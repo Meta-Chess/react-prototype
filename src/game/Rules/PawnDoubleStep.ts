@@ -3,7 +3,8 @@ import { Piece } from "../Board";
 import { standardGaits, pawnDoubleStepToken } from "./constants";
 
 export const PawnDoubleStep: Rule = {
-  postMove: ({ piecesMoved }) => {
+  postMove: ({ move }) => {
+    const piecesMoved = move.pieceDeltas.map((delta) => delta.piece);
     piecesMoved.forEach((piece: Piece) => {
       if (piece.name === PieceName.Pawn)
         piece.removeTokensByName(TokenName.PawnDoubleStep);
