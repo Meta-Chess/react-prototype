@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { objectMatches } from "utilities";
 import { GameContext } from "game";
-import { TokenName } from "game/types";
+import { Player, TokenName } from "game/types";
 import { Square } from "./Square";
 
 const SquareBoard: SFC = ({ style }) => {
@@ -59,7 +59,14 @@ const SquareBoard: SFC = ({ style }) => {
       >
         <SquaresContainer>
           {fileCoordinates.map((file) => (
-            <ColumnContainer style={{ maxWidth: squareSize }} key={file}>
+            <ColumnContainer
+              style={{
+                maxWidth: squareSize,
+                flexDirection:
+                  game.currentPlayer === Player.White ? "column-reverse" : "column",
+              }}
+              key={file}
+            >
               {rankCoordinates.map((rank) => (
                 <Square
                   size={squareSize}
@@ -99,7 +106,6 @@ const SquaresContainer = styled(View)`
 `;
 
 const ColumnContainer = styled(View)`
-  flex-direction: column-reverse;
   justify-content: flex-end;
   flex: 1;
   display: flex;
