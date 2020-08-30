@@ -53,7 +53,11 @@ const HexBoard: SFC = ({ style }) => {
           },
         ]}
       >
-        <SquaresContainer>
+        <SquaresContainer
+          style={{
+            flexDirection: game.currentPlayer === Player.White ? "row" : "row-reverse",
+          }}
+        >
           {fileCoordinates.map((file) => (
             <ColumnContainer
               style={{
@@ -97,7 +101,6 @@ const BoardContainer = styled(View)`
 `;
 
 const SquaresContainer = styled(View)`
-  flex-direction: row;
   display: flex;
   height: 100%;
   align-items: center;

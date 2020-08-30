@@ -57,7 +57,11 @@ const SquareBoard: SFC = ({ style }) => {
           },
         ]}
       >
-        <SquaresContainer>
+        <SquaresContainer
+          style={{
+            flexDirection: game.currentPlayer === Player.White ? "row" : "row-reverse",
+          }}
+        >
           {fileCoordinates.map((file) => (
             <ColumnContainer
               style={{
