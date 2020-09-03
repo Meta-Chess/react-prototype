@@ -1,61 +1,25 @@
 import { Piece } from "./Piece";
 import { Square } from "./Square";
 import { Adjacency } from "./Adjacencies";
-import {
-  Direction,
-  PieceDelta,
-  RankAndFileBounds,
-  Rule,
-  Token,
-  TokenName,
-} from "game/types";
+import { TokenOwner } from "./TokenOwner";
+import { Direction, PieceDelta, RankAndFileBounds, Rule, Token } from "game/types";
 import { applyInSequence, isPresent } from "utilities";
 
 interface LocationMap {
   [key: string]: Square;
 }
 
-class Board {
-  constructor(public squares: LocationMap = {}, public tokens: Token[] = []) {}
+// TODO: This class is too long!
+class Board extends TokenOwner {
+  constructor(public squares: LocationMap = {}, public tokens: Token[] = []) {
+    super(tokens);
+  }
 
-  // TODO: consider making this a "property" or whatever it's called?
+  // TODO: consider making this a "get" method?
   pieces(): Piece[] {
     return Object.values(this.squares)
       .map((square) => square.pieces)
       .flat();
-  }
-
-  // TODO: Clean up all methods, particularly token methods with extension
-  addToken(token: Token): void {
-    this.tokens.push(token);
-  }
-
-  addTokens(tokens: Token[]): void {
-    this.tokens.push(...tokens);
-  }
-
-  private filterTokensByRule(rule: (token: Token) => boolean): void {
-    this.tokens = this.tokens.filter(rule);
-  }
-
-  removeTokensByName(name: TokenName): void {
-    this.filterTokensByRule((token) => token.name !== name);
-  }
-
-  private firstTokenSatisfyingRule(rule: (token: Token) => boolean): Token | undefined {
-    return this.tokens.find(rule);
-  }
-
-  firstTokenWithName(name: TokenName): Token | undefined {
-    return this.firstTokenSatisfyingRule((token) => token.name === name);
-  }
-
-  private hasTokenSatisfyingRule(rule: (token: Token) => boolean): boolean {
-    return this.tokens.some(rule);
-  }
-
-  hasTokenWithName(name: TokenName): boolean {
-    return this.hasTokenSatisfyingRule((token) => token.name === name);
   }
 
   addSquare({ location, square }: { location: string; square: Square }): void {
@@ -90,6 +54,7 @@ class Board {
     this.pieces().forEach((piece) => piece.addTokens(rule(piece)));
   }
 
+  // TODO: Extract next two methods as utility methods?
   rankAndFileBounds(): RankAndFileBounds {
     return this.rankAndFileBoundsWithFilter(() => true);
   }

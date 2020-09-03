@@ -24,7 +24,7 @@ const Timer: SFC<Props> = ({ style, player }) => {
   if (validFor !== Number.POSITIVE_INFINITY) {
     setTimeout(() => {
       setDummy(!dummy);
-    }, validFor || 1000); // TODO: think about default
+    }, validFor || 1000);
   }
 
   if (!clock) return null; // Consider throwing an error?

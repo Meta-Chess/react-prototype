@@ -1,20 +1,23 @@
 import { Piece } from "./Piece";
 import { Adjacencies, Adjacency } from "./Adjacencies";
-import { Direction, Player, Token, TokenName } from "game/types";
+import { Direction, Player, Token } from "game/types";
+import { TokenOwner } from "./TokenOwner";
 
 interface Coordinates {
   rank: number;
   file: number;
 }
 
-export class Square {
+export class Square extends TokenOwner {
   constructor(
     public location: string,
     public coordinates: Coordinates, // TODO: Generalise coordinates to accept things other than rank and file
     public tokens: Token[] = [],
     public adjacencies: Adjacencies = new Adjacencies(),
     public pieces: Piece[] = []
-  ) {}
+  ) {
+    super(tokens);
+  }
 
   go(direction: Direction): string[] {
     return this.adjacencies.go(direction);
@@ -55,34 +58,5 @@ export class Square {
 
   findPiecesByRule(rule: (p: Piece) => boolean): Piece[] {
     return this.pieces.filter(rule);
-  }
-
-  // Token stuff - should probably extract to a superclass of square and piece
-  addToken(token: Token): void {
-    this.tokens.push(token);
-  }
-
-  private filterTokensByRule(rule: (token: Token) => boolean): void {
-    this.tokens = this.tokens.filter(rule);
-  }
-
-  removeTokensByName(name: TokenName): void {
-    this.filterTokensByRule((token) => token.name !== name);
-  }
-
-  private firstTokenSatisfyingRule(rule: (token: Token) => boolean): Token | undefined {
-    return this.tokens.find(rule);
-  }
-
-  firstTokenWithName(name: TokenName): Token | undefined {
-    return this.firstTokenSatisfyingRule((token) => token.name === name);
-  }
-
-  private hasTokenSatisfyingRule(rule: (token: Token) => boolean): boolean {
-    return this.tokens.some(rule);
-  }
-
-  hasTokenWithName(name: TokenName): boolean {
-    return this.hasTokenSatisfyingRule((token) => token.name === name);
   }
 }

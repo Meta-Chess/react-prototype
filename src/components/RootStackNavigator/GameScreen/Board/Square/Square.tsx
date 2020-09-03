@@ -6,7 +6,7 @@ import { Piece } from "./Piece";
 import { GridArrangement } from "./GridArrangement";
 import { GameContext } from "game";
 import { Square } from "game/Board";
-import { TokenName, SquareShape } from "game/types";
+import { SquareShape } from "game/types";
 import { Highlight } from "./Highlight";
 
 interface Props {
