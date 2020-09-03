@@ -4,14 +4,17 @@ import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { objectMatches } from "utilities";
 import { GameContext } from "game";
-import { TokenName, SquareShape, Player } from "game/types";
+import { TokenName, SquareShape } from "game/types";
 import { Square } from "./Square";
+import { useFlipDelay } from "./useFlipDelay";
 
 const HexBoard: SFC = ({ style }) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   const padding = 8;
+
   const { game } = useContext(GameContext);
+  const { flipBoard } = useFlipDelay(game?.currentPlayer);
   if (!game) return null;
 
   const { minRank, maxRank, minFile, maxFile } = game.board.rankAndFileBoundsWithFilter(
@@ -55,15 +58,14 @@ const HexBoard: SFC = ({ style }) => {
       >
         <SquaresContainer
           style={{
-            flexDirection: game.currentPlayer === Player.White ? "row" : "row-reverse",
+            flexDirection: flipBoard ? "row-reverse" : "row",
           }}
         >
           {fileCoordinates.map((file) => (
             <ColumnContainer
               style={{
                 maxWidth: squareSize,
-                flexDirection:
-                  game.currentPlayer === Player.White ? "column-reverse" : "column",
+                flexDirection: flipBoard ? "column" : "column-reverse",
               }}
               key={file}
             >
