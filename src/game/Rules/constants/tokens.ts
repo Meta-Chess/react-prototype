@@ -1,6 +1,6 @@
 import { TokenName } from "game/types";
 
-// TODO: Move tokens here
+// Keep moving tokens here
 
 export const polarToken = {
   name: TokenName.PolarToken,

@@ -93,7 +93,7 @@ class Board extends TokenOwner {
   }
 
   killPiecesAt(location: string): void {
-    // TODO: This should actually move the pieces to a special square
+    // This should actually move the pieces to a special square - to be taken care of when displaying dead pieces
     this.squares[location].pieces = [];
   }
 

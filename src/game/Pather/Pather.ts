@@ -3,7 +3,7 @@ import { Board, Piece, Square } from "../Board";
 import { Direction, Gait, Move, Rule } from "../types";
 import { flatMap } from "lodash";
 
-const MAX_STEPS = 64; // TODO: find a good number or something
+const MAX_STEPS = 64; // To be considered further
 
 export class Pather {
   constructor(private board: Board, private piece: Piece, private rules: Rule[]) {}

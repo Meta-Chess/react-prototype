@@ -11,7 +11,7 @@ interface Coordinates {
 export class Square extends TokenOwner {
   constructor(
     public location: string,
-    public coordinates: Coordinates, // TODO: Generalise coordinates to accept things other than rank and file
+    public coordinates: Coordinates,
     public tokens: Token[] = [],
     public adjacencies: Adjacencies = new Adjacencies(),
     public pieces: Piece[] = []

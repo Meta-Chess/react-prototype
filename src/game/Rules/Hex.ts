@@ -18,8 +18,8 @@ export const Hex: Rule = {
   },
   onBoardCreatedModify: ({ board }) => {
     const bounds = board.rankAndFileBounds();
-    board.addAdjacenciesByRule(standardAdjacencies(bounds));
-    board.addPiecesByRule(standardPiecesRule);
+    board.addAdjacenciesByRule(hexAdjacencies(bounds));
+    board.addPiecesByRule(hexPieceSetupRule);
     board.addToken(hexShapeToken);
     return { board };
   },
@@ -42,10 +42,7 @@ const generateHexSquares = (): { location: string; square: Square }[] =>
       return { location, square: new Square(location, { rank: y, file: x }) };
     });
 
-// TODO: Generalise to nxn by paying attention to bounds. Possibly extract
-const standardAdjacencies = (_bounds: RankAndFileBounds) => (
-  square: Square
-): Adjacency[] => {
+const hexAdjacencies = (_bounds: RankAndFileBounds) => (square: Square): Adjacency[] => {
   const { rank, file } = square.getCoordinates();
   return [
     { direction: Direction.H1, location: `R${rank + 3}F${file + 1}` },
@@ -63,7 +60,7 @@ const standardAdjacencies = (_bounds: RankAndFileBounds) => (
   ];
 };
 
-const standardPiecesRule = (square: Square): Piece[] => {
+const hexPieceSetupRule = (square: Square): Piece[] => {
   const { rank, file } = square.getCoordinates();
   const location = `R${rank}F${file}`;
   const owner = rank > 10 ? Player.Black : Player.White;

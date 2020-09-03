@@ -50,7 +50,7 @@ export class Scanner {
     );
   }
 
-  // TODO: This is duplicate code - investigate
+  // TODO: This is duplicate code - investigate, and probably fix with inheritance
   go({ from, direction }: { from: Square; direction: Direction }): Square[] {
     return (
       from.adjacencies

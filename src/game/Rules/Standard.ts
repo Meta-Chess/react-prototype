@@ -24,7 +24,6 @@ const generateStandardSquares = (): { location: string; square: Square }[] =>
       return { location, square: new Square(location, { rank: y, file: x }) };
     });
 
-// TODO: Generalise to nxn by paying attention to bounds. Possibly extract
 const standardAdjacencies = (_bounds: RankAndFileBounds) => (
   square: Square
 ): Adjacency[] => {
