@@ -72,11 +72,13 @@ const HexBoard: SFC = ({ style }) => {
               {rankCoordinates.map((rank) => (
                 <Square
                   size={squareSize}
-                  squares={game.board.squaresByCondition((square) =>
-                    objectMatches({
-                      rank,
-                      file,
-                    })(square.coordinates)
+                  square={game.board.firstSquareSatisfyingRule(
+                    (square) =>
+                      objectMatches({
+                        rank,
+                        file,
+                      })(square.coordinates) &&
+                      !square.hasTokenWithName(TokenName.InvisibilityToken)
                   )}
                   shape={SquareShape.Hex}
                   key={JSON.stringify([rank, file])}

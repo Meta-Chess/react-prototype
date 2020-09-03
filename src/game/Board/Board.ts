@@ -106,8 +106,8 @@ class Board {
     };
   }
 
-  squaresByCondition(condition: (s: Square) => boolean): Square[] {
-    return Object.values(this.squares).filter(condition);
+  firstSquareSatisfyingRule(condition: (s: Square) => boolean): Square | undefined {
+    return Object.values(this.squares).find(condition);
   }
 
   displace({ piece, destination }: { piece: Piece; destination: string }): void {

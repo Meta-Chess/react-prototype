@@ -10,23 +10,20 @@ import { TokenName, SquareShape } from "game/types";
 import { Highlight } from "./Highlight";
 
 interface Props {
-  squares: Square[];
+  square: Square | undefined;
   size: number;
   shape?: SquareShape;
 }
 
-const SquareComponent: SFC<Props> = ({ style, squares, size, shape }) => {
+const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
   const HEX_SQUARE_EMPTY_RATIO = 2 / Math.sqrt(3) - 1;
   const { game } = useContext(GameContext);
   if (!game) return null;
-
-  const square = squares[0]; // TODO: How do we want to draw two squares in the same location. Answer: we don't - this shouldn't return a list.
 
   if (!square) {
     const emptySize = shape === SquareShape.Hex ? HEX_SQUARE_EMPTY_RATIO * size : size;
     return <View style={[style, { width: emptySize, height: emptySize }]} />;
   }
-  if (square.hasTokenWithName(TokenName.InvisibilityToken)) return null;
 
   const backgroundColor = Colors.SQUARE[
     colorIndex({ ...square.getCoordinates(), shape })
