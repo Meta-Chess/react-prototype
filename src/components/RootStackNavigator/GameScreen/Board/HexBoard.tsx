@@ -101,7 +101,7 @@ const SizeContainer = styled(View)`
 const BoardContainer = styled(View)`
   position: relative;
   background: ${Colors.DARK.string()};
-  box-shadow: 2px 1px 16px ${Colors.SHADOW.string()};
+  box-shadow: 2px 1px 8px ${Colors.SHADOW.fade(0.8).string()};
 `;
 
 const SquaresContainer = styled(View)`
