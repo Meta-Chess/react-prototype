@@ -12,6 +12,7 @@ interface Props {
 }
 
 const PieceImage: FC<Props> = ({ type, color, size, glowColor }) => {
+  if (size < 0) return null;
   const primary = color;
   const secondary = Colors.DARKEST.string();
   const paths =
@@ -29,7 +30,7 @@ const PieceImage: FC<Props> = ({ type, color, size, glowColor }) => {
       <King />
     );
 
-  const glowAlphas = [0.03, 0.1, 0.1, 0.2, 0.3, 0.4, 1, 1];
+  const glowAlphas = [0.03, 0.1, 0.1, 0.2, 0.3, 0.4, 1];
   return (
     <Svg width={size} height={size} viewBox="0 0 45 45">
       {glowColor &&
