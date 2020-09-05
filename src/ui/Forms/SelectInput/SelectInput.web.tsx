@@ -8,6 +8,7 @@ import { Option } from "./types";
 interface Props {
   options: Option[];
   onChange?: (value?: any) => void; //eslint-disable-line @typescript-eslint/no-explicit-any
+  zIndex?: number;
 }
 
 export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
@@ -79,3 +80,60 @@ const DropdownIndicator: React.FC<IndicatorProps<any>> = (props: IndicatorProps<
     </components.DropdownIndicator>
   );
 };
+
+//      <Select
+//         onChange={(optionSelection): void => {
+//           if (Array.isArray(optionSelection))
+//             throw new Error("Multiple option selection not supported");
+//           if (optionSelection) {
+//             const option = optionSelection as Option; // TODO: Think about type safety
+//             onChange?.(option.value);
+//           }
+//         }}
+//         options={options}
+//         components={{ DropdownIndicator }}
+//         formatOptionLabel={OptionLabel}
+//         defaultValue={options[0]}
+//         searchable={false}
+//         theme={(theme): Theme => ({
+//           ...theme,
+//           colors: {
+//             ...theme.colors,
+//             primary: Colors.GREY.toString(), // Selected border
+//             neutral30: Colors.GREY.fade(0.2).toString(), // Hovered border
+//             primary50: Colors.GREY.fade(0.8).toString(), // During press of option
+//           },
+//         })}
+//         styles={{
+//           control: (baseStyle, { isFocused }): CSSProperties => ({
+//             ...baseStyle,
+//             width: 240,
+//             borderRadius: 4,
+//             border: `2px solid ${Colors.GREY.fade(0.4).toString()}`,
+//             backgroundColor: Colors.DARKEST.toString(),
+//             boxShadow: isFocused ? "0" : "0",
+//           }),
+//           menu: (baseStyle): CSSProperties => ({
+//             ...baseStyle,
+//             backgroundColor: Colors.DARK.toString(),
+//             zIndex: 9999,
+//           }),
+//           menuPortal: (baseStyle): CSSProperties => ({
+//             ...baseStyle,
+//             zIndex: 9999,
+//           }),
+//           option: (baseStyle, { isFocused, isSelected }): CSSProperties => ({
+//             ...baseStyle,
+//             backgroundColor: isSelected
+//               ? Colors.GREY.fade(0.8).toString()
+//               : isFocused
+//               ? Colors.GREY.fade(0.9).toString()
+//               : Colors.DARK.toString(),
+//           }),
+//           indicatorSeparator: (baseStyle): CSSProperties => ({
+//             ...baseStyle,
+//             display: "none",
+//           }),
+//         }}
+//         menuContainerStyle={{ zIndex: 9999 }}
+//       />

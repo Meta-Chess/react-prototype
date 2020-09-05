@@ -5,13 +5,16 @@ import { VariantName } from "game";
 import { SFC } from "primitives";
 
 interface Props {
-  variant: VariantName;
+  gameOptions: {
+    variant: VariantName;
+    time: number | undefined;
+  };
 }
-const StartButton: SFC<Props> = ({ variant, style }) => {
+const StartButton: SFC<Props> = ({ gameOptions, style }) => {
   const navigation = useNavigation();
   const onPress = (): void => {
     navigation.navigate<Screens.GameScreen>(Screens.GameScreen, {
-      variant,
+      gameOptions,
       gameId: Math.random(),
     });
   };

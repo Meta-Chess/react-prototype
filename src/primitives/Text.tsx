@@ -13,6 +13,7 @@ interface BaseTextProps {
   fontWeight?: "normal" | "heavy";
   monospaceNumbers?: boolean;
   loading?: boolean;
+  alignment?: "left" | "center" | "right";
   style?: StyleProp<TextStyle>;
 }
 
@@ -24,6 +25,7 @@ function Text({
   fontWeight = "normal",
   monospaceNumbers = false,
   loading = false,
+  alignment,
   style,
 }: BaseTextProps): React.ReactElement {
   const [fontsLoaded] = useFonts({ RobotoMono_400Regular });
@@ -42,7 +44,17 @@ function Text({
 
   if (monospaceNumbers && typeof children === "string" && children.length > 1)
     return (
-      <View style={{ flexDirection: "row" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent:
+            alignment === "left"
+              ? "flex-start"
+              : alignment === "right"
+              ? "flex-end"
+              : "center",
+        }}
+      >
         {children.split("").map((char, index) => (
           <Text
             size={size}
@@ -97,6 +109,7 @@ interface TextProps {
   weight?: "normal" | "heavy";
   monospaceNumbers?: boolean;
   loading?: boolean;
+  alignment?: "left" | "center" | "right";
 }
 
 Text.BodyS = function BodyS(props: TextProps): React.ReactElement {

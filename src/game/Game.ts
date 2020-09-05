@@ -1,13 +1,13 @@
 import { Board, Piece, Square } from "./Board";
 import { Renderer } from "./Renderer";
 import { Clock } from "./Clock";
-import { Move, Player, Rule } from "./types";
+import { GameOptions, Move, Player, Rule } from "./types";
 import { Pather } from "./Pather";
 import { flatMap } from "lodash";
-import { VariantName, variants } from "game/variants";
+import { variants } from "game/variants";
 
 export class Game {
-  public clock: Clock;
+  public clock: Clock | undefined;
   public players: Player[];
   public selectedPieces: Piece[];
   public allowableMoves: Move[];
@@ -18,10 +18,11 @@ export class Game {
     public board: Board,
     public rules: Rule[],
     public format: Format,
-    public renderer: Renderer
+    public renderer: Renderer,
+    time: number | undefined
   ) {
-    this.clock = new Clock([Player.White, Player.Black], 300000);
-    this.clock.setActivePlayers([Player.White]);
+    this.clock = time ? new Clock([Player.White, Player.Black], time) : undefined;
+    this.clock?.setActivePlayers([Player.White]);
     this.players = [Player.White, Player.Black];
     this.currentPlayer = Player.White;
     this.currentTurn = 1;
@@ -29,9 +30,16 @@ export class Game {
     this.allowableMoves = [];
   }
 
-  static createGame(input: { variant: VariantName; renderer: Renderer }): Game {
-    const rules = variants[input.variant].rules;
-    return new Game(Board.createBoard(rules), rules, Format.default, input.renderer);
+  static createGame(input: { gameOptions: GameOptions; renderer: Renderer }): Game {
+    const { variant, time } = input.gameOptions;
+    const rules = variants[variant].rules;
+    return new Game(
+      Board.createBoard(rules),
+      rules,
+      Format.default,
+      input.renderer,
+      time
+    );
   }
 
   render(): void {
@@ -76,7 +84,7 @@ export class Game {
   nextTurn(): void {
     const currentIndex = this.players.indexOf(this.currentPlayer);
     this.currentPlayer = this.players[(currentIndex + 1) % this.players.length];
-    this.clock.setActivePlayers([this.currentPlayer]);
+    this.clock?.setActivePlayers([this.currentPlayer]);
   }
 }
 

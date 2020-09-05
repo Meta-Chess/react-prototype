@@ -1,5 +1,5 @@
 import { Direction } from "./Direction";
-import { Piece } from "game";
+import { Piece, VariantName } from "game";
 
 export interface Gait {
   pattern: Direction[];
@@ -69,4 +69,9 @@ export interface RankAndFileBounds {
 export enum SquareShape {
   Square,
   Hex,
+}
+
+export interface GameOptions {
+  variant: VariantName;
+  time: number | undefined;
 }

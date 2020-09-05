@@ -7,16 +7,19 @@ import { Option } from "./types";
 interface Props {
   options: Option[];
   onChange?: (value?: any) => void; //eslint-disable-line @typescript-eslint/no-explicit-any
+  zIndex?: number;
 }
 
-export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
+export const SelectInput: SFC<Props> = ({ options, style, onChange, zIndex }) => {
+  const simplifiedOptions = options.map((o) => ({ label: o.label, value: o.label }));
   return (
     <View style={[style]}>
       <DropDownPicker
         onChangeItem={(option): void => {
-          onChange?.(option.value);
+          const value = options.find((o) => o.label === option.label)?.value;
+          onChange?.(value);
         }}
-        items={options}
+        items={simplifiedOptions}
         defaultValue={options[0].label}
         style={{
           backgroundColor: Colors.DARKEST.toString(),
@@ -41,7 +44,10 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
         customArrowDown={(): React.ReactElement => (
           <DownCaretIcon color={Colors.MCHESS.toString()} />
         )}
-        customArrowUp={(): React.ReactElement => (null as unknown) as JSX.Element}
+        customArrowUp={(): React.ReactElement => (
+          <DownCaretIcon color={Colors.MCHESS.toString()} />
+        )}
+        zIndex={zIndex}
       />
     </View>
   );

@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { View } from "react-native";
+import React, { useState, useContext, useEffect } from "react";
+import { Platform, View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
 import { GameContext } from "game";
@@ -8,24 +8,29 @@ import { contrast } from "utilities";
 
 interface Props {
   player: Player;
+  alignment: "left" | "center" | "right";
 }
 
-const Timer: SFC<Props> = ({ style, player }) => {
+const Timer: SFC<Props> = ({ style, player, alignment }) => {
   const { game } = useContext(GameContext);
   const [dummy, setDummy] = useState(false);
 
-  if (!game) return null;
-  const clock = game.clock.getPlayerTimer(player);
+  const clock = game?.clock?.getPlayerTimer(player);
 
   const formattedTime = clock?.getFormattedTime();
   const displayTime = formattedTime?.time;
   const validFor = formattedTime?.validFor;
 
-  if (validFor !== Number.POSITIVE_INFINITY) {
-    setTimeout(() => {
+  const timeout = setTimeout(
+    () => {
       setDummy(!dummy);
-    }, validFor || 1000);
-  }
+    },
+    validFor && validFor !== Number.POSITIVE_INFINITY ? validFor : 1000
+  );
+
+  useEffect(() => {
+    return (): void => clearTimeout(timeout);
+  }, [timeout]);
 
   if (!clock) return null; // Consider throwing an error?
 
@@ -34,6 +39,7 @@ const Timer: SFC<Props> = ({ style, player }) => {
       style={[
         style,
         {
+          flex: Platform.OS === "web" ? undefined : 1,
           backgroundColor: Colors.PLAYER[player].string(),
           borderColor: contrast(Colors.PLAYER[player].string()),
           borderWidth: 2,
@@ -43,12 +49,13 @@ const Timer: SFC<Props> = ({ style, player }) => {
         },
       ]}
     >
-      <Text.DisplayS
+      <Text.BodyS
         color={contrast(Colors.PLAYER[player].string())}
         monospaceNumbers={true}
+        alignment={alignment}
       >
         {displayTime}
-      </Text.DisplayS>
+      </Text.BodyS>
     </Container>
   );
 };

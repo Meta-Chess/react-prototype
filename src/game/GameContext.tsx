@@ -1,24 +1,24 @@
 import React, { createContext, FC, useState, useEffect } from "react";
 import { Game } from "./Game";
 import { Renderer } from "./Renderer";
-import { VariantName } from "game/variants";
+import { GameOptions } from "game/types";
 
 const GameContext = createContext<{ game?: Game }>({});
 
 interface Props {
-  variant: VariantName;
+  gameOptions: GameOptions;
   gameId: number;
 }
 
-const GameProvider: FC<Props> = ({ children, variant, gameId }) => {
+const GameProvider: FC<Props> = ({ children, gameOptions, gameId }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_updateCounter, setUpdateCounter] = useState(0);
   const [g, setG] = useState<Game | undefined>();
 
   useEffect(() => {
-    const newGame = variant
+    const newGame = gameOptions
       ? Game.createGame({
-          variant,
+          gameOptions,
           renderer: new Renderer(setUpdateCounter),
         })
       : undefined;

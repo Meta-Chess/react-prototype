@@ -4,7 +4,7 @@ import { VariantName } from "game";
 
 export interface NavigatorParamList extends ParamListBase {
   [Screens.GameScreen]: {
-    variant: VariantName;
+    gameOptions: { variant: VariantName; time: number | undefined };
     gameId: number;
   };
   [Screens.StartScreen]: undefined;
