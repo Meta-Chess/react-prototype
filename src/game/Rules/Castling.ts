@@ -11,8 +11,11 @@ export const Castling: Rule = {
       piece.removeTokensByNames([TokenName.ActiveCastling, TokenName.PassiveCastling]);
     });
   },
-  generateSpecialMoves: ({ board, piece: activePiece, rules }) => {
-    if (!activePiece.hasTokenWithName(TokenName.ActiveCastling)) return [];
+  generateSpecialMoves: (input) => {
+    if (!input.piece.hasTokenWithName(TokenName.ActiveCastling)) return input;
+
+    const { board, piece: activePiece, rules, moves } = input;
+
     const directions = activePiece
       .generateGaits()
       .map((g) => g.pattern[0])
@@ -55,7 +58,7 @@ export const Castling: Rule = {
       }
     );
 
-    return filteredCastlePiecesAndLocations.map(
+    const newMoves = filteredCastlePiecesAndLocations.map(
       ({ passivePiece, passiveDestination, activeDestination }) => ({
         location: activeDestination.location,
         pieceDeltas: [
@@ -64,6 +67,8 @@ export const Castling: Rule = {
         ],
       })
     );
+
+    return { board, piece: activePiece, rules, moves: [...moves, ...newMoves] };
   },
   onBoardCreatedModify: ({ board }) => {
     board.addPieceTokensByRule((piece: Piece) =>

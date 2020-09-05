@@ -27,13 +27,14 @@ export class Pather {
       })
     );
 
-    const specialMoves = this.rules?.flatMap(
-      (r) =>
-        r?.generateSpecialMoves?.({
-          board: this.board,
-          piece: this.piece,
-          rules: this.rules,
-        }) || []
+    const { moves: specialMoves } = applyInSequence(
+      this.rules?.map((r) => r?.generateSpecialMoves),
+      {
+        board: this.board,
+        piece: this.piece,
+        rules: this.rules,
+        moves: [],
+      }
     );
 
     return moves.concat(specialMoves);

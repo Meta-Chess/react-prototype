@@ -11,7 +11,12 @@ export interface Rule {
     currentSquare: Square;
   }>;
   forSquareGenerationModify?: Chainable<{ board: Board }>;
-  generateSpecialMoves?: (input: { board: Board; piece: Piece; rules: Rule[] }) => Move[];
+  generateSpecialMoves?: Chainable<{
+    board: Board;
+    piece: Piece;
+    rules: Rule[];
+    moves: Move[];
+  }>;
   onGaitsGeneratedModify?: Chainable<{ gaits: Gait[]; piece: Piece }>;
   onPieceGeneratedModify?: Chainable<{ piece: Piece }>;
   onBoardCreatedModify?: Chainable<{ board: Board }>;
