@@ -23,6 +23,10 @@ export class TokenOwner {
     this.filterTokensByRule((token) => !names.includes(token.name));
   }
 
+  removeExpiredTokens(currentTurn: number): void {
+    this.tokens = this.tokens.filter((token) => !token.expired(currentTurn));
+  }
+
   private firstTokenSatisfyingRule(rule: (token: Token) => boolean): Token | undefined {
     return this.tokens.find(rule);
   }

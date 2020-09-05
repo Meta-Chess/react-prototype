@@ -4,13 +4,13 @@ import { Rule } from "./Rules";
 import { hexGaits, pawnDoubleStepToken } from "./constants";
 
 export const HexPawnDoubleStep: Rule = {
-  postMove: ({ move }) => {
+  postMove: ({ move, currentTurn }) => {
     const piecesMoved = move.pieceDeltas.map((delta) => delta.piece);
     piecesMoved.forEach((piece: Piece) => {
       if (piece.name === PieceName.Pawn)
         piece.removeTokensByName(TokenName.PawnDoubleStep);
     });
-    return { move };
+    return { move, currentTurn };
   },
   onGaitsGeneratedModify: ({ gaits, piece }) => ({
     gaits: [

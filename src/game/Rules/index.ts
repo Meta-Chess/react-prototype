@@ -10,3 +10,4 @@ export * from "./Check";
 export * from "./loseWithNoKings";
 
 export * from "./Rules";
+export * from "./Fatigue";

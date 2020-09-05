@@ -6,12 +6,12 @@ import { isPresent } from "utilities";
 import { Pather, Scanner } from "../Pather";
 
 export const Castling: Rule = {
-  postMove: ({ move }) => {
+  postMove: ({ move, currentTurn }) => {
     const piecesMoved = move.pieceDeltas.map((delta) => delta.piece);
     piecesMoved.forEach((piece: Piece) => {
       piece.removeTokensByNames([TokenName.ActiveCastling, TokenName.PassiveCastling]);
     });
-    return { move };
+    return { move, currentTurn };
   },
   generateSpecialMoves: (input) => {
     if (!input.piece.hasTokenWithName(TokenName.ActiveCastling)) return input;

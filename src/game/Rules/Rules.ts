@@ -46,7 +46,7 @@ const identityRule = {
   onGaitsGeneratedModify: (x: { gaits: Gait[]; piece: Piece }) => x,
   onPieceGeneratedModify: (x: { piece: Piece }) => x,
   onBoardCreatedModify: (x: { board: Board }) => x,
-  postMove: (x: { move: Move }) => x,
+  postMove: (x: { move: Move; currentTurn: number }) => x,
   inCanStayFilter: (x: {
     move: Move;
     game: Game;

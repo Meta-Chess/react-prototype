@@ -27,7 +27,9 @@ export const Hex: Rule = {
 
 const hexShapeToken = {
   name: TokenName.Shape,
-  validTo: undefined,
+  expired: (): boolean => {
+    return false;
+  },
   data: { shape: SquareShape.Hex },
 };
 

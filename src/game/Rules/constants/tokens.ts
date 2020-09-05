@@ -4,30 +4,40 @@ import { TokenName } from "game/types";
 
 export const polarToken = {
   name: TokenName.PolarToken,
-  validTo: undefined,
+  expired: (): boolean => {
+    return false;
+  },
   data: undefined,
 };
 
 export const invisibilityToken = {
   name: TokenName.InvisibilityToken,
-  validTo: undefined,
+  expired: (): boolean => {
+    return false;
+  },
   data: undefined,
 };
 
 export const pawnDoubleStepToken = {
   name: TokenName.PawnDoubleStep,
-  validTo: undefined,
+  expired: (): boolean => {
+    return false;
+  },
   data: undefined,
 };
 
 export const activeCastlingToken = {
   name: TokenName.ActiveCastling,
-  validTo: undefined,
+  expired: (): boolean => {
+    return false;
+  },
   data: undefined,
 };
 
 export const passiveCastlingToken = {
   name: TokenName.PassiveCastling,
-  validTo: undefined,
+  expired: (): boolean => {
+    return false;
+  },
   data: undefined,
 };

@@ -41,7 +41,7 @@ export interface GaitParams {
 
 export interface Token {
   name: TokenName;
-  validTo: { player: Player; playerTurn: number } | undefined;
+  expired: (turn: number) => boolean;
   data: undefined | TokenData;
 }
 
@@ -54,6 +54,7 @@ export enum TokenName {
   ActiveCastling,
   PassiveCastling,
   CaptureToken,
+  Fatigue,
 }
 
 interface TokenData {

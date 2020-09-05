@@ -8,13 +8,15 @@ interface Props {
   type: PieceName;
   color: string;
   size: number;
+  opacity?: number;
   glowColor?: string;
 }
 
-const PieceImage: FC<Props> = ({ type, color, size, glowColor }) => {
+const PieceImage: FC<Props> = ({ type, color, size, opacity, glowColor }) => {
   if (size < 0) return null;
   const primary = color;
   const secondary = Colors.DARKEST.string();
+  const alphaModifier = opacity === undefined ? 1 : opacity;
   const paths =
     type === PieceName.Pawn ? (
       <Pawn />
@@ -44,7 +46,7 @@ const PieceImage: FC<Props> = ({ type, color, size, glowColor }) => {
             {paths}
           </G>
         ))}
-      <G fill={primary} stroke={secondary} strokeWidth={0.9}>
+      <G fill={primary} stroke={secondary} strokeWidth={0.9} opacity={alphaModifier}>
         {paths}
       </G>
     </Svg>
