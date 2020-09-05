@@ -19,6 +19,16 @@ export class Square extends TokenOwner {
     super(tokens);
   }
 
+  clone(): Square {
+    return new Square(
+      this.location,
+      this.coordinates,
+      this.tokens,
+      this.adjacencies.clone(),
+      this.pieces.map((piece) => piece.clone())
+    );
+  }
+
   go(direction: Direction): string[] {
     return this.adjacencies.go(direction);
   }

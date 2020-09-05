@@ -12,6 +12,10 @@ export class Adjacencies {
     } = {}
   ) {}
 
+  clone(): Adjacencies {
+    return new Adjacencies(this.adjacencies);
+  }
+
   go(direction: Direction): string[] {
     return this.adjacencies[direction] || [];
   }

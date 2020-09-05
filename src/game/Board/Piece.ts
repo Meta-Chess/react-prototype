@@ -2,16 +2,26 @@ import { PieceName, Player, Token, Gait, GaitParams } from "game/types";
 import { TokenOwner } from "./TokenOwner";
 
 class Piece extends TokenOwner {
-  id: number;
   constructor(
     public location: string,
     public name: PieceName,
     public generateGaits: (_?: GaitParams) => Gait[],
     public owner: Player,
-    public tokens: Token[] = []
+    public tokens: Token[] = [],
+    public id: number = Math.random()
   ) {
     super(tokens);
-    this.id = Math.random();
+  }
+
+  clone(): Piece {
+    return new Piece(
+      this.location,
+      this.name,
+      this.generateGaits,
+      this.owner,
+      this.tokens,
+      this.id
+    );
   }
 }
 
