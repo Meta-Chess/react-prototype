@@ -15,7 +15,18 @@ class Board extends TokenOwner {
     super(tokens);
   }
 
-  // TODO: consider making this a "get" method?
+  clone(): Board {
+    const locationMapClone = Object.keys(this.squares).reduce(
+      (acc, key) => ({
+        ...acc,
+        [key]: this.squares[key].clone(),
+      }),
+      {}
+    );
+    return new Board(locationMapClone, this.tokens);
+  }
+
+  // TODO: consider making this a "property" or whatever it's called?
   pieces(): Piece[] {
     return Object.values(this.squares)
       .map((square) => square.pieces)

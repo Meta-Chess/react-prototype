@@ -1,6 +1,18 @@
 import { Gait } from "game/types";
 import { Direction } from "game/types";
 
+export const CASTLE_GAITS: Gait[] = [
+  { pattern: [Direction.H4], repeats: true },
+  { pattern: [Direction.H8], repeats: true },
+  { pattern: [Direction.H12], repeats: true },
+];
+
+export const FORT_GAITS: Gait[] = [
+  { pattern: [Direction.H2], repeats: true },
+  { pattern: [Direction.H6], repeats: true },
+  { pattern: [Direction.H10], repeats: true },
+];
+
 const NonDiagonalDirections = [
   Direction.H2,
   Direction.H4,

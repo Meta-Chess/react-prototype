@@ -52,6 +52,7 @@ export enum TokenName {
   Shape,
   ActiveCastling,
   PassiveCastling,
+  CaptureToken,
 }
 
 interface TokenData {
