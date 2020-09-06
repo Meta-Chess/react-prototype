@@ -1,6 +1,6 @@
 import { range2 } from "utilities";
-import { Adjacency, Piece, Square } from "game/Board";
-import { Direction, PieceName, Player, RankAndFileBounds } from "game/types";
+import { Adjacency, Piece, Square } from "../Board";
+import { Direction, PieceName, Player, RankAndFileBounds } from "../types";
 import { Rule } from "./Rules";
 import { createPiece } from "./utilities";
 

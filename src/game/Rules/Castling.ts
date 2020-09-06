@@ -1,9 +1,9 @@
 import { PieceName, TokenName } from "../types";
-import { Piece } from "game";
+import { Piece } from "../Board";
 import { Rule } from "./Rules";
 import { activeCastlingToken, passiveCastlingToken } from "./constants";
 import { isPresent } from "utilities";
-import { Pather, Scanner } from "game/Pather";
+import { Pather, Scanner } from "../Pather";
 
 export const Castling: Rule = {
   postMove: ({ move }) => {

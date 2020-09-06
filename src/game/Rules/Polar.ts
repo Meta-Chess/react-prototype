@@ -1,5 +1,5 @@
-import { Adjacency, Square } from "game";
-import { Direction, RankAndFileBounds, TokenName } from "game/types";
+import { Adjacency, Square } from "../Board";
+import { Direction, RankAndFileBounds, TokenName } from "../types";
 import { range, wrapToCylinder } from "utilities";
 import { Rule } from "./Rules";
 import { polarToken, invisibilityToken } from "./constants";

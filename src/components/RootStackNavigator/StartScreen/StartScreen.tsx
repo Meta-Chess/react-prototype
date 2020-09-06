@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { View, useWindowDimensions, Platform } from "react-native";
+import { View, useWindowDimensions, Platform, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { Colors, MChessLogo } from "primitives";
 import { SelectInput } from "ui";
@@ -14,36 +14,43 @@ const StartScreen: FC = () => {
   const [time, setTime] = useState<number | undefined>();
 
   return (
-    <ScreenContainer style={{ padding, width, height }}>
-      <View style={{ flex: 1, justifyContent: "center" }}>
-        <MChessLogo
-          scaleFactor={Platform.OS === "web" ? 0.8 : 0.7}
-          style={{ margin: 24 }}
-        />
-      </View>
-      <ControlsContainer>
-        <View
-          style={{ flex: 7, justifyContent: "flex-end", flexDirection: "column-reverse" }}
-        >
-          <SelectInput
-            options={timeOptions}
-            onChange={(value): void => {
-              setTime(value);
-            }}
-            style={{ marginTop: 24 }}
-            zIndex={5000}
+    <ScreenContainer style={{ padding }}>
+      <View style={{ alignItems: "center", height: "100%" }}>
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <MChessLogo
+            scaleFactor={Platform.OS === "web" ? 0.8 : 0.7}
+            style={{ margin: 24 }}
           />
-          <SelectInput
-            options={variantOptions}
-            onChange={(value): void => {
-              setVariant(value);
-            }}
-            style={{ marginTop: 32 }}
-            zIndex={4000}
-          />
-          <StartButton gameOptions={{ variant, time }} />
         </View>
-      </ControlsContainer>
+        <ControlsContainer>
+          <View
+            style={{
+              flex: 7,
+              justifyContent: "flex-end",
+              flexDirection: "column-reverse",
+            }}
+          >
+            <DummyComponentToReserveHeightForSelectMenu />
+            <SelectInput
+              options={timeOptions}
+              onChange={(value): void => {
+                setTime(value);
+              }}
+              style={{ marginTop: 24 }}
+              zIndex={5000}
+            />
+            <SelectInput
+              options={variantOptions}
+              onChange={(value): void => {
+                setVariant(value);
+              }}
+              style={{ marginTop: 32 }}
+              zIndex={4000}
+            />
+            <StartButton gameOptions={{ variant, time }} />
+          </View>
+        </ControlsContainer>
+      </View>
     </ScreenContainer>
   );
 };
@@ -64,18 +71,24 @@ const timeOptions = [
   { label: "3 hours", value: 7200000 },
 ];
 
-const ScreenContainer = styled(View)`
+const ScreenContainer = styled(ScrollView)`
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
   display: flex;
   flex-direction: column;
-  height: 300px;
-  width: 300px;
   background-color: ${Colors.DARKEST.string()};
-  align-items: center;
 `;
 
 const ControlsContainer = styled(View)`
   flex: 1;
   justify-content: center;
+`;
+
+const DummyComponentToReserveHeightForSelectMenu = styled(View)`
+  height: 140px;
 `;
 
 export { StartScreen };

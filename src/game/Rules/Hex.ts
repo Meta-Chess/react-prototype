@@ -1,6 +1,6 @@
 import { range } from "utilities";
 import { Rule } from "./Rules";
-import { Adjacency, Piece, Square } from "game";
+import { Adjacency, Piece, Square } from "../Board";
 import {
   Direction,
   PieceName,
@@ -8,7 +8,7 @@ import {
   RankAndFileBounds,
   SquareShape,
   TokenName,
-} from "game/types";
+} from "../types";
 import { createPiece, PieceSet } from "./utilities";
 
 export const Hex: Rule = {
