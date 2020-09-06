@@ -1,5 +1,6 @@
-import { Adjacency, Square } from "../Board";
-import { Direction, RankAndFileBounds, Rule } from "game/types";
+import { Adjacency, Square } from "game";
+import { Rule } from "./Rules";
+import { Direction, RankAndFileBounds } from "game/types";
 
 export const Cylindrical: Rule = {
   onBoardCreatedModify: ({ board }) => {

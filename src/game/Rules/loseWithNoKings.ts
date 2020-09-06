@@ -1,4 +1,5 @@
-import { Rule, PieceName } from "../types";
+import { PieceName } from "../types";
+import { Rule } from "./Rules";
 
 export const loseWithNoKings: Rule = {
   lethalCondition: ({ board, player, dead }) => {

@@ -9,4 +9,4 @@ export * from "./Standard";
 export * from "./Check";
 export * from "./loseWithNoKings";
 
-export * from "./types";
+export * from "./Rules";

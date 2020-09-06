@@ -1,5 +1,6 @@
-import { PieceName, Rule, TokenName } from "../types";
-import { Piece } from "../Board";
+import { PieceName, TokenName } from "../types";
+import { Piece } from "game";
+import { Rule } from "./Rules";
 import { activeCastlingToken, passiveCastlingToken } from "./constants";
 import { isPresent } from "utilities";
 import { Pather, Scanner } from "game/Pather";
@@ -10,11 +11,12 @@ export const Castling: Rule = {
     piecesMoved.forEach((piece: Piece) => {
       piece.removeTokensByNames([TokenName.ActiveCastling, TokenName.PassiveCastling]);
     });
+    return { move };
   },
   generateSpecialMoves: (input) => {
     if (!input.piece.hasTokenWithName(TokenName.ActiveCastling)) return input;
 
-    const { board, piece: activePiece, rules, moves } = input;
+    const { board, piece: activePiece, interrupt, moves } = input;
 
     const directions = activePiece
       .generateGaits()
@@ -51,7 +53,11 @@ export const Castling: Rule = {
 
     const filteredCastlePiecesAndLocations = castlePiecesAndLocations.filter(
       ({ passivePiece, passiveDestination }) => {
-        const passivePieceMoveSet = new Pather(board, passivePiece, rules).findPaths();
+        const passivePieceMoveSet = new Pather(
+          board,
+          passivePiece,
+          interrupt
+        ).findPaths();
         return passivePieceMoveSet
           .map((move) => move.location)
           .includes(passiveDestination.location);
@@ -69,7 +75,7 @@ export const Castling: Rule = {
       })
     );
 
-    return { board, piece: activePiece, rules, moves: [...moves, ...newMoves] };
+    return { board, piece: activePiece, interrupt, moves: [...moves, ...newMoves] };
   },
   onBoardCreatedModify: ({ board }) => {
     board.addPieceTokensByRule((piece: Piece) =>

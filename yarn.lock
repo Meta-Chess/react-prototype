@@ -12659,6 +12659,11 @@ ts-pnp@^1.1.6:
   resolved "https://registry.yarnpkg.com/ts-pnp/-/ts-pnp-1.2.0.tgz#a500ad084b0798f1c3071af391e65912c86bca92"
   integrity sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==
 
+ts-transformer-keys@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/ts-transformer-keys/-/ts-transformer-keys-0.4.2.tgz#130d5b116b14d537d26aff2894dca10ac1877b22"
+  integrity sha512-8WVoathKnPIeZbhKuqkBKdWLq1JuiZjT5EmaKobeMI5AHQZIVLI8vyU+1h7e1YiIEIvtBUbmZ12uj2cFbgj5qg==
+
 tsconfig-paths-webpack-plugin@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/tsconfig-paths-webpack-plugin/-/tsconfig-paths-webpack-plugin-3.2.0.tgz#6e70bd42915ad0efb64d3385163f0c1270f3e04d"

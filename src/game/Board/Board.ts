@@ -6,11 +6,11 @@ import {
   Direction,
   PieceDelta,
   RankAndFileBounds,
-  Rule,
   Token,
   Player,
 } from "game/types";
-import { applyInSequence, isPresent } from "utilities";
+import { isPresent } from "utilities";
+import { CompactRules } from "game/Rules/Rules";
 
 interface LocationMap {
   [key: string]: Square;
@@ -147,18 +147,11 @@ class Board extends TokenOwner {
     return new Board({});
   }
 
-  static createBoard(rules: Rule[]): Board {
+  static createBoard(interrupt: CompactRules): Board {
     let board = new Board();
 
-    ({ board } = applyInSequence(
-      rules.map((r) => r?.forSquareGenerationModify),
-      { board }
-    ));
-
-    ({ board } = applyInSequence(
-      rules.map((r) => r?.onBoardCreatedModify),
-      { board }
-    ));
+    ({ board } = interrupt.for.forSquareGenerationModify({ board }));
+    ({ board } = interrupt.for.onBoardCreatedModify({ board }));
 
     return board;
   }

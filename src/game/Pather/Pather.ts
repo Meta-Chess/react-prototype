@@ -1,6 +1,6 @@
-import { applyInSequence, isPresent } from "utilities";
-import { Board, Piece, Square } from "../Board";
-import { Direction, Gait, Move, Rule } from "../types";
+import { isPresent } from "utilities";
+import { Board, CompactRules, Piece, Square } from "game";
+import { Direction, Gait, Move } from "../types";
 import { flatMap } from "lodash";
 
 const MAX_STEPS = 64; // To be considered further
@@ -9,7 +9,7 @@ export class Pather {
   constructor(
     private board: Board,
     private piece: Piece,
-    private rules: Rule[],
+    private interrupt: CompactRules,
     private params: { checkDepth?: number } = {}
   ) {}
 
@@ -17,13 +17,10 @@ export class Pather {
     const currentSquare = this.board.squareAt(this.piece.location);
     if (!currentSquare) return [];
 
-    const { gaits } = applyInSequence(
-      this.rules?.map((r) => r?.onGaitsGeneratedModify),
-      {
-        gaits: this.piece.generateGaits(),
-        piece: this.piece,
-      }
-    );
+    const { gaits } = this.interrupt.for.onGaitsGeneratedModify({
+      gaits: this.piece.generateGaits(),
+      piece: this.piece,
+    });
 
     const moves = flatMap(gaits, (gait) => this.path({ currentSquare, gait })).map(
       (square) => ({
@@ -33,15 +30,12 @@ export class Pather {
       })
     );
 
-    const { moves: specialMoves } = applyInSequence(
-      this.rules?.map((r) => r?.generateSpecialMoves),
-      {
-        board: this.board,
-        piece: this.piece,
-        rules: this.rules,
-        moves: [],
-      }
-    );
+    const { moves: specialMoves } = this.interrupt.for.generateSpecialMoves({
+      board: this.board,
+      piece: this.piece,
+      interrupt: this.interrupt,
+      moves: [],
+    });
 
     return moves.concat(specialMoves);
   }
@@ -70,10 +64,11 @@ export class Pather {
     return [
       ...allowableSquares,
       ...flatMap(continuingSquares, (square) => {
-        ({ gait, remainingSteps, currentSquare } = applyInSequence(
-          this.rules?.map((r) => r.afterStepModify),
-          { gait, remainingSteps, currentSquare: square }
-        ));
+        ({ gait, remainingSteps, currentSquare } = this.interrupt.for.afterStepModify({
+          gait,
+          remainingSteps,
+          currentSquare: square,
+        }));
 
         return this.path({
           gait,
@@ -128,20 +123,17 @@ export class Pather {
     } else {
       if (gait.mustCapture) return false;
     }
-    const { filtered } = applyInSequence(
-      this.rules?.map((r) => r.inCanStayFilter),
-      {
-        move: {
-          location: square.location,
-          pieceDeltas: [{ piece: this.piece.clone(), destination: square.location }],
-          player: this.piece.owner,
-        },
-        board: this.board,
-        rules: this.rules,
-        patherParams: this.params,
-        filtered: false,
-      }
-    );
+    const { filtered } = this.interrupt.for.inCanStayFilter({
+      move: {
+        location: square.location,
+        pieceDeltas: [{ piece: this.piece.clone(), destination: square.location }],
+        player: this.piece.owner,
+      },
+      board: this.board,
+      interrupt: this.interrupt,
+      patherParams: this.params,
+      filtered: false,
+    });
     return !filtered;
   }
 

@@ -1,5 +1,6 @@
-import { PieceName, Player, Rule, TokenName } from "../types";
-import { Piece } from "../Board";
+import { PieceName, Player, TokenName } from "../types";
+import { Piece } from "game";
+import { Rule } from "./Rules";
 import { standardGaits, pawnDoubleStepToken } from "./constants";
 
 export const PawnDoubleStep: Rule = {
@@ -9,6 +10,7 @@ export const PawnDoubleStep: Rule = {
       if (piece.name === PieceName.Pawn)
         piece.removeTokensByName(TokenName.PawnDoubleStep);
     });
+    return { move };
   },
   onGaitsGeneratedModify: ({ gaits, piece }) => ({
     gaits: [

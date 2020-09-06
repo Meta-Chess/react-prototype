@@ -1,10 +1,11 @@
 import { Board, Piece, Square } from "./Board";
 import { Renderer } from "./Renderer";
 import { Clock } from "./Clock";
-import { GameOptions, Move, Player, Rule } from "./types";
+import { GameOptions, Move, Player } from "./types";
 import { Pather } from "./Pather";
 import { flatMap } from "lodash";
-import { variants } from "game/variants";
+import { variants } from "./variants";
+import { CompactRules } from "./Rules/Rules";
 
 export class Game {
   public clock: Clock | undefined;
@@ -16,7 +17,7 @@ export class Game {
 
   constructor(
     public board: Board,
-    public rules: Rule[],
+    public interrupt: CompactRules,
     public format: Format,
     public renderer: Renderer,
     time: number | undefined
@@ -32,10 +33,10 @@ export class Game {
 
   static createGame(input: { gameOptions: GameOptions; renderer: Renderer }): Game {
     const { variant, time } = input.gameOptions;
-    const rules = variants[variant].rules;
+    const interrupt = new CompactRules(variants[variant].rules);
     return new Game(
-      Board.createBoard(rules),
-      rules,
+      Board.createBoard(interrupt),
+      interrupt,
       Format.default,
       input.renderer,
       time
@@ -61,7 +62,7 @@ export class Game {
   selectPieces(square: Square): void {
     this.selectedPieces = square.pieces;
     this.allowableMoves = flatMap(this.selectedPieces, (piece: Piece) =>
-      new Pather(this.board, piece, this.rules).findPaths()
+      new Pather(this.board, piece, this.interrupt).findPaths()
     );
   }
   unselectAllPieces(): void {
@@ -74,9 +75,7 @@ export class Game {
 
     this.board.displacePieces(move.pieceDeltas);
 
-    this.rules.forEach((v) => {
-      v.postMove?.({ move });
-    });
+    this.interrupt.for.postMove({ move });
 
     this.nextTurn();
   }

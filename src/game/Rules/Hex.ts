@@ -1,11 +1,11 @@
 import { range } from "utilities";
-import { Adjacency, Piece, Square } from "../Board";
+import { Rule } from "./Rules";
+import { Adjacency, Piece, Square } from "game";
 import {
   Direction,
   PieceName,
   Player,
   RankAndFileBounds,
-  Rule,
   SquareShape,
   TokenName,
 } from "game/types";
