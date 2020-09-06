@@ -2,13 +2,7 @@ import { Piece } from "./Piece";
 import { Square } from "./Square";
 import { Adjacency } from "./Adjacencies";
 import { TokenOwner } from "./TokenOwner";
-import {
-  Direction,
-  PieceDelta,
-  RankAndFileBounds,
-  Token,
-  Player,
-} from "game/types";
+import { Direction, PieceDelta, RankAndFileBounds, Token, Player } from "game/types";
 import { isPresent } from "utilities";
 import { CompactRules } from "game/Rules/Rules";
 

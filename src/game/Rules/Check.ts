@@ -2,7 +2,6 @@ import { CompactRules, Rule } from "./Rules";
 import { Pather } from "../Pather";
 import { Board } from "../Board";
 import { Move } from "../types";
-import { applyInSequence } from "utilities";
 import { cloneDeep } from "lodash";
 
 export const Check: Rule = {

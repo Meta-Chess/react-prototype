@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { View, useWindowDimensions, Platform, ScrollView } from "react-native";
+import { View, Platform, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { Colors, MChessLogo } from "primitives";
 import { SelectInput } from "ui";
@@ -8,7 +8,6 @@ import { StartButton } from "./StartButton";
 
 const StartScreen: FC = () => {
   const padding = 12;
-  const { width, height } = useWindowDimensions();
 
   const [variant, setVariant] = useState<VariantName>(variantNames[0]);
   const [time, setTime] = useState<number | undefined>();
