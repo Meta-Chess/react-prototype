@@ -1,29 +1,29 @@
 import React, { FC } from "react";
 import { Colors } from "primitives";
 import { Square } from "game/Board";
-import { Game } from "game";
+import { GameMaster } from "game";
 import Color from "color";
 import styled from "styled-components/native";
 import { View } from "react-native";
 
 interface Props {
-  game: Game;
+  gameMaster: GameMaster;
   square: Square;
 }
 
-const Highlight: FC<Props> = ({ game, square }) => {
+const Highlight: FC<Props> = ({ gameMaster, square }) => {
   if (
-    !game.allowableMoves.map((m) => m.location).includes(square.location) &&
-    !square.hasPieceOf(game.selectedPieces)
+    !gameMaster.allowableMoves.map((m) => m.location).includes(square.location) &&
+    !square.hasPieceOf(gameMaster.selectedPieces)
   )
     return null;
 
   const HighlightComponent = square.hasPiece() ? FullHighlight : CenterHighlight;
-  const selectedPieceOwner = game.selectedPieces[0]?.owner;
+  const selectedPieceOwner = gameMaster.selectedPieces[0]?.owner;
   const highlightColor =
-    selectedPieceOwner !== game.currentPlayer
+    selectedPieceOwner !== gameMaster.game.currentPlayer
       ? Colors.HIGHLIGHT.INFO
-      : square.hasPieceOf(game.selectedPieces)
+      : square.hasPieceOf(gameMaster.selectedPieces)
       ? Colors.HIGHLIGHT.WARNING
       : square.hasPieceNotBelongingTo(selectedPieceOwner)
       ? Colors.HIGHLIGHT.ERROR

@@ -6,18 +6,19 @@ import { GameContext } from "game";
 import { Timer } from "./Timer";
 
 const Clocks: SFC = ({ style }) => {
-  const { game } = useContext(GameContext);
-  if (!game?.clock) return null;
+  const { gameMaster } = useContext(GameContext);
+  if (!gameMaster?.game.clock) return null;
+  const players = gameMaster.game.players;
 
   return (
     <Container style={style}>
-      {game.players.map((player, index) => (
+      {players.map((player, index) => (
         <Timer
           style={{
-            marginRight: index < game.players.length - 1 ? 12 : 0,
+            marginRight: index < players.length - 1 ? 12 : 0,
           }}
           player={player}
-          alignment={game.players.length > 2 ? "center" : index === 0 ? "left" : "right"}
+          alignment={players.length > 2 ? "center" : index === 0 ? "left" : "right"}
           key={player}
         />
       ))}

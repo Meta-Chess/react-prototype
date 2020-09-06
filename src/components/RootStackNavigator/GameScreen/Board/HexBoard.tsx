@@ -13,7 +13,8 @@ const HexBoard: SFC = ({ style }) => {
 
   const padding = 8;
 
-  const { game } = useContext(GameContext);
+  const { gameMaster } = useContext(GameContext);
+  const game = gameMaster?.game;
   const { flipBoard } = useFlipDelay(game?.currentPlayer);
   if (!game) return null;
 

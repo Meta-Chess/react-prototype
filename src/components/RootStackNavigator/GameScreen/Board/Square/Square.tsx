@@ -17,8 +17,8 @@ interface Props {
 
 const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
   const HEX_SQUARE_EMPTY_RATIO = 2 / Math.sqrt(3) - 1;
-  const { game } = useContext(GameContext);
-  if (!game) return null;
+  const { gameMaster } = useContext(GameContext);
+  if (!gameMaster) return null;
 
   if (!square) {
     const emptySize = shape === SquareShape.Hex ? HEX_SQUARE_EMPTY_RATIO * size : size;
@@ -36,7 +36,7 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
   const pieceSize = (pieceScaleFactor * size) / dimension;
 
   const onPress = (): void => {
-    game.onPress(square);
+    gameMaster.onPress(square);
   };
 
   return (
@@ -53,7 +53,7 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
       onPress={onPress}
       activeOpacity={1}
     >
-      <Highlight game={game} square={square} />
+      <Highlight gameMaster={gameMaster} square={square} />
       <PositioningContainer size={pieceScaleFactor * size}>
         <GridArrangement>
           {piecesOnSquare.map((piece) => (

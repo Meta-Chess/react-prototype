@@ -16,13 +16,13 @@ export const Castling: Rule = {
   generateSpecialMoves: (input) => {
     if (!input.piece.hasTokenWithName(TokenName.ActiveCastling)) return input;
 
-    const { board, piece: activePiece, interrupt, moves } = input;
+    const { game, piece: activePiece, interrupt, moves } = input;
 
     const directions = activePiece
       .generateGaits()
       .map((g) => g.pattern[0])
       .filter(isPresent);
-    const scanner = new Scanner(board, activePiece);
+    const scanner = new Scanner(game.board, activePiece);
 
     const castlePiecesAndDirections = directions.flatMap((direction) =>
       scanner
@@ -35,12 +35,12 @@ export const Castling: Rule = {
 
     const castlePiecesAndLocations = castlePiecesAndDirections.flatMap(
       ({ piece: passivePiece, direction }) => {
-        const passiveDestinations = board.go({
+        const passiveDestinations = game.board.go({
           from: activePiece.location,
           path: [direction],
         });
         return passiveDestinations.flatMap((passiveDestination) =>
-          board
+          game.board
             .go({ from: passiveDestination.location, path: [direction] })
             .map((activeDestination) => ({
               passivePiece,
@@ -53,11 +53,7 @@ export const Castling: Rule = {
 
     const filteredCastlePiecesAndLocations = castlePiecesAndLocations.filter(
       ({ passivePiece, passiveDestination }) => {
-        const passivePieceMoveSet = new Pather(
-          board,
-          passivePiece,
-          interrupt
-        ).findPaths();
+        const passivePieceMoveSet = new Pather(game, passivePiece, interrupt).findPaths();
         return passivePieceMoveSet
           .map((move) => move.location)
           .includes(passiveDestination.location);
@@ -75,7 +71,7 @@ export const Castling: Rule = {
       })
     );
 
-    return { board, piece: activePiece, interrupt, moves: [...moves, ...newMoves] };
+    return { game, piece: activePiece, interrupt, moves: [...moves, ...newMoves] };
   },
   onBoardCreatedModify: ({ board }) => {
     board.addPieceTokensByRule((piece: Piece) =>

@@ -1,6 +1,7 @@
 import { Direction, Gait, Move, Player } from "../types";
 import { applyInSequence, isPresent } from "utilities";
 import { Board, Piece, Square } from "../Board";
+import { Game } from "game/Game";
 
 // Note: These linting exceptions should only ever be used with great caution
 // Take care to check extra carefully for errors in this file because we have less type safety
@@ -37,7 +38,7 @@ const identityRule = {
   }) => x,
   forSquareGenerationModify: (x: { board: Board }) => x,
   generateSpecialMoves: (x: {
-    board: Board;
+    game: Game;
     piece: Piece;
     interrupt: CompactRules;
     moves: Move[];
@@ -48,7 +49,7 @@ const identityRule = {
   postMove: (x: { move: Move }) => x,
   inCanStayFilter: (x: {
     move: Move;
-    board: Board;
+    game: Game;
     interrupt: CompactRules;
     patherParams: { checkDepth?: number };
     filtered: boolean;

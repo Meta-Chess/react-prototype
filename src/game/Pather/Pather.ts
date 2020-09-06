@@ -1,5 +1,5 @@
 import { isPresent } from "utilities";
-import { Board, CompactRules, Piece, Square } from "game";
+import { CompactRules, Game, Piece, Square } from "game";
 import { Direction, Gait, Move } from "../types";
 import { flatMap } from "lodash";
 
@@ -7,14 +7,14 @@ const MAX_STEPS = 64; // To be considered further
 
 export class Pather {
   constructor(
-    private board: Board,
+    private game: Game,
     private piece: Piece,
     private interrupt: CompactRules,
     private params: { checkDepth?: number } = {}
   ) {}
 
   findPaths(): Move[] {
-    const currentSquare = this.board.squareAt(this.piece.location);
+    const currentSquare = this.game.board.squareAt(this.piece.location);
     if (!currentSquare) return [];
 
     const { gaits } = this.interrupt.for.onGaitsGeneratedModify({
@@ -31,7 +31,7 @@ export class Pather {
     );
 
     const { moves: specialMoves } = this.interrupt.for.generateSpecialMoves({
-      board: this.board,
+      game: this.game,
       piece: this.piece,
       interrupt: this.interrupt,
       moves: [],
@@ -42,7 +42,7 @@ export class Pather {
 
   path({
     gait,
-    currentSquare = this.board.squareAt(this.piece.location),
+    currentSquare = this.game.board.squareAt(this.piece.location),
     remainingSteps = gait.pattern,
     stepAllowance = MAX_STEPS,
   }: {
@@ -129,7 +129,7 @@ export class Pather {
         pieceDeltas: [{ piece: this.piece.clone(), destination: square.location }],
         player: this.piece.owner,
       },
-      board: this.board,
+      game: this.game,
       interrupt: this.interrupt,
       patherParams: this.params,
       filtered: false,
@@ -146,7 +146,7 @@ export class Pather {
     return (
       from.adjacencies
         .go(direction)
-        ?.map((location) => this.board.squareAt(location))
+        ?.map((location) => this.game.board.squareAt(location))
         .filter(isPresent) || []
     );
   }

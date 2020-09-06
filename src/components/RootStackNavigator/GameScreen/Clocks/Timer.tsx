@@ -12,10 +12,10 @@ interface Props {
 }
 
 const Timer: SFC<Props> = ({ style, player, alignment }) => {
-  const { game } = useContext(GameContext);
+  const { gameMaster } = useContext(GameContext);
   const [dummy, setDummy] = useState(false);
 
-  const clock = game?.clock?.getPlayerTimer(player);
+  const clock = gameMaster?.game.clock?.getPlayerTimer(player);
 
   const formattedTime = clock?.getFormattedTime();
   const displayTime = formattedTime?.time;

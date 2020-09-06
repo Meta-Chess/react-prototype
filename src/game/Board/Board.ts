@@ -31,7 +31,7 @@ class Board extends TokenOwner {
   pieces(): Piece[] {
     return Object.values(this.squares)
       .map((square) => square.pieces)
-      .flat();
+      .flat(); // TODO: replace with flatmap / consider efficiency implications
   }
 
   piecesByRule(rule: (p: Piece) => boolean): Piece[] {
@@ -40,6 +40,10 @@ class Board extends TokenOwner {
 
   piecesNotBelongingTo(player: Player): Piece[] {
     return this.piecesByRule((piece) => piece.owner !== player);
+  }
+
+  findPieceById(id: number): Piece | undefined {
+    return this.pieces().find((p) => p.id === id);
   }
 
   addSquare({ location, square }: { location: string; square: Square }): void {

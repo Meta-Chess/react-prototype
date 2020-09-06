@@ -13,7 +13,8 @@ const SquareBoard: SFC = ({ style }) => {
 
   const padding = Platform.OS === "web" ? 8 : 0;
 
-  const { game } = useContext(GameContext);
+  const { gameMaster } = useContext(GameContext);
+  const game = gameMaster?.game;
   const { flipBoard } = useFlipDelay(game?.currentPlayer);
   if (!game) return null;
 

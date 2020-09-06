@@ -1,11 +1,9 @@
-import { CompactRules, Rule } from "./Rules";
+import { Rule } from "./Rules";
 import { Pather } from "../Pather";
-import { Board } from "../Board";
-import { Move } from "../types";
 import { cloneDeep } from "lodash";
 
 export const Check: Rule = {
-  inCanStayFilter: ({ move, board, interrupt, patherParams, filtered }) => {
+  inCanStayFilter: ({ move, game, interrupt, patherParams, filtered }) => {
     const newPatherParams = cloneDeep(patherParams);
     if (newPatherParams.checkDepth === undefined) {
       newPatherParams.checkDepth = 1;
@@ -13,34 +11,30 @@ export const Check: Rule = {
 
     if (newPatherParams.checkDepth > 0) {
       newPatherParams.checkDepth -= 1;
-      const newBoard = doMove(board.clone(), interrupt, move); // should call game.doMove but requires refactor
-      const pieces = newBoard.piecesNotBelongingTo(move.player);
+      const cloneGame = game.clone();
+      cloneGame.doMove(move);
+      const pieces = cloneGame.board.piecesNotBelongingTo(move.player);
 
       for (let i = 0; i < pieces.length; i++) {
         const piece = pieces[i];
-        const pather = new Pather(newBoard, piece, interrupt, newPatherParams);
+        const pather = new Pather(cloneGame, piece, interrupt, newPatherParams);
         const hypotheticalMoves = pather.findPaths();
         for (let j = 0; j < hypotheticalMoves.length; j++) {
+          const secondClonedGame = cloneGame.clone();
+          secondClonedGame.doMove(hypotheticalMoves[j]);
           const { dead } = interrupt.for.lethalCondition({
-            board: doMove(newBoard.clone(), interrupt, hypotheticalMoves[j]),
+            board: secondClonedGame.board,
             player: move.player,
             dead: false,
           });
           if (dead) {
-            return { move, board, interrupt, patherParams, filtered: true };
+            return { move, game, interrupt, patherParams, filtered: true };
           }
         }
       }
-      return { move, board, interrupt, patherParams, filtered };
+      return { move, game, interrupt, patherParams, filtered };
     } else {
-      return { move, board, interrupt, patherParams, filtered };
+      return { move, game, interrupt, patherParams, filtered };
     }
   },
 };
-
-// PURGE
-function doMove(board: Board, interrupt: CompactRules, move: Move): Board {
-  board.displacePieces(move.pieceDeltas);
-  interrupt.for.postMove({ move });
-  return board;
-}

@@ -1,9 +1,9 @@
 import React, { createContext, FC, useState, useEffect } from "react";
-import { Game } from "./Game";
 import { Renderer } from "./Renderer";
 import { GameOptions } from "game/types";
+import { GameMaster } from "game/GameMaster";
 
-const GameContext = createContext<{ game?: Game }>({});
+const GameContext = createContext<{ gameMaster?: GameMaster }>({});
 
 interface Props {
   gameOptions: GameOptions;
@@ -13,19 +13,16 @@ interface Props {
 const GameProvider: FC<Props> = ({ children, gameOptions, gameId }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_updateCounter, setUpdateCounter] = useState(0);
-  const [g, setG] = useState<Game | undefined>();
+  const [gameMaster, setGameMaster] = useState<GameMaster | undefined>();
 
   useEffect(() => {
-    const newGame = gameOptions
-      ? Game.createGame({
-          gameOptions,
-          renderer: new Renderer(setUpdateCounter),
-        })
+    const newGameMaster = gameOptions
+      ? new GameMaster(gameOptions, new Renderer(setUpdateCounter))
       : undefined;
-    setG(newGame);
+    setGameMaster(newGameMaster);
   }, [gameId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return <GameContext.Provider value={{ game: g }}>{children}</GameContext.Provider>;
+  return <GameContext.Provider value={{ gameMaster }}>{children}</GameContext.Provider>;
 };
 
 export { GameProvider, GameContext };

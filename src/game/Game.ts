@@ -1,73 +1,40 @@
-import { Board, Piece, Square } from "./Board";
-import { Renderer } from "./Renderer";
+import { Board } from "./Board";
 import { Clock } from "./Clock";
-import { GameOptions, Move, Player } from "./types";
-import { Pather } from "./Pather";
-import { flatMap } from "lodash";
-import { variants } from "./variants";
+import { Move, Player } from "./types";
 import { CompactRules } from "./Rules/Rules";
 
 export class Game {
-  public clock: Clock | undefined;
-  public players: Player[];
-  public selectedPieces: Piece[];
-  public allowableMoves: Move[];
-  public currentPlayer: Player;
-  public currentTurn: number;
-
   constructor(
-    public board: Board,
     public interrupt: CompactRules,
-    public format: Format,
-    public renderer: Renderer,
-    time: number | undefined
-  ) {
-    this.clock = time ? new Clock([Player.White, Player.Black], time) : undefined;
-    this.clock?.setActivePlayers([Player.White]);
-    this.players = [Player.White, Player.Black];
-    this.currentPlayer = Player.White;
-    this.currentTurn = 1;
-    this.selectedPieces = [];
-    this.allowableMoves = [];
-  }
+    public board: Board,
+    public clock: Clock | undefined,
+    public players: Player[],
+    public currentPlayer: Player,
+    public currentTurn: number
+  ) {}
 
-  static createGame(input: { gameOptions: GameOptions; renderer: Renderer }): Game {
-    const { variant, time } = input.gameOptions;
-    const interrupt = new CompactRules(variants[variant].rules);
+  static createGame(interrupt: CompactRules, time: number | undefined): Game {
+    const clock = time ? new Clock([Player.White, Player.Black], time) : undefined;
+    clock?.setActivePlayers([Player.White]);
     return new Game(
-      Board.createBoard(interrupt),
       interrupt,
-      Format.default,
-      input.renderer,
-      time
+      Board.createBoard(interrupt),
+      clock,
+      [Player.White, Player.Black],
+      Player.White,
+      1
     );
   }
 
-  render(): void {
-    this.renderer.render();
-  }
-
-  onPress(square: Square): void {
-    if (this.selectedPieces.length === 0) {
-      this.selectPieces(square);
-    } else {
-      if (this.currentPlayer == this.selectedPieces[0].owner) {
-        this.doMove(this.allowableMoves.find((m) => m.location === square.location));
-      }
-      this.unselectAllPieces();
-    }
-    this.render();
-  }
-
-  selectPieces(square: Square): void {
-    this.selectedPieces = square.pieces;
-    this.allowableMoves = flatMap(this.selectedPieces, (piece: Piece) =>
-      new Pather(this.board, piece, this.interrupt).findPaths()
+  clone(): Game {
+    return new Game(
+      this.interrupt, // When we start updating the rules, we'll need to clone the interrupt, perhaps by storing the list of rules and regenerating
+      this.board.clone(),
+      undefined, // Clones don't need a clock at the moment
+      this.players,
+      this.currentPlayer,
+      this.currentTurn
     );
-  }
-  unselectAllPieces(): void {
-    this.selectedPieces = [];
-    this.allowableMoves = [];
   }
 
   doMove(move?: Move): void {
@@ -85,8 +52,4 @@ export class Game {
     this.currentPlayer = this.players[(currentIndex + 1) % this.players.length];
     this.clock?.setActivePlayers([this.currentPlayer]);
   }
-}
-
-enum Format {
-  default,
 }
