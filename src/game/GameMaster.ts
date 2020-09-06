@@ -4,7 +4,7 @@ import { GameOptions, Move } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { variants } from "./variants";
-import { CompactRules } from "./Rules";
+import { Check, CompactRules } from "./Rules";
 import { flatMap } from "lodash";
 
 export class GameMaster {
@@ -14,8 +14,10 @@ export class GameMaster {
   public allowableMoves: Move[];
 
   constructor(gameOptions: GameOptions, private renderer: Renderer) {
-    const { variant, time } = gameOptions;
-    this.interrupt = new CompactRules(variants[variant].rules);
+    const { variant, time, checkEnabled } = gameOptions;
+    let rules = [...variants[variant].rules];
+    if (checkEnabled) rules.push(Check);
+    this.interrupt = new CompactRules(rules);
     this.game = Game.createGame(this.interrupt, time);
     this.selectedPieces = [];
     this.allowableMoves = [];

@@ -1,10 +1,10 @@
 import { ParamListBase } from "@react-navigation/native";
 import { Screens } from "./Screens";
-import { VariantName } from "game";
+import { GameOptions } from "game/types";
 
 export interface NavigatorParamList extends ParamListBase {
   [Screens.GameScreen]: {
-    gameOptions: { variant: VariantName; time: number | undefined };
+    gameOptions: GameOptions;
     gameId: number;
   };
   [Screens.StartScreen]: undefined;

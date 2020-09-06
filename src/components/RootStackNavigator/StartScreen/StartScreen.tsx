@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { View, Platform, useWindowDimensions, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { Colors, MChessLogo } from "primitives";
-import { SelectInput } from "ui";
+import { SelectInput, LabeledCheckBox } from "ui";
 import { VariantName, variants } from "game";
 import { StartButton } from "./StartButton";
 
@@ -13,6 +13,7 @@ const StartScreen: FC = () => {
 
   const [variant, setVariant] = useState<VariantName>(variantNames[0]);
   const [time, setTime] = useState<number | undefined>();
+  const [checkEnabled, setCheckEnabled] = useState(true);
 
   return (
     <ScreenContainer style={{ padding }}>
@@ -32,6 +33,12 @@ const StartScreen: FC = () => {
             }}
           >
             <DummyComponentToReserveHeightForSelectMenu />
+            <LabeledCheckBox
+              value={checkEnabled}
+              setValue={setCheckEnabled}
+              label={"Check enabled"}
+              style={{ marginTop: 24 }}
+            />
             <SelectInput
               options={timeOptions}
               onChange={(value): void => {
@@ -48,7 +55,7 @@ const StartScreen: FC = () => {
               style={{ marginTop: 32 }}
               zIndex={4000}
             />
-            <StartButton gameOptions={{ variant, time }} />
+            <StartButton gameOptions={{ variant, time, checkEnabled }} />
           </View>
         </ControlsContainer>
       </View>

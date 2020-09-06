@@ -1,14 +1,11 @@
 import React from "react";
 import { Screens, useNavigation } from "navigation";
 import { Button } from "ui";
-import { VariantName } from "game";
 import { SFC } from "primitives";
+import { GameOptions } from "game/types";
 
 interface Props {
-  gameOptions: {
-    variant: VariantName;
-    time: number | undefined;
-  };
+  gameOptions: GameOptions;
 }
 const StartButton: SFC<Props> = ({ gameOptions, style }) => {
   const navigation = useNavigation();

@@ -77,4 +77,5 @@ export enum SquareShape {
 export interface GameOptions {
   variant: VariantName;
   time: number | undefined;
+  checkEnabled: boolean;
 }
