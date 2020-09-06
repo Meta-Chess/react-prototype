@@ -24,6 +24,7 @@ export const MChessLogo: SFC<Props> = ({ scaleFactor = 1, style }) => {
         <Text
           size={scaleFactor * 300}
           color={Colors.MCHESS.toString()}
+          selectable={false}
           style={{ fontWeight: "700" }}
         >
           M
@@ -34,6 +35,7 @@ export const MChessLogo: SFC<Props> = ({ scaleFactor = 1, style }) => {
           <Text
             size={scaleFactor * 100}
             color={Colors.TEXT.LIGHT.toString()}
+            selectable={false}
             style={{
               textShadowColor: Colors.SHADOW.fade(0.5).toString(),
               textShadowRadius: 5,

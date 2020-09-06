@@ -15,6 +15,7 @@ interface BaseTextProps {
   loading?: boolean;
   alignment?: "left" | "center" | "right";
   style?: StyleProp<TextStyle>;
+  selectable?: boolean;
 }
 
 function Text({
@@ -26,6 +27,7 @@ function Text({
   monospaceNumbers = false,
   loading = false,
   alignment,
+  selectable = false,
   style,
 }: BaseTextProps): React.ReactElement {
   const [fontsLoaded] = useFonts({ RobotoMono_400Regular });
@@ -64,6 +66,7 @@ function Text({
             key={index}
             monospaceNumbers={true}
             style={style}
+            selectable={false}
           >
             {char}
           </Text>
@@ -88,6 +91,7 @@ function Text({
         },
         style,
       ]}
+      selectable={selectable}
     >
       {children}
     </NativeText>
