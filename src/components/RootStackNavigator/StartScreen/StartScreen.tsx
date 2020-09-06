@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { View, Platform, ScrollView } from "react-native";
+import { View, Platform, useWindowDimensions, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { Colors, MChessLogo } from "primitives";
 import { SelectInput } from "ui";
@@ -9,12 +9,14 @@ import { StartButton } from "./StartButton";
 const StartScreen: FC = () => {
   const padding = 12;
 
+  const { height } = useWindowDimensions();
+
   const [variant, setVariant] = useState<VariantName>(variantNames[0]);
   const [time, setTime] = useState<number | undefined>();
 
   return (
     <ScreenContainer style={{ padding }}>
-      <View style={{ alignItems: "center", height: "100%" }}>
+      <View style={{ alignItems: "center", height }}>
         <View style={{ flex: 1, justifyContent: "center" }}>
           <MChessLogo
             scaleFactor={Platform.OS === "web" ? 0.8 : 0.7}
