@@ -2,7 +2,14 @@ import { Piece } from "./Piece";
 import { Square } from "./Square";
 import { Adjacency } from "./Adjacencies";
 import { TokenOwner } from "./TokenOwner";
-import { Direction, PieceDelta, RankAndFileBounds, Rule, Token } from "game/types";
+import {
+  Direction,
+  PieceDelta,
+  RankAndFileBounds,
+  Rule,
+  Token,
+  Player,
+} from "game/types";
 import { applyInSequence, isPresent } from "utilities";
 
 interface LocationMap {
@@ -33,6 +40,14 @@ class Board extends TokenOwner {
       .flat();
   }
 
+  piecesByRule(rule: (p: Piece) => boolean): Piece[] {
+    return this.pieces().filter(rule);
+  }
+
+  piecesNotBelongingTo(player: Player): Piece[] {
+    return this.piecesByRule((piece) => piece.owner !== player);
+  }
+
   addSquare({ location, square }: { location: string; square: Square }): void {
     this.squares = { ...this.squares, [location]: square };
   }
@@ -59,6 +74,10 @@ class Board extends TokenOwner {
     squares.forEach((square) => {
       square.addPieces(rule(square));
     });
+  }
+
+  addPieceAt(piece: Piece, location: string): void {
+    this.squareAt(location)?.addPieces([piece]);
   }
 
   addPieceTokensByRule(rule: (piece: Piece) => Token[]): void {

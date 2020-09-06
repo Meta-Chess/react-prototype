@@ -6,5 +6,7 @@ export * from "./HexPawnDoubleStep";
 export * from "./PawnDoubleStep";
 export * from "./Polar";
 export * from "./Standard";
+export * from "./Check";
+export * from "./loseWithNoKings";
 
 export * from "./types";

@@ -65,6 +65,7 @@ export const Castling: Rule = {
           { piece: passivePiece, destination: passiveDestination.location },
           { piece: activePiece, destination: activeDestination.location },
         ],
+        player: activePiece.owner,
       })
     );
 

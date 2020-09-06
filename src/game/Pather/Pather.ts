@@ -6,7 +6,12 @@ import { flatMap } from "lodash";
 const MAX_STEPS = 64; // To be considered further
 
 export class Pather {
-  constructor(private board: Board, private piece: Piece, private rules: Rule[]) {}
+  constructor(
+    private board: Board,
+    private piece: Piece,
+    private rules: Rule[],
+    private params: { checkDepth?: number } = {}
+  ) {}
 
   findPaths(): Move[] {
     const currentSquare = this.board.squareAt(this.piece.location);
@@ -24,6 +29,7 @@ export class Pather {
       (square) => ({
         location: square.location,
         pieceDeltas: [{ piece: this.piece, destination: square.location }],
+        player: this.piece.owner,
       })
     );
 
@@ -122,7 +128,21 @@ export class Pather {
     } else {
       if (gait.mustCapture) return false;
     }
-    return true;
+    const { filtered } = applyInSequence(
+      this.rules?.map((r) => r.inCanStayFilter),
+      {
+        move: {
+          location: square.location,
+          pieceDeltas: [{ piece: this.piece.clone(), destination: square.location }],
+          player: this.piece.owner,
+        },
+        board: this.board,
+        rules: this.rules,
+        patherParams: this.params,
+        filtered: false,
+      }
+    );
+    return !filtered;
   }
 
   canContinue({ gait, square }: HypotheticalDisplacement): boolean {
