@@ -51,33 +51,28 @@ export class Pather {
     remainingSteps?: Direction[];
     stepAllowance?: number;
   }): Square[] {
-    if (stepAllowance === 0 || remainingSteps.length === 0 || !currentSquare) {
-      return [];
+    const allowableSquares: Square[] = [];
+    for (let steps = 0; steps < stepAllowance; steps++) {
+      if (remainingSteps.length === 0 || !currentSquare) return allowableSquares;
+
+      const { continuingSquares, newAllowableSquares } = this.step({
+        currentSquare,
+        remainingSteps,
+        gait,
+      });
+
+      allowableSquares.push(...newAllowableSquares);
+
+      remainingSteps = this.updateRemainingSteps({ gait, remainingSteps });
+
+      ({ gait, remainingSteps, currentSquare } = this.interrupt.for.afterStepModify({
+        gait,
+        remainingSteps,
+        currentSquare: continuingSquares[0], // Later: Handle multiple continuing squares
+      }));
     }
 
-    // prettier-ignore
-    const { continuingSquares, allowableSquares } = 
-      this.step({ currentSquare, remainingSteps, gait });
-
-    remainingSteps = this.updateRemainingSteps({ gait, remainingSteps });
-
-    return [
-      ...allowableSquares,
-      ...flatMap(continuingSquares, (square) => {
-        ({ gait, remainingSteps, currentSquare } = this.interrupt.for.afterStepModify({
-          gait,
-          remainingSteps,
-          currentSquare: square,
-        }));
-
-        return this.path({
-          gait,
-          currentSquare,
-          remainingSteps,
-          stepAllowance: stepAllowance - 1,
-        });
-      }),
-    ];
+    return allowableSquares;
   }
 
   step({
@@ -88,7 +83,7 @@ export class Pather {
     currentSquare: Square;
     remainingSteps: Direction[];
     gait: Gait;
-  }): { continuingSquares: Square[]; allowableSquares: Square[] } {
+  }): { continuingSquares: Square[]; newAllowableSquares: Square[] } {
     const possibleLandingSquares = this.go({
       from: currentSquare,
       direction: remainingSteps[0],
@@ -105,7 +100,7 @@ export class Pather {
 
     return {
       continuingSquares,
-      allowableSquares: stayingSquares,
+      newAllowableSquares: stayingSquares,
     };
   }
 
