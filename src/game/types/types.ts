@@ -78,4 +78,5 @@ export interface GameOptions {
   variant: VariantName;
   time: number | undefined;
   checkEnabled: boolean;
+  fatigueEnabled: boolean;
 }

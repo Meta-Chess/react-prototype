@@ -7,9 +7,7 @@ import {
   PawnDoubleStep,
   Polar,
   Standard,
-  Check,
   loseWithNoKings,
-  Fatigue,
 } from "./Rules";
 
 export type VariantName = keyof typeof variants;

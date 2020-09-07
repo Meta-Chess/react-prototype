@@ -14,6 +14,7 @@ const StartScreen: FC = () => {
   const [variant, setVariant] = useState<VariantName>(variantNames[0]);
   const [time, setTime] = useState<number | undefined>();
   const [checkEnabled, setCheckEnabled] = useState(true);
+  const [fatigueEnabled, setFatigueEnabled] = useState(false);
 
   return (
     <ScreenContainer style={{ padding }}>
@@ -33,6 +34,12 @@ const StartScreen: FC = () => {
             }}
           >
             <DummyComponentToReserveHeightForSelectMenu />
+            <LabeledCheckBox
+              value={fatigueEnabled}
+              setValue={setFatigueEnabled}
+              label={"Fatigue on move"}
+              style={{ marginTop: 24 }}
+            />
             <LabeledCheckBox
               value={checkEnabled}
               setValue={setCheckEnabled}
@@ -55,7 +62,7 @@ const StartScreen: FC = () => {
               style={{ marginTop: 32 }}
               zIndex={4000}
             />
-            <StartButton gameOptions={{ variant, time, checkEnabled }} />
+            <StartButton gameOptions={{ variant, time, checkEnabled, fatigueEnabled }} />
           </View>
         </ControlsContainer>
       </View>
