@@ -26,35 +26,13 @@ export class GameMaster {
   }
 
   onPress(square: Square): void {
-    /*
     const move = this.allowableMoves.find((m) => m.location === square.location);
-    if (move && this.currentPlayer === this.selectedPieces[0]?.owner) {
-      //make move
-      this.doMove(move);
+    if (move && this.game.currentPlayer === this.selectedPieces[0]?.owner) {
+      this.game.doMove(move);
       this.unselectAllPieces();
-
-      //removing expired tokens
-      for (const s of Object.values(this.board.squares)) {
-        if (s.pieces.length !== 0) {
-          s.pieces[0].removeExpiredTokens(this.currentTurn);
-        }
-      }
-      //always increment turn last
-      this.currentTurn += 1;
     } else {
       this.unselectAllPieces();
       this.selectPieces(square);
-    }
-    this.render();
-    */
-
-    if (this.selectedPieces.length === 0) {
-      this.selectPieces(square);
-    } else {
-      if (this.game.currentPlayer == this.selectedPieces[0].owner) {
-        this.game.doMove(this.allowableMoves.find((m) => m.location === square.location));
-      }
-      this.unselectAllPieces();
     }
     this.render();
   }
