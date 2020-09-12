@@ -52,8 +52,9 @@ export class Pather {
     stepAllowance?: number;
   }): Square[] {
     const allowableSquares: Square[] = [];
+    if (!currentSquare) return allowableSquares;
     for (let steps = 0; steps < stepAllowance; steps++) {
-      if (remainingSteps.length === 0 || !currentSquare) return allowableSquares;
+      if (remainingSteps.length === 0) return allowableSquares;
 
       const { continuingSquares, newAllowableSquares } = this.step({
         currentSquare,
@@ -65,6 +66,7 @@ export class Pather {
 
       remainingSteps = this.updateRemainingSteps({ gait, remainingSteps });
 
+      if (continuingSquares.length === 0) return allowableSquares;
       ({ gait, remainingSteps, currentSquare } = this.interrupt.for.afterStepModify({
         gait,
         remainingSteps,
