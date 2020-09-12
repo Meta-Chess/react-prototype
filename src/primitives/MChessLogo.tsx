@@ -1,15 +1,12 @@
 import React from "react";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import styled from "styled-components/native";
 import { SFC } from "./SFC";
 import { Text } from "./Text";
 import { Colors } from "./Colors";
 
-interface Props {
-  scaleFactor: number;
-}
-
-export const MChessLogo: SFC<Props> = ({ scaleFactor = 1, style }) => {
+export const MChessLogo: SFC = ({ style }) => {
+  const scaleFactor = Platform.OS === "web" ? 0.8 : 0.7;
   return (
     <View
       style={[
