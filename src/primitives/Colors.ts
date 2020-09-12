@@ -2,7 +2,7 @@ import Color from "color";
 
 export const Colors = {
   WHITE: Color("#FFFFFF"),
-  SHADOW: Color("#000000"),
+  BLACK: Color("#161616"),
   TEXT: {
     DARK: Color("#212121"),
     LIGHT: Color("#FFFFFF"),

@@ -1,17 +1,18 @@
 import React, { useContext, useState } from "react";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { objectMatches } from "utilities";
 import { GameContext } from "game";
-import { TokenName, SquareShape } from "game/types";
+import { TokenName } from "game/types";
 import { Square } from "./Square";
 import { useFlipDelay } from "./useFlipDelay";
+import { BoardProps } from "components/shared/Board/Board";
 
-const HexBoard: SFC = ({ style }) => {
+const SquareBoard: SFC<BoardProps> = ({ style, backboard = true }) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-  const padding = 8;
+  const padding = backboard && Platform.OS === "web" ? 8 : 0;
 
   const { gameMaster } = useContext(GameContext);
   const game = gameMaster?.game;
@@ -27,11 +28,15 @@ const HexBoard: SFC = ({ style }) => {
 
   const boardDetails = {
     width: numberOfFiles,
-    height: (Math.ceil(numberOfRanks / 2) * 2) / Math.sqrt(3),
+    height: numberOfRanks,
   };
 
-  const fileCoordinates = Array.from(Array(numberOfFiles).keys()).map((n) => n + minFile);
-  const rankCoordinates = Array.from(Array(numberOfRanks).keys()).map((n) => n + minRank);
+  const fileCoordinates = Array.from(Array(boardDetails.width).keys()).map(
+    (n) => n + minFile
+  );
+  const rankCoordinates = Array.from(Array(boardDetails.height).keys()).map(
+    (n) => n + minRank
+  );
 
   const squareSize = Math.min(
     (dimensions.width - 2 * padding) / boardDetails.width,
@@ -43,8 +48,9 @@ const HexBoard: SFC = ({ style }) => {
     <SizeContainer
       onLayout={(event): void => {
         const { width, height } = event.nativeEvent.layout;
-        if (dimensions.width !== width || dimensions.height !== height)
+        if (dimensions.width !== width || dimensions.height !== height) {
           setDimensions({ width, height });
+        }
       }}
       style={style}
     >
@@ -57,11 +63,7 @@ const HexBoard: SFC = ({ style }) => {
           },
         ]}
       >
-        <SquaresContainer
-          style={{
-            flexDirection: flipBoard ? "row-reverse" : "row",
-          }}
-        >
+        <SquaresContainer style={{ flexDirection: flipBoard ? "row-reverse" : "row" }}>
           {fileCoordinates.map((file) => (
             <ColumnContainer
               style={{
@@ -81,7 +83,6 @@ const HexBoard: SFC = ({ style }) => {
                       })(square.coordinates) &&
                       !square.hasTokenWithName(TokenName.InvisibilityToken)
                   )}
-                  shape={SquareShape.Hex}
                   key={JSON.stringify([rank, file])}
                 />
               ))}
@@ -102,20 +103,19 @@ const SizeContainer = styled(View)`
 const BoardContainer = styled(View)`
   position: relative;
   background: ${Colors.DARK.string()};
-  box-shadow: 2px 1px 8px ${Colors.SHADOW.fade(0.8).string()};
+  box-shadow: 0px 1px 8px ${Colors.BLACK.fade(0.5).string()};
 `;
 
 const SquaresContainer = styled(View)`
+  flex-direction: row;
   display: flex;
   height: 100%;
-  align-items: center;
 `;
 
 const ColumnContainer = styled(View)`
-  flex-direction: column-reverse;
   justify-content: flex-end;
   flex: 1;
   display: flex;
 `;
 
-export { HexBoard };
+export { SquareBoard };

@@ -5,7 +5,7 @@ import { Screens, useRoute, useNavigation } from "navigation";
 import { GameProvider } from "game";
 import { Colors } from "primitives";
 import { Button } from "ui";
-import { Board } from "./Board";
+import { Board } from "components/shared/Board";
 import { Clocks } from "./Clocks";
 import { PieceCredit } from "./PieceCredit";
 

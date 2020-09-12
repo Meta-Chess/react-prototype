@@ -10,6 +10,8 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
+      "components/*": ["./src/components/*"],
+      "components": ["./src/components"],
       "game/*": ["./src/game/*"],
       "game": ["./src/game"],
       "utilities/*": ["./src/utilities/*"],

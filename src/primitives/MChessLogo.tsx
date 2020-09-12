@@ -34,7 +34,7 @@ export const MChessLogo: SFC = ({ style }) => {
             color={Colors.TEXT.LIGHT.toString()}
             selectable={false}
             style={{
-              textShadowColor: Colors.SHADOW.fade(0.5).toString(),
+              textShadowColor: Colors.BLACK.fade(0.5).toString(),
               textShadowRadius: 5,
             }}
           >

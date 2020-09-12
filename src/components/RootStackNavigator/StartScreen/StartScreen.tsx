@@ -1,13 +1,12 @@
 import React, { FC, useState } from "react";
-import { View, Platform, useWindowDimensions, ScrollView } from "react-native";
+import { View, useWindowDimensions, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { Colors, MChessLogo } from "primitives";
-import { SelectInput, LabeledCheckBox } from "ui";
-import { VariantName, variants } from "game";
 import { StartButton } from "./StartButton";
 import { defaultGameOptions, GameOptionControls } from "./GameOptionControls";
 import { GameOptions } from "game/types";
 import { VerticalSeparator } from "ui/Separators";
+import { ShadowBoard } from "./ShadowBoard";
 
 const StartScreen: FC = () => {
   const padding = 12;
@@ -30,7 +29,7 @@ const StartScreen: FC = () => {
       </View>
     </ScreenContainer>
   ) : (
-    <ScreenContainer style={{ padding }}>
+    <ScreenContainer>
       <View
         style={{
           alignItems: "center",
@@ -41,11 +40,13 @@ const StartScreen: FC = () => {
         <View
           style={{
             flex: 2,
+            height,
             justifyContent: "center",
             alignItems: "center",
             padding: 24,
           }}
         >
+          <ShadowBoard gameOptions={gameOptions} />
           <MChessLogo />
         </View>
         <VerticalSeparator />
@@ -58,13 +59,11 @@ const StartScreen: FC = () => {
             alignItems: "center",
           }}
         >
-          <View style={{ flex: 3, justifyContent: "flex-end" }}>
+          <View style={{ flex: 3, justifyContent: "center" }}>
             <GameOptionControls
               gameOptions={gameOptions}
               setGameOptions={setGameOptions}
             />
-          </View>
-          <View style={{ flex: 2 }}>
             <StartButton gameOptions={gameOptions} style={{ width: 240 }} />
           </View>
         </View>

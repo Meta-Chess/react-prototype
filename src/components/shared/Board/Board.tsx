@@ -5,13 +5,17 @@ import { TokenName, SquareShape } from "game/types";
 import { HexBoard } from "./HexBoard";
 import { SquareBoard } from "./SquareBoard";
 
-const Board: SFC = ({ style }) => {
+interface BoardProps {
+  backboard?: boolean;
+}
+
+const Board: SFC<BoardProps> = (props) => {
   const { gameMaster } = useContext(GameContext);
   if (!gameMaster) return null;
   const shapeToken = gameMaster.game.board.firstTokenWithName(TokenName.Shape);
 
-  if (shapeToken?.data?.shape === SquareShape.Hex) return <HexBoard style={style} />;
-  return <SquareBoard style={style} />;
+  if (shapeToken?.data?.shape === SquareShape.Hex) return <HexBoard {...props} />;
+  return <SquareBoard {...props} />;
 };
 
-export { Board };
+export { Board, BoardProps };
