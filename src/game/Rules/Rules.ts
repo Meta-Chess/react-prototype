@@ -50,7 +50,7 @@ const identityRule = {
   inCanStayFilter: (x: {
     move: Move;
     game: Game;
-    gameClone: Game;
+    gameClones: Game[];
     interrupt: CompactRules;
     patherParams: { checkDepth?: number };
     filtered: boolean;

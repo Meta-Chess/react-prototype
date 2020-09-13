@@ -57,7 +57,7 @@ export class GameMaster {
   selectPieces(square: Square): void {
     this.selectedPieces = square.pieces;
     this.allowableMoves = flatMap(this.selectedPieces, (piece: Piece) =>
-      new Pather(this.game, piece, this.interrupt).findPaths()
+      new Pather(this.game, undefined, piece, this.interrupt).findPaths()
     );
   }
 }

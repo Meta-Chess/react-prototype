@@ -8,6 +8,7 @@ const MAX_STEPS = 64; // To be considered further
 export class Pather {
   constructor(
     private game: Game,
+    private gameClones: Game[] = [game.clone(), game.clone()],
     private piece: Piece,
     private interrupt: CompactRules,
     private params: { checkDepth?: number } = {}
@@ -127,7 +128,7 @@ export class Pather {
         player: this.piece.owner,
       },
       game: this.game,
-      gameClone: this.game.clone(),
+      gameClones: this.gameClones,
       interrupt: this.interrupt,
       patherParams: this.params,
       filtered: false,

@@ -7,8 +7,11 @@ export const Check: Rule = {
   description:
     "You can't do any moves that would allow an opponent to take your king on their next turn. Something something win condition? Something something multiple opponents?",
 
-  inCanStayFilter: ({ move, game, gameClone, interrupt, patherParams, filtered }) => {
+  inCanStayFilter: ({ move, game, gameClones, interrupt, patherParams, filtered }) => {
     const newPatherParams = cloneDeep(patherParams);
+    const gameClone = gameClones[0];
+    const secondClonedGame = gameClones[1];
+
     if (newPatherParams.checkDepth === undefined) {
       newPatherParams.checkDepth = 1;
     }
@@ -18,11 +21,17 @@ export const Check: Rule = {
       gameClone.doMove(move);
       const pieces = gameClone.board.piecesNotBelongingTo(move.player);
 
+      secondClonedGame.resetTo(gameClone);
       for (let i = 0; i < pieces.length; i++) {
         const piece = pieces[i];
-        const pather = new Pather(gameClone, piece, interrupt, newPatherParams);
+        const pather = new Pather(
+          gameClone,
+          [gameClones[0]],
+          piece,
+          interrupt,
+          newPatherParams
+        );
         const hypotheticalMoves = pather.findPaths();
-        const secondClonedGame = gameClone.clone();
         for (let j = 0; j < hypotheticalMoves.length; j++) {
           secondClonedGame.doMove(hypotheticalMoves[j]);
           const { dead } = interrupt.for.lethalCondition({
@@ -31,14 +40,14 @@ export const Check: Rule = {
             dead: false,
           });
           if (dead) {
-            gameClone.resetTo(game);
-            return { move, game, gameClone, interrupt, patherParams, filtered: true };
+            gameClones[0].resetTo(game);
+            return { move, game, gameClones, interrupt, patherParams, filtered: true };
           }
           secondClonedGame.resetTo(gameClone);
         }
       }
     }
-    gameClone.resetTo(game);
-    return { move, game, gameClone, interrupt, patherParams, filtered };
+    gameClones[0].resetTo(game);
+    return { move, game, gameClones, interrupt, patherParams, filtered };
   },
 };
