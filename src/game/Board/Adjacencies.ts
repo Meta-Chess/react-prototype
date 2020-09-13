@@ -16,6 +16,10 @@ export class Adjacencies {
     return new Adjacencies(this.adjacencies);
   }
 
+  resetTo(savePoint: Adjacencies): void {
+    this.adjacencies = savePoint.adjacencies;
+  }
+
   go(direction: Direction): string[] {
     return this.adjacencies[direction] || [];
   }

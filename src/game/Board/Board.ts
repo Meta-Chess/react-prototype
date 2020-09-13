@@ -27,6 +27,20 @@ class Board extends TokenOwner {
     return new Board(locationMapClone, this.tokens);
   }
 
+  resetTo(savePoint: Board): void {
+    this.tokens = savePoint.tokens;
+    Object.keys(this.squares).forEach((key) => {
+      if (savePoint.squares[key] === undefined) delete this.squares[key];
+    });
+    Object.keys(savePoint.squares).forEach((key) => {
+      if (this.squares[key] !== undefined) {
+        this.squares[key].resetTo(savePoint.squares[key]);
+      } else {
+        this.squares = { ...this.squares, [key]: savePoint.squares[key].clone() };
+      }
+    });
+  }
+
   // TODO: consider making this a "property" or whatever it's called?
   pieces(): Piece[] {
     return Object.values(this.squares)

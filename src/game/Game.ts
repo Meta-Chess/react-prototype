@@ -24,6 +24,14 @@ export class Game {
     );
   }
 
+  resetTo(savePoint: Game): void {
+    this.interrupt = savePoint.interrupt; // .resetTo(savePoint.interrupt);
+    this.board.resetTo(savePoint.board);
+    this.players = savePoint.players;
+    this.currentPlayer = savePoint.currentPlayer;
+    this.currentTurn = savePoint.currentTurn;
+  }
+
   static createGame(interrupt: CompactRules, time: number | undefined): Game {
     const clock = time ? new Clock([Player.White, Player.Black], time) : undefined;
     clock?.setActivePlayers([Player.White]);

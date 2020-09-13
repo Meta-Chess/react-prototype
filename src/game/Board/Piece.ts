@@ -23,6 +23,15 @@ class Piece extends TokenOwner {
       this.id
     );
   }
+
+  resetTo(savePoint: Piece): void {
+    this.location = savePoint.location;
+    this.name = savePoint.name;
+    this.generateGaits = savePoint.generateGaits;
+    this.owner = savePoint.owner;
+    this.tokens = savePoint.tokens;
+    this.id = savePoint.id;
+  }
 }
 
 export { Piece };

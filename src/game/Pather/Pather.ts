@@ -127,6 +127,7 @@ export class Pather {
         player: this.piece.owner,
       },
       game: this.game,
+      gameClone: this.game.clone(),
       interrupt: this.interrupt,
       patherParams: this.params,
       filtered: false,

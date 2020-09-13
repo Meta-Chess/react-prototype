@@ -29,6 +29,23 @@ export class Square extends TokenOwner {
     );
   }
 
+  resetTo(savePoint: Square): void {
+    this.location = savePoint.location;
+    this.coordinates = savePoint.coordinates;
+    this.tokens = savePoint.tokens;
+    this.adjacencies.resetTo(savePoint.adjacencies);
+    const a = Math.min(this.pieces.length, savePoint.pieces.length);
+    for (let i = 0; i < a; i++) {
+      this.pieces[i].resetTo(savePoint.pieces[i]);
+    }
+    for (let i = a; i < savePoint.pieces.length; i++) {
+      this.pieces[i] = savePoint.pieces[i].clone();
+    }
+    if (a < this.pieces.length) {
+      this.pieces = this.pieces.slice(0, a);
+    }
+  }
+
   go(direction: Direction): string[] {
     return this.adjacencies.go(direction);
   }
