@@ -56,7 +56,9 @@ export const Castling: Rule = {
 
     const filteredCastlePiecesAndLocations = castlePiecesAndLocations.filter(
       ({ passivePiece, passiveDestination }) => {
-        const passivePieceMoveSet = new Pather(game, passivePiece, interrupt).findPaths();
+        const passivePieceMoveSet = new Pather(game, passivePiece, interrupt, {
+          checkDepth: 0,
+        }).findPaths();
         return passivePieceMoveSet
           .map((move) => move.location)
           .includes(passiveDestination.location);
