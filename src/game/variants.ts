@@ -11,10 +11,9 @@ import {
 } from "./Rules";
 
 export type VariantName = keyof typeof variants;
-
 export const variants = {
   ["Chess"]: {
-    description: "Your usual chess, but missing castling, and en passant.",
+    description: "Your usual bog-standard game of chess (sans en passant).",
     rules: [Standard, loseWithNoKings, PawnDoubleStep, Castling],
   },
   ["Cylindrical Chess"]: {

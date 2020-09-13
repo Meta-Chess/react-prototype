@@ -4,6 +4,9 @@ import { Rule } from "./Rules";
 import { hexGaits, pawnDoubleStepToken } from "./constants";
 
 export const HexPawnDoubleStep: Rule = {
+  name: "Pawn Double Step",
+  description:
+    "For their first move, pawns can do two steps in their direction of travel!",
   postMove: ({ move, currentTurn }) => {
     const piecesMoved = move.pieceDeltas.map((delta) => delta.piece);
     piecesMoved.forEach((piece: Piece) => {

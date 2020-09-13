@@ -31,7 +31,7 @@ export const MChessLogo: SFC = ({ style }) => {
         <View style={{ paddingTop: scaleFactor * 50 }}>
           <Text
             size={scaleFactor * 100}
-            color={Colors.TEXT.LIGHT.toString()}
+            color={Colors.EMPHATIC.LIGHT.toString()}
             selectable={false}
             style={{
               textShadowColor: Colors.BLACK.fade(0.5).toString(),

@@ -59,4 +59,7 @@ const identityRule = {
 
 export type CompleteRule = typeof identityRule;
 type InterruptionName = keyof CompleteRule;
-export type Rule = Partial<CompleteRule>;
+export type Rule = Partial<CompleteRule> & {
+  name: string;
+  description: string;
+};

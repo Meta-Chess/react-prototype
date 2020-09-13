@@ -5,6 +5,9 @@ import { Rule } from "./Rules";
 import { polarToken, invisibilityToken } from "./constants";
 
 export const Polar: Rule = {
+  name: "Polar",
+  description:
+    "The top and bottom of the board behave like the poles of a sphere. The top edge of the board is wrapped around the edge of an invisible octagonal 'square' that pieces can cross but can't stop on. The bottom edge of the board is similarly wrapped around its own octagonal square.",
   afterStepModify: ({ gait, remainingSteps, currentSquare }) => {
     return currentSquare.hasTokenWithName(TokenName.PolarToken)
       ? {

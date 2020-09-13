@@ -3,12 +3,11 @@ import { View, Platform, useWindowDimensions } from "react-native";
 import styled from "styled-components/native";
 import { Screens, useRoute, useNavigation } from "navigation";
 import { GameProvider } from "game";
-import { Colors, Text } from "primitives";
+import { Colors } from "primitives";
 import { Button } from "ui";
 import { Board } from "components/shared/Board";
-import { Clocks } from "./Clocks";
 import { PieceCredit } from "./PieceCredit";
-import { Card } from "ui/Card";
+import { Sidebar } from "./Sidebar";
 
 const GameScreen: FC = () => {
   const { params } = useRoute<Screens.GameScreen>();
@@ -21,7 +20,7 @@ const GameScreen: FC = () => {
     return (
       <GameProvider {...params}>
         <ScreenContainer>
-          <Board />
+          <Board style={{ marginTop: 32 }} />
           <Button text="Finish Game" onPress={navigation.goBack} style={{ margin: 32 }} />
           <PieceCredit style={{ marginTop: 24 }} />
         </ScreenContainer>
@@ -40,18 +39,8 @@ const GameScreen: FC = () => {
           />
         </View>
         <View style={{ flex: 1, paddingHorizontal: 60 }}>
-          {/*TODO: Extract this next view as Sidebar or something*/}
-          <View style={{ flex: 1, paddingHorizontal: 60, justifyContent: "center" }}>
-            <Card>
-              <Text cat="BodyL">Thanks for playing with MChess!</Text>
-            </Card>
-            <Button
-              text="Finish Game"
-              onPress={navigation.goBack}
-              style={{ margin: 32 }}
-            />
-          </View>
-          <PieceCredit style={{ marginTop: 24 }} />
+          <Sidebar />
+          <PieceCredit />
         </View>
       </ScreenContainer>
     </GameProvider>

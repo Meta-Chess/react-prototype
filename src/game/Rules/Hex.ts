@@ -12,6 +12,9 @@ import {
 import { createPiece, PieceSet } from "./utilities";
 
 export const Hex: Rule = {
+  name: "Hexagon",
+  description:
+    "Every place on the board has a hexagonal geometry rather than a square geometry. Note that diagonal steps are a bit longer than usual. Click on a piece to find out how it moves!",
   forSquareGenerationModify: ({ board }) => {
     board.addSquares(generateHexSquares());
     return { board };

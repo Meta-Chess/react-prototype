@@ -3,8 +3,8 @@ import { Renderer } from "./Renderer";
 import { GameOptions, Move } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
-import { variants } from "./variants";
-import { Check, CompactRules, Fatigue } from "./Rules";
+import { VariantName, variants } from "./variants";
+import { Check, CompactRules, Fatigue, Rule } from "./Rules";
 import { flatMap } from "lodash";
 
 export class GameMaster {
@@ -12,6 +12,8 @@ export class GameMaster {
   public game: Game;
   public selectedPieces: Piece[];
   public allowableMoves: Move[];
+  public variant: VariantName;
+  public rules: Rule[];
 
   constructor(gameOptions: GameOptions, private renderer: Renderer) {
     const { variant, time, checkEnabled, fatigueEnabled } = gameOptions;
@@ -22,6 +24,8 @@ export class GameMaster {
     this.game = Game.createGame(this.interrupt, time);
     this.selectedPieces = [];
     this.allowableMoves = [];
+    this.variant = variant;
+    this.rules = rules;
   }
 
   render(): void {

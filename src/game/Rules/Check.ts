@@ -3,6 +3,9 @@ import { Pather } from "../Pather";
 import { cloneDeep } from "lodash";
 
 export const Check: Rule = {
+  name: "Check",
+  description:
+    "You can't do any moves that would allow an opponent to take your king on their next turn. Something something win condition? Something something multiple opponents?",
   inCanStayFilter: ({ move, game, interrupt, patherParams, filtered }) => {
     const newPatherParams = cloneDeep(patherParams);
     if (newPatherParams.checkDepth === undefined) {

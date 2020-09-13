@@ -5,7 +5,11 @@ export const Colors = {
   BLACK: Color("#161616"),
   TEXT: {
     DARK: Color("#212121"),
-    LIGHT: Color("#FFFFFF"),
+    LIGHT: Color("#FFFFFF").fade(0.1),
+  },
+  EMPHATIC: {
+    DARK: Color("#000000"),
+    LIGHT: Color("#FFFFFF").fade(0.1),
   },
   GREY: Color("#888888"),
   DARKEST: Color("#212121"),

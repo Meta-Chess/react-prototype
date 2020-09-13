@@ -47,9 +47,9 @@ const Text: FC<Props> = (props) => {
     style = {},
   } = props;
 
-  if (loading) return <LoadingText height={lineHeight} children={children} />;
+  if (loading) return <LoadingText height={lineHeight}>{children}</LoadingText>;
   if (monospaceNumbers && typeof children === "string" && children.length > 1)
-    return <MonospaceNumbers {...props} children={children} />;
+    return <MonospaceNumbers {...props}>{children}</MonospaceNumbers>;
 
   return (
     <NativeText
@@ -58,7 +58,7 @@ const Text: FC<Props> = (props) => {
           fontSize: size,
           lineHeight,
           color: color,
-          fontWeight: weight === "normal" ? "normal" : "500",
+          fontWeight: weight === "normal" ? "normal" : "600",
           fontFamily: fontFamily,
           textAlign: alignment,
         },
