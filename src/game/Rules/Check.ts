@@ -46,8 +46,8 @@ export const Check: Rule = {
           secondClonedGame.resetTo(gameClone);
         }
       }
+      gameClones[0].resetTo(game);
     }
-    gameClones[0].resetTo(game);
     return { move, game, gameClones, interrupt, patherParams, filtered };
   },
 };
