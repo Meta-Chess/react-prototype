@@ -60,6 +60,7 @@ const Text: FC<Props> = (props) => {
           color: color,
           fontWeight: weight === "normal" ? "normal" : "500",
           fontFamily: fontFamily,
+          textAlign: alignment,
         },
         style,
       ]}
@@ -94,7 +95,17 @@ type MonospaceNumbersProps = Props & { children: string };
 const MonospaceNumbers: FC<MonospaceNumbersProps> = (props) => {
   const [fontsLoaded] = useFonts({ RobotoMono_400Regular });
   return (
-    <>
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent:
+          props.alignment === "center"
+            ? "center"
+            : props.alignment === "right"
+            ? "flex-end"
+            : "flex-start",
+      }}
+    >
       {props.children.split("").map((char, index) => {
         const fontFamily =
           fontsLoaded && char.match(/[0-9]/) ? "RobotoMono_400Regular" : props.fontFamily;
@@ -104,7 +115,7 @@ const MonospaceNumbers: FC<MonospaceNumbersProps> = (props) => {
           </Text>
         );
       })}
-    </>
+    </View>
   );
 };
 

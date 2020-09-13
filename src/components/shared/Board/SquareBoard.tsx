@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Platform, View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
@@ -6,17 +6,18 @@ import { objectMatches } from "utilities";
 import { GameContext } from "game";
 import { TokenName } from "game/types";
 import { Square } from "./Square";
-import { useFlipDelay } from "./useFlipDelay";
-import { BoardProps } from "components/shared/Board/Board";
+import { InnerBoardProps } from "components/shared/Board/Board";
 
-const SquareBoard: SFC<BoardProps> = ({ style, backboard = true }) => {
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-
+const SquareBoard: SFC<InnerBoardProps> = ({
+  style,
+  backboard = true,
+  dimensions,
+  flipBoard,
+}) => {
   const padding = backboard && Platform.OS === "web" ? 8 : 0;
 
   const { gameMaster } = useContext(GameContext);
   const game = gameMaster?.game;
-  const { flipBoard } = useFlipDelay(game?.currentPlayer);
   if (!game) return null;
 
   const { minRank, maxRank, minFile, maxFile } = game.board.rankAndFileBoundsWithFilter(
@@ -45,60 +46,45 @@ const SquareBoard: SFC<BoardProps> = ({ style, backboard = true }) => {
   );
 
   return (
-    <SizeContainer
-      onLayout={(event): void => {
-        const { width, height } = event.nativeEvent.layout;
-        if (dimensions.width !== width || dimensions.height !== height) {
-          setDimensions({ width, height });
-        }
-      }}
-      style={style}
+    <BoardContainer
+      style={[
+        style,
+        {
+          height: squareSize * boardDetails.height + 2 * padding,
+          width: squareSize * boardDetails.width + 2 * padding,
+          padding,
+        },
+      ]}
     >
-      <BoardContainer
-        style={[
-          {
-            height: squareSize * boardDetails.height + 2 * padding,
-            width: squareSize * boardDetails.width + 2 * padding,
-            padding,
-          },
-        ]}
-      >
-        <SquaresContainer style={{ flexDirection: flipBoard ? "row-reverse" : "row" }}>
-          {fileCoordinates.map((file) => (
-            <ColumnContainer
-              style={{
-                maxWidth: squareSize,
-                flexDirection: flipBoard ? "column" : "column-reverse",
-              }}
-              key={file}
-            >
-              {rankCoordinates.map((rank) => (
-                <Square
-                  size={squareSize}
-                  square={game.board.firstSquareSatisfyingRule(
-                    (square) =>
-                      objectMatches({
-                        rank,
-                        file,
-                      })(square.coordinates) &&
-                      !square.hasTokenWithName(TokenName.InvisibilityToken)
-                  )}
-                  key={JSON.stringify([rank, file])}
-                />
-              ))}
-            </ColumnContainer>
-          ))}
-        </SquaresContainer>
-      </BoardContainer>
-    </SizeContainer>
+      <SquaresContainer style={{ flexDirection: flipBoard ? "row-reverse" : "row" }}>
+        {fileCoordinates.map((file) => (
+          <ColumnContainer
+            style={{
+              maxWidth: squareSize,
+              flexDirection: flipBoard ? "column" : "column-reverse",
+            }}
+            key={file}
+          >
+            {rankCoordinates.map((rank) => (
+              <Square
+                size={squareSize}
+                square={game.board.firstSquareSatisfyingRule(
+                  (square) =>
+                    objectMatches({
+                      rank,
+                      file,
+                    })(square.coordinates) &&
+                    !square.hasTokenWithName(TokenName.InvisibilityToken)
+                )}
+                key={JSON.stringify([rank, file])}
+              />
+            ))}
+          </ColumnContainer>
+        ))}
+      </SquaresContainer>
+    </BoardContainer>
   );
 };
-
-const SizeContainer = styled(View)`
-  flex: 1;
-  align-self: stretch;
-  align-items: center;
-`;
 
 const BoardContainer = styled(View)`
   position: relative;

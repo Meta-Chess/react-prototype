@@ -7,4 +7,6 @@ export const Card = styled(View)`
   background-color: ${Colors.DARK.toString()};
   box-shadow: 0px 1px 4px ${Colors.BLACK.fade(0.5).string()};
   border-radius: 4px;
+  margin: 12px;
+  padding: 12px;
 `;

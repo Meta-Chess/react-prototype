@@ -8,10 +8,10 @@ import { contrast } from "utilities";
 
 interface Props {
   player: Player;
-  alignment: "left" | "center" | "right";
+  alignment?: "left" | "center" | "right";
 }
 
-const Timer: SFC<Props> = ({ style, player, alignment }) => {
+const Timer: SFC<Props> = ({ style, player, alignment = "center" }) => {
   const { gameMaster } = useContext(GameContext);
   const [dummy, setDummy] = useState(false);
 
