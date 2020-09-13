@@ -1,102 +1,9 @@
-import React from "react";
+import React, { FC } from "react";
 import { StyleProp, Text as NativeText, TextStyle, View } from "react-native";
 import { randomInt } from "utilities";
 import { Skeleton } from "./Skeleton";
 import { Colors } from "./Colors";
 import { RobotoMono_400Regular, useFonts } from "@expo-google-fonts/roboto-mono";
-
-interface BaseTextProps {
-  children: React.ReactNode;
-  size: number;
-  lineHeight?: number;
-  color?: string;
-  fontWeight?: "normal" | "heavy";
-  monospaceNumbers?: boolean;
-  loading?: boolean;
-  alignment?: "left" | "center" | "right";
-  style?: StyleProp<TextStyle>;
-  selectable?: boolean;
-}
-
-function Text({
-  size,
-  lineHeight = size,
-  children,
-  color = Colors.TEXT.DARK.string(),
-  fontWeight = "normal",
-  monospaceNumbers = false,
-  loading = false,
-  alignment,
-  selectable = false,
-  style,
-}: BaseTextProps): React.ReactElement {
-  const [fontsLoaded] = useFonts({ RobotoMono_400Regular });
-  if (loading || !fontsLoaded)
-    return (
-      <Skeleton
-        style={{
-          height: lineHeight,
-          minWidth:
-            typeof children === "string"
-              ? (children.length * lineHeight) / 2
-              : randomInt(2, 5) * 40,
-        }}
-      />
-    );
-
-  if (monospaceNumbers && typeof children === "string" && children.length > 1)
-    return (
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent:
-            alignment === "left"
-              ? "flex-start"
-              : alignment === "right"
-              ? "flex-end"
-              : "center",
-        }}
-      >
-        {children.split("").map((char, index) => (
-          <Text
-            size={size}
-            lineHeight={lineHeight}
-            color={color}
-            fontWeight={fontWeight}
-            key={index}
-            monospaceNumbers={true}
-            style={style}
-            selectable={false}
-          >
-            {char}
-          </Text>
-        ))}
-      </View>
-    );
-
-  const fontFamily =
-    monospaceNumbers && typeof children === "string" && children.match(/[0-9]/)
-      ? "RobotoMono_400Regular"
-      : "System";
-
-  return (
-    <NativeText
-      style={[
-        {
-          fontSize: size,
-          lineHeight,
-          color: color,
-          fontWeight: fontWeight === "normal" ? "normal" : "500",
-          fontFamily: fontFamily,
-        },
-        style,
-      ]}
-      selectable={selectable}
-    >
-      {children}
-    </NativeText>
-  );
-}
 
 const sizes = {
   BodyS: { size: 14, lineHeight: 20 },
@@ -107,37 +14,98 @@ const sizes = {
   DisplayL: { size: 32, lineHeight: 40 },
 };
 
-interface TextProps {
+interface Props {
+  alignment?: "left" | "center" | "right";
+  cat?: keyof typeof sizes;
   children: React.ReactNode;
   color?: string;
+  fontFamily?: string;
   weight?: "normal" | "heavy";
-  monospaceNumbers?: boolean;
+  lineHeight?: number;
   loading?: boolean;
-  alignment?: "left" | "center" | "right";
+  monospaceNumbers?: boolean;
+  onPress?: () => void;
+  selectable?: boolean;
+  size?: number;
+  style?: StyleProp<TextStyle>;
 }
 
-Text.BodyS = function BodyS(props: TextProps): React.ReactElement {
-  return <Text {...sizes.BodyS} {...props} />;
+const Text: FC<Props> = (props) => {
+  const {
+    alignment = "left",
+    cat = "BodyM",
+    size = sizes[cat].size,
+    lineHeight = sizes[cat].lineHeight || size,
+    children,
+    color = Colors.TEXT.LIGHT.toString(),
+    fontFamily = "System",
+    weight = "normal",
+    loading = false,
+    monospaceNumbers = false,
+    onPress,
+    selectable = false,
+    style = {},
+  } = props;
+
+  if (loading) return <LoadingText height={lineHeight} children={children} />;
+  if (monospaceNumbers && typeof children === "string" && children.length > 1)
+    return <MonospaceNumbers {...props} children={children} />;
+
+  return (
+    <NativeText
+      style={[
+        {
+          fontSize: size,
+          lineHeight,
+          color: color,
+          fontWeight: weight === "normal" ? "normal" : "500",
+          fontFamily: fontFamily,
+        },
+        style,
+      ]}
+      selectable={selectable}
+      onPress={onPress}
+    >
+      {children}
+    </NativeText>
+  );
 };
 
-Text.BodyM = function BodyM(props: TextProps): React.ReactElement {
-  return <Text {...sizes.BodyM} {...props} />;
+interface LoadingProps {
+  height: number;
+}
+
+const LoadingText: FC<LoadingProps> = ({ height, children }) => {
+  return (
+    <Skeleton
+      style={{
+        height,
+        minWidth:
+          typeof children === "string"
+            ? (children.length * height) / 2
+            : randomInt(2, 5) * 40,
+      }}
+    />
+  );
 };
 
-Text.BodyL = function BodyL(props: TextProps): React.ReactElement {
-  return <Text {...sizes.BodyL} {...props} />;
-};
+type MonospaceNumbersProps = Props & { children: string };
 
-Text.DisplayS = function DisplayS(props: TextProps): React.ReactElement {
-  return <Text {...sizes.DisplayS} {...props} />;
-};
-
-Text.DisplayM = function DisplayM(props: TextProps): React.ReactElement {
-  return <Text {...sizes.DisplayM} {...props} />;
-};
-
-Text.DisplayL = function DisplayL(props: TextProps): React.ReactElement {
-  return <Text {...sizes.DisplayL} {...props} />;
+const MonospaceNumbers: FC<MonospaceNumbersProps> = (props) => {
+  const [fontsLoaded] = useFonts({ RobotoMono_400Regular });
+  return (
+    <>
+      {props.children.split("").map((char, index) => {
+        const fontFamily =
+          fontsLoaded && char.match(/[0-9]/) ? "RobotoMono_400Regular" : props.fontFamily;
+        return (
+          <Text {...props} key={index} fontFamily={fontFamily}>
+            {char}
+          </Text>
+        );
+      })}
+    </>
+  );
 };
 
 export { Text };

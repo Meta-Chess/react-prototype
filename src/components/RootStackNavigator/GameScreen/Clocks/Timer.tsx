@@ -49,13 +49,14 @@ const Timer: SFC<Props> = ({ style, player, alignment }) => {
         },
       ]}
     >
-      <Text.BodyS
+      <Text
+        cat="BodyM"
         color={contrast(Colors.PLAYER[player].string())}
         monospaceNumbers={true}
         alignment={alignment}
       >
         {displayTime}
-      </Text.BodyS>
+      </Text>
     </Container>
   );
 };

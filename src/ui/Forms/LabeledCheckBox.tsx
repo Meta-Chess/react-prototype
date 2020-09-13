@@ -13,7 +13,9 @@ interface Props {
 export const LabeledCheckBox: SFC<Props> = ({ value, setValue, label, style }) => {
   return (
     <Container style={style}>
-      <Text.BodyL color={Colors.TEXT.LIGHT.toString()}>{label}</Text.BodyL>
+      <Text cat="BodyL" color={Colors.TEXT.LIGHT.toString()}>
+        {label}
+      </Text>
       <CheckBox value={value} setValue={setValue} />
     </Container>
   );

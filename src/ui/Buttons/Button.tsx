@@ -11,7 +11,9 @@ interface Props {
 export const Button: SFC<Props> = ({ style, text, onPress }) => {
   return (
     <BaseButton onPress={onPress} style={style} accessibilityRole={"button"}>
-      <Text.DisplayL weight="heavy">{text}</Text.DisplayL>
+      <Text cat="DisplayL" weight="heavy">
+        {text}
+      </Text>
     </BaseButton>
   );
 };

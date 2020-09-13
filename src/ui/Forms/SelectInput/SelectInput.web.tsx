@@ -70,7 +70,11 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
 };
 
 const OptionLabel: React.FC<Option> = ({ label }) => {
-  return <Text.BodyL color={Colors.TEXT.LIGHT.toString()}>{label}</Text.BodyL>;
+  return (
+    <Text cat="BodyL" color={Colors.TEXT.LIGHT.toString()}>
+      {label}
+    </Text>
+  );
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

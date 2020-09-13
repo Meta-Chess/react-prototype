@@ -12,9 +12,9 @@ const StartScreen: FC = () => {
   const padding = 12;
 
   const { height, width } = useWindowDimensions();
+  const portrait = height > width;
 
   const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
-  const portrait = height > width;
 
   return portrait ? (
     <ScreenContainer style={{ padding }}>
