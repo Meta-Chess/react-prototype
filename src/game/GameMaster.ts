@@ -38,8 +38,13 @@ export class GameMaster {
       this.game.doMove(move);
       this.unselectAllPieces();
     } else {
-      this.unselectAllPieces();
-      this.selectPieces(square);
+      if (this.selectedPieces.some((p) => p.location === square.location)) {
+        // pressing again on a selected piece
+        this.unselectAllPieces();
+      } else {
+        this.unselectAllPieces();
+        this.selectPieces(square);
+      }
     }
     this.render();
   }
