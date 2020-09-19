@@ -8,34 +8,28 @@ export const Check: Rule = {
     "You can't do any moves that would allow an opponent to take your king on their next turn. Something something win condition? Something something multiple opponents?",
 
   inCanStayFilter: ({ move, game, gameClones, interrupt, patherParams, filtered }) => {
+    if (filtered) return { move, game, gameClones, interrupt, patherParams, filtered };
+
     const newPatherParams = cloneDeep(patherParams);
-    const gameClone = gameClones[0];
-    const secondClonedGame = gameClones[1];
 
     if (newPatherParams.checkDepth === undefined) {
       newPatherParams.checkDepth = 1;
     }
 
-    if (newPatherParams.checkDepth > 0 && filtered !== true) {
+    if (newPatherParams.checkDepth > 0) {
       newPatherParams.checkDepth -= 1;
-      gameClone.doMove(move);
-      const pieces = gameClone.board.piecesNotBelongingTo(move.player);
+      gameClones[0].doMove(move);
+      const pieces = gameClones[0].board.piecesNotBelongingTo(move.player);
 
-      secondClonedGame.resetTo(gameClone);
+      gameClones[1].resetTo(gameClones[0]);
       for (let i = 0; i < pieces.length; i++) {
         const piece = pieces[i];
-        const pather = new Pather(
-          gameClone,
-          [gameClones[0]],
-          piece,
-          interrupt,
-          newPatherParams
-        );
+        const pather = new Pather(gameClones[0], [], piece, interrupt, newPatherParams);
         const hypotheticalMoves = pather.findPaths();
         for (let j = 0; j < hypotheticalMoves.length; j++) {
-          secondClonedGame.doMove(hypotheticalMoves[j]);
+          gameClones[1].doMove(hypotheticalMoves[j]);
           const { dead } = interrupt.for.lethalCondition({
-            board: secondClonedGame.board,
+            board: gameClones[1].board,
             player: move.player,
             dead: false,
           });
@@ -43,11 +37,11 @@ export const Check: Rule = {
             gameClones[0].resetTo(game);
             return { move, game, gameClones, interrupt, patherParams, filtered: true };
           }
-          secondClonedGame.resetTo(gameClone);
+          gameClones[1].resetTo(gameClones[0]);
         }
       }
       gameClones[0].resetTo(game);
     }
-    return { move, game, gameClones, interrupt, patherParams, filtered };
+    return { move, game, gameClones, interrupt, patherParams, filtered: false };
   },
 };

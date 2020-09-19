@@ -8,7 +8,7 @@ const MAX_STEPS = 64; // To be considered further
 export class Pather {
   constructor(
     private game: Game,
-    private gameClones: Game[] = [game.clone(), game.clone()],
+    private gameClones: Game[] = [game.clone(), game.clone(), game.clone(), game.clone()],
     private piece: Piece,
     private interrupt: CompactRules,
     private params: { checkDepth?: number } = {}
@@ -31,11 +31,30 @@ export class Pather {
       })
     );
 
-    const { moves: specialMoves } = this.interrupt.for.generateSpecialMoves({
+    let { moves: specialMoves } = this.interrupt.for.generateSpecialMoves({
       game: this.game,
       piece: this.piece,
       interrupt: this.interrupt,
       moves: [],
+    });
+
+    specialMoves = specialMoves.filter((m) => {
+      const m1: Move = {
+        location: m.location,
+        pieceDeltas: m.pieceDeltas.map((p) => ({
+          piece: p.piece.clone(),
+          destination: p.destination,
+        })),
+        player: m.player,
+      };
+      return !this.interrupt.for.inCanStayFilter({
+        move: m1,
+        game: this.game,
+        gameClones: this.gameClones,
+        interrupt: this.interrupt,
+        patherParams: this.params,
+        filtered: false,
+      }).filtered;
     });
 
     return moves.concat(specialMoves);
@@ -54,13 +73,16 @@ export class Pather {
   }): Square[] {
     const allowableSquares: Square[] = [];
     if (!currentSquare) return allowableSquares;
+    const pieceClone = this.piece.clone();
     for (let steps = 0; steps < stepAllowance; steps++) {
       if (remainingSteps.length === 0) return allowableSquares;
 
+      pieceClone.resetTo(this.piece);
       const { continuingSquares, newAllowableSquares } = this.step({
         currentSquare,
         remainingSteps,
         gait,
+        pieceClone,
       });
 
       allowableSquares.push(...newAllowableSquares);
@@ -82,10 +104,12 @@ export class Pather {
     currentSquare,
     remainingSteps,
     gait,
+    pieceClone,
   }: {
     currentSquare: Square;
     remainingSteps: Direction[];
     gait: Gait;
+    pieceClone: Piece;
   }): { continuingSquares: Square[]; newAllowableSquares: Square[] } {
     const possibleLandingSquares = this.go({
       from: currentSquare,
@@ -95,7 +119,7 @@ export class Pather {
       this.canLand({ square, gait, remainingSteps })
     );
     const stayingSquares = landingSquares.filter((square) =>
-      this.canStay({ square, gait, remainingSteps })
+      this.canStay({ square, gait, remainingSteps, pieceClone })
     );
     const continuingSquares = landingSquares.filter((square) =>
       this.canContinue({ square, gait, remainingSteps })
@@ -112,7 +136,12 @@ export class Pather {
     return true;
   }
 
-  canStay({ square, gait, remainingSteps }: HypotheticalDisplacement): boolean {
+  canStay({
+    square,
+    gait,
+    remainingSteps,
+    pieceClone = this.piece.clone(),
+  }: HypotheticalDisplacement): boolean {
     if (!gait.interruptable && remainingSteps.length > 1) return false;
     if (square.hasPieceBelongingTo(this.piece.owner)) return false;
     if (square.hasPieceNotBelongingTo(this.piece.owner)) {
@@ -121,10 +150,11 @@ export class Pather {
     } else {
       if (gait.mustCapture) return false;
     }
+    pieceClone.resetTo(this.piece);
     const { filtered } = this.interrupt.for.inCanStayFilter({
       move: {
         location: square.location,
-        pieceDeltas: [{ piece: this.piece.clone(), destination: square.location }],
+        pieceDeltas: [{ piece: pieceClone, destination: square.location }],
         player: this.piece.owner,
       },
       game: this.game,
@@ -162,4 +192,5 @@ interface HypotheticalDisplacement {
   square: Square;
   gait: Gait;
   remainingSteps: Direction[];
+  pieceClone?: Piece;
 }

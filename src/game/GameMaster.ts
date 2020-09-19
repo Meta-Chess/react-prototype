@@ -10,6 +10,7 @@ import { flatMap } from "lodash";
 export class GameMaster {
   public interrupt: CompactRules;
   public game: Game;
+  public gameClones: Game[];
   public selectedPieces: Piece[];
   public allowableMoves: Move[];
   public variant: VariantName;
@@ -22,6 +23,12 @@ export class GameMaster {
     if (fatigueEnabled) rules.push(Fatigue);
     this.interrupt = new CompactRules(rules);
     this.game = Game.createGame(this.interrupt, time);
+    this.gameClones = [
+      this.game.clone(),
+      this.game.clone(),
+      this.game.clone(),
+      this.game.clone(),
+    ];
     this.selectedPieces = [];
     this.allowableMoves = [];
     this.variant = variant;
@@ -33,6 +40,7 @@ export class GameMaster {
   }
 
   onPress(square: Square): void {
+    this.gameClones.forEach((clone) => clone.resetTo(this.game));
     const move = this.allowableMoves.find((m) => m.location === square.location);
     if (move && this.game.currentPlayer === this.selectedPieces[0]?.owner) {
       this.game.doMove(move);
@@ -57,7 +65,7 @@ export class GameMaster {
   selectPieces(square: Square): void {
     this.selectedPieces = square.pieces;
     this.allowableMoves = flatMap(this.selectedPieces, (piece: Piece) =>
-      new Pather(this.game, undefined, piece, this.interrupt).findPaths()
+      new Pather(this.game, this.gameClones, piece, this.interrupt).findPaths()
     );
   }
 }

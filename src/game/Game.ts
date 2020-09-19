@@ -47,7 +47,6 @@ export class Game {
 
   doMove(move?: Move): void {
     if (!move) return;
-
     this.board.displacePieces(move.pieceDeltas);
     this.interrupt.for.postMove({ move, currentTurn: this.currentTurn });
     this.board.pieces().forEach((piece) => {
