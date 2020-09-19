@@ -2,8 +2,9 @@ import React, { FC } from "react";
 import { Button, SidebarContainer } from "ui";
 import { useNavigation } from "navigation";
 import { VariantInfoCard } from "./VariantInfoCard";
-import { RulesInfoCard } from "components/RootStackNavigator/GameScreen/Sidebar/RulesInfoCard";
-import { PieceCredit } from "components/RootStackNavigator/GameScreen/Sidebar/PieceCredit";
+import { RulesInfoCard } from "./RulesInfoCard";
+import { PieceCredit } from "./PieceCredit";
+import { SelectedPieceInfoCard } from "./SelectedPieceInfoCard";
 
 const Sidebar: FC = () => {
   const navigation = useNavigation();
@@ -11,6 +12,7 @@ const Sidebar: FC = () => {
     <SidebarContainer>
       <VariantInfoCard />
       <RulesInfoCard />
+      <SelectedPieceInfoCard />
       <Button text="Finish Game" onPress={navigation.goBack} style={{ margin: 32 }} />
       <PieceCredit />
     </SidebarContainer>

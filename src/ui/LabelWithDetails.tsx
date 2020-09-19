@@ -7,7 +7,7 @@ import { Triangle } from "./Triangle";
 
 interface Props {
   label: string;
-  details: string;
+  details?: string;
 }
 
 export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
@@ -15,19 +15,20 @@ export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0, top: 0, left: 0 });
   const { gameMaster } = useContext(GameContext);
 
-  const modalContent = (
+  const modalContent = details ? (
     <>
       <Triangle color={Colors.DARKISH.toString()} />
       <ModalContainer>
         <Text cat={"BodyS"}>{details}</Text>
       </ModalContainer>
     </>
-  );
+  ) : undefined;
 
   return (
     <>
       <LabelContainer
         style={style}
+        disabled={!details}
         onPress={(): void => {
           if (detailsVisible) {
             gameMaster?.hideModal();

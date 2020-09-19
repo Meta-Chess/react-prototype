@@ -85,7 +85,7 @@ export interface GameOptions {
 export interface Modal {
   top: number;
   left: number;
-  content: ReactElement;
+  content?: ReactElement;
   onShow: () => void;
   onHide: () => void;
 }
