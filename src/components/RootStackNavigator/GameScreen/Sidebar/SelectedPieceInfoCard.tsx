@@ -1,14 +1,16 @@
-import React, { FC, useContext } from "react";
+import React, { FC } from "react";
 import { Text } from "primitives";
 import { Card } from "ui/Containers/Card";
-import { GameContext } from "game";
+import { Piece } from "game";
 import { LabelWithDetails } from "ui";
 import { View } from "react-native";
 import { tokenDetails, pieceDetails } from "game/displayInfo";
 
-const SelectedPieceInfoCard: FC = () => {
-  const { gameMaster } = useContext(GameContext);
-  const pieces = gameMaster?.selectedPieces;
+interface Props {
+  pieces?: Piece[];
+}
+
+const SelectedPieceInfoCard: FC<Props> = ({ pieces }) => {
   if (!pieces || pieces.length === 0) return null;
 
   return (
@@ -23,7 +25,11 @@ const SelectedPieceInfoCard: FC = () => {
           )}
           <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
             {piece.tokens.map((token, index) => (
-              <LabelWithDetails label={tokenDetails[token.name].name} key={index} />
+              <LabelWithDetails
+                label={tokenDetails[token.name].name}
+                details={tokenDetails[token.name].description}
+                key={index}
+              />
             ))}
           </View>
         </Card>

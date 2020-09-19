@@ -1,21 +1,23 @@
-import React, { FC, useContext } from "react";
+import React, { FC } from "react";
 import { Text } from "primitives";
 import { Card } from "ui/Containers/Card";
-import { GameContext, variants } from "game";
+import { VariantName, variants } from "game";
 
-const VariantInfoCard: FC = () => {
-  const { gameMaster } = useContext(GameContext);
-  if (!gameMaster) return null;
+interface Props {
+  variant?: VariantName;
+}
+
+const VariantInfoCard: FC<Props> = ({ variant }) => {
+  if (!variant) return null;
 
   // Later: This should maybe be a more complicated way of calculating a name
   // for the current combination of rules and combining descriptions?
   // Or maybe just a list?
-  const variantName = gameMaster.variant;
-  const variantDescription = variants[variantName].description;
+  const variantDescription = variants[variant].description;
 
   return (
     <Card>
-      <Text cat="DisplayL">{variantName}</Text>
+      <Text cat="DisplayL">{variant}</Text>
       <Text cat="BodyL" style={{ marginTop: 8 }}>
         {variantDescription}
       </Text>
