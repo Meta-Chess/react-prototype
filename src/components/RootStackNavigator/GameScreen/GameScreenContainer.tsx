@@ -4,11 +4,19 @@ import styled from "styled-components/native";
 import { Colors } from "primitives";
 import { GameContext } from "game";
 
-export const GameScreenContainer: FC = ({ children }) => {
+interface Props {
+  orientation: string;
+}
+
+export const GameScreenContainer: FC<Props> = ({ children, orientation }) => {
   const { gameMaster } = useContext(GameContext);
   return (
     <StyledTouchableWithoutFeedback onPress={(): void => gameMaster?.hideModal()}>
-      <StyledContainer>{children}</StyledContainer>
+      <StyledContainer
+        style={{ flexDirection: orientation === "portrait" ? "column" : "row" }}
+      >
+        {children}
+      </StyledContainer>
     </StyledTouchableWithoutFeedback>
   );
 };
@@ -21,7 +29,6 @@ const StyledTouchableWithoutFeedback = styled(TouchableWithoutFeedback)`
 
 const StyledContainer = styled(View)`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: stretch;
   background: ${Colors.DARKEST.string()};

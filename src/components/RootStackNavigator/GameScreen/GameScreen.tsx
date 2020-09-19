@@ -19,7 +19,7 @@ const GameScreen: FC = () => {
   if (portrait)
     return (
       <GameProvider {...params}>
-        <GameScreenContainer>
+        <GameScreenContainer orientation="portrait">
           <Board style={{ marginTop: 32 }} />
           <Button text="Finish Game" onPress={navigation.goBack} style={{ margin: 32 }} />
           <PieceCredit style={{ marginTop: 24 }} />
@@ -29,7 +29,7 @@ const GameScreen: FC = () => {
 
   return (
     <GameProvider {...params}>
-      <GameScreenContainer>
+      <GameScreenContainer orientation="landscape">
         <View style={{ flex: 2 }}>
           <Board
             style={{
