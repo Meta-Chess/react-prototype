@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import { Direction } from "./Direction";
 import { Piece, VariantName } from "game";
 
@@ -79,4 +80,12 @@ export interface GameOptions {
   time: number | undefined;
   checkEnabled: boolean;
   fatigueEnabled: boolean;
+}
+
+export interface Modal {
+  top: number;
+  left: number;
+  content: ReactElement;
+  onShow: () => void;
+  onHide: () => void;
 }

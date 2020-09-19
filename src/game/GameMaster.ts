@@ -1,6 +1,6 @@
 import { Piece, Square } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, Move } from "./types";
+import { GameOptions, Modal, Move } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants";
@@ -15,6 +15,7 @@ export class GameMaster {
   public allowableMoves: Move[];
   public variant: VariantName;
   public rules: Rule[];
+  public modal?: Modal;
 
   constructor(gameOptions: GameOptions, private renderer: Renderer) {
     const { variant, time, checkEnabled, fatigueEnabled } = gameOptions;
@@ -40,6 +41,7 @@ export class GameMaster {
   }
 
   onPress(square: Square): void {
+    this.hideModal();
     this.gameClones.forEach((clone) => clone.resetTo(this.game));
     const move = this.allowableMoves.find((m) => m.location === square.location);
     if (move && this.game.currentPlayer === this.selectedPieces[0]?.owner) {
@@ -67,5 +69,18 @@ export class GameMaster {
     this.allowableMoves = flatMap(this.selectedPieces, (piece: Piece) =>
       new Pather(this.game, this.gameClones, piece, this.interrupt).findPaths()
     );
+  }
+
+  setModal(modal: Modal): void {
+    this.modal?.onHide();
+    this.modal = modal;
+    this.modal?.onShow();
+    this.render();
+  }
+
+  hideModal(): void {
+    this.modal?.onHide();
+    this.modal = undefined;
+    this.render();
   }
 }

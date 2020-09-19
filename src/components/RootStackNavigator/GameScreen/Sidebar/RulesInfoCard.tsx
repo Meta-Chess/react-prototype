@@ -1,7 +1,9 @@
 import React, { FC, useContext } from "react";
-import { Colors, Text } from "primitives";
-import { Card } from "ui/Card";
+import { Text } from "primitives";
+import { Card } from "ui/Containers/Card";
 import { GameContext } from "game";
+import { LabelWithDetails } from "ui";
+import { View } from "react-native";
 
 const RulesInfoCard: FC = () => {
   const { gameMaster } = useContext(GameContext);
@@ -10,15 +12,11 @@ const RulesInfoCard: FC = () => {
   return (
     <Card>
       <Text cat="DisplayL">Rules</Text>
-      {gameMaster.rules.map((rule, index) => (
-        <Text cat="BodyL" style={{ marginTop: 8 }} key={index}>
-          <Text cat="BodyL" weight="heavy" color={Colors.EMPHATIC.LIGHT.toString()}>
-            {rule.name}
-          </Text>
-          {" - "}
-          {rule.description}
-        </Text>
-      ))}
+      <View style={{ flexWrap: "wrap", flexDirection: "row", marginTop: 8 }}>
+        {gameMaster.rules.map((rule, index) => (
+          <LabelWithDetails label={rule.name} details={rule.description} key={index} />
+        ))}
+      </View>
     </Card>
   );
 };

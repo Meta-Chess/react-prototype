@@ -14,6 +14,7 @@ export const Colors = {
   GREY: Color("#888888"),
   DARKEST: Color("#212121"),
   DARK: Color("#333333"),
+  DARKISH: Color("#4C4C4C"),
   INFO: Color("#4696EC"),
   SUCCESS: Color("#67AC5B"),
   WARNING: Color("#F29C38"),

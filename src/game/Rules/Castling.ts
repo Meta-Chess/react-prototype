@@ -8,7 +8,7 @@ import { Pather, Scanner } from "../Pather";
 export const Castling: Rule = {
   name: "Castling",
   description:
-    "Can your king move two squares in a ___ direction? Is this your king's first move? Can a rook get to the square your king moves through? Is this that rook's first move? If so, your king and rook can do those moves at the same time!",
+    "Can your king move two squares in some direction? Is this your king's first move? Is there a rook in this direction from your king? Can that rook get to the square your king moves through? Is this that rook's first move? If so, your king and rook can do those moves at the same time!",
   postMove: ({ move, currentTurn }) => {
     const piecesMoved = move.pieceDeltas.map((delta) => delta.piece);
     piecesMoved.forEach((piece: Piece) => {

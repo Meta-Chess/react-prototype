@@ -1,23 +1,20 @@
 import React, { FC } from "react";
-import { View } from "react-native";
-import { Text } from "primitives";
-import { Button } from "ui";
-import { Card } from "ui/Card";
+import { Button, SidebarContainer } from "ui";
 import { useNavigation } from "navigation";
 import { VariantInfoCard } from "./VariantInfoCard";
 import { RulesInfoCard } from "components/RootStackNavigator/GameScreen/Sidebar/RulesInfoCard";
+import { PieceCredit } from "components/RootStackNavigator/GameScreen/Sidebar/PieceCredit";
 
 const Sidebar: FC = () => {
   const navigation = useNavigation();
   return (
-    <View style={{ flex: 1, paddingHorizontal: 60, justifyContent: "center" }}>
+    <SidebarContainer>
       <VariantInfoCard />
       <RulesInfoCard />
-      <Card>
-        <Text cat="BodyL">Thanks for playing with MChess!</Text>
-      </Card>
       <Button text="Finish Game" onPress={navigation.goBack} style={{ margin: 32 }} />
-    </View>
+      <PieceCredit />
+    </SidebarContainer>
   );
 };
+
 export { Sidebar };

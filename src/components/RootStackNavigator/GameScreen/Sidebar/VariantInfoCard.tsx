@@ -1,6 +1,6 @@
 import React, { FC, useContext } from "react";
 import { Text } from "primitives";
-import { Card } from "ui/Card";
+import { Card } from "ui/Containers/Card";
 import { GameContext, variants } from "game";
 
 const VariantInfoCard: FC = () => {

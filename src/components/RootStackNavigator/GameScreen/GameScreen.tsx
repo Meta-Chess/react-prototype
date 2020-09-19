@@ -1,13 +1,13 @@
 import React, { FC } from "react";
 import { View, Platform, useWindowDimensions } from "react-native";
-import styled from "styled-components/native";
 import { Screens, useRoute, useNavigation } from "navigation";
 import { GameProvider } from "game";
-import { Colors } from "primitives";
 import { Button } from "ui";
 import { Board } from "components/shared/Board";
-import { PieceCredit } from "./PieceCredit";
+import { PieceCredit } from "./Sidebar/PieceCredit";
 import { Sidebar } from "./Sidebar";
+import { GlobalModal } from "components/RootStackNavigator/GameScreen/GlobalModal";
+import { GameScreenContainer } from "components/RootStackNavigator/GameScreen/GameScreenContainer";
 
 const GameScreen: FC = () => {
   const { params } = useRoute<Screens.GameScreen>();
@@ -19,17 +19,17 @@ const GameScreen: FC = () => {
   if (portrait)
     return (
       <GameProvider {...params}>
-        <ScreenContainer>
+        <GameScreenContainer>
           <Board style={{ marginTop: 32 }} />
           <Button text="Finish Game" onPress={navigation.goBack} style={{ margin: 32 }} />
           <PieceCredit style={{ marginTop: 24 }} />
-        </ScreenContainer>
+        </GameScreenContainer>
       </GameProvider>
     );
 
   return (
     <GameProvider {...params}>
-      <ScreenContainer style={{ flexDirection: "row" }}>
+      <GameScreenContainer>
         <View style={{ flex: 2 }}>
           <Board
             style={{
@@ -38,22 +38,11 @@ const GameScreen: FC = () => {
             }}
           />
         </View>
-        <View style={{ flex: 1, paddingHorizontal: 60 }}>
-          <Sidebar />
-          <PieceCredit />
-        </View>
-      </ScreenContainer>
+        <Sidebar />
+      </GameScreenContainer>
+      <GlobalModal />
     </GameProvider>
   );
 };
-
-const ScreenContainer = styled(View)`
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  background: ${Colors.DARKEST.string()};
-  width: 100%;
-  height: 100%;
-`;
 
 export { GameScreen };
