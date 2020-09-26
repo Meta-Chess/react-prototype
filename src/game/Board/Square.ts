@@ -1,6 +1,6 @@
 import { Piece } from "./Piece";
 import { Adjacencies, Adjacency } from "./Adjacencies";
-import { Direction, Player, Token } from "game/types";
+import { Direction, Token } from "game/types";
 import { TokenOwner } from "./TokenOwner";
 
 interface Coordinates {
@@ -14,7 +14,7 @@ export class Square extends TokenOwner {
     public coordinates: Coordinates,
     public tokens: Token[] = [],
     public adjacencies: Adjacencies = new Adjacencies(),
-    public pieces: Piece[] = []
+    public pieces: string[] = []
   ) {
     super(tokens);
   }
@@ -25,7 +25,7 @@ export class Square extends TokenOwner {
       this.coordinates,
       this.tokens,
       this.adjacencies.clone(),
-      this.pieces.map((piece) => piece.clone())
+      this.pieces
     );
   }
 
@@ -34,15 +34,15 @@ export class Square extends TokenOwner {
     this.coordinates = savePoint.coordinates;
     this.tokens = savePoint.tokens;
     this.adjacencies.resetTo(savePoint.adjacencies);
-    this.pieces = savePoint.pieces.map((piece) => piece.clone());
+    this.pieces = savePoint.pieces;
   }
 
   go(direction: Direction): string[] {
     return this.adjacencies.go(direction);
   }
 
-  addPieces(pieces: Piece[]): void {
-    this.pieces = [...this.pieces, ...pieces];
+  addPieces(piecesIds: string[]): void {
+    this.pieces = [...this.pieces, ...piecesIds];
   }
 
   addAdjacencies(adjacencies: Adjacency[]): void {
@@ -63,18 +63,6 @@ export class Square extends TokenOwner {
 
   hasPieceOf(pieces: Piece[]): boolean {
     const ids = pieces.map((p) => p.id);
-    return this.pieces.some((piece) => ids.includes(piece.id));
-  }
-
-  hasPieceBelongingTo(owner: Player): boolean {
-    return this.pieces.some((piece) => piece.owner === owner);
-  }
-
-  hasPieceNotBelongingTo(owner: Player): boolean {
-    return this.pieces.some((piece) => piece.owner !== owner);
-  }
-
-  findPiecesByRule(rule: (p: Piece) => boolean): Piece[] {
-    return this.pieces.filter(rule);
+    return this.pieces.some((pId) => ids.includes(pId));
   }
 }

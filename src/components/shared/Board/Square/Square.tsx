@@ -57,7 +57,11 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
       <PositioningContainer size={pieceScaleFactor * size}>
         <GridArrangement>
           {piecesOnSquare.map((piece) => (
-            <Piece piece={piece} size={pieceSize} key={piece.id} />
+            <Piece
+              piece={gameMaster.game.board.pieces[piece]}
+              size={pieceSize}
+              key={piece}
+            />
           ))}
         </GridArrangement>
       </PositioningContainer>

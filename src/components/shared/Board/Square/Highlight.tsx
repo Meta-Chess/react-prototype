@@ -25,7 +25,7 @@ const Highlight: FC<Props> = ({ gameMaster, square }) => {
       ? Colors.HIGHLIGHT.INFO
       : square.hasPieceOf(gameMaster.selectedPieces)
       ? Colors.HIGHLIGHT.WARNING
-      : square.hasPieceNotBelongingTo(selectedPieceOwner)
+      : gameMaster.game.board.squareHasPieceNotBelongingTo(square, selectedPieceOwner)
       ? Colors.HIGHLIGHT.ERROR
       : Colors.HIGHLIGHT.SUCCESS;
 

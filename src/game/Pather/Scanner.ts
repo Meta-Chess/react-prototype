@@ -28,7 +28,10 @@ export class Scanner {
       return [];
     }
 
-    const matchingPieces = currentSquare.findPiecesByRule(pieceMatcher);
+    const matchingPieces = this.board.findPiecesOnSquareByRule(
+      currentSquare,
+      pieceMatcher
+    );
     if (matchingPieces.length !== 0) {
       return matchingPieces; // We terminate the scan when we find a matching piece - this can be changed
     }

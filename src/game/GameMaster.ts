@@ -46,26 +46,26 @@ export class GameMaster {
     const move = this.allowableMoves.find((m) => m.location === square.location);
     if (move && this.game.currentPlayer === this.selectedPieces[0]?.owner) {
       this.game.doMove(move);
-      this.unselectAllPieces();
+      this.unselectAllgetPieces();
     } else {
       if (this.selectedPieces.some((p) => p.location === square.location)) {
         // pressing again on a selected piece
-        this.unselectAllPieces();
+        this.unselectAllgetPieces();
       } else {
-        this.unselectAllPieces();
+        this.unselectAllgetPieces();
         this.selectPieces(square);
       }
     }
     this.render();
   }
 
-  unselectAllPieces(): void {
+  unselectAllgetPieces(): void {
     this.selectedPieces = [];
     this.allowableMoves = [];
   }
 
   selectPieces(square: Square): void {
-    this.selectedPieces = square.pieces;
+    this.selectedPieces = square.pieces.map((pId) => this.game.board.pieces[pId]);
     this.allowableMoves = flatMap(this.selectedPieces, (piece: Piece) =>
       new Pather(this.game, this.gameClones, piece, this.interrupt).findPaths()
     );

@@ -10,21 +10,36 @@ interface LocationMap {
   [key: string]: Square;
 }
 
+interface PieceIdMap {
+  [id: string]: Piece;
+}
+
 // TODO: This class is too long!
 class Board extends TokenOwner {
-  constructor(public squares: LocationMap = {}, public tokens: Token[] = []) {
+  constructor(
+    public squares: LocationMap = {},
+    public pieces: PieceIdMap = {},
+    public tokens: Token[] = []
+  ) {
     super(tokens);
   }
 
   clone(): Board {
-    const locationMapClone = Object.keys(this.squares).reduce(
+    const squaresClone = Object.keys(this.squares).reduce(
       (acc, key) => ({
         ...acc,
         [key]: this.squares[key].clone(),
       }),
       {}
     );
-    return new Board(locationMapClone, this.tokens);
+    const piecesClone = Object.keys(this.pieces).reduce(
+      (acc, id) => ({
+        ...acc,
+        [id]: this.pieces[id].clone(),
+      }),
+      {}
+    );
+    return new Board(squaresClone, piecesClone, this.tokens);
   }
 
   resetTo(savePoint: Board): void {
@@ -39,25 +54,34 @@ class Board extends TokenOwner {
         this.squares = { ...this.squares, [key]: savePoint.squares[key].clone() };
       }
     });
+
+    Object.keys(this.pieces).forEach((id) => {
+      if (savePoint.pieces[id] === undefined) delete this.pieces[id];
+    });
+    Object.keys(savePoint.pieces).forEach((id) => {
+      if (this.pieces[id] !== undefined) {
+        this.pieces[id].resetTo(savePoint.pieces[id]);
+      } else {
+        this.pieces = { ...this.pieces, [id]: savePoint.pieces[id].clone() };
+      }
+    });
   }
 
   // TODO: consider making this a "property" or whatever it's called?
-  pieces(): Piece[] {
-    return Object.values(this.squares)
-      .map((square) => square.pieces)
-      .flat(); // TODO: replace with flatmap / consider efficiency implications
+  getPieces(): Piece[] {
+    return Object.values(this.pieces);
   }
 
-  piecesByRule(rule: (p: Piece) => boolean): Piece[] {
-    return this.pieces().filter(rule);
+  getPiecesByRule(rule: (p: Piece) => boolean): Piece[] {
+    return this.getPieces().filter(rule);
   }
 
   piecesNotBelongingTo(player: Player): Piece[] {
-    return this.piecesByRule((piece) => piece.owner !== player);
+    return this.getPiecesByRule((piece) => piece.owner !== player);
   }
 
   findPieceById(id: number): Piece | undefined {
-    return this.pieces().find((p) => p.id === id);
+    return this.pieces[id];
   }
 
   addSquare({ location, square }: { location: string; square: Square }): void {
@@ -81,19 +105,27 @@ class Board extends TokenOwner {
     });
   }
 
+  addPiece(piece: Piece): void {
+    this.pieces = { ...this.pieces, [piece.id]: piece };
+  }
+
   addPiecesByRule(rule: (square: Square) => Piece[]): void {
     const squares = Object.values(this.squares);
     squares.forEach((square) => {
-      square.addPieces(rule(square));
+      rule(square).forEach((p) => {
+        square.addPieces([p.id]);
+        this.addPiece(p);
+      });
     });
   }
 
   addPieceAt(piece: Piece, location: string): void {
-    this.squareAt(location)?.addPieces([piece]);
+    this.squareAt(location)?.addPieces([piece.id]);
+    this.pieces = { ...this.pieces, [piece.id]: piece };
   }
 
   addPieceTokensByRule(rule: (piece: Piece) => Token[]): void {
-    this.pieces().forEach((piece) => piece.addTokens(rule(piece)));
+    this.getPieces().forEach((piece) => piece.addTokens(rule(piece)));
   }
 
   // TODO: Extract next two methods as utility methods?
@@ -117,13 +149,13 @@ class Board extends TokenOwner {
     return Object.values(this.squares).find(condition);
   }
 
-  displace({ piece, destination }: { piece: Piece; destination: string }): void {
-    const startSquare = this.squareAt(piece.location);
+  displace({ pId, destination }: { pId: string; destination: string }): void {
+    const startSquare = this.squareAt(this.pieces[pId].location);
     const endSquare = this.squareAt(destination);
     if (startSquare && endSquare) {
-      startSquare.pieces = startSquare.pieces.filter((p) => p.id != piece.id);
-      piece.location = destination;
-      endSquare.pieces.push(piece);
+      startSquare.pieces = startSquare.pieces.filter((p) => p != pId);
+      this.pieces[pId].location = destination;
+      endSquare.pieces.push(pId);
     }
   }
 
@@ -136,7 +168,17 @@ class Board extends TokenOwner {
 
   killPiecesAt(location: string): void {
     // This should actually move the pieces to a special square - to be taken care of when displaying dead pieces
-    this.squares[location].pieces = [];
+    const square = this.squares[location];
+    this.pieces = Object.keys(this.pieces)
+      .filter((id: string) => !square.pieces.includes(id))
+      .reduce(
+        (acc, id) => ({
+          ...acc,
+          [id]: this.pieces[id],
+        }),
+        {}
+      );
+    square.pieces = [];
   }
 
   squareAt(location?: string): Square | undefined {
@@ -166,6 +208,20 @@ class Board extends TokenOwner {
     ({ board } = interrupt.for.onBoardCreatedModify({ board }));
 
     return board;
+  }
+
+  squareHasPieceBelongingTo(square: Square, owner: Player): boolean {
+    return square.pieces.some((pId) => this.pieces[pId].owner === owner);
+  }
+
+  squareHasPieceNotBelongingTo(square: Square, owner: Player): boolean {
+    return square.pieces.some((pId) => this.pieces[pId].owner !== owner);
+  }
+
+  findPiecesOnSquareByRule(square: Square, rule: (p: Piece) => boolean): Piece[] {
+    return Object.values(this.pieces)
+      .filter((p) => square.pieces.some((pId) => p.id === pId))
+      .filter(rule);
   }
 }
 

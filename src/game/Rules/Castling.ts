@@ -9,12 +9,12 @@ export const Castling: Rule = {
   name: "Castling",
   description:
     "Can your king move two squares in some direction? Is this your king's first move? Is there a rook in this direction from your king? Can that rook get to the square your king moves through? Is this that rook's first move? If so, your king and rook can do those moves at the same time!",
-  postMove: ({ move, currentTurn }) => {
-    const piecesMoved = move.pieceDeltas.map((delta) => delta.piece);
+  postMove: ({ board, move, currentTurn }) => {
+    const piecesMoved = move.pieceDeltas.map((delta) => board.pieces[delta.pId]);
     piecesMoved.forEach((piece: Piece) => {
       piece.removeTokensByNames([TokenName.ActiveCastling, TokenName.PassiveCastling]);
     });
-    return { move, currentTurn };
+    return { board, move, currentTurn };
   },
   generateSpecialMoves: (input) => {
     if (!input.piece.hasTokenWithName(TokenName.ActiveCastling)) return input;
@@ -69,8 +69,8 @@ export const Castling: Rule = {
       ({ passivePiece, passiveDestination, activeDestination }) => ({
         location: activeDestination.location,
         pieceDeltas: [
-          { piece: passivePiece, destination: passiveDestination.location },
-          { piece: activePiece, destination: activeDestination.location },
+          { pId: passivePiece.id, destination: passiveDestination.location },
+          { pId: activePiece.id, destination: activeDestination.location },
         ],
         player: activePiece.owner,
       })

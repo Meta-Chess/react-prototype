@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { Direction } from "./Direction";
-import { Piece, VariantName } from "game";
+import { VariantName } from "game";
 
 export interface Gait {
   pattern: Direction[];
@@ -18,7 +18,7 @@ export interface Move {
 }
 
 export interface PieceDelta {
-  piece: Piece;
+  pId: string;
   destination: string;
 }
 

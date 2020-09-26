@@ -6,8 +6,8 @@ export const Fatigue: Rule = {
   name: "Fatigue",
   description:
     "Moving is hard work! If you moved one of your pieces last turn, it's too tired to move this turn.",
-  postMove: ({ move, currentTurn }) => {
-    const piecesMoved = move.pieceDeltas.map((delta) => delta.piece);
+  postMove: ({ board, move, currentTurn }) => {
+    const piecesMoved = move.pieceDeltas.map((delta) => board.pieces[delta.pId]);
     piecesMoved.forEach((piece: Piece) => {
       const fatigueToken = {
         name: TokenName.Fatigue,
@@ -18,7 +18,7 @@ export const Fatigue: Rule = {
       };
       piece.addToken(fatigueToken);
     });
-    return { move, currentTurn };
+    return { board, move, currentTurn };
   },
   onGaitsGeneratedModify: ({ piece, gaits }) =>
     piece.hasTokenWithName(TokenName.Fatigue)

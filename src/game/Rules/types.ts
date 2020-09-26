@@ -20,5 +20,5 @@ export interface Rule {
   onGaitsGeneratedModify?: Chainable<{ gaits: Gait[]; piece: Piece }>;
   onPieceGeneratedModify?: Chainable<{ piece: Piece }>;
   onBoardCreatedModify?: Chainable<{ board: Board }>;
-  postMove?: Action<{ move: Move; currentTurn: number }>;
+  postMove?: Action<{ board: Board; move: Move; currentTurn: number }>;
 }
