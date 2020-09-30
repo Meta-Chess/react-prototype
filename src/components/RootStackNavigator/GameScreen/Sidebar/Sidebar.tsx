@@ -18,7 +18,10 @@ const Sidebar: FC = () => {
   const { width, height } = useWindowDimensions();
 
   const [key, setKey] = useState(0);
-  const k = (pieces || []).reduce((sum, p) => sum + p.id, 0) + width + height;
+  const k =
+    width +
+    height +
+    (pieces || []).reduce((sum, p): number => sum + parseInt(p.id, 36), 0); // We should maybe create a function like "hash by id" for this purpose?
   if (k !== key) {
     setKey(k);
     gameMaster?.hideModal();
