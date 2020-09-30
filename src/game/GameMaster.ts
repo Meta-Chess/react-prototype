@@ -16,9 +16,10 @@ export class GameMaster {
   public variant: VariantName;
   public rules: Rule[];
   public modal?: Modal;
+  public flipBoard: boolean;
 
   constructor(gameOptions: GameOptions, private renderer: Renderer) {
-    const { variant, time, checkEnabled, fatigueEnabled } = gameOptions;
+    const { variant, time, checkEnabled, fatigueEnabled, flipBoard } = gameOptions;
     const rules = [...variants[variant].rules];
     if (checkEnabled) rules.push(Check);
     if (fatigueEnabled) rules.push(Fatigue);
@@ -34,6 +35,7 @@ export class GameMaster {
     this.allowableMoves = [];
     this.variant = variant;
     this.rules = rules;
+    this.flipBoard = flipBoard;
   }
 
   render(): void {

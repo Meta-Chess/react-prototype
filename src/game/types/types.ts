@@ -80,6 +80,7 @@ export interface GameOptions {
   time: number | undefined;
   checkEnabled: boolean;
   fatigueEnabled: boolean;
+  flipBoard: boolean;
 }
 
 export interface Modal {

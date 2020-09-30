@@ -38,10 +38,10 @@ export const tokenDetails: { [k in TokenName]: Details } = {
   },
   [TokenName.CaptureToken]: {
     name: "Capture token",
-    description: "This piece can be taken by moving to another square",
+    description: "This piece can be taken by moving to another square.",
   },
   [TokenName.Fatigue]: {
     name: "Fatigue",
-    description: "This piece can be taken by moving to another square",
+    description: "This piece can't move until next turn!",
   },
 };

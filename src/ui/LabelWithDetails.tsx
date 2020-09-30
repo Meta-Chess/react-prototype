@@ -49,7 +49,6 @@ export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
         onLayout={(event): void => {
           const { width, height, top, left } = (event.nativeEvent
             .layout as unknown) as Layout;
-          console.log("hi!");
           if (
             dimensions.width !== width ||
             dimensions.height !== height ||

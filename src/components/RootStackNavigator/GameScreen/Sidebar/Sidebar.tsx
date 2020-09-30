@@ -1,4 +1,4 @@
-import React, { FC, useContext, useLayoutEffect, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import { Button, SidebarContainer } from "ui";
 import { useNavigation } from "navigation";
 import { VariantInfoCard } from "./VariantInfoCard";
