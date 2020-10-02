@@ -32,6 +32,17 @@ export class Game {
     this.currentTurn = savePoint.currentTurn;
   }
 
+  // toJSON() { // TODO: Complete this to sync game state when entering room
+  //   return {
+  //     interrupt: JSON.stringify(this.interrupt),
+  //     board: JSON.stringify(this.board),
+  //     clock: JSON.stringify(this.clock),
+  //     players: JSON.stringify(this.players),
+  //     currentPlayer: JSON.stringify(this.currentPlayer),
+  //     currentTurn: this.currentTurn,
+  //   };
+  // }
+
   static createGame(interrupt: CompactRules, time: number | undefined): Game {
     const clock = time ? new Clock([Player.White, Player.Black], time) : undefined;
     clock?.setActivePlayers([Player.White]);

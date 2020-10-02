@@ -6,6 +6,7 @@ import { Game } from "./Game";
 import { VariantName, variants } from "./variants";
 import { Check, CompactRules, Fatigue, Rule } from "./Rules";
 import { flatMap } from "lodash";
+import socketIOClient from "socket.io-client";
 
 export class GameMaster {
   public interrupt: CompactRules;
@@ -17,6 +18,8 @@ export class GameMaster {
   public rules: Rule[];
   public modal?: Modal;
   public flipBoard: boolean;
+  private socket: SocketIOClient.Socket | undefined;
+  public roomId: string | undefined;
   public overTheBoard: boolean;
 
   constructor(gameOptions: GameOptions, private renderer: Renderer) {
@@ -27,6 +30,7 @@ export class GameMaster {
       fatigueEnabled,
       flipBoard,
       overTheBoard,
+      roomId,
     } = gameOptions;
     const rules = [...variants[variant].rules];
     if (checkEnabled) rules.push(Check);
@@ -45,6 +49,17 @@ export class GameMaster {
     this.rules = rules;
     this.flipBoard = flipBoard;
     this.overTheBoard = overTheBoard;
+
+    this.socket = socketIOClient("http://localhost:8000"); // TODO: Make this an environment variable
+    this.socket.on("roomId", (roomId: string): void => {
+      this.roomId = roomId;
+      this.render();
+    });
+    this.socket.on("move", (move: Move) => {
+      this.game.doMove(move);
+      this.render();
+    });
+    this.socket.emit("joinRoom", { roomId });
   }
 
   render(): void {
@@ -56,6 +71,7 @@ export class GameMaster {
     this.gameClones.forEach((clone) => clone.resetTo(this.game));
     const move = this.allowableMoves.find((m) => m.location === square.location);
     if (move && this.game.currentPlayer === this.selectedPieces[0]?.owner) {
+      this.socket?.emit("move", { move, roomId: this.roomId });
       this.game.doMove(move);
       this.unselectAllgetPieces();
     } else {
@@ -93,5 +109,9 @@ export class GameMaster {
     this.modal?.onHide();
     this.modal = undefined;
     this.render();
+  }
+
+  endGame(): void {
+    this.socket?.disconnect();
   }
 }

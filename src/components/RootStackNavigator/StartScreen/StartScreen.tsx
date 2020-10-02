@@ -7,6 +7,7 @@ import { defaultGameOptions, GameOptionControls } from "./GameOptionControls";
 import { GameOptions } from "game/types";
 import { VerticalSeparator } from "ui/Separators";
 import { ShadowBoard } from "./ShadowBoard";
+import { JoinRoomControls } from "./JoinRoomControls";
 
 const StartScreen: FC = () => {
   const padding = 12;
@@ -25,6 +26,7 @@ const StartScreen: FC = () => {
         <View style={{ flex: 3 }}>
           <StartButton gameOptions={gameOptions} style={{ width: 240 }} />
           <GameOptionControls gameOptions={gameOptions} setGameOptions={setGameOptions} />
+          <JoinRoomControls gameOptions={gameOptions} />
         </View>
       </View>
     </ScreenContainer>
@@ -65,6 +67,7 @@ const StartScreen: FC = () => {
               setGameOptions={setGameOptions}
             />
             <StartButton gameOptions={gameOptions} style={{ width: 240 }} />
+            <JoinRoomControls gameOptions={gameOptions} />
           </View>
         </View>
       </View>

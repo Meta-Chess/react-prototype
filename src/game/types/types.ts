@@ -82,6 +82,7 @@ export interface GameOptions {
   fatigueEnabled: boolean;
   flipBoard: boolean;
   overTheBoard: boolean;
+  roomId?: string;
 }
 
 export interface Modal {

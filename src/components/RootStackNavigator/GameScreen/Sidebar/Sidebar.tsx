@@ -32,7 +32,14 @@ const Sidebar: FC = () => {
       <VariantInfoCard variant={variant} />
       <RulesInfoCard rules={rules} key={key} />
       <SelectedPieceInfoCard pieces={pieces} />
-      <Button text="Finish Game" onPress={navigation.goBack} style={{ margin: 32 }} />
+      <Button
+        text="Finish Game"
+        onPress={(): void => {
+          gameMaster?.endGame();
+          navigation.goBack();
+        }}
+        style={{ margin: 32 }}
+      />
       <PieceCredit />
     </SidebarContainer>
   );
