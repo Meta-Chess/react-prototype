@@ -4,7 +4,7 @@ import { GameOptions, Modal, Move } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants";
-import { Check, CompactRules, Fatigue, Rule } from "./Rules";
+import { Check, CompactRules, Fatigue, Atomic, Rule } from "./Rules";
 import { flatMap } from "lodash";
 import socketIOClient from "socket.io-client";
 
@@ -32,6 +32,7 @@ export class GameMaster {
       time,
       checkEnabled,
       fatigueEnabled,
+      atomicEnabled,
       flipBoard,
       overTheBoard,
       roomId,
@@ -40,6 +41,7 @@ export class GameMaster {
     const rules = [...variants[variant].rules];
     if (checkEnabled) rules.push(Check);
     if (fatigueEnabled) rules.push(Fatigue);
+    if (atomicEnabled) rules.push(Atomic);
     this.interrupt = new CompactRules(rules);
     this.game = Game.createGame(this.interrupt, time);
     this.gameClones = [
@@ -80,20 +82,20 @@ export class GameMaster {
     if (move && this.game.currentPlayer === this.selectedPieces[0]?.owner) {
       this.socket?.emit("move", { move, roomId: this.roomId });
       this.game.doMove(move);
-      this.unselectAllgetPieces();
+      this.unselectAllPieces();
     } else {
       if (this.selectedPieces.some((p) => p.location === square.location)) {
         // pressing again on a selected piece
-        this.unselectAllgetPieces();
+        this.unselectAllPieces();
       } else {
-        this.unselectAllgetPieces();
+        this.unselectAllPieces();
         this.selectPieces(square);
       }
     }
     this.render();
   }
 
-  unselectAllgetPieces(): void {
+  unselectAllPieces(): void {
     this.selectedPieces = [];
     this.allowableMoves = [];
   }

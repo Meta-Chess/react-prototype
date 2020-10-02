@@ -56,6 +56,7 @@ const identityRule = {
     filtered: boolean;
   }) => x,
   lethalCondition: (x: { board: Board; player: Player; dead: boolean }) => x,
+  postCapture: (x: { board: Board; square: Square }) => x,
 };
 
 export type CompleteRule = typeof identityRule;

@@ -2,6 +2,7 @@ import { Piece } from "./Piece";
 import { Adjacencies, Adjacency } from "./Adjacencies";
 import { Direction, Token } from "game/types";
 import { TokenOwner } from "./TokenOwner";
+import { clone } from "lodash";
 
 interface Coordinates {
   rank: number;
@@ -22,19 +23,19 @@ export class Square extends TokenOwner {
   clone(): Square {
     return new Square(
       this.location,
-      this.coordinates,
-      this.tokens,
+      clone(this.coordinates),
+      clone(this.tokens),
       this.adjacencies.clone(),
-      this.pieces
+      clone(this.pieces)
     );
   }
 
   resetTo(savePoint: Square): void {
     this.location = savePoint.location;
-    this.coordinates = savePoint.coordinates;
-    this.tokens = savePoint.tokens;
+    this.coordinates = clone(savePoint.coordinates);
+    this.tokens = clone(savePoint.tokens);
     this.adjacencies.resetTo(savePoint.adjacencies);
-    this.pieces = savePoint.pieces;
+    this.pieces = clone(savePoint.pieces);
   }
 
   go(direction: Direction): string[] {

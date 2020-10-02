@@ -10,6 +10,7 @@ export * from "./Standard";
 export * from "./Check";
 export * from "./loseWithNoKings";
 export * from "./Fatigue";
+export * from "./Atomic";
 //END: named rules
 
 export * from "./Rules";

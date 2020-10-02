@@ -1,4 +1,5 @@
 import { Direction } from "game/types";
+import { clone } from "lodash";
 
 export interface Adjacency {
   direction: Direction;
@@ -13,11 +14,11 @@ export class Adjacencies {
   ) {}
 
   clone(): Adjacencies {
-    return new Adjacencies(this.adjacencies);
+    return new Adjacencies(clone(this.adjacencies));
   }
 
   resetTo(savePoint: Adjacencies): void {
-    this.adjacencies = savePoint.adjacencies;
+    this.adjacencies = clone(savePoint.adjacencies);
   }
 
   go(direction: Direction): string[] {
@@ -32,5 +33,13 @@ export class Adjacencies {
 
   addAdjacencies(adjacencies: Adjacency[]): void {
     adjacencies.forEach((adjacency) => this.addAdjacency(adjacency));
+  }
+
+  getAllAdjacencies(): string[] {
+    const filteredAdjacencies: string[] = [];
+    Object.values(this.adjacencies).forEach((adjacency) => {
+      if (adjacency !== undefined) filteredAdjacencies.concat(adjacency);
+    });
+    return filteredAdjacencies;
   }
 }
