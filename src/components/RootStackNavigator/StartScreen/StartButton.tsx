@@ -11,7 +11,10 @@ const StartButton: SFC<Props> = ({ gameOptions, style }) => {
   const navigation = useNavigation();
   const onPress = (): void => {
     navigation.navigate<Screens.GameScreen>(Screens.GameScreen, {
-      gameOptions,
+      gameOptions: {
+        ...gameOptions,
+        online: false,
+      },
       gameId: Math.random(),
     });
   };

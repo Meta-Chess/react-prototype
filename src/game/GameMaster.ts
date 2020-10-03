@@ -31,6 +31,7 @@ export class GameMaster {
       flipBoard,
       overTheBoard,
       roomId,
+      online,
     } = gameOptions;
     const rules = [...variants[variant].rules];
     if (checkEnabled) rules.push(Check);
@@ -50,16 +51,18 @@ export class GameMaster {
     this.flipBoard = flipBoard;
     this.overTheBoard = overTheBoard;
 
-    this.socket = socketIOClient("http://localhost:8000"); // TODO: Make this an environment variable
-    this.socket.on("roomId", (roomId: string): void => {
-      this.roomId = roomId;
-      this.render();
-    });
-    this.socket.on("move", (move: Move) => {
-      this.game.doMove(move);
-      this.render();
-    });
-    this.socket.emit("joinRoom", { roomId });
+    if (online) {
+      this.socket = socketIOClient("http://localhost:8000"); // TODO: Make this an environment variable
+      this.socket.on("roomId", (roomId: string): void => {
+        this.roomId = roomId;
+        this.render();
+      });
+      this.socket.on("move", (move: Move) => {
+        this.game.doMove(move);
+        this.render();
+      });
+      this.socket.emit("joinRoom", { roomId });
+    }
   }
 
   render(): void {

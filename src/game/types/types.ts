@@ -83,6 +83,7 @@ export interface GameOptions {
   flipBoard: boolean;
   overTheBoard: boolean;
   roomId?: string;
+  online: boolean;
 }
 
 export interface Modal {
