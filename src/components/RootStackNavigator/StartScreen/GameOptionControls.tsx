@@ -26,7 +26,6 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
 
   return (
     <ControlsContainer style={style}>
-      <DummyComponentToReserveHeightForSelectMenu />
       <LabeledCheckBox
         value={gameOptions.overTheBoard}
         setValue={setOverTheBoard}
@@ -99,10 +98,6 @@ const defaultGameOptions = {
 const ControlsContainer = styled(View)`
   flex-direction: column-reverse;
   max-width: 240px;
-`;
-
-const DummyComponentToReserveHeightForSelectMenu = styled(View)`
-  height: 100px;
 `;
 
 export { GameOptionControls, defaultGameOptions };

@@ -28,7 +28,7 @@ const JoinRoomControls: SFC<Props> = ({ gameOptions, style }) => {
         placeholder={"Please enter a room id"}
         onChangeText={(text: string): void => setRoomId(text)}
       />
-      <Button onPress={onPress} text={"JoinRoom"} style={{ marginTop: 32 }} />
+      <Button onPress={onPress} text={"Play Online"} style={{ marginTop: 32 }} />
     </View>
   );
 };

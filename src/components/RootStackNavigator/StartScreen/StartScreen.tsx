@@ -5,7 +5,7 @@ import { Colors, MChessLogo } from "primitives";
 import { StartButton } from "./StartButton";
 import { defaultGameOptions, GameOptionControls } from "./GameOptionControls";
 import { GameOptions } from "game/types";
-import { VerticalSeparator } from "ui/Separators";
+import { VerticalSeparator, HorizontalSeparator } from "ui";
 import { ShadowBoard } from "./ShadowBoard";
 import { JoinRoomControls } from "./JoinRoomControls";
 
@@ -23,9 +23,12 @@ const StartScreen: FC = () => {
         <View style={{ flex: 2, justifyContent: "center" }}>
           <MChessLogo style={{ margin: 24 }} />
         </View>
-        <View style={{ flex: 3 }}>
+        <View style={{ flex: 3, justifyContent: "center" }}>
           <StartButton gameOptions={gameOptions} style={{ width: 240 }} />
           <GameOptionControls gameOptions={gameOptions} setGameOptions={setGameOptions} />
+        </View>
+        <HorizontalSeparator />
+        <View style={{ flex: 2 }}>
           <JoinRoomControls gameOptions={gameOptions} />
         </View>
       </View>
@@ -61,12 +64,18 @@ const StartScreen: FC = () => {
             alignItems: "center",
           }}
         >
-          <View style={{ flex: 3, justifyContent: "center" }}>
+          <View style={{ flex: 2, justifyContent: "flex-end" }}>
             <GameOptionControls
               gameOptions={gameOptions}
               setGameOptions={setGameOptions}
             />
-            <StartButton gameOptions={gameOptions} style={{ width: 240 }} />
+            <StartButton
+              gameOptions={gameOptions}
+              style={{ width: 240, marginTop: 32 }}
+            />
+          </View>
+          <HorizontalSeparator />
+          <View style={{ flex: 1, justifyContent: "flex-start" }}>
             <JoinRoomControls gameOptions={gameOptions} />
           </View>
         </View>
