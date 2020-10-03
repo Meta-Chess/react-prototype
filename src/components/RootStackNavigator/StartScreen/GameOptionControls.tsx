@@ -12,6 +12,8 @@ interface Props {
 }
 
 const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) => {
+  const setOverTheBoard = (overTheBoard: boolean): void =>
+    setGameOptions({ ...gameOptions, overTheBoard });
   const setFlipBoard = (flipBoard: boolean): void =>
     setGameOptions({ ...gameOptions, flipBoard });
   const setFatigueEnabled = (fatigueEnabled: boolean): void =>
@@ -25,6 +27,12 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
   return (
     <ControlsContainer style={style}>
       <DummyComponentToReserveHeightForSelectMenu />
+      <LabeledCheckBox
+        value={gameOptions.overTheBoard}
+        setValue={setOverTheBoard}
+        label={"Over the board"}
+        style={{ marginTop: 24 }}
+      />
       <LabeledCheckBox
         value={gameOptions.flipBoard}
         setValue={setFlipBoard}
@@ -85,6 +93,7 @@ const defaultGameOptions = {
   checkEnabled: true,
   fatigueEnabled: false,
   flipBoard: false,
+  overTheBoard: false,
 };
 
 const ControlsContainer = styled(View)`

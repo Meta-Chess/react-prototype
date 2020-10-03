@@ -81,6 +81,7 @@ export interface GameOptions {
   checkEnabled: boolean;
   fatigueEnabled: boolean;
   flipBoard: boolean;
+  overTheBoard: boolean;
 }
 
 export interface Modal {

@@ -9,10 +9,18 @@ interface Props {
   color: string;
   size: number;
   opacity?: number;
+  rotatePiece?: boolean;
   glowColor?: string;
 }
 
-const PieceImage: FC<Props> = ({ type, color, size, opacity, glowColor }) => {
+const PieceImage: FC<Props> = ({
+  type,
+  color,
+  size,
+  opacity,
+  rotatePiece,
+  glowColor,
+}) => {
   if (size < 0) return null;
   const primary = color;
   const secondary = Colors.DARKEST.string();
@@ -33,8 +41,15 @@ const PieceImage: FC<Props> = ({ type, color, size, opacity, glowColor }) => {
     );
 
   const glowAlphas = [0.03, 0.1, 0.1, 0.2, 0.3, 0.4, 1];
+
   return (
-    <Svg width={size} height={size} viewBox="0 0 45 45">
+    <Svg
+      width={size}
+      height={size}
+      originX={rotatePiece ? 0 : 1}
+      rotation={rotatePiece ? 180 : 0}
+      viewBox="0 0 45 45"
+    >
       {glowColor &&
         glowAlphas.map((alpha, i) => (
           <G
