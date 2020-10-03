@@ -8,7 +8,7 @@ class Piece extends TokenOwner {
     public generateGaits: (_?: GaitParams) => Gait[],
     public owner: Player,
     public tokens: Token[] = [],
-    public id: string = Math.floor(Math.random() * 10 ** 10).toString(36) //TODO: set this in board
+    public id?: string
   ) {
     super(tokens);
   }
