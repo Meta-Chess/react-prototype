@@ -8,7 +8,7 @@ import { PieceCredit } from "./Sidebar/PieceCredit";
 import { Sidebar } from "./Sidebar";
 import { GlobalModal } from "./GlobalModal";
 import { GameScreenContainer } from "./GameScreenContainer";
-import { RoomIdDisplay } from "./RoomIdDisplay";
+import { RoomIdCard } from "./Sidebar/RoomIdCard";
 
 const GameScreen: FC = () => {
   const { params } = useRoute<Screens.GameScreen>();
@@ -22,17 +22,9 @@ const GameScreen: FC = () => {
     return (
       <GameProvider {...params}>
         <GameScreenContainer orientation="portrait">
-          <RoomIdDisplay />
+          <RoomIdCard roomId={gameMaster?.roomId} />
           <Board style={{ marginTop: 32 }} />
-          <Button
-            text="Finish Game"
-            onPress={(): void => {
-              gameMaster?.endGame();
-              navigation.goBack();
-            }}
-            style={{ margin: 32 }}
-          />
-          <PieceCredit style={{ marginTop: 24 }} />
+          <Sidebar short />
         </GameScreenContainer>
       </GameProvider>
     );
@@ -41,7 +33,6 @@ const GameScreen: FC = () => {
     <GameProvider {...params}>
       <GameScreenContainer orientation="landscape">
         <View style={{ flex: 2 }}>
-          <RoomIdDisplay />
           <Board
             style={{
               marginHorizontal: Platform.OS === "web" ? 16 : 0,
