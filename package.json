@@ -75,7 +75,7 @@
   "husky": {
     "hooks": {
       "post-merge": "yarn install",
-      "pre-push": "concurrently yarn:lint yarn:format:check yarn:type-check"
+      "pre-push": "concurrently yarn:lint yarn:format:check yarn:type-check yarn:test"
     }
   }
 }
