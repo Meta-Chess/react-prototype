@@ -8,6 +8,7 @@ import { HexBoard } from "./HexBoard";
 import { SquareBoard } from "./SquareBoard";
 import { useFlipDelay } from "./useFlipDelay";
 import { Timer } from "./Timer";
+import { Spinner } from "ui";
 
 interface OuterBoardProps {
   backboard?: boolean;
@@ -40,7 +41,7 @@ const Board: SFC<OuterBoardProps> = ({ style, ...props }) => {
 
   const { gameMaster } = useContext(GameContext);
   const { flipBoard } = useFlipDelay(gameMaster?.game?.currentPlayer); // TODO: Lift flip board above portrait decision, so the board doesn't briefly flip when the window resizes
-  if (!gameMaster) return null;
+  if (!gameMaster) return <Spinner />;
   const shapeToken = gameMaster.game.board.firstTokenWithName(TokenName.Shape);
 
   return (
@@ -49,7 +50,9 @@ const Board: SFC<OuterBoardProps> = ({ style, ...props }) => {
         player={flipBoard ? Player.White : Player.Black}
         style={{ marginBottom: 12 }}
       />
-      {shapeToken?.data?.shape === SquareShape.Hex ? (
+      {!dimensions.width ? (
+        <Spinner />
+      ) : shapeToken?.data?.shape === SquareShape.Hex ? (
         <HexBoard {...props} dimensions={constrainedDimensions} flipBoard={flipBoard} />
       ) : (
         <SquareBoard

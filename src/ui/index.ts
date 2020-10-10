@@ -3,3 +3,4 @@ export * from "./Forms";
 export * from "./Containers";
 export * from "./LabelWithDetails";
 export * from "./Separators";
+export * from "./Spinner";
