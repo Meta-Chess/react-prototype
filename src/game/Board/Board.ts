@@ -90,6 +90,14 @@ class Board extends TokenOwner {
     return this.pieces[id];
   }
 
+  findPiecesAt(location: string): Piece[] {
+    let pieces: Piece[] = [];
+    this.squareAt(location)?.pieces.forEach((id) => {
+      pieces = pieces.concat(this.pieces[id]);
+    });
+    return pieces;
+  }
+
   addSquare({ location, square }: { location: string; square: Square }): void {
     this.squares = { ...this.squares, [location]: square };
   }
@@ -154,8 +162,7 @@ class Board extends TokenOwner {
   }
 
   displace({ pId: pieceId, destination }: { pId: string; destination: string }): void {
-    console.log({ pieceId, pieces: this.pieces, board: this });
-    const startSquare = this.squareAt(this.pieces[pieceId].location);
+    const startSquare = this.squareAt(this.pieces[pieceId]?.location);
     const endSquare = this.squareAt(destination);
     if (startSquare && endSquare) {
       startSquare.pieces = startSquare.pieces.filter((p) => p != pieceId);
@@ -166,17 +173,21 @@ class Board extends TokenOwner {
 
   displacePieces(pieceDeltas: PieceDelta[]): void {
     pieceDeltas.forEach((pieceDelta) => {
-      this.capturePiecesAt(pieceDelta.destination);
+      const captureHappened = this.capturePiecesAt(pieceDelta.destination);
       this.displace(pieceDelta);
+      if (captureHappened) {
+        this.interrupt.for.postCapture({
+          board: this,
+          square: this.squares[pieceDelta.destination],
+        });
+      }
     });
   }
 
-  capturePiecesAt(location: string): void {
-    // TODO: initialise board with rules
-    if ((this.squareAt(location)?.pieces.length || 0) > 0) {
-      this.killPiecesAt(location);
-      //this.interrupt.for.postCapture({ board: this, square: this.squares[location] });
-    }
+  capturePiecesAt(location: string): boolean {
+    const captureHappened = (this.squareAt(location)?.pieces.length || 0) > 0;
+    this.killPiecesAt(location);
+    return captureHappened;
   }
 
   killPiecesAt(location: string): void {

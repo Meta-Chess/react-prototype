@@ -9,6 +9,14 @@ interface Coordinates {
   file: number;
 }
 
+// TODO: move to utilities
+export function resetArrayTo<T>(a: Array<T>, b: Array<T>): void {
+  a.length = b.length;
+  for (let i = 0; i < a.length; i++) {
+    a[i] = b[i];
+  }
+}
+
 export class Square extends TokenOwner {
   constructor(
     public location: string,
@@ -32,10 +40,11 @@ export class Square extends TokenOwner {
 
   resetTo(savePoint: Square): void {
     this.location = savePoint.location;
-    this.coordinates = clone(savePoint.coordinates);
-    this.tokens = clone(savePoint.tokens);
+    this.coordinates.rank = savePoint.coordinates.rank;
+    this.coordinates.file = savePoint.coordinates.file;
+    resetArrayTo(this.tokens, savePoint.tokens);
     this.adjacencies.resetTo(savePoint.adjacencies);
-    this.pieces = clone(savePoint.pieces);
+    resetArrayTo(this.pieces, savePoint.pieces);
   }
 
   go(direction: Direction): string[] {

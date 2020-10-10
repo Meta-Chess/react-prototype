@@ -8,9 +8,11 @@ export const PawnDoubleStep: Rule = {
   description:
     "For their first move, pawns can do two steps in their direction of travel!",
   postMove: ({ board, move, currentTurn }) => {
-    const piecesMoved = move.pieceDeltas.map((delta) => board.pieces[delta.pId]);
+    const piecesMoved = move.pieceDeltas
+      .map((delta) => board.pieces[delta.pId])
+      .filter((piece) => piece !== undefined);
     piecesMoved.forEach((piece: Piece) => {
-      if (piece.name === PieceName.Pawn)
+      if (piece?.name === PieceName.Pawn)
         piece.removeTokensByName(TokenName.PawnDoubleStep);
     });
     return { board, move, currentTurn };
