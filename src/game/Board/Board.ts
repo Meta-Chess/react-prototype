@@ -80,7 +80,7 @@ class Board extends TokenOwner {
     return this.getPiecesByRule((piece) => piece.owner !== player);
   }
 
-  findPieceById(id: number): Piece | undefined {
+  findPieceById(id: string): Piece | undefined {
     return this.pieces[id];
   }
 
