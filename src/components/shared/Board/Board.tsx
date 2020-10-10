@@ -23,12 +23,11 @@ const Board: SFC<OuterBoardProps> = ({ style, ...props }) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   const handleDimensions = useCallback(
-    () =>
-      throttle((event) => {
-        const { width, height } = event.nativeEvent.layout;
-        if (dimensions.width !== width || dimensions.height !== height)
-          setDimensions({ width, height: height });
-      }, 200),
+    (event) => {
+      const { width, height } = event.nativeEvent.layout;
+      if (dimensions.width !== width || dimensions.height !== height)
+        setDimensions({ width, height: height });
+    },
     [dimensions, setDimensions]
   );
 

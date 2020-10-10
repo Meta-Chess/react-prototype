@@ -5,16 +5,14 @@ import { Colors } from "primitives";
 import { GameContext } from "game";
 
 interface Props {
-  orientation: string;
+  portrait: boolean;
 }
 
-export const GameScreenContainer: FC<Props> = ({ children, orientation }) => {
+export const GameScreenContainer: FC<Props> = ({ children, portrait }) => {
   const { gameMaster } = useContext(GameContext);
   return (
     <StyledTouchableWithoutFeedback onPress={(): void => gameMaster?.hideModal()}>
-      <StyledContainer
-        style={{ flexDirection: orientation === "portrait" ? "column" : "row" }}
-      >
+      <StyledContainer style={{ flexDirection: portrait ? "column" : "row" }}>
         {children}
       </StyledContainer>
     </StyledTouchableWithoutFeedback>
