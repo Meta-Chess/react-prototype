@@ -102,14 +102,11 @@ export class GameMaster {
   }
 
   setModal(modal: Modal): void {
-    this.modal?.onHide();
     this.modal = modal;
-    this.modal?.onShow();
     this.render();
   }
 
   hideModal(): void {
-    this.modal?.onHide();
     this.modal = undefined;
     this.render();
   }

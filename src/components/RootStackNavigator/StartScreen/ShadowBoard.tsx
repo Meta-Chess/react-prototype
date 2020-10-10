@@ -12,23 +12,19 @@ interface Props {
 
 const ShadowBoard: FC<Props> = ({ gameOptions }) => {
   return (
-    <GameProvider
-      gameOptions={{ ...gameOptions, time: undefined, online: false, flipBoard: false }}
-    >
-      <Container>
-        <Board
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            maxWidth: 800,
-            minWidth: 400,
-            minHeight: 400,
-          }}
-          backboard={false}
-        />
-        <ShadowLayer />
-      </Container>
-    </GameProvider>
+    <Container>
+      <Board
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          maxWidth: 800,
+          minWidth: 400,
+          minHeight: 400,
+        }}
+        backboard={false}
+      />
+      <ShadowLayer />
+    </Container>
   );
 };
 

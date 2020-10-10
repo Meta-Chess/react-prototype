@@ -30,7 +30,6 @@ const Sidebar: FC<Props> = ({ short }) => {
     (pieces || []).reduce((sum, p): number => sum + parseInt(p.id || "0", 36), 0); // We should maybe create a function like "hash by id" for this purpose?
   if (k !== key) {
     setKey(k);
-    gameMaster?.hideModal();
   }
 
   return (
