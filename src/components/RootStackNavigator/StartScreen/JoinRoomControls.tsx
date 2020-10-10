@@ -19,7 +19,6 @@ const JoinRoomControls: SFC<Props> = ({ gameOptions, style }) => {
         roomId,
         online: true,
       },
-      gameId: Math.random(),
     });
   };
 

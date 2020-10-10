@@ -13,8 +13,7 @@ interface Props {
 const ShadowBoard: FC<Props> = ({ gameOptions }) => {
   return (
     <GameProvider
-      gameOptions={{ ...gameOptions, time: undefined }}
-      gameId={Math.random()}
+      gameOptions={{ ...gameOptions, time: undefined, online: false, flipBoard: false }}
     >
       <Container>
         <Board

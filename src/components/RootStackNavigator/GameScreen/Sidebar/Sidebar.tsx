@@ -10,7 +10,7 @@ import { PieceCredit } from "./PieceCredit";
 import { SelectedPieceInfoCard } from "./SelectedPieceInfoCard";
 
 interface Props {
-  short: boolean;
+  short?: boolean;
 }
 
 const Sidebar: FC<Props> = ({ short }) => {

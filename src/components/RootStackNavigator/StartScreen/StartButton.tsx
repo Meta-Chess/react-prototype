@@ -15,7 +15,6 @@ const StartButton: SFC<Props> = ({ gameOptions, style }) => {
         ...gameOptions,
         online: false,
       },
-      gameId: Math.random(),
     });
   };
 
