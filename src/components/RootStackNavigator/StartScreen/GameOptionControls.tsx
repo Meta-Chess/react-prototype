@@ -1,6 +1,6 @@
 import React from "react";
 import { SFC } from "primitives";
-import { SelectInput, LabeledCheckBox } from "ui";
+import { SelectInput, LabeledCheckBox, TextInput } from "ui";
 import { VariantName, variants } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
@@ -12,6 +12,8 @@ interface Props {
 }
 
 const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) => {
+  const setRoomId = (roomId: string): void => setGameOptions({ ...gameOptions, roomId });
+  const setOnline = (online: boolean): void => setGameOptions({ ...gameOptions, online });
   const setOverTheBoard = (overTheBoard: boolean): void =>
     setGameOptions({ ...gameOptions, overTheBoard });
   const setFlipBoard = (flipBoard: boolean): void =>
@@ -26,6 +28,17 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
 
   return (
     <ControlsContainer style={style}>
+      <TextInput
+        placeholder={"Please enter an invite key"}
+        onChangeText={(text: string): void => setRoomId(text)}
+        style={{ marginTop: 24 }}
+      />
+      <LabeledCheckBox
+        value={gameOptions.online}
+        setValue={setOnline}
+        label={"Flip board"}
+        style={{ marginTop: 24 }}
+      />
       <LabeledCheckBox
         value={gameOptions.overTheBoard}
         setValue={setOverTheBoard}

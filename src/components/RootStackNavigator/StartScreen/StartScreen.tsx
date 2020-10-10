@@ -5,14 +5,11 @@ import { Colors, MChessLogo } from "primitives";
 import { StartButton } from "./StartButton";
 import { defaultGameOptions, GameOptionControls } from "./GameOptionControls";
 import { GameOptions } from "game/types";
-import { VerticalSeparator, HorizontalSeparator } from "ui";
+import { VerticalSeparator } from "ui";
 import { ShadowBoard } from "./ShadowBoard";
-import { JoinRoomControls } from "./JoinRoomControls";
 import { GameProvider } from "game";
 
 const StartScreen: FC = () => {
-  const padding = 12;
-
   const { height, width } = useWindowDimensions();
   const portrait = height > width;
 
@@ -22,74 +19,51 @@ const StartScreen: FC = () => {
     <GameProvider
       gameOptions={{ ...gameOptions, time: undefined, online: false, flipBoard: false }}
     >
-      {portrait ? (
-        <ScreenContainer style={{ padding }}>
-          <View style={{ alignItems: "center", height }}>
-            <View style={{ flex: 2, justifyContent: "center" }}>
-              <MChessLogo style={{ margin: 24 }} />
-            </View>
-            <View style={{ flex: 3, justifyContent: "center" }}>
-              <StartButton gameOptions={gameOptions} style={{ width: 240 }} />
+      <ScreenContainer>
+        <View
+          style={{
+            alignItems: "center",
+            width,
+            height,
+            flexDirection: portrait ? "column" : "row",
+          }}
+        >
+          <View
+            style={{
+              flex: portrait ? 1 : 2,
+              width,
+              height,
+              justifyContent: "center",
+              alignItems: "center",
+              padding: 24,
+            }}
+          >
+            <ShadowBoard />
+            <MChessLogo />
+          </View>
+          {!portrait && <VerticalSeparator />}
+          <View
+            style={{
+              flex: portrait ? 2 : 1,
+              height,
+              padding: 20,
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <View style={{ flex: 2, justifyContent: portrait ? "flex-start" : "center" }}>
               <GameOptionControls
                 gameOptions={gameOptions}
                 setGameOptions={setGameOptions}
               />
-            </View>
-            <HorizontalSeparator />
-            <View style={{ flex: 2 }}>
-              <JoinRoomControls gameOptions={gameOptions} />
-            </View>
-          </View>
-        </ScreenContainer>
-      ) : (
-        <ScreenContainer>
-          <View
-            style={{
-              alignItems: "center",
-              height,
-              flexDirection: "row",
-            }}
-          >
-            <View
-              style={{
-                flex: 2,
-                height,
-                justifyContent: "center",
-                alignItems: "center",
-                padding: 24,
-              }}
-            >
-              <ShadowBoard gameOptions={gameOptions} />
-              <MChessLogo />
-            </View>
-            <VerticalSeparator />
-            <View
-              style={{
-                flex: 1,
-                height,
-                padding: 20,
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <View style={{ flex: 2, justifyContent: "flex-end" }}>
-                <GameOptionControls
-                  gameOptions={gameOptions}
-                  setGameOptions={setGameOptions}
-                />
-                <StartButton
-                  gameOptions={gameOptions}
-                  style={{ width: 240, marginTop: 32 }}
-                />
-              </View>
-              <HorizontalSeparator />
-              <View style={{ flex: 1, justifyContent: "flex-start" }}>
-                <JoinRoomControls gameOptions={gameOptions} />
-              </View>
+              <StartButton
+                gameOptions={gameOptions}
+                style={{ width: 240, marginTop: 32 }}
+              />
             </View>
           </View>
-        </ScreenContainer>
-      )}
+        </View>
+      </ScreenContainer>
     </GameProvider>
   );
 };

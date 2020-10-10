@@ -18,7 +18,7 @@ const StartButton: SFC<Props> = ({ gameOptions, style }) => {
     });
   };
 
-  return <Button onPress={onPress} text={"Play Locally"} style={style} />;
+  return <Button onPress={onPress} text={"Play"} style={style} />;
 };
 
 export { StartButton };

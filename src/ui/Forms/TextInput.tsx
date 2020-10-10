@@ -1,6 +1,6 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import { TextInput as NativeTextInput } from "react-native";
-import { Colors } from "primitives";
+import { SFC, Colors } from "primitives";
 
 interface Props {
   onChangeText?: (text: string) => void;
@@ -8,21 +8,26 @@ interface Props {
   placeholder?: string;
 }
 
-export const TextInput: FC<Props> = ({ onChangeText, placeholder, value }) => {
+export const TextInput: SFC<Props> = ({ onChangeText, placeholder, value, style }) => {
   const [focused, setFocused] = useState(false);
 
   return (
     <NativeTextInput
-      style={{
-        height: 48,
-        width: 240,
-        borderWidth: 2,
-        borderRadius: 4,
-        borderColor: focused ? Colors.GREY.toString() : Colors.GREY.fade(0.4).toString(),
-        paddingHorizontal: 12,
-        color: Colors.TEXT.LIGHT.toString(),
-        // outlineWidth: 0, // TODO: Fix type error (note - this line stops it looking weird in chrome, but might cause accessibility problems)
-      }}
+      style={[
+        style,
+        {
+          height: 48,
+          width: 240,
+          borderWidth: 2,
+          borderRadius: 4,
+          borderColor: focused
+            ? Colors.GREY.toString()
+            : Colors.GREY.fade(0.4).toString(),
+          paddingHorizontal: 12,
+          color: Colors.TEXT.LIGHT.toString(),
+          // outlineWidth: 0, // TODO: Fix type error (note - this line stops it looking weird in chrome, but might cause accessibility problems)
+        },
+      ]}
       onFocus={(): void => {
         setFocused(true);
       }}
