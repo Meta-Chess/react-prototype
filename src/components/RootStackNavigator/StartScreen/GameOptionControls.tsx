@@ -93,6 +93,7 @@ const defaultGameOptions = {
   fatigueEnabled: false,
   flipBoard: false,
   overTheBoard: false,
+  online: false,
 };
 
 const ControlsContainer = styled(View)`

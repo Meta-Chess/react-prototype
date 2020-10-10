@@ -8,7 +8,7 @@ class Piece extends TokenOwner {
     public generateGaits: (_?: GaitParams) => Gait[],
     public owner: Player,
     public tokens: Token[] = [],
-    public id?: string
+    public id: string
   ) {
     super(tokens);
   }

@@ -22,7 +22,7 @@ interface PieceCreationInput {
 export function createPiece(input: PieceCreationInput): Piece {
   const { location, owner, name, tokens } = input;
   const gaitGenerator = determineGaitGenerator(input);
-  return new Piece(location, name, gaitGenerator, owner, tokens);
+  return new Piece(location, name, gaitGenerator, owner, tokens, "0");
 }
 
 const determineGaitGenerator = (input: PieceCreationInput): GaitGenerator => {
