@@ -20,6 +20,8 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
     setGameOptions({ ...gameOptions, flipBoard });
   const setFatigueEnabled = (fatigueEnabled: boolean): void =>
     setGameOptions({ ...gameOptions, fatigueEnabled });
+  const setAtomicEnabled = (atomicEnabled: boolean): void =>
+    setGameOptions({ ...gameOptions, atomicEnabled });
   const setCheckEnabled = (checkEnabled: boolean): void =>
     setGameOptions({ ...gameOptions, checkEnabled });
   const setTime = (time: number): void => setGameOptions({ ...gameOptions, time });
@@ -55,6 +57,12 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
         value={gameOptions.fatigueEnabled}
         setValue={setFatigueEnabled}
         label={"Fatigue on move"}
+        style={{ marginTop: 24 }}
+      />
+      <LabeledCheckBox
+        value={gameOptions.atomicEnabled}
+        setValue={setAtomicEnabled}
+        label={"Atomic enabled"}
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox
@@ -104,6 +112,7 @@ const defaultGameOptions = {
   time: undefined,
   checkEnabled: true,
   fatigueEnabled: false,
+  atomicEnabled: false,
   flipBoard: false,
   overTheBoard: false,
   online: false,

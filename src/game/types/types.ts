@@ -80,6 +80,7 @@ export interface GameOptions {
   time: number | undefined;
   checkEnabled: boolean;
   fatigueEnabled: boolean;
+  atomicEnabled: boolean;
   flipBoard: boolean;
   overTheBoard: boolean;
   roomId?: string;

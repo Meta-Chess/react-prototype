@@ -20,6 +20,7 @@ class Board extends TokenOwner {
   private idGenerator: IdGenerator;
 
   constructor(
+    public interrupt: CompactRules,
     public squares: LocationMap = {},
     public pieces: PieceIdMap = {},
     public tokens: Token[] = []
@@ -43,7 +44,8 @@ class Board extends TokenOwner {
       }),
       {}
     );
-    return new Board(squaresClone, piecesClone, this.tokens);
+    //TODO: actually clone rules
+    return new Board(this.interrupt, squaresClone, piecesClone, this.tokens);
   }
 
   resetTo(savePoint: Board): void {
@@ -86,6 +88,14 @@ class Board extends TokenOwner {
 
   findPieceById(id: number): Piece | undefined {
     return this.pieces[id];
+  }
+
+  getPiecesAt(location: string): Piece[] {
+    let pieces: Piece[] = [];
+    this.squareAt(location)?.pieces.forEach((id) => {
+      pieces = pieces.concat(this.pieces[id]);
+    });
+    return pieces;
   }
 
   addSquare({ location, square }: { location: string; square: Square }): void {
@@ -151,21 +161,33 @@ class Board extends TokenOwner {
     return Object.values(this.squares).find(condition);
   }
 
-  displace({ pId, destination }: { pId: string; destination: string }): void {
-    const startSquare = this.squareAt(this.pieces[pId].location);
+  displace({ pId: pieceId, destination }: { pId: string; destination: string }): void {
+    const startSquare = this.squareAt(this.pieces[pieceId]?.location);
     const endSquare = this.squareAt(destination);
     if (startSquare && endSquare) {
-      startSquare.pieces = startSquare.pieces.filter((p) => p != pId);
-      this.pieces[pId].location = destination;
-      endSquare.pieces.push(pId);
+      startSquare.pieces = startSquare.pieces.filter((p) => p != pieceId);
+      this.pieces[pieceId].location = destination;
+      endSquare.pieces.push(pieceId);
     }
   }
 
   displacePieces(pieceDeltas: PieceDelta[]): void {
     pieceDeltas.forEach((pieceDelta) => {
-      this.killPiecesAt(pieceDelta.destination);
+      const captureHappened = this.capturePiecesAt(pieceDelta.destination);
       this.displace(pieceDelta);
+      if (captureHappened) {
+        this.interrupt.for.postCapture({
+          board: this,
+          square: this.squares[pieceDelta.destination],
+        });
+      }
     });
+  }
+
+  capturePiecesAt(location: string): boolean {
+    const captureHappened = (this.squareAt(location)?.pieces.length || 0) > 0;
+    this.killPiecesAt(location);
+    return captureHappened;
   }
 
   killPiecesAt(location: string): void {
@@ -199,12 +221,8 @@ class Board extends TokenOwner {
     return currentSquares.filter(isPresent);
   }
 
-  static createEmptyBoard(): Board {
-    return new Board({});
-  }
-
   static createBoard(interrupt: CompactRules): Board {
-    let board = new Board();
+    let board = new Board(interrupt);
 
     ({ board } = interrupt.for.forSquareGenerationModify({ board }));
     ({ board } = interrupt.for.onBoardCreatedModify({ board }));
