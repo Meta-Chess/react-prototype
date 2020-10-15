@@ -82,12 +82,13 @@ export interface GameOptions {
   fatigueEnabled: boolean;
   flipBoard: boolean;
   overTheBoard: boolean;
+  roomId?: string;
+  online: boolean;
 }
 
 export interface Modal {
+  id: number;
   top: number;
   left: number;
   content?: ReactElement;
-  onShow: () => void;
-  onHide: () => void;
 }

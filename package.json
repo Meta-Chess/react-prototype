@@ -35,6 +35,7 @@
     "react-native-web": "^0.13.9",
     "react-refresh": "^0.8.3",
     "react-select": "^3.1.0",
+    "socket.io-client": "^2.3.1",
     "styled-components": "^5.2.0"
   },
   "optionalDependencies": {
@@ -49,6 +50,7 @@
     "@types/react": "^16.9.49",
     "@types/react-native": "^0.63.15",
     "@types/react-select": "^3.0.19",
+    "@types/socket.io-client": "^1.4.34",
     "@types/styled-components": "^5.1.3",
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
@@ -73,7 +75,7 @@
   "husky": {
     "hooks": {
       "post-merge": "yarn install",
-      "pre-push": "concurrently yarn:lint yarn:format:check yarn:type-check"
+      "pre-push": "concurrently yarn:lint yarn:format:check yarn:type-check yarn:test"
     }
   }
 }

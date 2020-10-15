@@ -5,6 +5,7 @@ import { TokenOwner } from "./TokenOwner";
 import { Direction, PieceDelta, RankAndFileBounds, Token, Player } from "game/types";
 import { isPresent } from "utilities";
 import { CompactRules } from "game/Rules/Rules";
+import { IdGenerator } from "utilities/IdGenerator";
 
 interface LocationMap {
   [key: string]: Square;
@@ -16,12 +17,15 @@ interface PieceIdMap {
 
 // TODO: This class is too long!
 class Board extends TokenOwner {
+  private idGenerator: IdGenerator;
+
   constructor(
     public squares: LocationMap = {},
     public pieces: PieceIdMap = {},
     public tokens: Token[] = []
   ) {
     super(tokens);
+    this.idGenerator = new IdGenerator();
   }
 
   clone(): Board {
@@ -105,23 +109,21 @@ class Board extends TokenOwner {
     });
   }
 
-  addPiece(piece: Piece): void {
-    this.pieces = { ...this.pieces, [piece.id]: piece };
+  // TODO: this method should handle a location or a square
+  addPieceToSquare(piece: Piece, square: Square): void {
+    const pieceId = this.idGenerator.getId().toString(36);
+    square.addPieces([pieceId]);
+    piece.id = pieceId;
+    this.pieces = { ...this.pieces, [pieceId]: piece };
   }
 
   addPiecesByRule(rule: (square: Square) => Piece[]): void {
     const squares = Object.values(this.squares);
     squares.forEach((square) => {
-      rule(square).forEach((p) => {
-        square.addPieces([p.id]);
-        this.addPiece(p);
+      rule(square).forEach((piece) => {
+        this.addPieceToSquare(piece, square);
       });
     });
-  }
-
-  addPieceAt(piece: Piece, location: string): void {
-    this.squareAt(location)?.addPieces([piece.id]);
-    this.pieces = { ...this.pieces, [piece.id]: piece };
   }
 
   addPieceTokensByRule(rule: (piece: Piece) => Token[]): void {

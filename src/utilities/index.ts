@@ -3,6 +3,7 @@ export * from "./color";
 export * from "./filterByValue";
 export * from "./flatMapValues";
 export * from "./formatMillis";
+export * from "./IdGenerator";
 export * from "./isPresent";
 export * from "./Map";
 export * from "./objectMatches";
