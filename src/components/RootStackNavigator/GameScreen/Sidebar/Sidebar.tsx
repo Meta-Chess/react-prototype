@@ -39,7 +39,7 @@ const Sidebar: FC<Props> = ({ short }) => {
         <>
           <VariantInfoCard variant={variant} />
           <RulesInfoCard rules={rules} key={key} />
-          <SelectedPieceInfoCard pieces={pieces} />
+          <SelectedPieceInfoCard pieces={pieces} key={key+1}/>
         </>
       )}
       <Button
