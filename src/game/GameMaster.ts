@@ -17,10 +17,14 @@ export class GameMaster {
   public variant: VariantName;
   public rules: Rule[];
   public modal?: Modal;
+
+  // TODO: Consider restructure to encapsulate visualisation details in a nice abstraction
   public flipBoard: boolean;
+  public overTheBoard: boolean;
+
+  // TODO: Consider restructure to encapsulate server details in a nice abstraction
   private socket: SocketIOClient.Socket | undefined;
   public roomId: string | undefined;
-  public overTheBoard: boolean;
 
   constructor(gameOptions: GameOptions, private renderer: Renderer) {
     const {

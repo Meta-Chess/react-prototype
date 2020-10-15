@@ -109,6 +109,7 @@ class Board extends TokenOwner {
     });
   }
 
+  // TODO: this method should handle a location or a square
   addPieceToSquare(piece: Piece, square: Square): void {
     const pieceId = this.idGenerator.getId().toString(36);
     square.addPieces([pieceId]);
