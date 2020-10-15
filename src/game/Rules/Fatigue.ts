@@ -32,16 +32,18 @@ export const Fatigue: Rule = {
       : { piece, gaits },
   inCanStayFilter: ({ move, game, gameClones, interrupt, patherParams, filtered }) => {
     /* Fatigued pieces can only move to capture king */
-    const movedPieceId = move.pieceDeltas
+    const fatiguedCapturers = move.pieceDeltas
       .filter((pieceDelta) => pieceDelta.destination === move.location)
-      .map((pieceDelta) => pieceDelta.pId)
-      .pop();
-    const movedPiece = movedPieceId ? game.board.findPieceById(movedPieceId) : undefined;
-    if (movedPiece?.hasTokenWithName(TokenName.Fatigue)) {
-      const kings = game.board
+      .map((pieceDelta) => game.board.findPieceById(pieceDelta.pId))
+      .filter(
+        (piece) => piece !== undefined && piece.hasTokenWithName(TokenName.Fatigue)
+      );
+
+    if (fatiguedCapturers.length > 0) {
+      const enemyKings = game.board
         .getPieces()
-        .filter((piece) => piece.name === PieceName.King);
-      filtered = !game.board.squares[move.location].hasPieceOf(kings);
+        .filter((piece) => piece.name === PieceName.King && piece.owner !== move.player);
+      filtered = !game.board.squares[move.location].hasPieceOf(enemyKings);
     }
     return { move, game, gameClones, interrupt, patherParams, filtered };
   },
