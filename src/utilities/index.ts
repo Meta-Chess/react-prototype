@@ -11,3 +11,4 @@ export * from "./random";
 export * from "./range";
 export * from "./range2";
 export * from "./wrapToCylinder";
+export * from "./arrayHelper";

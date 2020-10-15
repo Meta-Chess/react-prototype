@@ -2,6 +2,7 @@ import { PieceName, Player, TokenName } from "../types";
 import { Piece } from "../Board";
 import { Rule } from "./Rules";
 import { hexGaits, pawnDoubleStepToken } from "./constants";
+import { isPresent } from "utilities";
 
 export const HexPawnDoubleStep: Rule = {
   name: "Pawn Double Step",
@@ -10,9 +11,9 @@ export const HexPawnDoubleStep: Rule = {
   postMove: ({ board, move, currentTurn }) => {
     const piecesMoved = move.pieceDeltas
       .map((delta) => board.pieces[delta.pId])
-      .filter((piece) => piece !== undefined);
+      .filter(isPresent);
     piecesMoved.forEach((piece: Piece) => {
-      if (piece?.name === PieceName.Pawn)
+      if (piece.name === PieceName.Pawn)
         piece.removeTokensByName(TokenName.PawnDoubleStep);
     });
     return { board, move, currentTurn };

@@ -3,18 +3,11 @@ import { Adjacencies, Adjacency } from "./Adjacencies";
 import { Direction, Token } from "game/types";
 import { TokenOwner } from "./TokenOwner";
 import { clone } from "lodash";
+import { resetArrayTo } from "utilities";
 
 interface Coordinates {
   rank: number;
   file: number;
-}
-
-// TODO: move to utilities
-export function resetArrayTo<T>(a: Array<T>, b: Array<T>): void {
-  a.length = b.length;
-  for (let i = 0; i < a.length; i++) {
-    a[i] = b[i];
-  }
 }
 
 export class Square extends TokenOwner {
@@ -42,9 +35,9 @@ export class Square extends TokenOwner {
     this.location = savePoint.location;
     this.coordinates.rank = savePoint.coordinates.rank;
     this.coordinates.file = savePoint.coordinates.file;
-    resetArrayTo(this.tokens, savePoint.tokens);
+    resetArrayTo({ from: this.tokens, to: savePoint.tokens });
     this.adjacencies.resetTo(savePoint.adjacencies);
-    resetArrayTo(this.pieces, savePoint.pieces);
+    resetArrayTo({ from: this.pieces, to: savePoint.pieces });
   }
 
   go(direction: Direction): string[] {

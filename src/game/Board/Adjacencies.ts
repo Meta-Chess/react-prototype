@@ -29,12 +29,5 @@ export class Adjacencies extends Map<Direction, string[]> {
 
   getAllAdjacencies(): string[] {
     return Object.values(this.dictionary).flat().filter(isPresent);
-    // let filteredAdjacencies: string[] = [];
-    // Object.values(this.dictionary).forEach((adjacency) => {
-    //   if (adjacency !== undefined) {
-    //     filteredAdjacencies = filteredAdjacencies.concat(adjacency);
-    //   }
-    // });
-    // return filteredAdjacencies;
   }
 }

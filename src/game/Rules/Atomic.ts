@@ -8,7 +8,7 @@ export const Atomic: Rule = {
   postCapture: ({ board, square }) => {
     board.killPiecesAt(square.location);
     square.adjacencies.getAllAdjacencies().forEach((adjacency) => {
-      if (!board.findPiecesAt(adjacency).some((piece) => piece.name === PieceName.Pawn)) {
+      if (!board.getPiecesAt(adjacency).some((piece) => piece.name === PieceName.Pawn)) {
         board.killPiecesAt(adjacency);
       }
     });

@@ -1,6 +1,7 @@
 import { TokenName } from "../types";
 import { Piece } from "../Board";
 import { Rule } from "./Rules";
+import { isPresent } from "utilities";
 
 export const Fatigue: Rule = {
   name: "Fatigue",
@@ -9,7 +10,7 @@ export const Fatigue: Rule = {
   postMove: ({ board, move, currentTurn }) => {
     const piecesMoved = move.pieceDeltas
       .map((delta) => board.pieces[delta.pId])
-      .filter((piece) => piece !== undefined);
+      .filter(isPresent);
     piecesMoved.forEach((piece: Piece) => {
       const fatigueToken = {
         name: TokenName.Fatigue,
