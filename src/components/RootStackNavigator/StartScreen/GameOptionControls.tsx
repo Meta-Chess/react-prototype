@@ -38,7 +38,7 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
       <LabeledCheckBox
         value={gameOptions.online}
         setValue={setOnline}
-        label={"Flip board"}
+        label={"Online"}
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox

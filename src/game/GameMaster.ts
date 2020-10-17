@@ -25,6 +25,7 @@ export class GameMaster {
   // TODO: Consider restructure to encapsulate server details in a nice abstraction
   private socket: SocketIOClient.Socket | undefined;
   public roomId: string | undefined;
+  public online: boolean;
 
   constructor(gameOptions: GameOptions, private renderer: Renderer) {
     const {
@@ -57,6 +58,7 @@ export class GameMaster {
     this.flipBoard = flipBoard;
     this.overTheBoard = overTheBoard;
 
+    this.online = online;
     if (online) {
       this.socket = socketIOClient("http://localhost:8000"); // TODO: Make this an environment variable
       this.socket.on("roomId", (roomId: string): void => {
