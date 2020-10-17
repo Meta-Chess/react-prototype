@@ -2,6 +2,8 @@ import { isPresent } from "utilities";
 import { CompactRules, Game, Piece, Square } from "game";
 import { Direction, Gait, Move } from "../types";
 import { flatMap } from "lodash";
+import _ from "lodash";
+import { Path } from "./Path";
 
 const MAX_STEPS = 64; // To be considered further
 
@@ -26,8 +28,8 @@ export class Pather {
     const moves = flatMap(gaits, (gait) => this.path({ currentSquare, gait })).map(
       (square) => ({
         pieceId: this.piece.id,
-        location: square.location,
-        pieceDeltas: [{ pId: this.piece.id, destination: square.location }],
+        location: square.path.getStart(),
+        pieceDeltas: [{ pId: this.piece.id, path }],
         player: this.piece.owner,
       })
     );
@@ -63,11 +65,14 @@ export class Pather {
     currentSquare?: Square;
     remainingSteps?: Direction[];
     stepAllowance?: number;
-  }): Square[] {
-    const allowableSquares: Square[] = [];
-    if (!currentSquare) return allowableSquares;
+  }): Path[] {
+    const allowablePaths: Path[] = [];
+
+    if (!currentSquare) return allowablePaths;
+    const pathSoFar: Path = new Path(currentSquare.location);
+
     for (let steps = 0; steps < stepAllowance; steps++) {
-      if (remainingSteps.length === 0) return allowableSquares;
+      if (remainingSteps.length === 0) return allowablePaths;
 
       const { continuingSquares, newAllowableSquares } = this.step({
         currentSquare,
@@ -75,19 +80,27 @@ export class Pather {
         gait,
       });
 
-      allowableSquares.push(...newAllowableSquares);
+      allowablePaths.push(
+        ...newAllowableSquares.map((square) => {
+          const path = pathSoFar.clone();
+          path.push(square.location);
+          return path;
+        })
+      );
 
       remainingSteps = this.updateRemainingSteps({ gait, remainingSteps });
 
-      if (continuingSquares.length === 0) return allowableSquares;
+      if (continuingSquares.length === 0) return allowablePaths;
       ({ gait, remainingSteps, currentSquare } = this.interrupt.for.afterStepModify({
         gait,
         remainingSteps,
         currentSquare: continuingSquares[0], // Later: Handle multiple continuing squares
       }));
+
+      pathSoFar.push(currentSquare.location);
     }
 
-    return allowableSquares;
+    return allowablePaths;
   }
 
   step({
@@ -137,7 +150,7 @@ export class Pather {
       move: {
         pieceId: this.piece.id,
         location: square.location,
-        pieceDeltas: [{ pId: this.piece.id, destination: square.location }],
+        pieceDeltas: [{ pieceId: this.piece.id, destination: square.location }],
         player: this.piece.owner,
       },
       game: this.game,

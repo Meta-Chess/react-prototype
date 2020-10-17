@@ -161,24 +161,25 @@ class Board extends TokenOwner {
     return Object.values(this.squares).find(condition);
   }
 
-  displace({ pId: pieceId, destination }: { pId: string; destination: string }): void {
-    const startSquare = this.squareAt(this.pieces[pieceId]?.location);
-    const endSquare = this.squareAt(destination);
+  displace({ pId: pieceId, path }: PieceDelta): void {
+    const startSquare = this.squareAt(this.pieces[pieceId].location);
+    const endSquare = this.squareAt(path.getEnd());
     if (startSquare && endSquare) {
       startSquare.pieces = startSquare.pieces.filter((p) => p != pieceId);
-      this.pieces[pieceId].location = destination;
+      this.pieces[pieceId].location = path.getEnd();
       endSquare.pieces.push(pieceId);
     }
   }
 
   displacePieces(pieceDeltas: PieceDelta[]): void {
     pieceDeltas.forEach((pieceDelta) => {
-      const captureHappened = this.capturePiecesAt(pieceDelta.destination);
+      this.killPiecesAt(pieceDelta.path.getEnd());
+      const captureHappened = this.capturePiecesAt(pieceDelta.path.getEnd());
       this.displace(pieceDelta);
       if (captureHappened) {
         this.interrupt.for.postCapture({
           board: this,
-          square: this.squares[pieceDelta.destination],
+          square: this.squares[pieceDelta.path.getEnd()],
         });
       }
     });
