@@ -33,7 +33,7 @@ const Sidebar: FC<Props> = ({ short }) => {
   }
 
   return (
-    <SidebarContainer>
+    <SidebarContainer style={{ minHeight: short ? (roomId ? 300 : 140) : undefined }}>
       <RoomIdCard roomId={roomId} />
       {!short && (
         <>
