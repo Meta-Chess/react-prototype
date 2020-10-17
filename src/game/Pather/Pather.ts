@@ -104,25 +104,27 @@ export class Pather {
 
   step({
     currentSquare,
+    pathSoFar,
     remainingSteps,
     gait,
   }: {
     currentSquare: Square;
     remainingSteps: Direction[];
     gait: Gait;
+    pathSoFar: Path;
   }): { continuingSquares: Square[]; newAllowableSquares: Square[] } {
     const possibleLandingSquares = this.go({
       from: currentSquare,
       direction: remainingSteps[0],
     });
     const landingSquares = possibleLandingSquares.filter((square) =>
-      this.canLand({ square, gait, remainingSteps })
+      this.canLand({ square, pathSoFar, gait, remainingSteps })
     );
     const stayingSquares = landingSquares.filter((square) =>
-      this.canStay({ square, gait, remainingSteps })
+      this.canStay({ square, pathSoFar, gait, remainingSteps })
     );
     const continuingSquares = landingSquares.filter((square) =>
-      this.canContinue({ square, gait, remainingSteps })
+      this.canContinue({ square, pathSoFar, gait, remainingSteps })
     );
 
     return {
@@ -136,7 +138,12 @@ export class Pather {
     return true;
   }
 
-  canStay({ square, gait, remainingSteps }: HypotheticalDisplacement): boolean {
+  canStay({
+    square,
+    pathSoFar,
+    gait,
+    remainingSteps,
+  }: HypotheticalDisplacement): boolean {
     if (!gait.interruptable && remainingSteps.length > 1) return false;
     if (this.game.board.squareHasPieceBelongingTo(square, this.piece.owner)) return false;
     if (this.game.board.squareHasPieceNotBelongingTo(square, this.piece.owner)) {
@@ -145,11 +152,15 @@ export class Pather {
     } else {
       if (gait.mustCapture) return false;
     }
+
+    const hypotheticalPath = pathSoFar.clone();
+    hypotheticalPath.push(square.location);
+
     const { filtered } = this.interrupt.for.inCanStayFilter({
       move: {
         pieceId: this.piece.id,
         location: square.location,
-        pieceDeltas: [{ pieceId: this.piece.id, destination: square.location }],
+        pieceDeltas: [{ pId: this.piece.id, path: hypotheticalPath }],
         player: this.piece.owner,
       },
       game: this.game,
@@ -185,6 +196,7 @@ export class Pather {
 
 interface HypotheticalDisplacement {
   square: Square;
+  pathSoFar: Path;
   gait: Gait;
   remainingSteps: Direction[];
 }
