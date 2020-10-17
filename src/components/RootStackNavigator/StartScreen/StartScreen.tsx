@@ -5,70 +5,66 @@ import { Colors, MChessLogo } from "primitives";
 import { StartButton } from "./StartButton";
 import { defaultGameOptions, GameOptionControls } from "./GameOptionControls";
 import { GameOptions } from "game/types";
-import { VerticalSeparator } from "ui/Separators";
+import { VerticalSeparator } from "ui";
 import { ShadowBoard } from "./ShadowBoard";
+import { GameProvider } from "game";
 
 const StartScreen: FC = () => {
-  const padding = 12;
-
   const { height, width } = useWindowDimensions();
   const portrait = height > width;
 
   const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
 
-  return portrait ? (
-    <ScreenContainer style={{ padding }}>
-      <View style={{ alignItems: "center", height }}>
-        <View style={{ flex: 2, justifyContent: "center" }}>
-          <MChessLogo style={{ margin: 24 }} />
-        </View>
-        <View style={{ flex: 3 }}>
-          <StartButton gameOptions={gameOptions} style={{ width: 240 }} />
-          <GameOptionControls gameOptions={gameOptions} setGameOptions={setGameOptions} />
-        </View>
-      </View>
-    </ScreenContainer>
-  ) : (
-    <ScreenContainer>
-      <View
-        style={{
-          alignItems: "center",
-          height,
-          flexDirection: "row",
-        }}
-      >
+  return (
+    <GameProvider
+      gameOptions={{ ...gameOptions, time: undefined, online: false, flipBoard: false }}
+    >
+      <ScreenContainer>
         <View
           style={{
-            flex: 2,
-            height,
-            justifyContent: "center",
             alignItems: "center",
-            padding: 24,
+            width,
+            height,
+            flexDirection: portrait ? "column" : "row",
           }}
         >
-          <ShadowBoard gameOptions={gameOptions} />
-          <MChessLogo />
-        </View>
-        <VerticalSeparator />
-        <View
-          style={{
-            flex: 1,
-            height,
-            padding: 20,
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <View style={{ flex: 3, justifyContent: "center" }}>
-            <GameOptionControls
-              gameOptions={gameOptions}
-              setGameOptions={setGameOptions}
-            />
-            <StartButton gameOptions={gameOptions} style={{ width: 240 }} />
+          <View
+            style={{
+              flex: portrait ? 1 : 2,
+              width,
+              height,
+              justifyContent: "center",
+              alignItems: "center",
+              padding: 24,
+            }}
+          >
+            <ShadowBoard />
+            <MChessLogo />
+          </View>
+          {!portrait && <VerticalSeparator />}
+          <View
+            style={{
+              flex: portrait ? 2 : 1,
+              height,
+              padding: 20,
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <View style={{ flex: 2, justifyContent: portrait ? "flex-start" : "center" }}>
+              <GameOptionControls
+                gameOptions={gameOptions}
+                setGameOptions={setGameOptions}
+              />
+              <StartButton
+                gameOptions={gameOptions}
+                style={{ width: 240, marginTop: 32 }}
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </ScreenContainer>
+      </ScreenContainer>
+    </GameProvider>
   );
 };
 

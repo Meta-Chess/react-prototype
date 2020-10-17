@@ -5,6 +5,7 @@ import { TokenOwner } from "./TokenOwner";
 import { Direction, PieceDelta, RankAndFileBounds, Token, Player } from "game/types";
 import { isPresent } from "utilities";
 import { CompactRules } from "game/Rules/Rules";
+import { IdGenerator } from "utilities/IdGenerator";
 
 interface LocationMap {
   [key: string]: Square;
@@ -16,12 +17,16 @@ interface PieceIdMap {
 
 // TODO: This class is too long!
 class Board extends TokenOwner {
+  private idGenerator: IdGenerator;
+
   constructor(
+    public interrupt: CompactRules,
     public squares: LocationMap = {},
     public pieces: PieceIdMap = {},
     public tokens: Token[] = []
   ) {
     super(tokens);
+    this.idGenerator = new IdGenerator();
   }
 
   clone(): Board {
@@ -39,7 +44,8 @@ class Board extends TokenOwner {
       }),
       {}
     );
-    return new Board(squaresClone, piecesClone, this.tokens);
+    //TODO: actually clone rules
+    return new Board(this.interrupt, squaresClone, piecesClone, this.tokens);
   }
 
   resetTo(savePoint: Board): void {
@@ -84,6 +90,14 @@ class Board extends TokenOwner {
     return this.pieces[id];
   }
 
+  getPiecesAt(location: string): Piece[] {
+    let pieces: Piece[] = [];
+    this.squareAt(location)?.pieces.forEach((id) => {
+      pieces = pieces.concat(this.pieces[id]);
+    });
+    return pieces;
+  }
+
   addSquare({ location, square }: { location: string; square: Square }): void {
     this.squares = { ...this.squares, [location]: square };
   }
@@ -105,23 +119,21 @@ class Board extends TokenOwner {
     });
   }
 
-  addPiece(piece: Piece): void {
-    this.pieces = { ...this.pieces, [piece.id]: piece };
+  // TODO: this method should handle a location or a square
+  addPieceToSquare(piece: Piece, square: Square): void {
+    const pieceId = this.idGenerator.getId().toString(36);
+    square.addPieces([pieceId]);
+    piece.id = pieceId;
+    this.pieces = { ...this.pieces, [pieceId]: piece };
   }
 
   addPiecesByRule(rule: (square: Square) => Piece[]): void {
     const squares = Object.values(this.squares);
     squares.forEach((square) => {
-      rule(square).forEach((p) => {
-        square.addPieces([p.id]);
-        this.addPiece(p);
+      rule(square).forEach((piece) => {
+        this.addPieceToSquare(piece, square);
       });
     });
-  }
-
-  addPieceAt(piece: Piece, location: string): void {
-    this.squareAt(location)?.addPieces([piece.id]);
-    this.pieces = { ...this.pieces, [piece.id]: piece };
   }
 
   addPieceTokensByRule(rule: (piece: Piece) => Token[]): void {
@@ -149,21 +161,33 @@ class Board extends TokenOwner {
     return Object.values(this.squares).find(condition);
   }
 
-  displace({ pId, destination }: { pId: string; destination: string }): void {
-    const startSquare = this.squareAt(this.pieces[pId].location);
+  displace({ pId: pieceId, destination }: { pId: string; destination: string }): void {
+    const startSquare = this.squareAt(this.pieces[pieceId]?.location);
     const endSquare = this.squareAt(destination);
     if (startSquare && endSquare) {
-      startSquare.pieces = startSquare.pieces.filter((p) => p != pId);
-      this.pieces[pId].location = destination;
-      endSquare.pieces.push(pId);
+      startSquare.pieces = startSquare.pieces.filter((p) => p != pieceId);
+      this.pieces[pieceId].location = destination;
+      endSquare.pieces.push(pieceId);
     }
   }
 
   displacePieces(pieceDeltas: PieceDelta[]): void {
     pieceDeltas.forEach((pieceDelta) => {
-      this.killPiecesAt(pieceDelta.destination);
+      const captureHappened = this.capturePiecesAt(pieceDelta.destination);
       this.displace(pieceDelta);
+      if (captureHappened) {
+        this.interrupt.for.postCapture({
+          board: this,
+          square: this.squares[pieceDelta.destination],
+        });
+      }
     });
+  }
+
+  capturePiecesAt(location: string): boolean {
+    const captureHappened = (this.squareAt(location)?.pieces.length || 0) > 0;
+    this.killPiecesAt(location);
+    return captureHappened;
   }
 
   killPiecesAt(location: string): void {
@@ -197,12 +221,8 @@ class Board extends TokenOwner {
     return currentSquares.filter(isPresent);
   }
 
-  static createEmptyBoard(): Board {
-    return new Board({});
-  }
-
   static createBoard(interrupt: CompactRules): Board {
-    let board = new Board();
+    let board = new Board(interrupt);
 
     ({ board } = interrupt.for.forSquareGenerationModify({ board }));
     ({ board } = interrupt.for.onBoardCreatedModify({ board }));

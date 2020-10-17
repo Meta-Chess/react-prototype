@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
-  const [detailsVisible, setDetailsVisible] = useState(false);
+  const [modalId] = useState(Math.random());
   const [dimensions, setDimensions] = useState({ width: 0, height: 0, top: 0, left: 0 });
   const { gameMaster } = useContext(GameContext);
 
@@ -30,19 +30,14 @@ export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
         style={style}
         disabled={!details}
         onPress={(): void => {
-          if (detailsVisible) {
+          if (gameMaster?.modal?.id === modalId) {
             gameMaster?.hideModal();
           } else {
             gameMaster?.setModal({
+              id: modalId,
               top: dimensions.top + dimensions.height,
               left: dimensions.left + dimensions.width / 2,
               content: modalContent,
-              onShow: () => {
-                setDetailsVisible(true);
-              },
-              onHide: () => {
-                setDetailsVisible(false);
-              },
             });
           }
         }}

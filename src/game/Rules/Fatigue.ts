@@ -1,13 +1,16 @@
 import { PieceName, TokenName } from "../types";
 import { Piece } from "../Board";
 import { Rule } from "./Rules";
+import { isPresent } from "utilities";
 
 export const Fatigue: Rule = {
   name: "Fatigue",
   description:
     "Moving is hard work! If you moved one of your pieces last turn, it's too tired to move this turn (unless you can capture the king!)",
   postMove: ({ board, move, currentTurn }) => {
-    const piecesMoved = move.pieceDeltas.map((delta) => board.pieces[delta.pId]);
+    const piecesMoved = move.pieceDeltas
+      .map((delta) => board.pieces[delta.pId])
+      .filter(isPresent);
     piecesMoved.forEach((piece: Piece) => {
       const fatigueToken = {
         name: TokenName.Fatigue,

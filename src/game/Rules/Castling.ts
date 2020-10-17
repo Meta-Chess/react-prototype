@@ -10,7 +10,9 @@ export const Castling: Rule = {
   description:
     "Can your king move two squares in some direction? Is this your king's first move? Is there a rook in this direction from your king? Can that rook get to the square your king moves through? Is this that rook's first move? If so, your king and rook can do those moves at the same time!",
   postMove: ({ board, move, currentTurn }) => {
-    const piecesMoved = move.pieceDeltas.map((delta) => board.pieces[delta.pId]);
+    const piecesMoved = move.pieceDeltas
+      .map((delta) => board.pieces[delta.pId])
+      .filter((piece) => piece !== undefined);
     piecesMoved.forEach((piece: Piece) => {
       piece.removeTokensByNames([TokenName.ActiveCastling, TokenName.PassiveCastling]);
     });
@@ -67,6 +69,7 @@ export const Castling: Rule = {
 
     const newMoves = filteredCastlePiecesAndLocations.map(
       ({ passivePiece, passiveDestination, activeDestination }) => ({
+        pieceId: activePiece.id,
         location: activeDestination.location,
         pieceDeltas: [
           { pId: passivePiece.id, destination: passiveDestination.location },

@@ -12,6 +12,7 @@ export interface Gait {
 }
 
 export interface Move {
+  pieceId: string;
   location: string;
   pieceDeltas: PieceDelta[];
   player: Player;
@@ -80,14 +81,16 @@ export interface GameOptions {
   time: number | undefined;
   checkEnabled: boolean;
   fatigueEnabled: boolean;
+  atomicEnabled: boolean;
   flipBoard: boolean;
   overTheBoard: boolean;
+  roomId?: string;
+  online: boolean;
 }
 
 export interface Modal {
+  id: number;
   top: number;
   left: number;
   content?: ReactElement;
-  onShow: () => void;
-  onHide: () => void;
 }

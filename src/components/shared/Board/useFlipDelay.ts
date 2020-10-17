@@ -10,12 +10,13 @@ export const useFlipDelay = (
   const { gameMaster } = useContext(GameContext);
   const flipBoardEnabled = !!gameMaster?.flipBoard;
 
-  useEffect(() => {
+  useEffect((): (() => void) | undefined => {
     const boardShouldBeFlipped = currentPlayer === Player.Black && flipBoardEnabled;
     if (flipBoard !== boardShouldBeFlipped) {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         setFlipBoard(boardShouldBeFlipped);
       }, delay);
+      return (): void => clearTimeout(timer);
     }
   }, [currentPlayer, flipBoard, setFlipBoard, delay, flipBoardEnabled]);
 

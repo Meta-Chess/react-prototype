@@ -1,36 +1,33 @@
 import { Direction } from "game/types";
+import { clone } from "lodash";
+import { Map } from "utilities/Map";
+import { isPresent } from "utilities";
 
 export interface Adjacency {
   direction: Direction;
   location: string;
 }
 
-export class Adjacencies {
-  constructor(
-    private adjacencies: {
-      [key in Direction]?: string[];
-    } = {}
-  ) {}
-
+export class Adjacencies extends Map<Direction, string[]> {
   clone(): Adjacencies {
-    return new Adjacencies(this.adjacencies);
-  }
-
-  resetTo(savePoint: Adjacencies): void {
-    this.adjacencies = savePoint.adjacencies;
+    return new Adjacencies(clone(this.dictionary));
   }
 
   go(direction: Direction): string[] {
-    return this.adjacencies[direction] || [];
+    return this.dictionary[direction] || [];
   }
 
   addAdjacency({ direction, location }: Adjacency): void {
-    if (this.adjacencies[direction] && !this.adjacencies[direction]?.includes(location))
-      this.adjacencies[direction]?.push(location);
-    else this.adjacencies = { ...this.adjacencies, [direction]: [location] };
+    if (this.dictionary[direction] && !this.dictionary[direction]?.includes(location))
+      this.dictionary[direction]?.push(location);
+    else this.dictionary = { ...this.dictionary, [direction]: [location] };
   }
 
-  addAdjacencies(adjacencies: Adjacency[]): void {
-    adjacencies.forEach((adjacency) => this.addAdjacency(adjacency));
+  addAdjacencies(dictionary: Adjacency[]): void {
+    dictionary.forEach((adjacency) => this.addAdjacency(adjacency));
+  }
+
+  getAllAdjacencies(): string[] {
+    return Object.values(this.dictionary).flat().filter(isPresent);
   }
 }
