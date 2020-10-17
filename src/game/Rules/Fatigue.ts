@@ -27,9 +27,11 @@ export const Fatigue: Rule = {
     /* Fatigued pieces can only move to capture king */
     piece.hasTokenWithName(TokenName.Fatigue)
       ? {
-          gaits: gaits.map((g) => {
-            return { ...g, mustCapture: true };
-          }),
+          gaits: gaits
+            .filter((g) => !g.mustNotCapture)
+            .map((g) => {
+              return { ...g, mustCapture: true };
+            }),
           piece,
         }
       : { piece, gaits },
