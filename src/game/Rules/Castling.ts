@@ -69,6 +69,7 @@ export const Castling: Rule = {
 
     const newMoves = filteredCastlePiecesAndLocations.map(
       ({ passivePiece, passiveDestination, activeDestination }) => ({
+        pieceId: activePiece.id,
         location: activeDestination.location,
         pieceDeltas: [
           { pId: passivePiece.id, destination: passiveDestination.location },
