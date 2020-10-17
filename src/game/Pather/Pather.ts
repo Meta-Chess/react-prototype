@@ -25,6 +25,7 @@ export class Pather {
 
     const moves = flatMap(gaits, (gait) => this.path({ currentSquare, gait })).map(
       (square) => ({
+        pieceId: this.piece.id,
         location: square.location,
         pieceDeltas: [{ pId: this.piece.id, destination: square.location }],
         player: this.piece.owner,
@@ -134,6 +135,7 @@ export class Pather {
     }
     const { filtered } = this.interrupt.for.inCanStayFilter({
       move: {
+        pieceId: this.piece.id,
         location: square.location,
         pieceDeltas: [{ pId: this.piece.id, destination: square.location }],
         player: this.piece.owner,

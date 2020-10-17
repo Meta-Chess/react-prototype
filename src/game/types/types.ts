@@ -12,6 +12,7 @@ export interface Gait {
 }
 
 export interface Move {
+  pieceId: string;
   location: string;
   pieceDeltas: PieceDelta[];
   player: Player;
