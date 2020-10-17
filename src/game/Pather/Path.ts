@@ -1,4 +1,4 @@
-import _, { clone } from "lodash";
+import { clone, last } from "lodash";
 
 export class Path {
   constructor(private start: string, private path: string[] = []) {}
@@ -8,7 +8,7 @@ export class Path {
   }
 
   getEnd(): string {
-    return _.last(this.path) || this.start;
+    return last(this.path) || this.start;
   }
 
   getPath(): string[] {

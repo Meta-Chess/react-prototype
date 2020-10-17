@@ -2,7 +2,6 @@ import { isPresent } from "utilities";
 import { CompactRules, Game, Piece, Square } from "game";
 import { Direction, Gait, Move } from "../types";
 import { flatMap } from "lodash";
-import _ from "lodash";
 import { Path } from "./Path";
 
 const MAX_STEPS = 64; // To be considered further
