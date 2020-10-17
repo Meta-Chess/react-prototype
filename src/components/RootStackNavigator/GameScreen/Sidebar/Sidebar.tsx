@@ -20,6 +20,7 @@ const Sidebar: FC<Props> = ({ short }) => {
   const rules = gameMaster?.rules;
   const variant = gameMaster?.variant;
   const roomId = gameMaster?.roomId;
+  const online = gameMaster?.online;
 
   const { width, height } = useWindowDimensions();
 
@@ -33,7 +34,7 @@ const Sidebar: FC<Props> = ({ short }) => {
   }
 
   return (
-    <SidebarContainer style={{ minHeight: short ? (roomId ? 300 : 140) : undefined }}>
+    <SidebarContainer style={{ minHeight: short ? (online ? 300 : 140) : undefined }}>
       <RoomIdCard roomId={roomId} />
       {!short && (
         <>

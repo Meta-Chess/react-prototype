@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Platform, View } from "react-native";
+import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
 import { GameContext } from "game";
@@ -8,10 +8,11 @@ import { contrast } from "utilities";
 
 interface Props {
   player: Player;
+  hidden: boolean;
   alignment?: "left" | "center" | "right";
 }
 
-const Timer: SFC<Props> = ({ style, player, alignment = "center" }) => {
+const Timer: SFC<Props> = ({ style, player, hidden, alignment = "center" }) => {
   const { gameMaster } = useContext(GameContext);
   const [dummy, setDummy] = useState(false);
 
@@ -34,21 +35,11 @@ const Timer: SFC<Props> = ({ style, player, alignment = "center" }) => {
 
   if (!clock) return null; // Consider throwing an error?
 
-  return (
-    <Container
-      style={[
-        style,
-        {
-          flex: Platform.OS === "web" ? undefined : 1,
-          backgroundColor: Colors.PLAYER[player].string(),
-          borderColor: contrast(Colors.PLAYER[player].string()),
-          borderWidth: 2,
-          shadowRadius: 12,
-          shadowColor:
-            clock.getTimeRemaining() <= 0 ? Colors.ERROR.string() : "transparent",
-        },
-      ]}
-    >
+  style = { ...style, height: 40 };
+  return hidden ? (
+    <View style={style} />
+  ) : (
+    <Container style={style} timeRemaining={clock.getTimeRemaining()} player={player}>
       <Text
         cat="BodyM"
         color={contrast(Colors.PLAYER[player].string())}
@@ -61,9 +52,19 @@ const Timer: SFC<Props> = ({ style, player, alignment = "center" }) => {
   );
 };
 
-const Container = styled(View)`
+interface ContainerProps {
+  player: number;
+  timeRemaining: number;
+}
+
+const Container = styled(View)<ContainerProps>`
   padding: 8px 12px;
   border-radius: 8px;
+  background-color: ${({ player }): string => Colors.PLAYER[player].string()};
+  border: 2px solid ${({ player }): string => contrast(Colors.PLAYER[player].string())};
+  box-shadow: 0px 1px 12px
+    ${({ timeRemaining }): string =>
+      timeRemaining <= 0 ? Colors.ERROR.toString() : "transparent"};
 `;
 
 export { Timer };

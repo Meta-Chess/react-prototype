@@ -20,7 +20,7 @@ const GameScreen: FC = () => {
             marginTop: portrait ? 48 : 0,
             marginHorizontal: Platform.OS === "web" ? 16 : 0,
             justifyContent: portrait ? "flex-start" : "center",
-            flex: 2,
+            flex: portrait ? 5 : 2,
           }}
         />
         <Sidebar short={portrait} />

@@ -11,6 +11,7 @@ const ShadowBoard: FC = () => {
         style={{
           alignItems: "center",
           justifyContent: "center",
+          flex: 1,
         }}
         maxSize={800}
         backboard={false}
