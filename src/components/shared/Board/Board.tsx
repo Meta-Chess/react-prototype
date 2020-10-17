@@ -41,27 +41,39 @@ const Board: SFC<OuterBoardProps> = ({ style, ...props }) => {
 
   const { gameMaster } = useContext(GameContext);
   const { flipBoard } = useFlipDelay(gameMaster?.game?.currentPlayer); // TODO: Lift flip board above portrait decision, so the board doesn't briefly flip when the window resizes
-  if (!gameMaster) return <Spinner />;
-  const shapeToken = gameMaster.game.board.firstTokenWithName(TokenName.Shape);
 
   return (
     <SizeContainer onLayout={handleDimensions} style={[style]}>
-      <Timer
-        player={flipBoard ? Player.White : Player.Black}
-        style={{ marginBottom: 12 }}
-      />
-      {!dimensions.width ? (
-        <Spinner />
-      ) : shapeToken?.data?.shape === SquareShape.Hex ? (
-        <HexBoard {...props} dimensions={constrainedDimensions} flipBoard={flipBoard} />
+      {!gameMaster || (gameMaster.online && !gameMaster.roomId) || !dimensions.width ? (
+        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+          <Spinner />
+        </View>
       ) : (
-        <SquareBoard
-          {...props}
-          dimensions={constrainedDimensions}
-          flipBoard={flipBoard}
-        />
+        <>
+          <Timer
+            player={flipBoard ? Player.White : Player.Black}
+            style={{ marginBottom: 12 }}
+          />
+          {gameMaster.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape ===
+          SquareShape.Hex ? (
+            <HexBoard
+              {...props}
+              dimensions={constrainedDimensions}
+              flipBoard={flipBoard}
+            />
+          ) : (
+            <SquareBoard
+              {...props}
+              dimensions={constrainedDimensions}
+              flipBoard={flipBoard}
+            />
+          )}
+          <Timer
+            player={flipBoard ? Player.Black : Player.White}
+            style={{ marginTop: 12 }}
+          />
+        </>
       )}
-      <Timer player={flipBoard ? Player.Black : Player.White} style={{ marginTop: 12 }} />
     </SizeContainer>
   );
 };

@@ -45,11 +45,11 @@ const Spinner: SFC<Props> = ({ style }) => {
   });
   const animatedColor1 = rotateValue.interpolate({
     inputRange: [0, 10],
-    outputRange: ["rgba(242,97,0,0.7)", "rgba(242,97,0,1)"],
+    outputRange: ["rgba(232,229,229,1)", "rgba(242,97,0,1)"],
   });
   const animatedColor2 = rotateValue.interpolate({
     inputRange: [0, 10],
-    outputRange: ["rgba(255,255,255,0.15)", "rgba(0,123,255,1)"],
+    outputRange: ["rgba(164,185,204,1)", "rgba(0,123,255,1)"],
   });
 
   return (
