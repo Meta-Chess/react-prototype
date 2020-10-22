@@ -63,6 +63,7 @@ const StartScreen: FC = () => {
               style={{
                 justifyContent: portrait ? "flex-start" : "center",
                 width: "100%",
+                maxHeight: portrait ? undefined : height,
                 flex: portrait ? 1 : undefined,
               }}
             >
