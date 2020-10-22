@@ -25,9 +25,9 @@ export class Pather {
     });
 
     const moves = flatMap(gaits, (gait) => this.path({ currentSquare, gait })).map(
-      (square) => ({
+      (path) => ({
         pieceId: this.piece.id,
-        location: square.path.getStart(),
+        location: path.getEnd(),
         pieceDeltas: [{ pId: this.piece.id, path }],
         player: this.piece.owner,
       })
@@ -75,6 +75,7 @@ export class Pather {
 
       const { continuingSquares, newAllowableSquares } = this.step({
         currentSquare,
+        pathSoFar,
         remainingSteps,
         gait,
       });
