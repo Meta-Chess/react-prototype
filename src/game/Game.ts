@@ -56,6 +56,9 @@ export class Game {
     this.board.getPieces().forEach((piece) => {
       piece.removeExpiredTokens(this.currentTurn);
     });
+    Object.values(this.board.squares).forEach((square) =>
+      square.removeExpiredTokens(this.currentTurn)
+    );
     this.nextTurn();
   }
 

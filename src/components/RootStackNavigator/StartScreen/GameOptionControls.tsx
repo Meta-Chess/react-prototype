@@ -116,6 +116,7 @@ const defaultGameOptions = {
   flipBoard: false,
   overTheBoard: false,
   online: false,
+  interceptionEnabled: true,
 };
 
 const ControlsContainer = styled(View)`

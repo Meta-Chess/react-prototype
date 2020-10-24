@@ -1,6 +1,6 @@
 import { isPresent } from "utilities";
 import { CompactRules, Game, Piece, Square } from "game";
-import { Direction, Gait, Move } from "../types";
+import { Direction, Gait, Move, TokenName } from "../types";
 import { flatMap } from "lodash";
 import { Path } from "./Path";
 
@@ -150,9 +150,14 @@ export class Pather {
     if (this.game.board.squareHasPieceNotBelongingTo(square, this.piece.owner)) {
       // TODO: change this out for "hasCapturablePiece method"
       if (gait.mustNotCapture) return false;
-    } else {
-      if (gait.mustCapture) return false;
-    }
+    } else if (square.hasTokenWithName(TokenName.CaptureToken)) {
+      const token = square.firstTokenWithName(TokenName.CaptureToken);
+      const capturablePiece = token?.data?.pieceId
+        ? this.game.board.findPieceById(token?.data?.pieceId)
+        : undefined;
+      if (capturablePiece?.owner === this.piece.owner || gait.mustNotCapture)
+        return false;
+    } else if (gait.mustCapture) return false;
 
     const hypotheticalPath = pathSoFar.clone();
     hypotheticalPath.push(square.location);

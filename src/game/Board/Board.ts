@@ -186,8 +186,15 @@ class Board extends TokenOwner {
   }
 
   capturePiecesAt(location: string): boolean {
-    const captureHappened = (this.squareAt(location)?.pieces.length || 0) > 0;
+    let captureHappened = (this.squareAt(location)?.pieces.length || 0) > 0;
     this.killPiecesAt(location);
+
+    ({ captureHappened } = this.interrupt.for.onCapture({
+      board: this,
+      location,
+      captureHappened,
+    }));
+
     return captureHappened;
   }
 

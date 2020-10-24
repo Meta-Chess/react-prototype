@@ -10,6 +10,7 @@ export interface Gait {
   nonBlocking?: boolean;
   mustNotCapture?: boolean;
   mustCapture?: boolean;
+  interceptable?: boolean;
 }
 
 export interface Move {
@@ -17,6 +18,7 @@ export interface Move {
   location: string;
   pieceDeltas: PieceDelta[];
   player: Player;
+  interceptable?: boolean;
 }
 
 export interface PieceDelta {
@@ -63,6 +65,7 @@ export enum TokenName {
 interface TokenData {
   history?: string[];
   shape?: SquareShape;
+  pieceId?: string;
 }
 
 export interface RankAndFileBounds {
@@ -87,6 +90,7 @@ export interface GameOptions {
   overTheBoard: boolean;
   roomId?: string;
   online: boolean;
+  interceptionEnabled: boolean;
 }
 
 export interface Modal {

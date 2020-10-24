@@ -7,6 +7,7 @@ import { VariantName, variants } from "./variants";
 import { check, CompactRules, fatigue, atomic, Rule } from "./Rules";
 import { flatMap } from "lodash";
 import socketIOClient from "socket.io-client";
+import { Interception } from "./Rules/Interception";
 
 export class GameMaster {
   public interrupt: CompactRules;
@@ -38,11 +39,13 @@ export class GameMaster {
       overTheBoard,
       roomId,
       online,
+      interceptionEnabled,
     } = gameOptions;
     const rules = [...variants[variant].rules];
     if (checkEnabled) rules.push(check);
     if (fatigueEnabled) rules.push(fatigue);
     if (atomicEnabled) rules.push(atomic);
+    if (interceptionEnabled) rules.push(Interception);
     this.interrupt = new CompactRules(rules);
     this.game = Game.createGame(this.interrupt, time);
     this.gameClones = [
