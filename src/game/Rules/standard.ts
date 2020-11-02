@@ -4,7 +4,7 @@ import { Direction, PieceName, Player, RankAndFileBounds } from "../types";
 import { Rule } from "./Rules";
 import { createPiece } from "./utilities";
 
-export const Standard: Rule = {
+export const standard: Rule = {
   name: "Standard",
   description:
     "This rule takes care of all the details of your usual bog-standard board and piece set-up.",

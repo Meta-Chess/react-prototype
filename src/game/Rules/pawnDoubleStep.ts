@@ -1,10 +1,10 @@
-import { PieceName, Player, TokenName } from "../types";
+import { Gait, PieceName, TokenName } from "../types";
 import { Piece } from "../Board";
 import { Rule } from "./Rules";
-import { hexGaits, pawnDoubleStepToken } from "./constants";
+import { pawnDoubleStepToken } from "./constants";
 import { isPresent } from "utilities";
 
-export const HexPawnDoubleStep: Rule = {
+export const pawnDoubleStep: Rule = {
   name: "Pawn Double Step",
   description:
     "For their first move, pawns can do two steps in their direction of travel!",
@@ -13,7 +13,7 @@ export const HexPawnDoubleStep: Rule = {
       .map((delta) => board.pieces[delta.pId])
       .filter(isPresent);
     piecesMoved.forEach((piece: Piece) => {
-      if (piece.name === PieceName.Pawn)
+      if (piece?.name === PieceName.Pawn)
         piece.removeTokensByName(TokenName.PawnDoubleStep);
     });
     return { board, move, currentTurn };
@@ -21,11 +21,7 @@ export const HexPawnDoubleStep: Rule = {
   onGaitsGeneratedModify: ({ gaits, piece }) => ({
     gaits: [
       ...gaits,
-      ...(piece.hasTokenWithName(TokenName.PawnDoubleStep)
-        ? piece.owner === Player.White
-          ? hexGaits.WHITE_PAWN_DS_GAITS
-          : hexGaits.BLACK_PAWN_DS_GAITS
-        : []),
+      ...(piece.hasTokenWithName(TokenName.PawnDoubleStep) ? gaits.map(doubleStep) : []),
     ],
     piece,
   }),
@@ -36,3 +32,8 @@ export const HexPawnDoubleStep: Rule = {
     return { board };
   },
 };
+
+const doubleStep = (originalGait: Gait): Gait => ({
+  ...originalGait,
+  pattern: [...originalGait.pattern, ...originalGait.pattern],
+});

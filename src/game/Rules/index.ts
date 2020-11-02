@@ -1,16 +1,16 @@
 //START: named rules
-export * from "./Atomic";
-export * from "./Castling";
-export * from "./Check";
-export * from "./Cylindrical";
-export * from "./Fatigue";
-export * from "./Hex";
-export * from "./HexCylindrical";
-export * from "./HexPawnDoubleStep";
+export * from "./atomic";
+export * from "./castling";
+export * from "./check";
+export * from "./cylindrical";
+export * from "./fatigue";
+export * from "./hex";
+export * from "./hexCylindrical";
 export * from "./loseWithNoKings";
-export * from "./PawnDoubleStep";
-export * from "./Polar";
-export * from "./Standard";
+export * from "./pawnDoubleStep";
+export * from "./polar";
+export * from "./standard";
+export * from "./longBoard";
 //END: named rules
 
 export * from "./Rules";

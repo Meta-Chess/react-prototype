@@ -1,7 +1,7 @@
 import { PieceName } from "../types";
 import { Rule } from "./Rules";
 
-export const Atomic: Rule = {
+export const atomic: Rule = {
   name: "Atomic",
   description:
     "When a piece is captured, all pieces on adjacent squares are destroyed. Pawns shield their square from this effect. The capturing piece is also destroyed.",
