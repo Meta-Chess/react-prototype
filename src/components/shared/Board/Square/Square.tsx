@@ -9,6 +9,7 @@ import { GameContext } from "game";
 import { Square } from "game/Board";
 import { SquareShape } from "game/types";
 import { Highlight } from "./Highlight";
+import { AbsoluteView } from "ui";
 
 interface Props {
   square: Square | undefined;
@@ -60,7 +61,6 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
       onPress={onPress}
       activeOpacity={1}
     >
-      <Highlight gameMaster={gameMaster} square={square} />
       <PositioningContainer size={pieceScaleFactor * size}>
         <GridArrangement>
           {piecesUnderSquare.map((piece) => (
