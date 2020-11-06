@@ -7,7 +7,7 @@ import { invisibilityToken } from "./constants";
 export const hexCylindrical: Rule = {
   name: "Cylinder",
   description:
-    "The board has been wrapped onto a cylinder, and the vertical edges have been glued together. This allows pieces to move off the right side of the board onto the left side, and vice versa. (If you look closely, you'll notice that there's an invisible row of squares between the left edge and the right edge. This allows the gluing to happen without changing the local geometry.)",
+    "The board has been wrapped onto a cylinder, and the edge files have been glued together. This allows pieces to move off the right side of the board onto the left side, and vice versa. (If you look closely, you'll notice that there's an invisible row of squares between the left edge and the right edge. This allows the gluing to happen without changing the local geometry.)",
   onBoardCreatedModify: ({ board }) => {
     const bounds = board.rankAndFileBounds();
     board.addSquares(generateEdgeStitchingSquares());
