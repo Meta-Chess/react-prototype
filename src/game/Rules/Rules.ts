@@ -57,6 +57,7 @@ const identityRule = {
   }) => x,
   lethalCondition: (x: { board: Board; player: Player; dead: boolean }) => x,
   postCapture: (x: { board: Board; square: Square }) => x,
+  piecesUnderSquare: (x: { square: Square; board: Board; pieceIds: string[] }) => x,
 };
 
 export type CompleteRule = typeof identityRule;

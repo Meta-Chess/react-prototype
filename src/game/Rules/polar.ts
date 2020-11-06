@@ -2,7 +2,7 @@ import { Adjacency, Square } from "../Board";
 import { Direction, RankAndFileBounds, TokenName } from "../types";
 import { range, toLocation, wrapToCylinder } from "utilities";
 import { Rule } from "./Rules";
-import { polarToken, invisibilityToken } from "./constants";
+import { invisibilityToken, polarToken } from "./constants";
 
 export const polar: Rule = {
   name: "Polar",
@@ -68,6 +68,8 @@ function rotate180(pattern: Direction[]): Direction[] {
         return Direction.H5;
       case Direction.H12:
         return Direction.H6;
+      case Direction.Down:
+        return Direction.Down;
     }
   });
 }
