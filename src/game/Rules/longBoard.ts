@@ -1,4 +1,4 @@
-import { range2 } from "utilities";
+import { range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
 import { Direction, PieceName, Player, RankAndFileBounds } from "../types";
 import { Rule } from "./Rules";
@@ -25,7 +25,7 @@ const generateStandardSquares = (): { location: string; square: Square }[] =>
   range2(1, 8, 1, 14)
     .flat()
     .map(({ x, y }) => {
-      const location = `R${y}F${x}`;
+      const location = toLocation({ rank: y, file: x });
       return { location, square: new Square(location, { rank: y, file: x }) };
     });
 
@@ -34,20 +34,20 @@ const toroidalAdjacencies = (_bounds: RankAndFileBounds) => (
 ): Adjacency[] => {
   const { rank, file } = square.getCoordinates();
   return [
-    { direction: Direction.N, location: `R${rank + 1}F${file}` },
-    { direction: Direction.NE, location: `R${rank + 1}F${file + 1}` },
-    { direction: Direction.E, location: `R${rank}F${file + 1}` },
-    { direction: Direction.SE, location: `R${rank - 1}F${file + 1}` },
-    { direction: Direction.S, location: `R${rank - 1}F${file}` },
-    { direction: Direction.SW, location: `R${rank - 1}F${file - 1}` },
-    { direction: Direction.W, location: `R${rank}F${file - 1}` },
-    { direction: Direction.NW, location: `R${rank + 1}F${file - 1}` },
+    { direction: Direction.N, location: toLocation({ rank: rank + 1, file }) },
+    { direction: Direction.NE, location: toLocation({ rank: rank + 1, file: file + 1 }) },
+    { direction: Direction.E, location: toLocation({ rank, file: file + 1 }) },
+    { direction: Direction.SE, location: toLocation({ rank: rank - 1, file: file + 1 }) },
+    { direction: Direction.S, location: toLocation({ rank: rank - 1, file }) },
+    { direction: Direction.SW, location: toLocation({ rank: rank - 1, file: file - 1 }) },
+    { direction: Direction.W, location: toLocation({ rank, file: file - 1 }) },
+    { direction: Direction.NW, location: toLocation({ rank: rank + 1, file: file - 1 }) },
   ];
 };
 
 const toroidalPiecesRule = (square: Square): Piece[] => {
   const { rank, file } = square.getCoordinates();
-  const location = `R${rank}F${file}`;
+  const location = toLocation({ rank, file });
   const owner = [7, 8, 9].includes(rank) ? Player.Black : Player.White;
 
   if (rank === 2) return [createPiece({ location, owner, name: PieceName.Pawn })];

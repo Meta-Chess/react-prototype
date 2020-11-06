@@ -5,7 +5,7 @@ import { TokenOwner } from "./TokenOwner";
 import { clone } from "lodash";
 import { resetArrayTo } from "utilities";
 
-interface Coordinates {
+export interface Coordinates {
   rank: number;
   file: number;
 }

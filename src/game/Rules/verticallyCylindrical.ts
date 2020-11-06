@@ -1,6 +1,7 @@
 import { Adjacency, Board, Square } from "../Board";
 import { Rule } from "./Rules";
 import { Direction, RankAndFileBounds } from "../types";
+import { toLocation } from "utilities";
 
 export const verticallyCylindrical: Rule = {
   name: "Vertical Cylinder",
@@ -20,25 +21,25 @@ const cylindricalAdjacenciesRule = (
   const { rank, file } = square.getCoordinates();
   return rank === minRank
     ? [
-        { direction: Direction.S, location: `R${maxRank}F${file}` },
+        { direction: Direction.S, location: toLocation({ rank: maxRank, file }) },
         ...(board
-          ?.squareAt(`R${maxRank}F${file}`)
+          ?.squareAt(toLocation({ rank: maxRank, file }))
           ?.go(Direction.W)
           ?.map((location) => ({ direction: Direction.SW, location })) || []),
         ...(board
-          ?.squareAt(`R${maxRank}F${file}`)
+          ?.squareAt(toLocation({ rank: maxRank, file }))
           ?.go(Direction.E)
           ?.map((location) => ({ direction: Direction.SE, location })) || []),
       ]
     : file === maxRank
     ? [
-        { direction: Direction.N, location: `R${minRank}F${file}` },
+        { direction: Direction.N, location: toLocation({ rank: minRank, file }) },
         ...(board
-          ?.squareAt(`R${minRank}F${file}`)
+          ?.squareAt(toLocation({ rank: minRank, file }))
           ?.go(Direction.W)
           ?.map((location) => ({ direction: Direction.NW, location })) || []),
         ...(board
-          ?.squareAt(`R${minRank}F${file}`)
+          ?.squareAt(toLocation({ rank: minRank, file }))
           ?.go(Direction.E)
           ?.map((location) => ({ direction: Direction.NE, location })) || []),
       ]

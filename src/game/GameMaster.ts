@@ -1,6 +1,6 @@
 import { Piece, Square } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, Modal, Move } from "./types";
+import { Direction, GameOptions, Modal, Move } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants";
@@ -71,6 +71,8 @@ export class GameMaster {
       });
       this.socket.emit("joinRoom", { roomId });
     }
+
+    console.log(this.game.board.squareAt(`R2F5`)?.go(Direction.N));
   }
 
   render(): void {

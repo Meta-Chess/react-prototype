@@ -1,7 +1,7 @@
 import { Adjacency, Square } from "../Board";
 import { Rule } from "./Rules";
 import { Direction, RankAndFileBounds } from "../types";
-import { range } from "utilities";
+import { range, toLocation } from "utilities";
 import { invisibilityToken } from "./constants";
 
 export const hexCylindrical: Rule = {
@@ -17,11 +17,11 @@ export const hexCylindrical: Rule = {
 };
 
 const generateEdgeStitchingSquares = (): { location: string; square: Square }[] =>
-  range(5, 7, 2).map((r) => {
-    const location = `ER${r}F0`;
+  range(5, 7, 2).map((rank) => {
+    const location = toLocation({ rank, file: 0, prefix: "E" });
     return {
       location,
-      square: new Square(location, { rank: r, file: 0 }, [invisibilityToken]),
+      square: new Square(location, { rank, file: 0 }, [invisibilityToken]),
     };
   });
 
@@ -31,38 +31,93 @@ const cylindricalAdjacenciesRule = ({ minFile, maxFile }: RankAndFileBounds) => 
   const { rank, file } = square.getCoordinates();
   return file === minFile
     ? [
-        { direction: Direction.H7, location: `ER${rank - 3}F0` },
-        { direction: Direction.H8, location: `ER${rank - 1}F0` },
-        { direction: Direction.H9, location: `R${rank}F${maxFile}` },
-        { direction: Direction.H10, location: `ER${rank + 1}F0` },
-        { direction: Direction.H11, location: `ER${rank + 3}F0` },
+        {
+          direction: Direction.H7,
+          location: toLocation({ rank: rank - 3, file: 0, prefix: "E" }),
+        },
+        {
+          direction: Direction.H8,
+          location: toLocation({ rank: rank - 1, file: 0, prefix: "E" }),
+        },
+        { direction: Direction.H9, location: toLocation({ rank, file: maxFile }) },
+        {
+          direction: Direction.H10,
+          location: toLocation({ rank: rank + 1, file: 0, prefix: "E" }),
+        },
+        {
+          direction: Direction.H11,
+          location: toLocation({ rank: rank + 3, file: 0, prefix: "E" }),
+        },
       ]
     : file === minFile + 1
-    ? [{ direction: Direction.H9, location: `ER${rank}F0` }]
+    ? [
+        {
+          direction: Direction.H9,
+          location: toLocation({ rank, file: 0, prefix: "E" }),
+        },
+      ]
     : file === maxFile
     ? [
-        { direction: Direction.H1, location: `ER${rank + 3}F0` },
-        { direction: Direction.H2, location: `ER${rank + 1}F0` },
-        { direction: Direction.H3, location: `R${rank}F${minFile}` },
-        { direction: Direction.H4, location: `ER${rank - 1}F0` },
-        { direction: Direction.H5, location: `ER${rank - 3}F0` },
+        {
+          direction: Direction.H1,
+          location: toLocation({ rank: rank + 3, file: 0, prefix: "E" }),
+        },
+        {
+          direction: Direction.H2,
+          location: toLocation({ rank: rank + 1, file: 0, prefix: "E" }),
+        },
+        { direction: Direction.H3, location: toLocation({ rank, file: minFile }) },
+        {
+          direction: Direction.H4,
+          location: toLocation({ rank: rank - 1, file: 0, prefix: "E" }),
+        },
+        {
+          direction: Direction.H5,
+          location: toLocation({ rank: rank - 3, file: 0, prefix: "E" }),
+        },
       ]
     : file === maxFile - 1
-    ? [{ direction: Direction.H3, location: `ER${rank}F0` }]
+    ? [
+        {
+          direction: Direction.H3,
+          location: toLocation({ rank, file: 0, prefix: "E" }),
+        },
+      ]
     : file === 0 && square.getLocation().charAt(0) === "E"
     ? [
-        { direction: Direction.H1, location: `R${rank + 3}F${1}` },
-        { direction: Direction.H2, location: `R${rank + 1}F${1}` },
-        { direction: Direction.H3, location: `R${rank}F${2}` },
-        { direction: Direction.H4, location: `R${rank - 1}F${1}` },
-        { direction: Direction.H5, location: `R${rank - 3}F${1}` },
-        { direction: Direction.H6, location: `ER${rank - 2}F0` },
-        { direction: Direction.H7, location: `R${rank - 3}F${maxFile}` },
-        { direction: Direction.H8, location: `R${rank - 1}F${maxFile}` },
-        { direction: Direction.H9, location: `R${rank}F${maxFile - 1}` },
-        { direction: Direction.H10, location: `R${rank + 1}F${maxFile}` },
-        { direction: Direction.H11, location: `R${rank + 3}F${maxFile}` },
-        { direction: Direction.H12, location: `ER${rank + 2}F0` },
+        { direction: Direction.H1, location: toLocation({ rank: rank + 3, file: 1 }) },
+        { direction: Direction.H2, location: toLocation({ rank: rank + 1, file: 1 }) },
+        { direction: Direction.H3, location: toLocation({ rank, file: 2 }) },
+        { direction: Direction.H4, location: toLocation({ rank: rank - 1, file: 1 }) },
+        { direction: Direction.H5, location: toLocation({ rank: rank - 3, file: 1 }) },
+        {
+          direction: Direction.H6,
+          location: toLocation({ rank: rank - 2, file: 0, prefix: "E" }),
+        },
+        {
+          direction: Direction.H7,
+          location: toLocation({ rank: rank - 3, file: maxFile }),
+        },
+        {
+          direction: Direction.H8,
+          location: toLocation({ rank: rank - 1, file: maxFile }),
+        },
+        {
+          direction: Direction.H9,
+          location: toLocation({ rank, file: maxFile - 1 }),
+        },
+        {
+          direction: Direction.H10,
+          location: toLocation({ rank: rank + 1, file: maxFile }),
+        },
+        {
+          direction: Direction.H11,
+          location: toLocation({ rank: rank + 3, file: maxFile }),
+        },
+        {
+          direction: Direction.H12,
+          location: toLocation({ rank: rank + 2, file: 0, prefix: "E" }),
+        },
       ]
     : [];
 };

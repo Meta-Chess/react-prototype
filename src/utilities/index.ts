@@ -5,6 +5,7 @@ export * from "./flatMapValues";
 export * from "./formatMillis";
 export * from "./IdGenerator";
 export * from "./isPresent";
+export * from "./location";
 export * from "./Map";
 export * from "./objectMatches";
 export * from "./random";
