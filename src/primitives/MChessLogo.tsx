@@ -13,13 +13,14 @@ export const MChessLogo: SFC = ({ style }) => {
         style,
         {
           width: scaleFactor * 300,
-          height: scaleFactor * 300,
+          height: scaleFactor * (Platform.OS === "web" ? 300 : 240),
         },
       ]}
     >
       <CenteredContainer style={{ height: scaleFactor * 300, width: scaleFactor * 300 }}>
         <Text
           size={scaleFactor * 300}
+          lineHeight={scaleFactor * 300}
           color={Colors.MCHESS.toString()}
           selectable={false}
           style={{ fontWeight: "700" }}
@@ -31,6 +32,7 @@ export const MChessLogo: SFC = ({ style }) => {
         <View style={{ paddingTop: scaleFactor * 50 }}>
           <Text
             size={scaleFactor * 100}
+            lineHeight={scaleFactor * 100}
             color={Colors.EMPHATIC.LIGHT.toString()}
             selectable={false}
             style={{

@@ -21,12 +21,12 @@ interface InnerBoardProps {
   flipBoard: boolean;
 }
 
-const Board: SFC<OuterBoardProps> = ({ style, ...props }) => {
+const Board: SFC<OuterBoardProps> = ({ style, maxSize, ...props }) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const constrainedDimensions = props.maxSize
+  const constrainedDimensions = maxSize
     ? {
-        width: Math.min(dimensions.width, props.maxSize),
-        height: Math.min(dimensions.height, props.maxSize),
+        width: Math.min(dimensions.width, maxSize),
+        height: Math.min(dimensions.height, maxSize),
       }
     : dimensions;
 
@@ -40,41 +40,40 @@ const Board: SFC<OuterBoardProps> = ({ style, ...props }) => {
   );
 
   const { gameMaster } = useContext(GameContext);
-  const { flipBoard } = useFlipDelay(gameMaster?.game?.currentPlayer); // TODO: Lift flip board above portrait decision, so the board doesn't briefly flip when the window resizes
+  const { flipBoard } = useFlipDelay(gameMaster?.game?.currentPlayer);
+  const shapeToken = gameMaster?.game.board.firstTokenWithName(TokenName.Shape);
+  const loading =
+    !gameMaster || (gameMaster.online && !gameMaster.roomId) || !dimensions.width;
 
   return (
-    <SizeContainer onLayout={handleDimensions} style={[style]}>
-      {!gameMaster || (gameMaster.online && !gameMaster.roomId) || !dimensions.width ? (
-        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <View style={style}>
+      <Timer
+        player={flipBoard ? Player.White : Player.Black}
+        style={{ margin: 12 }}
+        hidden={loading}
+      />
+      <SizeContainer
+        onLayout={handleDimensions}
+        style={{ justifyContent: "center", alignItems: "center" }}
+      >
+        {loading ? (
           <Spinner />
-        </View>
-      ) : (
-        <>
-          <Timer
-            player={flipBoard ? Player.White : Player.Black}
-            style={{ marginBottom: 12 }}
+        ) : shapeToken?.data?.shape === SquareShape.Hex ? (
+          <HexBoard {...props} dimensions={constrainedDimensions} flipBoard={flipBoard} />
+        ) : (
+          <SquareBoard
+            {...props}
+            dimensions={constrainedDimensions}
+            flipBoard={flipBoard}
           />
-          {gameMaster.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape ===
-          SquareShape.Hex ? (
-            <HexBoard
-              {...props}
-              dimensions={constrainedDimensions}
-              flipBoard={flipBoard}
-            />
-          ) : (
-            <SquareBoard
-              {...props}
-              dimensions={constrainedDimensions}
-              flipBoard={flipBoard}
-            />
-          )}
-          <Timer
-            player={flipBoard ? Player.Black : Player.White}
-            style={{ marginTop: 12 }}
-          />
-        </>
-      )}
-    </SizeContainer>
+        )}
+      </SizeContainer>
+      <Timer
+        player={flipBoard ? Player.Black : Player.White}
+        style={{ margin: 12 }}
+        hidden={loading}
+      />
+    </View>
   );
 };
 

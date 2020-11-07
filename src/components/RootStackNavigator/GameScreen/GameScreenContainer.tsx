@@ -1,5 +1,5 @@
 import React, { FC, useContext } from "react";
-import { TouchableWithoutFeedback, View } from "react-native";
+import { TouchableWithoutFeedback, useWindowDimensions, View } from "react-native";
 import styled from "styled-components/native";
 import { Colors } from "primitives";
 import { GameContext } from "game";
@@ -10,12 +10,15 @@ interface Props {
 
 export const GameScreenContainer: FC<Props> = ({ children, portrait }) => {
   const { gameMaster } = useContext(GameContext);
+  const { height, width } = useWindowDimensions();
   return (
-    <StyledTouchableWithoutFeedback onPress={(): void => gameMaster?.hideModal()}>
-      <StyledContainer style={{ flexDirection: portrait ? "column" : "row" }}>
-        {children}
-      </StyledContainer>
-    </StyledTouchableWithoutFeedback>
+    <View style={{ width, height }}>
+      <StyledTouchableWithoutFeedback onPress={(): void => gameMaster?.hideModal()}>
+        <StyledContainer style={{ flexDirection: portrait ? "column" : "row" }}>
+          {children}
+        </StyledContainer>
+      </StyledTouchableWithoutFeedback>
+    </View>
   );
 };
 

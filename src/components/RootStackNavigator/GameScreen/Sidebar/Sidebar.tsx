@@ -1,7 +1,8 @@
-import React, { FC, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useWindowDimensions } from "react-native";
 import { Button, SidebarContainer } from "ui";
 import { useNavigation } from "navigation";
+import { SFC } from "primitives";
 import { GameContext } from "game";
 import { RoomIdCard } from "./RoomIdCard";
 import { VariantInfoCard } from "./VariantInfoCard";
@@ -13,13 +14,14 @@ interface Props {
   short?: boolean;
 }
 
-const Sidebar: FC<Props> = ({ short }) => {
+const Sidebar: SFC<Props> = ({ short, style }) => {
   const navigation = useNavigation();
   const { gameMaster } = useContext(GameContext);
   const pieces = gameMaster?.selectedPieces;
   const rules = gameMaster?.rules;
   const variant = gameMaster?.variant;
   const roomId = gameMaster?.roomId;
+  const online = gameMaster?.online;
 
   const { width, height } = useWindowDimensions();
 
@@ -33,7 +35,9 @@ const Sidebar: FC<Props> = ({ short }) => {
   }
 
   return (
-    <SidebarContainer>
+    <SidebarContainer
+      style={[style, { minHeight: short ? (online ? 300 : 140) : undefined }]}
+    >
       <RoomIdCard roomId={roomId} />
       {!short && (
         <>

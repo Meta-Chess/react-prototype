@@ -1,5 +1,11 @@
 import React, { FC, useState } from "react";
-import { View, useWindowDimensions, ScrollView } from "react-native";
+import {
+  View,
+  useWindowDimensions,
+  ScrollView,
+  Platform,
+  SafeAreaView,
+} from "react-native";
 import styled from "styled-components/native";
 import { Colors, MChessLogo } from "primitives";
 import { StartButton } from "./StartButton";
@@ -20,7 +26,7 @@ const StartScreen: FC = () => {
       gameOptions={{ ...gameOptions, time: undefined, online: false, flipBoard: false }}
     >
       <ScreenContainer>
-        <View
+        <SafeAreaView
           style={{
             alignItems: "center",
             width,
@@ -38,7 +44,7 @@ const StartScreen: FC = () => {
               padding: 24,
             }}
           >
-            <ShadowBoard />
+            {(Platform.OS === "web" || width > 1000 || height > 1000) && <ShadowBoard />}
             <MChessLogo />
           </View>
           {!portrait && <VerticalSeparator />}
@@ -49,26 +55,45 @@ const StartScreen: FC = () => {
               padding: 20,
               flexDirection: "column",
               alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
             }}
           >
-            <View style={{ flex: 2, justifyContent: portrait ? "flex-start" : "center" }}>
-              <GameOptionControls
-                gameOptions={gameOptions}
-                setGameOptions={setGameOptions}
-              />
-              <StartButton
-                gameOptions={gameOptions}
-                style={{ width: 240, marginTop: 32 }}
-              />
+            <View
+              style={{
+                justifyContent: portrait ? "flex-start" : "center",
+                width: "100%",
+                maxHeight: portrait ? undefined : height,
+                flex: portrait ? 1 : undefined,
+              }}
+            >
+              <ScrollView style={{ width: "100%" }}>
+                <View
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flex: 1,
+                  }}
+                >
+                  <GameOptionControls
+                    gameOptions={gameOptions}
+                    setGameOptions={setGameOptions}
+                  />
+                  <StartButton
+                    gameOptions={gameOptions}
+                    style={{ width: 240, marginTop: 32, marginBottom: 16 }}
+                  />
+                </View>
+              </ScrollView>
             </View>
           </View>
-        </View>
+        </SafeAreaView>
       </ScreenContainer>
     </GameProvider>
   );
 };
 
-const ScreenContainer = styled(ScrollView)`
+const ScreenContainer = styled(View)`
   position: absolute;
   top: 0px;
   bottom: 0px;

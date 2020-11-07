@@ -17,13 +17,17 @@ const GameScreen: FC = () => {
       <GameScreenContainer portrait={portrait}>
         <Board
           style={{
-            marginTop: portrait ? 48 : 0,
-            marginHorizontal: Platform.OS === "web" ? 16 : 0,
+            marginTop: portrait ? 48 : 16,
+            marginBottom: portrait ? 0 : 16,
+            marginHorizontal: portrait && Platform.OS === "web" ? 16 : 0,
             justifyContent: portrait ? "flex-start" : "center",
-            flex: 2,
+            flex: portrait ? 5 : 2,
           }}
         />
-        <Sidebar short={portrait} />
+        <Sidebar
+          short={portrait}
+          style={{ flex: 1, minWidth: Platform.OS === "web" ? 380 : undefined }}
+        />
       </GameScreenContainer>
       <GlobalModal />
     </GameProvider>
