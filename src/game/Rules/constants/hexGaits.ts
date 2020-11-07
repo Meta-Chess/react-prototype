@@ -1,6 +1,5 @@
-import {Gait, PieceName} from "game/types";
+import { Gait } from "game/types";
 import { Direction } from "game/types";
-import {Piece} from "game";
 
 export const CASTLE_GAITS: Gait[] = [
   { pattern: [Direction.H4], repeats: true },
@@ -79,31 +78,11 @@ const WHITE_PAWN_GAITS: Gait[] = [
   { pattern: [Direction.H2], mustCapture: true },
   { pattern: [Direction.H10], mustCapture: true },
 ];
-const WHITE_PAWN_DS_GAITS: Gait[] = [
-  { pattern: [Direction.H12, Direction.H12],
-    mustNotCapture: true,
-    data: {
-    interceptable: true,
-      interceptionCondition: (piece: Piece): boolean => {
-        return piece.name === PieceName.Pawn;
-      }
-    }
-  },
-];
 
 const BLACK_PAWN_GAITS: Gait[] = [
   { pattern: [Direction.H6], mustNotCapture: true },
   { pattern: [Direction.H4], mustCapture: true },
   { pattern: [Direction.H8], mustCapture: true },
-];
-const BLACK_PAWN_DS_GAITS: Gait[] = [
-  { pattern: [Direction.H6, Direction.H6], mustNotCapture: true,
-    data: {
-      interceptable: true,
-      interceptionCondition: (piece: Piece): boolean => {
-        return piece.name === PieceName.Pawn;
-      }
-    }},
 ];
 
 export const hexGaits = {
@@ -113,7 +92,5 @@ export const hexGaits = {
   QUEEN_GAITS,
   KING_GAITS,
   WHITE_PAWN_GAITS,
-  WHITE_PAWN_DS_GAITS,
   BLACK_PAWN_GAITS,
-  BLACK_PAWN_DS_GAITS,
 };

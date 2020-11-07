@@ -21,7 +21,9 @@ export const pawnDoubleStep: Rule = {
   onGaitsGeneratedModify: ({ gaits, piece }) => ({
     gaits: [
       ...gaits,
-      ...(piece.hasTokenWithName(TokenName.PawnDoubleStep) ? gaits.map(doubleStep) : []),
+      ...(piece.hasTokenWithName(TokenName.PawnDoubleStep)
+        ? gaits.filter((g) => g.mustNotCapture).map(doubleStep)
+        : []),
     ],
     piece,
   }),
@@ -36,4 +38,10 @@ export const pawnDoubleStep: Rule = {
 const doubleStep = (originalGait: Gait): Gait => ({
   ...originalGait,
   pattern: [...originalGait.pattern, ...originalGait.pattern],
+  data: {
+    interceptable: true,
+    interceptionCondition: (piece: Piece): boolean => {
+      return piece.name === PieceName.Pawn;
+    },
+  },
 });

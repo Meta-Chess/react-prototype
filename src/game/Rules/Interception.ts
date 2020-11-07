@@ -9,7 +9,7 @@ export const Interception: Rule = {
       move.pieceDeltas.forEach((pieceDelta) => {
         pieceDelta.path
           .getPath()
-          .slice(0, -1)
+          .slice(1, -1)
           .forEach((location) => {
             const interceptionToken = {
               name: TokenName.CaptureToken,
@@ -41,14 +41,14 @@ export const Interception: Rule = {
       interceptionSquare.pieces = [];
 
       board.pieces = Object.keys(board.pieces)
-          .filter((id: string) => !(captureToken?.data?.pieceId === id))
-          .reduce(
-              (acc, id) => ({
-                ...acc,
-                [id]: board.pieces[id],
-              }),
-              {}
-          );
+        .filter((id: string) => !(captureToken?.data?.pieceId === id))
+        .reduce(
+          (acc, id) => ({
+            ...acc,
+            [id]: board.pieces[id],
+          }),
+          {}
+        );
     }
 
     captureHappened = captureHappened || captureIsAllowed;

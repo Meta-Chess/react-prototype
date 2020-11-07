@@ -33,7 +33,7 @@ export class Pather {
       location: path.getEnd(),
       pieceDeltas: [{ pId: this.piece.id, path }],
       player: this.piece.owner,
-      data: gait.data
+      data: gait.data,
     }));
 
     let { moves: specialMoves } = this.interrupt.for.generateSpecialMoves({
@@ -155,10 +155,10 @@ export class Pather {
       if (gait.mustNotCapture) return false;
     } else if (square.hasTokenWithName(TokenName.CaptureToken)) {
       const token = square.firstTokenWithName(TokenName.CaptureToken);
-        if (token?.data?.condition?.(this.piece)) {
+      if (token?.data?.condition?.(this.piece)) {
         const capturablePiece = token?.data?.pieceId
-            ? this.game.board.findPieceById(token?.data?.pieceId)
-            : undefined;
+          ? this.game.board.findPieceById(token?.data?.pieceId)
+          : undefined;
         if (capturablePiece?.owner === this.piece.owner || gait.mustNotCapture)
           return false;
       }
