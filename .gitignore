@@ -14,3 +14,6 @@ web-build/
 .DS_Store
 yarn-error.log
 .vscode/launch.json
+
+# windows
+debug.log

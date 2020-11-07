@@ -5,7 +5,6 @@ import { VariantName, variants } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
 import { GameOptions } from "game/types";
-import { VariantButton } from "./VariantButton";
 
 interface Props {
   gameOptions: GameOptions;
@@ -33,25 +32,25 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox
-        value={!!gameOptions.online}
+        value={gameOptions.online}
         setValue={setOnline}
         label={"Online"}
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox
-        value={!!gameOptions.overTheBoard}
+        value={gameOptions.overTheBoard}
         setValue={setOverTheBoard}
         label={"Over the board"}
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox
-        value={!!gameOptions.flipBoard}
+        value={gameOptions.flipBoard}
         setValue={setFlipBoard}
         label={"Flip board"}
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox
-        value={!!gameOptions.checkEnabled}
+        value={gameOptions.checkEnabled}
         setValue={setCheckEnabled}
         label={"Check enabled"}
         style={{ marginTop: 24 }}
@@ -71,16 +70,6 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
         }}
         style={{ marginTop: 32 }}
         zIndex={4000}
-      />
-      <VariantButton
-        gameOptions={gameOptions}
-        style={{
-          width: 240,
-          height: 64,
-          marginTop: 24,
-          borderRadius: 4,
-          backgroundColor: Colors.GREY.toString(),
-        }}
       />
     </ControlsContainer>
   );
