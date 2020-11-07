@@ -149,20 +149,14 @@ export class Pather {
     remainingSteps,
   }: HypotheticalDisplacement): boolean {
     if (!gait.interruptable && remainingSteps.length > 1) return false;
+
     if (this.game.board.squareHasPieceBelongingTo(square, this.piece.owner)) return false;
-    if (this.game.board.squareHasPieceNotBelongingTo(square, this.piece.owner)) {
-      // TODO: change this out for "hasCapturablePiece method"
+
+    if (this.capturePossible(square)) {
       if (gait.mustNotCapture) return false;
-    } else if (square.hasTokenWithName(TokenName.CaptureToken)) {
-      const token = square.firstTokenWithName(TokenName.CaptureToken);
-      if (token?.data?.condition?.(this.piece)) {
-        const capturablePiece = token?.data?.pieceId
-          ? this.game.board.findPieceById(token?.data?.pieceId)
-          : undefined;
-        if (capturablePiece?.owner === this.piece.owner || gait.mustNotCapture)
-          return false;
-      }
-    } else if (gait.mustCapture) return false;
+    } else if (gait.mustCapture) {
+      return false;
+    }
 
     const hypotheticalPath = pathSoFar.clone();
     hypotheticalPath.push(square.location);
@@ -201,6 +195,28 @@ export class Pather {
     const repeat = remainingSteps.length === 1 && gait.repeats;
 
     return repeat ? gait.pattern : remainingSteps.slice(1);
+  }
+
+  private capturePossible(square: Square): boolean {
+    if (this.game.board.squareHasPieceNotBelongingTo(square, this.piece.owner)) {
+      return true;
+    }
+
+    return (
+      square.tokens
+        .filter((token) => token.name === TokenName.CaptureToken)
+        .map((token) => {
+          const capturablePiece = token?.data?.pieceId
+            ? this.game.board.findPieceById(token?.data?.pieceId)
+            : undefined;
+          if (capturablePiece?.owner === this.piece.owner) {
+            return false;
+          }
+
+          return token?.data?.condition?.(this.piece) || false;
+        })
+        .find((capturePossible) => capturePossible) || false
+    );
   }
 }
 
