@@ -173,8 +173,7 @@ class Board extends TokenOwner {
 
   displacePieces(pieceDeltas: PieceDelta[]): void {
     pieceDeltas.forEach((pieceDelta) => {
-      this.killPiecesAt(pieceDelta.path.getEnd());
-      const captureHappened = this.capturePiecesAt(pieceDelta.path.getEnd());
+      const captureHappened = this.capturePiecesAt(pieceDelta.path.getEnd(), this.pieces[pieceDelta.pId]);
       this.displace(pieceDelta);
       if (captureHappened) {
         this.interrupt.for.postCapture({
@@ -185,12 +184,13 @@ class Board extends TokenOwner {
     });
   }
 
-  capturePiecesAt(location: string): boolean {
+  capturePiecesAt(location: string, piece: Piece): boolean {
     let captureHappened = (this.squareAt(location)?.pieces.length || 0) > 0;
     this.killPiecesAt(location);
 
     ({ captureHappened } = this.interrupt.for.onCapture({
       board: this,
+      piece,
       location,
       captureHappened,
     }));

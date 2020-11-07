@@ -1,5 +1,6 @@
-import { Gait } from "game/types";
+import { Gait, PieceName } from "game/types";
 import { Direction } from "game/types";
+import { Piece } from "game";
 
 const ROOK_GAITS: Gait[] = [
   { pattern: [Direction.N], repeats: true },
@@ -52,7 +53,16 @@ const WHITE_PAWN_GAITS: Gait[] = [
   { pattern: [Direction.NW], mustCapture: true },
 ];
 const WHITE_PAWN_DS_GAITS: Gait[] = [
-  { pattern: [Direction.N, Direction.N], mustNotCapture: true },
+  {
+    pattern: [Direction.N, Direction.N],
+    mustNotCapture: true,
+    data: {
+      interceptable: true,
+      interceptionCondition: (piece: Piece): boolean => {
+        return piece.name === PieceName.Pawn;
+      },
+    },
+  },
 ];
 
 const BLACK_PAWN_GAITS: Gait[] = [
@@ -61,7 +71,16 @@ const BLACK_PAWN_GAITS: Gait[] = [
   { pattern: [Direction.SW], mustCapture: true },
 ];
 const BLACK_PAWN_DS_GAITS: Gait[] = [
-  { pattern: [Direction.S, Direction.S], mustNotCapture: true },
+  {
+    pattern: [Direction.S, Direction.S],
+    mustNotCapture: true,
+    data: {
+      interceptable: true,
+      interceptionCondition: (piece: Piece): boolean => {
+        return piece.name === PieceName.Pawn;
+      },
+    },
+  },
 ];
 
 export const standardGaits = {

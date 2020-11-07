@@ -1,7 +1,12 @@
 import { ReactElement } from "react";
 import { Direction } from "./Direction";
-import { VariantName } from "game";
+import { Piece, VariantName } from "game";
 import { Path } from "game/Pather/Path";
+
+export interface gaitData {
+  interceptable?: boolean;
+  interceptionCondition?: (piece: Piece) => boolean;
+}
 
 export interface Gait {
   pattern: Direction[];
@@ -10,7 +15,12 @@ export interface Gait {
   nonBlocking?: boolean;
   mustNotCapture?: boolean;
   mustCapture?: boolean;
+  data?: gaitData;
+}
+
+export interface moveData {
   interceptable?: boolean;
+  interceptionCondition?: (piece: Piece) => boolean;
 }
 
 export interface Move {
@@ -18,7 +28,7 @@ export interface Move {
   location: string;
   pieceDeltas: PieceDelta[];
   player: Player;
-  interceptable?: boolean;
+  data?: moveData;
 }
 
 export interface PieceDelta {
@@ -66,6 +76,7 @@ interface TokenData {
   history?: string[];
   shape?: SquareShape;
   pieceId?: string;
+  condition?: (piece: Piece) => boolean;
 }
 
 export interface RankAndFileBounds {

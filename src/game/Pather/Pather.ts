@@ -24,14 +24,17 @@ export class Pather {
       piece: this.piece,
     });
 
-    const moves = flatMap(gaits, (gait) => this.path({ currentSquare, gait })).map(
-      (path) => ({
-        pieceId: this.piece.id,
-        location: path.getEnd(),
-        pieceDeltas: [{ pId: this.piece.id, path }],
-        player: this.piece.owner,
-      })
-    );
+    const moves: Move[] = flatMap(gaits, (gait) => {
+      return this.path({ currentSquare, gait }).map((path) => {
+        return { path, gait };
+      });
+    }).map(({ path, gait }) => ({
+      pieceId: this.piece.id,
+      location: path.getEnd(),
+      pieceDeltas: [{ pId: this.piece.id, path }],
+      player: this.piece.owner,
+      data: gait.data
+    }));
 
     let { moves: specialMoves } = this.interrupt.for.generateSpecialMoves({
       game: this.game,
@@ -152,11 +155,13 @@ export class Pather {
       if (gait.mustNotCapture) return false;
     } else if (square.hasTokenWithName(TokenName.CaptureToken)) {
       const token = square.firstTokenWithName(TokenName.CaptureToken);
-      const capturablePiece = token?.data?.pieceId
-        ? this.game.board.findPieceById(token?.data?.pieceId)
-        : undefined;
-      if (capturablePiece?.owner === this.piece.owner || gait.mustNotCapture)
-        return false;
+        if (token?.data?.condition?.(this.piece)) {
+        const capturablePiece = token?.data?.pieceId
+            ? this.game.board.findPieceById(token?.data?.pieceId)
+            : undefined;
+        if (capturablePiece?.owner === this.piece.owner || gait.mustNotCapture)
+          return false;
+      }
     } else if (gait.mustCapture) return false;
 
     const hypotheticalPath = pathSoFar.clone();
@@ -179,8 +184,7 @@ export class Pather {
   }
 
   canContinue({ gait, square }: HypotheticalDisplacement): boolean {
-    if (square.hasPiece() && !gait.nonBlocking) return false;
-    return true;
+    return !(square.hasPiece() && !gait.nonBlocking);
   }
 
   go({ from, direction }: { from: Square; direction: Direction }): Square[] {
