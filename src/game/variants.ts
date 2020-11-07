@@ -4,6 +4,8 @@ import {
   hex,
   hexCylindrical,
   loseWithNoKings,
+  mobius,
+  passiveMoveThroughBoard,
   pawnDoubleStep,
   polar,
   standard,
@@ -41,6 +43,19 @@ export const variants = {
     rules: [
       longBoard,
       cylindrical,
+      verticallyCylindrical,
+      loseWithNoKings,
+      pawnDoubleStep,
+      castling,
+    ],
+  },
+  ["Möbius Chess"]: {
+    description:
+      "Chess on a Möbius strip! You can move through the top and bottom edges, and you can see the pieces on the opposite side of the strip!",
+    rules: [
+      mobius,
+      passiveMoveThroughBoard,
+      longBoard,
       verticallyCylindrical,
       loseWithNoKings,
       pawnDoubleStep,

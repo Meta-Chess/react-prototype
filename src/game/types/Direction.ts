@@ -19,4 +19,5 @@ export enum Direction {
   H10,
   H11,
   H12,
+  Down,
 }

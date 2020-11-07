@@ -7,6 +7,8 @@ export * from "./fatigue";
 export * from "./hex";
 export * from "./hexCylindrical";
 export * from "./loseWithNoKings";
+export * from "./mobius";
+export * from "./passiveMoveThroughBoard";
 export * from "./pawnDoubleStep";
 export * from "./polar";
 export * from "./standard";

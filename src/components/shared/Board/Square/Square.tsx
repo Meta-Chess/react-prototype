@@ -3,6 +3,7 @@ import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { Piece } from "./Piece";
+import { ShadowPiece } from "./ShadowPiece";
 import { GridArrangement } from "./GridArrangement";
 import { GameContext } from "game";
 import { Square } from "game/Board";
@@ -30,10 +31,16 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
   ].string();
 
   const piecesOnSquare = square.pieces;
+  const { pieceIds: piecesUnderSquare } = gameMaster.interrupt.for.piecesUnderSquare({
+    square,
+    board: gameMaster.game.board,
+    pieceIds: [],
+  });
 
-  const dimension = Math.ceil(Math.sqrt(piecesOnSquare.length));
+  const pieceGridDimension = Math.ceil(Math.sqrt(piecesOnSquare.length)) || 1;
   const pieceScaleFactor = shape === SquareShape.Hex ? 0.9 : 1; // TODO: this will cause problems with chess plus and hex.
-  const pieceSize = (pieceScaleFactor * size) / dimension;
+  const pieceSize = (pieceScaleFactor * size) / pieceGridDimension;
+  // TODO: For chess plus add and use shadowPieceSize
 
   const onPress = (): void => {
     gameMaster.onPress(square);
@@ -53,6 +60,18 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
       onPress={onPress}
       activeOpacity={1}
     >
+      <Highlight gameMaster={gameMaster} square={square} />
+      <PositioningContainer size={pieceScaleFactor * size}>
+        <GridArrangement>
+          {piecesUnderSquare.map((piece) => (
+            <ShadowPiece
+              piece={gameMaster.game.board.pieces[piece]}
+              size={pieceSize}
+              key={piece}
+            />
+          ))}
+        </GridArrangement>
+      </PositioningContainer>
       <Highlight gameMaster={gameMaster} square={square} />
       <PositioningContainer size={pieceScaleFactor * size}>
         <GridArrangement>
@@ -91,6 +110,8 @@ const PositioningContainer = styled(View)<{ size: number }>`
   top: 50%;
   margin-left: ${({ size }): number => -size / 2}px;
   margin-top: ${({ size }): number => -size / 2}px;
+  width: ${({ size }): number => size}px;
+  height: ${({ size }): number => size}px;
 `;
 
 export { SquareComponent as Square };
