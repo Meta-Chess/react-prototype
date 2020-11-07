@@ -1,10 +1,10 @@
 import { Adjacency, Square } from "../Board";
 import { Direction, RankAndFileBounds, TokenName } from "../types";
-import { range, wrapToCylinder } from "utilities";
+import { range, toLocation, wrapToCylinder } from "utilities";
 import { Rule } from "./Rules";
 import { polarToken, invisibilityToken } from "./constants";
 
-export const Polar: Rule = {
+export const polar: Rule = {
   name: "Polar",
   description:
     "The top and bottom of the board behave like the poles of a sphere. The top edge of the board is wrapped around the edge of an invisible octagonal 'square' that pieces can cross but can't stop on. The bottom edge of the board is similarly wrapped around its own octagonal square.",
@@ -85,7 +85,7 @@ const generatePolarSetup = ({
   return {
     squares: [
       ...range(minFile, numberOfFiles).map((x) => {
-        const location = `PR${maxRank + 1}F${x}`;
+        const location = toLocation({ rank: maxRank + 1, file: x, prefix: "P" });
         return {
           location,
           square: new Square(location, { rank: 9, file: x }, [
@@ -95,7 +95,7 @@ const generatePolarSetup = ({
         };
       }),
       ...range(minFile, numberOfFiles).map((x) => {
-        const location = `PR${minRank - 1}F${x}`;
+        const location = toLocation({ rank: minRank - 1, file: x, prefix: "P" });
         return {
           location,
           square: new Square(location, { rank: 0, file: x }, [
@@ -110,56 +110,78 @@ const generatePolarSetup = ({
       const wrap = wrapToCylinder(minRank, maxRank);
       return rank === minRank - 1
         ? [
-            { direction: Direction.N, location: `R${minRank}F${wrap(file + 4)}` },
+            {
+              direction: Direction.N,
+              location: toLocation({ rank: minRank, file: wrap(file + 4) }),
+            },
             {
               direction: Direction.NE,
-              location: `R${minRank}F${wrap(file + 5)}`,
+              location: toLocation({ rank: minRank, file: wrap(file + 5) }),
             },
             {
               direction: Direction.NW,
-              location: `R${minRank}F${wrap(file + 3)}`,
+              location: toLocation({ rank: minRank, file: wrap(file + 3) }),
             },
           ]
         : rank === maxRank + 1
         ? [
-            { direction: Direction.S, location: `R${maxRank}F${wrap(file + 4)}` },
+            {
+              direction: Direction.S,
+              location: toLocation({ rank: maxRank, file: wrap(file + 4) }),
+            },
             {
               direction: Direction.SE,
-              location: `R${maxRank}F${wrap(file + 5)}`,
+              location: toLocation({ rank: maxRank, file: wrap(file + 5) }),
             },
             {
               direction: Direction.SW,
-              location: `R${maxRank}F${wrap(file + 3)}`,
+              location: toLocation({ rank: maxRank, file: wrap(file + 3) }),
             },
           ]
         : rank === minRank
         ? [
             {
               direction: Direction.S,
-              location: `PR${minRank - 1}F${wrap(file)}`,
+              location: toLocation({ rank: minRank - 1, file: wrap(file), prefix: "P" }),
             },
             {
               direction: Direction.SE,
-              location: `PR${minRank - 1}F${wrap(file + 1)}`,
+              location: toLocation({
+                rank: minRank - 1,
+                file: wrap(file + 1),
+                prefix: "P",
+              }),
             },
             {
               direction: Direction.SW,
-              location: `PR${minRank - 1}F${wrap(file - 1)}`,
+              location: toLocation({
+                rank: minRank - 1,
+                file: wrap(file - 1),
+                prefix: "P",
+              }),
             },
           ]
         : rank === maxRank
         ? [
             {
               direction: Direction.N,
-              location: `PR${maxRank + 1}F${wrap(file)}`,
+              location: toLocation({ rank: maxRank + 1, file: wrap(file), prefix: "P" }),
             },
             {
               direction: Direction.NE,
-              location: `PR${maxRank + 1}F${wrap(file + 1)}`,
+              location: toLocation({
+                rank: maxRank + 1,
+                file: wrap(file + 1),
+                prefix: "P",
+              }),
             },
             {
               direction: Direction.NW,
-              location: `PR${maxRank + 1}F${wrap(file - 1)}`,
+              location: toLocation({
+                rank: maxRank + 1,
+                file: wrap(file - 1),
+                prefix: "P",
+              }),
             },
           ]
         : [];

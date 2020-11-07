@@ -2,7 +2,7 @@ import { Rule } from "./Rules";
 import { Pather } from "../Pather";
 import { cloneDeep } from "lodash";
 
-export const Check: Rule = {
+export const check: Rule = {
   name: "Check",
   description:
     "You can't do any moves that would allow an opponent to take your king on their next turn. Something something win condition? Something something multiple opponents?",

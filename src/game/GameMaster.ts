@@ -4,7 +4,7 @@ import { GameOptions, Modal, Move } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants";
-import { Check, CompactRules, Fatigue, Atomic, Rule } from "./Rules";
+import { check, CompactRules, fatigue, atomic, Rule } from "./Rules";
 import { flatMap } from "lodash";
 import socketIOClient from "socket.io-client";
 
@@ -40,9 +40,9 @@ export class GameMaster {
       online,
     } = gameOptions;
     const rules = [...variants[variant].rules];
-    if (checkEnabled) rules.push(Check);
-    if (fatigueEnabled) rules.push(Fatigue);
-    if (atomicEnabled) rules.push(Atomic);
+    if (checkEnabled) rules.push(check);
+    if (fatigueEnabled) rules.push(fatigue);
+    if (atomicEnabled) rules.push(atomic);
     this.interrupt = new CompactRules(rules);
     this.game = Game.createGame(this.interrupt, time);
     this.gameClones = [
