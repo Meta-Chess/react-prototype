@@ -1,7 +1,13 @@
 import { clone, last } from "lodash";
 
 export class Path {
-  constructor(private start: string, private path: string[] = []) {}
+  private readonly start: string;
+  private readonly path: string[];
+
+  constructor(start: string, path: string[] = []) {
+    this.start = start;
+    this.path = [this.start].concat(path);
+  }
 
   getStart(): string {
     return this.start;
@@ -12,7 +18,7 @@ export class Path {
   }
 
   getPath(): string[] {
-    return [this.start].concat(this.path);
+    return this.path;
   }
 
   push(location: string): number {
@@ -20,6 +26,6 @@ export class Path {
   }
 
   clone(): Path {
-    return new Path(this.start, clone(this.path));
+    return new Path(this.start, clone(this.path.slice(1)));
   }
 }
