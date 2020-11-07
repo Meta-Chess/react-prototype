@@ -9,7 +9,6 @@ import { GameContext } from "game";
 import { Square } from "game/Board";
 import { SquareShape } from "game/types";
 import { Highlight } from "./Highlight";
-import { AbsoluteView } from "ui";
 
 interface Props {
   square: Square | undefined;
@@ -63,30 +62,28 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
     >
       <Highlight gameMaster={gameMaster} square={square} />
       <PositioningContainer size={pieceScaleFactor * size}>
-        <AbsoluteView>
-          <GridArrangement>
-            {piecesUnderSquare.map((piece) => (
-              <ShadowPiece
-                piece={gameMaster.game.board.pieces[piece]}
-                size={pieceSize}
-                key={piece}
-              />
-            ))}
-          </GridArrangement>
-        </AbsoluteView>
-        <AbsoluteView>
-          <GridArrangement>
-            {piecesOnSquare.map((piece) => (
-              <Piece
-                piece={gameMaster.game.board.pieces[piece]}
-                size={pieceSize}
-                key={piece}
-              />
-            ))}
-          </GridArrangement>
-        </AbsoluteView>
+        <GridArrangement>
+          {piecesUnderSquare.map((piece) => (
+            <ShadowPiece
+              piece={gameMaster.game.board.pieces[piece]}
+              size={pieceSize}
+              key={piece}
+            />
+          ))}
+        </GridArrangement>
       </PositioningContainer>
       <Highlight gameMaster={gameMaster} square={square} />
+      <PositioningContainer size={pieceScaleFactor * size}>
+        <GridArrangement>
+          {piecesOnSquare.map((piece) => (
+            <Piece
+              piece={gameMaster.game.board.pieces[piece]}
+              size={pieceSize}
+              key={piece}
+            />
+          ))}
+        </GridArrangement>
+      </PositioningContainer>
     </PressableContainer>
   );
 };
