@@ -36,37 +36,37 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox
-        value={gameOptions.online}
+        value={!!gameOptions.online}
         setValue={setOnline}
         label={"Online"}
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox
-        value={gameOptions.overTheBoard}
+        value={!!gameOptions.overTheBoard}
         setValue={setOverTheBoard}
         label={"Over the board"}
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox
-        value={gameOptions.flipBoard}
+        value={!!gameOptions.flipBoard}
         setValue={setFlipBoard}
         label={"Flip board"}
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox
-        value={gameOptions.fatigueEnabled}
+        value={!!gameOptions.fatigueEnabled}
         setValue={setFatigueEnabled}
         label={"Fatigue on move"}
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox
-        value={gameOptions.atomicEnabled}
+        value={!!gameOptions.atomicEnabled}
         setValue={setAtomicEnabled}
         label={"Atomic enabled"}
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox
-        value={gameOptions.checkEnabled}
+        value={!!gameOptions.checkEnabled}
         setValue={setCheckEnabled}
         label={"Check enabled"}
         style={{ marginTop: 24 }}

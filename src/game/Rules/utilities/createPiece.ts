@@ -10,7 +10,7 @@ export enum PieceSet {
 }
 
 interface PieceCreationInput {
-  location: string;
+  location?: string;
   owner: Player;
   name: PieceName;
   gaits?: Gait[];
@@ -22,7 +22,7 @@ interface PieceCreationInput {
 export function createPiece(input: PieceCreationInput): Piece {
   const { location, owner, name, tokens } = input;
   const gaitGenerator = determineGaitGenerator(input);
-  return new Piece(location, name, gaitGenerator, owner, tokens);
+  return new Piece(name, gaitGenerator, owner, location, tokens);
 }
 
 const determineGaitGenerator = (input: PieceCreationInput): GaitGenerator => {

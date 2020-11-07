@@ -78,14 +78,14 @@ export enum SquareShape {
 
 export interface GameOptions {
   variant: VariantName;
-  time: number | undefined;
-  checkEnabled: boolean;
-  fatigueEnabled: boolean;
-  atomicEnabled: boolean;
-  flipBoard: boolean;
-  overTheBoard: boolean;
+  time?: number;
+  checkEnabled?: boolean;
+  fatigueEnabled?: boolean;
+  atomicEnabled?: boolean;
+  flipBoard?: boolean;
+  overTheBoard?: boolean;
   roomId?: string;
-  online: boolean;
+  online?: boolean;
 }
 
 export interface Modal {

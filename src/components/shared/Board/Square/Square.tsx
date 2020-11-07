@@ -9,7 +9,6 @@ import { GameContext } from "game";
 import { Square } from "game/Board";
 import { SquareShape } from "game/types";
 import { Highlight } from "./Highlight";
-import { AbsoluteView } from "ui";
 
 interface Props {
   square: Square | undefined;
@@ -44,7 +43,7 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
   // TODO: For chess plus add and use shadowPieceSize
 
   const onPress = (): void => {
-    gameMaster.onPress(square);
+    gameMaster.onPress(square.location);
   };
 
   return (

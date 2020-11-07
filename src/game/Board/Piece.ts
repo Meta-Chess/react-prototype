@@ -3,10 +3,10 @@ import { TokenOwner } from "./TokenOwner";
 
 class Piece extends TokenOwner {
   constructor(
-    public location: string,
     public name: PieceName,
     public generateGaits: (_?: GaitParams) => Gait[],
     public owner: Player,
+    public location: string = "unassigned",
     public tokens: Token[] = [],
     public id = "0"
   ) {
@@ -15,10 +15,10 @@ class Piece extends TokenOwner {
 
   clone(): Piece {
     return new Piece(
-      this.location,
       this.name,
       this.generateGaits,
       this.owner,
+      this.location,
       this.tokens,
       this.id
     );
