@@ -48,14 +48,14 @@ const toroidalAdjacencies = (_bounds: RankAndFileBounds) => (
 const toroidalPiecesRule = (square: Square): Piece[] => {
   const { rank, file } = square.getCoordinates();
   const location = toLocation({ rank, file });
-  const owner = [7, 8, 9].includes(rank) ? Player.Black : Player.White;
+  const owner = [10, 11, 12].includes(rank) ? Player.Black : Player.White;
 
-  if (rank === 2) return [createPiece({ location, owner, name: PieceName.Pawn })];
-  if (rank === 14)
+  if (rank === 5) return [createPiece({ location, owner, name: PieceName.Pawn })];
+  if (rank === 3)
     return [
       new Piece(location, PieceName.Pawn, () => standardGaits.BLACK_PAWN_GAITS, owner),
     ];
-  if (rank === 1) {
+  if (rank === 4) {
     if (file === 1 || file === 8)
       return [createPiece({ location, owner, name: PieceName.Rook })];
     if (file === 2 || file === 7)
@@ -66,12 +66,12 @@ const toroidalPiecesRule = (square: Square): Piece[] => {
     if (file === 5) return [createPiece({ location, owner, name: PieceName.King })];
   }
 
-  if (rank === 7) return [createPiece({ location, owner, name: PieceName.Pawn })];
-  if (rank === 9)
+  if (rank === 10) return [createPiece({ location, owner, name: PieceName.Pawn })];
+  if (rank === 12)
     return [
       new Piece(location, PieceName.Pawn, () => standardGaits.WHITE_PAWN_GAITS, owner),
     ];
-  if (rank === 8) {
+  if (rank === 11) {
     if (file === 1 || file === 8)
       return [createPiece({ location, owner, name: PieceName.Rook })];
     if (file === 2 || file === 7)
