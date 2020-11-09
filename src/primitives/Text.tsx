@@ -5,7 +5,7 @@ import { Skeleton } from "./Skeleton";
 import { Colors } from "./Colors";
 import { RobotoMono_400Regular, useFonts } from "@expo-google-fonts/roboto-mono";
 
-const sizes = {
+export const sizes = {
   BodyXS: { size: 12, lineHeight: 16 },
   BodyS: { size: 14, lineHeight: 20 },
   BodyM: { size: 16, lineHeight: 20 },

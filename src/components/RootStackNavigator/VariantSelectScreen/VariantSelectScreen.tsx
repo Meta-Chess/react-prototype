@@ -1,52 +1,52 @@
 import React, { FC, useState } from "react";
-import { View, useWindowDimensions, ScrollView, TouchableOpacity } from "react-native";
+import { View, useWindowDimensions, ScrollView } from "react-native";
+import { Button } from "ui";
 import styled from "styled-components/native";
-import { Colors, MChessLogo, SFC, Text } from "primitives";
+import { Colors, Text } from "primitives";
 import { VariantTile } from "./VariantTile";
-//import { VerticalSeparatorLong } from "ui/Separators";
-import { defaultGameOptions, GameOptionControls } from "./GameOptionControls";
+import { defaultGameOptions } from "./GameOptionControls";
 import { GameOptions } from "game/types";
 import { FutureVariantName, futureVariants } from "game/variants";
-import { isPresent } from "utilities";
-import { traitColors } from "game";
+import { isPresent, sortStr } from "utilities";
+import { traitColors, TraitClasses } from "game";
+import { TraitFilter } from "./TraitFilter";
+import { useNavigation, Screens } from "navigation";
 
 const VariantSelectScreen: FC = () => {
   const padding = 12;
 
+  const navigation = useNavigation();
   const { height, width } = useWindowDimensions();
   const portrait = height > width;
 
-  const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
+  const [activeFilters, setActiveFilters] = useState<TraitClasses[]>([]);
 
-  const allVariants: FutureVariantName[] = Object.values(
-    FutureVariantName
-  ) as FutureVariantName[];
-
-  interface TraitLabelProps {
-    trait: string;
-  }
-
-  const TraitLabel: SFC<TraitLabelProps> = ({ trait, style }) => {
-    const color = traitColors[trait as keyof typeof traitColors].toString();
-    return (
-      <TouchableOpacity
-        style={[
-          style,
-          {
-            backgroundColor: color,
-            borderRadius: 12,
-            width: 24,
-            height: 24,
-          },
-        ]}
-      ></TouchableOpacity>
+  const allVariants: FutureVariantName[] = Object.keys(futureVariants)
+    .filter((key) => futureVariants[key].implemented === true)
+    .sort((n1, n2) => sortStr(n1, n2))
+    .concat(
+      Object.keys(futureVariants)
+        .filter((key) => futureVariants[key].implemented !== true)
+        .sort((n1, n2) => sortStr(n1, n2))
+    )
+    .filter(
+      (key) =>
+        activeFilters.length === 0 ||
+        futureVariants[key].traitClasses.some((x: string) =>
+          activeFilters.some((y) => y === x)
+        )
     );
-  };
 
-  const [selectedVariants, setSelectedVariants] = useState<FutureVariantName[]>([]); //VariantNames[]
-  return portrait ? (
+  const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
+  const [selectedVariants, setSelectedVariants] = useState<FutureVariantName[]>([]);
+
+  return portrait ? ( // currently have not done any templating for portrait
     <ScreenContainer style={{ padding }}>
       <Text>{"Portrait Templating Todo"}</Text>
+      <Button
+        text={"setGameOptions"}
+        onPress={(): void => setGameOptions(defaultGameOptions)}
+      ></Button>
     </ScreenContainer>
   ) : (
     <ScreenContainer>
@@ -96,13 +96,24 @@ const VariantSelectScreen: FC = () => {
                     <VariantTile
                       key={ekey}
                       text={ekey}
+                      selected={selectedVariants.some((x) => x === ekey)}
                       onPress={(): void =>
-                        setSelectedVariants([...selectedVariants, ekey])
+                        selectedVariants.some((x) => x === ekey)
+                          ? setSelectedVariants(
+                              selectedVariants.filter((x) => x !== ekey)
+                            )
+                          : setSelectedVariants([...selectedVariants, ekey])
                       }
                       style={{
                         justifyContent: "flex-start",
                         alignItems: "flex-start",
                         alignContent: "flex-start",
+                        shadowColor: Colors.BLACK.toString(),
+                        shadowRadius: 4,
+                        shadowOffset: {
+                          width: 0,
+                          height: 2,
+                        },
                       }}
                     />
                   );
@@ -112,39 +123,79 @@ const VariantSelectScreen: FC = () => {
         </View>
         <View
           style={{
-            height: 48,
-            marginVertical: 24,
-            backgroundColor: Colors.DARKER.toString(),
-            justifyContent: "flex-start",
+            width,
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            alignContent: "center",
             alignSelf: "center",
-            borderRadius: 6,
-            shadowColor: Colors.BLACK.toString(),
-            shadowRadius: 4,
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
           }}
         >
+          <View style={{ alignSelf: "center", flex: 1, margin: 32, marginRight: 64 }}>
+            <Button
+              text="Back"
+              cat="DisplayM"
+              onPress={(): void => {
+                navigation.goBack();
+              }}
+              style={{ alignSelf: "flex-end", width: 200 }}
+            />
+          </View>
           <View
             style={{
+              height: 48,
+              maxWidth: 375,
+              minWidth: 375,
+              marginVertical: 24,
+              backgroundColor: Colors.DARKER.toString(),
+              justifyContent: "center",
+              alignContent: "center",
+              alignItems: "center",
               flexDirection: "row",
-              marginHorizontal: 12,
-              marginVertical: 12,
+              alignSelf: "center",
+              flex: 1,
+              borderRadius: 6,
+              shadowColor: Colors.BLACK.toString(),
+              shadowRadius: 4,
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
             }}
           >
-            {[
-              "piece",
-              "restriction",
-              "ability",
-              "game end",
-              "interaction",
-              "geometry",
-              "world",
-              "algorithm",
-            ].map((trait: string, index: number) => (
-              <TraitLabel key={index} trait={trait} style={{ marginHorizontal: 12 }} />
-            ))}
+            <View
+              style={{
+                flexDirection: "row",
+                marginHorizontal: 12,
+                marginVertical: 12,
+              }}
+            >
+              {Object.keys(traitColors).map((trait: string, index: number) => (
+                <TraitFilter
+                  key={index}
+                  trait={trait}
+                  style={{ marginHorizontal: 10 }}
+                  unselected={!activeFilters.some((filt) => filt === trait)}
+                  onPress={(): void =>
+                    activeFilters.some((filt) => filt === trait)
+                      ? setActiveFilters([])
+                      : setActiveFilters([trait as TraitClasses])
+                  }
+                />
+              ))}
+            </View>
+          </View>
+          <View style={{ alignSelf: "center", flex: 1, margin: 32, marginLeft: 64 }}>
+            <Button
+              text="Start Game"
+              cat="DisplayM"
+              onPress={(): void => {
+                navigation.navigate<Screens.GameScreen>(Screens.GameScreen, {
+                  gameOptions,
+                });
+              }}
+              style={{ alignSelf: "flex-start", width: 200 }}
+            />
           </View>
         </View>
       </View>

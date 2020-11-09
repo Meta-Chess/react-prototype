@@ -228,3 +228,9 @@ export { hexImage };
 
 import generalEnpassantImage from "./generalEnpassantImage.png";
 export { generalEnpassantImage };
+
+import toroidalImage from "./toroidalImage.png";
+export { toroidalImage };
+
+import mobiusImage from "./mobiusImage.png";
+export { mobiusImage };

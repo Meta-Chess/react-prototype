@@ -84,570 +84,585 @@ export const variants = {
   },
 };
 
-export enum FutureVariantName {
-  threeCheck,
-  armageddon,
-  atomic,
-  catapult,
-  centerRemoval,
-  chessPlus,
-  cylinder,
-  diagonalMirror,
-  dpsKing,
-  emptyCenter,
-  extinction,
-  kingOfTheSixthRank,
-  kingOfTheHill,
-  monochromatic,
-  patheticKing,
-  phaseKing,
-  push,
-  seventhRankPromotion,
-  dancingKings,
-  alice,
-  ambiguous,
-  avalanche,
-  castleAnyside,
-  castleForever,
-  chainReaction,
-  chemicallyExcitedKnight,
-  claudiusPromotion,
-  colourBlindSignal,
-  connectFour,
-  connectFive,
-  crazyhouse,
-  captureExplosion,
-  diagonalValley,
-  fatigue,
-  fortifications,
-  fourHorsemenOfTheApocalypse,
-  gambit,
-  hill,
-  horizontalValley,
-  infiniteStaircase,
-  invertedPyramid,
-  limitedReaction,
-  loseOnStalemate,
-  moraleVictory,
-  moveAsterixMoveAsterixAsterixSignal,
-  noFork,
-  parity,
-  polar,
-  prism,
-  regicide,
-  signal,
-  spherical,
-  verticalValley,
-  veto,
-  vocation,
-  winOnCapture,
-  winOnPromotion,
-  winOnStalemate,
-  zoneOfControl,
-  zoneOfFatigue,
-  puppeteers,
-  lethalPressure,
-  coordination,
-  retreatingPawns,
-  combinationMove,
-  pawnOrbit,
-  centerfold,
-  goCapture,
-  stuckInTheMud,
-  compactify,
-  pinch,
-  morphlings,
-  jumble,
-  pull,
-  noPin,
-  hex,
-  generalEnpassant,
-}
-
-export interface variantInterface {
+export interface futureVariantDetails {
   title: string;
-  short_description: string;
-  trait_classes: string[];
-  icon_name: keyof typeof VariantImages;
+  shortDescription: string;
+  traitClasses: string[];
+  imageName: keyof typeof VariantImages;
+  implemented: boolean;
 }
 
-export const futureVariants: { [k in FutureVariantName]: variantInterface } = {
-  [FutureVariantName.threeCheck]: {
+export type FutureVariantName = keyof typeof futureVariants;
+export const futureVariants: { [id: string]: futureVariantDetails } = {
+  ["threeCheck"]: {
     title: "3-Check",
-    short_description: "3 checks and you're out.",
-    trait_classes: ["game end"],
-    icon_name: "threeCheckImage",
+    shortDescription: "3 checks and you're out.",
+    traitClasses: ["game end"],
+    imageName: "threeCheckImage",
+    implemented: false,
   },
-  [FutureVariantName.armageddon]: {
+  ["armageddon"]: {
     title: "Armageddon",
-    short_description:
+    shortDescription:
       "Captures lead to a large explosion. Pawns are immune to the blast zone.",
-    trait_classes: ["ability"],
-    icon_name: "armageddonImage",
+    traitClasses: ["ability"],
+    imageName: "armageddonImage",
+    implemented: false,
   },
-  [FutureVariantName.atomic]: {
+  ["atomic"]: {
     title: "Atomic",
-    short_description:
+    shortDescription:
       "Captures lead to a small explosion. Pawns are immune to the blast zone.",
-    trait_classes: ["ability"],
-    icon_name: "atomicImage",
+    traitClasses: ["ability"],
+    imageName: "atomicImage",
+    implemented: true,
   },
-  [FutureVariantName.catapult]: {
+  ["catapult"]: {
     title: "Catapult",
-    short_description: "Pieces can throw other pieces occupying the same square.",
-    trait_classes: ["ability"],
-    icon_name: "catapultImage",
+    shortDescription: "Pieces can throw other pieces occupying the same square.",
+    traitClasses: ["ability"],
+    imageName: "catapultImage",
+    implemented: false,
   },
-  [FutureVariantName.centerRemoval]: {
+  ["centerRemoval"]: {
     title: "Center Removal",
-    short_description: "Center squares and the pieces on them are removed from the game.",
-    trait_classes: ["world"],
-    icon_name: "centerRemovalImage",
+    shortDescription: "Center squares and the pieces on them are removed from the game.",
+    traitClasses: ["world"],
+    imageName: "centerRemovalImage",
+    implemented: false,
   },
-  [FutureVariantName.chessPlus]: {
+  ["chessPlus"]: {
     title: "Chess +",
-    short_description: "2 non-king pieces are allowed on a square.",
-    trait_classes: ["ability"],
-    icon_name: "chessPlusImage",
+    shortDescription: "2 non-king pieces are allowed on a square.",
+    traitClasses: ["ability"],
+    imageName: "chessPlusImage",
+    implemented: false,
   },
-  [FutureVariantName.cylinder]: {
+  ["cylinder"]: {
     title: "Cylinder",
-    short_description: "End columns of the board are glued together.",
-    trait_classes: ["geometry"],
-    icon_name: "cylinderImage",
+    shortDescription: "End columns of the board are glued together.",
+    traitClasses: ["geometry"],
+    imageName: "cylinderImage",
+    implemented: true,
   },
-  [FutureVariantName.diagonalMirror]: {
+  ["diagonalMirror"]: {
     title: "Diagonal Mirror",
-    short_description: "Diagonal movers bounce off the end of the board.",
-    trait_classes: ["world"],
-    icon_name: "diagonalMirrorImage",
+    shortDescription: "Diagonal movers bounce off the end of the board.",
+    traitClasses: ["world"],
+    imageName: "diagonalMirrorImage",
+    implemented: false,
   },
-  [FutureVariantName.dpsKing]: {
+  ["dpsKing"]: {
     title: "DPS King",
-    short_description: "Kings can capture all pieces surrounding them.",
-    trait_classes: ["piece", "ability"],
-    icon_name: "dpsKingImage",
+    shortDescription: "Kings can capture all pieces surrounding them.",
+    traitClasses: ["piece", "ability"],
+    imageName: "dpsKingImage",
+    implemented: false,
   },
-  [FutureVariantName.emptyCenter]: {
+  ["emptyCenter"]: {
     title: "Empty Center",
-    short_description: "Pieces can move through but not on the center of the board.",
-    trait_classes: ["restriction"],
-    icon_name: "emptyCenterImage",
+    shortDescription: "Pieces can move through but not on the center of the board.",
+    traitClasses: ["restriction"],
+    imageName: "emptyCenterImage",
+    implemented: false,
   },
-  [FutureVariantName.extinction]: {
+  ["extinction"]: {
     title: "Extinction",
-    short_description: "Lose the game if any piece goes extinct.",
-    trait_classes: ["game end"],
-    icon_name: "extinctionImage",
+    shortDescription: "Lose the game if any piece goes extinct.",
+    traitClasses: ["game end"],
+    imageName: "extinctionImage",
+    implemented: false,
   },
-  [FutureVariantName.kingOfTheSixthRank]: {
+  ["kingOfTheSixthRank"]: {
     title: "King of the 6th Rank",
-    short_description: "Win the game with a king reaching the 6th rank.",
-    trait_classes: ["game end"],
-    icon_name: "kingOfTheSixthRankImage",
+    shortDescription: "Win the game with a king reaching the 6th rank.",
+    traitClasses: ["game end"],
+    imageName: "kingOfTheSixthRankImage",
+    implemented: false,
   },
-  [FutureVariantName.kingOfTheHill]: {
+  ["kingOfTheHill"]: {
     title: "King of the Hill",
-    short_description: "Win the game with a king reaching the center.",
-    trait_classes: ["game end"],
-    icon_name: "kingOfTheHillImage",
+    shortDescription: "Win the game with a king reaching the center.",
+    traitClasses: ["game end"],
+    imageName: "kingOfTheHillImage",
+    implemented: false,
   },
-  [FutureVariantName.monochromatic]: {
+  ["monochromatic"]: {
     title: "Monochromatic",
-    short_description: "Pieces must move onto the same coloured square.",
-    trait_classes: ["restriction"],
-    icon_name: "monochromaticImage",
+    shortDescription: "Pieces must move onto the same coloured square.",
+    traitClasses: ["restriction"],
+    imageName: "monochromaticImage",
+    implemented: false,
   },
-  [FutureVariantName.patheticKing]: {
+  ["patheticKing"]: {
     title: "Pathetic King",
-    short_description: "Kings cannot capture.",
-    trait_classes: ["piece", "restriction"],
-    icon_name: "patheticKingImage",
+    shortDescription: "Kings cannot capture.",
+    traitClasses: ["piece", "restriction"],
+    imageName: "patheticKingImage",
+    implemented: false,
   },
-  [FutureVariantName.phaseKing]: {
+  ["phaseKing"]: {
     title: "Phase King",
-    short_description: "Kings may move onto friendly pieces.",
-    trait_classes: ["piece", "ability"],
-    icon_name: "phaseKingImage",
+    shortDescription: "Kings may move onto friendly pieces.",
+    traitClasses: ["piece", "ability"],
+    imageName: "phaseKingImage",
+    implemented: false,
   },
-  [FutureVariantName.push]: {
+  ["push"]: {
     title: "Push",
-    short_description: "Push chains of neighbouring friendly pieces.",
-    trait_classes: ["ability"],
-    icon_name: "pushImage",
+    shortDescription: "Push chains of neighbouring friendly pieces.",
+    traitClasses: ["ability"],
+    imageName: "pushImage",
+    implemented: false,
   },
-  [FutureVariantName.seventhRankPromotion]: {
+  ["seventhRankPromotion"]: {
     title: "7th Rank Promotion",
-    short_description: "Promote on the 7th rank.",
-    trait_classes: ["game end"],
-    icon_name: "seventhRankPromotionImage",
+    shortDescription: "Promote on the 7th rank.",
+    traitClasses: ["game end"],
+    imageName: "seventhRankPromotionImage",
+    implemented: false,
   },
-  [FutureVariantName.dancingKings]: {
+  ["dancingKings"]: {
     title: "Dancing Kings",
-    short_description: "Keep the king moving or lose the game.",
-    trait_classes: ["piece", "game end"],
-    icon_name: "dancingKingsImage",
+    shortDescription: "Keep the king moving or lose the game.",
+    traitClasses: ["piece", "game end"],
+    imageName: "dancingKingsImage",
+    implemented: false,
   },
-  [FutureVariantName.alice]: {
+  ["alice"]: {
     title: "Alice",
-    short_description: "Pieces move between worlds.",
-    trait_classes: ["world"],
-    icon_name: "aliceImage",
+    shortDescription: "Pieces move between worlds.",
+    traitClasses: ["world"],
+    imageName: "aliceImage",
+    implemented: false,
   },
-  [FutureVariantName.ambiguous]: {
+  ["ambiguous"]: {
     title: "Ambiguous",
-    short_description: "Choose a square and your opponent chooses the move.",
-    trait_classes: ["interaction", "restriction"],
-    icon_name: "ambiguousImage",
+    shortDescription: "Choose a square and your opponent chooses the move.",
+    traitClasses: ["interaction", "restriction"],
+    imageName: "ambiguousImage",
+    implemented: false,
   },
-  [FutureVariantName.avalanche]: {
+  ["avalanche"]: {
     title: "Avalanche",
-    short_description: "After moving, make a non capturing pawn move for your opponent.",
-    trait_classes: ["piece", "interaction"],
-    icon_name: "avalancheImage",
+    shortDescription: "After moving, make a non capturing pawn move for your opponent.",
+    traitClasses: ["piece", "interaction"],
+    imageName: "avalancheImage",
+    implemented: false,
   },
-  [FutureVariantName.castleAnyside]: {
+  ["castleAnyside"]: {
     title: "Castle Anyside",
-    short_description: "Kings can castle with any friendly piece on a straight line.",
-    trait_classes: ["ability"],
-    icon_name: "castleAnysideImage",
+    shortDescription: "Kings can castle with any friendly piece on a straight line.",
+    traitClasses: ["ability"],
+    imageName: "castleAnysideImage",
+    implemented: false,
   },
-  [FutureVariantName.castleForever]: {
+  ["castleForever"]: {
     title: "Castle Forever",
-    short_description: "Moving pieces does not remove their castling rights.",
-    trait_classes: ["ability"],
-    icon_name: "castleForeverImage",
+    shortDescription: "Moving pieces does not remove their castling rights.",
+    traitClasses: ["ability"],
+    imageName: "castleForeverImage",
+    implemented: false,
   },
-  [FutureVariantName.chainReaction]: {
+  ["chainReaction"]: {
     title: "Chain Reaction",
-    short_description: "A captured piece captures all pieces it is attacking.",
-    trait_classes: ["ability"],
-    icon_name: "chainReactionImage",
+    shortDescription: "A captured piece captures all pieces it is attacking.",
+    traitClasses: ["ability"],
+    imageName: "chainReactionImage",
+    implemented: false,
   },
-  [FutureVariantName.chemicallyExcitedKnight]: {
+  ["chemicallyExcitedKnight"]: {
     title: "Chemically Excited Knight",
-    short_description: "Any time a knight is attacking 3 pieces, it explodes.",
-    trait_classes: ["piece", "ability"],
-    icon_name: "chemicallyExcitedKnightImage",
+    shortDescription: "Any time a knight is attacking 3 pieces, it explodes.",
+    traitClasses: ["piece", "ability"],
+    imageName: "chemicallyExcitedKnightImage",
+    implemented: false,
   },
-  [FutureVariantName.claudiusPromotion]: {
+  ["claudiusPromotion"]: {
     title: "Claudius Promotion",
-    short_description: "Pawns may promote to replace a king.",
-    trait_classes: ["piece", "ability"],
-    icon_name: "claudiusPromotionImage",
+    shortDescription: "Pawns may promote to replace a king.",
+    traitClasses: ["piece", "ability"],
+    imageName: "claudiusPromotionImage",
+    implemented: false,
   },
-  [FutureVariantName.colourBlindSignal]: {
+  ["colourBlindSignal"]: {
     title: "Colour Blind Signalling",
-    short_description: "Signal pieces of any colour to move them next turn.",
-    trait_classes: ["interaction", "restriction"],
-    icon_name: "colourBlindSignalImage",
+    shortDescription: "Signal pieces of any colour to move them next turn.",
+    traitClasses: ["interaction", "restriction"],
+    imageName: "colourBlindSignalImage",
+    implemented: false,
   },
-  [FutureVariantName.connectFour]: {
+  ["connectFour"]: {
     title: "Connect Five",
-    short_description: "4 friendly pawns diagonally connected win the game.",
-    trait_classes: ["game end"],
-    icon_name: "connectFourImage",
+    shortDescription: "4 friendly pawns diagonally connected win the game.",
+    traitClasses: ["game end"],
+    imageName: "connectFourImage",
+    implemented: false,
   },
-  [FutureVariantName.connectFive]: {
+  ["connectFive"]: {
     title: "Connect Four",
-    short_description: "5 friendly pieces diagonally connected win the game.",
-    trait_classes: ["game end"],
-    icon_name: "connectFiveImage",
+    shortDescription: "5 friendly pieces diagonally connected win the game.",
+    traitClasses: ["game end"],
+    imageName: "connectFiveImage",
+    implemented: false,
   },
-  [FutureVariantName.crazyhouse]: {
+  ["crazyhouse"]: {
     title: "Crazyhouse",
-    short_description: "Play captured pieces on the board.",
-    trait_classes: ["ability"],
-    icon_name: "crazyhouseImage",
+    shortDescription: "Play captured pieces on the board.",
+    traitClasses: ["ability"],
+    imageName: "crazyhouseImage",
+    implemented: false,
   },
-  [FutureVariantName.captureExplosion]: {
+  ["captureExplosion"]: {
     title: "Capture Explosion",
-    short_description:
+    shortDescription:
       "Pieces capture themselves and diagonal neighbours after capturing.",
-    trait_classes: ["ability"],
-    icon_name: "captureExplosionImage",
+    traitClasses: ["ability"],
+    imageName: "captureExplosionImage",
+    implemented: false,
   },
-  [FutureVariantName.diagonalValley]: {
+  ["diagonalValley"]: {
     title: "Diagonal Valley",
-    short_description: "The board is a valley bottoming out along the main diagonals.",
-    trait_classes: ["world"],
-    icon_name: "diagonalValleyImage",
+    shortDescription: "The board is a valley bottoming out along the main diagonals.",
+    traitClasses: ["world"],
+    imageName: "diagonalValleyImage",
+    implemented: false,
   },
-  [FutureVariantName.fatigue]: {
+  ["fatigue"]: {
     title: "Fatigue",
-    short_description:
+    shortDescription:
       "Pieces can't be moved twice in a row, unless they can kill the king.",
-    trait_classes: ["restriction"],
-    icon_name: "fatigueImage",
+    traitClasses: ["restriction"],
+    imageName: "fatigueImage",
+    implemented: true,
   },
-  [FutureVariantName.fortifications]: {
+  ["fortifications"]: {
     title: "Fortifications",
-    short_description: "Rooks cannot capture or be captured.",
-    trait_classes: ["piece", "ability"],
-    icon_name: "fortificationsImage",
+    shortDescription: "Rooks cannot capture or be captured.",
+    traitClasses: ["piece", "ability"],
+    imageName: "fortificationsImage",
+    implemented: false,
   },
-  [FutureVariantName.fourHorsemenOfTheApocalypse]: {
+  ["fourHorsemenOfTheApocalypse"]: {
     title: "Four Horsemen of the Apocalypse",
-    short_description: "Control 4 knights on board to win the game.",
-    trait_classes: ["game end"],
-    icon_name: "fourHorsemenOfTheApocalypseImage",
+    shortDescription: "Control 4 knights on board to win the game.",
+    traitClasses: ["game end"],
+    imageName: "fourHorsemenOfTheApocalypseImage",
+    implemented: false,
   },
-  [FutureVariantName.gambit]: {
+  ["gambit"]: {
     title: "Gambit",
-    short_description: "Pieces may capture friendly pieces.",
-    trait_classes: ["ability"],
-    icon_name: "gambitImage",
+    shortDescription: "Pieces may capture friendly pieces.",
+    traitClasses: ["ability"],
+    imageName: "gambitImage",
+    implemented: false,
   },
-  [FutureVariantName.hill]: {
+  ["hill"]: {
     title: "Hill",
-    short_description: "An elevation at the center of the board.",
-    trait_classes: ["world"],
-    icon_name: "hillImage",
+    shortDescription: "An elevation at the center of the board.",
+    traitClasses: ["world"],
+    imageName: "hillImage",
+    implemented: false,
   },
-  [FutureVariantName.horizontalValley]: {
+  ["horizontalValley"]: {
     title: "Horizontal Valley",
-    short_description: "The board is a valley bottoming out at the center rows.",
-    trait_classes: ["world"],
-    icon_name: "horizontalValleyImage",
+    shortDescription: "The board is a valley bottoming out at the center rows.",
+    traitClasses: ["world"],
+    imageName: "horizontalValleyImage",
+    implemented: false,
   },
-  [FutureVariantName.infiniteStaircase]: {
+  ["infiniteStaircase"]: {
     title: "Infinite Staircase",
-    short_description:
+    shortDescription:
       "The board decends forever to white's left and ascends forever to the right.",
-    trait_classes: ["world", "geometry"],
-    icon_name: "infiniteStaircaseImage",
+    traitClasses: ["world", "geometry"],
+    imageName: "infiniteStaircaseImage",
+    implemented: false,
   },
-  [FutureVariantName.invertedPyramid]: {
+  ["invertedPyramid"]: {
     title: "Inverted Pyramid",
-    short_description: "The board decends in layers bottoming out at the center.",
-    trait_classes: ["world"],
-    icon_name: "invertedPyramidImage",
+    shortDescription: "The board decends in layers bottoming out at the center.",
+    traitClasses: ["world"],
+    imageName: "invertedPyramidImage",
+    implemented: false,
   },
-  [FutureVariantName.limitedReaction]: {
+  ["limitedReaction"]: {
     title: "Limited Reaction",
-    short_description:
+    shortDescription:
       "A captured piece captures all pieces it is attacking, except if the piece was captured via limited reaction.",
-    trait_classes: ["ability"],
-    icon_name: "limitedReactionImage",
+    traitClasses: ["ability"],
+    imageName: "limitedReactionImage",
+    implemented: false,
   },
-  [FutureVariantName.loseOnStalemate]: {
+  ["loseOnStalemate"]: {
     title: "Lose On Stalemate",
-    short_description: "Having no legal moves is a loss.",
-    trait_classes: ["game end"],
-    icon_name: "loseOnStalemateImage",
+    shortDescription: "Having no legal moves is a loss.",
+    traitClasses: ["game end"],
+    imageName: "loseOnStalemateImage",
+    implemented: false,
   },
-  [FutureVariantName.moraleVictory]: {
+  ["moraleVictory"]: {
     title: "Morale Victory",
-    short_description: "Lose the game without any pawns.",
-    trait_classes: ["game end"],
-    icon_name: "moraleVictoryImage",
+    shortDescription: "Lose the game without any pawns.",
+    traitClasses: ["game end"],
+    imageName: "moraleVictoryImage",
+    implemented: false,
   },
-  [FutureVariantName.moveAsterixMoveAsterixAsterixSignal]: {
+  ["moveAsterixMoveAsterixAsterixSignal"]: {
     title: "Move* Move** Signal",
-    short_description: "An unsignalled piece, the signalled piece, signal a piece.",
-    trait_classes: ["interaction"],
-    icon_name: "moveAsterixMoveAsterixAsterixSignalImage",
+    shortDescription: "An unsignalled piece, the signalled piece, signal a piece.",
+    traitClasses: ["interaction"],
+    imageName: "moveAsterixMoveAsterixAsterixSignalImage",
+    implemented: false,
   },
-  [FutureVariantName.noFork]: {
+  ["noFork"]: {
     title: "No Fork",
-    short_description: "Knights can no longer attack 2 or more pieces.",
-    trait_classes: ["piece", "restriction"],
-    icon_name: "noForkImage",
+    shortDescription: "Knights can no longer attack 2 or more pieces.",
+    traitClasses: ["piece", "restriction"],
+    imageName: "noForkImage",
+    implemented: false,
   },
-  [FutureVariantName.parity]: {
+  ["parity"]: {
     title: "Parity",
-    short_description: "Pieces must move onto a different coloured square.",
-    trait_classes: ["restriction"],
-    icon_name: "parityImage",
+    shortDescription: "Pieces must move onto a different coloured square.",
+    traitClasses: ["restriction"],
+    imageName: "parityImage",
+    implemented: false,
   },
-  [FutureVariantName.polar]: {
+  ["polar"]: {
     title: "Polar",
-    short_description: "Slide through end rows and re-emerge through the same row.",
-    trait_classes: ["geometry"],
-    icon_name: "polarImage",
+    shortDescription: "Slide through end rows and re-emerge through the same row.",
+    traitClasses: ["geometry"],
+    imageName: "polarImage",
+    implemented: false,
   },
-  [FutureVariantName.prism]: {
+  ["prism"]: {
     title: "Prism",
-    short_description: "Reflect or refract pieces over the ends of the board.",
-    trait_classes: ["geometry", "world"],
-    icon_name: "prismImage",
+    shortDescription: "Reflect or refract pieces over the ends of the board.",
+    traitClasses: ["geometry", "world"],
+    imageName: "prismImage",
+    implemented: false,
   },
-  [FutureVariantName.regicide]: {
+  ["regicide"]: {
     title: "Regicide",
-    short_description: "Lose the game without a queen.",
-    trait_classes: ["game end"],
-    icon_name: "regicideImage",
+    shortDescription: "Lose the game without a queen.",
+    traitClasses: ["game end"],
+    imageName: "regicideImage",
+    implemented: false,
   },
-  [FutureVariantName.signal]: {
+  ["signal"]: {
     title: "Signal",
-    short_description: "Signal a piece to move it next turn.",
-    trait_classes: ["restriction"],
-    icon_name: "signalImage",
+    shortDescription: "Signal a piece to move it next turn.",
+    traitClasses: ["restriction"],
+    imageName: "signalImage",
+    implemented: false,
   },
-  [FutureVariantName.spherical]: {
+  ["spherical"]: {
     title: "Spherical",
-    short_description: "The board wrapped around a sphere. Cylinder together with Polar.",
-    trait_classes: ["geometry"],
-    icon_name: "sphericalImage",
+    shortDescription: "The board wrapped around a sphere. Cylinder together with Polar.",
+    traitClasses: ["geometry"],
+    imageName: "sphericalImage",
+    implemented: true,
   },
-  [FutureVariantName.verticalValley]: {
+  ["verticalValley"]: {
     title: "Vertical Valley",
-    short_description: "The board is a valley bottoming out at the center columns.",
-    trait_classes: ["world"],
-    icon_name: "verticalValleyImage",
+    shortDescription: "The board is a valley bottoming out at the center columns.",
+    traitClasses: ["world"],
+    imageName: "verticalValleyImage",
+    implemented: false,
   },
-  [FutureVariantName.veto]: {
+  ["veto"]: {
     title: "Veto",
-    short_description: "A move may be vetoed each turn.",
-    trait_classes: ["interaction", "restriction"],
-    icon_name: "vetoImage",
+    shortDescription: "A move may be vetoed each turn.",
+    traitClasses: ["interaction", "restriction"],
+    imageName: "vetoImage",
+    implemented: false,
   },
-  [FutureVariantName.vocation]: {
+  ["vocation"]: {
     title: "Vocation",
-    short_description:
+    shortDescription:
       "Any piece kind may promote to any other piece kind. Old kings become pawns.",
-    trait_classes: ["ability"],
-    icon_name: "vocationImage",
+    traitClasses: ["ability"],
+    imageName: "vocationImage",
+    implemented: false,
   },
-  [FutureVariantName.winOnCapture]: {
+  ["winOnCapture"]: {
     title: "Win on Capture",
-    short_description: "Win by capturing an enemy piece with the king.",
-    trait_classes: ["game end"],
-    icon_name: "winOnCaptureImage",
+    shortDescription: "Win by capturing an enemy piece with the king.",
+    traitClasses: ["game end"],
+    imageName: "winOnCaptureImage",
+    implemented: false,
   },
-  [FutureVariantName.winOnPromotion]: {
+  ["winOnPromotion"]: {
     title: "Win on Promotion",
-    short_description: "Win by promoting a piece.",
-    trait_classes: ["game end"],
-    icon_name: "winOnPromotionImage",
+    shortDescription: "Win by promoting a piece.",
+    traitClasses: ["game end"],
+    imageName: "winOnPromotionImage",
+    implemented: false,
   },
-  [FutureVariantName.winOnStalemate]: {
+  ["winOnStalemate"]: {
     title: "Win on Stalemate",
-    short_description: "Win by having no legal moves.",
-    trait_classes: ["game end"],
-    icon_name: "winOnStalemateImage",
+    shortDescription: "Win by having no legal moves.",
+    traitClasses: ["game end"],
+    imageName: "winOnStalemateImage",
+    implemented: false,
   },
-  [FutureVariantName.zoneOfControl]: {
+  ["zoneOfControl"]: {
     title: "Zone of Control",
-    short_description:
+    shortDescription:
       "After moving past an enemy piece, only one more step can be taken.",
-    trait_classes: ["ability", "restriction"],
-    icon_name: "zoneOfControlImage",
+    traitClasses: ["ability", "restriction"],
+    imageName: "zoneOfControlImage",
+    implemented: false,
   },
-  [FutureVariantName.zoneOfFatigue]: {
+  ["zoneOfFatigue"]: {
     title: "Zone of Fatigue",
-    short_description: "Moving past an enemy piece results in fatigue.",
-    trait_classes: ["ability", "restriction"],
-    icon_name: "zoneOfFatigueImage",
+    shortDescription: "Moving past an enemy piece results in fatigue.",
+    traitClasses: ["ability", "restriction"],
+    imageName: "zoneOfFatigueImage",
+    implemented: false,
   },
-  [FutureVariantName.puppeteers]: {
+  ["puppeteers"]: {
     title: "Puppeteers",
-    short_description: "Any piece defended by a knight can move as a knight.",
-    trait_classes: ["piece", "ability"],
-    icon_name: "puppeteersImage",
+    shortDescription: "Any piece defended by a knight can move as a knight.",
+    traitClasses: ["piece", "ability"],
+    imageName: "puppeteersImage",
+    implemented: false,
   },
-  [FutureVariantName.lethalPressure]: {
+  ["lethalPressure"]: {
     title: "Lethal Pressure",
-    short_description: "Pieces attacked 4 or more times are captured.",
-    trait_classes: ["ability"],
-    icon_name: "lethalPressureImage",
+    shortDescription: "Pieces attacked 4 or more times are captured.",
+    traitClasses: ["ability"],
+    imageName: "lethalPressureImage",
+    implemented: false,
   },
-  [FutureVariantName.coordination]: {
+  ["coordination"]: {
     title: "Coordination",
-    short_description: "Move multiple pieces to the same square.",
-    trait_classes: ["ability"],
-    icon_name: "coordinationImage",
+    shortDescription: "Move multiple pieces to the same square.",
+    traitClasses: ["ability"],
+    imageName: "coordinationImage",
+    implemented: false,
   },
-  [FutureVariantName.retreatingPawns]: {
+  ["retreatingPawns"]: {
     title: "Retreating Pawns",
-    short_description:
+    shortDescription:
       "Pawns will run backwards after losing a defender, until redefended.",
-    trait_classes: ["piece", "algorithm"],
-    icon_name: "retreatingPawnsImage",
+    traitClasses: ["piece", "interaction"],
+    imageName: "retreatingPawnsImage",
+    implemented: false,
   },
-  [FutureVariantName.combinationMove]: {
+  ["combinationMove"]: {
     title: "Combination Move",
-    short_description: "Move multiple pieces off of the same square.",
-    trait_classes: ["ability"],
-    icon_name: "combinationMoveImage",
+    shortDescription: "Move multiple pieces off of the same square.",
+    traitClasses: ["ability"],
+    imageName: "combinationMoveImage",
+    implemented: false,
   },
-  [FutureVariantName.pawnOrbit]: {
+  ["pawnOrbit"]: {
     title: "Pawn Orbit",
-    short_description: "Isolated pawns can shift all neighbouring pieces clockwise.",
-    trait_classes: ["piece", "ability"],
-    icon_name: "pawnOrbitImage",
+    shortDescription: "Isolated pawns can shift all neighbouring pieces clockwise.",
+    traitClasses: ["piece", "ability"],
+    imageName: "pawnOrbitImage",
+    implemented: false,
   },
-  [FutureVariantName.centerfold]: {
+  ["centerfold"]: {
     title: "Centerfold",
-    short_description:
+    shortDescription:
       "The board is folded along the vertical center line and column ends are glued.",
-    trait_classes: ["geometry"],
-    icon_name: "centerfoldImage",
+    traitClasses: ["geometry"],
+    imageName: "centerfoldImage",
+    implemented: false,
   },
-  [FutureVariantName.goCapture]: {
+  ["goCapture"]: {
     title: "Go Capture",
-    short_description: "Capture pieces by surrounding them in a line without gaps.",
-    trait_classes: ["ability"],
-    icon_name: "goCaptureImage",
+    shortDescription: "Capture pieces by surrounding them in a line without gaps.",
+    traitClasses: ["ability"],
+    imageName: "goCaptureImage",
+    implemented: false,
   },
-  [FutureVariantName.stuckInTheMud]: {
+  ["stuckInTheMud"]: {
     title: "Stuck In The Mud",
-    short_description: "Center squares may be stepped on, but not through.",
-    trait_classes: ["restriction"],
-    icon_name: "stuckInTheMudImage",
+    shortDescription: "Center squares may be stepped on, but not through.",
+    traitClasses: ["restriction"],
+    imageName: "stuckInTheMudImage",
+    implemented: false,
   },
-  [FutureVariantName.compactify]: {
+  ["compactify"]: {
     title: "Compactify",
-    short_description:
+    shortDescription:
       "Columns without pieces are destroyed, with the board closing around the empty space.",
-    trait_classes: ["world"],
-    icon_name: "compactifyImage",
+    traitClasses: ["world"],
+    imageName: "compactifyImage",
+    implemented: false,
   },
-  [FutureVariantName.pinch]: {
+  ["pinch"]: {
     title: "Pinch",
-    short_description: "Length 2 diagonals are glued on their ends in each corner.",
-    trait_classes: ["geometry"],
-    icon_name: "pinchImage",
+    shortDescription: "Length 2 diagonals are glued on their ends in each corner.",
+    traitClasses: ["geometry"],
+    imageName: "pinchImage",
+    implemented: false,
   },
-  [FutureVariantName.morphlings]: {
+  ["morphlings"]: {
     title: "Morphlings",
-    short_description: "After moving bishops become knights and knights become bishops.",
-    trait_classes: ["piece", "ability"],
-    icon_name: "morphlingsImage",
+    shortDescription: "After moving bishops become knights and knights become bishops.",
+    traitClasses: ["piece", "ability"],
+    imageName: "morphlingsImage",
+    implemented: false,
   },
-  [FutureVariantName.jumble]: {
+  ["jumble"]: {
     title: "Jumble",
-    short_description: "Move multiple pieces on and off of the same square.",
-    trait_classes: ["ability"],
-    icon_name: "jumbleImage",
+    shortDescription: "Move multiple pieces on and off of the same square.",
+    traitClasses: ["ability"],
+    imageName: "jumbleImage",
+    implemented: false,
   },
-  [FutureVariantName.pull]: {
+  ["pull"]: {
     title: "Pull",
-    short_description: "Pull chains of neighbouring friendly pieces.",
-    trait_classes: ["ability"],
-    icon_name: "pullImage",
+    shortDescription: "Pull chains of neighbouring friendly pieces.",
+    traitClasses: ["ability"],
+    imageName: "pullImage",
+    implemented: false,
   },
-  [FutureVariantName.noPin]: {
+  ["noPin"]: {
     title: "No Pin",
-    short_description:
+    shortDescription:
       "Bishops cannot attack a piece if when the piece is removed the bishop would be attacking another piece.",
-    trait_classes: ["piece", "restriction"],
-    icon_name: "noPinImage",
+    traitClasses: ["piece", "restriction"],
+    imageName: "noPinImage",
+    implemented: false,
   },
-  [FutureVariantName.hex]: {
+  ["hex"]: {
     title: "Hex",
-    short_description: "A board tiled with hexagons.",
-    trait_classes: ["world"],
-    icon_name: "hexImage",
+    shortDescription: "A board tiled with hexagons.",
+    traitClasses: ["world"],
+    imageName: "hexImage",
+    implemented: true,
   },
-  [FutureVariantName.generalEnpassant]: {
+  ["generalEnpassant"]: {
     title: "General Enpassant",
-    short_description: "Any piece can enpassant any other.",
-    trait_classes: ["ability"],
-    icon_name: "generalEnpassantImage",
+    shortDescription: "Any piece can enpassant any other.",
+    traitClasses: ["ability"],
+    imageName: "generalEnpassantImage",
+    implemented: false,
+  },
+  ["toroidal"]: {
+    title: "Toroidal",
+    shortDescription: "Double the cylinder and pawns on a long board.",
+    traitClasses: ["geometry", "world"],
+    imageName: "toroidalImage",
+    implemented: true,
+  },
+  ["mobius"]: {
+    title: "Mobius ",
+    shortDescription:
+      "A long board mobius strip, with the ability to phase through to empty squares.",
+    traitClasses: ["geometry", "world"],
+    imageName: "mobiusImage",
+    implemented: true,
   },
 };
 
+export type TraitClasses = keyof typeof traitColors;
 export const traitColors = {
   piece: Colors.TRAIT_CLASS.PIECE,
   restriction: Colors.TRAIT_CLASS.RESTRICTION,
@@ -656,5 +671,4 @@ export const traitColors = {
   interaction: Colors.TRAIT_CLASS.INTERACTION,
   geometry: Colors.TRAIT_CLASS.GEOMETRY,
   world: Colors.TRAIT_CLASS.WORLD,
-  algorithm: Colors.TRAIT_CLASS.ALGORITHM,
 };

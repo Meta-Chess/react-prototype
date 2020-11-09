@@ -3,33 +3,35 @@ import { TouchableOpacity, View, Image } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
 import * as VariantImages from "primitives/VariantImage";
-import { traitColors } from "game";
-import { variantInterface } from "game";
-import { contrast } from "utilities";
+import { futureVariantDetails } from "game";
+import { TraitLabel } from "ui/Buttons";
 
 interface Props {
-  // TODO: get the right type
-  variant: variantInterface; // eslint-disable-line @typescript-eslint/no-explicit-any
+  variant: futureVariantDetails;
+  selected: boolean;
   onPress: () => void;
 }
 
-export const VariantTileButton: SFC<Props> = ({ style, variant, onPress }) => {
+export const VariantTileButton: SFC<Props> = ({ style, variant, selected, onPress }) => {
   const Container = styled(View)`
     color: black;
     margin: 4px;
-    background: ${Colors.DARKISH.toString()};
+    background: ${selected ? Colors.BLACK.toString() : Colors.DARKISH.toString()};
     border-radius: 4px;
-    box-shadow: 0px 2px 4px ${Colors.BLACK.toString()};
     width: 300px;
     height: 166px;
     flex-direction: row;
     overflow: hidden;
   `;
-  const currentImage = VariantImages[variant.icon_name];
+  const currentImage = VariantImages[variant.imageName];
 
   return (
     <Container style={style}>
-      <View style={{ flex: 1, flexDirection: "column" }}>
+      <TouchableOpacity
+        style={{ flex: 1, flexDirection: "column" }}
+        onPress={onPress}
+        accessibilityRole={"button"}
+      >
         <Text
           cat="DisplayXS"
           weight="heavy"
@@ -45,13 +47,11 @@ export const VariantTileButton: SFC<Props> = ({ style, variant, onPress }) => {
           {variant.title}
         </Text>
 
-        <TouchableOpacity
+        <View
           style={{
             flex: 1,
             flexDirection: "row",
           }}
-          onPress={onPress}
-          accessibilityRole={"button"}
         >
           <View
             style={{
@@ -67,7 +67,7 @@ export const VariantTileButton: SFC<Props> = ({ style, variant, onPress }) => {
                 style={{ marginHorizontal: 12 }}
                 numberOfLines={4}
               >
-                {variant.short_description}
+                {variant.shortDescription}
               </Text>
             </View>
             <View>
@@ -78,7 +78,7 @@ export const VariantTileButton: SFC<Props> = ({ style, variant, onPress }) => {
                   marginVertical: 6,
                 }}
               >
-                {variant.trait_classes.map((trait: string, index: number) => (
+                {variant.traitClasses.map((trait: string, index: number) => (
                   <TraitLabel
                     key={index}
                     trait={trait}
@@ -116,33 +116,18 @@ export const VariantTileButton: SFC<Props> = ({ style, variant, onPress }) => {
               />
             </View>
           </View>
-        </TouchableOpacity>
-      </View>
+        </View>
+      </TouchableOpacity>
+      {!variant.implemented && (
+        <View
+          style={{
+            width: 300,
+            height: 166,
+            position: "absolute",
+            backgroundColor: Colors.BLACK.fade(0.25).toString(),
+          }}
+        />
+      )}
     </Container>
-  );
-};
-
-// TODO: move this to its own file
-interface TraitLabelProps {
-  trait: string;
-}
-const TraitLabel: SFC<TraitLabelProps> = ({ trait, style }) => {
-  const color = traitColors[trait as keyof typeof traitColors].toString();
-  return (
-    <View
-      style={[
-        style,
-        {
-          backgroundColor: color,
-          borderRadius: 6,
-          width: 12,
-          height: 12,
-        },
-      ]}
-    >
-      <Text cat={"BodyXS"} color={contrast(color)}>
-        {}
-      </Text>
-    </View>
   );
 };

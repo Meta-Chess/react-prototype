@@ -100,6 +100,8 @@ export interface GameOptions {
   overTheBoard: boolean;
   roomId?: string;
   online?: boolean;
+  fatigueEnabled?: boolean;
+  atomicEnabled?: boolean;
 }
 
 export interface Modal {

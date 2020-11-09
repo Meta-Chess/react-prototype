@@ -5,7 +5,7 @@ import { VariantName, variants } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
 import { GameOptions } from "game/types";
-import { VariantButton } from "./VariantButton";
+import { Screens, useNavigation } from "navigation";
 
 interface Props {
   gameOptions: GameOptions;
@@ -21,9 +21,14 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
     setGameOptions({ ...gameOptions, flipBoard });
   const setCheckEnabled = (checkEnabled: boolean): void =>
     setGameOptions({ ...gameOptions, checkEnabled });
+  const setFatigueEnabled = (fatigueEnabled: boolean): void =>
+    setGameOptions({ ...gameOptions, fatigueEnabled });
+  const setAtomicEnabled = (atomicEnabled: boolean): void =>
+    setGameOptions({ ...gameOptions, atomicEnabled });
   const setTime = (time: number): void => setGameOptions({ ...gameOptions, time });
   const setVariant = (variant: VariantName): void =>
     setGameOptions({ ...gameOptions, variant });
+  const navigation = useNavigation();
 
   return (
     <ControlsContainer style={style}>
@@ -56,6 +61,18 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
         label={"Check enabled"}
         style={{ marginTop: 24 }}
       />
+      <LabeledCheckBox
+        value={gameOptions.fatigueEnabled}
+        setValue={setFatigueEnabled}
+        label={"Fatigue enabled"}
+        style={{ marginTop: 24 }}
+      />
+      <LabeledCheckBox
+        value={gameOptions.atomicEnabled}
+        setValue={setAtomicEnabled}
+        label={"Atomic enabled"}
+        style={{ marginTop: 24 }}
+      />
       <SelectInput
         options={timeOptions}
         onChange={(value): void => {
@@ -64,33 +81,32 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
         style={{ marginTop: 24 }}
         zIndex={5000}
       />
-      <SelectInput
+      <SelectInput //note: windows scrollbar is gross
         options={variantOptions}
         onChange={(value): void => {
-          setVariant(value);
+          value !== "More..."
+            ? setVariant(value)
+            : navigation.navigate<Screens.VariantSelectScreen>(
+                Screens.VariantSelectScreen,
+                {
+                  gameOptions,
+                }
+              );
         }}
-        style={{ marginTop: 32 }}
+        style={{ marginTop: 16 }}
         zIndex={4000}
-      />
-      <VariantButton
-        gameOptions={gameOptions}
-        style={{
-          width: 240,
-          height: 64,
-          marginTop: 24,
-          borderRadius: 4,
-          backgroundColor: Colors.GREY.toString(),
-        }}
       />
     </ControlsContainer>
   );
 };
 
 const variantNames = Object.keys(variants) as VariantName[];
-const variantOptions = variantNames.map((k) => ({
-  label: k,
-  value: k,
-}));
+const variantOptions = variantNames
+  .map((k) => ({
+    label: k,
+    value: k,
+  }))
+  .concat([{ label: "More...", value: "More..." }]);
 
 const timeOptions = [
   { label: "No timers", value: undefined },

@@ -1,17 +1,22 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
-import { SFC, Text, Colors } from "primitives";
+import { SFC, Text, sizes, Colors } from "primitives";
 
 interface Props {
   text: string;
+  cat?: keyof typeof sizes;
   onPress: () => void;
 }
 
-export const Button: SFC<Props> = ({ style, text, onPress }) => {
+export const Button: SFC<Props> = ({ style, text, cat, onPress }) => {
   return (
     <BaseButton onPress={onPress} style={style} accessibilityRole={"button"}>
-      <Text cat="DisplayL" weight="heavy" color={Colors.TEXT.DARK.toString()}>
+      <Text
+        cat={cat ? cat : "DisplayL"}
+        weight="heavy"
+        color={Colors.TEXT.DARK.toString()}
+      >
         {text}
       </Text>
     </BaseButton>
