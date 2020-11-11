@@ -1,7 +1,7 @@
 import React from "react";
 import { SFC } from "primitives";
 import { TouchableOpacity } from "react-native";
-import { traitColors } from "game";
+import { traitColors } from "game/types";
 
 interface TraitFilterProps {
   trait: string;

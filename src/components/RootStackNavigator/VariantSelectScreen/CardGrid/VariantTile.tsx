@@ -1,5 +1,5 @@
 import React from "react";
-import { VariantTileButton } from "ui/Buttons";
+import { VariantTileButton } from "ui/Buttons/VariantTileButton";
 import { SFC } from "primitives";
 import { FutureVariantName, futureVariants } from "game/variants";
 

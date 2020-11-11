@@ -13,7 +13,7 @@ import {
   Interception,
 } from "./Rules";
 import { verticallyCylindrical } from "game/Rules/verticallyCylindrical";
-import { Colors } from "primitives";
+import { TraitClasses } from "game/types";
 import * as VariantImages from "primitives/VariantImage";
 
 export type VariantName = keyof typeof variants;
@@ -87,7 +87,7 @@ export const variants = {
 export interface futureVariantDetails {
   title: string;
   shortDescription: string;
-  traitClasses: string[];
+  traitClasses: TraitClasses[];
   imageName: keyof typeof VariantImages;
   implemented: boolean;
 }
@@ -660,15 +660,4 @@ export const futureVariants: { [id: string]: futureVariantDetails } = {
     imageName: "mobiusImage",
     implemented: true,
   },
-};
-
-export type TraitClasses = keyof typeof traitColors;
-export const traitColors = {
-  piece: Colors.TRAIT_CLASS.PIECE,
-  restriction: Colors.TRAIT_CLASS.RESTRICTION,
-  ability: Colors.TRAIT_CLASS.ABILITY,
-  "game end": Colors.TRAIT_CLASS.GAME_END,
-  interaction: Colors.TRAIT_CLASS.INTERACTION,
-  geometry: Colors.TRAIT_CLASS.GEOMETRY,
-  world: Colors.TRAIT_CLASS.WORLD,
 };

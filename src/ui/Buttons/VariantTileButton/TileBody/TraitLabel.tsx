@@ -1,7 +1,7 @@
 import React from "react";
 import { SFC, Text } from "primitives";
 import { View } from "react-native";
-import { traitColors } from "game";
+import { traitColors } from "game/types";
 import { contrast } from "utilities";
 
 interface TraitLabelProps {

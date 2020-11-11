@@ -1,23 +1,20 @@
 import React, { FC, useState } from "react";
-import { View, useWindowDimensions, ScrollView } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import { Button } from "ui";
 import styled from "styled-components/native";
-import { Colors, Text } from "primitives";
-import { VariantTile } from "./VariantTile";
-import { defaultGameOptions } from "./GameOptionControls";
-import { GameOptions } from "game/types";
+import { Colors } from "primitives";
 import { FutureVariantName, futureVariants } from "game/variants";
-import { isPresent, sortStr } from "utilities";
-import { traitColors, TraitClasses } from "game";
-import { TraitFilter } from "./TraitFilter";
+import { sortStr } from "utilities";
+import { TraitClasses } from "game/types";
 import { useNavigation, Screens } from "navigation";
+import { CardGrid } from "./CardGrid";
+import { TraitFilterBar } from "./TraitFilterBar";
+import { GameOptions } from "game/types";
+import { VariantName } from "game";
 
 const VariantSelectScreen: FC = () => {
-  const padding = 12;
-
   const navigation = useNavigation();
   const { height, width } = useWindowDimensions();
-  const portrait = height > width;
 
   const [activeFilters, setActiveFilters] = useState<TraitClasses[]>([]);
 
@@ -37,166 +34,75 @@ const VariantSelectScreen: FC = () => {
         )
     );
 
-  const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
   const [selectedVariants, setSelectedVariants] = useState<FutureVariantName[]>([]);
+  const gameOptions: GameOptions = {
+    variant: "Chess" as VariantName,
+    time: undefined,
+    checkEnabled: true,
+    fatigueEnabled: false,
+    atomicEnabled: false,
+    flipBoard: false,
+    overTheBoard: false,
+    online: false,
+  };
 
-  return portrait ? ( // currently have not done any templating for portrait
-    <ScreenContainer style={{ padding }}>
-      <Text>{"Portrait Templating Todo"}</Text>
-      <Button
-        text={"setGameOptions"}
-        onPress={(): void => setGameOptions(defaultGameOptions)}
-      ></Button>
-    </ScreenContainer>
-  ) : (
+  return (
     <ScreenContainer>
       <View
         style={{
-          alignItems: "center",
-          justifyContent: "center",
-          alignContent: "center",
-          alignSelf: "center",
+          justifyContent: "space-between",
+          alignContent: "stretch",
           height,
           width,
           flexDirection: "column",
         }}
       >
-        <View
-          style={{
-            height: padding * 2 + 166 * 3,
-            justifyContent: "center",
-            alignItems: "center",
-            alignSelf: "center",
-            marginTop: 12,
-            marginHorizontal: 12,
-          }}
-        >
-          <ScrollView
-            style={{
-              maxHeight: "100%",
-              maxWidth: "100%",
-            }}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-          >
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "flex-start",
-                flexDirection: "row",
-                flexWrap: "wrap",
-                alignContent: "flex-start",
-                marginVertical: -1,
-              }}
-            >
-              {allVariants
-                .filter((ekey) => isPresent(futureVariants[ekey]))
-                .map((ekey) => {
-                  return (
-                    <VariantTile
-                      key={ekey}
-                      text={ekey}
-                      selected={selectedVariants.some((x) => x === ekey)}
-                      onPress={(): void =>
-                        selectedVariants.some((x) => x === ekey)
-                          ? setSelectedVariants(
-                              selectedVariants.filter((x) => x !== ekey)
-                            )
-                          : setSelectedVariants([...selectedVariants, ekey])
-                      }
-                      style={{
-                        justifyContent: "flex-start",
-                        alignItems: "flex-start",
-                        alignContent: "flex-start",
-                        shadowColor: Colors.BLACK.toString(),
-                        shadowRadius: 4,
-                        shadowOffset: {
-                          width: 0,
-                          height: 2,
-                        },
-                      }}
-                    />
-                  );
-                })}
-            </View>
-          </ScrollView>
-        </View>
+        <CardGrid
+          allVariants={allVariants}
+          selectedVariants={selectedVariants}
+          setSelectedVariants={setSelectedVariants}
+        />
         <View
           style={{
             width,
             flexDirection: "row",
-            justifyContent: "space-evenly",
-            alignItems: "center",
-            alignContent: "center",
-            alignSelf: "center",
+            justifyContent: "center",
+            minHeight: 165,
+            paddingBottom: 6,
           }}
         >
-          <View style={{ alignSelf: "center", flex: 1, margin: 32, marginRight: 64 }}>
-            <Button
-              text="Back"
-              cat="DisplayM"
-              onPress={(): void => {
-                navigation.goBack();
-              }}
-              style={{ alignSelf: "flex-end", width: 200 }}
-            />
-          </View>
-          <View
+          <Button
+            text="Back"
+            cat="DisplayM"
+            onPress={(): void => {
+              navigation.goBack();
+            }}
             style={{
-              height: 48,
-              maxWidth: 375,
-              minWidth: 375,
-              marginVertical: 24,
-              backgroundColor: Colors.DARKER.toString(),
-              justifyContent: "center",
-              alignContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
               alignSelf: "center",
               flex: 1,
-              borderRadius: 6,
-              shadowColor: Colors.BLACK.toString(),
-              shadowRadius: 4,
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
+              marginRight: 64,
+              maxWidth: 200,
             }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                marginHorizontal: 12,
-                marginVertical: 12,
-              }}
-            >
-              {Object.keys(traitColors).map((trait: string, index: number) => (
-                <TraitFilter
-                  key={index}
-                  trait={trait}
-                  style={{ marginHorizontal: 10 }}
-                  unselected={!activeFilters.some((filt) => filt === trait)}
-                  onPress={(): void =>
-                    activeFilters.some((filt) => filt === trait)
-                      ? setActiveFilters([])
-                      : setActiveFilters([trait as TraitClasses])
-                  }
-                />
-              ))}
-            </View>
-          </View>
-          <View style={{ alignSelf: "center", flex: 1, margin: 32, marginLeft: 64 }}>
-            <Button
-              text="Start Game"
-              cat="DisplayM"
-              onPress={(): void => {
-                navigation.navigate<Screens.GameScreen>(Screens.GameScreen, {
-                  gameOptions,
-                });
-              }}
-              style={{ alignSelf: "flex-start", width: 200 }}
-            />
-          </View>
+          />
+          <TraitFilterBar
+            activeFilters={activeFilters}
+            setActiveFilters={setActiveFilters}
+          />
+          <Button
+            text="Start Game"
+            cat="DisplayM"
+            onPress={(): void => {
+              navigation.navigate<Screens.GameScreen>(Screens.GameScreen, {
+                gameOptions,
+              });
+            }}
+            style={{
+              alignSelf: "center",
+              flex: 1,
+              marginLeft: 64,
+              maxWidth: 200,
+            }}
+          />
         </View>
       </View>
     </ScreenContainer>
