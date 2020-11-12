@@ -14,6 +14,7 @@ export class GameMaster {
   public gameClones: Game[];
   public selectedPieces: Piece[];
   public allowableMoves: Move[];
+  public title: string;
   public variant: VariantName;
   public rules: Rule[];
   public modal?: Modal;
@@ -30,6 +31,7 @@ export class GameMaster {
   constructor(gameOptions: GameOptions, private renderer: Renderer) {
     const {
       variant,
+      customTitle,
       customRules,
       time,
       checkEnabled,
@@ -55,6 +57,7 @@ export class GameMaster {
     ];
     this.selectedPieces = [];
     this.allowableMoves = [];
+    this.title = customTitle; //TODO bundle this into other info
     this.variant = variant;
     this.rules = rules;
     this.flipBoard = !!flipBoard;

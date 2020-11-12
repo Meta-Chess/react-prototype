@@ -1,5 +1,5 @@
 import React from "react";
-import { SFC, Colors } from "primitives";
+import { SFC } from "primitives";
 import { SelectInput, LabeledCheckBox, TextInput } from "ui";
 import { VariantName, variants } from "game";
 import styled from "styled-components/native";
@@ -118,6 +118,7 @@ const timeOptions = [
 
 const defaultGameOptions = {
   variant: variantNames[0] as VariantName,
+  customTitle: "",
   customRules: [],
   time: undefined,
   checkEnabled: true,

@@ -5,9 +5,10 @@ import { VariantName, variants } from "game";
 
 interface Props {
   variant?: VariantName;
+  title?: string;
 }
 
-const VariantInfoCard: FC<Props> = ({ variant }) => {
+const VariantInfoCard: FC<Props> = ({ variant, title }) => {
   if (!variant) return null;
 
   // Later: This should maybe be a more complicated way of calculating a name
@@ -17,7 +18,7 @@ const VariantInfoCard: FC<Props> = ({ variant }) => {
 
   return (
     <Card>
-      <Text cat="DisplayL">{variant}</Text>
+      <Text cat="DisplayL">{title ? title : variant}</Text>
       <Text cat="BodyL" style={{ marginTop: 8 }}>
         {variantDescription}
       </Text>

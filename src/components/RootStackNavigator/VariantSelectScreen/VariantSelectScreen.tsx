@@ -11,7 +11,6 @@ import { CardGrid } from "./CardGrid";
 import { TraitFilterBar } from "./TraitFilterBar";
 import { GameOptions } from "game/types";
 import { variants, VariantName, Rule } from "game";
-import { cos } from "react-native-reanimated";
 
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
@@ -75,6 +74,14 @@ const VariantSelectScreen: FC = () => {
 
   const gameOptions: GameOptions = {
     variant: "Variant Fusion" as VariantName,
+    customTitle:
+      ([] as string[])
+        .concat(
+          ...selectedVariants.map(
+            (key) => futureVariants[key as FutureVariantName].title as string
+          )
+        )
+        .join(" ") + " Chess",
     customRules: fusedRules,
     time: undefined,
     checkEnabled: true,

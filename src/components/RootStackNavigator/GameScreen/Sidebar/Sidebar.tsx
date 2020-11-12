@@ -19,6 +19,7 @@ const Sidebar: SFC<Props> = ({ short, style }) => {
   const { gameMaster } = useContext(GameContext);
   const pieces = gameMaster?.selectedPieces;
   const rules = gameMaster?.rules;
+  const title = gameMaster?.title;
   const variant = gameMaster?.variant;
   const roomId = gameMaster?.roomId;
   const online = gameMaster?.online;
@@ -41,7 +42,7 @@ const Sidebar: SFC<Props> = ({ short, style }) => {
       <RoomIdCard roomId={roomId} />
       {!short && (
         <>
-          <VariantInfoCard variant={variant} />
+          <VariantInfoCard variant={variant} title={title} />
           <RulesInfoCard rules={rules} key={key} />
           <SelectedPieceInfoCard pieces={pieces} key={key + 0.5} />
         </>

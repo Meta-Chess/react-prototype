@@ -98,7 +98,7 @@ export const variants = {
     ],
   },
   ["Variant Fusion"]: {
-    description: "A custom variant selection.",
+    description: "A custom fusion of variants.",
     rules: [],
   },
 };
