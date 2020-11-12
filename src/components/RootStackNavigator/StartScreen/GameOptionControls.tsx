@@ -84,7 +84,7 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
       <SelectInput //note: windows scrollbar is gross
         options={variantOptions}
         onChange={(value): void => {
-          value !== "More..."
+          value !== "Variant Fusion"
             ? setVariant(value)
             : navigation.navigate<Screens.VariantSelectScreen>(
                 Screens.VariantSelectScreen,
@@ -101,12 +101,10 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
 };
 
 const variantNames = Object.keys(variants) as VariantName[];
-const variantOptions = variantNames
-  .map((k) => ({
-    label: k,
-    value: k,
-  }))
-  .concat([{ label: "More...", value: "More..." }]);
+const variantOptions = variantNames.map((k) => ({
+  label: k,
+  value: k,
+}));
 
 const timeOptions = [
   { label: "No timers", value: undefined },
@@ -120,6 +118,7 @@ const timeOptions = [
 
 const defaultGameOptions = {
   variant: variantNames[0] as VariantName,
+  customRules: [],
   time: undefined,
   checkEnabled: true,
   fatigueEnabled: false,

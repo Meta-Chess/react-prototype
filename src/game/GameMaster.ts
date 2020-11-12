@@ -30,6 +30,7 @@ export class GameMaster {
   constructor(gameOptions: GameOptions, private renderer: Renderer) {
     const {
       variant,
+      customRules,
       time,
       checkEnabled,
       fatigueEnabled,
@@ -39,10 +40,11 @@ export class GameMaster {
       roomId,
       online,
     } = gameOptions;
-    const rules = [...variants[variant].rules];
+
+    const rules = customRules.length === 0 ? [...variants[variant].rules] : customRules;
     if (checkEnabled) rules.push(check);
-    if (fatigueEnabled) rules.push(fatigue);
-    if (atomicEnabled) rules.push(atomic);
+    if (fatigueEnabled && customRules.length === 0) rules.push(fatigue);
+    if (atomicEnabled && customRules.length === 0) rules.push(atomic);
     this.interrupt = new CompactRules(rules);
     this.game = Game.createGame(this.interrupt, time);
     this.gameClones = [
