@@ -1,7 +1,7 @@
 import React from "react";
 import { SFC, Text } from "primitives";
 import { View } from "react-native";
-import { traitColors } from "game/types";
+import { traitInfo } from "game/types";
 import { contrast } from "utilities";
 
 interface TraitLabelProps {
@@ -9,7 +9,7 @@ interface TraitLabelProps {
 }
 
 const TraitLabel: SFC<TraitLabelProps> = ({ trait, style }) => {
-  const color = traitColors[trait as keyof typeof traitColors].toString();
+  const color = traitInfo[trait as keyof typeof traitInfo].color.toString();
   return (
     <View
       style={[

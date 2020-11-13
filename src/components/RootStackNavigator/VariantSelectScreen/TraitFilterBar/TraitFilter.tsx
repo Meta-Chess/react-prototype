@@ -1,7 +1,7 @@
 import React from "react";
 import { SFC } from "primitives";
 import { TouchableOpacity } from "react-native";
-import { traitColors } from "game/types";
+import { traitInfo } from "game/types";
 
 interface TraitFilterProps {
   trait: string;
@@ -10,7 +10,7 @@ interface TraitFilterProps {
 }
 
 const TraitFilter: SFC<TraitFilterProps> = ({ trait, style, unselected, onPress }) => {
-  const color = traitColors[trait as keyof typeof traitColors];
+  const color = traitInfo[trait as keyof typeof traitInfo].color;
   return (
     <TouchableOpacity
       style={[
@@ -23,7 +23,7 @@ const TraitFilter: SFC<TraitFilterProps> = ({ trait, style, unselected, onPress 
         },
       ]}
       onPress={onPress}
-    ></TouchableOpacity>
+    />
   );
 };
 

@@ -60,6 +60,7 @@ const VariantSelectScreen: FC = () => {
             style={{
               alignSelf: "center",
               flex: 1,
+              marginTop: 32,
               marginRight: 64,
               maxWidth: 200,
             }}
@@ -79,6 +80,7 @@ const VariantSelectScreen: FC = () => {
             style={{
               alignSelf: "center",
               flex: 1,
+              marginTop: 32,
               marginLeft: 64,
               maxWidth: 200,
             }}

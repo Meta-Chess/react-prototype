@@ -1,8 +1,10 @@
 import React from "react";
 import { View } from "react-native";
-import { SFC, Colors } from "primitives";
-import { TraitFilter } from "./TraitFilter";
-import { traitColors, TraitClasses } from "game/types";
+import { SFC } from "primitives";
+import { traitInfo, TraitClasses } from "game/types";
+import { FilterDisplay } from "./FilterDisplay";
+import { TraitFilterRow } from "./TraitFilterRow";
+import { CoverMessyShadow } from "./CoverMessyShadow";
 
 interface Props {
   activeFilters: React.ReactText[];
@@ -10,41 +12,34 @@ interface Props {
 }
 
 const TraitFilterBar: SFC<Props> = ({ activeFilters, setActiveFilters }) => {
+  const filterDisplayTitle =
+    activeFilters.length === 0
+      ? "No Filters"
+      : traitInfo[activeFilters[0] as keyof typeof traitInfo].name;
+  const filterBarHeight = 48;
+  const filterBarWidth = 375;
   return (
     <View
       style={{
-        height: 48,
-        maxWidth: 375,
-        minWidth: 375,
-        marginVertical: 24,
-        backgroundColor: Colors.DARKER.toString(),
-        justifyContent: "space-evenly",
-        flexDirection: "row",
+        justifyContent: "flex-start",
         alignSelf: "center",
         alignItems: "center",
-        flex: 1,
-        borderRadius: 6,
-        shadowColor: Colors.BLACK.toString(),
-        shadowRadius: 4,
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        paddingHorizontal: 10,
+        flexDirection: "column-reverse",
+        marginVertical: 24,
+        paddingBottom: 6,
       }}
     >
-      {Object.keys(traitColors).map((trait: string, index: number) => (
-        <TraitFilter
-          key={index}
-          trait={trait}
-          unselected={!activeFilters.some((filt) => filt === trait)}
-          onPress={(): void =>
-            activeFilters.some((filt) => filt === trait)
-              ? setActiveFilters([])
-              : setActiveFilters([trait as TraitClasses])
-          }
-        />
-      ))}
+      <TraitFilterRow
+        activeFilters={activeFilters}
+        setActiveFilters={setActiveFilters}
+        filterBarHeight={filterBarHeight}
+        filterBarWidth={filterBarWidth}
+      />
+      <FilterDisplay filterDisplayTitle={filterDisplayTitle} />
+      <CoverMessyShadow
+        filterBarHeight={filterBarHeight}
+        filterBarWidth={filterBarWidth}
+      />
     </View>
   );
 };
