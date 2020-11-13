@@ -8,9 +8,15 @@ interface Props {
   allVariants: FutureVariantName[];
   selectedVariants: React.ReactText[];
   setSelectedVariants: (x: React.ReactText[]) => void;
+  variantClash: boolean;
 }
 
-const CardGrid: SFC<Props> = ({ allVariants, selectedVariants, setSelectedVariants }) => {
+const CardGrid: SFC<Props> = ({
+  allVariants,
+  selectedVariants,
+  setSelectedVariants,
+  variantClash,
+}) => {
   return (
     <View
       style={{
@@ -46,6 +52,7 @@ const CardGrid: SFC<Props> = ({ allVariants, selectedVariants, setSelectedVarian
                 key={ekey}
                 text={ekey}
                 selected={selectedVariants.some((x) => x === ekey)}
+                clash={variantClash}
                 onPress={(): void =>
                   selectedVariants.some((x) => x === ekey)
                     ? setSelectedVariants(selectedVariants.filter((x) => x !== ekey))

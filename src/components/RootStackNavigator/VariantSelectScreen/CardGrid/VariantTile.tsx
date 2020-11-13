@@ -7,15 +7,17 @@ interface Props {
   onPress: () => void;
   text: FutureVariantName;
   selected: boolean;
+  clash: boolean;
 }
 /// return to start screen
-const VariantTile: SFC<Props> = ({ text, style, selected, onPress }) => {
+const VariantTile: SFC<Props> = ({ text, style, selected, clash, onPress }) => {
   return (
     <VariantTileButton
       onPress={onPress}
       variant={futureVariants[text]}
       style={style}
       selected={selected}
+      clash={clash}
     />
   );
 };

@@ -9,14 +9,22 @@ import { TileImage } from "./TileImage";
 interface Props {
   variant: futureVariantDetails;
   selected: boolean;
+  clash: boolean;
   onPress: () => void;
 }
 
-export const VariantTileButton: SFC<Props> = ({ style, variant, selected, onPress }) => {
+export const VariantTileButton: SFC<Props> = ({
+  style,
+  variant,
+  selected,
+  clash,
+  onPress,
+}) => {
+  const selectColor: string = clash ? Colors.ERROR.toString() : Colors.SUCCESS.toString();
   const Container = styled(View)`
     color: black;
     margin: 4px;
-    background: ${selected ? Colors.BLACK.toString() : Colors.DARKISH.toString()};
+    background: ${selected ? selectColor : Colors.DARKISH.toString()};
     border-radius: 4px;
     width: 300px;
     height: 166px;

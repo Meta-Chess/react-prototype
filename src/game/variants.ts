@@ -31,6 +31,30 @@ export const ruleFuseMap: { [id: string]: { [id: string]: Rule[] } } = {
   },
 };
 
+export const variantsBlacklist: {
+  [id: string]: {
+    [id: string]: string;
+  };
+} = {
+  hex: {
+    toroidal: "",
+    mobius: "",
+    spherical: "",
+    polar: "",
+  },
+  mobius: {
+    polar: "",
+    spherical: "",
+    toroidal: "",
+  },
+  polar: {
+    toroidal: "",
+  },
+  spherical: {
+    toroidal: "",
+  },
+};
+
 export type VariantName = keyof typeof variants;
 export const variants = {
   ["Chess"]: {
@@ -491,7 +515,7 @@ export const futureVariants: { [id: string]: futureVariantDetails } = {
     rules: [],
   },
   ["mobius"]: {
-    title: "Mobius ",
+    title: "Mobius",
     shortDescription:
       "A long board mobius strip, with the ability to phase through to empty squares.",
     traitClasses: ["geometry", "world"],

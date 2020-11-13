@@ -3,94 +3,27 @@ import { View, useWindowDimensions } from "react-native";
 import { Button } from "ui";
 import styled from "styled-components/native";
 import { Colors } from "primitives";
-import { ruleFuseMap, FutureVariantName, futureVariants } from "game/variants";
-import { sortStr } from "utilities";
+import { FutureVariantName } from "game/variants";
 import { TraitClasses } from "game/types";
 import { useNavigation, Screens } from "navigation";
 import { CardGrid } from "./CardGrid";
 import { TraitFilterBar } from "./TraitFilterBar";
 import { GameOptions } from "game/types";
-import { variants, VariantName, Rule } from "game";
+import { CalcGameOptions } from "./CalcGameOptions";
+import { CalcVariantClash } from "./CalcVariantClash";
+import { CalcVariantFilterAndDisplayOrder } from "./CalcVariantFilterAndDisplayOrder";
 
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
   const { height, width } = useWindowDimensions();
 
   const [activeFilters, setActiveFilters] = useState<TraitClasses[]>([]);
-  const allVariants: FutureVariantName[] = Object.keys(futureVariants)
-    .filter((key) => futureVariants[key].implemented === true)
-    .sort((n1, n2) => sortStr(n1, n2))
-    .concat(
-      Object.keys(futureVariants)
-        .filter((key) => futureVariants[key].implemented !== true)
-        .sort((n1, n2) => sortStr(n1, n2))
-    )
-    .filter(
-      (key) =>
-        activeFilters.length === 0 ||
-        futureVariants[key].traitClasses.some((x: string) =>
-          activeFilters.some((y) => y === x)
-        )
-    );
-
+  const allVariants: FutureVariantName[] = CalcVariantFilterAndDisplayOrder(
+    activeFilters
+  );
   const [selectedVariants, setSelectedVariants] = useState<FutureVariantName[]>([]);
-
-  const concatRules: Rule[] = ([] as Rule[]).concat(
-    ...selectedVariants.map(
-      (key) => futureVariants[key as FutureVariantName].rules as Rule[]
-    )
-  );
-
-  //when these (unionRules, fusedRules) were constants, they would not update with the state change
-  let unionRules: Rule[] = variants["Chess"].rules;
-  for (const rule of concatRules) {
-    if (!unionRules.includes(rule)) {
-      unionRules = unionRules.concat([rule]);
-    }
-  }
-  let fusedRules: Rule[] = [];
-  for (const rule of unionRules) {
-    let match = false;
-    if (Object.keys(ruleFuseMap).includes(rule["name"])) {
-      for (const clashingRuleName in ruleFuseMap[rule["name"]]) {
-        if (unionRules.map((r) => r["name"]).includes(clashingRuleName)) {
-          match = true;
-          for (const addFuseRule of ruleFuseMap[rule["name"]][clashingRuleName]) {
-            fusedRules = fusedRules.concat([addFuseRule]);
-          }
-        }
-      }
-    }
-    if (!match) fusedRules = fusedRules.concat([rule]);
-  }
-
-  fusedRules = fusedRules.sort((
-    n1 //TEMP: gross sorting so double step/hex cylinder isnt dropped on board create
-  ) =>
-    n1["name"] === "Long board" || n1["name"] === "Hexagon" || n1["name"] === "Standard"
-      ? -1
-      : 1
-  );
-
-  const gameOptions: GameOptions = {
-    variant: "Variant Fusion" as VariantName,
-    customTitle:
-      ([] as string[])
-        .concat(
-          ...selectedVariants.map(
-            (key) => futureVariants[key as FutureVariantName].title as string
-          )
-        )
-        .join(" ") + " Chess",
-    customRules: fusedRules,
-    time: undefined,
-    checkEnabled: true,
-    fatigueEnabled: false,
-    atomicEnabled: false,
-    flipBoard: false,
-    overTheBoard: false,
-    online: false,
-  };
+  const existsVariantsClash: boolean = CalcVariantClash(selectedVariants);
+  const gameOptions: GameOptions = CalcGameOptions(selectedVariants);
 
   return (
     <ScreenContainer>
@@ -107,6 +40,7 @@ const VariantSelectScreen: FC = () => {
           allVariants={allVariants}
           selectedVariants={selectedVariants}
           setSelectedVariants={setSelectedVariants}
+          variantClash={existsVariantsClash}
         />
         <View
           style={{
