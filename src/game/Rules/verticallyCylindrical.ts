@@ -31,7 +31,7 @@ const cylindricalAdjacenciesRule = (
           ?.go(Direction.E)
           ?.map((location) => ({ direction: Direction.SE, location })) || []),
       ]
-    : file === maxRank
+    : rank === maxRank
     ? [
         { direction: Direction.N, location: toLocation({ rank: minRank, file }) },
         ...(board
