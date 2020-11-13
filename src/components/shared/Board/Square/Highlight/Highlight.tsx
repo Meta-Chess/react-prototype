@@ -5,20 +5,23 @@ import { GameMaster } from "game";
 import Color from "color";
 import styled from "styled-components/native";
 import { View } from "react-native";
+import { SquareShape } from "game/types";
+import { FullHighlight } from "./FullHighlight";
 
 interface Props {
   gameMaster: GameMaster;
   square: Square;
+  size: number;
+  shape?: SquareShape;
 }
 
-const Highlight: FC<Props> = ({ gameMaster, square }) => {
+const Highlight: FC<Props> = ({ gameMaster, square, size, shape }) => {
   if (
     !gameMaster.allowableMoves.map((m) => m.location).includes(square.location) &&
     !square.hasPieceOf(gameMaster.selectedPieces)
   )
     return null;
 
-  const HighlightComponent = square.hasPiece() ? FullHighlight : CenterHighlight;
   const selectedPieceOwner = gameMaster.selectedPieces[0]?.owner;
   const highlightColor =
     selectedPieceOwner !== gameMaster.game.currentPlayer
@@ -29,21 +32,16 @@ const Highlight: FC<Props> = ({ gameMaster, square }) => {
       ? Colors.HIGHLIGHT.ERROR
       : Colors.HIGHLIGHT.SUCCESS;
 
-  return <HighlightComponent color={highlightColor} />;
+  return square.hasPiece() ? (
+    <FullHighlight color={highlightColor} size={size} shape={shape} />
+  ) : (
+    <CenterHighlight color={highlightColor} />
+  );
 };
 
 interface HighlightProps {
   color: Color;
 }
-
-const FullHighlight = styled(View)<HighlightProps>`
-  background-color: ${({ color }): string => color.fade(0.3).string()};
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-`;
 
 const CenterHighlight = styled(View)<HighlightProps>`
   background-color: ${({ color }): string => color.fade(0.3).string()};

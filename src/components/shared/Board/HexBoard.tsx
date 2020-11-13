@@ -49,7 +49,8 @@ const HexBoard: SFC<InnerBoardProps> = ({
           height: squareSize * boardDetails.height + 2 * padding,
           width: squareSize * boardDetails.width + 2 * padding,
           backgroundColor: backboard ? Colors.DARK.toString() : "transparent",
-          padding,
+          paddingVertical: padding,
+          paddingHorizontal: 2 * padding,
         },
       ]}
     >
