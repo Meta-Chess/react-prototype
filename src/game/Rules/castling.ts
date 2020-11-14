@@ -4,6 +4,7 @@ import { Rule } from "./Rules";
 import { activeCastlingToken, passiveCastlingToken } from "./constants";
 import { isPresent } from "utilities";
 import { Pather, Scanner } from "../Pather";
+import { Path } from "game/Pather/Path";
 
 export const castling: Rule = {
   name: "Castling",
@@ -72,8 +73,8 @@ export const castling: Rule = {
         pieceId: activePiece.id,
         location: activeDestination.location,
         pieceDeltas: [
-          { pId: passivePiece.id, destination: passiveDestination.location },
-          { pId: activePiece.id, destination: activeDestination.location },
+          { pId: passivePiece.id, path: new Path(passiveDestination.location) },
+          { pId: activePiece.id, path: new Path(activeDestination.location) },
         ],
         player: activePiece.owner,
       })

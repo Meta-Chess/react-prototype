@@ -1,7 +1,8 @@
 import { isPresent } from "utilities";
 import { CompactRules, Game, Piece, Square } from "game";
-import { Direction, Gait, Move } from "../types";
+import { Direction, Gait, Move, TokenName } from "../types";
 import { flatMap } from "lodash";
+import { Path } from "./Path";
 
 const MAX_STEPS = 64; // To be considered further
 
@@ -23,14 +24,15 @@ export class Pather {
       piece: this.piece,
     });
 
-    const moves = flatMap(gaits, (gait) => this.path({ currentSquare, gait })).map(
-      (square) => ({
-        pieceId: this.piece.id,
-        location: square.location,
-        pieceDeltas: [{ pId: this.piece.id, destination: square.location }],
-        player: this.piece.owner,
-      })
-    );
+    const moves: Move[] = flatMap(gaits, (gait) => {
+      return this.path({ currentSquare, gait }).map((path) => ({ path, gait }));
+    }).map(({ path, gait }) => ({
+      pieceId: this.piece.id,
+      location: path.getEnd(),
+      pieceDeltas: [{ pId: this.piece.id, path }],
+      player: this.piece.owner,
+      data: gait.data,
+    }));
 
     let { moves: specialMoves } = this.interrupt.for.generateSpecialMoves({
       game: this.game,
@@ -63,54 +65,68 @@ export class Pather {
     currentSquare?: Square;
     remainingSteps?: Direction[];
     stepAllowance?: number;
-  }): Square[] {
-    const allowableSquares: Square[] = [];
-    if (!currentSquare) return allowableSquares;
+  }): Path[] {
+    const allowablePaths: Path[] = [];
+
+    if (!currentSquare) return allowablePaths;
+    const pathSoFar: Path = new Path(currentSquare.location);
+
     for (let steps = 0; steps < stepAllowance; steps++) {
-      if (remainingSteps.length === 0) return allowableSquares;
+      if (remainingSteps.length === 0) return allowablePaths;
 
       const { continuingSquares, newAllowableSquares } = this.step({
         currentSquare,
+        pathSoFar,
         remainingSteps,
         gait,
       });
 
-      allowableSquares.push(...newAllowableSquares);
+      allowablePaths.push(
+        ...newAllowableSquares.map((square) => {
+          const path = pathSoFar.clone();
+          path.push(square.location);
+          return path;
+        })
+      );
 
       remainingSteps = this.updateRemainingSteps({ gait, remainingSteps });
 
-      if (continuingSquares.length === 0) return allowableSquares;
+      if (continuingSquares.length === 0) return allowablePaths;
       ({ gait, remainingSteps, currentSquare } = this.interrupt.for.afterStepModify({
         gait,
         remainingSteps,
         currentSquare: continuingSquares[0], // Later: Handle multiple continuing squares
       }));
+
+      pathSoFar.push(currentSquare.location);
     }
 
-    return allowableSquares;
+    return allowablePaths;
   }
 
   step({
     currentSquare,
+    pathSoFar,
     remainingSteps,
     gait,
   }: {
     currentSquare: Square;
     remainingSteps: Direction[];
     gait: Gait;
+    pathSoFar: Path;
   }): { continuingSquares: Square[]; newAllowableSquares: Square[] } {
     const possibleLandingSquares = this.go({
       from: currentSquare,
       direction: remainingSteps[0],
     });
     const landingSquares = possibleLandingSquares.filter((square) =>
-      this.canLand({ square, gait, remainingSteps })
+      this.canLand({ square, pathSoFar, gait, remainingSteps })
     );
     const stayingSquares = landingSquares.filter((square) =>
-      this.canStay({ square, gait, remainingSteps })
+      this.canStay({ square, pathSoFar, gait, remainingSteps })
     );
     const continuingSquares = landingSquares.filter((square) =>
-      this.canContinue({ square, gait, remainingSteps })
+      this.canContinue({ square, pathSoFar, gait, remainingSteps })
     );
 
     return {
@@ -124,20 +140,31 @@ export class Pather {
     return true;
   }
 
-  canStay({ square, gait, remainingSteps }: HypotheticalDisplacement): boolean {
+  canStay({
+    square,
+    pathSoFar,
+    gait,
+    remainingSteps,
+  }: HypotheticalDisplacement): boolean {
     if (!gait.interruptable && remainingSteps.length > 1) return false;
+
     if (this.game.board.squareHasPieceBelongingTo(square, this.piece.owner)) return false;
-    if (this.game.board.squareHasPieceNotBelongingTo(square, this.piece.owner)) {
-      // TODO: change this out for "hasCapturablePiece method"
+
+    if (this.capturePossible(square)) {
       if (gait.mustNotCapture) return false;
-    } else {
-      if (gait.mustCapture) return false;
+    } else if (gait.mustCapture) {
+      return false;
     }
+
+    const hypotheticalPath = pathSoFar.clone();
+    hypotheticalPath.push(square.location);
+
+    // should be lifted to findPaths
     const { filtered } = this.interrupt.for.inCanStayFilter({
       move: {
         pieceId: this.piece.id,
         location: square.location,
-        pieceDeltas: [{ pId: this.piece.id, destination: square.location }],
+        pieceDeltas: [{ pId: this.piece.id, path: hypotheticalPath }],
         player: this.piece.owner,
       },
       game: this.game,
@@ -150,8 +177,7 @@ export class Pather {
   }
 
   canContinue({ gait, square }: HypotheticalDisplacement): boolean {
-    if (square.hasPiece() && !gait.nonBlocking) return false;
-    return true;
+    return !(square.hasPiece() && !gait.nonBlocking);
   }
 
   go({ from, direction }: { from: Square; direction: Direction }): Square[] {
@@ -169,10 +195,33 @@ export class Pather {
 
     return repeat ? gait.pattern : remainingSteps.slice(1);
   }
+
+  private capturePossible(square: Square): boolean {
+    if (this.game.board.squareHasPieceNotBelongingTo(square, this.piece.owner)) {
+      return true;
+    }
+
+    return (
+      square.tokens
+        .filter((token) => token.name === TokenName.CaptureToken)
+        .map((token) => {
+          const capturablePiece = token?.data?.pieceId
+            ? this.game.board.findPieceById(token?.data?.pieceId)
+            : undefined;
+          if (capturablePiece?.owner === this.piece.owner) {
+            return false;
+          }
+
+          return token?.data?.condition?.(this.piece) || false;
+        })
+        .find((capturePossible) => capturePossible) || false
+    );
+  }
 }
 
 interface HypotheticalDisplacement {
   square: Square;
+  pathSoFar: Path;
   gait: Gait;
   remainingSteps: Direction[];
 }

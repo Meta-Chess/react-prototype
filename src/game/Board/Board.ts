@@ -161,32 +161,43 @@ class Board extends TokenOwner {
     return Object.values(this.squares).find(condition);
   }
 
-  displace({ pId: pieceId, destination }: { pId: string; destination: string }): void {
-    const startSquare = this.squareAt(this.pieces[pieceId]?.location);
-    const endSquare = this.squareAt(destination);
+  displace({ pId: pieceId, path }: PieceDelta): void {
+    const startSquare = this.squareAt(this.pieces[pieceId].location);
+    const endSquare = this.squareAt(path.getEnd());
     if (startSquare && endSquare) {
       startSquare.pieces = startSquare.pieces.filter((p) => p != pieceId);
-      this.pieces[pieceId].location = destination;
+      this.pieces[pieceId].location = path.getEnd();
       endSquare.pieces.push(pieceId);
     }
   }
 
   displacePieces(pieceDeltas: PieceDelta[]): void {
     pieceDeltas.forEach((pieceDelta) => {
-      const captureHappened = this.capturePiecesAt(pieceDelta.destination);
+      const captureHappened = this.capturePiecesAt(
+        pieceDelta.path.getEnd(),
+        this.pieces[pieceDelta.pId]
+      );
       this.displace(pieceDelta);
       if (captureHappened) {
         this.interrupt.for.postCapture({
           board: this,
-          square: this.squares[pieceDelta.destination],
+          square: this.squares[pieceDelta.path.getEnd()],
         });
       }
     });
   }
 
-  capturePiecesAt(location: string): boolean {
-    const captureHappened = (this.squareAt(location)?.pieces.length || 0) > 0;
+  capturePiecesAt(location: string, piece: Piece): boolean {
+    let captureHappened = (this.squareAt(location)?.pieces.length || 0) > 0;
     this.killPiecesAt(location);
+
+    ({ captureHappened } = this.interrupt.for.onCapture({
+      board: this,
+      piece,
+      location,
+      captureHappened,
+    }));
+
     return captureHappened;
   }
 
@@ -242,6 +253,18 @@ class Board extends TokenOwner {
     return Object.values(this.pieces)
       .filter((p) => square.pieces.some((pId) => p.id === pId))
       .filter(rule);
+  }
+
+  killPiece(pieceId: string): void {
+    this.pieces = Object.keys(this.pieces)
+      .filter((id: string) => !(id === pieceId))
+      .reduce(
+        (acc, id) => ({
+          ...acc,
+          [id]: this.pieces[id],
+        }),
+        {}
+      );
   }
 }
 

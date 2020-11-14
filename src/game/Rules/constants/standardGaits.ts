@@ -51,17 +51,11 @@ const WHITE_PAWN_GAITS: Gait[] = [
   { pattern: [Direction.NE], mustCapture: true },
   { pattern: [Direction.NW], mustCapture: true },
 ];
-const WHITE_PAWN_DS_GAITS: Gait[] = [
-  { pattern: [Direction.N, Direction.N], mustNotCapture: true },
-];
 
 const BLACK_PAWN_GAITS: Gait[] = [
   { pattern: [Direction.S], mustNotCapture: true },
   { pattern: [Direction.SE], mustCapture: true },
   { pattern: [Direction.SW], mustCapture: true },
-];
-const BLACK_PAWN_DS_GAITS: Gait[] = [
-  { pattern: [Direction.S, Direction.S], mustNotCapture: true },
 ];
 
 export const standardGaits = {
@@ -71,7 +65,5 @@ export const standardGaits = {
   QUEEN_GAITS,
   KING_GAITS,
   WHITE_PAWN_GAITS,
-  WHITE_PAWN_DS_GAITS,
   BLACK_PAWN_GAITS,
-  BLACK_PAWN_DS_GAITS,
 };
