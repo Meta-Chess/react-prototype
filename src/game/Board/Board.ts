@@ -254,6 +254,18 @@ class Board extends TokenOwner {
       .filter((p) => square.pieces.some((pId) => p.id === pId))
       .filter(rule);
   }
+
+  killPiece(pieceId: string): void {
+    this.pieces = Object.keys(this.pieces)
+      .filter((id: string) => !(id === pieceId))
+      .reduce(
+        (acc, id) => ({
+          ...acc,
+          [id]: this.pieces[id],
+        }),
+        {}
+      );
+  }
 }
 
 export { Board };

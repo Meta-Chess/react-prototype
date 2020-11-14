@@ -3,7 +3,8 @@ import { Rule } from ".";
 
 export const Interception: Rule = {
   name: "Interception",
-  description: "",
+  description:
+    "Enables interceptable moves where pieces can be captured by moving to a square that they moved through",
   postMove: ({ board, move, currentTurn }) => {
     if (move.data?.interceptable) {
       move.pieceDeltas.forEach((pieceDelta) => {
@@ -40,15 +41,7 @@ export const Interception: Rule = {
       const interceptionSquare = board.squares[interceptedPiece.location];
       interceptionSquare.pieces = [];
 
-      board.pieces = Object.keys(board.pieces)
-        .filter((id: string) => !(captureToken?.data?.pieceId === id))
-        .reduce(
-          (acc, id) => ({
-            ...acc,
-            [id]: board.pieces[id],
-          }),
-          {}
-        );
+      board.killPiece(captureToken?.data?.pieceId);
     }
 
     captureHappened = captureHappened || captureIsAllowed;

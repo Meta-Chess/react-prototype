@@ -101,7 +101,6 @@ export interface GameOptions {
   overTheBoard: boolean;
   roomId?: string;
   online: boolean;
-  interceptionEnabled: boolean;
 }
 
 export interface Modal {

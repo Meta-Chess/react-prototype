@@ -25,9 +25,7 @@ export class Pather {
     });
 
     const moves: Move[] = flatMap(gaits, (gait) => {
-      return this.path({ currentSquare, gait }).map((path) => {
-        return { path, gait };
-      });
+      return this.path({ currentSquare, gait }).map((path) => ({ path, gait }));
     }).map(({ path, gait }) => ({
       pieceId: this.piece.id,
       location: path.getEnd(),
@@ -161,6 +159,7 @@ export class Pather {
     const hypotheticalPath = pathSoFar.clone();
     hypotheticalPath.push(square.location);
 
+    // should be lifted to findPaths
     const { filtered } = this.interrupt.for.inCanStayFilter({
       move: {
         pieceId: this.piece.id,

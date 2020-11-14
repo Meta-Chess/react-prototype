@@ -13,6 +13,7 @@ export * from "./pawnDoubleStep";
 export * from "./polar";
 export * from "./standard";
 export * from "./longBoard";
+export * from "./Interception";
 //END: named rules
 
 export * from "./Rules";
