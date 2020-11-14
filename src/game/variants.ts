@@ -45,7 +45,6 @@ export const variantsBlacklist: {
   mobius: {
     polar: "",
     spherical: "",
-    toroidal: "",
   },
   polar: {
     toroidal: "",
