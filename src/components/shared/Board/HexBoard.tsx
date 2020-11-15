@@ -65,14 +65,12 @@ const HexBoard: SFC<InnerBoardProps> = ({
         padding={padding}
         boardWidth={boardWidth + 4}
         boardHeight={boardHeight + 4}
-        shadow={true}
       />
       <HexBoardBacking
         colorString={backboard ? Colors.DARK.toString() : "transparent"}
         padding={padding}
         boardWidth={boardWidth}
         boardHeight={boardHeight}
-        shadow={false}
       />
       <CenteredContainer>
         {/*TODO: Can this layer be removed?*/}

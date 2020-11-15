@@ -20,7 +20,6 @@ const HexBoardBacking: SFC<HexBoardBackingProps> = ({
   const centerHeight = boardHeight / 2;
   const endHeight = boardHeight / 4;
 
-  //const box-shadow: 0px 1px 8px ${Colors.BLACK.fade(0.5).string()}
   return (
     <View
       style={{
