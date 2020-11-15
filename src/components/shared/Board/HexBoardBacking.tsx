@@ -14,7 +14,6 @@ const HexBoardBacking: SFC<HexBoardBackingProps> = ({
   padding,
   boardWidth,
   boardHeight,
-  shadow,
 }) => {
   const centerWidth = boardWidth;
   const endHalfWidth = boardWidth / 2;
