@@ -38,7 +38,7 @@ export const Colors = {
     ALGORITHM: Color("#696867"),
   },
   PLAYER: [Color("#FCFCFC"), Color("#606060")],
-  SQUARE: [Color("#A4B9CC"), Color("#E8E5E5"), Color("#DDEEFF")],
+  SQUARE: [Color("#A4B9CC"), Color("#E8E5E5"), Color("#D4B6FF")],
   MCHESS_ORANGE: Color("#F26100"),
   MCHESS_BLUE: Color("#99caf7"),
 };
