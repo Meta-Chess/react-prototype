@@ -1,5 +1,5 @@
 import React from "react";
-import { SFC, Colors } from "primitives";
+import { SFC } from "primitives";
 import { View } from "react-native";
 
 interface HexBoardBackingProps {
@@ -7,7 +7,6 @@ interface HexBoardBackingProps {
   padding: number;
   boardWidth: number;
   boardHeight: number;
-  shadow: boolean;
 }
 
 const HexBoardBacking: SFC<HexBoardBackingProps> = ({
