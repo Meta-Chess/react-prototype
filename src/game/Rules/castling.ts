@@ -1,6 +1,5 @@
 import { PieceName, TokenName } from "../types";
-import { Piece } from "../Board";
-import { Rule } from "./Rules";
+import { Piece, Rule } from "game";
 import { activeCastlingToken, passiveCastlingToken } from "./constants";
 import { isPresent } from "utilities";
 import { Pather, Scanner } from "../Pather";
@@ -52,7 +51,6 @@ export const castling: Rule = {
               passivePiece,
               passiveDestination,
               activePath: new Path(activePiece.location, [
-                activePiece.location,
                 passiveDestination.location,
                 activeDestination.location,
               ]),
@@ -83,7 +81,8 @@ export const castling: Rule = {
         player: activePiece.owner,
         data: {
           interceptable: true,
-          interceptionCondition: () => true,
+          interceptionCondition: (): boolean => true,
+          interceptableAtStart: true,
         },
       })
     );
