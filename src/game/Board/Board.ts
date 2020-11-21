@@ -98,6 +98,10 @@ class Board extends TokenOwner {
     return pieces;
   }
 
+  getLocations(): string[] {
+    return Object.keys(this.squares);
+  }
+
   addSquare({ location, square }: { location: string; square: Square }): void {
     this.squares = { ...this.squares, [location]: square };
   }
@@ -119,11 +123,21 @@ class Board extends TokenOwner {
     });
   }
 
-  // TODO: this method should handle a location or a square
-  addPieceToSquare(piece: Piece, square: Square): void {
+  addPiece({
+    piece,
+    square,
+    location,
+  }: {
+    piece: Piece;
+    square?: Square;
+    location?: string;
+  }): void {
     const pieceId = this.idGenerator.getId().toString(36);
+    square = square || this.squareAt(location);
+    if (!square) throw new Error("Must specify either square or location to add piece");
     square.addPieces([pieceId]);
     piece.id = pieceId;
+    piece.location = square.location;
     this.pieces = { ...this.pieces, [pieceId]: piece };
   }
 
@@ -131,7 +145,7 @@ class Board extends TokenOwner {
     const squares = Object.values(this.squares);
     squares.forEach((square) => {
       rule(square).forEach((piece) => {
-        this.addPieceToSquare(piece, square);
+        this.addPiece({ piece, square });
       });
     });
   }

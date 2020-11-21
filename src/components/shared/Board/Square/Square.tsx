@@ -43,7 +43,7 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
   // TODO: For chess plus add and use shadowPieceSize
 
   const onPress = (): void => {
-    gameMaster.onPress(square);
+    gameMaster.onPress(square.location);
   };
 
   return (
@@ -60,7 +60,6 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
       onPress={onPress}
       activeOpacity={1}
     >
-      <Highlight gameMaster={gameMaster} square={square} />
       <PositioningContainer size={pieceScaleFactor * size}>
         <GridArrangement>
           {piecesUnderSquare.map((piece) => (

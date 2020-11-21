@@ -1,4 +1,4 @@
-import { Piece, Square } from "./Board";
+import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
 import { GameOptions, Modal, Move } from "./types";
 import { Pather } from "./Pather";
@@ -55,10 +55,10 @@ export class GameMaster {
     this.allowableMoves = [];
     this.variant = variant;
     this.rules = rules;
-    this.flipBoard = flipBoard;
-    this.overTheBoard = overTheBoard;
+    this.flipBoard = !!flipBoard;
+    this.overTheBoard = !!overTheBoard;
 
-    this.online = online;
+    this.online = !!online;
     if (online) {
       this.socket = socketIOClient("http://localhost:8000"); // TODO: Make this an environment variable
       this.socket.on("roomId", (roomId: string): void => {
@@ -77,21 +77,21 @@ export class GameMaster {
     this.renderer.render();
   }
 
-  onPress(square: Square): void {
+  onPress(location: string): void {
     this.hideModal();
     this.gameClones.forEach((clone) => clone.resetTo(this.game));
-    const move = this.allowableMoves.find((m) => m.location === square.location);
+    const move = this.allowableMoves.find((m) => m.location === location);
     if (move && this.game.currentPlayer === this.selectedPieces[0]?.owner) {
       this.socket?.emit("move", { move, roomId: this.roomId });
       this.game.doMove(move);
       this.unselectAllPieces();
     } else {
-      if (this.selectedPieces.some((p) => p.location === square.location)) {
+      if (this.selectedPieces.some((p) => p.location === location)) {
         // pressing again on a selected piece
         this.unselectAllPieces();
       } else {
         this.unselectAllPieces();
-        this.selectPieces(square);
+        this.selectPieces(location);
       }
     }
     this.render();
@@ -102,8 +102,10 @@ export class GameMaster {
     this.allowableMoves = [];
   }
 
-  selectPieces(square: Square): void {
-    this.selectedPieces = square.pieces.map((pId) => this.game.board.pieces[pId]);
+  selectPieces(location: string): void {
+    const square = this.game.board.squareAt(location);
+    this.selectedPieces =
+      square?.pieces.map((pieceId) => this.game.board.pieces[pieceId]) || [];
     this.allowableMoves = flatMap(this.selectedPieces, (piece: Piece) =>
       new Pather(this.game, this.gameClones, piece, this.interrupt).findPaths()
     );
