@@ -51,7 +51,11 @@ export const castling: Rule = {
             .map((activeDestination) => ({
               passivePiece,
               passiveDestination,
-              activeDestination,
+              activePath: new Path(activePiece.location, [
+                activePiece.location,
+                passiveDestination.location,
+                activeDestination.location,
+              ]),
             }))
         );
       }
@@ -69,14 +73,18 @@ export const castling: Rule = {
     );
 
     const newMoves = filteredCastlePiecesAndLocations.map(
-      ({ passivePiece, passiveDestination, activeDestination }) => ({
+      ({ passivePiece, passiveDestination, activePath }) => ({
         pieceId: activePiece.id,
-        location: activeDestination.location,
+        location: activePath.getEnd(),
         pieceDeltas: [
           { pId: passivePiece.id, path: new Path(passiveDestination.location) },
-          { pId: activePiece.id, path: new Path(activeDestination.location) },
+          { pId: activePiece.id, path: activePath },
         ],
         player: activePiece.owner,
+        data: {
+          interceptable: true,
+          interceptionCondition: () => true,
+        },
       })
     );
 
