@@ -12,36 +12,20 @@ describe("On the cylindrical board", () => {
       throw new Error("Standard board should have a square at this location");
     }
 
-    it("should be possible to `go` N", () => {
-      expect(square.go(Direction.N)).toEqual([toLocation({ rank: 5, file: 4 })]);
-    });
-
-    it("should be possible to `go` NE", () => {
-      expect(square.go(Direction.NE)).toEqual([toLocation({ rank: 5, file: 5 })]);
-    });
-
-    it("should be possible to `go` E", () => {
-      expect(square.go(Direction.E)).toEqual([toLocation({ rank: 4, file: 5 })]);
-    });
-
-    it("should be possible to `go` SE", () => {
-      expect(square.go(Direction.SE)).toEqual([toLocation({ rank: 3, file: 5 })]);
-    });
-
-    it("should be possible to `go` S", () => {
-      expect(square.go(Direction.S)).toEqual([toLocation({ rank: 3, file: 4 })]);
-    });
-
-    it("should be possible to `go` SW", () => {
-      expect(square.go(Direction.SW)).toEqual([toLocation({ rank: 3, file: 3 })]);
-    });
-
-    it("should be possible to `go` W", () => {
-      expect(square.go(Direction.W)).toEqual([toLocation({ rank: 4, file: 3 })]);
-    });
-
-    it("should be possible to `go` NW", () => {
-      expect(square.go(Direction.NW)).toEqual([toLocation({ rank: 5, file: 3 })]);
+    describe.each`
+      direction       | directionLabel | endLocations
+      ${Direction.N}  | ${"N"}         | ${[toLocation({ rank: 5, file: 4 })]}
+      ${Direction.NE} | ${"NE"}        | ${[toLocation({ rank: 5, file: 5 })]}
+      ${Direction.E}  | ${"E"}         | ${[toLocation({ rank: 4, file: 5 })]}
+      ${Direction.SE} | ${"SE"}        | ${[toLocation({ rank: 3, file: 5 })]}
+      ${Direction.S}  | ${"S"}         | ${[toLocation({ rank: 3, file: 4 })]}
+      ${Direction.SW} | ${"SW"}        | ${[toLocation({ rank: 3, file: 3 })]}
+      ${Direction.W}  | ${"W"}         | ${[toLocation({ rank: 4, file: 3 })]}
+      ${Direction.NW} | ${"NW"}        | ${[toLocation({ rank: 5, file: 3 })]}
+    `("going $directionLabel", ({ direction, endLocations }) => {
+      it(`should arrive at square with locations ${endLocations}`, () => {
+        expect(square.go(direction)).toEqual(endLocations);
+      });
     });
   });
 
@@ -51,29 +35,19 @@ describe("On the cylindrical board", () => {
       throw new Error("Standard board should have a square at this location");
     }
 
-    it("should be possible to `go` N", () => {
-      expect(square.go(Direction.N)).toEqual([toLocation({ rank: 2, file: 1 })]);
-    });
-
-    it("should be possible to `go` NE", () => {
-      expect(square.go(Direction.NE)).toEqual([toLocation({ rank: 2, file: 2 })]);
-    });
-
-    it("should be possible to `go` E", () => {
-      expect(square.go(Direction.E)).toEqual([toLocation({ rank: 1, file: 2 })]);
-    });
-
-    it("should be possible to `go` NW", () => {
-      expect(square.go(Direction.NW)).toEqual([toLocation({ rank: 2, file: 8 })]);
-    });
-
-    it("should be possible to `go` W", () => {
-      expect(square.go(Direction.W)).toEqual([toLocation({ rank: 1, file: 8 })]);
-    });
-
-    it("should be not be possible to `go` in the other directions", () => {
-      [Direction.SE, Direction.SW, Direction.S].forEach((direction) => {
-        expect(square.go(direction)).toEqual([]);
+    describe.each`
+      direction       | directionLabel | endLocations
+      ${Direction.N}  | ${"N"}         | ${[toLocation({ rank: 2, file: 1 })]}
+      ${Direction.NE} | ${"NE"}        | ${[toLocation({ rank: 2, file: 2 })]}
+      ${Direction.E}  | ${"E"}         | ${[toLocation({ rank: 1, file: 2 })]}
+      ${Direction.SE} | ${"SE"}        | ${[]}
+      ${Direction.S}  | ${"S"}         | ${[]}
+      ${Direction.SW} | ${"SW"}        | ${[]}
+      ${Direction.W}  | ${"W"}         | ${[toLocation({ rank: 1, file: 8 })]}
+      ${Direction.NW} | ${"NW"}        | ${[toLocation({ rank: 2, file: 8 })]}
+    `("going $directionLabel", ({ direction, endLocations }) => {
+      it(`should arrive at square with locations ${endLocations}`, () => {
+        expect(square.go(direction)).toEqual(endLocations);
       });
     });
   });
@@ -84,29 +58,19 @@ describe("On the cylindrical board", () => {
       throw new Error("Standard board should have a square at this location");
     }
 
-    it("should be possible to `go` N", () => {
-      expect(square.go(Direction.N)).toEqual([toLocation({ rank: 2, file: 8 })]);
-    });
-
-    it("should be possible to `go` NW", () => {
-      expect(square.go(Direction.NW)).toEqual([toLocation({ rank: 2, file: 7 })]);
-    });
-
-    it("should be possible to `go` W", () => {
-      expect(square.go(Direction.W)).toEqual([toLocation({ rank: 1, file: 7 })]);
-    });
-
-    it("should be possible to `go` NE", () => {
-      expect(square.go(Direction.NE)).toEqual([toLocation({ rank: 2, file: 1 })]);
-    });
-
-    it("should be possible to `go` E", () => {
-      expect(square.go(Direction.E)).toEqual([toLocation({ rank: 1, file: 1 })]);
-    });
-
-    it("should be not be possible to `go` in the other directions", () => {
-      [Direction.SE, Direction.SW, Direction.S].forEach((direction) => {
-        expect(square.go(direction)).toEqual([]);
+    describe.each`
+      direction       | directionLabel | endLocations
+      ${Direction.N}  | ${"N"}         | ${[toLocation({ rank: 2, file: 8 })]}
+      ${Direction.NE} | ${"NE"}        | ${[toLocation({ rank: 2, file: 1 })]}
+      ${Direction.E}  | ${"E"}         | ${[toLocation({ rank: 1, file: 1 })]}
+      ${Direction.SE} | ${"SE"}        | ${[]}
+      ${Direction.S}  | ${"S"}         | ${[]}
+      ${Direction.SW} | ${"SW"}        | ${[]}
+      ${Direction.W}  | ${"W"}         | ${[toLocation({ rank: 1, file: 7 })]}
+      ${Direction.NW} | ${"NW"}        | ${[toLocation({ rank: 2, file: 7 })]}
+    `("going $directionLabel", ({ direction, endLocations }) => {
+      it(`should arrive at square with locations ${endLocations}`, () => {
+        expect(square.go(direction)).toEqual(endLocations);
       });
     });
   });
@@ -117,29 +81,19 @@ describe("On the cylindrical board", () => {
       throw new Error("Standard board should have a square at this location");
     }
 
-    it("should be possible to `go` S", () => {
-      expect(square.go(Direction.S)).toEqual([toLocation({ rank: 7, file: 8 })]);
-    });
-
-    it("should be possible to `go` SW", () => {
-      expect(square.go(Direction.SW)).toEqual([toLocation({ rank: 7, file: 7 })]);
-    });
-
-    it("should be possible to `go` W", () => {
-      expect(square.go(Direction.W)).toEqual([toLocation({ rank: 8, file: 7 })]);
-    });
-
-    it("should be possible to `go` SE", () => {
-      expect(square.go(Direction.SE)).toEqual([toLocation({ rank: 7, file: 1 })]);
-    });
-
-    it("should be possible to `go` E", () => {
-      expect(square.go(Direction.E)).toEqual([toLocation({ rank: 8, file: 1 })]);
-    });
-
-    it("should be not be possible to `go` in the other directions", () => {
-      [Direction.NW, Direction.N, Direction.NE].forEach((direction) => {
-        expect(square.go(direction)).toEqual([]);
+    describe.each`
+      direction       | directionLabel | endLocations
+      ${Direction.N}  | ${"N"}         | ${[]}
+      ${Direction.NE} | ${"NE"}        | ${[]}
+      ${Direction.E}  | ${"E"}         | ${[toLocation({ rank: 8, file: 1 })]}
+      ${Direction.SE} | ${"SE"}        | ${[toLocation({ rank: 7, file: 1 })]}
+      ${Direction.S}  | ${"S"}         | ${[toLocation({ rank: 7, file: 8 })]}
+      ${Direction.SW} | ${"SW"}        | ${[toLocation({ rank: 7, file: 7 })]}
+      ${Direction.W}  | ${"W"}         | ${[toLocation({ rank: 8, file: 7 })]}
+      ${Direction.NW} | ${"NW"}        | ${[]}
+    `("going $directionLabel", ({ direction, endLocations }) => {
+      it(`should arrive at square with locations ${endLocations}`, () => {
+        expect(square.go(direction)).toEqual(endLocations);
       });
     });
   });
@@ -150,29 +104,19 @@ describe("On the cylindrical board", () => {
       throw new Error("Standard board should have a square at this location");
     }
 
-    it("should be possible to `go` S", () => {
-      expect(square.go(Direction.S)).toEqual([toLocation({ rank: 7, file: 1 })]);
-    });
-
-    it("should be possible to `go` SE", () => {
-      expect(square.go(Direction.SE)).toEqual([toLocation({ rank: 7, file: 2 })]);
-    });
-
-    it("should be possible to `go` E", () => {
-      expect(square.go(Direction.E)).toEqual([toLocation({ rank: 8, file: 2 })]);
-    });
-
-    it("should be possible to `go` SW", () => {
-      expect(square.go(Direction.SW)).toEqual([toLocation({ rank: 7, file: 8 })]);
-    });
-
-    it("should be possible to `go` W", () => {
-      expect(square.go(Direction.W)).toEqual([toLocation({ rank: 8, file: 8 })]);
-    });
-
-    it("should be not be possible to `go` in the other directions", () => {
-      [Direction.NW, Direction.N, Direction.NE].forEach((direction) => {
-        expect(square.go(direction)).toEqual([]);
+    describe.each`
+      direction       | directionLabel | endLocations
+      ${Direction.N}  | ${"N"}         | ${[]}
+      ${Direction.NE} | ${"NE"}        | ${[]}
+      ${Direction.E}  | ${"E"}         | ${[toLocation({ rank: 8, file: 2 })]}
+      ${Direction.SE} | ${"SE"}        | ${[toLocation({ rank: 7, file: 2 })]}
+      ${Direction.S}  | ${"S"}         | ${[toLocation({ rank: 7, file: 1 })]}
+      ${Direction.SW} | ${"SW"}        | ${[toLocation({ rank: 7, file: 8 })]}
+      ${Direction.W}  | ${"W"}         | ${[toLocation({ rank: 8, file: 8 })]}
+      ${Direction.NW} | ${"NW"}        | ${[]}
+    `("going $directionLabel", ({ direction, endLocations }) => {
+      it(`should arrive at square with locations ${endLocations}`, () => {
+        expect(square.go(direction)).toEqual(endLocations);
       });
     });
   });
