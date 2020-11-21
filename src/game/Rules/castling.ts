@@ -50,6 +50,7 @@ export const castling: Rule = {
             .map((activeDestination) => ({
               passivePiece,
               passiveDestination,
+              // the active piece moves from its start to the destination through the passive piece's destination
               activePath: new Path(activePiece.location, [
                 passiveDestination.location,
                 activeDestination.location,
