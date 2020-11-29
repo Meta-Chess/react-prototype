@@ -2,7 +2,7 @@ import { FutureVariantName, futureVariants } from "game/variants";
 import { TraitClasses } from "game/types";
 import { sortStr } from "utilities";
 
-export function CalcVariantFilterAndDisplayOrder(
+export function calculateVariantFilterAndDisplayOrder(
   activeFilters: TraitClasses[]
 ): FutureVariantName[] {
   return Object.keys(futureVariants)

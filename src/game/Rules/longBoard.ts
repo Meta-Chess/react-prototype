@@ -13,7 +13,7 @@ export const longBoard: Rule = {
     board.addSquares(generateStandardSquares());
     return { board };
   },
-  onBoardCreatedModify: ({ board }) => {
+  onBoardCreate: ({ board }) => {
     const bounds = board.rankAndFileBounds();
     board.addAdjacenciesByRule(toroidalAdjacencies(bounds));
     board.addPiecesByRule(toroidalPiecesRule);

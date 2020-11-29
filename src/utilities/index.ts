@@ -14,3 +14,4 @@ export * from "./toLocation";
 export * from "./wrapToCylinder";
 export * from "./arrayHelper";
 export * from "./sortStr";
+export * from "./deduplicateByName";

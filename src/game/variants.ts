@@ -19,15 +19,12 @@ import { TraitClasses } from "game/types";
 import * as VariantImages from "primitives/VariantImage";
 import { Rule } from "./Rules";
 
-//should the strings be type declared as Rule["name"]?
-export const ruleFuseMap: { [id: string]: { [id: string]: Rule[] } } = {
-  //should maybe live in Rules, didn't want to duplicate importing Rules
-  Cylinder: {
-    Hexagon: [hexCylindrical],
+export const integrateWithOtherRules: { [id: string]: (rules: Rule[]) => Rule[] } = {
+  Cylinder: (rules: Rule[]): Rule[] => {
+    return rules.includes(hex) ? [hexCylindrical] : [cylindrical];
   },
-  Standard: {
-    Hexagon: [],
-    "Long board": [],
+  Standard: (rules: Rule[]): Rule[] => {
+    return rules.includes(hex) || rules.includes(longBoard) ? [] : [standard];
   },
 };
 

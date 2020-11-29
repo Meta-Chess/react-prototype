@@ -93,7 +93,6 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
                 }
               );
         }}
-        style={{ marginTop: 16 }}
         zIndex={4000}
       />
     </ControlsContainer>

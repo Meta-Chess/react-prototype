@@ -1,6 +1,6 @@
 import { variantsBlacklist } from "game/variants";
 
-export function CalcVariantClash(selectedVariants: (string | number)[]): boolean {
+export function determineIfVariantClash(selectedVariants: (string | number)[]): boolean {
   const concatVariants = ([] as string[]).concat(
     ...selectedVariants.map((key) => key as string)
   );

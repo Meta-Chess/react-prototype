@@ -19,7 +19,7 @@ export const hex: Rule = {
     board.addSquares(generateHexSquares());
     return { board };
   },
-  onBoardCreatedModify: ({ board }) => {
+  onBoardCreate: ({ board }) => {
     const bounds = board.rankAndFileBounds();
     board.addAdjacenciesByRule(hexAdjacencies(bounds));
     board.addPiecesByRule(hexPieceSetupRule);

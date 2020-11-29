@@ -250,7 +250,8 @@ class Board extends TokenOwner {
     let board = new Board(interrupt);
 
     ({ board } = interrupt.for.forSquareGenerationModify({ board }));
-    ({ board } = interrupt.for.onBoardCreatedModify({ board }));
+    ({ board } = interrupt.for.onBoardCreate({ board }));
+    ({ board } = interrupt.for.afterBoardCreation({ board }));
 
     return board;
   }

@@ -90,7 +90,7 @@ export const castling: Rule = {
 
     return { game, piece: activePiece, interrupt, moves: [...moves, ...newMoves] };
   },
-  onBoardCreatedModify: ({ board }) => {
+  afterBoardCreation: ({ board }) => {
     board.addPieceTokensByRule((piece: Piece) =>
       piece.name === PieceName.King
         ? [activeCastlingToken]

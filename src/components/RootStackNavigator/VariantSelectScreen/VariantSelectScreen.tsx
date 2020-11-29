@@ -9,21 +9,21 @@ import { useNavigation, Screens } from "navigation";
 import { CardGrid } from "./CardGrid";
 import { TraitFilterBar } from "./TraitFilterBar";
 import { GameOptions } from "game/types";
-import { CalcGameOptions } from "./CalcGameOptions";
-import { CalcVariantClash } from "./CalcVariantClash";
-import { CalcVariantFilterAndDisplayOrder } from "./CalcVariantFilterAndDisplayOrder";
+import { calculateGameOptions } from "./calculateGameOptions";
+import { determineIfVariantClash } from "./determineIfVariantClash";
+import { calculateVariantFilterAndDisplayOrder } from "./calculateVariantFilterAndDisplayOrder";
 
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
   const { height, width } = useWindowDimensions();
 
   const [activeFilters, setActiveFilters] = useState<TraitClasses[]>([]);
-  const allVariants: FutureVariantName[] = CalcVariantFilterAndDisplayOrder(
+  const allVariants: FutureVariantName[] = calculateVariantFilterAndDisplayOrder(
     activeFilters
   );
   const [selectedVariants, setSelectedVariants] = useState<FutureVariantName[]>([]);
-  const existsVariantsClash: boolean = CalcVariantClash(selectedVariants);
-  const gameOptions: GameOptions = CalcGameOptions(selectedVariants);
+  const existsVariantsClash: boolean = determineIfVariantClash(selectedVariants);
+  const gameOptions: GameOptions = calculateGameOptions(selectedVariants);
 
   return (
     <ScreenContainer>
