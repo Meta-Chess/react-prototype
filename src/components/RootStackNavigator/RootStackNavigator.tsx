@@ -12,8 +12,16 @@ export const RootStackNavigator: FC = () => {
       initialRouteName={Screens.StartScreen}
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name={Screens.GameScreen} component={GameScreen} />
-      <Stack.Screen name={Screens.StartScreen} component={StartScreen} />
+      <Stack.Screen
+        name={Screens.GameScreen}
+        component={GameScreen}
+        options={{ title: "mchess" }}
+      />
+      <Stack.Screen
+        name={Screens.StartScreen}
+        component={StartScreen}
+        options={{ title: "mchess" }}
+      />
     </Stack.Navigator>
   );
 };
