@@ -71,22 +71,20 @@ export class Pather {
     if (!currentSquare) return allowablePaths;
     const pathSoFar: Path = new Path(currentSquare.location);
 
+    const paths = [pathSoFar];
+
     for (let steps = 0; steps < stepAllowance; steps++) {
       if (remainingSteps.length === 0) return allowablePaths;
 
       const { continuingSquares, newAllowableSquares } = this.step({
         currentSquare,
-        pathSoFar,
+        pathSoFar: paths[steps],
         remainingSteps,
         gait,
       });
 
       allowablePaths.push(
-        ...newAllowableSquares.map((square) => {
-          const path = pathSoFar.clone();
-          path.push(square.location);
-          return path;
-        })
+        ...newAllowableSquares.map((square) => new Path(square.location, paths[steps]))
       );
 
       remainingSteps = this.updateRemainingSteps({ gait, remainingSteps });
@@ -98,7 +96,7 @@ export class Pather {
         currentSquare: continuingSquares[0], // Later: Handle multiple continuing squares
       }));
 
-      pathSoFar.push(currentSquare.location);
+      paths.push(new Path(currentSquare.location, paths[steps]));
     }
 
     return allowablePaths;
@@ -156,8 +154,7 @@ export class Pather {
       return false;
     }
 
-    const hypotheticalPath = pathSoFar.clone();
-    hypotheticalPath.push(square.location);
+    const hypotheticalPath = new Path(square.location, pathSoFar);
 
     // should be lifted to findPaths
     const { filtered } = this.interrupt.for.inCanStayFilter({

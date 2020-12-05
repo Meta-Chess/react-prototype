@@ -47,15 +47,17 @@ export const castling: Rule = {
         return passiveDestinations.flatMap((passiveDestination) =>
           game.board
             .go({ from: passiveDestination.location, path: [direction] })
-            .map((activeDestination) => ({
-              passivePiece,
-              passiveDestination,
-              // the active piece moves from its start to the destination through the passive piece's destination
-              activePath: new Path(activePiece.location, [
-                passiveDestination.location,
+            .map((activeDestination) => {
+              const activePath = new Path(
                 activeDestination.location,
-              ]),
-            }))
+                new Path(passiveDestination.location, new Path(activePiece.location))
+              );
+              return {
+                passivePiece,
+                passiveDestination,
+                activePath,
+              };
+            })
         );
       }
     );

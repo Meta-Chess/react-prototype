@@ -11,7 +11,7 @@ export const Interception: Rule = {
 
       move.pieceDeltas
         .find((delta) => delta.pId === move.pieceId)
-        ?.path.getPath()
+        ?.path.toList()
         .slice(start, -1)
         .forEach((location) => {
           const interceptionToken = {
