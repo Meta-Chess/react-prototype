@@ -21,6 +21,7 @@ export interface Gait {
 export interface moveData {
   interceptable?: boolean;
   interceptionCondition?: (piece: Piece) => boolean;
+  interceptableAtStart?: boolean;
 }
 
 export interface Move {

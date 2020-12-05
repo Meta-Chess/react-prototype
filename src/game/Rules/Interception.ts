@@ -7,26 +7,28 @@ export const Interception: Rule = {
     "Enables interceptable moves where pieces can be captured by moving to a square that they moved through",
   postMove: ({ board, move, currentTurn }) => {
     if (move.data?.interceptable) {
-      move.pieceDeltas.forEach((pieceDelta) => {
-        pieceDelta.path
-          .getPath()
-          .slice(1, -1)
-          .forEach((location) => {
-            const interceptionToken = {
-              name: TokenName.CaptureToken,
-              expired: (turn: number): boolean => {
-                return turn >= currentTurn + 1;
-              },
-              data: {
-                pieceId: move.pieceId,
-                condition: move.data?.interceptionCondition,
-              },
-            };
+      const start = move.data?.interceptableAtStart ? 0 : 1;
 
-            board.squareAt(location)?.addToken(interceptionToken);
-          });
-      });
+      move.pieceDeltas
+        .find((delta) => delta.pId === move.pieceId)
+        ?.path.getPath()
+        .slice(start, -1)
+        .forEach((location) => {
+          const interceptionToken = {
+            name: TokenName.CaptureToken,
+            expired: (turn: number): boolean => {
+              return turn >= currentTurn + 1;
+            },
+            data: {
+              pieceId: move.pieceId,
+              condition: move.data?.interceptionCondition,
+            },
+          };
+
+          board.squareAt(location)?.addToken(interceptionToken);
+        });
     }
+
     return { board, move, currentTurn };
   },
 

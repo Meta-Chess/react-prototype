@@ -1,6 +1,5 @@
 import { PieceName, TokenName } from "../types";
-import { Piece } from "../Board";
-import { Rule } from "./Rules";
+import { Piece, Rule } from "game";
 import { activeCastlingToken, passiveCastlingToken } from "./constants";
 import { isPresent } from "utilities";
 import { Pather, Scanner } from "../Pather";
@@ -51,7 +50,11 @@ export const castling: Rule = {
             .map((activeDestination) => ({
               passivePiece,
               passiveDestination,
-              activeDestination,
+              // the active piece moves from its start to the destination through the passive piece's destination
+              activePath: new Path(activePiece.location, [
+                passiveDestination.location,
+                activeDestination.location,
+              ]),
             }))
         );
       }
@@ -69,14 +72,19 @@ export const castling: Rule = {
     );
 
     const newMoves = filteredCastlePiecesAndLocations.map(
-      ({ passivePiece, passiveDestination, activeDestination }) => ({
+      ({ passivePiece, passiveDestination, activePath }) => ({
         pieceId: activePiece.id,
-        location: activeDestination.location,
+        location: activePath.getEnd(),
         pieceDeltas: [
           { pId: passivePiece.id, path: new Path(passiveDestination.location) },
-          { pId: activePiece.id, path: new Path(activeDestination.location) },
+          { pId: activePiece.id, path: activePath },
         ],
         player: activePiece.owner,
+        data: {
+          interceptable: true,
+          interceptionCondition: (): boolean => true,
+          interceptableAtStart: true,
+        },
       })
     );
 
