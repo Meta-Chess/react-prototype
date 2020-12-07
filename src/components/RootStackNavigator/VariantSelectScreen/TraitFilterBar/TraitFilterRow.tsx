@@ -44,16 +44,16 @@ interface ContainerProps {
 }
 
 const RowContainer = styled(View)<ContainerProps>`
-  min-height: ${({ filterBarHeight }): number => filterBarHeight};
-  max-height: ${({ filterBarHeight }): number => filterBarHeight};
-  min-width: ${({ filterBarWidth }): number => filterBarWidth};
-  max-width: ${({ filterBarWidth }): number => filterBarWidth};
+  min-height: ${({ filterBarHeight }): string => filterBarHeight.toString() + "px"};
+  max-height: ${({ filterBarHeight }): string => filterBarHeight.toString() + "px"};
+  min-width: ${({ filterBarWidth }): string => filterBarWidth.toString() + "px"};
+  max-width: ${({ filterBarWidth }): string => filterBarWidth.toString() + "px"};
   justify-content: space-evenly;
   flex-direction: row;
   align-self: center;
   align-items: center;
-  padding-horizontal: 10;
-  border-radius: 6;
+  padding-horizontal: 10px;
+  border-radius: 6px;
   shadow-color: ${Colors.BLACK.toString()};
   shadow-radius: 4px;
   box-shadow: 0px 1px 2px;

@@ -1,8 +1,9 @@
 import React from "react";
 import { View, ScrollView } from "react-native";
-import { SFC, Colors } from "primitives";
-import { VariantTileButton } from "ui/Buttons/VariantTileButton";
+import { SFC } from "primitives";
+import { VariantTile } from "ui/Pressable/VariantTile";
 import { FutureVariantName, futureVariants } from "game/variants";
+import styled from "styled-components/native";
 interface Props {
   displayVariants: FutureVariantName[];
   selectedVariants: FutureVariantName[];
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const CardGrid: SFC<Props> = ({
+  style,
   displayVariants,
   selectedVariants,
   setSelectedVariants,
@@ -18,36 +20,19 @@ const CardGrid: SFC<Props> = ({
 }) => {
   return (
     <View
-      style={{
-        height: "72%",
-        justifyContent: "center",
-        alignItems: "center",
-        alignSelf: "center",
-        marginHorizontal: 12,
-        marginTop: 36,
-        flex: 1,
-      }}
+      style={[
+        style,
+        {
+          justifyContent: "center",
+          alignItems: "center",
+        },
+      ]}
     >
-      <ScrollView
-        style={{
-          maxHeight: "100%",
-          maxWidth: "100%",
-        }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "flex-start",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            alignContent: "flex-start",
-            marginVertical: -1,
-          }}
-        >
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <CardContainer>
           {displayVariants.map((variant) => {
             return (
-              <VariantTileButton
+              <VariantTile
                 key={variant}
                 variant={futureVariants[variant]}
                 selected={selectedVariants.some((x) => x === variant)}
@@ -57,24 +42,22 @@ const CardGrid: SFC<Props> = ({
                     ? setSelectedVariants(selectedVariants.filter((x) => x !== variant))
                     : setSelectedVariants([...selectedVariants, variant])
                 }
-                style={{
-                  justifyContent: "flex-start",
-                  alignItems: "flex-start",
-                  alignContent: "flex-start",
-                  shadowColor: Colors.BLACK.toString(),
-                  shadowRadius: 4,
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                }}
               />
             );
           })}
-        </View>
+        </CardContainer>
       </ScrollView>
     </View>
   );
 };
+
+const CardContainer = styled(View)`
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  margin-vertical: -1px;
+`;
 
 export { CardGrid };

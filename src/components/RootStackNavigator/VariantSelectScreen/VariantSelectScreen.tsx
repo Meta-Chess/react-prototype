@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { View, useWindowDimensions } from "react-native";
+import { StyleSheet, View, useWindowDimensions } from "react-native";
 import styled from "styled-components/native";
 import { Colors } from "primitives";
 import { FutureVariantName } from "game/variants";
@@ -28,6 +28,7 @@ const VariantSelectScreen: FC = () => {
     <ScreenContainer>
       <GridContainer width={width} height={height}>
         <CardGrid
+          style={styles.CardGrid}
           displayVariants={displayVariants}
           selectedVariants={selectedVariants}
           setSelectedVariants={setSelectedVariants}
@@ -35,15 +36,20 @@ const VariantSelectScreen: FC = () => {
         />
         <OptionContainer width={width}>
           <BackButton
+            style={styles.BackButton}
             onPress={(): void => {
               navigation.goBack();
             }}
           />
           <TraitFilterBar
+            style={styles.TraitFilterBar}
+            filterBarHeight={48}
+            filterBarWidth={375}
             activeFilters={activeFilters}
             setActiveFilters={setActiveFilters}
           />
           <StartButton
+            style={styles.StartButton}
             onPress={(): void => {
               navigation.navigate<Screens.GameScreen>(Screens.GameScreen, {
                 gameOptions: calculateGameOptions(selectedVariants),
@@ -87,8 +93,35 @@ const OptionContainer = styled(View)<OptionContainerProps>`
   flex-direction: row;
   justify-content: center;
   width: ${({ width }): number => width};
-  min-height: 165;
-  padding-bottom: 6;
+  min-height: 165px;
+  padding-bottom: 6px;
 `;
+
+const styles = StyleSheet.create({
+  CardGrid: {
+    height: "72%",
+    alignSelf: "center",
+    marginHorizontal: 12,
+    marginTop: 36,
+    flex: 1,
+  },
+  BackButton: {
+    alignSelf: "center",
+    marginTop: 32,
+    marginRight: 64,
+    width: 200,
+  },
+  StartButton: {
+    alignSelf: "center",
+    marginTop: 32,
+    marginLeft: 64,
+    width: 200,
+  },
+  TraitFilterBar: {
+    alignSelf: "center",
+    marginVertical: 24,
+    paddingBottom: 6,
+  },
+});
 
 export { VariantSelectScreen };

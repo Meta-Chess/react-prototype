@@ -8,36 +8,29 @@ interface VariantTileImageProps {
   variant: FutureVariant;
 }
 
-const VariantTileImage: SFC<VariantTileImageProps> = ({ variant }) => {
+const VariantTileImage: SFC<VariantTileImageProps> = ({ style, variant }) => {
   const currentImage = VariantImages[variant.imageName];
+
   return (
     <View
-      style={{
-        width: 136,
-        height: 136,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: Colors.DARK.toString(),
-      }}
-    >
-      <View
-        style={{
-          width: 120,
-          height: 120,
+      style={[
+        style,
+        {
           alignItems: "center",
+          alignSelf: "center",
           justifyContent: "center",
-          borderRadius: 4,
           backgroundColor: Colors.DARKER.toString(),
+          borderRadius: 4,
+        },
+      ]}
+    >
+      <Image
+        source={currentImage}
+        style={{
+          width: "80%",
+          height: "80%",
         }}
-      >
-        <Image
-          source={currentImage}
-          style={{
-            width: "80%",
-            height: "80%",
-          }}
-        />
-      </View>
+      />
     </View>
   );
 };

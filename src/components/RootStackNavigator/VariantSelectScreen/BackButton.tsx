@@ -6,19 +6,8 @@ interface BackButtonProps {
   onPress: () => void;
 }
 
-const BackButton: SFC<BackButtonProps> = ({ onPress }) => {
-  return (
-    <Button
-      text="Back"
-      onPress={onPress}
-      style={{
-        alignSelf: "center",
-        marginTop: 32,
-        marginRight: 64,
-        width: 200,
-      }}
-    />
-  );
+const BackButton: SFC<BackButtonProps> = ({ style, onPress }) => {
+  return <Button text="Back" onPress={onPress} style={style} />;
 };
 
 export { BackButton };
