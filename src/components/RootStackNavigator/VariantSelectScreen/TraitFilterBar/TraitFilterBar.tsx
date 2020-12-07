@@ -1,21 +1,21 @@
 import React from "react";
 import { View } from "react-native";
 import { SFC } from "primitives";
-import { traitInfo, TraitClasses } from "game/types";
+import { TraitClass } from "game/types";
 import { FilterDisplay } from "./FilterDisplay";
 import { TraitFilterRow } from "./TraitFilterRow";
-import { CoverMessyShadow } from "./CoverMessyShadow";
+import { titleUppercase } from "utilities";
 
 interface Props {
-  activeFilters: React.ReactText[];
-  setActiveFilters: (x: TraitClasses[]) => void;
+  activeFilters: TraitClass[];
+  setActiveFilters: (x: TraitClass[]) => void;
 }
 
 const TraitFilterBar: SFC<Props> = ({ activeFilters, setActiveFilters }) => {
   const filterDisplayTitle =
     activeFilters.length === 0
       ? "No Filters"
-      : traitInfo[activeFilters[0] as keyof typeof traitInfo].name;
+      : titleUppercase(activeFilters[0].toString());
   const filterBarHeight = 48;
   const filterBarWidth = 375;
   return (
@@ -36,10 +36,6 @@ const TraitFilterBar: SFC<Props> = ({ activeFilters, setActiveFilters }) => {
         filterBarWidth={filterBarWidth}
       />
       <FilterDisplay filterDisplayTitle={filterDisplayTitle} />
-      <CoverMessyShadow
-        filterBarHeight={filterBarHeight}
-        filterBarWidth={filterBarWidth}
-      />
     </View>
   );
 };

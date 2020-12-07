@@ -8,7 +8,7 @@ import { GridArrangement } from "./GridArrangement";
 import { GameContext } from "game";
 import { Square } from "game/Board";
 import { SquareShape } from "game/types";
-import { HexTileView } from "./HexTileView";
+import { HexTile } from "./HexTile";
 import { Highlight } from "./Highlight";
 
 interface Props {
@@ -49,9 +49,9 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
   };
 
   return (
-    <UnderlayContainer size={size}>
+    <OuterContainer size={size}>
       {shape === SquareShape.Hex && GRAPHIC_HEX_TILING && (
-        <HexTileView radius={size / 2} colorString={backgroundColor} />
+        <HexTile radius={size / 2} color={backgroundColor} />
       )}
       <PressableContainer
         size={size}
@@ -94,7 +94,7 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
           </GridArrangement>
         </PositioningContainer>
       </PressableContainer>
-    </UnderlayContainer>
+    </OuterContainer>
   );
 };
 
@@ -110,7 +110,7 @@ const colorIndex = ({
   return shape === SquareShape.Hex ? rank % 3 : (rank + file) % 2;
 };
 
-const UnderlayContainer = styled(View)<{ size: number }>`
+const OuterContainer = styled(View)<{ size: number }>`
   overflow: visible;
   width: ${({ size }): number => size};
   height: ${({ size }): number => size};

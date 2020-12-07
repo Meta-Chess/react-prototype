@@ -1,18 +1,17 @@
 import React from "react";
 import { View, ScrollView } from "react-native";
 import { SFC, Colors } from "primitives";
-import { VariantTile } from "./VariantTile";
-import { FutureVariantName } from "game/variants";
-
+import { VariantTileButton } from "ui/Buttons/VariantTileButton";
+import { FutureVariantName, futureVariants } from "game/variants";
 interface Props {
-  allVariants: FutureVariantName[];
-  selectedVariants: React.ReactText[];
-  setSelectedVariants: (x: React.ReactText[]) => void;
+  displayVariants: FutureVariantName[];
+  selectedVariants: FutureVariantName[];
+  setSelectedVariants: (x: FutureVariantName[]) => void;
   variantClash: boolean;
 }
 
 const CardGrid: SFC<Props> = ({
-  allVariants,
+  displayVariants,
   selectedVariants,
   setSelectedVariants,
   variantClash,
@@ -46,17 +45,17 @@ const CardGrid: SFC<Props> = ({
             marginVertical: -1,
           }}
         >
-          {allVariants.map((ekey) => {
+          {displayVariants.map((variant) => {
             return (
-              <VariantTile
-                key={ekey}
-                text={ekey}
-                selected={selectedVariants.some((x) => x === ekey)}
+              <VariantTileButton
+                key={variant}
+                variant={futureVariants[variant]}
+                selected={selectedVariants.some((x) => x === variant)}
                 clash={variantClash}
                 onPress={(): void =>
-                  selectedVariants.some((x) => x === ekey)
-                    ? setSelectedVariants(selectedVariants.filter((x) => x !== ekey))
-                    : setSelectedVariants([...selectedVariants, ekey])
+                  selectedVariants.some((x) => x === variant)
+                    ? setSelectedVariants(selectedVariants.filter((x) => x !== variant))
+                    : setSelectedVariants([...selectedVariants, variant])
                 }
                 style={{
                   justifyContent: "flex-start",

@@ -13,7 +13,7 @@ export const Colors = {
   },
   GREY: Color("#888888"),
   DARKEST: Color("#212121"),
-  DARKER: Color("#2a2a2a"),
+  DARKER: Color("#2A2A2A"),
   DARK: Color("#333333"),
   DARKISH: Color("#4C4C4C"),
   INFO: Color("#4696EC"),

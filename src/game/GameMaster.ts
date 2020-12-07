@@ -44,7 +44,7 @@ export class GameMaster {
     } = gameOptions;
 
     const rules = customRules.length === 0 ? [...variants[variant].rules] : customRules;
-    if (checkEnabled) rules.push(check);
+    if (checkEnabled && customRules.length === 0) rules.push(check);
     if (fatigueEnabled && customRules.length === 0) rules.push(fatigue);
     if (atomicEnabled && customRules.length === 0) rules.push(atomic);
     this.interrupt = new CompactRules(rules);

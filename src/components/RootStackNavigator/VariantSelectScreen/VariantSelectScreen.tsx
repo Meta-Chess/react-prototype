@@ -1,92 +1,57 @@
 import React, { FC, useState } from "react";
 import { View, useWindowDimensions } from "react-native";
-import { Button } from "ui";
 import styled from "styled-components/native";
 import { Colors } from "primitives";
 import { FutureVariantName } from "game/variants";
-import { TraitClasses } from "game/types";
+import { TraitClass } from "game/types";
 import { useNavigation, Screens } from "navigation";
 import { CardGrid } from "./CardGrid";
 import { TraitFilterBar } from "./TraitFilterBar";
-import { GameOptions } from "game/types";
+import { StartButton } from "./StartButton";
+import { BackButton } from "./BackButton";
 import { calculateGameOptions } from "./calculateGameOptions";
 import { determineIfVariantClash } from "./determineIfVariantClash";
-import { calculateVariantFilterAndDisplayOrder } from "./calculateVariantFilterAndDisplayOrder";
+import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
 
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
   const { height, width } = useWindowDimensions();
 
-  const [activeFilters, setActiveFilters] = useState<TraitClasses[]>([]);
-  const allVariants: FutureVariantName[] = calculateVariantFilterAndDisplayOrder(
+  const [activeFilters, setActiveFilters] = useState<TraitClass[]>([]);
+  const displayVariants: FutureVariantName[] = getFilteredVariantsInDisplayOrder(
     activeFilters
   );
   const [selectedVariants, setSelectedVariants] = useState<FutureVariantName[]>([]);
   const existsVariantsClash: boolean = determineIfVariantClash(selectedVariants);
-  const gameOptions: GameOptions = calculateGameOptions(selectedVariants);
 
   return (
     <ScreenContainer>
-      <View
-        style={{
-          justifyContent: "space-between",
-          alignContent: "stretch",
-          height,
-          width,
-          flexDirection: "column",
-        }}
-      >
+      <GridContainer width={width} height={height}>
         <CardGrid
-          allVariants={allVariants}
+          displayVariants={displayVariants}
           selectedVariants={selectedVariants}
           setSelectedVariants={setSelectedVariants}
           variantClash={existsVariantsClash}
         />
-        <View
-          style={{
-            width,
-            flexDirection: "row",
-            justifyContent: "center",
-            minHeight: 165,
-            paddingBottom: 6,
-          }}
-        >
-          <Button
-            text="Back"
-            cat="DisplayM"
+        <OptionContainer width={width}>
+          <BackButton
             onPress={(): void => {
               navigation.goBack();
-            }}
-            style={{
-              alignSelf: "center",
-              flex: 1,
-              marginTop: 32,
-              marginRight: 64,
-              maxWidth: 200,
             }}
           />
           <TraitFilterBar
             activeFilters={activeFilters}
             setActiveFilters={setActiveFilters}
           />
-          <Button
-            text="Start Game"
-            cat="DisplayM"
+          <StartButton
             onPress={(): void => {
               navigation.navigate<Screens.GameScreen>(Screens.GameScreen, {
-                gameOptions,
+                gameOptions: calculateGameOptions(selectedVariants),
               });
             }}
-            style={{
-              alignSelf: "center",
-              flex: 1,
-              marginTop: 32,
-              marginLeft: 64,
-              maxWidth: 200,
-            }}
           />
-        </View>
-      </View>
+        </OptionContainer>
+      </GridContainer>
     </ScreenContainer>
   );
 };
@@ -99,6 +64,31 @@ const ScreenContainer = styled(View)`
   right: 0px;
   display: flex;
   background-color: ${Colors.DARKEST.string()};
+`;
+
+interface GridContainerProps {
+  height: number;
+  width: number;
+}
+
+const GridContainer = styled(View)<GridContainerProps>`
+  justify-content: space-between;
+  align-content: stretch;
+  flex-direction: column;
+  height: ${({ height }): number => height};
+  width: ${({ width }): number => width};
+`;
+
+interface OptionContainerProps {
+  width: number;
+}
+
+const OptionContainer = styled(View)<OptionContainerProps>`
+  flex-direction: row;
+  justify-content: center;
+  width: ${({ width }): number => width};
+  min-height: 165;
+  padding-bottom: 6;
 `;
 
 export { VariantSelectScreen };

@@ -1,14 +1,15 @@
 import React from "react";
 import { SFC, Text, Colors } from "primitives";
 import { View } from "react-native";
-import { futureVariantDetails } from "game";
+import { FutureVariant } from "game";
 import { TraitLabel } from "./TraitLabel";
+import { TraitClass } from "game/types";
 
-interface TileBodyProps {
-  variant: futureVariantDetails;
+interface VariantTileBodyProps {
+  variant: FutureVariant;
 }
 
-const TileBody: SFC<TileBodyProps> = ({ variant }) => {
+const VariantTileBody: SFC<VariantTileBodyProps> = ({ variant }) => {
   return (
     <View
       style={{
@@ -34,7 +35,7 @@ const TileBody: SFC<TileBodyProps> = ({ variant }) => {
           marginVertical: 6,
         }}
       >
-        {variant.traitClasses.map((trait: string, index: number) => (
+        {variant.TraitClass.map((trait: TraitClass, index: number) => (
           <TraitLabel
             key={index}
             trait={trait}
@@ -46,4 +47,4 @@ const TileBody: SFC<TileBodyProps> = ({ variant }) => {
   );
 };
 
-export { TileBody };
+export { VariantTileBody };

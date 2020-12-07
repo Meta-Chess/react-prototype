@@ -1,7 +1,7 @@
 import React from "react";
 import { SFC } from "primitives";
 import { View } from "react-native";
-import { HexTileView } from "../HexTileView";
+import { HexTile } from "../HexTile";
 import Color from "color";
 import { SquareShape } from "game/types";
 
@@ -15,7 +15,7 @@ const FullHighlight: SFC<FullHighlightProps> = ({ color, size, shape }) => {
   const highlightColor = color.fade(0.3).string();
 
   return shape === SquareShape.Hex ? (
-    <HexTileView radius={size / 2} colorString={highlightColor} />
+    <HexTile radius={size / 2} color={highlightColor} />
   ) : (
     <View
       style={{

@@ -1,6 +1,6 @@
 import { Colors } from "primitives";
 
-export type TraitClasses = keyof typeof traitInfo;
+export type TraitClass = keyof typeof traitInfo;
 
 export const traitInfo = {
   piece: { name: "Piece", color: Colors.TRAIT_CLASS.PIECE },

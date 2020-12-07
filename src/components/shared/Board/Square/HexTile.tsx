@@ -2,12 +2,12 @@ import React from "react";
 import { SFC } from "primitives";
 import { View } from "react-native";
 
-interface HexTileViewProps {
+interface HexTileProps {
   radius: number;
-  colorString: string;
+  color: string;
 }
 
-const HexTileView: SFC<HexTileViewProps> = ({ radius, colorString }) => {
+const HexTile: SFC<HexTileProps> = ({ radius, color }) => {
   const height = 2 * radius;
   const centerWidth = radius * (2 / Math.sqrt(3));
   const endWidth = radius / Math.sqrt(3);
@@ -34,14 +34,14 @@ const HexTileView: SFC<HexTileViewProps> = ({ radius, colorString }) => {
           backgroundColor: "transparent",
           borderTopColor: "transparent",
           borderBottomColor: "transparent",
-          borderRightColor: colorString,
+          borderRightColor: color,
         }}
       />
       <View
         style={{
           width: centerWidth,
           height: height,
-          backgroundColor: colorString,
+          backgroundColor: color,
         }}
       />
       <View
@@ -55,11 +55,11 @@ const HexTileView: SFC<HexTileViewProps> = ({ radius, colorString }) => {
           backgroundColor: "transparent",
           borderTopColor: "transparent",
           borderBottomColor: "transparent",
-          borderLeftColor: colorString,
+          borderLeftColor: color,
         }}
       />
     </View>
   );
 };
 
-export { HexTileView };
+export { HexTile };

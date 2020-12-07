@@ -1,14 +1,14 @@
 import React from "react";
 import { SFC, Colors } from "primitives";
 import { View, Image } from "react-native";
-import { futureVariantDetails } from "game";
+import { FutureVariant } from "game";
 import * as VariantImages from "primitives/VariantImage";
 
-interface TileImageProps {
-  variant: futureVariantDetails;
+interface VariantTileImageProps {
+  variant: FutureVariant;
 }
 
-const TileImage: SFC<TileImageProps> = ({ variant }) => {
+const VariantTileImage: SFC<VariantTileImageProps> = ({ variant }) => {
   const currentImage = VariantImages[variant.imageName];
   return (
     <View
@@ -42,4 +42,4 @@ const TileImage: SFC<TileImageProps> = ({ variant }) => {
   );
 };
 
-export { TileImage };
+export { VariantTileImage };

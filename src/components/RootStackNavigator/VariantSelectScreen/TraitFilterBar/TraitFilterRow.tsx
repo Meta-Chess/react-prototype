@@ -2,11 +2,12 @@ import React from "react";
 import { View } from "react-native";
 import { SFC, Colors } from "primitives";
 import { TraitFilter } from "./TraitFilter";
-import { traitInfo, TraitClasses } from "game/types";
+import { traitInfo, TraitClass } from "game/types";
+import styled from "styled-components/native";
 
 interface Props {
-  activeFilters: React.ReactText[];
-  setActiveFilters: (x: TraitClasses[]) => void;
+  activeFilters: TraitClass[];
+  setActiveFilters: (x: TraitClass[]) => void;
   filterBarHeight: number;
   filterBarWidth: number;
 }
@@ -18,41 +19,45 @@ const TraitFilterRow: SFC<Props> = ({
   filterBarWidth,
 }) => {
   return (
-    <View
-      style={{
-        minHeight: filterBarHeight,
-        maxHeight: filterBarHeight,
-        maxWidth: filterBarWidth,
-        minWidth: filterBarWidth,
-        justifyContent: "space-evenly",
-        flexDirection: "row",
-        alignSelf: "center",
-        alignItems: "center",
-        paddingHorizontal: 10,
-        borderRadius: 6,
-        shadowColor: Colors.BLACK.toString(),
-        shadowRadius: 4,
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        backgroundColor: Colors.DARKER.toString(),
-      }}
-    >
-      {Object.keys(traitInfo).map((trait: string, index: number) => (
-        <TraitFilter
-          key={index}
-          trait={trait}
-          unselected={!activeFilters.some((filt) => filt === trait)}
-          onPress={(): void =>
-            activeFilters.some((filt) => filt === trait)
-              ? setActiveFilters([])
-              : setActiveFilters([trait as TraitClasses])
-          }
-        />
-      ))}
-    </View>
+    <RowContainer filterBarHeight={filterBarHeight} filterBarWidth={filterBarWidth}>
+      {Object.keys(traitInfo)
+        .map((trait) => trait as TraitClass)
+        .map((trait: TraitClass, index: number) => (
+          <TraitFilter
+            key={index}
+            trait={trait}
+            selected={activeFilters.some((filt) => filt === trait)}
+            onPress={(): void =>
+              activeFilters.some((filt) => filt === trait)
+                ? setActiveFilters([])
+                : setActiveFilters([trait as TraitClass])
+            }
+          />
+        ))}
+    </RowContainer>
   );
 };
+
+interface ContainerProps {
+  filterBarHeight: number;
+  filterBarWidth: number;
+}
+
+const RowContainer = styled(View)<ContainerProps>`
+  min-height: ${({ filterBarHeight }): number => filterBarHeight};
+  max-height: ${({ filterBarHeight }): number => filterBarHeight};
+  min-width: ${({ filterBarWidth }): number => filterBarWidth};
+  max-width: ${({ filterBarWidth }): number => filterBarWidth};
+  justify-content: space-evenly;
+  flex-direction: row;
+  align-self: center;
+  align-items: center;
+  padding-horizontal: 10;
+  border-radius: 6;
+  shadow-color: ${Colors.BLACK.toString()};
+  shadow-radius: 4px;
+  box-shadow: 0px 1px 2px;
+  background-color: ${Colors.DARKER.toString()};
+`;
 
 export { TraitFilterRow };

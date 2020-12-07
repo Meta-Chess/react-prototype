@@ -13,5 +13,5 @@ export * from "./range2";
 export * from "./toLocation";
 export * from "./wrapToCylinder";
 export * from "./arrayHelper";
-export * from "./sortStr";
 export * from "./deduplicateByName";
+export * from "./titleUppercase";
