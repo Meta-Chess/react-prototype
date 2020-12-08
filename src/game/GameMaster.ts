@@ -1,12 +1,12 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, Modal, Move } from "./types";
+import { GameOptions, Modal, Move, PieceDelta } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants";
 import { check, CompactRules, fatigue, atomic, Rule } from "./Rules";
 import { flatMap } from "lodash";
-import socketIOClient from "socket.io-client";
+import { Path } from "./Pather/Path";
 
 export class GameMaster {
   public interrupt: CompactRules;
@@ -23,7 +23,7 @@ export class GameMaster {
   public overTheBoard: boolean;
 
   // TODO: Consider restructure to encapsulate server details in a nice abstraction
-  private socket: SocketIOClient.Socket | undefined;
+  private socket: WebSocket | undefined;
   public roomId: string | undefined;
   public online: boolean;
 
@@ -60,16 +60,45 @@ export class GameMaster {
 
     this.online = !!online;
     if (online) {
-      this.socket = socketIOClient("http://localhost:8000"); // TODO: Make this an environment variable
-      this.socket.on("roomId", (roomId: string): void => {
-        this.roomId = roomId;
-        this.render();
+      this.socket = new WebSocket(
+        "wss://3oxeo6rv48.execute-api.ap-southeast-2.amazonaws.com/dev"
+      ); // TODO: Make this an environment variable
+
+      const socket = this.socket;
+      this.socket.addEventListener("open", function (event) {
+        socket.send(JSON.stringify({ action: "joinRoom", roomId: 3 }));
       });
-      this.socket.on("move", (move: Move) => {
+
+      const onMove = (move: Move) => {
         this.game.doMove(move);
         this.render();
+      };
+
+      this.socket.addEventListener("message", function (event) {
+        console.log(event.data);
+        const move = JSON.parse(event.data);
+
+        const pieceDeltas: PieceDelta[] = move.pieceDeltas.map((delta: any) => {
+          return {
+            ...delta,
+            path: new Path(delta.path.start, delta.path.path),
+          };
+        });
+        console.dir(move.pieceDeltas);
+        onMove({ ...move, pieceDeltas });
       });
-      this.socket.emit("joinRoom", { roomId });
+
+      this.roomId = "3"; // TODO: set this after room joining confirmed
+
+      // this.socket.on("roomId", (roomId: string): void => {
+      //   this.roomId = roomId;
+      //   this.render();
+      // });
+      // this.socket.on("move", (move: Move) => {
+      //   this.game.doMove(move);
+      //   this.render();
+      // });
+      // this.socket.emit("joinRoom", { roomId });
     }
   }
 
@@ -82,7 +111,7 @@ export class GameMaster {
     this.gameClones.forEach((clone) => clone.resetTo(this.game));
     const move = this.allowableMoves.find((m) => m.location === location);
     if (move && this.game.currentPlayer === this.selectedPieces[0]?.owner) {
-      this.socket?.emit("move", { move, roomId: this.roomId });
+      this.socket?.send(JSON.stringify({ action: "move", roomId: this.roomId, move }));
       this.game.doMove(move);
       this.unselectAllPieces();
     } else {
@@ -122,6 +151,6 @@ export class GameMaster {
   }
 
   endGame(): void {
-    this.socket?.disconnect();
+    this.socket?.close();
   }
 }
