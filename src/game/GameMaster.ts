@@ -66,7 +66,7 @@ export class GameMaster {
 
       const socket = this.socket;
       this.socket.addEventListener("open", function (event) {
-        socket.send(JSON.stringify({ action: "joinRoom", roomId: 3 }));
+        socket.send(JSON.stringify({ action: "joinRoom", roomId }));
       });
 
       const onMove = (move: Move) => {
@@ -88,17 +88,7 @@ export class GameMaster {
         onMove({ ...move, pieceDeltas });
       });
 
-      this.roomId = "3"; // TODO: set this after room joining confirmed
-
-      // this.socket.on("roomId", (roomId: string): void => {
-      //   this.roomId = roomId;
-      //   this.render();
-      // });
-      // this.socket.on("move", (move: Move) => {
-      //   this.game.doMove(move);
-      //   this.render();
-      // });
-      // this.socket.emit("joinRoom", { roomId });
+      this.roomId = '"' + roomId + '"'; // TODO: set this after room joining confirmed
     }
   }
 
