@@ -43,8 +43,6 @@ const VariantSelectScreen: FC = () => {
           />
           <TraitFilterBar
             style={styles.TraitFilterBar}
-            filterBarHeight={48}
-            filterBarWidth={375}
             activeFilters={activeFilters}
             setActiveFilters={setActiveFilters}
           />

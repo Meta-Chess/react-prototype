@@ -8,18 +8,11 @@ import styled from "styled-components/native";
 interface Props {
   activeFilters: TraitClass[];
   setActiveFilters: (x: TraitClass[]) => void;
-  filterBarHeight: number;
-  filterBarWidth: number;
 }
 
-const TraitFilterRow: SFC<Props> = ({
-  activeFilters,
-  setActiveFilters,
-  filterBarHeight,
-  filterBarWidth,
-}) => {
+const TraitFilterRow: SFC<Props> = ({ activeFilters, setActiveFilters }) => {
   return (
-    <RowContainer filterBarHeight={filterBarHeight} filterBarWidth={filterBarWidth}>
+    <RowContainer>
       {Object.keys(traitInfo)
         .map((trait) => trait as TraitClass)
         .map((trait: TraitClass, index: number) => (
@@ -38,16 +31,9 @@ const TraitFilterRow: SFC<Props> = ({
   );
 };
 
-interface ContainerProps {
-  filterBarHeight: number;
-  filterBarWidth: number;
-}
-
-const RowContainer = styled(View)<ContainerProps>`
-  min-height: ${({ filterBarHeight }): string => filterBarHeight.toString() + "px"};
-  max-height: ${({ filterBarHeight }): string => filterBarHeight.toString() + "px"};
-  min-width: ${({ filterBarWidth }): string => filterBarWidth.toString() + "px"};
-  max-width: ${({ filterBarWidth }): string => filterBarWidth.toString() + "px"};
+const RowContainer = styled(View)`
+  width: 375;
+  height: 48;
   justify-content: space-evenly;
   flex-direction: row;
   align-self: center;

@@ -9,39 +9,17 @@ import { titleUppercase } from "utilities";
 interface Props {
   activeFilters: TraitClass[];
   setActiveFilters: (x: TraitClass[]) => void;
-  filterBarHeight: number;
-  filterBarWidth: number;
 }
 
-const TraitFilterBar: SFC<Props> = ({
-  style,
-  activeFilters,
-  setActiveFilters,
-  filterBarHeight,
-  filterBarWidth,
-}) => {
+const TraitFilterBar: SFC<Props> = ({ style, activeFilters, setActiveFilters }) => {
   const filterDisplayTitle =
     activeFilters.length === 0
       ? "No Filters"
       : titleUppercase(activeFilters[0].toString());
   return (
-    <View
-      style={[
-        style,
-        {
-          justifyContent: "flex-start",
-          alignItems: "center",
-          flexDirection: "column-reverse",
-        },
-      ]}
-    >
-      <TraitFilterRow
-        activeFilters={activeFilters}
-        setActiveFilters={setActiveFilters}
-        filterBarHeight={filterBarHeight}
-        filterBarWidth={filterBarWidth}
-      />
+    <View style={[style, { justifyContent: "flex-start", alignItems: "center" }]}>
       <FilterDisplay filterDisplayTitle={filterDisplayTitle} />
+      <TraitFilterRow activeFilters={activeFilters} setActiveFilters={setActiveFilters} />
     </View>
   );
 };
