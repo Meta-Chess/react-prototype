@@ -1,12 +1,11 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, Modal, Move, PieceDelta } from "./types";
+import { GameOptions, Modal, Move } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants";
 import { check, CompactRules, fatigue, atomic, Rule } from "./Rules";
 import { flatMap } from "lodash";
-import {GameClient} from "game/GameClient/GameClient";
 
 export class GameMaster {
   public interrupt: CompactRules;
@@ -22,11 +21,6 @@ export class GameMaster {
   public flipBoard: boolean;
   public overTheBoard: boolean;
 
-  // TODO: Consider restructure to encapsulate server details in a nice abstraction
-  private gameClient: GameClient | undefined;
-  public roomId: string | undefined;
-  public online: boolean;
-
   constructor(gameOptions: GameOptions, private renderer: Renderer) {
     const {
       variant,
@@ -36,8 +30,6 @@ export class GameMaster {
       atomicEnabled,
       flipBoard,
       overTheBoard,
-      roomId,
-      online,
     } = gameOptions;
     const rules = [...variants[variant].rules];
     if (checkEnabled) rules.push(check);
@@ -57,47 +49,27 @@ export class GameMaster {
     this.rules = rules;
     this.flipBoard = !!flipBoard;
     this.overTheBoard = !!overTheBoard;
-
-    this.online = !!online;
-    if (online) {
-      const setRoomId = (roomId: string | undefined) => {
-        this.roomId = '"' + roomId + '"';  // TODO: set this after room joining confirmed
-      }
-
-      const onMove = (move: Move) => {
-        this.game.doMove(move);
-        this.render();
-      };
-
-      this.gameClient = new GameClient(
-        "wss://3oxeo6rv48.execute-api.ap-southeast-2.amazonaws.com/dev", // TODO: Make this an environment variable
-          onMove,
-          setRoomId,
-          roomId
-      );
-    }
   }
 
   render(): void {
     this.renderer.render();
   }
 
-  onPress(location: string): void {
+  onPress(location: string): Move | undefined {
     this.hideModal();
     this.gameClones.forEach((clone) => clone.resetTo(this.game));
     const move = this.allowableMoves.find((m) => m.location === location);
     if (move && this.game.currentPlayer === this.selectedPieces[0]?.owner) {
-      this.gameClient?.sendMove(move);
       this.game.doMove(move);
       this.unselectAllPieces();
+      this.render();
+      return move;
+    } else if (this.selectedPieces.some((p) => p.location === location)) {
+      // pressing again on a selected piece
+      this.unselectAllPieces();
     } else {
-      if (this.selectedPieces.some((p) => p.location === location)) {
-        // pressing again on a selected piece
-        this.unselectAllPieces();
-      } else {
-        this.unselectAllPieces();
-        this.selectPieces(location);
-      }
+      this.unselectAllPieces();
+      this.selectPieces(location);
     }
     this.render();
   }
@@ -126,7 +98,7 @@ export class GameMaster {
     this.render();
   }
 
-  endGame(): void {
-    this.gameClient?.close();
-  }
+  // All games can be ended, but only online games need to do something with it at the moment
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  endGame(): void {}
 }

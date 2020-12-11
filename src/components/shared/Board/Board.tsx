@@ -42,8 +42,7 @@ const Board: SFC<OuterBoardProps> = ({ style, maxSize, ...props }) => {
   const { gameMaster } = useContext(GameContext);
   const { flipBoard } = useFlipDelay(gameMaster?.game?.currentPlayer);
   const shapeToken = gameMaster?.game.board.firstTokenWithName(TokenName.Shape);
-  const loading =
-    !gameMaster || (gameMaster.online && !gameMaster.roomId) || !dimensions.width;
+  const loading = !gameMaster || !dimensions.width;
 
   return (
     <View style={style}>

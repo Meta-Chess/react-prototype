@@ -9,6 +9,7 @@ import { VariantInfoCard } from "./VariantInfoCard";
 import { RulesInfoCard } from "./RulesInfoCard";
 import { PieceCredit } from "./PieceCredit";
 import { SelectedPieceInfoCard } from "./SelectedPieceInfoCard";
+import { OnlineGameMaster } from "game/OnlineGameMaster";
 
 interface Props {
   short?: boolean;
@@ -20,8 +21,8 @@ const Sidebar: SFC<Props> = ({ short, style }) => {
   const pieces = gameMaster?.selectedPieces;
   const rules = gameMaster?.rules;
   const variant = gameMaster?.variant;
-  const roomId = gameMaster?.roomId;
-  const online = gameMaster?.online;
+  const online = gameMaster instanceof OnlineGameMaster;
+  const roomId = gameMaster instanceof OnlineGameMaster ? gameMaster?.roomId : undefined;
 
   const { width, height } = useWindowDimensions();
 
