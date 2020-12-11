@@ -6,7 +6,7 @@ import { Game } from "./Game";
 import { VariantName, variants } from "./variants";
 import { check, CompactRules, fatigue, atomic, Rule } from "./Rules";
 import { flatMap } from "lodash";
-import { Path } from "./Pather/Path";
+import {GameClient} from "game/GameClient/GameClient";
 
 export class GameMaster {
   public interrupt: CompactRules;
@@ -23,7 +23,7 @@ export class GameMaster {
   public overTheBoard: boolean;
 
   // TODO: Consider restructure to encapsulate server details in a nice abstraction
-  private socket: WebSocket | undefined;
+  private gameClient: GameClient | undefined;
   public roomId: string | undefined;
   public online: boolean;
 
@@ -60,35 +60,21 @@ export class GameMaster {
 
     this.online = !!online;
     if (online) {
-      this.socket = new WebSocket(
-        "wss://3oxeo6rv48.execute-api.ap-southeast-2.amazonaws.com/dev"
-      ); // TODO: Make this an environment variable
-
-      const socket = this.socket;
-      this.socket.addEventListener("open", function (event) {
-        socket.send(JSON.stringify({ action: "joinRoom", roomId }));
-      });
+      const setRoomId = (roomId: string | undefined) => {
+        this.roomId = '"' + roomId + '"';  // TODO: set this after room joining confirmed
+      }
 
       const onMove = (move: Move) => {
         this.game.doMove(move);
         this.render();
       };
 
-      this.socket.addEventListener("message", function (event) {
-        console.log(event.data);
-        const move = JSON.parse(event.data);
-
-        const pieceDeltas: PieceDelta[] = move.pieceDeltas.map((delta: any) => {
-          return {
-            ...delta,
-            path: new Path(delta.path.start, delta.path.path),
-          };
-        });
-        console.dir(move.pieceDeltas);
-        onMove({ ...move, pieceDeltas });
-      });
-
-      this.roomId = '"' + roomId + '"'; // TODO: set this after room joining confirmed
+      this.gameClient = new GameClient(
+        "wss://3oxeo6rv48.execute-api.ap-southeast-2.amazonaws.com/dev", // TODO: Make this an environment variable
+          onMove,
+          setRoomId,
+          roomId
+      );
     }
   }
 
@@ -101,7 +87,7 @@ export class GameMaster {
     this.gameClones.forEach((clone) => clone.resetTo(this.game));
     const move = this.allowableMoves.find((m) => m.location === location);
     if (move && this.game.currentPlayer === this.selectedPieces[0]?.owner) {
-      this.socket?.send(JSON.stringify({ action: "move", roomId: this.roomId, move }));
+      this.gameClient?.sendMove(move);
       this.game.doMove(move);
       this.unselectAllPieces();
     } else {
@@ -141,6 +127,6 @@ export class GameMaster {
   }
 
   endGame(): void {
-    this.socket?.close();
+    this.gameClient?.close();
   }
 }
