@@ -43,7 +43,7 @@ async function setGameMasterToNewGame(
 ): Promise<void> {
   const newGameMaster = gameOptions
     ? gameOptions.online
-      ? await OnlineGameMaster.connectNewGame(renderer, gameOptions)
+      ? await OnlineGameMaster.connectNewGame(renderer, gameOptions, gameOptions.roomId)
       : new GameMaster(gameOptions, renderer)
     : undefined;
   setGameMaster(newGameMaster);
