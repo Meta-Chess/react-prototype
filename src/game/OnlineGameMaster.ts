@@ -13,13 +13,16 @@ export class OnlineGameMaster extends GameMaster {
     super(gameOptions, renderer);
   }
 
+  // wss://3oxeo6rv48.execute-api.ap-southeast-2.amazonaws.com/dev
+
   static async connectNewGame(
     renderer: Renderer,
     gameOptions: GameOptions,
     roomId?: string | undefined
   ): Promise<OnlineGameMaster> {
     const gameClient = new GameClient(
-      "wss://3oxeo6rv48.execute-api.ap-southeast-2.amazonaws.com/dev", // TODO: Make this an environment variable
+      process.env.SERVER_URL ||
+        "wss://3oxeo6rv48.execute-api.ap-southeast-2.amazonaws.com/dev",
       roomId
     );
 

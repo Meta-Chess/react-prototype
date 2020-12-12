@@ -24,7 +24,6 @@ const GameProvider: FC<Props> = ({ children, gameOptions }) => {
   }
 
   useEffect((): void => {
-    // TODO: Extract this to a factory function
     const renderer = new Renderer(setUpdateCounter);
     setGameMasterToNewGame(gameOptions, renderer, setGameMaster);
   }, [gameOptions]); // eslint-disable-line react-hooks/exhaustive-deps
