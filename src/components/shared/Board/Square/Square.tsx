@@ -112,15 +112,15 @@ const colorIndex = ({
 
 const OuterContainer = styled(View)<{ size: number }>`
   overflow: visible;
-  width: ${({ size }): number => size};
-  height: ${({ size }): number => size};
+  width: ${({ size }): number => size}px;
+  height: ${({ size }): number => size}px;
   background-color: transparent;
 `;
 
 const PressableContainer = styled(TouchableOpacity)<{ size: number }>`
   position: absolute;
-  width: ${({ size }): number => size};
-  height: ${({ size }): number => size};
+  width: ${({ size }): number => size}px;
+  height: ${({ size }): number => size}px;
 `;
 
 const PositioningContainer = styled(View)<{ size: number }>`

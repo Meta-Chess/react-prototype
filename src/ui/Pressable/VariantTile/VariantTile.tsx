@@ -58,8 +58,8 @@ const VariantTileBody = styled(View)`
 `;
 
 const TitleText = styled(Text)`
-  padding-horizontal: 8;
-  padding-vertical: 4;
-  height: 30;
+  padding-horizontal: 8px;
+  padding-vertical: 4px;
+  height: 30px;
   text-align: center;
 `;

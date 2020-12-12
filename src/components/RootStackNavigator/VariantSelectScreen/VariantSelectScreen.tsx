@@ -62,17 +62,17 @@ const ScreenContainer = styled(View)<{ height: number; width: number }>`
   background-color: ${Colors.DARKEST.string()};
   justify-content: space-between;
   flex-direction: column;
-  height: ${({ height }): number => height};
-  width: ${({ width }): number => width};
-  padding-horizontal: 16;
-  padding-vertical: 32;
+  height: ${({ height }): number => height}px;
+  width: ${({ width }): number => width}px;
+  padding-horizontal: 16px;
+  padding-vertical: 32px;
 `;
 
 const OptionContainer = styled(View)`
   flex-direction: row;
   justify-content: center;
   align-items: flex-end;
-  margin-top: 8;
+  margin-top: 8px;
 `;
 
 export { VariantSelectScreen };
