@@ -8,6 +8,7 @@ import { GridArrangement } from "./GridArrangement";
 import { GameContext } from "game";
 import { Square } from "game/Board";
 import { SquareShape } from "game/types";
+import { HexTile } from "./HexTile";
 import { Highlight } from "./Highlight";
 
 interface Props {
@@ -18,6 +19,7 @@ interface Props {
 
 const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
   const HEX_SQUARE_EMPTY_RATIO = 2 / Math.sqrt(3) - 1;
+  const GRAPHIC_HEX_TILING = true; //true for Hex over Circle, bundle into graphic options
   const { gameMaster } = useContext(GameContext);
   if (!gameMaster) return null;
 
@@ -47,43 +49,52 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
   };
 
   return (
-    <PressableContainer
-      style={[
-        style,
-        {
-          width: size,
-          height: size,
-          backgroundColor,
-          borderRadius: shape === SquareShape.Hex ? 50 : 0,
-        },
-      ]}
-      onPress={onPress}
-      activeOpacity={1}
-    >
-      <PositioningContainer size={pieceScaleFactor * size}>
-        <GridArrangement>
-          {piecesUnderSquare.map((piece) => (
-            <ShadowPiece
-              piece={gameMaster.game.board.pieces[piece]}
-              size={pieceSize}
-              key={piece}
-            />
-          ))}
-        </GridArrangement>
-      </PositioningContainer>
-      <Highlight gameMaster={gameMaster} square={square} />
-      <PositioningContainer size={pieceScaleFactor * size}>
-        <GridArrangement>
-          {piecesOnSquare.map((piece) => (
-            <Piece
-              piece={gameMaster.game.board.pieces[piece]}
-              size={pieceSize}
-              key={piece}
-            />
-          ))}
-        </GridArrangement>
-      </PositioningContainer>
-    </PressableContainer>
+    <OuterContainer size={size}>
+      {shape === SquareShape.Hex && GRAPHIC_HEX_TILING && (
+        <HexTile radius={size / 2} color={backgroundColor} />
+      )}
+      <PressableContainer
+        size={size}
+        style={[
+          style,
+          {
+            backgroundColor:
+              shape === SquareShape.Hex && GRAPHIC_HEX_TILING
+                ? "transparent"
+                : backgroundColor,
+            borderRadius: shape === SquareShape.Hex ? 50 : 0,
+            overflow:
+              shape === SquareShape.Hex && GRAPHIC_HEX_TILING ? "visible" : "hidden",
+          },
+        ]}
+        onPress={onPress}
+        activeOpacity={1}
+      >
+        <PositioningContainer size={pieceScaleFactor * size}>
+          <GridArrangement>
+            {piecesUnderSquare.map((piece) => (
+              <ShadowPiece
+                piece={gameMaster.game.board.pieces[piece]}
+                size={pieceSize}
+                key={piece}
+              />
+            ))}
+          </GridArrangement>
+        </PositioningContainer>
+        <Highlight gameMaster={gameMaster} square={square} size={size} shape={shape} />
+        <PositioningContainer size={pieceScaleFactor * size}>
+          <GridArrangement>
+            {piecesOnSquare.map((piece) => (
+              <Piece
+                piece={gameMaster.game.board.pieces[piece]}
+                size={pieceSize}
+                key={piece}
+              />
+            ))}
+          </GridArrangement>
+        </PositioningContainer>
+      </PressableContainer>
+    </OuterContainer>
   );
 };
 
@@ -99,8 +110,17 @@ const colorIndex = ({
   return shape === SquareShape.Hex ? rank % 3 : (rank + file) % 2;
 };
 
-const PressableContainer = styled(TouchableOpacity)`
-  overflow: hidden;
+const OuterContainer = styled(View)<{ size: number }>`
+  overflow: visible;
+  width: ${({ size }): number => size}px;
+  height: ${({ size }): number => size}px;
+  background-color: transparent;
+`;
+
+const PressableContainer = styled(TouchableOpacity)<{ size: number }>`
+  position: absolute;
+  width: ${({ size }): number => size}px;
+  height: ${({ size }): number => size}px;
 `;
 
 const PositioningContainer = styled(View)<{ size: number }>`

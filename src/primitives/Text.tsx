@@ -5,10 +5,12 @@ import { Skeleton } from "./Skeleton";
 import { Colors } from "./Colors";
 import { RobotoMono_400Regular, useFonts } from "@expo-google-fonts/roboto-mono";
 
-const sizes = {
+export const sizes = {
+  BodyXS: { size: 12, lineHeight: 16 },
   BodyS: { size: 14, lineHeight: 20 },
   BodyM: { size: 16, lineHeight: 20 },
   BodyL: { size: 18, lineHeight: 20 },
+  DisplayXS: { size: 16, lineHeight: 20 },
   DisplayS: { size: 20, lineHeight: 28 },
   DisplayM: { size: 24, lineHeight: 32 },
   DisplayL: { size: 32, lineHeight: 40 },
@@ -25,6 +27,7 @@ interface Props {
   loading?: boolean;
   monospaceNumbers?: boolean;
   onPress?: () => void;
+  numberOfLines?: number;
   selectable?: boolean;
   size?: number;
   style?: StyleProp<TextStyle>;
@@ -42,6 +45,7 @@ const Text: FC<Props> = (props) => {
     weight = "normal",
     loading = false,
     monospaceNumbers = false,
+    numberOfLines,
     onPress,
     selectable = false,
     style = {},
@@ -66,6 +70,7 @@ const Text: FC<Props> = (props) => {
       ]}
       selectable={selectable}
       onPress={onPress}
+      numberOfLines={numberOfLines}
     >
       {children}
     </NativeText>

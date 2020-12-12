@@ -7,6 +7,7 @@ import { GameContext } from "game";
 import { TokenName } from "game/types";
 import { Square } from "./Square";
 import { InnerBoardProps } from "components/shared/Board/Board";
+import { Styles } from "primitives/Styles";
 
 const SquareBoard: SFC<InnerBoardProps> = ({
   style,
@@ -89,7 +90,7 @@ const SquareBoard: SFC<InnerBoardProps> = ({
 const BoardContainer = styled(View)`
   position: relative;
   background: ${Colors.DARK.string()};
-  box-shadow: 0px 1px 8px ${Colors.BLACK.fade(0.5).string()};
+  ${Styles.BOX_SHADOW_STRONG}
 `;
 
 const SquaresContainer = styled(View)`

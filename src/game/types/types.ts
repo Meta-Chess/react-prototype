@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { Direction } from "./Direction";
-import { Piece, VariantName } from "game";
+import { Piece, VariantName, Rule } from "game";
 import { Path } from "game/Pather/Path";
 
 export interface gaitData {
@@ -94,14 +94,16 @@ export enum SquareShape {
 
 export interface GameOptions {
   variant: VariantName;
-  time?: number;
+  customTitle?: string;
+  customRules?: Rule[];
+  time?: number | undefined;
   checkEnabled?: boolean;
-  fatigueEnabled?: boolean;
-  atomicEnabled?: boolean;
   flipBoard?: boolean;
   overTheBoard?: boolean;
   roomId?: string;
   online?: boolean;
+  fatigueEnabled?: boolean;
+  atomicEnabled?: boolean;
 }
 
 export interface Modal {

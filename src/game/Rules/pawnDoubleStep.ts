@@ -27,7 +27,7 @@ export const pawnDoubleStep: Rule = {
     ],
     piece,
   }),
-  onBoardCreatedModify: ({ board }) => {
+  afterBoardCreation: ({ board }) => {
     board.addPieceTokensByRule((piece: Piece) =>
       piece.name === PieceName.Pawn ? [pawnDoubleStepToken] : []
     );

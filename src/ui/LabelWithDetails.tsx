@@ -4,6 +4,7 @@ import { Colors, SFC, Text } from "primitives";
 import styled from "styled-components/native";
 import { GameContext } from "game";
 import { Triangle } from "./Triangle";
+import { Styles } from "primitives/Styles";
 
 interface Props {
   label: string;
@@ -79,7 +80,7 @@ const ModalContainer = styled(View)`
   padding: 12px;
   background-color: ${Colors.DARKISH.toString()};
   border-radius: 4px;
-  box-shadow: 0px 1px 4px ${Colors.BLACK.string()};
+  ${Styles.BOX_SHADOW}
 `;
 
 interface Layout {

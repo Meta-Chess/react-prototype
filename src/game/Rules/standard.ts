@@ -12,7 +12,7 @@ export const standard: Rule = {
     board.addSquares(generateStandardSquares());
     return { board };
   },
-  onBoardCreatedModify: ({ board }) => {
+  onBoardCreate: ({ board }) => {
     const bounds = board.rankAndFileBounds();
     board.addAdjacenciesByRule(standardAdjacencies(bounds));
     board.addPiecesByRule(standardPiecesRule);

@@ -5,6 +5,7 @@ import { VariantName, variants } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
 import { GameOptions } from "game/types";
+import { Screens, useNavigation } from "navigation";
 
 interface Props {
   gameOptions: GameOptions;
@@ -18,15 +19,16 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
     setGameOptions({ ...gameOptions, overTheBoard });
   const setFlipBoard = (flipBoard: boolean): void =>
     setGameOptions({ ...gameOptions, flipBoard });
+  const setCheckEnabled = (checkEnabled: boolean): void =>
+    setGameOptions({ ...gameOptions, checkEnabled });
   const setFatigueEnabled = (fatigueEnabled: boolean): void =>
     setGameOptions({ ...gameOptions, fatigueEnabled });
   const setAtomicEnabled = (atomicEnabled: boolean): void =>
     setGameOptions({ ...gameOptions, atomicEnabled });
-  const setCheckEnabled = (checkEnabled: boolean): void =>
-    setGameOptions({ ...gameOptions, checkEnabled });
   const setTime = (time: number): void => setGameOptions({ ...gameOptions, time });
   const setVariant = (variant: VariantName): void =>
     setGameOptions({ ...gameOptions, variant });
+  const navigation = useNavigation();
 
   return (
     <ControlsContainer style={style}>
@@ -54,21 +56,21 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox
+        value={!!gameOptions.checkEnabled}
+        setValue={setCheckEnabled}
+        label={"Check enabled"}
+        style={{ marginTop: 24 }}
+      />
+      <LabeledCheckBox
         value={!!gameOptions.fatigueEnabled}
         setValue={setFatigueEnabled}
-        label={"Fatigue on move"}
+        label={"Fatigue enabled"}
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox
         value={!!gameOptions.atomicEnabled}
         setValue={setAtomicEnabled}
         label={"Atomic enabled"}
-        style={{ marginTop: 24 }}
-      />
-      <LabeledCheckBox
-        value={!!gameOptions.checkEnabled}
-        setValue={setCheckEnabled}
-        label={"Check enabled"}
         style={{ marginTop: 24 }}
       />
       <SelectInput
@@ -79,12 +81,18 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
         style={{ marginTop: 24 }}
         zIndex={5000}
       />
-      <SelectInput
+      <SelectInput //note: windows scrollbar is gross
         options={variantOptions}
         onChange={(value): void => {
-          setVariant(value);
+          value !== "Variant Fusion"
+            ? setVariant(value)
+            : navigation.navigate<Screens.VariantSelectScreen>(
+                Screens.VariantSelectScreen,
+                {
+                  gameOptions,
+                }
+              );
         }}
-        style={{ marginTop: 32 }}
         zIndex={4000}
       />
     </ControlsContainer>
@@ -109,6 +117,8 @@ const timeOptions = [
 
 const defaultGameOptions = {
   variant: variantNames[0] as VariantName,
+  customTitle: "",
+  customRules: [],
   time: undefined,
   checkEnabled: true,
   fatigueEnabled: false,

@@ -17,7 +17,7 @@ export const polar: Rule = {
         }
       : { gait, remainingSteps, currentSquare };
   },
-  onBoardCreatedModify: ({ board }) => {
+  afterBoardCreation: ({ board }) => {
     const polarSetup = generatePolarSetup(board.rankAndFileBounds());
     board.addSquares(polarSetup.squares);
     board.addAdjacenciesByRule(polarSetup.adjacenciesRule);
