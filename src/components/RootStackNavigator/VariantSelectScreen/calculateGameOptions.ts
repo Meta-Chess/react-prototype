@@ -18,7 +18,7 @@ export function calculateGameOptions(selectedVariants: FutureVariantName[]): Gam
           ? integrateWithOtherRules[rule.name](rules)
           : [rule]
       )
-      .sort((r1) => (r1.name === "Fatigue" ? 1 : -1)) //just temp ordering fatigue later
+      .sort((r1) => (r1.name === "Fatigue" ? 1 : -1)) //just temp ordering fatigue later TODO: Fix the bug that this handles properly - reset cloned pieces properly?
       .concat([check]) //just temp adding check
   );
 
