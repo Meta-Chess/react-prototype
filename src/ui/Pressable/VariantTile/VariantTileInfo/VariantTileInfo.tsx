@@ -3,7 +3,7 @@ import { SFC, Text, Colors } from "primitives";
 import { View } from "react-native";
 import { FutureVariant } from "game";
 import { TraitLabel } from "./TraitLabel";
-import { TraitClass } from "game/types";
+import { TraitClass } from "game/variants";
 import styled from "styled-components/native";
 
 interface VariantTileInfoProps {

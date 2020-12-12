@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { Colors, SFC, Text } from "primitives";
-import { TraitClass } from "game/types";
+import { TraitClass } from "game/variants";
 import { TraitFilterRow } from "./TraitFilterRow";
 import { titleUppercase } from "utilities";
 

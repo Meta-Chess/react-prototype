@@ -2,7 +2,7 @@ import React from "react";
 import { View, ScrollView } from "react-native";
 import { SFC } from "primitives";
 import { VariantTile } from "ui/Pressable/VariantTile";
-import { FutureVariantName, futureVariants } from "game/variants";
+import { FutureVariantName, futureVariants } from "game/variants/variants";
 import styled from "styled-components/native";
 interface Props {
   displayVariants: FutureVariantName[];

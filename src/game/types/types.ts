@@ -94,12 +94,12 @@ export enum SquareShape {
 
 export interface GameOptions {
   variant: VariantName;
-  customTitle: string;
-  customRules: Rule[];
-  time: number | undefined;
-  checkEnabled: boolean;
-  flipBoard: boolean;
-  overTheBoard: boolean;
+  customTitle?: string;
+  customRules?: Rule[];
+  time?: number | undefined;
+  checkEnabled?: boolean;
+  flipBoard?: boolean;
+  overTheBoard?: boolean;
   roomId?: string;
   online?: boolean;
   fatigueEnabled?: boolean;

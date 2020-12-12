@@ -13,11 +13,11 @@ import {
   atomic,
   fatigue,
   Interception,
-} from "./Rules";
+} from "../Rules";
 import { verticallyCylindrical } from "game/Rules/verticallyCylindrical";
-import { TraitClass } from "game/types";
+import { TraitClass } from "game/variants";
 import * as VariantImages from "primitives/VariantImage";
-import { Rule } from "./Rules";
+import { Rule } from "../Rules";
 
 export const integrateWithOtherRules: { [key: string]: (rules: Rule[]) => Rule[] } = {
   Cylinder: (rules: Rule[]): Rule[] => {

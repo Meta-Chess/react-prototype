@@ -4,7 +4,7 @@ import {
   integrateWithOtherRules,
   futureVariants,
   FutureVariantName,
-} from "game/variants";
+} from "game/variants/variants";
 import { deduplicateByName } from "utilities";
 import { check } from "game/Rules";
 

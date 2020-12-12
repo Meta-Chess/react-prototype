@@ -62,13 +62,13 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox
-        value={gameOptions.fatigueEnabled}
+        value={!!gameOptions.fatigueEnabled}
         setValue={setFatigueEnabled}
         label={"Fatigue enabled"}
         style={{ marginTop: 24 }}
       />
       <LabeledCheckBox
-        value={gameOptions.atomicEnabled}
+        value={!!gameOptions.atomicEnabled}
         setValue={setAtomicEnabled}
         label={"Atomic enabled"}
         style={{ marginTop: 24 }}

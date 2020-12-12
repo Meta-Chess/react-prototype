@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { SFC, Colors } from "primitives";
 import { TraitFilter } from "./TraitFilter";
-import { traitInfo, TraitClass } from "game/types";
+import { traitInfo, TraitClass } from "game/variants";
 import styled from "styled-components/native";
 import { Styles } from "primitives/Styles";
 

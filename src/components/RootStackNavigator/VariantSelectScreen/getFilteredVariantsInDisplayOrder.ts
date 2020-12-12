@@ -1,5 +1,5 @@
-import { FutureVariantName, futureVariants } from "game/variants";
-import { TraitClass } from "game/types";
+import { FutureVariantName, futureVariants } from "game/variants/variants";
+import { TraitClass } from "game/variants";
 
 export function getFilteredVariantsInDisplayOrder(
   activeFilters: TraitClass[]

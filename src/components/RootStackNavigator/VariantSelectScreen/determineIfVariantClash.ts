@@ -1,4 +1,4 @@
-import { FutureVariantName, variantsBlacklist } from "game/variants";
+import { FutureVariantName, variantsBlacklist } from "game/variants/variants";
 
 export const determineIfVariantClash = (
   selectedVariants: FutureVariantName[]

@@ -3,7 +3,7 @@ import { Renderer } from "./Renderer";
 import { GameOptions, Modal, Move } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
-import { VariantName, variants } from "./variants";
+import { VariantName, variants } from "./variants/variants";
 import { check, CompactRules, fatigue, atomic, Rule } from "./Rules";
 import { flatMap } from "lodash";
 import socketIOClient from "socket.io-client";
@@ -43,10 +43,10 @@ export class GameMaster {
       online,
     } = gameOptions;
 
-    const rules = customRules.length === 0 ? [...variants[variant].rules] : customRules;
-    if (checkEnabled && customRules.length === 0) rules.push(check);
-    if (fatigueEnabled && customRules.length === 0) rules.push(fatigue);
-    if (atomicEnabled && customRules.length === 0) rules.push(atomic);
+    const rules = !customRules?.length ? [...variants[variant].rules] : customRules;
+    if (checkEnabled && !customRules?.length) rules.push(check);
+    if (fatigueEnabled && !customRules?.length) rules.push(fatigue);
+    if (atomicEnabled && !customRules?.length) rules.push(atomic);
     this.interrupt = new CompactRules(rules);
     this.game = Game.createGame(this.interrupt, time);
     this.gameClones = [
@@ -57,7 +57,7 @@ export class GameMaster {
     ];
     this.selectedPieces = [];
     this.allowableMoves = [];
-    this.title = customTitle; //TODO bundle this into other info
+    this.title = customTitle || "Chess"; //TODO bundle this into other info
     this.variant = variant;
     this.rules = rules;
     this.flipBoard = !!flipBoard;
