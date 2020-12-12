@@ -1,8 +1,7 @@
 import React from "react";
 import { View } from "react-native";
-import { SFC } from "primitives";
+import { Colors, SFC, Text } from "primitives";
 import { TraitClass } from "game/types";
-import { FilterDisplay } from "./FilterDisplay";
 import { TraitFilterRow } from "./TraitFilterRow";
 import { titleUppercase } from "utilities";
 
@@ -18,8 +17,14 @@ const TraitFilterBar: SFC<Props> = ({ activeFilters, setActiveFilters, style }) 
       : titleUppercase(activeFilters[0].toString());
   return (
     <View style={[style, { alignItems: "center" }]}>
-      <FilterDisplay filterDisplayTitle={filterDisplayTitle} />
-      <TraitFilterRow activeFilters={activeFilters} setActiveFilters={setActiveFilters} />
+      <Text cat={"DisplayS"} weight="heavy" color={Colors.TEXT.LIGHT.toString()}>
+        {filterDisplayTitle}
+      </Text>
+      <TraitFilterRow
+        activeFilters={activeFilters}
+        setActiveFilters={setActiveFilters}
+        style={{ marginTop: 8 }}
+      />
     </View>
   );
 };

@@ -11,9 +11,9 @@ interface Props {
   setActiveFilters: (x: TraitClass[]) => void;
 }
 
-const TraitFilterRow: SFC<Props> = ({ activeFilters, setActiveFilters }) => {
+const TraitFilterRow: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => {
   return (
-    <RowContainer>
+    <RowContainer style={style}>
       {Object.keys(traitInfo)
         .map((trait) => trait as TraitClass)
         .map((trait: TraitClass, index: number) => (
