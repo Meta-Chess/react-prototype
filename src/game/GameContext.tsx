@@ -3,6 +3,7 @@ import { Renderer } from "./Renderer";
 import { GameOptions } from "game/types";
 import { GameMaster } from "game/GameMaster";
 import { useWindowDimensions } from "react-native";
+import { OnlineGameMaster } from "game/OnlineGameMaster";
 
 const GameContext = createContext<{ gameMaster?: GameMaster }>({});
 
@@ -22,15 +23,29 @@ const GameProvider: FC<Props> = ({ children, gameOptions }) => {
     gameMaster?.hideModal();
   }
 
-  useEffect((): (() => void) => {
-    const newGameMaster = gameOptions
-      ? new GameMaster(gameOptions, new Renderer(setUpdateCounter))
-      : undefined;
-    setGameMaster(newGameMaster);
-    return (): void => newGameMaster?.endGame();
+  useEffect((): void => {
+    const renderer = new Renderer(setUpdateCounter);
+    setGameMasterToNewGame(gameOptions, renderer, setGameMaster);
   }, [gameOptions]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect((): (() => void) => {
+    return (): void => gameMaster?.endGame();
+  }, [gameMaster]);
 
   return <GameContext.Provider value={{ gameMaster }}>{children}</GameContext.Provider>;
 };
+
+async function setGameMasterToNewGame(
+  gameOptions: GameOptions,
+  renderer: Renderer,
+  setGameMaster: (gm: GameMaster | undefined) => void
+): Promise<void> {
+  const newGameMaster = gameOptions
+    ? gameOptions.online
+      ? await OnlineGameMaster.connectNewGame(renderer, gameOptions, gameOptions.roomId)
+      : new GameMaster(gameOptions, renderer)
+    : undefined;
+  setGameMaster(newGameMaster);
+}
 
 export { GameProvider, GameContext };

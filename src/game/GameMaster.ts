@@ -6,7 +6,6 @@ import { Game } from "./Game";
 import { VariantName, variants } from "./variants/variants";
 import { check, CompactRules, fatigue, atomic, Rule } from "./Rules";
 import { flatMap } from "lodash";
-import socketIOClient from "socket.io-client";
 
 export class GameMaster {
   public interrupt: CompactRules;
@@ -23,11 +22,6 @@ export class GameMaster {
   public flipBoard: boolean;
   public overTheBoard: boolean;
 
-  // TODO: Consider restructure to encapsulate server details in a nice abstraction
-  private socket: SocketIOClient.Socket | undefined;
-  public roomId: string | undefined;
-  public online: boolean;
-
   constructor(gameOptions: GameOptions, private renderer: Renderer) {
     const {
       variant,
@@ -39,8 +33,6 @@ export class GameMaster {
       atomicEnabled,
       flipBoard,
       overTheBoard,
-      roomId,
-      online,
     } = gameOptions;
 
     const rules = !customRules?.length ? [...variants[variant].rules] : customRules;
@@ -62,42 +54,27 @@ export class GameMaster {
     this.rules = rules;
     this.flipBoard = !!flipBoard;
     this.overTheBoard = !!overTheBoard;
-
-    this.online = !!online;
-    if (online) {
-      this.socket = socketIOClient("http://localhost:8000"); // TODO: Make this an environment variable
-      this.socket.on("roomId", (roomId: string): void => {
-        this.roomId = roomId;
-        this.render();
-      });
-      this.socket.on("move", (move: Move) => {
-        this.game.doMove(move);
-        this.render();
-      });
-      this.socket.emit("joinRoom", { roomId });
-    }
   }
 
   render(): void {
     this.renderer.render();
   }
 
-  onPress(location: string): void {
+  onPress(location: string): Move | undefined {
     this.hideModal();
     this.gameClones.forEach((clone) => clone.resetTo(this.game));
     const move = this.allowableMoves.find((m) => m.location === location);
     if (move && this.game.currentPlayer === this.selectedPieces[0]?.owner) {
-      this.socket?.emit("move", { move, roomId: this.roomId });
       this.game.doMove(move);
       this.unselectAllPieces();
+      this.render();
+      return move;
+    } else if (this.selectedPieces.some((p) => p.location === location)) {
+      // pressing again on a selected piece
+      this.unselectAllPieces();
     } else {
-      if (this.selectedPieces.some((p) => p.location === location)) {
-        // pressing again on a selected piece
-        this.unselectAllPieces();
-      } else {
-        this.unselectAllPieces();
-        this.selectPieces(location);
-      }
+      this.unselectAllPieces();
+      this.selectPieces(location);
     }
     this.render();
   }
@@ -126,7 +103,7 @@ export class GameMaster {
     this.render();
   }
 
-  endGame(): void {
-    this.socket?.disconnect();
-  }
+  // All games can be ended, but only online games need to do something with it at the moment
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  endGame(): void {}
 }
