@@ -17,7 +17,7 @@ const TraitFilterBar: SFC<Props> = ({ style, activeFilters, setActiveFilters }) 
       ? "No Filters"
       : titleUppercase(activeFilters[0].toString());
   return (
-    <View style={[style, { justifyContent: "flex-start", alignItems: "center" }]}>
+    <View style={[style, { alignItems: "center" }]}>
       <FilterDisplay filterDisplayTitle={filterDisplayTitle} />
       <TraitFilterRow activeFilters={activeFilters} setActiveFilters={setActiveFilters} />
     </View>
