@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { FutureVariant } from "game";
 import { TraitLabel } from "./TraitLabel";
 import { TraitClass } from "game/types";
+import styled from "styled-components/native";
 
 interface VariantTileInfoProps {
   variant: FutureVariant;
@@ -11,32 +12,24 @@ interface VariantTileInfoProps {
 
 const VariantTileInfo: SFC<VariantTileInfoProps> = ({ style, variant }) => {
   return (
-    <View
-      style={[
-        style,
-        {
-          justifyContent: "space-between",
-          backgroundColor: Colors.DARK.toString(),
-        },
-      ]}
-    >
+    <Container style={style}>
       <View>
         <Text cat="BodyXS" color={Colors.TEXT.LIGHT.toString()} numberOfLines={4}>
           {variant.shortDescription}
         </Text>
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          marginBottom: 2,
-        }}
-      >
+      <View style={{ flexDirection: "row", marginBottom: 2 }}>
         {variant.TraitClass.map((trait: TraitClass, index: number) => (
           <TraitLabel key={index} trait={trait} style={{ marginRight: 8 }} />
         ))}
       </View>
-    </View>
+    </Container>
   );
 };
+
+const Container = styled(View)`
+  justify-content: space-between;
+  background-color: ${Colors.DARK.toString()};
+`;
 
 export { VariantTileInfo };
