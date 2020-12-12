@@ -11,7 +11,7 @@ interface Props {
   variantClash: boolean;
 }
 
-const CardGrid: SFC<Props> = ({
+const VariantCardGrid: SFC<Props> = ({
   style,
   displayVariants,
   selectedVariants,
@@ -19,15 +19,7 @@ const CardGrid: SFC<Props> = ({
   variantClash,
 }) => {
   return (
-    <View
-      style={[
-        style,
-        {
-          justifyContent: "center",
-          alignItems: "center",
-        },
-      ]}
-    >
+    <View style={style}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <CardContainer>
           {displayVariants.map((variant) => {
@@ -35,10 +27,10 @@ const CardGrid: SFC<Props> = ({
               <VariantTile
                 key={variant}
                 variant={futureVariants[variant]}
-                selected={selectedVariants.some((x) => x === variant)}
+                selected={selectedVariants.includes(variant)}
                 clash={variantClash}
                 onPress={(): void =>
-                  selectedVariants.some((x) => x === variant)
+                  selectedVariants.includes(variant)
                     ? setSelectedVariants(selectedVariants.filter((x) => x !== variant))
                     : setSelectedVariants([...selectedVariants, variant])
                 }
@@ -53,11 +45,8 @@ const CardGrid: SFC<Props> = ({
 
 const CardContainer = styled(View)`
   justify-content: center;
-  align-items: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
-  align-content: flex-start;
-  margin-vertical: -1px;
 `;
 
-export { CardGrid };
+export { VariantCardGrid };

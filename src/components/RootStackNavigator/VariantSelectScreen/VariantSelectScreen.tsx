@@ -5,7 +5,7 @@ import { Colors } from "primitives";
 import { FutureVariantName } from "game/variants";
 import { TraitClass } from "game/types";
 import { useNavigation, Screens } from "navigation";
-import { CardGrid } from "./CardGrid";
+import { VariantCardGrid } from "./VariantCardGrid";
 import { TraitFilterBar } from "./TraitFilterBar";
 import { calculateGameOptions } from "./calculateGameOptions";
 import { determineIfVariantClash } from "./determineIfVariantClash";
@@ -25,7 +25,7 @@ const VariantSelectScreen: FC = () => {
 
   return (
     <ScreenContainer width={width} height={height}>
-      <CardGrid
+      <VariantCardGrid
         style={{ flex: 1 }}
         displayVariants={displayVariants}
         selectedVariants={selectedVariants}
