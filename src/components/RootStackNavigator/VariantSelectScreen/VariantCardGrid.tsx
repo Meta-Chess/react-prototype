@@ -34,6 +34,7 @@ const VariantCardGrid: SFC<Props> = ({
                     ? setSelectedVariants(selectedVariants.filter((x) => x !== variant))
                     : setSelectedVariants([...selectedVariants, variant])
                 }
+                style={{ margin: 4 }}
               />
             );
           })}

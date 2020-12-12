@@ -6,6 +6,8 @@ import { FutureVariant } from "game";
 import { VariantTileInfo } from "./VariantTileInfo";
 import { VariantTileImage } from "./VariantTileImage";
 import { Styles } from "primitives/Styles";
+import { AbsoluteView } from "ui";
+import Color from "color";
 
 interface Props {
   variant: FutureVariant;
@@ -15,88 +17,48 @@ interface Props {
 }
 
 export const VariantTile: SFC<Props> = ({ style, variant, selected, clash, onPress }) => {
-  const selectColor: string = clash ? Colors.ERROR.toString() : Colors.SUCCESS.toString();
-  const tileHeight = "166px";
-  const tileWidth = "300px";
+  const color = !selected ? Colors.DARKISH : clash ? Colors.ERROR : Colors.SUCCESS;
 
   return (
-    <OuterContainer
-      style={style}
-      selected={selected}
-      selectColor={selectColor}
-      tileHeight={tileHeight}
-      tileWidth={tileWidth}
-    >
-      <TouchableOpacity
-        style={{ flex: 1, flexDirection: "column" }}
-        onPress={onPress}
-        activeOpacity={1}
+    <TouchableContainer style={style} onPress={onPress} activeOpacity={1} color={color}>
+      <TitleText
+        cat="DisplayXS"
+        weight="heavy"
+        color={Colors.TEXT.LIGHT.toString()}
+        numberOfLines={1}
       >
-        <TitleText
-          cat="DisplayXS"
-          weight="heavy"
-          color={Colors.TEXT.LIGHT.toString()}
-          numberOfLines={1}
-        >
-          {variant.title}
-        </TitleText>
+        {variant.title}
+      </TitleText>
 
-        <VariantTileBody>
-          <VariantTileInfo
-            variant={variant}
-            style={{ flex: 1, marginHorizontal: "12px", marginVertical: "8px" }}
-          />
-          <VariantTileImage
-            variant={variant}
-            style={{ width: 120, height: 120, margin: "8px" }}
-          />
-        </VariantTileBody>
-      </TouchableOpacity>
-      {!variant.implemented && (
-        <CoverView style={style} tileHeight={tileHeight} tileWidth={tileWidth} />
-      )}
-    </OuterContainer>
+      <VariantTileBody>
+        <VariantTileInfo variant={variant} style={{ flex: 1 }} />
+        <VariantTileImage
+          variant={variant}
+          style={{ width: 120, height: 120, margin: 8 }}
+        />
+      </VariantTileBody>
+      {!variant.implemented && <CoverView />}
+    </TouchableContainer>
   );
 };
 
-interface OuterContainerProps {
-  selected: boolean;
-  selectColor: string;
-  tileHeight: string;
-  tileWidth: string;
-}
-
-const OuterContainer = styled(View)<OuterContainerProps>`
-  color: black;
-  margin: 4px;
-  background: ${({ selected, selectColor }): string =>
-    selected ? selectColor : Colors.DARKISH.toString()};
-  flex-direction: row;
-  height: ${({ tileHeight }): string => tileHeight};
-  width: ${({ tileWidth }): string => tileWidth};
+const TouchableContainer = styled(TouchableOpacity)<{ color: Color }>`
+  background: ${({ color }): string => color.toString()};
+  width: 300px;
   ${Styles.BOX_SHADOW_STRONG}
 `;
 
-interface CoverViewProps {
-  tileHeight: string;
-  tileWidth: string;
-}
-
-const CoverView = styled(View)<CoverViewProps>`
-  position: absolute;
+const CoverView = styled(AbsoluteView)`
   background-color: ${Colors.BLACK.fade(0.25).toString()};
-  height: ${({ tileHeight }): string => tileHeight};
-  width: ${({ tileWidth }): string => tileWidth};
 `;
 
 const VariantTileBody = styled(View)`
   flex-direction: row;
   background-color: ${Colors.DARK.toString()};
-  height: 136;
 `;
 
 const TitleText = styled(Text)`
-  margin-horizontal: 8;
+  padding-horizontal: 8;
   padding-vertical: 4;
   height: 30;
   text-align: center;
