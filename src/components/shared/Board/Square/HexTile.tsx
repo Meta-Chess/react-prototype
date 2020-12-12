@@ -14,10 +14,6 @@ const HexTile: SFC<HexTileProps> = ({ radius, color }) => {
   return (
     <View
       style={{
-        width: centerWidth + 2 * endWidth,
-        height: height,
-        justifyContent: "center",
-        backgroundColor: "transparent",
         flexDirection: "row",
         marginLeft: -height / (8 * Math.sqrt(3)),
         position: "absolute",
@@ -25,13 +21,9 @@ const HexTile: SFC<HexTileProps> = ({ radius, color }) => {
     >
       <View
         style={{
-          width: 0,
-          height: 0,
           borderTopWidth: height / 2,
           borderBottomWidth: height / 2,
           borderRightWidth: endWidth,
-          borderStyle: "solid",
-          backgroundColor: "transparent",
           borderTopColor: "transparent",
           borderBottomColor: "transparent",
           borderRightColor: color,
@@ -46,13 +38,9 @@ const HexTile: SFC<HexTileProps> = ({ radius, color }) => {
       />
       <View
         style={{
-          width: 0,
-          height: 0,
           borderTopWidth: height / 2,
           borderBottomWidth: height / 2,
           borderLeftWidth: endWidth,
-          borderStyle: "solid",
-          backgroundColor: "transparent",
           borderTopColor: "transparent",
           borderBottomColor: "transparent",
           borderLeftColor: color,
