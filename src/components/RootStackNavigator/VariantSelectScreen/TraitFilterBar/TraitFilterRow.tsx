@@ -20,12 +20,13 @@ const TraitFilterRow: SFC<Props> = ({ activeFilters, setActiveFilters }) => {
           <TraitFilter
             key={index}
             trait={trait}
-            selected={activeFilters.some((filt) => filt === trait)}
+            selected={activeFilters.includes(trait)}
             onPress={(): void =>
-              activeFilters.some((filt) => filt === trait)
+              activeFilters.includes(trait)
                 ? setActiveFilters([])
                 : setActiveFilters([trait as TraitClass])
             }
+            style={{ margin: 12 }}
           />
         ))}
     </RowContainer>
@@ -33,13 +34,8 @@ const TraitFilterRow: SFC<Props> = ({ activeFilters, setActiveFilters }) => {
 };
 
 const RowContainer = styled(View)`
-  width: 375;
-  height: 48;
-  justify-content: space-evenly;
   flex-direction: row;
-  align-self: center;
-  align-items: center;
-  padding-horizontal: 10px;
+  padding-horizontal: 16px;
   border-radius: 6px;
   ${Styles.BOX_SHADOW}
   background-color: ${Colors.DARKER.toString()};
