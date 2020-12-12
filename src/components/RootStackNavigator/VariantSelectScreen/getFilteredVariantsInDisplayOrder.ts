@@ -4,8 +4,8 @@ import { TraitClass } from "game/types";
 export function getFilteredVariantsInDisplayOrder(
   activeFilters: TraitClass[]
 ): FutureVariantName[] {
-  return Object.keys(futureVariants)
-    .map((k) => k as FutureVariantName)
+  const variantNames = Object.keys(futureVariants) as FutureVariantName[];
+  return variantNames
     .filter(
       (variant) =>
         activeFilters.length === 0 ||

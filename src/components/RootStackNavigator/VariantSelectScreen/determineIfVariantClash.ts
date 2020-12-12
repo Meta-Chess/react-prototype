@@ -5,7 +5,5 @@ export const determineIfVariantClash = (
 ): boolean => {
   return selectedVariants
     .flatMap((variant) => variantsBlacklist[variant] || [])
-    .some((blacklistedVariant) =>
-      selectedVariants.includes(blacklistedVariant as FutureVariantName)
-    );
+    .some((blacklistedVariant) => selectedVariants.includes(blacklistedVariant));
 };
