@@ -7,6 +7,7 @@ import { GameContext } from "game";
 import { TokenName, SquareShape } from "game/types";
 import { Square } from "./Square";
 import { InnerBoardProps } from "components/shared/Board/Board";
+import { Styles } from "primitives/Styles";
 
 const HexBoard: SFC<InnerBoardProps> = ({
   style,
@@ -92,7 +93,7 @@ const HexBoard: SFC<InnerBoardProps> = ({
 
 const BoardContainer = styled(View)`
   position: relative;
-  box-shadow: 0px 1px 8px ${Colors.BLACK.fade(0.5).string()};
+  ${Styles.BOX_SHADOW_STRONG}
 `;
 
 const SquaresContainer = styled(View)`

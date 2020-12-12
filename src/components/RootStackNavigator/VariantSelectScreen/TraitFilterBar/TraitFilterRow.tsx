@@ -4,6 +4,7 @@ import { SFC, Colors } from "primitives";
 import { TraitFilter } from "./TraitFilter";
 import { traitInfo, TraitClass } from "game/types";
 import styled from "styled-components/native";
+import { Styles } from "primitives/Styles";
 
 interface Props {
   activeFilters: TraitClass[];
@@ -40,9 +41,7 @@ const RowContainer = styled(View)`
   align-items: center;
   padding-horizontal: 10px;
   border-radius: 6px;
-  shadow-color: ${Colors.BLACK.toString()};
-  shadow-radius: 4px;
-  box-shadow: 0px 1px 2px;
+  ${Styles.BOX_SHADOW}
   background-color: ${Colors.DARKER.toString()};
 `;
 

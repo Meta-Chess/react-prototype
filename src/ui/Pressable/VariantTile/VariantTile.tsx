@@ -5,6 +5,7 @@ import { SFC, Text, Colors } from "primitives";
 import { FutureVariant } from "game";
 import { VariantTileInfo } from "./VariantTileInfo";
 import { VariantTileImage } from "./VariantTileImage";
+import { Styles } from "primitives/Styles";
 
 interface Props {
   variant: FutureVariant;
@@ -73,9 +74,7 @@ const OuterContainer = styled(View)<OuterContainerProps>`
   flex-direction: row;
   height: ${({ tileHeight }): string => tileHeight};
   width: ${({ tileWidth }): string => tileWidth};
-  shadow-color: ${Colors.BLACK.toString()};
-  shadow-radius: 4px;
-  box-shadow: 0px 2px 4px;
+  ${Styles.BOX_SHADOW_STRONG}
 `;
 
 interface CoverViewProps {

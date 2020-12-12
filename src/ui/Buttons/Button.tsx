@@ -2,6 +2,7 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
+import { Styles } from "primitives/Styles";
 
 interface Props {
   text: string;
@@ -24,6 +25,6 @@ const BaseButton = styled(TouchableOpacity)`
   min-height: 40px;
   background-color: ${Colors.MCHESS.string()};
   border-radius: 50px;
-  box-shadow: 0px 1px 4px ${Colors.BLACK.fade(0.5).string()};
+  ${Styles.BOX_SHADOW}
   align-items: center;
 `;
