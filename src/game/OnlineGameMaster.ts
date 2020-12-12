@@ -13,16 +13,14 @@ export class OnlineGameMaster extends GameMaster {
     super(gameOptions, renderer);
   }
 
-  // wss://3oxeo6rv48.execute-api.ap-southeast-2.amazonaws.com/dev
-
   static async connectNewGame(
     renderer: Renderer,
     gameOptions: GameOptions,
     roomId?: string | undefined
   ): Promise<OnlineGameMaster> {
     const gameClient = new GameClient(
-      process.env.SERVER_URL ||
-        "wss://3oxeo6rv48.execute-api.ap-southeast-2.amazonaws.com/dev",
+      process.env.REACT_APP_SERVER ||
+        "wss://fik1wh1ttf.execute-api.ap-southeast-2.amazonaws.com/dev",
       roomId
     );
 
