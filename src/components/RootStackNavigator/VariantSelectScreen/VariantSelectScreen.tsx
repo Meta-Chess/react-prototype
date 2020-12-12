@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { StyleSheet, View, useWindowDimensions } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import styled from "styled-components/native";
 import { Colors } from "primitives";
 import { FutureVariantName } from "game/variants";
@@ -7,11 +7,10 @@ import { TraitClass } from "game/types";
 import { useNavigation, Screens } from "navigation";
 import { CardGrid } from "./CardGrid";
 import { TraitFilterBar } from "./TraitFilterBar";
-import { StartButton } from "./StartButton";
-import { BackButton } from "./BackButton";
 import { calculateGameOptions } from "./calculateGameOptions";
 import { determineIfVariantClash } from "./determineIfVariantClash";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
+import { Button } from "ui";
 
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
@@ -25,101 +24,55 @@ const VariantSelectScreen: FC = () => {
   const existsVariantsClash: boolean = determineIfVariantClash(selectedVariants);
 
   return (
-    <ScreenContainer>
-      <GridContainer width={width} height={height}>
-        <CardGrid
-          style={styles.CardGrid}
-          displayVariants={displayVariants}
-          selectedVariants={selectedVariants}
-          setSelectedVariants={setSelectedVariants}
-          variantClash={existsVariantsClash}
+    <ScreenContainer width={width} height={height}>
+      <CardGrid
+        style={{ flex: 1 }}
+        displayVariants={displayVariants}
+        selectedVariants={selectedVariants}
+        setSelectedVariants={setSelectedVariants}
+        variantClash={existsVariantsClash}
+      />
+      <OptionContainer>
+        <Button
+          text="Back"
+          onPress={(): void => navigation.goBack()}
+          style={{ width: 200 }}
         />
-        <OptionContainer width={width}>
-          <BackButton
-            style={styles.BackButton}
-            onPress={(): void => {
-              navigation.goBack();
-            }}
-          />
-          <TraitFilterBar
-            style={styles.TraitFilterBar}
-            activeFilters={activeFilters}
-            setActiveFilters={setActiveFilters}
-          />
-          <StartButton
-            style={styles.StartButton}
-            onPress={(): void => {
-              navigation.navigate<Screens.GameScreen>(Screens.GameScreen, {
-                gameOptions: calculateGameOptions(selectedVariants),
-              });
-            }}
-          />
-        </OptionContainer>
-      </GridContainer>
+        <TraitFilterBar
+          activeFilters={activeFilters}
+          setActiveFilters={setActiveFilters}
+          style={{ marginLeft: 64 }}
+        />
+        <Button
+          text="Start Game"
+          onPress={(): void =>
+            navigation.navigate(Screens.GameScreen, {
+              gameOptions: calculateGameOptions(selectedVariants),
+            })
+          }
+          style={{ width: 200, marginLeft: 64 }}
+        />
+      </OptionContainer>
     </ScreenContainer>
   );
 };
 
-const ScreenContainer = styled(View)`
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
+const ScreenContainer = styled(View)<{ height: number; width: number }>`
   display: flex;
   background-color: ${Colors.DARKEST.string()};
-`;
-
-interface GridContainerProps {
-  height: number;
-  width: number;
-}
-
-const GridContainer = styled(View)<GridContainerProps>`
   justify-content: space-between;
-  align-content: stretch;
   flex-direction: column;
   height: ${({ height }): number => height};
   width: ${({ width }): number => width};
+  padding-horizontal: 16;
+  padding-vertical: 32;
 `;
 
-interface OptionContainerProps {
-  width: number;
-}
-
-const OptionContainer = styled(View)<OptionContainerProps>`
+const OptionContainer = styled(View)`
   flex-direction: row;
   justify-content: center;
-  width: ${({ width }): number => width};
-  min-height: 165px;
-  padding-bottom: 6px;
+  align-items: flex-end;
+  margin-top: 8;
 `;
-
-const styles = StyleSheet.create({
-  CardGrid: {
-    height: "72%",
-    alignSelf: "center",
-    marginHorizontal: 12,
-    marginTop: 36,
-    flex: 1,
-  },
-  BackButton: {
-    alignSelf: "center",
-    marginTop: 32,
-    marginRight: 64,
-    width: 200,
-  },
-  StartButton: {
-    alignSelf: "center",
-    marginTop: 32,
-    marginLeft: 64,
-    width: 200,
-  },
-  TraitFilterBar: {
-    alignSelf: "center",
-    marginVertical: 24,
-    paddingBottom: 6,
-  },
-});
 
 export { VariantSelectScreen };

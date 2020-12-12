@@ -11,7 +11,7 @@ interface Props {
   setActiveFilters: (x: TraitClass[]) => void;
 }
 
-const TraitFilterBar: SFC<Props> = ({ style, activeFilters, setActiveFilters }) => {
+const TraitFilterBar: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => {
   const filterDisplayTitle =
     activeFilters.length === 0
       ? "No Filters"
