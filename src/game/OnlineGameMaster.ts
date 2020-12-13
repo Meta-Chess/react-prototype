@@ -21,14 +21,19 @@ export class OnlineGameMaster extends GameMaster {
     const gameClient = new GameClient(
       process.env.REACT_APP_SERVER ||
         "wss://arf34qu32l.execute-api.ap-southeast-2.amazonaws.com/prod",
-      roomId
+      roomId,
+      gameOptions
     );
 
     roomId = await gameClient.getRoomId();
 
+    if (!gameClient.gameOptions) {
+      throw new Error("Game options should be set already");
+    }
+
     const onlineGameMaster = new OnlineGameMaster(
       renderer,
-      gameOptions,
+      gameClient.gameOptions,
       roomId,
       gameClient
     );

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "chess2",
-    "slug": "chess2",
+    "name": "mchess",
+    "slug": "mchess",
     "version": "1.0.0",
     "orientation": "portrait",
     "splash": {
