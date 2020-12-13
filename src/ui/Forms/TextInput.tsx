@@ -16,7 +16,7 @@ export const TextInput: SFC<Props> = ({ onChangeText, placeholder, value, style 
       style={[
         style,
         {
-          height: 48,
+          height: 44,
           width: 240,
           borderWidth: 2,
           borderRadius: 4,

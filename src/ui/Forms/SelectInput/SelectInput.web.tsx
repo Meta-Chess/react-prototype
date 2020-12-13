@@ -13,7 +13,7 @@ interface Props {
 
 export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
   return (
-    <View style={[style]}>
+    <View style={style}>
       <Select
         onChange={(optionSelection): void => {
           if (Array.isArray(optionSelection))
@@ -71,7 +71,7 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
 
 const OptionLabel: React.FC<Option> = ({ label }) => {
   return (
-    <Text cat="BodyL" color={Colors.TEXT.LIGHT.toString()}>
+    <Text cat="BodyM" color={Colors.TEXT.LIGHT.toString()}>
       {label}
     </Text>
   );

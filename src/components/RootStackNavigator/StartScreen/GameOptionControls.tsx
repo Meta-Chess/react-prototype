@@ -35,64 +35,55 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
       <TextInput
         placeholder={"Please enter an invite key"}
         onChangeText={(text: string): void => setRoomId(text)}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 20 }}
       />
       <LabeledCheckBox
         value={!!gameOptions.online}
         setValue={setOnline}
         label={"Online"}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 16 }}
       />
       <LabeledCheckBox
         value={!!gameOptions.overTheBoard}
         setValue={setOverTheBoard}
         label={"Over the board"}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 16 }}
       />
       <LabeledCheckBox
         value={!!gameOptions.flipBoard}
         setValue={setFlipBoard}
         label={"Flip board"}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 16 }}
       />
       <LabeledCheckBox
         value={!!gameOptions.checkEnabled}
         setValue={setCheckEnabled}
         label={"Check enabled"}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 16 }}
       />
       <LabeledCheckBox
         value={!!gameOptions.fatigueEnabled}
         setValue={setFatigueEnabled}
         label={"Fatigue enabled"}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 16 }}
       />
       <LabeledCheckBox
         value={!!gameOptions.atomicEnabled}
         setValue={setAtomicEnabled}
         label={"Atomic enabled"}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 20 }}
       />
       <SelectInput
         options={timeOptions}
         onChange={(value): void => {
           setTime(value);
         }}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 20 }}
         zIndex={5000}
       />
       <SelectInput //note: windows scrollbar is gross
         options={variantOptions}
-        onChange={(value): void => {
-          value !== "Variant Fusion"
-            ? setVariant(value)
-            : navigation.navigate<Screens.VariantSelectScreen>(
-                Screens.VariantSelectScreen,
-                {
-                  gameOptions,
-                }
-              );
-        }}
+        onChange={(value): void => setVariant(value)}
         zIndex={4000}
       />
     </ControlsContainer>

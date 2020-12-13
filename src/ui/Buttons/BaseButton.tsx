@@ -44,7 +44,7 @@ const TouchableContainer = styled(TouchableOpacity)<{
   borderColor: Color;
 }>`
   padding-horizontal: 24px;
-  height: 32px;
+  height: 40px;
   background-color: ${({ backgroundColor }): string => backgroundColor.toString()};
   border: 1px solid ${({ borderColor }): string => borderColor.toString()};
   border-radius: 4px;

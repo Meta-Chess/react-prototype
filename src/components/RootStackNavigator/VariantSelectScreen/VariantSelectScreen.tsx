@@ -10,7 +10,7 @@ import { TraitFilterBar } from "./TraitFilterBar";
 import { calculateGameOptions } from "./calculateGameOptions";
 import { determineIfVariantClash } from "./determineIfVariantClash";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
-import { Button } from "ui";
+import { Button, ButtonSecondary } from "ui";
 
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
@@ -33,7 +33,7 @@ const VariantSelectScreen: FC = () => {
         variantClash={existsVariantsClash}
       />
       <OptionContainer>
-        <Button
+        <ButtonSecondary
           text="Back"
           onPress={(): void => navigation.goBack()}
           style={{ width: 200 }}

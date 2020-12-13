@@ -11,9 +11,10 @@ import { Colors, MChessLogo } from "primitives";
 import { StartButton } from "./StartButton";
 import { defaultGameOptions, GameOptionControls } from "./GameOptionControls";
 import { GameOptions } from "game/types";
-import { VerticalSeparator } from "ui";
+import { AbsoluteView, Row, VerticalSeparator } from "ui";
 import { ShadowBoard } from "./ShadowBoard";
 import { GameProvider } from "game";
+import { SetupGameButton } from "components/RootStackNavigator/StartScreen/SetupGameButton";
 
 const StartScreen: FC = () => {
   const { height, width } = useWindowDimensions();
@@ -73,16 +74,17 @@ const StartScreen: FC = () => {
                     alignItems: "center",
                     justifyContent: "center",
                     flex: 1,
+                    paddingVertical: 40,
                   }}
                 >
                   <GameOptionControls
                     gameOptions={gameOptions}
                     setGameOptions={setGameOptions}
                   />
-                  <StartButton
-                    gameOptions={gameOptions}
-                    style={{ width: 240, marginTop: 32, marginBottom: 16 }}
-                  />
+                  <Row style={{ marginTop: 24, width: 240 }}>
+                    <StartButton gameOptions={gameOptions} style={{ flex: 1 }} />
+                    <SetupGameButton style={{ flex: 1, marginLeft: 8 }} />
+                  </Row>
                 </View>
               </ScrollView>
             </View>
@@ -93,12 +95,7 @@ const StartScreen: FC = () => {
   );
 };
 
-const ScreenContainer = styled(View)`
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
+const ScreenContainer = styled(AbsoluteView)`
   display: flex;
   background-color: ${Colors.DARKEST.string()};
 `;
