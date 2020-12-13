@@ -15,14 +15,14 @@ const animation = Animated.loop(
       duration: 5000,
       easing: Easing.elastic(1),
       isInteraction: false,
-      useNativeDriver: Platform.OS !== "web",
+      useNativeDriver: Platform.OS === "ios",
     }),
     Animated.timing(rotateValue, {
       toValue: 10,
       duration: 5000,
       easing: Easing.elastic(1),
       isInteraction: false,
-      useNativeDriver: Platform.OS !== "web",
+      useNativeDriver: Platform.OS === "ios",
     }),
   ])
 );

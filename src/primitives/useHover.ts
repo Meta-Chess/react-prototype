@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Platform } from "react-native";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useHover(): [React.MutableRefObject<any>, boolean] {
@@ -12,7 +13,7 @@ export function useHover(): [React.MutableRefObject<any>, boolean] {
 
   useEffect((): void | (() => void) => {
     const node = ref.current;
-    if (node) {
+    if (node && Platform.OS !== "web") {
       node.addEventListener("mouseover", handleMouseOver);
       node.addEventListener("mouseout", handleMouseOut);
 

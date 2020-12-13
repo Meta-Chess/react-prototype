@@ -14,10 +14,9 @@ export const TextInput: SFC<Props> = ({ onChangeText, placeholder, value, style 
   return (
     <NativeTextInput
       style={[
-        style,
         {
           height: 44,
-          width: 240,
+          width: 300,
           borderWidth: 2,
           borderRadius: 4,
           borderColor: focused
@@ -27,6 +26,7 @@ export const TextInput: SFC<Props> = ({ onChangeText, placeholder, value, style 
           color: Colors.TEXT.LIGHT.toString(),
           // outlineWidth: 0, // TODO: Fix type error (note - this line stops it looking weird in chrome, but might cause accessibility problems)
         },
+        style,
       ]}
       onFocus={(): void => {
         setFocused(true);

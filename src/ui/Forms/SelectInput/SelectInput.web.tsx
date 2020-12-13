@@ -40,7 +40,6 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
         styles={{
           control: (baseStyle, { isFocused }): CSSProperties => ({
             ...baseStyle,
-            width: 240,
             borderRadius: 4,
             border: `2px solid ${Colors.GREY.fade(0.4).toString()}`,
             backgroundColor: Colors.DARKEST.toString(),

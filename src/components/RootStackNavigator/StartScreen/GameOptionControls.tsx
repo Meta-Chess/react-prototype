@@ -5,7 +5,6 @@ import { VariantName, variants } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
 import { GameOptions } from "game/types";
-import { Screens, useNavigation } from "navigation";
 
 interface Props {
   gameOptions: GameOptions;
@@ -28,7 +27,6 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
   const setTime = (time: number): void => setGameOptions({ ...gameOptions, time });
   const setVariant = (variant: VariantName): void =>
     setGameOptions({ ...gameOptions, variant });
-  const navigation = useNavigation();
 
   return (
     <ControlsContainer style={style}>
@@ -121,7 +119,7 @@ const defaultGameOptions = {
 
 const ControlsContainer = styled(View)`
   flex-direction: column-reverse;
-  max-width: 240px;
+  width: 300px;
 `;
 
 export { GameOptionControls, defaultGameOptions };

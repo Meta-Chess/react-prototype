@@ -1,12 +1,12 @@
 import React, { FC } from "react";
-import { View } from "react-native";
 import { Board } from "components/shared/Board";
 import { Colors } from "primitives";
+import { AbsoluteView } from "ui";
 import styled from "styled-components/native";
 
 const ShadowBoard: FC = () => {
   return (
-    <Container>
+    <AbsoluteView>
       <Board
         style={{
           alignItems: "center",
@@ -17,25 +17,11 @@ const ShadowBoard: FC = () => {
         backboard={false}
       />
       <ShadowLayer />
-    </Container>
+    </AbsoluteView>
   );
 };
 
-const Container = styled(View)`
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  padding: 24px;
-`;
-
-const ShadowLayer = styled(View)`
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+const ShadowLayer = styled(AbsoluteView)`
   background-color: ${Colors.DARKEST.fade(0.1).toString()};
 `;
 
