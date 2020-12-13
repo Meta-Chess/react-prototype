@@ -6,9 +6,10 @@ interface Props {
   onChangeText?: (text: string) => void;
   value?: string;
   placeholder?: string;
+  onSubmitEditing?: () => void;
 }
 
-export const TextInput: SFC<Props> = ({ onChangeText, placeholder, value, style }) => {
+export const TextInput: SFC<Props> = ({ style, ...rest }) => {
   const [focused, setFocused] = useState(false);
   const [ref, hovered] = useHover();
 
@@ -38,9 +39,7 @@ export const TextInput: SFC<Props> = ({ onChangeText, placeholder, value, style 
       onBlur={(): void => {
         setFocused(false);
       }}
-      onChangeText={onChangeText}
-      placeholder={placeholder}
-      value={value}
+      {...rest}
     />
   );
 };

@@ -1,18 +1,27 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useCallback } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { Colors, MChessLogo } from "primitives";
-import { Row } from "ui";
+import { Button, Row } from "ui";
 import { GameProvider } from "game";
 import { GameOptions } from "game/types";
 import { defaultGameOptions, GameOptionControls } from "./GameOptionControls";
 import { ShadowBoard } from "./ShadowBoard";
-import { StartButton } from "./StartButton";
-import { SetupGameButton } from "./SetupGameButton";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
+import { Screens, useNavigation } from "navigation";
+import { SetupGameButton } from "components/RootStackNavigator/StartScreen/SetupGameButton";
 
 const StartScreen: FC = () => {
   const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
+  const navigation = useNavigation();
+
+  const startGame = useCallback(
+    (): void =>
+      navigation.navigate<Screens.GameScreen>(Screens.GameScreen, {
+        gameOptions,
+      }),
+    [gameOptions]
+  );
 
   return (
     <GameProvider
@@ -31,9 +40,10 @@ const StartScreen: FC = () => {
               <GameOptionControls
                 gameOptions={gameOptions}
                 setGameOptions={setGameOptions}
+                onSubmit={startGame}
               />
               <Row style={{ marginTop: 24, width: 300 }}>
-                <StartButton gameOptions={gameOptions} style={{ flex: 1 }} />
+                <Button onPress={startGame} text={"Play"} style={{ flex: 1 }} />
                 <SetupGameButton style={{ flex: 1, marginLeft: 8 }} />
               </Row>
             </>

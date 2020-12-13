@@ -9,10 +9,21 @@ import { GameOptions } from "game/types";
 interface Props {
   gameOptions: GameOptions;
   setGameOptions: (gameOptions: GameOptions) => void;
+  onSubmit: () => void;
 }
 
-const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) => {
-  const setRoomId = (roomId: string): void => setGameOptions({ ...gameOptions, roomId });
+const GameOptionControls: SFC<Props> = ({
+  style,
+  gameOptions,
+  setGameOptions,
+  onSubmit,
+}) => {
+  const setRoomId = (roomId: string): void =>
+    setGameOptions({
+      ...gameOptions,
+      roomId,
+      online: roomId && !gameOptions.roomId ? true : gameOptions.online,
+    });
   const setOnline = (online: boolean): void => setGameOptions({ ...gameOptions, online });
   const setOverTheBoard = (overTheBoard: boolean): void =>
     setGameOptions({ ...gameOptions, overTheBoard });
@@ -34,6 +45,7 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
         placeholder={"Please enter an invite key"}
         onChangeText={(text: string): void => setRoomId(text)}
         style={{ marginTop: 20 }}
+        onSubmitEditing={onSubmit}
       />
       <LabeledCheckBox
         value={!!gameOptions.online}
