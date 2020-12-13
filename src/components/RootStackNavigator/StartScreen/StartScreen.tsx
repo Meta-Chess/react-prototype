@@ -20,7 +20,7 @@ const StartScreen: FC = () => {
       navigation.navigate<Screens.GameScreen>(Screens.GameScreen, {
         gameOptions,
       }),
-    [gameOptions]
+    [gameOptions, navigation]
   );
 
   return (
