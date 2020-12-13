@@ -1,11 +1,13 @@
 import { GameOptions, Move, PieceDelta } from "game/types";
 import { Path } from "game/Pather/Path";
+import { sleep } from "utilities/sleep";
 
 class GameClient {
   private socket: WebSocket;
   private roomJoined: boolean;
   private onMove: ((move: Move) => void) | undefined;
   private messageListener: ((event: MessageEvent) => void) | undefined;
+  public moves: Move[] = [];
 
   constructor(url: string, private roomId?: string, public gameOptions?: GameOptions) {
     const socket = new WebSocket(url);
@@ -21,7 +23,7 @@ class GameClient {
   }
 
   async getRoomId(): Promise<string> {
-    while (!this.roomJoined) await new Promise((resolve) => setTimeout(resolve, 100));
+    while (!this.roomJoined) await sleep(100);
     if (!this.roomId)
       throw new Error("Something broke! The room id should be defined by now!");
     return this.roomId;
@@ -40,6 +42,12 @@ class GameClient {
     const setGameOptions = (gameOptions: GameOptions): void => {
       this.gameOptions = gameOptions;
     };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const setMoves = (moves: any[]): void => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.moves = moves.map((move: any) => parseMove(move));
+    };
     const onMove = this.onMove;
 
     this.messageListener = (event: MessageEvent): void => {
@@ -48,6 +56,7 @@ class GameClient {
         case "roomJoined":
           setRoomId(data.roomId);
           setGameOptions(data.gameOptions);
+          setMoves(data.moves);
           setRoomJoined(true);
           break;
         case "move":
