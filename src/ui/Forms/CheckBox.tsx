@@ -15,7 +15,7 @@ export const CheckBox: FC<Props> = ({ value, setValue }) => {
       onPress={(): void => setValue(!value)}
     >
       {value ? (
-        <CheckBoxFilled color={Colors.MCHESS.toString()} />
+        <CheckBoxFilled color={Colors.MCHESS_ORANGE.toString()} />
       ) : (
         <CheckBoxEmpty color={Colors.GREY.fade(0.4).toString()} />
       )}

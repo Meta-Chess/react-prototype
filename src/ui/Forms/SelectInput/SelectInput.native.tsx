@@ -42,10 +42,10 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange, zIndex }) =>
         }}
         labelStyle={{ color: Colors.TEXT.LIGHT.toString() }}
         customArrowDown={(): React.ReactElement => (
-          <DownCaretIcon color={Colors.MCHESS.toString()} />
+          <DownCaretIcon color={Colors.MCHESS_ORANGE.toString()} />
         )}
         customArrowUp={(): React.ReactElement => (
-          <DownCaretIcon color={Colors.MCHESS.toString()} />
+          <DownCaretIcon color={Colors.MCHESS_ORANGE.toString()} />
         )}
         zIndex={zIndex}
       />

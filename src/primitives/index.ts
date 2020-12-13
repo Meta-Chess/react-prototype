@@ -6,3 +6,4 @@ export * from "./Skeleton";
 export * from "./Text";
 export * from "./icons";
 export * from "./images";
+export * from "./useHover";

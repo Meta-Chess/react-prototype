@@ -81,7 +81,7 @@ const OptionLabel: React.FC<Option> = ({ label }) => {
 const DropdownIndicator: React.FC<IndicatorProps<any>> = (props: IndicatorProps<any>) => {
   return (
     <components.DropdownIndicator {...props}>
-      <DownCaretIcon color={Colors.MCHESS.toString()} />
+      <DownCaretIcon color={Colors.MCHESS_ORANGE.toString()} />
     </components.DropdownIndicator>
   );
 };

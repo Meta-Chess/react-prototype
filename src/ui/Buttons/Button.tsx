@@ -1,30 +1,13 @@
 import React from "react";
-import { TouchableOpacity } from "react-native";
-import styled from "styled-components/native";
-import { SFC, Text, Colors } from "primitives";
-import { Styles } from "primitives/Styles";
+import { SFC } from "primitives";
+import { BaseButton } from "ui/Buttons/BaseButton";
 
 interface Props {
   text: string;
   onPress: () => void;
+  accessibilityLabel?: string;
 }
 
-export const Button: SFC<Props> = ({ style, text, onPress }) => {
-  return (
-    <BaseButton onPress={onPress} style={style} accessibilityRole={"button"}>
-      <Text weight="heavy" cat="DisplayM" color={Colors.TEXT.DARK.toString()}>
-        {text}
-      </Text>
-    </BaseButton>
-  );
+export const Button: SFC<Props> = (props) => {
+  return <BaseButton {...props} />;
 };
-
-// TODO: This should probably be a button underneath for accessibility reasons
-const BaseButton = styled(TouchableOpacity)`
-  padding: 12px 32px;
-  min-height: 40px;
-  background-color: ${Colors.MCHESS.string()};
-  border-radius: 50px;
-  ${Styles.BOX_SHADOW}
-  align-items: center;
-`;

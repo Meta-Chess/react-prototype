@@ -3,6 +3,7 @@ import Color from "color";
 export const Colors = {
   WHITE: Color("#FFFFFF"),
   BLACK: Color("#161616"),
+  TRANSPARENT: Color().fade(1),
   TEXT: {
     DARK: Color("#212121"),
     LIGHT: Color("#FFFFFF").fade(0.1),
@@ -38,5 +39,6 @@ export const Colors = {
   },
   PLAYER: [Color("#FCFCFC"), Color("#606060")],
   SQUARE: [Color("#A4B9CC"), Color("#E8E5E5"), Color("#DDEEFF")],
-  MCHESS: Color("#F26100"),
+  MCHESS_ORANGE: Color("#F26100"),
+  MCHESS_BLUE: Color("#99caf7"),
 };

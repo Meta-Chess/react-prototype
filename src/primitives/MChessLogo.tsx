@@ -21,7 +21,7 @@ export const MChessLogo: SFC = ({ style }) => {
         <Text
           size={scaleFactor * 300}
           lineHeight={scaleFactor * 300}
-          color={Colors.MCHESS.toString()}
+          color={Colors.MCHESS_ORANGE.toString()}
           selectable={false}
           style={{ fontWeight: "700" }}
         >
