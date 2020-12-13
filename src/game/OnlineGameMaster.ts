@@ -20,7 +20,7 @@ export class OnlineGameMaster extends GameMaster {
   ): Promise<OnlineGameMaster> {
     const gameClient = new GameClient(
       process.env.REACT_APP_SERVER ||
-        "wss://fik1wh1ttf.execute-api.ap-southeast-2.amazonaws.com/dev",
+        "wss://arf34qu32l.execute-api.ap-southeast-2.amazonaws.com/prod",
       roomId
     );
 
