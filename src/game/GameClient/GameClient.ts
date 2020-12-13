@@ -1,4 +1,4 @@
-import { Move, PieceDelta } from "game/types";
+import { GameOptions, Move, PieceDelta } from "game/types";
 import { Path } from "game/Pather/Path";
 
 class GameClient {
@@ -7,13 +7,13 @@ class GameClient {
   private onMove: ((move: Move) => void) | undefined;
   private messageListener: ((event: MessageEvent) => void) | undefined;
 
-  constructor(url: string, private roomId: string | undefined) {
+  constructor(url: string, private roomId?: string, public gameOptions?: GameOptions) {
     const socket = new WebSocket(url);
     this.socket = socket;
     this.roomJoined = false;
 
     this.socket.addEventListener("open", function (_event) {
-      socket.send(JSON.stringify({ action: "joinRoom", roomId }));
+      socket.send(JSON.stringify({ action: "joinRoom", roomId, gameOptions }));
     });
 
     this.messageListener = undefined;
@@ -37,13 +37,17 @@ class GameClient {
     const setRoomId = (roomId: string | undefined): void => {
       this.roomId = roomId;
     };
+    const setGameOptions = (gameOptions: GameOptions): void => {
+      this.gameOptions = gameOptions;
+    };
     const onMove = this.onMove;
 
     this.messageListener = (event: MessageEvent): void => {
       const data = JSON.parse(event.data);
       switch (data.type) {
         case "roomJoined":
-          setRoomId(data.roomId); // TODO: Receive more data
+          setRoomId(data.roomId);
+          setGameOptions(data.gameOptions);
           setRoomJoined(true);
           break;
         case "move":
