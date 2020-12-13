@@ -13,7 +13,7 @@ export function useHover(): [React.MutableRefObject<any>, boolean] {
 
   useEffect((): void | (() => void) => {
     const node = ref.current;
-    if (node && Platform.OS !== "web") {
+    if (node && Platform.OS === "web") {
       node.addEventListener("mouseover", handleMouseOver);
       node.addEventListener("mouseout", handleMouseOut);
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { TextInput as NativeTextInput } from "react-native";
-import { SFC, Colors } from "primitives";
+import { TextInput as NativeTextInput, TextStyle } from "react-native";
+import { SFC, Colors, useHover } from "primitives";
 
 interface Props {
   onChangeText?: (text: string) => void;
@@ -10,9 +10,11 @@ interface Props {
 
 export const TextInput: SFC<Props> = ({ onChangeText, placeholder, value, style }) => {
   const [focused, setFocused] = useState(false);
+  const [ref, hovered] = useHover();
 
   return (
     <NativeTextInput
+      ref={ref}
       style={[
         {
           height: 44,
@@ -21,11 +23,13 @@ export const TextInput: SFC<Props> = ({ onChangeText, placeholder, value, style 
           borderRadius: 4,
           borderColor: focused
             ? Colors.GREY.toString()
+            : hovered
+            ? Colors.GREY.fade(0.2).toString()
             : Colors.GREY.fade(0.4).toString(),
           paddingHorizontal: 12,
           color: Colors.TEXT.LIGHT.toString(),
-          // outlineWidth: 0, // TODO: Fix type error (note - this line stops it looking weird in chrome, but might cause accessibility problems)
-        },
+          outlineWidth: 0,
+        } as TextStyle,
         style,
       ]}
       onFocus={(): void => {

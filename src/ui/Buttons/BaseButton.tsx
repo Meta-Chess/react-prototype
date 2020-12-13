@@ -22,13 +22,13 @@ export const BaseButton: SFC<Props> = ({
   ...rest
 }) => {
   const [ref, hovered] = useHover();
-  const fade = hovered ? (backgroundColor.alpha() > 0.5 ? 0.05 : 0.1) : 0;
+  const fade = hovered ? (backgroundColor.alpha() > 0.5 ? 0.15 : 0.3) : 0;
   return (
     <TouchableContainer
       ref={ref}
       backgroundColor={backgroundColor.fade(fade)}
       borderColor={borderColor.fade(fade)}
-      activeOpacity={0.9}
+      activeOpacity={0.5}
       accessibilityRole={"button"}
       {...rest}
     >
