@@ -9,7 +9,7 @@ interface Props {
 }
 
 const VariantInfoCard: FC<Props> = ({ variant, title }) => {
-  if (!variant) return null;
+  if (!variant || !variants[variant]) return null;
 
   // Later: This should maybe be a more complicated way of calculating a name
   // for the current combination of rules and combining descriptions?

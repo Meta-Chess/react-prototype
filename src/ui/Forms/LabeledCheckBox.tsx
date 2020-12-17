@@ -1,8 +1,7 @@
 import React from "react";
-import { View } from "react-native";
+import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
-import { Text, Colors, SFC } from "primitives";
-import { CheckBox } from "./CheckBox";
+import { Text, Colors, SFC, CheckBoxFilled, CheckBoxEmpty } from "primitives";
 
 interface Props {
   value: boolean;
@@ -12,16 +11,25 @@ interface Props {
 
 export const LabeledCheckBox: SFC<Props> = ({ value, setValue, label, style }) => {
   return (
-    <Container style={style}>
-      <Text cat="BodyL" color={Colors.TEXT.LIGHT.toString()}>
+    <TouchableContainer
+      style={style}
+      onPress={(): void => setValue(!value)}
+      accessibilityRole={"checkbox"}
+      activeOpacity={0.8}
+    >
+      <Text cat="BodyM" color={Colors.TEXT.LIGHT.toString()}>
         {label}
       </Text>
-      <CheckBox value={value} setValue={setValue} />
-    </Container>
+      {value ? (
+        <CheckBoxFilled color={Colors.MCHESS_ORANGE.toString()} />
+      ) : (
+        <CheckBoxEmpty color={Colors.GREY.fade(0.4).toString()} />
+      )}
+    </TouchableContainer>
   );
 };
 
-const Container = styled(View)`
+const TouchableContainer = styled(TouchableOpacity)`
   flex-direction: row;
   justify-content: space-between;
   padding-left: 12px;

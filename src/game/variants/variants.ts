@@ -94,10 +94,6 @@ export const variants = {
       Interception,
     ],
   },
-  ["Variant Fusion"]: {
-    description: "A custom fusion of variants.",
-    rules: [],
-  },
 };
 
 export interface FutureVariant {

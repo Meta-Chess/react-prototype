@@ -56,6 +56,7 @@ const SquareBoard: SFC<InnerBoardProps> = ({
           padding,
         },
       ]}
+      backboard={backboard}
     >
       <SquaresContainer style={{ flexDirection: flipBoard ? "row-reverse" : "row" }}>
         {fileCoordinates.map((file) => (
@@ -87,10 +88,10 @@ const SquareBoard: SFC<InnerBoardProps> = ({
   );
 };
 
-const BoardContainer = styled(View)`
+const BoardContainer = styled(View)<{ backboard: boolean }>`
   position: relative;
   background: ${Colors.DARK.string()};
-  ${Styles.BOX_SHADOW_STRONG}
+  ${({ backboard }): string => (backboard ? Styles.BOX_SHADOW_STRONG : "")}
 `;
 
 const SquaresContainer = styled(View)`

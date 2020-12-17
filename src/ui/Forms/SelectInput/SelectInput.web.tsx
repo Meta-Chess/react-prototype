@@ -13,7 +13,7 @@ interface Props {
 
 export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
   return (
-    <View style={[style]}>
+    <View style={style}>
       <Select
         onChange={(optionSelection): void => {
           if (Array.isArray(optionSelection))
@@ -40,7 +40,6 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
         styles={{
           control: (baseStyle, { isFocused }): CSSProperties => ({
             ...baseStyle,
-            width: 240,
             borderRadius: 4,
             border: `2px solid ${Colors.GREY.fade(0.4).toString()}`,
             backgroundColor: Colors.DARKEST.toString(),
@@ -71,7 +70,7 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
 
 const OptionLabel: React.FC<Option> = ({ label }) => {
   return (
-    <Text cat="BodyL" color={Colors.TEXT.LIGHT.toString()}>
+    <Text cat="BodyM" color={Colors.TEXT.LIGHT.toString()}>
       {label}
     </Text>
   );
@@ -81,7 +80,7 @@ const OptionLabel: React.FC<Option> = ({ label }) => {
 const DropdownIndicator: React.FC<IndicatorProps<any>> = (props: IndicatorProps<any>) => {
   return (
     <components.DropdownIndicator {...props}>
-      <DownCaretIcon color={Colors.MCHESS.toString()} />
+      <DownCaretIcon color={Colors.MCHESS_ORANGE.toString()} />
     </components.DropdownIndicator>
   );
 };

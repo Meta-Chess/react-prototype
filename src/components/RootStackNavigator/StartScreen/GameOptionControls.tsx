@@ -5,15 +5,25 @@ import { VariantName, variants } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
 import { GameOptions } from "game/types";
-import { Screens, useNavigation } from "navigation";
 
 interface Props {
   gameOptions: GameOptions;
   setGameOptions: (gameOptions: GameOptions) => void;
+  onSubmit: () => void;
 }
 
-const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) => {
-  const setRoomId = (roomId: string): void => setGameOptions({ ...gameOptions, roomId });
+const GameOptionControls: SFC<Props> = ({
+  style,
+  gameOptions,
+  setGameOptions,
+  onSubmit,
+}) => {
+  const setRoomId = (roomId: string): void =>
+    setGameOptions({
+      ...gameOptions,
+      roomId,
+      online: roomId && !gameOptions.roomId ? true : gameOptions.online,
+    });
   const setOnline = (online: boolean): void => setGameOptions({ ...gameOptions, online });
   const setOverTheBoard = (overTheBoard: boolean): void =>
     setGameOptions({ ...gameOptions, overTheBoard });
@@ -28,71 +38,62 @@ const GameOptionControls: SFC<Props> = ({ style, gameOptions, setGameOptions }) 
   const setTime = (time: number): void => setGameOptions({ ...gameOptions, time });
   const setVariant = (variant: VariantName): void =>
     setGameOptions({ ...gameOptions, variant });
-  const navigation = useNavigation();
 
   return (
     <ControlsContainer style={style}>
       <TextInput
         placeholder={"Please enter an invite key"}
         onChangeText={(text: string): void => setRoomId(text)}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 20 }}
+        onSubmitEditing={onSubmit}
       />
       <LabeledCheckBox
         value={!!gameOptions.online}
         setValue={setOnline}
         label={"Online"}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 16 }}
       />
       <LabeledCheckBox
         value={!!gameOptions.overTheBoard}
         setValue={setOverTheBoard}
         label={"Over the board"}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 16 }}
       />
       <LabeledCheckBox
         value={!!gameOptions.flipBoard}
         setValue={setFlipBoard}
         label={"Flip board"}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 16 }}
       />
       <LabeledCheckBox
         value={!!gameOptions.checkEnabled}
         setValue={setCheckEnabled}
         label={"Check enabled"}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 16 }}
       />
       <LabeledCheckBox
         value={!!gameOptions.fatigueEnabled}
         setValue={setFatigueEnabled}
         label={"Fatigue enabled"}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 16 }}
       />
       <LabeledCheckBox
         value={!!gameOptions.atomicEnabled}
         setValue={setAtomicEnabled}
         label={"Atomic enabled"}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 20 }}
       />
       <SelectInput
         options={timeOptions}
         onChange={(value): void => {
           setTime(value);
         }}
-        style={{ marginTop: 24 }}
+        style={{ marginTop: 20 }}
         zIndex={5000}
       />
       <SelectInput //note: windows scrollbar is gross
         options={variantOptions}
-        onChange={(value): void => {
-          value !== "Variant Fusion"
-            ? setVariant(value)
-            : navigation.navigate<Screens.VariantSelectScreen>(
-                Screens.VariantSelectScreen,
-                {
-                  gameOptions,
-                }
-              );
-        }}
+        onChange={(value): void => setVariant(value)}
         zIndex={4000}
       />
     </ControlsContainer>
@@ -130,7 +131,7 @@ const defaultGameOptions = {
 
 const ControlsContainer = styled(View)`
   flex-direction: column-reverse;
-  max-width: 240px;
+  width: 300px;
 `;
 
 export { GameOptionControls, defaultGameOptions };
