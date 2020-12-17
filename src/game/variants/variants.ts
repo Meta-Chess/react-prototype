@@ -31,7 +31,7 @@ export const integrateWithOtherRules: { [key: string]: (rules: Rule[]) => Rule[]
 export type VariantName = keyof typeof variants;
 export const variants = {
   Chess: {
-    description: "Your usual bog-standard game of chess (sans en passant).",
+    description: "Your usual bog-standard game of chess",
     rules: [standard, loseWithNoKings, pawnDoubleStep, castling, Interception],
   },
   ["Cylindrical Chess"]: {

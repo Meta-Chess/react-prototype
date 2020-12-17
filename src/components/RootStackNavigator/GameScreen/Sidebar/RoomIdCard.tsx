@@ -1,16 +1,16 @@
-import React, { FC } from "react";
-import { Text } from "primitives";
+import React from "react";
+import { SFC, Text } from "primitives";
 import { Card } from "ui";
 
 interface Props {
   roomId?: string;
 }
 
-const RoomIdCard: FC<Props> = ({ roomId }) => {
+const RoomIdCard: SFC<Props> = ({ roomId, style }) => {
   if (!roomId) return null;
   return (
-    <Card>
-      <Text cat="DisplayL">{`Invite key: ${roomId}`}</Text>
+    <Card style={style}>
+      <Text cat="DisplayM">{`Invite key: ${roomId}`}</Text>
     </Card>
   );
 };

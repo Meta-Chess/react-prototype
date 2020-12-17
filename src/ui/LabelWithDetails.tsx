@@ -20,7 +20,7 @@ export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
     <>
       <Triangle color={Colors.DARKISH.toString()} />
       <ModalContainer>
-        <Text cat={"BodyS"}>{details}</Text>
+        <Text cat={"BodyXS"}>{details}</Text>
       </ModalContainer>
     </>
   ) : undefined;
@@ -54,21 +54,19 @@ export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
             setDimensions({ width, height, top, left });
         }}
       >
-        <Text cat={"BodyM"}>{label}</Text>
+        <Text cat={"BodyS"}>{label}</Text>
       </LabelContainer>
     </>
   );
 };
 
 const LabelContainer = styled(TouchableOpacity)`
-  border: 2px solid ${Colors.GREY.fade(0.4).toString()};
-  border-radius: 50px;
-  padding-horizontal: 12px;
-  padding-vertical: 4px
-  margin-right: 8px;
-  margin-top: 12px;
+  border-radius: 4px;
+  padding-horizontal: 8px;
+  margin-right: 4px;
+  margin-top: 4px;
   align-self: flex-start;
-  background-color: ${Colors.DARKEST.fade(0.6).toString()};
+  background-color: ${Colors.MCHESS_BLUE.fade(0.8).toString()};
 `;
 
 const ModalContainer = styled(View)`

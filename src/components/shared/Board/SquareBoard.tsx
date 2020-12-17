@@ -2,17 +2,17 @@ import React, { useContext } from "react";
 import { Platform, View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
-import { objectMatches } from "utilities";
+import { objectMatches, range } from "utilities";
 import { GameContext } from "game";
 import { TokenName } from "game/types";
 import { Square } from "./Square";
-import { InnerBoardProps } from "components/shared/Board/Board";
+import { BoardProps } from "components/shared/Board/Board";
 import { Styles } from "primitives/Styles";
 
-const SquareBoard: SFC<InnerBoardProps> = ({
+const SquareBoard: SFC<BoardProps> = ({
   style,
   backboard = true,
-  dimensions,
+  measurements,
   flipBoard,
 }) => {
   const padding = backboard && Platform.OS === "web" ? 8 : 0;
@@ -21,38 +21,17 @@ const SquareBoard: SFC<InnerBoardProps> = ({
   const game = gameMaster?.game;
   if (!game) return null;
 
-  const { minRank, maxRank, minFile, maxFile } = game.board.rankAndFileBoundsWithFilter(
-    (square) => !square.hasTokenWithName(TokenName.InvisibilityToken)
-  );
-
-  const numberOfRanks = maxRank - minRank + 1;
-  const numberOfFiles = maxFile - minFile + 1;
-
-  const boardDetails = {
-    width: numberOfFiles,
-    height: numberOfRanks,
-  };
-
-  const fileCoordinates = Array.from(Array(boardDetails.width).keys()).map(
-    (n) => n + minFile
-  );
-  const rankCoordinates = Array.from(Array(boardDetails.height).keys()).map(
-    (n) => n + minRank
-  );
-
-  const squareSize = Math.min(
-    (dimensions.width - 2 * padding) / boardDetails.width,
-    (dimensions.height - 2 * padding) / boardDetails.height,
-    120
-  );
+  const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
+  const fileCoordinates = range(minFile, maxFile - minFile + 1);
+  const rankCoordinates = range(minRank, maxRank - minFile + 1);
 
   return (
     <BoardContainer
       style={[
         style,
         {
-          height: squareSize * boardDetails.height + 2 * padding,
-          width: squareSize * boardDetails.width + 2 * padding,
+          height: measurements.height,
+          width: measurements.width,
           padding,
         },
       ]}
@@ -62,14 +41,14 @@ const SquareBoard: SFC<InnerBoardProps> = ({
         {fileCoordinates.map((file) => (
           <ColumnContainer
             style={{
-              maxWidth: squareSize,
+              maxWidth: measurements.squareSize,
               flexDirection: flipBoard ? "column" : "column-reverse",
             }}
             key={file}
           >
             {rankCoordinates.map((rank) => (
               <Square
-                size={squareSize}
+                size={measurements.squareSize}
                 square={game.board.firstSquareSatisfyingRule(
                   (square) =>
                     objectMatches({

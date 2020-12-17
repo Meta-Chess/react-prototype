@@ -8,7 +8,7 @@ import { contrast } from "utilities";
 
 interface Props {
   player: Player;
-  hidden: boolean;
+  hidden?: boolean;
   alignment?: "left" | "center" | "right";
 }
 
@@ -36,7 +36,7 @@ const Timer: SFC<Props> = ({ style, player, hidden, alignment = "center" }) => {
   if (!clock) return null; // Consider throwing an error?
 
   style = { ...style, height: 40 };
-  return hidden ? (
+  return hidden === true ? (
     <View style={style} />
   ) : (
     <Container style={style} timeRemaining={clock.getTimeRemaining()} player={player}>

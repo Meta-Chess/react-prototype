@@ -2,17 +2,17 @@ import React, { useContext } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
-import { objectMatches } from "utilities";
+import { objectMatches, range } from "utilities";
 import { GameContext } from "game";
 import { TokenName, SquareShape } from "game/types";
 import { Square } from "./Square";
-import { InnerBoardProps } from "components/shared/Board/Board";
+import { BoardProps } from "components/shared/Board/Board";
 import { HexBackboard } from "./HexBackboard";
 
-const HexBoard: SFC<InnerBoardProps> = ({
+const HexBoard: SFC<BoardProps> = ({
   style,
   backboard = true,
-  dimensions,
+  measurements,
   flipBoard,
 }) => {
   const padding = backboard ? 8 : 0;
@@ -21,29 +21,13 @@ const HexBoard: SFC<InnerBoardProps> = ({
   const game = gameMaster?.game;
   if (!game) return null;
 
-  const { minRank, maxRank, minFile, maxFile } = game.board.rankAndFileBoundsWithFilter(
-    (square) => !square.hasTokenWithName(TokenName.InvisibilityToken)
-  );
+  const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
+  const fileCoordinates = range(minFile, maxFile - minFile + 1);
+  const rankCoordinates = range(minRank, maxRank - minFile + 1);
 
-  const numberOfRanks = maxRank - minRank + 1;
-  const numberOfFiles = maxFile - minFile + 1;
-
-  const boardDetails = {
-    width: numberOfFiles,
-    height: (Math.ceil(numberOfRanks / 2) * 2) / Math.sqrt(3),
-  };
-
-  const fileCoordinates = Array.from(Array(numberOfFiles).keys()).map((n) => n + minFile);
-  const rankCoordinates = Array.from(Array(numberOfRanks).keys()).map((n) => n + minRank);
-
-  const squareSize = Math.min(
-    (dimensions.width - 2 * padding) / boardDetails.width,
-    (dimensions.height - 2 * padding) / boardDetails.height,
-    120
-  );
   const boardPadding = 4 * padding;
-  const boardWidth = squareSize * boardDetails.width + boardPadding;
-  const boardHeight = squareSize * boardDetails.height + boardPadding;
+  const boardWidth = measurements.squareSize * measurements.width + boardPadding;
+  const boardHeight = measurements.squareSize * measurements.height + boardPadding;
 
   return (
     <BoardContainer
@@ -52,10 +36,10 @@ const HexBoard: SFC<InnerBoardProps> = ({
         {
           height: boardHeight,
           width: boardWidth,
-          paddingVertical: padding,
-          paddingHorizontal: padding,
+          padding,
           alignContent: "center",
           justifyContent: "center",
+          backgroundColor: backboard ? Colors.DARK.toString() : "transparent",
         },
       ]}
     >
@@ -74,38 +58,42 @@ const HexBoard: SFC<InnerBoardProps> = ({
         boardHeight={boardHeight}
       />
       <CenteredContainer>
-        {/*TODO: Can this layer be removed?*/}
-        <SquaresContainer
-          style={{
-            flexDirection: flipBoard ? "row-reverse" : "row",
-          }}
-        >
-          {fileCoordinates.map((file) => (
-            <ColumnContainer
-              style={{
-                maxWidth: squareSize,
-                flexDirection: flipBoard ? "column" : "column-reverse",
-              }}
-              key={file}
-            >
-              {rankCoordinates.map((rank) => (
+      {/*TODO: Can this layer be removed?*/}
+      <SquaresContainer
+        style={{
+          flexDirection: flipBoard ? "row-reverse" : "row",
+        }}
+      >
+        {fileCoordinates.map((file) => (
+          <ColumnContainer
+            style={{
+              maxWidth: measurements.squareSize,
+              flexDirection: flipBoard ? "column" : "column-reverse",
+            }}
+            key={file}
+          >
+            {rankCoordinates.map((rank) => {
+              const square = game.board.firstSquareSatisfyingRule(
+                (square) =>
+                  objectMatches({
+                    rank,
+                    file,
+                  })(square.coordinates) &&
+                  !square.hasTokenWithName(TokenName.InvisibilityToken)
+              );
+              // TODO: Handle hidden squares in hex better - maybe a rule to determine which coordinates belong on a hex grid?
+              return (
                 <Square
-                  size={squareSize}
-                  square={game.board.firstSquareSatisfyingRule(
-                    (square) =>
-                      objectMatches({
-                        rank,
-                        file,
-                      })(square.coordinates) &&
-                      !square.hasTokenWithName(TokenName.InvisibilityToken)
-                  )}
+                  size={square ? measurements.squareSize : measurements.spacings[0]}
+                  square={square}
                   shape={SquareShape.Hex}
                   key={JSON.stringify([rank, file])}
                 />
-              ))}
-            </ColumnContainer>
-          ))}
-        </SquaresContainer>
+              );
+            })}
+          </ColumnContainer>
+        ))}
+      </SquaresContainer>
       </CenteredContainer>
     </BoardContainer>
   );
