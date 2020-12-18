@@ -6,7 +6,11 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { GameContext } from "game";
-import { Board, calculateBoardMeasurements } from "components/shared/Board";
+import {
+  Board,
+  BoardMeasurements,
+  calculateBoardMeasurements,
+} from "components/shared/Board";
 import { Sidebar } from "./Sidebar";
 import { GlobalModal } from "./GlobalModal";
 import { Player, TokenName } from "game/types";
@@ -16,7 +20,7 @@ import { Spinner } from "ui";
 import { Colors } from "primitives";
 import styled from "styled-components/native";
 
-const PLAYER_ROW_HEIGHT = 56;
+const PLAYER_ROW_HEIGHT = 64;
 
 export const GameScreenContent: FC = () => {
   const { height, width } = useWindowDimensions();
@@ -44,7 +48,7 @@ export const GameScreenContent: FC = () => {
 
   return (
     <StyledTouchableWithoutFeedback onPress={(): void => gameMaster?.hideModal()}>
-      <StyledContainer style={{ flexDirection: portrait ? "column" : "row", padding }}>
+      <Container style={{ flexDirection: portrait ? "column" : "row", padding }}>
         <View>
           <PlayerRow
             player={flipBoard ? Player.White : Player.Black}
@@ -60,36 +64,40 @@ export const GameScreenContent: FC = () => {
             style={{ height: PLAYER_ROW_HEIGHT }}
           />
         </View>
-        <Sidebar
-          short={portrait}
-          style={{
-            flex: 1,
-            marginLeft: 16,
-            height: portrait
-              ? height - boardMeasurements.height - 2 * PLAYER_ROW_HEIGHT - 2 * padding
-              : boardMeasurements.height,
-            minWidth: 300,
-            maxWidth: 450,
-            width: portrait ? boardMeasurements.width : undefined,
-          }}
-        />
+        <SidebarContainer portrait={portrait} boardMeasurements={boardMeasurements}>
+          <Sidebar short={portrait} style={{ flex: 1 }} />
+        </SidebarContainer>
         <GlobalModal />
-      </StyledContainer>
+      </Container>
     </StyledTouchableWithoutFeedback>
   );
 };
 
 const StyledTouchableWithoutFeedback = styled(TouchableWithoutFeedback)`
   display: flex;
-  width: 100%;
-  height: 100%;
+  flex: 1;
 `;
 
-const StyledContainer = styled(View)`
+const Container = styled(View)`
   display: flex;
   justify-content: space-around;
   align-items: center;
   background: ${Colors.DARKEST.string()};
-  width: 100%;
-  height: 100%;
+  flex: 1;
+`;
+
+interface SidebarContainerProps {
+  portrait: boolean;
+  boardMeasurements: BoardMeasurements;
+}
+
+const SidebarContainer = styled(View)<SidebarContainerProps>`
+  flex: 1;
+  ${({ portrait, boardMeasurements }): string =>
+    portrait ? "" : `height: ${boardMeasurements.height};`}
+  ${({ portrait, boardMeasurements }): string =>
+    portrait ? `width: ${boardMeasurements.width};` : ""}
+  min-width: 300;
+  max-width: 450;
+  margin-left: ${({ portrait }): number => (portrait ? 0 : 16)};
 `;

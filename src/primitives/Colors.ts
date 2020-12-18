@@ -7,6 +7,7 @@ export const Colors = {
   TEXT: {
     DARK: Color("#212121"),
     LIGHT: Color("#FFFFFF").fade(0.1),
+    LIGHT_SECONDARY: Color("#FFFFFF").fade(0.3),
   },
   EMPHATIC: {
     DARK: Color("#000000"),

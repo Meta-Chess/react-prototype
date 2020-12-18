@@ -35,7 +35,6 @@ const Timer: SFC<Props> = ({ style, player, hidden, alignment = "center" }) => {
 
   if (!clock) return null; // Consider throwing an error?
 
-  style = { ...style, height: 40 };
   return hidden === true ? (
     <View style={style} />
   ) : (
