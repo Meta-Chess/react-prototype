@@ -20,5 +20,5 @@ export const PlayerRow: SFC<Props> = ({ style, player }) => {
 
 const StyledRow = styled(Row)`
   justify-content: space-between;
-  padding-vertical: 8px;
+  padding: 8px;
 `;

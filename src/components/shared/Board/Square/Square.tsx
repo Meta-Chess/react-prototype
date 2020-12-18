@@ -18,7 +18,7 @@ interface Props {
 }
 
 const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
-  const GRAPHIC_HEX_TILING = true; //true for Hex over Circle, bundle into graphic options
+  const GRAPHIC_HEX_TILING = true; //true for Hex over Circle, TODO: bundle into graphic options, or choose one over the other
   const { gameMaster } = useContext(GameContext);
   if (!gameMaster) return null;
 

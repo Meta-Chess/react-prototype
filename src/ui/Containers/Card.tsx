@@ -8,4 +8,5 @@ export const Card = styled(View)`
   ${Styles.BOX_SHADOW}
   border-radius: 4px;
   padding: 16px;
+  overflow: hidden;
 `;

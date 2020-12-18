@@ -10,7 +10,7 @@ export const Colors = {
   },
   EMPHATIC: {
     DARK: Color("#000000"),
-    LIGHT: Color("#FFFFFF").fade(0.1),
+    LIGHT: Color("#FFFFFF"),
   },
   GREY: Color("#888888"),
   DARKEST: Color("#212121"),
