@@ -11,10 +11,6 @@ export class Game {
     public players: Player[] = [
       new Player(PlayerName.White),
       new Player(PlayerName.Black),
-      new Player(PlayerName.Silver, false, " ate shit"),
-      new Player(PlayerName.Gold, false, " got blown up"),
-      // new Player(PlayerName.Red, false, " lost by accidental suicide"),
-      // new Player(PlayerName.Blue, false, "didn't get to play"),
     ],
     public currentPlayerIndex: number = 0,
     public currentTurn: number = 1
