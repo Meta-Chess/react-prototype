@@ -21,7 +21,6 @@ const GameProvider: FC<Props> = ({ children, gameOptions, roomId }) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   if (dimensions.width !== width || dimensions.height !== height) {
     setDimensions({ width, height });
-    gameMaster?.hideModal();
   }
 
   useEffect((): void => {

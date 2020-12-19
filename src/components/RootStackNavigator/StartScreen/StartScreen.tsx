@@ -1,6 +1,5 @@
 import React, { FC, useState, useCallback } from "react";
 import { View } from "react-native";
-import styled from "styled-components/native";
 import { Colors, MChessLogo } from "primitives";
 import { Button, Row } from "ui";
 import { GameProvider } from "game";
@@ -10,6 +9,7 @@ import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
 import { Screens, useNavigation } from "navigation";
 import { SetupGameButton } from "components/RootStackNavigator/StartScreen/SetupGameButton";
+import styled from "styled-components/native";
 
 const StartScreen: FC = () => {
   const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
@@ -56,7 +56,6 @@ const StartScreen: FC = () => {
 };
 
 const ScreenContainer = styled(View)`
-  display: flex;
   flex: 1;
   background-color: ${Colors.DARKEST.string()};
 `;

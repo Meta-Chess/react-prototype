@@ -3,19 +3,21 @@ import React, { FC } from "react";
 
 interface Props {
   color: string;
+  width: number;
+  height: number;
 }
 
-export const Triangle: FC<Props> = ({ color }) => (
+export const TriangleUp: FC<Props> = ({ color, width, height }) => (
   <View
     style={[
       {
-        marginLeft: -10,
+        marginLeft: -width / 2,
         backgroundColor: "transparent",
         borderStyle: "solid",
         borderTopWidth: 0,
-        borderRightWidth: 10,
-        borderBottomWidth: 10,
-        borderLeftWidth: 10,
+        borderRightWidth: width / 2,
+        borderBottomWidth: height,
+        borderLeftWidth: width / 2,
         borderBottomColor: color,
         borderRightColor: "transparent",
         borderLeftColor: "transparent",

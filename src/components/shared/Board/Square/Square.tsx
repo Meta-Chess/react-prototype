@@ -10,6 +10,7 @@ import { Square } from "game/Board";
 import { SquareShape } from "game/types";
 import { HexTile } from "./HexTile";
 import { Highlight } from "./Highlight";
+import { useModals } from "ui";
 
 interface Props {
   square: Square | undefined;
@@ -19,6 +20,7 @@ interface Props {
 
 const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
   const GRAPHIC_HEX_TILING = true; //true for Hex over Circle, TODO: bundle into graphic options, or choose one over the other
+  const modals = useModals();
   const { gameMaster } = useContext(GameContext);
   if (!gameMaster) return null;
 
@@ -41,6 +43,7 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
   // TODO: For chess plus add and use shadowPieceSize
 
   const onPress = (): void => {
+    modals.hideAll();
     gameMaster.onPress(square.location);
   };
 

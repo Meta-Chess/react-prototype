@@ -3,6 +3,7 @@ import {
   Platform,
   useWindowDimensions,
   View,
+  SafeAreaView,
   TouchableWithoutFeedback,
 } from "react-native";
 import { GameContext } from "game";
@@ -12,11 +13,10 @@ import {
   calculateBoardMeasurements,
 } from "components/shared/Board";
 import { Sidebar } from "./Sidebar";
-import { GlobalModal } from "./GlobalModal";
 import { Player, TokenName } from "game/types";
 import { useFlipDelay } from "components/shared/Board/useFlipDelay";
 import { PlayerRow } from "./PlayerRow";
-import { Spinner } from "ui";
+import { Spinner, useModals } from "ui";
 import { Colors } from "primitives";
 import styled from "styled-components/native";
 
@@ -26,6 +26,7 @@ export const GameScreenContent: FC = () => {
   const { height, width } = useWindowDimensions();
   const portrait = height > width;
 
+  const modals = useModals();
   const { gameMaster } = useContext(GameContext);
   const { flipBoard } = useFlipDelay(gameMaster?.game?.currentPlayer);
   if (!gameMaster) return <Spinner />;
@@ -47,7 +48,7 @@ export const GameScreenContent: FC = () => {
   });
 
   return (
-    <StyledTouchableWithoutFeedback onPress={(): void => gameMaster?.hideModal()}>
+    <StyledTouchableWithoutFeedback onPress={modals.hideAll}>
       <Container style={{ flexDirection: portrait ? "column" : "row", padding }}>
         <View>
           <PlayerRow
@@ -67,7 +68,6 @@ export const GameScreenContent: FC = () => {
         <SidebarContainer portrait={portrait} boardMeasurements={boardMeasurements}>
           <Sidebar short={portrait} style={{ flex: 1 }} />
         </SidebarContainer>
-        <GlobalModal />
       </Container>
     </StyledTouchableWithoutFeedback>
   );
@@ -78,7 +78,7 @@ const StyledTouchableWithoutFeedback = styled(TouchableWithoutFeedback)`
   flex: 1;
 `;
 
-const Container = styled(View)`
+const Container = styled(SafeAreaView)`
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -94,10 +94,11 @@ interface SidebarContainerProps {
 const SidebarContainer = styled(View)<SidebarContainerProps>`
   flex: 1;
   ${({ portrait, boardMeasurements }): string =>
-    portrait ? "" : `height: ${boardMeasurements.height};`}
+    portrait ? "" : `height: ${boardMeasurements.height}px;`}
   ${({ portrait, boardMeasurements }): string =>
-    portrait ? `width: ${boardMeasurements.width};` : ""}
-  min-width: 300;
-  max-width: 450;
-  margin-left: ${({ portrait }): number => (portrait ? 0 : 16)};
+    portrait ? `width: ${boardMeasurements.width}px;` : ""}
+  min-width: 300px;
+  max-width: 450px;
+  padding: ${Platform.OS === "web" ? 0 : 8}px;
+  margin-left: ${({ portrait }): number => (portrait ? 0 : 16)}px;
 `;
