@@ -6,7 +6,6 @@ import { Game } from "./Game";
 import { VariantName, variants } from "./variants/variants";
 import { check, CompactRules, fatigue, atomic, Rule } from "./Rules";
 import { flatMap } from "lodash";
-import { winModalContent } from "components/shared/Modals";
 import { randomChoice } from "utilities";
 
 export class GameMaster {
@@ -20,6 +19,7 @@ export class GameMaster {
   public rules: Rule[];
   public result = ""; // TODO: what is this?
   public modal?: Modal;
+  public gameOver: boolean;
 
   // TODO: Consider restructure to encapsulate visualisation details in a nice abstraction
   public flipBoard: boolean;
@@ -58,6 +58,7 @@ export class GameMaster {
     this.rules = rules;
     this.flipBoard = !!flipBoard;
     this.overTheBoard = !!overTheBoard;
+    this.gameOver = false;
   }
 
   render(): void {
@@ -82,7 +83,7 @@ export class GameMaster {
       if (remainingPlayers.length == 1) {
         const winner = remainingPlayers[0];
         this.result = PlayerDisplayNames[winner] + " won on time!";
-        this.setWon();
+        this.setGameOver();
         this.endGame();
       }
     }
@@ -91,7 +92,11 @@ export class GameMaster {
   onPress(location: string): Move | undefined {
     this.gameClones.forEach((clone) => clone.resetTo(this.game));
     const move = this.allowableMoves.find((m) => m.location === location);
-    if (move && this.game.players[this.game.currentPlayerIndex].name === this.selectedPieces[0]?.owner) {
+    if (
+      move &&
+      this.game.players[this.game.currentPlayerIndex].name ===
+        this.selectedPieces[0]?.owner
+    ) {
       this.doMove(move);
       if (!this.game.players[this.game.currentPlayerIndex].alive) {
         this.doMove();
@@ -117,7 +122,6 @@ export class GameMaster {
     }
     this.checkGameEndConditions();
   }
-
 
   unselectAllPieces(): void {
     this.selectedPieces = [];
@@ -158,7 +162,7 @@ export class GameMaster {
     const remainingPlayers = this.game.alivePlayers();
     if (remainingPlayers.length == 1) {
       this.result = PlayerDisplayNames[remainingPlayers[0].name] + " won";
-      this.setWon();
+      this.setGameOver();
       this.endGame();
     }
     //TODO: once there are other win conditions check those with an interruption point
@@ -167,7 +171,7 @@ export class GameMaster {
   checkDrawConditions(): void {
     if (this.game.alivePlayers().length == 0) {
       this.result = "Draw by mutual destruction";
-      this.setWon();
+      this.setGameOver();
       this.endGame();
     }
   }
@@ -186,11 +190,7 @@ export class GameMaster {
     this.game.clock?.stop();
   }
 
-  setWon(): void {
-    this.setModal({
-      id: 1,
-      fullScreen: true,
-      content: winModalContent,
-    });
+  setGameOver(): void {
+    this.gameOver = true;
   }
 }

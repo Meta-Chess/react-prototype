@@ -86,5 +86,3 @@ export const WinModal: SFC = () => {
     </View>
   );
 };
-
-export const winModalContent = <WinModal />;
