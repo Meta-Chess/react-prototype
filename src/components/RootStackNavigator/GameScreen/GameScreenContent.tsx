@@ -1,11 +1,5 @@
 import React, { FC, useContext } from "react";
-import {
-  Platform,
-  useWindowDimensions,
-  View,
-  SafeAreaView,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { Platform, useWindowDimensions, View, SafeAreaView } from "react-native";
 import { GameContext } from "game";
 import {
   Board,
@@ -48,7 +42,7 @@ export const GameScreenContent: FC = () => {
   });
 
   return (
-    <StyledTouchableWithoutFeedback onPress={modals.hideAll}>
+    <StyledContainer>
       <Container style={{ flexDirection: portrait ? "column" : "row", padding }}>
         <View>
           <PlayerRow
@@ -69,11 +63,11 @@ export const GameScreenContent: FC = () => {
           <Sidebar short={portrait} style={{ flex: 1 }} />
         </SidebarContainer>
       </Container>
-    </StyledTouchableWithoutFeedback>
+    </StyledContainer>
   );
 };
 
-const StyledTouchableWithoutFeedback = styled(TouchableWithoutFeedback)`
+const StyledContainer = styled(View)`
   display: flex;
   flex: 1;
 `;

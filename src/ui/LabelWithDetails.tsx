@@ -1,11 +1,16 @@
-import { TouchableOpacity, View, Platform, useWindowDimensions } from "react-native";
+import {
+  TouchableOpacity,
+  Platform,
+  useWindowDimensions,
+  ScrollView,
+} from "react-native";
 import React, { useState, useRef, useCallback } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Colors, SFC, Text } from "primitives";
 import styled from "styled-components/native";
 import { TriangleUp } from "./TriangleUp";
 import { Styles } from "primitives/Styles";
 import { useModals } from "ui/Modals";
-import { sleep } from "utilities";
 
 interface Props {
   label: string;
@@ -18,49 +23,67 @@ const TRIANGLE_HEIGHT = 8;
 export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
   const anchorRef = useRef<TouchableOpacity>(null);
   const [modalId] = useState(Math.random());
-  const { width: screenWidth } = useWindowDimensions();
-  const [measurements, setMeasurements] = useState({ top: 0, left: 0 });
-  const measure = useCallback(() => {
-    anchorRef.current?.measure((width, height, px, py, fx, fy) => {
-      setMeasurements({ top: fy + py, left: px / 2 + fx });
-    });
-  }, [anchorRef]);
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const safeAreaInsets = useSafeAreaInsets();
+  console.log(safeAreaInsets);
+  const measure = useCallback(
+    (callback: (input: { top: number; left: number }) => void) => {
+      anchorRef.current?.measure((_w, _h, px, py, fx, fy) => {
+        callback({ top: fy + py, left: px / 2 + fx });
+      });
+    },
+    [anchorRef]
+  );
 
   const modals = useModals();
-  const showModal = useCallback(() => {
-    if (details) {
-      modals.hideAll();
-      modals.show({
-        id: modalId + 1,
-        content: (
-          <ModalContainer>
-            <Text cat={"BodyXS"}>{details}</Text>
-          </ModalContainer>
-        ),
-        top: measurements.top + TRIANGLE_HEIGHT,
-        left:
-          measurements.left < MODAL_WIDTH / 2
-            ? MODAL_WIDTH / 2
-            : measurements.left > screenWidth - MODAL_WIDTH / 2
-            ? screenWidth - MODAL_WIDTH / 2
-            : measurements.left,
-      });
-      modals.show({
-        id: modalId,
-        content: (
-          <TriangleUp
-            color={Colors.DARKISH.toString()}
-            width={16}
-            height={TRIANGLE_HEIGHT}
-          />
-        ),
-        ...measurements,
-      });
-    }
-  }, [measurements, details, modalId, modals, screenWidth]);
+  const showModal = useCallback(
+    (measurements: { top: number; left: number }) => {
+      if (details) {
+        modals.hideAll();
+        modals.show({
+          id: modalId + 1,
+          content: (
+            <ModalContainer
+              style={{
+                maxHeight:
+                  screenHeight -
+                  safeAreaInsets.bottom -
+                  measurements.top -
+                  TRIANGLE_HEIGHT,
+              }}
+              contentContainerStyle={{ padding: 12 }}
+              bounces={false}
+            >
+              <Text cat={"BodyXS"}>{details}</Text>
+            </ModalContainer>
+          ),
+          top: measurements.top + TRIANGLE_HEIGHT,
+          left:
+            measurements.left < MODAL_WIDTH / 2 + safeAreaInsets.left
+              ? MODAL_WIDTH / 2
+              : measurements.left > screenWidth - MODAL_WIDTH / 2 - safeAreaInsets.right
+              ? screenWidth - MODAL_WIDTH / 2
+              : measurements.left,
+        });
+        modals.show({
+          id: modalId,
+          content: (
+            <TriangleUp
+              color={Colors.DARKISH.toString()}
+              width={16}
+              height={TRIANGLE_HEIGHT}
+            />
+          ),
+          ...measurements,
+        });
+      }
+    },
+    [details, modalId, modals, screenWidth]
+  );
 
   const hideModal = useCallback(() => {
     modals.hide(modalId);
+    modals.hide(modalId + 1);
   }, [modalId, modals]);
 
   return (
@@ -68,22 +91,20 @@ export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
       <LabelContainer
         style={style}
         disabled={!details}
-        onPress={(): void => {
+        onPress={async (): Promise<void> => {
           if (modals.showing(modalId)) {
             hideModal();
           } else {
-            measure();
-            showModal();
+            measure(showModal);
           }
         }}
         ref={anchorRef}
         onLayout={async (): Promise<void> => {
-          if (Platform.OS !== "web") await sleep(300);
-          measure();
-          if (modals.showing(modalId)) {
-            hideModal();
-            showModal();
-          }
+          if (Platform.OS !== "web" && modals.showing(modalId))
+            measure((measurements) => {
+              hideModal();
+              showModal(measurements);
+            });
         }}
       >
         <Text cat={"BodyS"}>{label}</Text>
@@ -102,12 +123,11 @@ const LabelContainer = styled(TouchableOpacity)`
   background-color: ${Colors.MCHESS_BLUE.fade(0.8).toString()};
 `;
 
-const ModalContainer = styled(View)`
+const ModalContainer = styled(ScrollView)`
   position: absolute;
   width: ${MODAL_WIDTH}px;
   margin-left: ${-MODAL_WIDTH / 2}px;
   z-index: 10;
-  padding: 12px;
   background-color: ${Colors.DARKISH.toString()};
   border-radius: 4px;
   ${Styles.BOX_SHADOW}

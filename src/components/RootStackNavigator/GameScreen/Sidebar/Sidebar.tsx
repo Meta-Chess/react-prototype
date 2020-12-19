@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useWindowDimensions, ScrollView, View } from "react-native";
-import { Button, Card } from "ui";
+import { Button, Card, useModals } from "ui";
 import { Screens, useNavigation } from "navigation";
 import { Colors, SFC } from "primitives";
 import { GameContext } from "game";
@@ -18,6 +18,7 @@ interface Props {
 
 const Sidebar: SFC<Props> = ({ style }) => {
   const navigation = useNavigation();
+  const modals = useModals();
   const { gameMaster } = useContext(GameContext);
   const pieces = gameMaster?.selectedPieces;
   const rules = gameMaster?.rules;
@@ -38,7 +39,13 @@ const Sidebar: SFC<Props> = ({ style }) => {
 
   return (
     <Container style={style}>
-      <ScrollView contentContainerStyle={{ paddingBottom: 24 }}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 24 }}
+        onScroll={() => {
+          modals.hideAll();
+        }}
+        scrollEventThrottle={100}
+      >
         <RoomIdCard roomId={roomId} />
         <VariantInfoCard
           variant={variant}

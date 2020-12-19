@@ -2,6 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { RootStackNavigator } from "components";
 import { KeyboardAvoidingView, Platform, SafeAreaView } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 import { Colors } from "primitives";
 import { ModalProvider } from "ui";
@@ -12,9 +13,11 @@ export default function App() {
     <NavigationContainer linking={linking}>
       <ModalProvider>
         <KeyboardAvoidingContainer behavior={Platform.OS == "ios" ? "padding" : "height"}>
-          <SafeAreaContainer>
-            <RootStackNavigator />
-          </SafeAreaContainer>
+          <SafeAreaProvider>
+            <SafeAreaContainer>
+              <RootStackNavigator />
+            </SafeAreaContainer>
+          </SafeAreaProvider>
         </KeyboardAvoidingContainer>
       </ModalProvider>
     </NavigationContainer>
