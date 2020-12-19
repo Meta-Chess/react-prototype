@@ -1,13 +1,6 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import {
-  GameOptions,
-  Modal,
-  Move,
-  PlayerName,
-  Player,
-  PlayerDisplayNames,
-} from "./types";
+import { GameOptions, Modal, Move, PlayerDisplayNames } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants/variants";

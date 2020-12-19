@@ -1,10 +1,8 @@
 import React, { useContext } from "react";
 import { View, TouchableOpacity, ScrollView } from "react-native";
 import { SFC, Text } from "primitives";
-import { Button } from "ui/Buttons";
 import { GameContext } from "game";
 import { PlayerDisplayNames } from "game/types";
-import { Colors } from "primitives";
 
 export const WinModal: SFC = () => {
   const { gameMaster } = useContext(GameContext);
