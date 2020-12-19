@@ -4,7 +4,7 @@ import { Adjacency, Piece, Square } from "../Board";
 import {
   Direction,
   PieceName,
-  Player,
+  PlayerName,
   RankAndFileBounds,
   SquareShape,
   TokenName,
@@ -76,7 +76,7 @@ const hexAdjacencies = (_bounds: RankAndFileBounds) => (square: Square): Adjacen
 const hexPieceSetupRule = (square: Square): Piece[] => {
   const { rank, file } = square.getCoordinates();
   const location = toLocation({ rank, file });
-  const owner = rank > 10 ? Player.Black : Player.White;
+  const owner = rank > 10 ? PlayerName.Black : PlayerName.White;
   const set = PieceSet.HexStandard;
 
   if ([1, 3, 5].includes(rank) && file === 6)

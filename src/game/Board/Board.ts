@@ -7,7 +7,7 @@ import {
   PieceDelta,
   RankAndFileBounds,
   Token,
-  Player,
+  PlayerName,
   Region,
   Regions,
 } from "game/types";
@@ -90,7 +90,7 @@ class Board extends TokenOwner {
     return this.getPieces().filter(rule);
   }
 
-  piecesNotBelongingTo(player: Player): Piece[] {
+  piecesNotBelongingTo(player: PlayerName): Piece[] {
     return this.getPiecesByRule((piece) => piece.owner !== player);
   }
 
@@ -274,11 +274,11 @@ class Board extends TokenOwner {
     return board;
   }
 
-  squareHasPieceBelongingTo(square: Square, owner: Player): boolean {
+  squareHasPieceBelongingTo(square: Square, owner: PlayerName): boolean {
     return square.pieces.some((pId) => this.pieces[pId].owner === owner);
   }
 
-  squareHasPieceNotBelongingTo(square: Square, owner: Player): boolean {
+  squareHasPieceNotBelongingTo(square: Square, owner: PlayerName): boolean {
     return square.pieces.some((pId) => this.pieces[pId].owner !== owner);
   }
 

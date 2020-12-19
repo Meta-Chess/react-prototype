@@ -1,6 +1,6 @@
 import { standardGaits, hexGaits } from "../constants";
 import { Piece } from "game/Board";
-import { Gait, PieceName, Player, Token, GaitParams } from "game/types";
+import { Gait, PieceName, PlayerName, Token, GaitParams } from "game/types";
 
 type GaitGenerator = (p?: GaitParams) => Gait[];
 
@@ -11,7 +11,7 @@ export enum PieceSet {
 
 interface PieceCreationInput {
   location?: string;
-  owner: Player;
+  owner: PlayerName;
   name: PieceName;
   gaits?: Gait[];
   gaitGenerators?: GaitGenerator[];
@@ -42,14 +42,14 @@ const defaultGaitGenerator = ({
   set,
 }: {
   name: PieceName;
-  owner: Player;
+  owner: PlayerName;
   set: PieceSet | undefined;
 }): (() => Gait[]) => {
   const gaits = set !== undefined ? allGaits[set] : allGaits[PieceSet.Standard];
 
   if (name === PieceName.Pawn) {
-    if (owner === Player.White) return (): Gait[] => gaits.WHITE_PAWN_GAITS;
-    if (owner === Player.Black) return (): Gait[] => gaits.BLACK_PAWN_GAITS;
+    if (owner === PlayerName.White) return (): Gait[] => gaits.WHITE_PAWN_GAITS;
+    if (owner === PlayerName.Black) return (): Gait[] => gaits.BLACK_PAWN_GAITS;
   }
   if (name === PieceName.Knight) return (): Gait[] => gaits.KNIGHT_GAITS;
   if (name === PieceName.Bishop) return (): Gait[] => gaits.BISHOP_GAITS;

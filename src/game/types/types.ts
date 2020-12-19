@@ -29,7 +29,7 @@ export interface Move {
   pieceId: string;
   location: string;
   pieceDeltas: PieceDelta[];
-  player: Player;
+  player: PlayerName;
   data?: moveData;
 }
 
@@ -38,9 +38,38 @@ export interface PieceDelta {
   path: Path;
 }
 
-export enum Player {
+export enum PlayerName {
   White,
   Black,
+  Silver,
+  Gold,
+  Blue,
+  Red,
+  Yellow,
+  Green,
+}
+
+export const PlayerDisplayNames: { [key in PlayerName]: string } = {
+  [PlayerName.White]: "White",
+  [PlayerName.Black]: "Black",
+  [PlayerName.Silver]: "Silver",
+  [PlayerName.Gold]: "Gold",
+  [PlayerName.Blue]: "Blue",
+  [PlayerName.Red]: "Red",
+  [PlayerName.Yellow]: "Yellow",
+  [PlayerName.Green]: "Green",
+};
+
+export class Player {
+  constructor(
+    public name: PlayerName,
+    public alive: boolean = true,
+    public endGameMessage: string = " died."
+  ) {}
+
+  clone(): Player {
+    return new Player(this.name, this.alive, this.endGameMessage);
+  }
 }
 
 export enum PieceName {
@@ -110,9 +139,10 @@ export interface GameOptions {
 
 export interface Modal {
   id: number;
-  top: number;
-  left: number;
+  top?: number;
+  left?: number;
   content?: ReactElement;
+  fullScreen?: boolean;
 }
 
 export interface TraitsInSetInfo {

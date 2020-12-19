@@ -1,11 +1,19 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, Move } from "./types";
+import {
+  GameOptions,
+  Modal,
+  Move,
+  PlayerName,
+  Player,
+  PlayerDisplayNames,
+} from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants/variants";
 import { check, CompactRules, fatigue, atomic, Rule } from "./Rules";
 import { flatMap } from "lodash";
+import { winModalContent } from "components/shared/Modals";
 import { randomChoice } from "utilities";
 
 export class GameMaster {
@@ -17,6 +25,8 @@ export class GameMaster {
   public title: string;
   public variant: VariantName;
   public rules: Rule[];
+  public result = ""; // TODO: what is this?
+  public modal?: Modal;
 
   // TODO: Consider restructure to encapsulate visualisation details in a nice abstraction
   public flipBoard: boolean;
@@ -61,12 +71,38 @@ export class GameMaster {
     this.renderer.render();
   }
 
+  handleTimerFinish(): void {
+    const clock = this.game.clock;
+    if (clock) {
+      this.game
+        .alivePlayers()
+        .filter((p) => {
+          const timer = clock.getPlayerTimer(p.name);
+          return timer && timer.getAllowance() <= 0;
+        })
+        .forEach((p) => {
+          p.alive = false;
+          p.endGameMessage = " ran out of time!";
+        });
+
+      const remainingPlayers = clock.getPlayersWithNonzeroAllowance();
+      if (remainingPlayers.length == 1) {
+        const winner = remainingPlayers[0];
+        this.result = PlayerDisplayNames[winner] + " won on time!";
+        this.setWon();
+        this.endGame();
+      }
+    }
+  }
+
   onPress(location: string): Move | undefined {
     this.gameClones.forEach((clone) => clone.resetTo(this.game));
     const move = this.allowableMoves.find((m) => m.location === location);
-    if (move && this.game.currentPlayer === this.selectedPieces[0]?.owner) {
-      this.game.doMove(move);
-      this.unselectAllPieces();
+    if (move && this.game.players[this.game.currentPlayerIndex].name === this.selectedPieces[0]?.owner) {
+      this.doMove(move);
+      if (!this.game.players[this.game.currentPlayerIndex].alive) {
+        this.doMove();
+      }
       this.render();
       return move;
     } else if (this.selectedPieces.some((p) => p.location === location)) {
@@ -79,9 +115,16 @@ export class GameMaster {
     this.render();
   }
 
-  doMove(move: Move): void {
-    this.game.doMove(move);
+  doMove(move?: Move): void {
+    if (move) {
+      this.game.doMove(move);
+      this.unselectAllPieces();
+    } else {
+      this.game.nextTurn();
+    }
+    this.checkGameEndConditions();
   }
+
 
   unselectAllPieces(): void {
     this.selectedPieces = [];
@@ -97,7 +140,64 @@ export class GameMaster {
     );
   }
 
-  // All games can be ended, but only online games need to do something with it at the moment
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  endGame(): void {}
+  checkGameEndConditions(): void {
+    this.applyLossConditions();
+    this.checkWinConditions();
+    this.checkDrawConditions();
+  }
+
+  applyLossConditions(): void {
+    this.game.alivePlayers().forEach((p) => {
+      const { dead } = this.interrupt.for.lethalCondition({
+        board: this.game.board,
+        player: p.name,
+        dead: false,
+      });
+      p.alive = !dead;
+      if (dead) p.endGameMessage = " slayed on the field of battle";
+    });
+
+    //TODO: the same for loss conditions once they exist.
+    //TODO: set loss message here by forcing loss conditions to provide one.
+  }
+
+  checkWinConditions(): void {
+    const remainingPlayers = this.game.alivePlayers();
+    if (remainingPlayers.length == 1) {
+      this.result = PlayerDisplayNames[remainingPlayers[0].name] + " won";
+      this.setWon();
+      this.endGame();
+    }
+    //TODO: once there are other win conditions check those with an interruption point
+  }
+
+  checkDrawConditions(): void {
+    if (this.game.alivePlayers().length == 0) {
+      this.result = "Draw by mutual destruction";
+      this.setWon();
+      this.endGame();
+    }
+  }
+
+  setModal(modal: Modal): void {
+    this.modal = modal;
+    this.render();
+  }
+
+  hideModal(): void {
+    this.modal = undefined;
+    this.render();
+  }
+
+  endGame(): void {
+    this.game.clock?.stop();
+  }
+
+  setWon(): void {
+    this.setModal({
+      id: 1,
+      fullScreen: true,
+      content: winModalContent,
+    });
+  }
 }

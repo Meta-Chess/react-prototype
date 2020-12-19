@@ -3,11 +3,11 @@ import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
 import { GameContext } from "game";
-import { Player } from "game/types";
+import { PlayerName } from "game/types";
 import { AbsoluteView, Card } from "ui";
 
 interface Props {
-  player: Player;
+  player: PlayerName;
   hidden?: boolean;
   alignment?: "left" | "center" | "right";
 }
@@ -21,6 +21,13 @@ const Timer: SFC<Props> = ({ style, player, hidden, alignment = "center" }) => {
   const formattedTime = clock?.getFormattedTime();
   const displayTime = formattedTime?.time;
   const validFor = formattedTime?.validFor;
+  const timeRemaining = clock?.getTimeRemaining();
+
+  useEffect(() => {
+    if (timeRemaining && timeRemaining <= 0) {
+      gameMaster?.handleTimerFinish();
+    }
+  }, [displayTime, gameMaster, timeRemaining]);
 
   const timeout = setTimeout(
     () => {

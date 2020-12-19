@@ -1,4 +1,4 @@
-import { Direction, Gait, Move, Player } from "../types";
+import { Direction, Gait, Move, PlayerName } from "../types";
 import { applyInSequence, isPresent } from "utilities";
 import { Board, Piece, Square } from "../Board";
 import { Game } from "game/Game";
@@ -56,7 +56,7 @@ const identityRule = {
     patherParams: { checkDepth?: number };
     filtered: boolean;
   }) => x,
-  lethalCondition: (x: { board: Board; player: Player; dead: boolean }) => x,
+  lethalCondition: (x: { board: Board; player: PlayerName; dead: boolean }) => x,
   postCapture: (x: { board: Board; square: Square }) => x,
   piecesUnderSquare: (x: { square: Square; board: Board; pieceIds: string[] }) => x,
   onCapture: (x: {
