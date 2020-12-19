@@ -41,7 +41,7 @@ const Sidebar: SFC<Props> = ({ style }) => {
     <Container style={style}>
       <ScrollView
         contentContainerStyle={{ paddingBottom: 24 }}
-        onScroll={() => {
+        onScroll={(): void => {
           modals.hideAll();
         }}
         scrollEventThrottle={100}

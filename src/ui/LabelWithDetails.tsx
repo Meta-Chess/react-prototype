@@ -25,7 +25,6 @@ export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
   const [modalId] = useState(Math.random());
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const safeAreaInsets = useSafeAreaInsets();
-  console.log(safeAreaInsets);
   const measure = useCallback(
     (callback: (input: { top: number; left: number }) => void) => {
       anchorRef.current?.measure((_w, _h, px, py, fx, fy) => {
@@ -78,7 +77,16 @@ export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
         });
       }
     },
-    [details, modalId, modals, screenWidth]
+    [
+      details,
+      modalId,
+      modals,
+      safeAreaInsets.bottom,
+      safeAreaInsets.left,
+      safeAreaInsets.right,
+      screenHeight,
+      screenWidth,
+    ]
   );
 
   const hideModal = useCallback(() => {

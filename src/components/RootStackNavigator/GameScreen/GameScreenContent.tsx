@@ -10,7 +10,7 @@ import { Sidebar } from "./Sidebar";
 import { Player, TokenName } from "game/types";
 import { useFlipDelay } from "components/shared/Board/useFlipDelay";
 import { PlayerRow } from "./PlayerRow";
-import { Spinner, useModals } from "ui";
+import { Spinner } from "ui";
 import { Colors } from "primitives";
 import styled from "styled-components/native";
 
@@ -20,7 +20,6 @@ export const GameScreenContent: FC = () => {
   const { height, width } = useWindowDimensions();
   const portrait = height > width;
 
-  const modals = useModals();
   const { gameMaster } = useContext(GameContext);
   const { flipBoard } = useFlipDelay(gameMaster?.game?.currentPlayer);
   if (!gameMaster) return <Spinner />;
