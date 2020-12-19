@@ -38,6 +38,7 @@ export const TextInput: SFC<Props> = ({ style, ...rest }) => {
       onBlur={(): void => {
         setFocused(false);
       }}
+      placeholderTextColor={Colors.TEXT.LIGHT_SECONDARY.toString()}
       {...rest}
     />
   );
