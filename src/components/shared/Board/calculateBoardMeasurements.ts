@@ -29,7 +29,6 @@ export function calculateBoardMeasurements({
   shape: SquareShape | undefined;
   backboard: boolean;
 }): BoardMeasurements {
-  // TODO: Board margins
   const boardPaddingHorizontal = backboard ? (shape === SquareShape.Hex ? 16 : 8) : 0;
   const boardPaddingVertical = backboard ? 8 : 0;
 
