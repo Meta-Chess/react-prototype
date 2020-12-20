@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Platform, View } from "react-native";
+import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { objectMatches, range } from "utilities";
@@ -8,6 +8,7 @@ import { TokenName } from "game/types";
 import { Square } from "./Square";
 import { BoardProps } from "components/shared/Board/Board";
 import { Styles } from "primitives/Styles";
+import { BoardMeasurements } from "components/shared";
 
 const SquareBoard: SFC<BoardProps> = ({
   style,
@@ -15,8 +16,6 @@ const SquareBoard: SFC<BoardProps> = ({
   measurements,
   flipBoard,
 }) => {
-  const padding = backboard && Platform.OS === "web" ? 8 : 0;
-
   const { gameMaster } = useContext(GameContext);
   const game = gameMaster?.game;
   if (!game) return null;
@@ -26,17 +25,7 @@ const SquareBoard: SFC<BoardProps> = ({
   const rankCoordinates = range(minRank, maxRank - minFile + 1);
 
   return (
-    <BoardContainer
-      style={[
-        style,
-        {
-          height: measurements.height,
-          width: measurements.width,
-          padding,
-        },
-      ]}
-      backboard={backboard}
-    >
+    <BoardContainer style={style} measurements={measurements} backboard={backboard}>
       <SquaresContainer style={{ flexDirection: flipBoard ? "row-reverse" : "row" }}>
         {fileCoordinates.map((file) => (
           <ColumnContainer
@@ -67,10 +56,19 @@ const SquareBoard: SFC<BoardProps> = ({
   );
 };
 
-const BoardContainer = styled(View)<{ backboard: boolean }>`
+const BoardContainer = styled(View)<{
+  backboard: boolean;
+  measurements: BoardMeasurements;
+}>`
   position: relative;
-  background: ${Colors.DARK.string()};
   ${({ backboard }): string => (backboard ? Styles.BOX_SHADOW_STRONG : "")}
+  ${({ backboard }): string =>
+    backboard ? `background-color: ${Colors.DARK.toString()}` : ""}
+  height: ${({ measurements }): number => measurements.height}px;
+  width: ${({ measurements }): number => measurements.width}px;
+  padding-horizontal: ${({ measurements }): number =>
+    measurements.boardPaddingHorizontal}px;
+  padding-vertical: ${({ measurements }): number => measurements.boardPaddingVertical}px;
 `;
 
 const SquaresContainer = styled(View)`

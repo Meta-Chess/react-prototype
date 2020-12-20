@@ -5,7 +5,8 @@ export interface BoardMeasurements {
   width: number;
   height: number;
   squareSize: number;
-  boardPadding: number;
+  boardPaddingHorizontal: number;
+  boardPaddingVertical: number;
   spacings: number[];
   rankAndFileBounds: {
     minRank: number;
@@ -29,7 +30,8 @@ export function calculateBoardMeasurements({
   backboard: boolean;
 }): BoardMeasurements {
   // TODO: Board margins
-  const boardPadding = backboard ? 8 : 0;
+  const boardPaddingHorizontal = backboard ? (shape === SquareShape.Hex ? 16 : 8) : 0;
+  const boardPaddingVertical = backboard ? 8 : 0;
 
   const { minRank, maxRank, minFile, maxFile } = board.rankAndFileBoundsWithFilter(
     (square) => !square.hasTokenWithName(TokenName.InvisibilityToken)
@@ -45,18 +47,19 @@ export function calculateBoardMeasurements({
       : numberOfRanks;
 
   const squareSize = Math.min(
-    (boardAreaWidth - 2 * boardPadding) / boardWidthInSquares,
-    (boardAreaHeight - 2 * boardPadding) / boardHeightInSquares,
+    (boardAreaWidth - 2 * boardPaddingHorizontal) / boardWidthInSquares,
+    (boardAreaHeight - 2 * boardPaddingVertical) / boardHeightInSquares,
     120
   );
 
   const spacings = shape === SquareShape.Hex ? [0.1547 * squareSize] : [];
 
   return {
-    width: squareSize * boardWidthInSquares + 2 * boardPadding,
-    height: squareSize * boardHeightInSquares + 2 * boardPadding,
+    width: squareSize * boardWidthInSquares + 2 * boardPaddingHorizontal,
+    height: squareSize * boardHeightInSquares + 2 * boardPaddingVertical,
     squareSize,
-    boardPadding,
+    boardPaddingHorizontal,
+    boardPaddingVertical,
     spacings,
     rankAndFileBounds: { minRank, maxRank, minFile, maxFile },
   };

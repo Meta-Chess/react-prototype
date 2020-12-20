@@ -7,6 +7,8 @@ import { GameContext } from "game";
 import { TokenName, SquareShape } from "game/types";
 import { Square } from "./Square";
 import { BoardProps } from "components/shared/Board/Board";
+import { Styles } from "primitives/Styles";
+import { BoardMeasurements } from "components/shared";
 import { HexBackboard } from "./HexBackboard";
 
 const HexBoard: SFC<BoardProps> = ({
@@ -15,8 +17,6 @@ const HexBoard: SFC<BoardProps> = ({
   measurements,
   flipBoard,
 }) => {
-  const padding = backboard ? 8 : 0;
-
   const { gameMaster } = useContext(GameContext);
   const game = gameMaster?.game;
   if (!game) return null;
@@ -25,82 +25,81 @@ const HexBoard: SFC<BoardProps> = ({
   const fileCoordinates = range(minFile, maxFile - minFile + 1);
   const rankCoordinates = range(minRank, maxRank - minFile + 1);
 
-  const boardPadding = 4 * padding;
+  const boardPadding = 4 * measurements.boardPaddingHorizontal;
   const boardWidth = measurements.squareSize * measurements.width + boardPadding;
   const boardHeight = measurements.squareSize * measurements.height + boardPadding;
 
   return (
-    <BoardContainer
-      style={[
-        style,
-        {
-          height: boardHeight,
-          width: boardWidth,
-          padding,
-          alignContent: "center",
-          justifyContent: "center",
-          backgroundColor: backboard ? Colors.DARK.toString() : "transparent",
-        },
-      ]}
-    >
+    <BoardContainer style={style} backboard={backboard} measurements={measurements}>
       <BackboardShadow
         style={{ alignSelf: "center" }}
         color={backboard ? Colors.BLACK.fade(0.5).toString() : "transparent"}
-        padding={padding}
+        padding={measurements.boardPaddingHorizontal}
         boardWidth={boardWidth + 4}
         boardHeight={boardHeight + 4}
       />
       <Backboard
         style={{ alignSelf: "center" }}
         color={backboard ? Colors.DARK.toString() : "transparent"}
-        padding={padding}
+        padding={measurements.boardPaddingHorizontal}
         boardWidth={boardWidth}
         boardHeight={boardHeight}
       />
       <CenteredContainer>
-      {/*TODO: Can this layer be removed?*/}
-      <SquaresContainer
-        style={{
-          flexDirection: flipBoard ? "row-reverse" : "row",
-        }}
-      >
-        {fileCoordinates.map((file) => (
-          <ColumnContainer
-            style={{
-              maxWidth: measurements.squareSize,
-              flexDirection: flipBoard ? "column" : "column-reverse",
-            }}
-            key={file}
-          >
-            {rankCoordinates.map((rank) => {
-              const square = game.board.firstSquareSatisfyingRule(
-                (square) =>
-                  objectMatches({
-                    rank,
-                    file,
-                  })(square.coordinates) &&
-                  !square.hasTokenWithName(TokenName.InvisibilityToken)
-              );
-              // TODO: Handle hidden squares in hex better - maybe a rule to determine which coordinates belong on a hex grid?
-              return (
-                <Square
-                  size={square ? measurements.squareSize : measurements.spacings[0]}
-                  square={square}
-                  shape={SquareShape.Hex}
-                  key={JSON.stringify([rank, file])}
-                />
-              );
-            })}
-          </ColumnContainer>
-        ))}
-      </SquaresContainer>
+        {/*TODO: Can this layer be removed?*/}
+        <SquaresContainer
+          style={{
+            flexDirection: flipBoard ? "row-reverse" : "row",
+          }}
+        >
+          {fileCoordinates.map((file) => (
+            <ColumnContainer
+              style={{
+                maxWidth: measurements.squareSize,
+                flexDirection: flipBoard ? "column" : "column-reverse",
+              }}
+              key={file}
+            >
+              {rankCoordinates.map((rank) => {
+                const square = game.board.firstSquareSatisfyingRule(
+                  (square) =>
+                    objectMatches({
+                      rank,
+                      file,
+                    })(square.coordinates) &&
+                    !square.hasTokenWithName(TokenName.InvisibilityToken)
+                );
+                // TODO: Handle hidden squares in hex better - maybe a rule to determine which coordinates belong on a hex grid?
+                return (
+                  <Square
+                    size={square ? measurements.squareSize : measurements.spacings[0]}
+                    square={square}
+                    shape={SquareShape.Hex}
+                    key={JSON.stringify([rank, file])}
+                  />
+                );
+              })}
+            </ColumnContainer>
+          ))}
+        </SquaresContainer>
       </CenteredContainer>
     </BoardContainer>
   );
 };
 
-const BoardContainer = styled(View)`
+const BoardContainer = styled(View)<{
+  backboard: boolean;
+  measurements: BoardMeasurements;
+}>`
   position: relative;
+  ${({ backboard }): string => (backboard ? Styles.BOX_SHADOW_STRONG : "")}
+  ${({ backboard }): string =>
+    backboard ? `background-color: ${Colors.DARK.toString()}` : ""}
+  height: ${({ measurements }): number => measurements.height}px;
+  width: ${({ measurements }): number => measurements.width}px;
+  padding-horizontal: ${({ measurements }): number =>
+    measurements.boardPaddingHorizontal}px;
+  padding-vertical: ${({ measurements }): number => measurements.boardPaddingVertical}px;
 `;
 
 const CenteredContainer = styled(View)`
