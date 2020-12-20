@@ -22,7 +22,7 @@ const ShadowBoard: FC = () => {
   const shape = gameMaster.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape;
 
   const boardMeasurements = calculateBoardMeasurements({
-    game: gameMaster.game,
+    board: gameMaster.game.board,
     boardAreaWidth: Math.min(dimensions.width, 800),
     boardAreaHeight: Math.min(dimensions.height, 800),
     shape,

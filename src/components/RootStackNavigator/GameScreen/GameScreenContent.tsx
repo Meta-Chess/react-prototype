@@ -7,7 +7,7 @@ import {
   calculateBoardMeasurements,
 } from "components/shared/Board";
 import { Sidebar } from "./Sidebar";
-import { Player, TokenName } from "game/types";
+import { Player, SquareShape, TokenName } from "game/types";
 import { useFlipDelay } from "components/shared/Board/useFlipDelay";
 import { PlayerRow } from "./PlayerRow";
 import { Spinner } from "ui";
@@ -27,10 +27,10 @@ export const GameScreenContent: FC = () => {
   const shape = gameMaster.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape;
 
   const backboard = Platform.OS === "web";
-  const padding = Platform.OS === "web" ? 16 : 0;
+  const padding = Platform.OS === "web" || shape === SquareShape.Hex ? 16 : 0;
 
   const boardMeasurements = calculateBoardMeasurements({
-    game: gameMaster.game,
+    board: gameMaster.game.board,
     boardAreaWidth: portrait ? width - 2 * padding : (2 * width) / 3 - 2 * padding,
     boardAreaHeight:
       (portrait ? Math.min((3 * height) / 4, height - 200) : height) -

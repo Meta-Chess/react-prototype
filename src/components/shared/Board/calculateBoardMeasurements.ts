@@ -1,4 +1,4 @@
-import { Game } from "game";
+import { Board } from "game";
 import { SquareShape, TokenName } from "game/types";
 
 export interface BoardMeasurements {
@@ -16,13 +16,13 @@ export interface BoardMeasurements {
 }
 
 export function calculateBoardMeasurements({
-  game,
+  board,
   boardAreaWidth,
   boardAreaHeight,
   shape,
   backboard,
 }: {
-  game: Game;
+  board: Board;
   boardAreaWidth: number;
   boardAreaHeight: number;
   shape: SquareShape | undefined;
@@ -31,7 +31,7 @@ export function calculateBoardMeasurements({
   // TODO: Board margins
   const boardPadding = backboard ? 8 : 0;
 
-  const { minRank, maxRank, minFile, maxFile } = game.board.rankAndFileBoundsWithFilter(
+  const { minRank, maxRank, minFile, maxFile } = board.rankAndFileBoundsWithFilter(
     (square) => !square.hasTokenWithName(TokenName.InvisibilityToken)
   );
 
@@ -46,7 +46,7 @@ export function calculateBoardMeasurements({
 
   const squareSize = Math.min(
     (boardAreaWidth - 2 * boardPadding) / boardWidthInSquares,
-    (boardAreaHeight - 2 * boardPadding) / numberOfRanks,
+    (boardAreaHeight - 2 * boardPadding) / boardHeightInSquares,
     120
   );
 
