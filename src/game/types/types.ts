@@ -93,7 +93,7 @@ export enum SquareShape {
 }
 
 export interface GameOptions {
-  variant: VariantName;
+  variant?: VariantName;
   customTitle?: string;
   customRules?: Rule[];
   time?: number | undefined;

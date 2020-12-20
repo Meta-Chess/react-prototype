@@ -6,6 +6,7 @@ import { Game } from "./Game";
 import { VariantName, variants } from "./variants/variants";
 import { check, CompactRules, fatigue, atomic, Rule } from "./Rules";
 import { flatMap } from "lodash";
+import { randomChoice } from "utilities";
 
 export class GameMaster {
   public interrupt: CompactRules;
@@ -24,7 +25,6 @@ export class GameMaster {
 
   constructor(gameOptions: GameOptions, private renderer: Renderer) {
     const {
-      variant,
       customTitle,
       customRules,
       time,
@@ -34,6 +34,8 @@ export class GameMaster {
       flipBoard,
       overTheBoard,
     } = gameOptions;
+    const variant =
+      gameOptions.variant || (randomChoice(Object.keys(variants)) as VariantName);
 
     const rules = !customRules?.length ? [...variants[variant].rules] : customRules;
     if (checkEnabled && !customRules?.length) rules.push(check);

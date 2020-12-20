@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useWindowDimensions } from "react-native";
 import { Button, SidebarContainer } from "ui";
-import { useNavigation } from "navigation";
+import { Screens, useNavigation } from "navigation";
 import { SFC } from "primitives";
 import { GameContext } from "game";
 import { RoomIdCard } from "./RoomIdCard";
@@ -52,7 +52,7 @@ const Sidebar: SFC<Props> = ({ short, style }) => {
         text="Finish Game"
         onPress={(): void => {
           gameMaster?.endGame();
-          navigation.goBack();
+          navigation.navigate(Screens.StartScreen);
         }}
         style={{ margin: 32 }}
       />

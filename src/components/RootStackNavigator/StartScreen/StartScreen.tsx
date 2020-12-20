@@ -17,8 +17,9 @@ const StartScreen: FC = () => {
 
   const startGame = useCallback(
     (): void =>
-      navigation.navigate<Screens.GameScreen>(Screens.GameScreen, {
+      navigation.navigate(Screens.GameScreen, {
         gameOptions,
+        roomId: gameOptions.roomId,
       }),
     [gameOptions, navigation]
   );

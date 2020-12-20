@@ -15,7 +15,7 @@ export class OnlineGameMaster extends GameMaster {
 
   static async connectNewGame(
     renderer: Renderer,
-    gameOptions: GameOptions,
+    gameOptions?: GameOptions,
     roomId?: string | undefined
   ): Promise<OnlineGameMaster> {
     const gameClient = new GameClient(

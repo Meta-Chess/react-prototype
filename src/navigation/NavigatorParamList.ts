@@ -4,7 +4,8 @@ import { GameOptions } from "game/types";
 
 export interface NavigatorParamList extends ParamListBase {
   [Screens.GameScreen]: {
-    gameOptions: GameOptions;
+    gameOptions?: GameOptions;
+    roomId?: string;
   };
   [Screens.StartScreen]: undefined;
 }

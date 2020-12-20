@@ -118,15 +118,7 @@ const timeOptions = [
 
 const defaultGameOptions = {
   variant: variantNames[0] as VariantName,
-  customTitle: "",
-  customRules: [],
-  time: undefined,
   checkEnabled: true,
-  fatigueEnabled: false,
-  atomicEnabled: false,
-  flipBoard: false,
-  overTheBoard: false,
-  online: false,
 };
 
 const ControlsContainer = styled(View)`
