@@ -7,9 +7,6 @@ import React, {
   useContext,
 } from "react";
 import { View } from "react-native";
-import { Colors } from "primitives";
-import styled from "styled-components/native";
-import { AbsoluteTouchableOpacity } from "ui/Containers";
 
 const defaultModalController = {
   show: (_modal: Modal): void => {
@@ -46,7 +43,7 @@ export const ModalProvider: FC = ({ children }) => {
       setModals((modals) => modals.filter((modal) => modal.id !== modalId));
     }
     function hideAll(): void {
-      if (modals.length !== 0) setModals([]);
+      setModals([]);
     }
     function showing(modalId: number): boolean {
       return modals.some((modal) => modal.id === modalId);
@@ -57,7 +54,6 @@ export const ModalProvider: FC = ({ children }) => {
   return (
     <ModalContext.Provider value={contextMethods}>
       {children}
-      {modals.length !== 0 && <Backdrop onPressIn={contextMethods.hideAll} opacity={0} />}
       {modals.map((modal) => (
         <View
           key={modal.id}
@@ -73,8 +69,3 @@ export const ModalProvider: FC = ({ children }) => {
 export function useModals(): typeof defaultModalController {
   return useContext(ModalContext);
 }
-
-const Backdrop = styled(AbsoluteTouchableOpacity)<{ opacity: number }>`
-  background-color: ${({ opacity }): string =>
-    Colors.DARKEST.fade(1 - opacity).toString()};
-`;

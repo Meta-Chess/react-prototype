@@ -1,10 +1,5 @@
-import {
-  TouchableOpacity,
-  Platform,
-  useWindowDimensions,
-  ScrollView,
-} from "react-native";
-import React, { useState, useRef, useCallback } from "react";
+import { TouchableOpacity, useWindowDimensions, ScrollView } from "react-native";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Colors, SFC, Text } from "primitives";
 import styled from "styled-components/native";
@@ -24,6 +19,8 @@ export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
   const anchorRef = useRef<TouchableOpacity>(null);
   const [modalId] = useState(Math.random());
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const [screenSize, setScreenSize] = useState({ screenWidth, screenHeight });
+
   const safeAreaInsets = useSafeAreaInsets();
   const measure = useCallback(
     (callback: (input: { top: number; left: number }) => void) => {
@@ -35,6 +32,7 @@ export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
   );
 
   const modals = useModals();
+
   const showModal = useCallback(
     (measurements: { top: number; left: number }) => {
       if (details) {
@@ -94,12 +92,28 @@ export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
     modals.hide(modalId + 1);
   }, [modalId, modals]);
 
+  useEffect(() => {
+    if (
+      screenSize.screenWidth !== screenWidth ||
+      screenSize.screenHeight !== screenHeight
+    ) {
+      hideModal();
+      setScreenSize({ screenWidth, screenHeight });
+    }
+  }, [
+    screenWidth,
+    screenHeight,
+    screenSize.screenWidth,
+    screenSize.screenHeight,
+    hideModal,
+  ]);
+
   return (
     <>
       <LabelContainer
         style={style}
         disabled={!details}
-        onPress={async (): Promise<void> => {
+        onPressIn={async (): Promise<void> => {
           if (modals.showing(modalId)) {
             hideModal();
           } else {
@@ -107,13 +121,6 @@ export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
           }
         }}
         ref={anchorRef}
-        onLayout={async (): Promise<void> => {
-          if (Platform.OS !== "web" && modals.showing(modalId))
-            measure((measurements) => {
-              hideModal();
-              showModal(measurements);
-            });
-        }}
       >
         <Text cat={"BodyS"}>{label}</Text>
       </LabelContainer>
@@ -128,6 +135,7 @@ const LabelContainer = styled(TouchableOpacity)`
   margin-top: 4px;
   align-self: flex-start;
   align-items: center;
+  z-index: 9;
   background-color: ${Colors.MCHESS_BLUE.fade(0.8).toString()};
 `;
 

@@ -1,7 +1,6 @@
 import React, { FC, useState, ReactElement } from "react";
-import { View, ViewStyle } from "react-native";
-import styled from "styled-components/native";
-import { Colors, StyleProps } from "primitives";
+import { ViewStyle, Platform } from "react-native";
+import { StyleProps } from "primitives";
 import { FutureVariantName } from "game/variants/variants";
 import { TraitName } from "game/variants";
 import { useNavigation, Screens } from "navigation";
@@ -11,7 +10,8 @@ import { calculateGameOptions } from "./calculateGameOptions";
 import { determineIfVariantClash } from "./determineIfVariantClash";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
 import { Button, ButtonSecondary } from "ui";
-import { ControlLayoutContainer } from "components/RootStackNavigator/VariantSelectScreen/ControlLayoutContainer";
+import { ScreenContainer } from "components/shared";
+import { ControlLayoutContainer } from "./ControlLayoutContainer";
 
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
@@ -33,6 +33,7 @@ const VariantSelectScreen: FC = () => {
         variantClash={existsVariantsClash}
       />
       <ControlLayoutContainer
+        style={{ marginBottom: Platform.OS === "web" ? 16 : 0 }}
         a={({ style }: { style: StyleProps<ViewStyle> }): ReactElement => (
           <TraitFilterBar
             activeFilters={activeFilters}
@@ -62,15 +63,5 @@ const VariantSelectScreen: FC = () => {
     </ScreenContainer>
   );
 };
-
-// TODO: Make screen containers the same on all screens
-const ScreenContainer = styled(View)`
-  flex: 1;
-  background-color: ${Colors.DARKEST.string()};
-  justify-content: space-between;
-  flex-direction: column;
-  padding-horizontal: 16px;
-  padding-vertical: 32px;
-`;
 
 export { VariantSelectScreen };

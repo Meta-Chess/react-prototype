@@ -1,5 +1,10 @@
 import React, { useContext, useState } from "react";
-import { useWindowDimensions, ScrollView, View } from "react-native";
+import {
+  useWindowDimensions,
+  ScrollView,
+  View,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { Button, Card, useModals } from "ui";
 import { Screens, useNavigation } from "navigation";
 import { Colors, SFC } from "primitives";
@@ -41,22 +46,28 @@ const Sidebar: SFC<Props> = ({ style }) => {
     <Container style={style}>
       <ScrollView
         contentContainerStyle={{ paddingBottom: 24 }}
-        onScroll={(): void => {
-          modals.hideAll();
-        }}
+        onScroll={(): void => modals.hideAll()}
         scrollEventThrottle={100}
       >
-        <RoomIdCard roomId={roomId} />
-        <VariantInfoCard
-          variant={variant}
-          title={title}
-          style={{ marginTop: roomId ? 8 : 0 }}
-        />
-        <RulesInfoCard rules={rules} key={key} style={{ marginTop: 8 }} />
-        <SelectedPieceInfoCard pieces={pieces} key={key + 0.5} style={{ marginTop: 8 }} />
-        <Card style={{ marginTop: 8 }}>
-          <PieceCredit />
-        </Card>
+        <TouchableWithoutFeedback onPress={(): void => modals.hideAll()}>
+          <View>
+            <RoomIdCard roomId={roomId} />
+            <VariantInfoCard
+              variant={variant}
+              title={title}
+              style={{ marginTop: roomId ? 8 : 0 }}
+            />
+            <RulesInfoCard rules={rules} key={key} style={{ marginTop: 8 }} />
+            <SelectedPieceInfoCard
+              pieces={pieces}
+              key={key + 0.5}
+              style={{ marginTop: 8 }}
+            />
+            <Card style={{ marginTop: 8 }}>
+              <PieceCredit />
+            </Card>
+          </View>
+        </TouchableWithoutFeedback>
       </ScrollView>
       <ButtonContainer>
         <Button

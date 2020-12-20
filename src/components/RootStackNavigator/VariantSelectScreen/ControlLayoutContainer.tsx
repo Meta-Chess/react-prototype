@@ -1,6 +1,6 @@
-import React, { ReactNode, useCallback, FC, useState } from "react";
+import React, { ReactNode, useCallback, useState } from "react";
 import { ViewStyle, View } from "react-native";
-import { StyleProps } from "primitives";
+import { SFC, StyleProps } from "primitives";
 import styled from "styled-components/native";
 import { Row } from "ui";
 
@@ -10,7 +10,7 @@ interface Props {
   c: (props: { style: StyleProps<ViewStyle> }) => ReactNode;
 }
 
-const ControlLayoutContainer: FC<Props> = ({ a, b, c }) => {
+const ControlLayoutContainer: SFC<Props> = ({ a, b, c, style }) => {
   const [width, setWidth] = useState(0);
   const handleDimensions = useCallback(
     (event) => {
@@ -20,7 +20,7 @@ const ControlLayoutContainer: FC<Props> = ({ a, b, c }) => {
     [width]
   );
   return (
-    <View onLayout={handleDimensions}>
+    <View onLayout={handleDimensions} style={style}>
       {width < 780 ? (
         <NarrowOptionContainer>
           {a({ style: {} })}

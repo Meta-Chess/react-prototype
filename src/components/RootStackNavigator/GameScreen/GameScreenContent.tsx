@@ -1,5 +1,5 @@
 import React, { FC, useContext } from "react";
-import { Platform, useWindowDimensions, View, SafeAreaView } from "react-native";
+import { Platform, useWindowDimensions, View } from "react-native";
 import { GameContext } from "game";
 import {
   Board,
@@ -11,8 +11,8 @@ import { Player, TokenName } from "game/types";
 import { useFlipDelay } from "components/shared/Board/useFlipDelay";
 import { PlayerRow } from "./PlayerRow";
 import { Spinner } from "ui";
-import { Colors } from "primitives";
 import styled from "styled-components/native";
+import { ScreenContainer } from "components/shared";
 
 const PLAYER_ROW_HEIGHT = 64;
 
@@ -41,42 +41,32 @@ export const GameScreenContent: FC = () => {
   });
 
   return (
-    <StyledContainer>
-      <Container style={{ flexDirection: portrait ? "column" : "row", padding }}>
-        <View>
-          <PlayerRow
-            player={flipBoard ? Player.White : Player.Black}
-            style={{ height: PLAYER_ROW_HEIGHT }}
-          />
-          <Board
-            measurements={boardMeasurements}
-            backboard={backboard}
-            flipBoard={flipBoard}
-          />
-          <PlayerRow
-            player={flipBoard ? Player.Black : Player.White}
-            style={{ height: PLAYER_ROW_HEIGHT }}
-          />
-        </View>
-        <SidebarContainer portrait={portrait} boardMeasurements={boardMeasurements}>
-          <Sidebar short={portrait} style={{ flex: 1 }} />
-        </SidebarContainer>
-      </Container>
+    <StyledContainer style={{ flexDirection: portrait ? "column" : "row", padding }}>
+      <View>
+        <PlayerRow
+          player={flipBoard ? Player.White : Player.Black}
+          style={{ height: PLAYER_ROW_HEIGHT }}
+        />
+        <Board
+          measurements={boardMeasurements}
+          backboard={backboard}
+          flipBoard={flipBoard}
+        />
+        <PlayerRow
+          player={flipBoard ? Player.Black : Player.White}
+          style={{ height: PLAYER_ROW_HEIGHT }}
+        />
+      </View>
+      <SidebarContainer portrait={portrait} boardMeasurements={boardMeasurements}>
+        <Sidebar short={portrait} style={{ flex: 1 }} />
+      </SidebarContainer>
     </StyledContainer>
   );
 };
 
-const StyledContainer = styled(View)`
-  display: flex;
-  flex: 1;
-`;
-
-const Container = styled(SafeAreaView)`
-  display: flex;
+const StyledContainer = styled(ScreenContainer)`
   justify-content: space-around;
   align-items: center;
-  background: ${Colors.DARKEST.string()};
-  flex: 1;
 `;
 
 interface SidebarContainerProps {
