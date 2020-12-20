@@ -4,6 +4,7 @@ import { useModals } from "ui";
 import { View, Platform, useWindowDimensions } from "react-native";
 import { Colors, SFC } from "primitives";
 import styled from "styled-components/native";
+import { ErrorBoundary } from "components/shared/ErrorBoundary";
 
 export const ScreenContainer: SFC = ({ children, style }) => {
   const navigation = useNavigation();
@@ -21,7 +22,7 @@ export const ScreenContainer: SFC = ({ children, style }) => {
 
   return (
     <Container style={[{ paddingHorizontal, paddingVertical }, style]}>
-      {children}
+      <ErrorBoundary>{children}</ErrorBoundary>
     </Container>
   );
 };

@@ -6,8 +6,9 @@ import { GameOptions } from "game/types";
 import { defaultGameOptions, GameOptionControls } from "./GameOptionControls";
 import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
-import { Screens, useNavigation, ScreenContainer } from "navigation";
-import { SetupGameButton } from "components/RootStackNavigator/StartScreen/SetupGameButton";
+import { Screens, useNavigation } from "navigation";
+import { SetupGameButton } from "./SetupGameButton";
+import { ScreenContainer } from "components/shared";
 
 const StartScreen: FC = () => {
   const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);

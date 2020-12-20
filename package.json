@@ -10,7 +10,8 @@
     "type-check": "tsc --noEmit",
     "lint": "eslint --max-warnings 0 src",
     "format": "prettier ./src --write",
-    "format:check": "prettier ./src"
+    "format:check": "prettier ./src",
+    "all-check": "concurrently yarn:lint yarn:test yarn:type-check"
   },
   "dependencies": {
     "@expo-google-fonts/roboto-mono": "^0.1.0",
