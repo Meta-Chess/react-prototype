@@ -3,14 +3,15 @@ import { SFC } from "primitives";
 import { View } from "react-native";
 
 interface HexBoardBackingProps {
-  colorString: string;
+  color: string;
   padding: number;
   boardWidth: number;
   boardHeight: number;
 }
 
 const HexBoardBacking: SFC<HexBoardBackingProps> = ({
-  colorString,
+  style,
+  color,
   padding,
   boardWidth,
   boardHeight,
@@ -22,20 +23,18 @@ const HexBoardBacking: SFC<HexBoardBackingProps> = ({
 
   return (
     <View
-      style={{
-        flexDirection: "column",
-        alignSelf: "center",
-        justifyContent: "flex-start",
-        position: "absolute",
-        marginVertical: -padding / 2,
-        marginHorizontal: -padding / 2,
-      }}
+      style={[
+        style,
+        {
+          flexDirection: "column",
+          position: "absolute",
+          marginVertical: -padding / 2,
+          marginHorizontal: -padding / 2,
+        },
+      ]}
     >
       <View
         style={{
-          alignSelf: "center",
-          width: 0,
-          height: 0,
           borderLeftWidth: endHalfWidth,
           borderRightWidth: endHalfWidth,
           borderBottomWidth: endHeight,
@@ -43,22 +42,18 @@ const HexBoardBacking: SFC<HexBoardBackingProps> = ({
           backgroundColor: "transparent",
           borderLeftColor: "transparent",
           borderRightColor: "transparent",
-          borderBottomColor: colorString,
+          borderBottomColor: color,
         }}
       />
       <View
         style={{
-          alignSelf: "center",
           width: centerWidth,
           height: centerHeight,
-          backgroundColor: colorString,
+          backgroundColor: color,
         }}
       />
       <View
         style={{
-          alignSelf: "center",
-          width: 0,
-          height: 0,
           borderLeftWidth: endHalfWidth,
           borderRightWidth: endHalfWidth,
           borderTopWidth: endHeight,
@@ -66,7 +61,7 @@ const HexBoardBacking: SFC<HexBoardBackingProps> = ({
           backgroundColor: "transparent",
           borderLeftColor: "transparent",
           borderRightColor: "transparent",
-          borderTopColor: colorString,
+          borderTopColor: color,
         }}
       />
     </View>
