@@ -2,9 +2,10 @@ import React from "react";
 import { View } from "react-native";
 import { SFC, Colors } from "primitives";
 import { TraitFilter } from "./TraitFilter";
-import { traitInfo, TraitClass } from "game/variants";
+import { TraitClass } from "game/variants";
 import styled from "styled-components/native";
 import { Styles } from "primitives/Styles";
+import { getTraitInfoForSet } from "./getTraitInfoForSet";
 
 interface Props {
   activeFilters: TraitClass[];
@@ -12,23 +13,23 @@ interface Props {
 }
 
 const TraitFilterRow: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => {
+  const traitsInSet: [TraitClass, number][] = getTraitInfoForSet();
   return (
     <RowContainer style={style}>
-      {Object.keys(traitInfo)
-        .map((trait) => trait as TraitClass)
-        .map((trait: TraitClass, index: number) => (
-          <TraitFilter
-            key={index}
-            trait={trait}
-            selected={activeFilters.includes(trait)}
-            onPress={(): void =>
-              activeFilters.includes(trait)
-                ? setActiveFilters([])
-                : setActiveFilters([trait as TraitClass])
-            }
-            style={{ margin: 12 }}
-          />
-        ))}
+      {traitsInSet.map((info) => (
+        <TraitFilter
+          key={info[0]}
+          trait={info[0]}
+          numTraitInSet={info[1]}
+          selected={activeFilters.includes(info[0])}
+          onPress={(): void =>
+            activeFilters.includes(info[0])
+              ? setActiveFilters([])
+              : setActiveFilters([info[0]])
+          }
+          style={{ flexDirection: "row", margin: 12 }}
+        />
+      ))}
     </RowContainer>
   );
 };

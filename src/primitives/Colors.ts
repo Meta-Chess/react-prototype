@@ -34,7 +34,7 @@ export const Colors = {
     GAME_END: Color("#F0FF00"),
     INTERACTION: Color("#8B00FF"),
     GEOMETRY: Color("#00C1FF"),
-    WORLD: Color("#0F00FF"),
+    WORLD: Color("#0335FC"),
     ALGORITHM: Color("#696867"),
   },
   PLAYER: [Color("#FCFCFC"), Color("#606060")],
