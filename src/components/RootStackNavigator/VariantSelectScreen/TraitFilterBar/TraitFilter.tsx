@@ -1,12 +1,12 @@
 import React from "react";
 import { SFC } from "primitives";
 import { TouchableOpacity, View } from "react-native";
-import { TraitClass, traitInfo } from "game/variants";
+import { TraitName, traitInfo } from "game/variants";
 import { Text, Colors } from "primitives";
 import styled from "styled-components/native";
 import Color from "color";
 interface TraitFilterProps {
-  trait: TraitClass;
+  trait: TraitName;
   numTraitInSet: number;
   selected: boolean;
   onPress: () => void;
@@ -24,7 +24,7 @@ const TraitFilter: SFC<TraitFilterProps> = ({
   return (
     <TouchableLabel style={style} color={color} onPress={onPress}>
       <Text cat={"BodyS"} color={Colors.TEXT.LIGHT.toString()}>
-        {traitInfo[trait].name}
+        {trait}
       </Text>
       <CountContainer>
         <Text

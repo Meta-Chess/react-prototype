@@ -27,7 +27,7 @@ export const Colors = {
     WARNING: Color("#FF8800"),
     ERROR: Color("#FF1900"),
   },
-  TRAIT_CLASS: {
+  TRAIT: {
     PIECE: Color("#FF47EE"),
     RESTRICT: Color("#FF2222"),
     ABILITY: Color("#FF5D00"),

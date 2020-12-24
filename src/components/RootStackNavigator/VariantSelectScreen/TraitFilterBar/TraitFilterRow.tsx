@@ -2,18 +2,18 @@ import React from "react";
 import { View } from "react-native";
 import { SFC, Colors } from "primitives";
 import { TraitFilter } from "./TraitFilter";
-import { TraitClass } from "game/variants";
+import { TraitName } from "game/variants";
 import styled from "styled-components/native";
 import { Styles } from "primitives/Styles";
 import { getTraitInfoForSet } from "./getTraitInfoForSet";
 
 interface Props {
-  activeFilters: TraitClass[];
-  setActiveFilters: (x: TraitClass[]) => void;
+  activeFilters: TraitName[];
+  setActiveFilters: (x: TraitName[]) => void;
 }
 
 const TraitFilterRow: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => {
-  const traitsInSet: [TraitClass, number][] = getTraitInfoForSet();
+  const traitsInSet: [TraitName, number][] = getTraitInfoForSet();
   return (
     <RowContainer style={style}>
       {traitsInSet.map((info) => (

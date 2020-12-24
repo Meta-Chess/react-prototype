@@ -15,7 +15,7 @@ import {
   Interception,
 } from "../Rules";
 import { verticallyCylindrical } from "game/Rules/verticallyCylindrical";
-import { TraitClass } from "game/variants";
+import { TraitName } from "game/variants";
 import * as VariantImages from "primitives/VariantImage";
 import { Rule } from "../Rules";
 
@@ -99,7 +99,7 @@ export const variants = {
 export interface FutureVariant {
   title: string;
   shortDescription: string;
-  TraitClass: TraitClass[];
+  traits: TraitName[];
   imageName: keyof typeof VariantImages;
   implemented: boolean;
   rules: Rule[];
@@ -129,7 +129,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     title: "Armageddon",
     shortDescription:
       "Captures lead to a large explosion. Pawns are immune to the blast zone.",
-    TraitClass: ["ability"],
+    traits: ["Ability"],
     imageName: "armageddonImage",
     implemented: false,
     rules: [],
@@ -138,7 +138,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     title: "Atomic",
     shortDescription:
       "Captures lead to a small explosion. Pawns are immune to the blast zone.",
-    TraitClass: ["ability"],
+    traits: ["Ability"],
     imageName: "atomicImage",
     implemented: true,
     rules: [atomic],
@@ -146,7 +146,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
   [FutureVariantName.centerRemoval]: {
     title: "Center Removal",
     shortDescription: "Center squares and the pieces on them are removed from the game.",
-    TraitClass: ["terraform"],
+    traits: ["Terraform"],
     imageName: "centerRemovalImage",
     implemented: false,
     rules: [],
@@ -154,7 +154,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
   [FutureVariantName.crazyhouse]: {
     title: "Crazyhouse",
     shortDescription: "Play captured pieces on the board.",
-    TraitClass: ["ability"],
+    traits: ["Ability"],
     imageName: "crazyhouseImage",
     implemented: false,
     rules: [],
@@ -162,7 +162,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
   [FutureVariantName.cylinder]: {
     title: "Cylinder",
     shortDescription: "End columns of the board are glued together.",
-    TraitClass: ["geometry"],
+    traits: ["Geometry"],
     imageName: "cylinderImage",
     implemented: true,
     rules: [cylindrical],
@@ -171,7 +171,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     title: "Fatigue",
     shortDescription:
       "Pieces can't be moved twice in a row, unless they can kill the king.",
-    TraitClass: ["restrict"],
+    traits: ["Restrict"],
     imageName: "fatigueImage",
     implemented: true,
     rules: [fatigue],
@@ -179,7 +179,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
   [FutureVariantName.hex]: {
     title: "Hex",
     shortDescription: "A board tiled with hexagons.",
-    TraitClass: ["terraform"],
+    traits: ["Terraform"],
     imageName: "hexImage",
     implemented: true,
     rules: [hex],
@@ -187,7 +187,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
   [FutureVariantName.kingOfTheHill]: {
     title: "King of the Hill",
     shortDescription: "Win the game with a king reaching the center.",
-    TraitClass: ["game end"],
+    traits: ["Game End"],
     imageName: "kingOfTheHillImage",
     implemented: false,
     rules: [],
@@ -196,7 +196,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     title: "Mobius",
     shortDescription:
       "A long board mobius strip, with the ability to phase through to empty squares.",
-    TraitClass: ["geometry", "terraform"],
+    traits: ["Geometry", "Terraform"],
     imageName: "mobiusImage",
     implemented: true,
     rules: [mobius, longBoard, passiveMoveThroughBoard, verticallyCylindrical],
@@ -204,7 +204,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
   [FutureVariantName.noFork]: {
     title: "No Fork",
     shortDescription: "Knights can no longer attack 2 or more pieces.",
-    TraitClass: ["piece", "restrict"],
+    traits: ["Piece", "Restrict"],
     imageName: "noForkImage",
     implemented: false,
     rules: [],
@@ -212,7 +212,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
   [FutureVariantName.patheticKing]: {
     title: "Pathetic King",
     shortDescription: "Kings cannot capture.",
-    TraitClass: ["piece", "restrict"],
+    traits: ["Piece", "Restrict"],
     imageName: "patheticKingImage",
     implemented: false,
     rules: [],
@@ -220,7 +220,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
   [FutureVariantName.polar]: {
     title: "Polar",
     shortDescription: "Slide through end rows and re-emerge through the same row.",
-    TraitClass: ["geometry"],
+    traits: ["Geometry"],
     imageName: "polarImage",
     implemented: true,
     rules: [polar],
@@ -228,7 +228,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
   [FutureVariantName.push]: {
     title: "Push",
     shortDescription: "Push chains of neighbouring friendly pieces.",
-    TraitClass: ["ability"],
+    traits: ["Ability"],
     imageName: "pushImage",
     implemented: false,
     rules: [],
@@ -236,7 +236,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
   [FutureVariantName.spherical]: {
     title: "Spherical",
     shortDescription: "The board wrapped around a sphere. Cylinder together with Polar.",
-    TraitClass: ["geometry"],
+    traits: ["Geometry"],
     imageName: "sphericalImage",
     implemented: true,
     rules: [cylindrical, polar],
@@ -244,7 +244,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
   [FutureVariantName.threeCheck]: {
     title: "3-Check",
     shortDescription: "3 checks and you're out.",
-    TraitClass: ["game end"],
+    traits: ["Game End"],
     imageName: "threeCheckImage",
     implemented: false,
     rules: [],
@@ -252,7 +252,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
   [FutureVariantName.toroidal]: {
     title: "Toroidal",
     shortDescription: "Double the cylinder and pawns on a long board.",
-    TraitClass: ["geometry", "terraform"],
+    traits: ["Geometry", "Terraform"],
     imageName: "toroidalImage",
     implemented: true,
     rules: [longBoard, cylindrical, verticallyCylindrical],

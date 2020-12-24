@@ -1,12 +1,12 @@
 import React from "react";
 import { SFC, Text } from "primitives";
 import { View } from "react-native";
-import { TraitClass, traitInfo } from "game/variants";
+import { TraitName, traitInfo } from "game/variants";
 import { opacify } from "utilities";
 import { Colors } from "primitives";
 
 interface TraitLabelProps {
-  trait: TraitClass;
+  trait: TraitName;
 }
 
 const TraitLabel: SFC<TraitLabelProps> = ({ trait, style }) => {
@@ -25,7 +25,7 @@ const TraitLabel: SFC<TraitLabelProps> = ({ trait, style }) => {
       ]}
     >
       <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()}>
-        {traitInfo[trait].name}
+        {trait}
       </Text>
     </View>
   );
