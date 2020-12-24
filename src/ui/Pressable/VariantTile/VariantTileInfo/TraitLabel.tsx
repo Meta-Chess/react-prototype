@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { TraitName, traitInfo } from "game/variants";
 import { opacify } from "utilities";
 import { Colors } from "primitives";
+import styled from "styled-components/native";
 
 interface TraitLabelProps {
   trait: TraitName;
@@ -12,23 +13,20 @@ interface TraitLabelProps {
 const TraitLabel: SFC<TraitLabelProps> = ({ trait, style }) => {
   const color = opacify(traitInfo[trait].color.toString(), 0.5);
   return (
-    <View
-      style={[
-        style,
-        {
-          alignItems: "center",
-          backgroundColor: color,
-          borderRadius: 6,
-          paddingHorizontal: 7,
-          paddingVertical: 1,
-        },
-      ]}
-    >
+    <Container style={style} color={color}>
       <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()}>
         {trait}
       </Text>
-    </View>
+    </Container>
   );
 };
+
+const Container = styled(View)<{ color: string }>`
+  border-radius: 6px;
+  padding-horizontal: 7px;
+  padding-vertical: 1px;
+  margin-top: 1px;
+  background-color: ${({ color }): string => color};
+`;
 
 export { TraitLabel };
