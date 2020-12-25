@@ -7,7 +7,7 @@ import { GameContext } from "game";
 import { TokenName, SquareShape } from "game/types";
 import { Square } from "./Square";
 import { InnerBoardProps } from "components/shared/Board/Board";
-import { HexBoardBacking } from "./HexBoardBacking";
+import { HexBackboard } from "./HexBackboard";
 
 const HexBoard: SFC<InnerBoardProps> = ({
   style,
@@ -59,14 +59,14 @@ const HexBoard: SFC<InnerBoardProps> = ({
         },
       ]}
     >
-      <HexBackboardShadow
+      <BackboardShadow
         style={{ alignSelf: "center" }}
         color={backboard ? Colors.BLACK.fade(0.5).toString() : "transparent"}
         padding={padding}
         boardWidth={boardWidth + 4}
         boardHeight={boardHeight + 4}
       />
-      <HexBackboard
+      <Backboard
         style={{ alignSelf: "center" }}
         color={backboard ? Colors.DARK.toString() : "transparent"}
         padding={padding}
@@ -119,11 +119,11 @@ const CenteredContainer = styled(View)`
   align-self: center;
 `;
 
-const HexBackboard = styled(HexBoardBacking)`
+const Backboard = styled(HexBackboard)`
   align-self: center;
 `;
 
-const HexBackboardShadow = styled(HexBoardBacking)`
+const BackboardShadow = styled(HexBackboard)`
   align-self: center;
 `;
 

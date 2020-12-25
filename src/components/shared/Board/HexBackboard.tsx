@@ -2,14 +2,14 @@ import React from "react";
 import { SFC } from "primitives";
 import { View } from "react-native";
 
-interface HexBoardBackingProps {
+interface HexBackboardProps {
   color: string;
   padding: number;
   boardWidth: number;
   boardHeight: number;
 }
 
-const HexBoardBacking: SFC<HexBoardBackingProps> = ({
+const HexBackboard: SFC<HexBackboardProps> = ({
   style,
   color,
   padding,
@@ -38,8 +38,6 @@ const HexBoardBacking: SFC<HexBoardBackingProps> = ({
           borderLeftWidth: endHalfWidth,
           borderRightWidth: endHalfWidth,
           borderBottomWidth: endHeight,
-          borderStyle: "solid",
-          backgroundColor: "transparent",
           borderLeftColor: "transparent",
           borderRightColor: "transparent",
           borderBottomColor: color,
@@ -57,8 +55,6 @@ const HexBoardBacking: SFC<HexBoardBackingProps> = ({
           borderLeftWidth: endHalfWidth,
           borderRightWidth: endHalfWidth,
           borderTopWidth: endHeight,
-          borderStyle: "solid",
-          backgroundColor: "transparent",
           borderLeftColor: "transparent",
           borderRightColor: "transparent",
           borderTopColor: color,
@@ -68,4 +64,4 @@ const HexBoardBacking: SFC<HexBoardBackingProps> = ({
   );
 };
 
-export { HexBoardBacking };
+export { HexBackboard };
