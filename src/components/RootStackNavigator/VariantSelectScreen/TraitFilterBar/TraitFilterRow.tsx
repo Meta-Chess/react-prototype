@@ -6,6 +6,7 @@ import { TraitName } from "game/variants";
 import styled from "styled-components/native";
 import { Styles } from "primitives/Styles";
 import { getTraitInfoForSet } from "./getTraitInfoForSet";
+import { TraitsInSetInfo } from "game/types";
 
 interface Props {
   activeFilters: TraitName[];
@@ -13,19 +14,19 @@ interface Props {
 }
 
 const TraitFilterRow: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => {
-  const traitsInSet: [TraitName, number][] = getTraitInfoForSet();
+  const traitsInSet: TraitsInSetInfo[] = getTraitInfoForSet();
   return (
     <RowContainer style={style}>
-      {traitsInSet.map((info) => (
+      {Object.values(traitsInSet).map((info) => (
         <TraitFilter
-          key={info[0]}
-          trait={info[0]}
-          numTraitInSet={info[1]}
-          selected={activeFilters.includes(info[0])}
+          key={info.name}
+          trait={info.name}
+          numberOfVariantsWithTrait={info.count}
+          selected={activeFilters.includes(info.name)}
           onPress={(): void =>
-            activeFilters.includes(info[0])
+            activeFilters.includes(info.name)
               ? setActiveFilters([])
-              : setActiveFilters([info[0]])
+              : setActiveFilters([info.name])
           }
           style={{ flexDirection: "row", margin: 12 }}
         />

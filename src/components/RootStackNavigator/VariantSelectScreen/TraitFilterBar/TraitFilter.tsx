@@ -5,16 +5,17 @@ import { TraitName, traitInfo } from "game/variants";
 import { Text, Colors } from "primitives";
 import styled from "styled-components/native";
 import Color from "color";
+
 interface TraitFilterProps {
   trait: TraitName;
-  numTraitInSet: number;
+  numberOfVariantsWithTrait: number;
   selected: boolean;
   onPress: () => void;
 }
 
 const TraitFilter: SFC<TraitFilterProps> = ({
   trait,
-  numTraitInSet,
+  numberOfVariantsWithTrait,
   style,
   selected,
   onPress,
@@ -27,12 +28,8 @@ const TraitFilter: SFC<TraitFilterProps> = ({
         {trait}
       </Text>
       <CountContainer>
-        <Text
-          style={{ marginBottom: 1 }}
-          cat={"BodyXS"}
-          color={Colors.TEXT.LIGHT.toString()}
-        >
-          {numTraitInSet.toString()}
+        <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()}>
+          {numberOfVariantsWithTrait.toString()}
         </Text>
       </CountContainer>
     </TouchableLabel>
@@ -42,19 +39,18 @@ const TraitFilter: SFC<TraitFilterProps> = ({
 const TouchableLabel = styled(TouchableOpacity)<{ color: Color }>`
   flex-direction: row;
   border-radius: 6px;
-  padding-horizontal: 7px;
-  padding-vertical: 1px;
-  margin-top: 1px;
+  padding-horizontal: 8px;
+  padding-vertical: 2px;
   background-color: ${({ color }): string => color.string()};
 `;
 
 const CountContainer = styled(View)`
   align-items: center;
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
   border-radius: 50px;
   margin-top: 2px;
-  margin-left: 5px;
+  margin-left: 4px;
   background-color: ${Colors.BLACK.fade(0.75).toString()};
 `;
 

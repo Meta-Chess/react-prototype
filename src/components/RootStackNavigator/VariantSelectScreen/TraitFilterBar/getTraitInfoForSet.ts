@@ -1,8 +1,9 @@
 import { futureVariants, FutureVariantName } from "game/variants/variants";
 import { TraitName } from "game/variants";
+import { TraitsInSetInfo } from "game/types";
 
 //TODO: soon sets will be groups of variants, and be passed into this function
-export function getTraitInfoForSet(): [TraitName, number][] {
+export function getTraitInfoForSet(): TraitsInSetInfo[] {
   const counter: { [key: string]: number } = {};
   for (const variant in futureVariants) {
     for (const trait of futureVariants[variant as FutureVariantName].traits) {
@@ -10,9 +11,21 @@ export function getTraitInfoForSet(): [TraitName, number][] {
       else counter[trait] = 1;
     }
   }
-  return Object.keys(counter)
-    .map((key: string) => [key, counter[key]] as [TraitName, number])
-    .sort((i1, i2) =>
-      i1[1] != i2[1] ? (i1[1] > i2[1] ? -1 : 1) : i2[0].localeCompare(i1[0]) ? 1 : -1
-    );
+  return Object.assign(
+    {},
+    Object.keys(counter)
+      .sort((k1, k2) =>
+        counter[k1] != counter[k2]
+          ? counter[k1] > counter[k2]
+            ? -1
+            : 1
+          : k2.localeCompare(k1)
+          ? 1
+          : -1
+      )
+      .map((key: string) => ({
+        name: key as TraitName,
+        count: counter[key],
+      }))
+  );
 }
