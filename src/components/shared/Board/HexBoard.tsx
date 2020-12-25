@@ -7,7 +7,7 @@ import { GameContext } from "game";
 import { TokenName, SquareShape } from "game/types";
 import { Square } from "./Square";
 import { InnerBoardProps } from "components/shared/Board/Board";
-import { Styles } from "primitives/Styles";
+import { HexBackboard } from "./HexBackboard";
 
 const HexBoard: SFC<InnerBoardProps> = ({
   style,
@@ -41,59 +41,90 @@ const HexBoard: SFC<InnerBoardProps> = ({
     (dimensions.height - 2 * padding) / boardDetails.height,
     120
   );
+  const boardPadding = 4 * padding;
+  const boardWidth = squareSize * boardDetails.width + boardPadding;
+  const boardHeight = squareSize * boardDetails.height + boardPadding;
 
   return (
     <BoardContainer
       style={[
         style,
         {
-          height: squareSize * boardDetails.height + 2 * padding,
-          width: squareSize * boardDetails.width + 2 * padding,
-          backgroundColor: backboard ? Colors.DARK.toString() : "transparent",
+          height: boardHeight,
+          width: boardWidth,
           paddingVertical: padding,
-          paddingHorizontal: 2 * padding,
+          paddingHorizontal: padding,
+          alignContent: "center",
+          justifyContent: "center",
         },
       ]}
     >
-      {/*TODO: Can this layer be removed?*/}
-      <SquaresContainer
-        style={{
-          flexDirection: flipBoard ? "row-reverse" : "row",
-        }}
-      >
-        {fileCoordinates.map((file) => (
-          <ColumnContainer
-            style={{
-              maxWidth: squareSize,
-              flexDirection: flipBoard ? "column" : "column-reverse",
-            }}
-            key={file}
-          >
-            {rankCoordinates.map((rank) => (
-              <Square
-                size={squareSize}
-                square={game.board.firstSquareSatisfyingRule(
-                  (square) =>
-                    objectMatches({
-                      rank,
-                      file,
-                    })(square.coordinates) &&
-                    !square.hasTokenWithName(TokenName.InvisibilityToken)
-                )}
-                shape={SquareShape.Hex}
-                key={JSON.stringify([rank, file])}
-              />
-            ))}
-          </ColumnContainer>
-        ))}
-      </SquaresContainer>
+      <BackboardShadow
+        style={{ alignSelf: "center" }}
+        color={backboard ? Colors.BLACK.fade(0.5).toString() : "transparent"}
+        padding={padding}
+        boardWidth={boardWidth + 4}
+        boardHeight={boardHeight + 4}
+      />
+      <Backboard
+        style={{ alignSelf: "center" }}
+        color={backboard ? Colors.DARK.toString() : "transparent"}
+        padding={padding}
+        boardWidth={boardWidth}
+        boardHeight={boardHeight}
+      />
+      <CenteredContainer>
+        {/*TODO: Can this layer be removed?*/}
+        <SquaresContainer
+          style={{
+            flexDirection: flipBoard ? "row-reverse" : "row",
+          }}
+        >
+          {fileCoordinates.map((file) => (
+            <ColumnContainer
+              style={{
+                maxWidth: squareSize,
+                flexDirection: flipBoard ? "column" : "column-reverse",
+              }}
+              key={file}
+            >
+              {rankCoordinates.map((rank) => (
+                <Square
+                  size={squareSize}
+                  square={game.board.firstSquareSatisfyingRule(
+                    (square) =>
+                      objectMatches({
+                        rank,
+                        file,
+                      })(square.coordinates) &&
+                      !square.hasTokenWithName(TokenName.InvisibilityToken)
+                  )}
+                  shape={SquareShape.Hex}
+                  key={JSON.stringify([rank, file])}
+                />
+              ))}
+            </ColumnContainer>
+          ))}
+        </SquaresContainer>
+      </CenteredContainer>
     </BoardContainer>
   );
 };
 
 const BoardContainer = styled(View)`
   position: relative;
-  ${Styles.BOX_SHADOW_STRONG}
+`;
+
+const CenteredContainer = styled(View)`
+  align-self: center;
+`;
+
+const Backboard = styled(HexBackboard)`
+  align-self: center;
+`;
+
+const BackboardShadow = styled(HexBackboard)`
+  align-self: center;
 `;
 
 const SquaresContainer = styled(View)`
