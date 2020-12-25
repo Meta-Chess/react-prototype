@@ -39,18 +39,17 @@ const TraitFilter: SFC<TraitFilterProps> = ({
 const TouchableLabel = styled(TouchableOpacity)<{ color: Color }>`
   flex-direction: row;
   border-radius: 6px;
-  padding-horizontal: 8px;
-  padding-vertical: 2px;
+  padding-left: 8px;
+  margin-top: 1px;
   background-color: ${({ color }): string => color.string()};
+  overflow: hidden;
 `;
 
 const CountContainer = styled(View)`
-  align-items: center;
-  width: 16px;
-  height: 16px;
-  border-radius: 50px;
-  margin-top: 2px;
-  margin-left: 4px;
+  justify-content: center;
+  margin-left: 6px;
+  padding-left: 6px;
+  padding-right: 8px;
   background-color: ${Colors.BLACK.fade(0.75).toString()};
 `;
 
