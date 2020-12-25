@@ -27,11 +27,7 @@ const TraitFilter: SFC<TraitFilterProps> = ({
         {trait}
       </Text>
       <CountContainer>
-        <Text
-          style={{ marginBottom: 1 }}
-          cat={"BodyXS"}
-          color={Colors.TEXT.LIGHT.toString()}
-        >
+        <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()}>
           {numTraitInSet.toString()}
         </Text>
       </CountContainer>
@@ -42,19 +38,17 @@ const TraitFilter: SFC<TraitFilterProps> = ({
 const TouchableLabel = styled(TouchableOpacity)<{ color: Color }>`
   flex-direction: row;
   border-radius: 6px;
-  padding-horizontal: 7px;
-  padding-vertical: 1px;
+  padding-left: 8px;
   margin-top: 1px;
   background-color: ${({ color }): string => color.string()};
+  overflow: hidden;
 `;
 
 const CountContainer = styled(View)`
-  align-items: center;
-  width: 17px;
-  height: 17px;
-  border-radius: 50px;
-  margin-top: 2px;
-  margin-left: 5px;
+  justify-content: center;
+  margin-left: 6px;
+  padding-left: 6px;
+  padding-right: 8px;
   background-color: ${Colors.BLACK.fade(0.75).toString()};
 `;
 
