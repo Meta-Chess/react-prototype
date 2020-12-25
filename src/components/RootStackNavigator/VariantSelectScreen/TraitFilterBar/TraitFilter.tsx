@@ -22,13 +22,13 @@ const TraitFilter: SFC<TraitFilterProps> = ({
 }) => {
   const baseColor = traitInfo[trait].color.fade(0.5);
   const color = selected ? baseColor : baseColor.fade(0.5);
-  const outerPadding = 8;
-  const innerPadding = 6;
+  const labelPadding = 8;
+  const counterPadding = 6;
   const verticalPadding = 2;
   return (
     <TouchableLabel
-      outerPadding={outerPadding}
-      innerPadding={innerPadding}
+      labelPadding={labelPadding}
+      counterPadding={counterPadding}
       verticalPadding={verticalPadding}
       style={style}
       color={color}
@@ -38,8 +38,8 @@ const TraitFilter: SFC<TraitFilterProps> = ({
         {trait}
       </Text>
       <CountContainer
-        outerPadding={outerPadding}
-        innerPadding={innerPadding}
+        labelPadding={labelPadding}
+        counterPadding={counterPadding}
         verticalPadding={verticalPadding}
       >
         <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()}>
@@ -52,28 +52,28 @@ const TraitFilter: SFC<TraitFilterProps> = ({
 
 const TouchableLabel = styled(TouchableOpacity)<{
   color: Color;
-  outerPadding: number;
-  innerPadding: number;
+  labelPadding: number;
+  counterPadding: number;
   verticalPadding: number;
 }>`
   flex-direction: row;
   border-radius: 6px;
-  padding-left: ${({ outerPadding }): number => outerPadding}px;
+  padding-left: ${({ labelPadding }): number => labelPadding}px;
   padding-vertical: ${({ verticalPadding }): number => verticalPadding}px;
   background-color: ${({ color }): string => color.string()};
   overflow: hidden;
 `;
 
 const CountContainer = styled(View)<{
-  outerPadding: number;
-  innerPadding: number;
+  labelPadding: number;
+  counterPadding: number;
   verticalPadding: number;
 }>`
   justify-content: center;
   margin-vertical: -${({ verticalPadding }): number => verticalPadding}px;
-  margin-left: ${({ innerPadding }): number => innerPadding}px;
-  padding-left: ${({ innerPadding }): number => innerPadding}px;
-  padding-right: ${({ outerPadding }): number => outerPadding}px;
+  margin-left: ${({ labelPadding }): number => labelPadding}px;
+  padding-left: ${({ counterPadding }): number => counterPadding}px;
+  padding-right: ${({ counterPadding }): number => counterPadding}px;
   background-color: ${Colors.BLACK.fade(0.75).toString()};
 `;
 
