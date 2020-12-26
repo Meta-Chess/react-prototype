@@ -2,6 +2,7 @@ import { GameMaster } from "./GameMaster";
 import { Renderer } from "./Renderer";
 import { GameOptions, Move } from "game/types";
 import { GameClient } from "game/GameClient";
+import { sleep } from "utilities/sleep";
 
 export class OnlineGameMaster extends GameMaster {
   constructor(
@@ -11,6 +12,15 @@ export class OnlineGameMaster extends GameMaster {
     private gameClient: GameClient
   ) {
     super(gameOptions, renderer);
+    this.doMovesSlowly(gameClient.moves);
+  }
+
+  async doMovesSlowly(moves: Move[]): Promise<void> {
+    for (const move of moves) {
+      await sleep(50);
+      this.doMove(move);
+      this.render();
+    }
   }
 
   static async connectNewGame(
@@ -20,7 +30,7 @@ export class OnlineGameMaster extends GameMaster {
   ): Promise<OnlineGameMaster> {
     const gameClient = new GameClient(
       process.env.REACT_APP_SERVER ||
-        "wss://arf34qu32l.execute-api.ap-southeast-2.amazonaws.com/prod",
+        "wss://fik1wh1ttf.execute-api.ap-southeast-2.amazonaws.com/dev",
       roomId,
       gameOptions
     );

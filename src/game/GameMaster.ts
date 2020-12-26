@@ -79,6 +79,10 @@ export class GameMaster {
     this.render();
   }
 
+  doMove(move: Move): void {
+    this.game.doMove(move);
+  }
+
   unselectAllPieces(): void {
     this.selectedPieces = [];
     this.allowableMoves = [];
