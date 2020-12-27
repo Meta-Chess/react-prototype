@@ -2,6 +2,7 @@ import { ReactElement } from "react";
 import { Direction } from "./Direction";
 import { Piece, VariantName, Rule } from "game";
 import { Path } from "game/Pather/Path";
+import { TraitName } from "game/variants";
 
 export interface gaitData {
   interceptable?: boolean;
@@ -111,4 +112,9 @@ export interface Modal {
   top: number;
   left: number;
   content?: ReactElement;
+}
+
+export interface TraitsInSetInfo {
+  name: TraitName;
+  count: number;
 }

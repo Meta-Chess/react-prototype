@@ -1,13 +1,13 @@
 import { Colors } from "primitives";
 
-export type TraitClass = keyof typeof traitInfo;
+export type TraitName = keyof typeof traitInfo;
 
 export const traitInfo = {
-  piece: { name: "Piece", color: Colors.TRAIT_CLASS.PIECE },
-  restriction: { name: "Restriction", color: Colors.TRAIT_CLASS.RESTRICTION },
-  ability: { name: "Ability", color: Colors.TRAIT_CLASS.ABILITY },
-  "game end": { name: "Game End", color: Colors.TRAIT_CLASS.GAME_END },
-  interaction: { name: "Interaction", color: Colors.TRAIT_CLASS.INTERACTION },
-  geometry: { name: "Geometry", color: Colors.TRAIT_CLASS.GEOMETRY },
-  world: { name: "Terraform", color: Colors.TRAIT_CLASS.WORLD },
+  Piece: { color: Colors.TRAIT.PIECE },
+  Restrict: { color: Colors.TRAIT.RESTRICT },
+  Ability: { color: Colors.TRAIT.ABILITY },
+  "Game End": { color: Colors.TRAIT.GAME_END },
+  "New Phase": { color: Colors.TRAIT.NEW_PHASE },
+  Geometry: { color: Colors.TRAIT.GEOMETRY },
+  Terraform: { color: Colors.TRAIT.TERRAFORM },
 };

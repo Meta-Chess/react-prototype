@@ -1,27 +1,80 @@
 import React from "react";
 import { SFC } from "primitives";
-import { TouchableOpacity } from "react-native";
-import { TraitClass, traitInfo } from "game/variants";
+import { TouchableOpacity, View } from "react-native";
+import { TraitName, traitInfo } from "game/variants";
+import { Text, Colors } from "primitives";
 import styled from "styled-components/native";
 import Color from "color";
 
 interface TraitFilterProps {
-  trait: TraitClass;
+  trait: TraitName;
+  numberOfVariantsWithTrait: number;
   selected: boolean;
   onPress: () => void;
 }
 
-const TraitFilter: SFC<TraitFilterProps> = ({ trait, style, selected, onPress }) => {
-  const baseColor = traitInfo[trait].color;
-  const color = selected ? baseColor : baseColor.fade(0.75);
-  return <TouchableDot style={style} onPress={onPress} color={color} />;
+const TraitFilter: SFC<TraitFilterProps> = ({
+  trait,
+  numberOfVariantsWithTrait,
+  style,
+  selected,
+  onPress,
+}) => {
+  const baseColor = traitInfo[trait].color.fade(0.5);
+  const color = selected ? baseColor : baseColor.fade(0.5);
+  const labelPadding = 8;
+  const counterPadding = 6;
+  const verticalPadding = 2;
+  return (
+    <TouchableLabel
+      labelPadding={labelPadding}
+      counterPadding={counterPadding}
+      verticalPadding={verticalPadding}
+      style={style}
+      color={color}
+      onPress={onPress}
+    >
+      <Text cat={"BodyS"} color={Colors.TEXT.LIGHT.toString()}>
+        {trait}
+      </Text>
+      <CountContainer
+        labelPadding={labelPadding}
+        counterPadding={counterPadding}
+        verticalPadding={verticalPadding}
+      >
+        <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()}>
+          {numberOfVariantsWithTrait.toString()}
+        </Text>
+      </CountContainer>
+    </TouchableLabel>
+  );
 };
 
-const TouchableDot = styled(TouchableOpacity)<{ color: Color }>`
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
+const TouchableLabel = styled(TouchableOpacity)<{
+  color: Color;
+  labelPadding: number;
+  counterPadding: number;
+  verticalPadding: number;
+}>`
+  flex-direction: row;
+  border-radius: 6px;
+  padding-left: ${({ labelPadding }): number => labelPadding}px;
+  padding-vertical: ${({ verticalPadding }): number => verticalPadding}px;
   background-color: ${({ color }): string => color.string()};
+  overflow: hidden;
+`;
+
+const CountContainer = styled(View)<{
+  labelPadding: number;
+  counterPadding: number;
+  verticalPadding: number;
+}>`
+  justify-content: center;
+  margin-vertical: -${({ verticalPadding }): number => verticalPadding}px;
+  margin-left: ${({ labelPadding }): number => labelPadding}px;
+  padding-left: ${({ counterPadding }): number => counterPadding}px;
+  padding-right: ${({ counterPadding }): number => counterPadding}px;
+  background-color: ${Colors.BLACK.fade(0.75).toString()};
 `;
 
 export { TraitFilter };

@@ -1,32 +1,32 @@
 import React from "react";
 import { SFC, Text } from "primitives";
 import { View } from "react-native";
-import { TraitClass, traitInfo } from "game/variants";
-import { contrast } from "utilities";
+import { TraitName, traitInfo } from "game/variants";
+import { opacify } from "utilities";
+import { Colors } from "primitives";
+import styled from "styled-components/native";
 
 interface TraitLabelProps {
-  trait: TraitClass;
+  trait: TraitName;
 }
 
 const TraitLabel: SFC<TraitLabelProps> = ({ trait, style }) => {
-  const color = traitInfo[trait].color.toString();
+  const color = opacify(traitInfo[trait].color.toString(), 0.5);
   return (
-    <View
-      style={[
-        style,
-        {
-          backgroundColor: color,
-          borderRadius: 6,
-          width: 12,
-          height: 12,
-        },
-      ]}
-    >
-      <Text cat={"BodyXS"} color={contrast(color)}>
-        {}
+    <Container style={style} color={color}>
+      <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()}>
+        {trait}
       </Text>
-    </View>
+    </Container>
   );
 };
+
+const Container = styled(View)<{ color: string }>`
+  border-radius: 6px;
+  padding-horizontal: 7px;
+  padding-vertical: 1px;
+  margin-top: 1px;
+  background-color: ${({ color }): string => color};
+`;
 
 export { TraitLabel };

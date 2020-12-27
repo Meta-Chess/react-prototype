@@ -3,7 +3,7 @@ import { View, useWindowDimensions } from "react-native";
 import styled from "styled-components/native";
 import { Colors } from "primitives";
 import { FutureVariantName } from "game/variants/variants";
-import { TraitClass } from "game/variants";
+import { TraitName } from "game/variants";
 import { useNavigation, Screens } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
 import { TraitFilterBar } from "./TraitFilterBar";
@@ -16,7 +16,7 @@ const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
   const { height, width } = useWindowDimensions();
 
-  const [activeFilters, setActiveFilters] = useState<TraitClass[]>([]);
+  const [activeFilters, setActiveFilters] = useState<TraitName[]>([]);
   const displayVariants: FutureVariantName[] = getFilteredVariantsInDisplayOrder(
     activeFilters
   );

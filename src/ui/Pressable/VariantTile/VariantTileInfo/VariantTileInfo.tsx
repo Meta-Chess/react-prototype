@@ -3,7 +3,7 @@ import { SFC, Text, Colors } from "primitives";
 import { View } from "react-native";
 import { FutureVariant } from "game";
 import { TraitLabel } from "./TraitLabel";
-import { TraitClass } from "game/variants";
+import { TraitName } from "game/variants";
 import styled from "styled-components/native";
 
 interface VariantTileInfoProps {
@@ -19,7 +19,7 @@ const VariantTileInfo: SFC<VariantTileInfoProps> = ({ style, variant }) => {
         </Text>
       </View>
       <View style={{ flexDirection: "row", marginBottom: 2 }}>
-        {variant.TraitClass.map((trait: TraitClass, index: number) => (
+        {variant.traits.map((trait: TraitName, index: number) => (
           <TraitLabel key={index} trait={trait} style={{ marginRight: 8 }} />
         ))}
       </View>

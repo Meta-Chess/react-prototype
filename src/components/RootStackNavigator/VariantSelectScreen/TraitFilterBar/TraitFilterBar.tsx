@@ -1,13 +1,13 @@
 import React from "react";
 import { View } from "react-native";
 import { Colors, SFC, Text } from "primitives";
-import { TraitClass } from "game/variants";
+import { TraitName } from "game/variants";
 import { TraitFilterRow } from "./TraitFilterRow";
 import { titleUppercase } from "utilities";
 
 interface Props {
-  activeFilters: TraitClass[];
-  setActiveFilters: (x: TraitClass[]) => void;
+  activeFilters: TraitName[];
+  setActiveFilters: (x: TraitName[]) => void;
 }
 
 const TraitFilterBar: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => {
