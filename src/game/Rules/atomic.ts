@@ -11,6 +11,12 @@ export const atomic: Rule = {
       if (!board.getPiecesAt(adjacency).some((piece) => piece.name === PieceName.Pawn)) {
         board.killPiecesAt(adjacency);
       }
+      //how could we make sure this doesnt happen in the clones in a neat way(?)
+      board.animationHandler.addAnimation({
+        duration: 1500,
+        type: "square",
+        locations: atomicImpactSquares,
+      });
     });
     return { board, square };
   },

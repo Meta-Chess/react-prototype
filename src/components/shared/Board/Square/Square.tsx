@@ -47,6 +47,14 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
     gameMaster.onPress(square.location);
   };
 
+  let renderAnimation = false;
+  const animationHandler = gameMaster.game.board.animationHandler;
+  if (animationHandler.inAnimation(square.location)) {
+    if (animationHandler.liveAnimation) {
+      renderAnimation = true;
+    }
+  }
+
   return (
     <OuterContainer size={size}>
       {shape === SquareShape.Hex && GRAPHIC_HEX_TILING && (
@@ -93,6 +101,7 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
           </GridArrangement>
         </PositioningContainer>
       </PressableContainer>
+      {renderAnimation && <Explosion key={square.location} size={size} />}
     </OuterContainer>
   );
 };

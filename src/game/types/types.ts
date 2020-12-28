@@ -123,3 +123,9 @@ export enum Region {
 }
 
 export type Regions = { [key in Region]?: string[] };
+
+export interface AnimationData {
+  duration: number;
+  type: string;
+  locations: { [id in string]: undefined };
+}
