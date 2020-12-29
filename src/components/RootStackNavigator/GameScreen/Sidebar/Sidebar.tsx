@@ -1,10 +1,5 @@
 import React, { useContext, useState } from "react";
-import {
-  useWindowDimensions,
-  ScrollView,
-  View,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { useWindowDimensions, ScrollView, View, TouchableOpacity } from "react-native";
 import { Button, Card, useModals } from "ui";
 import { Screens, useNavigation } from "navigation";
 import { Colors, SFC } from "primitives";
@@ -45,11 +40,15 @@ const Sidebar: SFC<Props> = ({ style }) => {
   return (
     <Container style={style}>
       <ScrollView
-        contentContainerStyle={{ paddingBottom: 24 }}
+        contentContainerStyle={{ paddingBottom: 24, flexGrow: 1 }}
         onScroll={(): void => modals.hideAll()}
         scrollEventThrottle={100}
       >
-        <TouchableWithoutFeedback onPress={(): void => modals.hideAll()}>
+        <TouchableOpacity
+          style={{ flex: 1 }}
+          onPress={(): void => modals.hideAll()}
+          activeOpacity={1}
+        >
           <View>
             <RoomIdCard roomId={roomId} />
             <VariantInfoCard
@@ -67,7 +66,7 @@ const Sidebar: SFC<Props> = ({ style }) => {
               <PieceCredit />
             </Card>
           </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </ScrollView>
       <ButtonContainer>
         <Button
