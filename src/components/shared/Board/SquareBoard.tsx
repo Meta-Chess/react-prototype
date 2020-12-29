@@ -11,10 +11,9 @@ import { Styles } from "primitives/Styles";
 import { BoardMeasurements } from "components/shared";
 
 const SquareBoard: SFC<BoardProps> = ({
-  style,
   backboard = true,
   measurements,
-  flipBoard,
+  flipBoard = false,
 }) => {
   const { gameMaster } = useContext(GameContext);
   const game = gameMaster?.game;
@@ -25,33 +24,29 @@ const SquareBoard: SFC<BoardProps> = ({
   const rankCoordinates = range(minRank, maxRank - minFile + 1);
 
   return (
-    <BoardContainer style={style} measurements={measurements} backboard={backboard}>
-      <SquaresContainer style={{ flexDirection: flipBoard ? "row-reverse" : "row" }}>
-        {fileCoordinates.map((file) => (
-          <ColumnContainer
-            style={{
-              maxWidth: measurements.squareSize,
-              flexDirection: flipBoard ? "column" : "column-reverse",
-            }}
-            key={file}
-          >
-            {rankCoordinates.map((rank) => (
-              <Square
-                size={measurements.squareSize}
-                square={game.board.firstSquareSatisfyingRule(
-                  (square) =>
-                    objectMatches({
-                      rank,
-                      file,
-                    })(square.coordinates) &&
-                    !square.hasTokenWithName(TokenName.InvisibilityToken)
-                )}
-                key={JSON.stringify([rank, file])}
-              />
-            ))}
-          </ColumnContainer>
-        ))}
-      </SquaresContainer>
+    <BoardContainer
+      measurements={measurements}
+      backboard={backboard}
+      style={{ flexDirection: flipBoard ? "row-reverse" : "row" }}
+    >
+      {fileCoordinates.map((file) => (
+        <ColumnContainer flipBoard={flipBoard} key={file}>
+          {rankCoordinates.map((rank) => (
+            <Square
+              size={measurements.squareSize}
+              square={game.board.firstSquareSatisfyingRule(
+                (square) =>
+                  objectMatches({
+                    rank,
+                    file,
+                  })(square.coordinates) &&
+                  !square.hasTokenWithName(TokenName.InvisibilityToken)
+              )}
+              key={JSON.stringify([rank, file])}
+            />
+          ))}
+        </ColumnContainer>
+      ))}
     </BoardContainer>
   );
 };
@@ -71,16 +66,8 @@ const BoardContainer = styled(View)<{
   padding-vertical: ${({ measurements }): number => measurements.boardPaddingVertical}px;
 `;
 
-const SquaresContainer = styled(View)`
-  flex-direction: row;
-  display: flex;
-  height: 100%;
-`;
-
-const ColumnContainer = styled(View)`
-  justify-content: flex-end;
-  flex: 1;
-  display: flex;
+const ColumnContainer = styled(View)<{ flipBoard: boolean }>`
+  flex-direction: ${({ flipBoard }): string => (flipBoard ? "column" : "column-reverse")};
 `;
 
 export { SquareBoard };

@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { SFC } from "primitives";
+import React, { useContext, FC } from "react";
 import { GameContext } from "game";
 import { TokenName, SquareShape } from "game/types";
 import { HexBoard } from "./HexBoard";
@@ -12,7 +11,7 @@ export interface BoardProps {
   flipBoard?: boolean;
 }
 
-export const Board: SFC<BoardProps> = (props) => {
+export const Board: FC<BoardProps> = (props) => {
   const { gameMaster } = useContext(GameContext);
   const shapeToken = gameMaster?.game.board.firstTokenWithName(TokenName.Shape);
 

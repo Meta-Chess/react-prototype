@@ -1,38 +1,32 @@
 import React from "react";
 import { SFC } from "primitives";
-import { View } from "react-native";
+import { View, ViewStyle, StyleProp } from "react-native";
+import { BoardMeasurements } from "components/shared";
+import styled from "styled-components/native";
+import { AbsoluteView } from "ui";
 
 interface HexBackboardProps {
   color: string;
-  padding: number;
-  boardWidth: number;
-  boardHeight: number;
+  measurements: BoardMeasurements;
+  shadow?: boolean;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 const HexBackboard: SFC<HexBackboardProps> = ({
-  style,
   color,
-  padding,
-  boardWidth,
-  boardHeight,
+  measurements,
+  shadow = false,
+  children,
+  containerStyle,
 }) => {
-  const centerWidth = boardWidth;
-  const endHalfWidth = boardWidth / 2;
-  const centerHeight = boardHeight / 2;
-  const endHeight = boardHeight / 4;
+  const extra = shadow ? 4 : 0;
+  const centerWidth = measurements.width + extra;
+  const endHalfWidth = (measurements.width + extra) / 2;
+  const centerHeight = (measurements.height + extra) / 2;
+  const endHeight = (measurements.height + extra) / 4;
 
   return (
-    <View
-      style={[
-        style,
-        {
-          flexDirection: "column",
-          position: "absolute",
-          marginVertical: -padding / 2,
-          marginHorizontal: -padding / 2,
-        },
-      ]}
-    >
+    <View style={{ flexDirection: "column", padding: shadow ? -extra / 2 : 0 }}>
       <View
         style={{
           borderLeftWidth: endHalfWidth,
@@ -60,8 +54,16 @@ const HexBackboard: SFC<HexBackboardProps> = ({
           borderTopColor: color,
         }}
       />
+      <AbsoluteChildrenContainer style={containerStyle}>
+        {children}
+      </AbsoluteChildrenContainer>
     </View>
   );
 };
+
+const AbsoluteChildrenContainer = styled(AbsoluteView)`
+  justify-content: center;
+  align-items: center;
+`;
 
 export { HexBackboard };

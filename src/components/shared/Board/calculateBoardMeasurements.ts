@@ -29,8 +29,8 @@ export function calculateBoardMeasurements({
   shape: SquareShape | undefined;
   backboard: boolean;
 }): BoardMeasurements {
-  const boardPaddingHorizontal = backboard ? (shape === SquareShape.Hex ? 16 : 8) : 0;
-  const boardPaddingVertical = backboard ? 8 : 0;
+  const boardPaddingHorizontal = backboard ? (shape === SquareShape.Hex ? 12 : 8) : 0;
+  const boardPaddingVertical = backboard ? (shape === SquareShape.Hex ? 16 : 8) : 0;
 
   const { minRank, maxRank, minFile, maxFile } = board.rankAndFileBoundsWithFilter(
     (square) => !square.hasTokenWithName(TokenName.InvisibilityToken)
@@ -42,7 +42,7 @@ export function calculateBoardMeasurements({
   const boardWidthInSquares = numberOfFiles;
   const boardHeightInSquares =
     shape === SquareShape.Hex
-      ? Math.ceil(numberOfRanks / 2) * 1.1547 // 2 / sqrt(3)
+      ? Math.ceil(numberOfRanks / 2) * 1.1547 // 1.1547 ~= 2 / sqrt(3)
       : numberOfRanks;
 
   const squareSize = Math.min(
