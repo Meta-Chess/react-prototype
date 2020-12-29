@@ -8,10 +8,11 @@ import { OnlineGameMaster } from "game/OnlineGameMaster";
 const GameContext = createContext<{ gameMaster?: GameMaster }>({});
 
 interface Props {
-  gameOptions: GameOptions;
+  gameOptions?: GameOptions;
+  roomId?: string;
 }
 
-const GameProvider: FC<Props> = ({ children, gameOptions }) => {
+const GameProvider: FC<Props> = ({ children, gameOptions, roomId }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_updateCounter, setUpdateCounter] = useState(0);
   const [gameMaster, setGameMaster] = useState<GameMaster | undefined>();
@@ -25,7 +26,7 @@ const GameProvider: FC<Props> = ({ children, gameOptions }) => {
 
   useEffect((): void => {
     const renderer = new Renderer(setUpdateCounter);
-    setGameMasterToNewGame(gameOptions, renderer, setGameMaster);
+    setGameMasterToNewGame({ renderer, setGameMaster, roomId, gameOptions });
   }, [gameOptions]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect((): (() => void) => {
@@ -35,16 +36,21 @@ const GameProvider: FC<Props> = ({ children, gameOptions }) => {
   return <GameContext.Provider value={{ gameMaster }}>{children}</GameContext.Provider>;
 };
 
-async function setGameMasterToNewGame(
-  gameOptions: GameOptions,
-  renderer: Renderer,
-  setGameMaster: (gm: GameMaster | undefined) => void
-): Promise<void> {
-  const newGameMaster = gameOptions
-    ? gameOptions.online
-      ? await OnlineGameMaster.connectNewGame(renderer, gameOptions, gameOptions.roomId)
-      : new GameMaster(gameOptions, renderer)
-    : undefined;
+async function setGameMasterToNewGame({
+  renderer,
+  setGameMaster,
+  roomId,
+  gameOptions,
+}: {
+  renderer: Renderer;
+  setGameMaster: (gm: GameMaster | undefined) => void;
+  roomId?: string;
+  gameOptions?: GameOptions;
+}): Promise<void> {
+  const newGameMaster =
+    gameOptions?.online === true || (gameOptions?.online !== false && roomId)
+      ? await OnlineGameMaster.connectNewGame(renderer, gameOptions, roomId)
+      : new GameMaster(gameOptions || {}, renderer);
   setGameMaster(newGameMaster);
 }
 
