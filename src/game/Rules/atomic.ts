@@ -6,10 +6,14 @@ export const atomic: Rule = {
   description:
     "When a piece is captured, all pieces on adjacent squares are destroyed. Pawns shield their square from this effect. The capturing piece is also destroyed.",
   postCapture: ({ board, square }) => {
-    board.killPiecesAt(square.location);
-    square.adjacencies.getAllAdjacencies().forEach((adjacency) => {
-      if (!board.getPiecesAt(adjacency).some((piece) => piece.name === PieceName.Pawn)) {
-        board.killPiecesAt(adjacency);
+    const atomicImpactSquares = [square.location].concat(
+      square.adjacencies.getAllAdjacencies()
+    );
+
+    board.killPiecesAt(square.location); //this square is double hit, is it slower to make an exception in the forEach(?)
+    atomicImpactSquares.forEach((location) => {
+      if (!board.getPiecesAt(location).some((piece) => piece.name === PieceName.Pawn)) {
+        board.killPiecesAt(location);
       }
       //how could we make sure this doesnt happen in the clones in a neat way(?)
       board.animationHandler.addAnimation({
