@@ -1,109 +1,73 @@
 import React, { useContext } from "react";
-import { Platform, View } from "react-native";
+import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
-import { objectMatches } from "utilities";
+import { objectMatches, range } from "utilities";
 import { GameContext } from "game";
 import { TokenName } from "game/types";
 import { Square } from "./Square";
-import { InnerBoardProps } from "components/shared/Board/Board";
+import { BoardProps } from "components/shared/Board/Board";
 import { Styles } from "primitives/Styles";
+import { BoardMeasurements } from "components/shared";
 
-const SquareBoard: SFC<InnerBoardProps> = ({
-  style,
+const SquareBoard: SFC<BoardProps> = ({
   backboard = true,
-  dimensions,
-  flipBoard,
+  measurements,
+  flipBoard = false,
 }) => {
-  const padding = backboard && Platform.OS === "web" ? 8 : 0;
-
   const { gameMaster } = useContext(GameContext);
   const game = gameMaster?.game;
   if (!game) return null;
 
-  const { minRank, maxRank, minFile, maxFile } = game.board.rankAndFileBoundsWithFilter(
-    (square) => !square.hasTokenWithName(TokenName.InvisibilityToken)
-  );
-
-  const numberOfRanks = maxRank - minRank + 1;
-  const numberOfFiles = maxFile - minFile + 1;
-
-  const boardDetails = {
-    width: numberOfFiles,
-    height: numberOfRanks,
-  };
-
-  const fileCoordinates = Array.from(Array(boardDetails.width).keys()).map(
-    (n) => n + minFile
-  );
-  const rankCoordinates = Array.from(Array(boardDetails.height).keys()).map(
-    (n) => n + minRank
-  );
-
-  const squareSize = Math.min(
-    (dimensions.width - 2 * padding) / boardDetails.width,
-    (dimensions.height - 2 * padding) / boardDetails.height,
-    120
-  );
+  const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
+  const fileCoordinates = range(minFile, maxFile - minFile + 1);
+  const rankCoordinates = range(minRank, maxRank - minFile + 1);
 
   return (
     <BoardContainer
-      style={[
-        style,
-        {
-          height: squareSize * boardDetails.height + 2 * padding,
-          width: squareSize * boardDetails.width + 2 * padding,
-          padding,
-        },
-      ]}
+      measurements={measurements}
       backboard={backboard}
+      style={{ flexDirection: flipBoard ? "row-reverse" : "row" }}
     >
-      <SquaresContainer style={{ flexDirection: flipBoard ? "row-reverse" : "row" }}>
-        {fileCoordinates.map((file) => (
-          <ColumnContainer
-            style={{
-              maxWidth: squareSize,
-              flexDirection: flipBoard ? "column" : "column-reverse",
-            }}
-            key={file}
-          >
-            {rankCoordinates.map((rank) => (
-              <Square
-                size={squareSize}
-                square={game.board.firstSquareSatisfyingRule(
-                  (square) =>
-                    objectMatches({
-                      rank,
-                      file,
-                    })(square.coordinates) &&
-                    !square.hasTokenWithName(TokenName.InvisibilityToken)
-                )}
-                key={JSON.stringify([rank, file])}
-              />
-            ))}
-          </ColumnContainer>
-        ))}
-      </SquaresContainer>
+      {fileCoordinates.map((file) => (
+        <ColumnContainer flipBoard={flipBoard} key={file}>
+          {rankCoordinates.map((rank) => (
+            <Square
+              size={measurements.squareSize}
+              square={game.board.firstSquareSatisfyingRule(
+                (square) =>
+                  objectMatches({
+                    rank,
+                    file,
+                  })(square.coordinates) &&
+                  !square.hasTokenWithName(TokenName.InvisibilityToken)
+              )}
+              key={JSON.stringify([rank, file])}
+            />
+          ))}
+        </ColumnContainer>
+      ))}
     </BoardContainer>
   );
 };
 
-const BoardContainer = styled(View)<{ backboard: boolean }>`
+const BoardContainer = styled(View)<{
+  backboard: boolean;
+  measurements: BoardMeasurements;
+}>`
   position: relative;
-  background: ${Colors.DARK.string()};
   ${({ backboard }): string => (backboard ? Styles.BOX_SHADOW_STRONG : "")}
+  ${({ backboard }): string =>
+    backboard ? `background-color: ${Colors.DARK.toString()}` : ""}
+  height: ${({ measurements }): number => measurements.height}px;
+  width: ${({ measurements }): number => measurements.width}px;
+  padding-horizontal: ${({ measurements }): number =>
+    measurements.boardPaddingHorizontal}px;
+  padding-vertical: ${({ measurements }): number => measurements.boardPaddingVertical}px;
 `;
 
-const SquaresContainer = styled(View)`
-  flex-direction: row;
-  display: flex;
-  height: 100%;
-`;
-
-const ColumnContainer = styled(View)`
-  justify-content: flex-end;
-  flex: 1;
-  display: flex;
+const ColumnContainer = styled(View)<{ flipBoard: boolean }>`
+  flex-direction: ${({ flipBoard }): string => (flipBoard ? "column" : "column-reverse")};
 `;
 
 export { SquareBoard };

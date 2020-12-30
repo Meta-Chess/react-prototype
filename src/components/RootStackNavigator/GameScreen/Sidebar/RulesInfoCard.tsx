@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { Text } from "primitives";
+import React from "react";
+import { SFC, Text } from "primitives";
 import { Card } from "ui/Containers/Card";
 import { Rule } from "game";
 import { LabelWithDetails } from "ui";
@@ -9,12 +9,12 @@ interface Props {
   rules?: Rule[];
 }
 
-const RulesInfoCard: FC<Props> = ({ rules }) => {
+const RulesInfoCard: SFC<Props> = ({ rules, style }) => {
   if (!rules) return null;
 
   return (
-    <Card>
-      <Text cat="DisplayL">Rules</Text>
+    <Card style={style}>
+      <Text cat="DisplayM">Rules</Text>
       <View style={{ flexWrap: "wrap", flexDirection: "row", marginTop: 8 }}>
         {rules.map((rule, index) => (
           <LabelWithDetails label={rule.name} details={rule.description} key={index} />

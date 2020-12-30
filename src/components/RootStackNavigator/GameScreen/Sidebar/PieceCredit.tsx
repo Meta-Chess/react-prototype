@@ -4,7 +4,7 @@ import { SFC, Colors, Text } from "primitives";
 
 const pieceCreditLink = (
   <Text
-    cat={"BodyS"}
+    cat={"BodyXS"}
     style={{ color: Colors.INFO.toString() }}
     onPress={(): void => {
       Linking.openURL("https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces");
@@ -16,7 +16,7 @@ const pieceCreditLink = (
 
 const creatorCreditLink = (
   <Text
-    cat={"BodyS"}
+    cat={"BodyXS"}
     style={{ color: Colors.INFO.toString() }}
     onPress={(): void => {
       Linking.openURL("https://en.wikipedia.org/wiki/User:Cburnett");
@@ -29,7 +29,7 @@ const creatorCreditLink = (
 export const PieceCredit: SFC = ({ style }) => {
   return (
     <View style={style}>
-      <Text cat="BodyS" color={Colors.TEXT.LIGHT.toString()} alignment="center">
+      <Text cat="BodyXS" color={Colors.TEXT.LIGHT.toString()} alignment="center">
         Chess pieces originally by {creatorCreditLink} under creative commons license,
         found {pieceCreditLink}.
       </Text>

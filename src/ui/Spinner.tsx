@@ -61,8 +61,13 @@ const Spinner: SFC<Props> = ({ style }) => {
               style={{
                 width: 10,
                 height: 10,
-                margin: rotateValue,
-                backgroundColor: (x + y) % 2 === 0 ? animatedColor1 : animatedColor2,
+                margin: Platform.OS === "web" ? rotateValue : undefined,
+                backgroundColor:
+                  Platform.OS === "web"
+                    ? (x + y) % 2 === 0
+                      ? animatedColor1
+                      : animatedColor2
+                    : undefined,
               }}
               key={`x${x}y${y}`}
             />

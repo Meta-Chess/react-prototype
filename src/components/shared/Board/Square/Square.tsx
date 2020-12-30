@@ -10,6 +10,7 @@ import { Square } from "game/Board";
 import { SquareShape } from "game/types";
 import { HexTile } from "./HexTile";
 import { Highlight } from "./Highlight";
+import { useModals } from "ui";
 
 interface Props {
   square: Square | undefined;
@@ -18,15 +19,12 @@ interface Props {
 }
 
 const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
-  const HEX_SQUARE_EMPTY_RATIO = 2 / Math.sqrt(3) - 1;
-  const GRAPHIC_HEX_TILING = true; //true for Hex over Circle, bundle into graphic options
+  const GRAPHIC_HEX_TILING = true; //true for Hex over Circle, TODO: bundle into graphic options, or choose one over the other
+  const modals = useModals();
   const { gameMaster } = useContext(GameContext);
   if (!gameMaster) return null;
 
-  if (!square) {
-    const emptySize = shape === SquareShape.Hex ? HEX_SQUARE_EMPTY_RATIO * size : size;
-    return <View style={[style, { width: emptySize, height: emptySize }]} />;
-  }
+  if (!square) return <View style={[style, { width: size, height: size }]} />;
 
   const backgroundColor = Colors.SQUARE[
     colorIndex({ ...square.getCoordinates(), shape })
@@ -40,11 +38,12 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
   });
 
   const pieceGridDimension = Math.ceil(Math.sqrt(piecesOnSquare.length)) || 1;
-  const pieceScaleFactor = shape === SquareShape.Hex ? 0.9 : 1; // TODO: this will cause problems with chess plus and hex.
+  const pieceScaleFactor = shape === SquareShape.Hex ? 0.9 : 1;
   const pieceSize = (pieceScaleFactor * size) / pieceGridDimension;
   // TODO: For chess plus add and use shadowPieceSize
 
   const onPress = (): void => {
+    modals.hideAll();
     gameMaster.onPress(square.location);
   };
 

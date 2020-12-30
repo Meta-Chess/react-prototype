@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { Text } from "primitives";
+import React from "react";
+import { SFC, Text } from "primitives";
 import { Card } from "ui/Containers/Card";
 import { VariantName, variants } from "game";
 
@@ -8,7 +8,7 @@ interface Props {
   title?: string;
 }
 
-const VariantInfoCard: FC<Props> = ({ variant, title }) => {
+const VariantInfoCard: SFC<Props> = ({ variant, title, style }) => {
   if (!variant || !variants[variant]) return null;
 
   // Later: This should maybe be a more complicated way of calculating a name
@@ -17,9 +17,9 @@ const VariantInfoCard: FC<Props> = ({ variant, title }) => {
   const variantDescription = variants[variant].description;
 
   return (
-    <Card>
-      <Text cat="DisplayL">{title ? title : variant}</Text>
-      <Text cat="BodyL" style={{ marginTop: 8 }}>
+    <Card style={style}>
+      <Text cat="DisplayM">{title ? title : variant}</Text>
+      <Text cat="BodyM" style={{ marginTop: 8 }}>
         {variantDescription}
       </Text>
     </Card>

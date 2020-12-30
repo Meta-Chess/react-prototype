@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
-import { useWindowDimensions } from "react-native";
-import { Button, SidebarContainer } from "ui";
+import { useWindowDimensions, ScrollView, View, TouchableOpacity } from "react-native";
+import { Button, Card, useModals } from "ui";
 import { Screens, useNavigation } from "navigation";
-import { SFC } from "primitives";
+import { Colors, SFC } from "primitives";
 import { GameContext } from "game";
 import { RoomIdCard } from "./RoomIdCard";
 import { VariantInfoCard } from "./VariantInfoCard";
@@ -10,19 +10,20 @@ import { RulesInfoCard } from "./RulesInfoCard";
 import { PieceCredit } from "./PieceCredit";
 import { SelectedPieceInfoCard } from "./SelectedPieceInfoCard";
 import { OnlineGameMaster } from "game/OnlineGameMaster";
+import styled from "styled-components/native";
 
 interface Props {
   short?: boolean;
 }
 
-const Sidebar: SFC<Props> = ({ short, style }) => {
+const Sidebar: SFC<Props> = ({ style }) => {
   const navigation = useNavigation();
+  const modals = useModals();
   const { gameMaster } = useContext(GameContext);
   const pieces = gameMaster?.selectedPieces;
   const rules = gameMaster?.rules;
   const title = gameMaster?.title;
   const variant = gameMaster?.variant;
-  const online = gameMaster instanceof OnlineGameMaster;
   const roomId = gameMaster instanceof OnlineGameMaster ? gameMaster?.roomId : undefined;
 
   const { width, height } = useWindowDimensions();
@@ -37,28 +38,56 @@ const Sidebar: SFC<Props> = ({ short, style }) => {
   }
 
   return (
-    <SidebarContainer
-      style={[style, { minHeight: short ? (online ? 300 : 140) : undefined }]}
-    >
-      <RoomIdCard roomId={roomId} />
-      {!short && (
-        <>
-          <VariantInfoCard variant={variant} title={title} />
-          <RulesInfoCard rules={rules} key={key} />
-          <SelectedPieceInfoCard pieces={pieces} key={key + 0.5} />
-        </>
-      )}
-      <Button
-        text="Finish Game"
-        onPress={(): void => {
-          gameMaster?.endGame();
-          navigation.navigate(Screens.StartScreen);
-        }}
-        style={{ margin: 32 }}
-      />
-      <PieceCredit />
-    </SidebarContainer>
+    <Container style={style}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 24, flexGrow: 1 }}
+        onScroll={(): void => modals.hideAll()}
+        scrollEventThrottle={100}
+      >
+        <TouchableOpacity
+          style={{ flex: 1 }}
+          onPress={(): void => modals.hideAll()}
+          activeOpacity={1}
+        >
+          <View>
+            <RoomIdCard roomId={roomId} />
+            <VariantInfoCard
+              variant={variant}
+              title={title}
+              style={{ marginTop: roomId ? 8 : 0 }}
+            />
+            <RulesInfoCard rules={rules} key={key} style={{ marginTop: 8 }} />
+            <SelectedPieceInfoCard
+              pieces={pieces}
+              key={key + 0.5}
+              style={{ marginTop: 8 }}
+            />
+            <Card style={{ marginTop: 8 }}>
+              <PieceCredit />
+            </Card>
+          </View>
+        </TouchableOpacity>
+      </ScrollView>
+      <ButtonContainer>
+        <Button
+          text="Finish Game"
+          onPress={(): void => {
+            gameMaster?.endGame();
+            navigation.navigate(Screens.StartScreen);
+          }}
+        />
+      </ButtonContainer>
+    </Container>
   );
 };
+
+const Container = styled(View)`
+  justify-content: space-between;
+`;
+
+const ButtonContainer = styled(View)`
+  background-color: ${Colors.DARKEST.string()};
+  padding-vertical: 8px;
+`;
 
 export { Sidebar };

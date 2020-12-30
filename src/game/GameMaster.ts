@@ -1,6 +1,6 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, Modal, Move } from "./types";
+import { GameOptions, Move } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants/variants";
@@ -17,7 +17,6 @@ export class GameMaster {
   public title: string;
   public variant: VariantName;
   public rules: Rule[];
-  public modal?: Modal;
 
   // TODO: Consider restructure to encapsulate visualisation details in a nice abstraction
   public flipBoard: boolean;
@@ -63,7 +62,6 @@ export class GameMaster {
   }
 
   onPress(location: string): Move | undefined {
-    this.hideModal();
     this.gameClones.forEach((clone) => clone.resetTo(this.game));
     const move = this.allowableMoves.find((m) => m.location === location);
     if (move && this.game.currentPlayer === this.selectedPieces[0]?.owner) {
@@ -97,16 +95,6 @@ export class GameMaster {
     this.allowableMoves = flatMap(this.selectedPieces, (piece: Piece) =>
       new Pather(this.game, this.gameClones, piece, this.interrupt).findPaths()
     );
-  }
-
-  setModal(modal: Modal): void {
-    this.modal = modal;
-    this.render();
-  }
-
-  hideModal(): void {
-    this.modal = undefined;
-    this.render();
   }
 
   // All games can be ended, but only online games need to do something with it at the moment

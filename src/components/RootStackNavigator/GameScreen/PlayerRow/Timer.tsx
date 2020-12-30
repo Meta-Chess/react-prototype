@@ -4,11 +4,11 @@ import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
 import { GameContext } from "game";
 import { Player } from "game/types";
-import { contrast } from "utilities";
+import { AbsoluteView, Card } from "ui";
 
 interface Props {
   player: Player;
-  hidden: boolean;
+  hidden?: boolean;
   alignment?: "left" | "center" | "right";
 }
 
@@ -35,14 +35,18 @@ const Timer: SFC<Props> = ({ style, player, hidden, alignment = "center" }) => {
 
   if (!clock) return null; // Consider throwing an error?
 
-  style = { ...style, height: 40 };
-  return hidden ? (
+  return hidden === true ? (
     <View style={style} />
   ) : (
-    <Container style={style} timeRemaining={clock.getTimeRemaining()} player={player}>
+    <Container style={style}>
+      {clock.getTimeRemaining() <= 0 && (
+        <AbsoluteView
+          style={{ backgroundColor: Colors.HIGHLIGHT.ERROR.fade(0.6).toString() }}
+        />
+      )}
       <Text
         cat="BodyM"
-        color={contrast(Colors.PLAYER[player].string())}
+        color={Colors.TEXT.LIGHT.toString()}
         monospaceNumbers={true}
         alignment={alignment}
       >
@@ -52,19 +56,8 @@ const Timer: SFC<Props> = ({ style, player, hidden, alignment = "center" }) => {
   );
 };
 
-interface ContainerProps {
-  player: number;
-  timeRemaining: number;
-}
-
-const Container = styled(View)<ContainerProps>`
+const Container = styled(Card)`
   padding: 8px 12px;
-  border-radius: 8px;
-  background-color: ${({ player }): string => Colors.PLAYER[player].string()};
-  border: 2px solid ${({ player }): string => contrast(Colors.PLAYER[player].string())};
-  box-shadow: 0px 1px 12px
-    ${({ timeRemaining }): string =>
-      timeRemaining <= 0 ? Colors.ERROR.toString() : "transparent"};
 `;
 
 export { Timer };

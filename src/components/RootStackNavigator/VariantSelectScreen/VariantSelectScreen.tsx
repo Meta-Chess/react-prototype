@@ -1,7 +1,6 @@
-import React, { FC, useState } from "react";
-import { View, useWindowDimensions } from "react-native";
-import styled from "styled-components/native";
-import { Colors } from "primitives";
+import React, { FC, useState, ReactElement } from "react";
+import { ViewStyle, Platform } from "react-native";
+import { StyleProps } from "primitives";
 import { FutureVariantName } from "game/variants/variants";
 import { TraitName } from "game/variants";
 import { useNavigation, Screens } from "navigation";
@@ -11,10 +10,11 @@ import { calculateGameOptions } from "./calculateGameOptions";
 import { determineIfVariantClash } from "./determineIfVariantClash";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
 import { Button, ButtonSecondary } from "ui";
+import { ScreenContainer } from "components/shared";
+import { ControlLayoutContainer } from "./ControlLayoutContainer";
 
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
-  const { height, width } = useWindowDimensions();
 
   const [activeFilters, setActiveFilters] = useState<TraitName[]>([]);
   const displayVariants: FutureVariantName[] = getFilteredVariantsInDisplayOrder(
@@ -24,7 +24,7 @@ const VariantSelectScreen: FC = () => {
   const existsVariantsClash: boolean = determineIfVariantClash(selectedVariants);
 
   return (
-    <ScreenContainer width={width} height={height}>
+    <ScreenContainer>
       <VariantCardGrid
         style={{ flex: 1 }}
         displayVariants={displayVariants}
@@ -32,47 +32,36 @@ const VariantSelectScreen: FC = () => {
         setSelectedVariants={setSelectedVariants}
         variantClash={existsVariantsClash}
       />
-      <OptionContainer>
-        <ButtonSecondary
-          text="Back"
-          onPress={(): void => navigation.goBack()}
-          style={{ width: 200 }}
-        />
-        <TraitFilterBar
-          activeFilters={activeFilters}
-          setActiveFilters={setActiveFilters}
-          style={{ marginLeft: 64 }}
-        />
-        <Button
-          text="Start Game"
-          onPress={(): void =>
-            navigation.navigate(Screens.GameScreen, {
-              gameOptions: calculateGameOptions(selectedVariants),
-            })
-          }
-          style={{ width: 200, marginLeft: 64 }}
-        />
-      </OptionContainer>
+      <ControlLayoutContainer
+        style={{ marginBottom: Platform.OS === "web" ? 16 : 0 }}
+        a={({ style }: { style: StyleProps<ViewStyle> }): ReactElement => (
+          <TraitFilterBar
+            activeFilters={activeFilters}
+            setActiveFilters={setActiveFilters}
+            style={style}
+          />
+        )}
+        b={({ style }: { style: StyleProps<ViewStyle> }): ReactElement => (
+          <ButtonSecondary
+            text="Back"
+            onPress={(): void => navigation.goBack()}
+            style={style}
+          />
+        )}
+        c={({ style }: { style: StyleProps<ViewStyle> }): ReactElement => (
+          <Button
+            text="Start Game"
+            onPress={(): void =>
+              navigation.navigate(Screens.GameScreen, {
+                gameOptions: calculateGameOptions(selectedVariants),
+              })
+            }
+            style={style}
+          />
+        )}
+      />
     </ScreenContainer>
   );
 };
-
-const ScreenContainer = styled(View)<{ height: number; width: number }>`
-  display: flex;
-  background-color: ${Colors.DARKEST.string()};
-  justify-content: space-between;
-  flex-direction: column;
-  height: ${({ height }): number => height}px;
-  width: ${({ width }): number => width}px;
-  padding-horizontal: 16px;
-  padding-vertical: 32px;
-`;
-
-const OptionContainer = styled(View)`
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-end;
-  margin-top: 8px;
-`;
 
 export { VariantSelectScreen };
