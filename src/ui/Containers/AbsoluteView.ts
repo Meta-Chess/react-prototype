@@ -7,4 +7,6 @@ export const AbsoluteView = styled(View)`
   bottom: 0;
   left: 0;
   right: 0;
+  justify-content: center;
+  align-items: center;
 `;

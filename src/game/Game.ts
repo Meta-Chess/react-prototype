@@ -1,7 +1,8 @@
 import { Board } from "./Board";
 import { Clock } from "./Clock";
-import { Move, Player, PlayerName } from "./types";
+import { Move, PlayerName } from "./types";
 import { CompactRules } from "./Rules/Rules";
+import { Player } from "game/Player";
 
 export class Game {
   constructor(
@@ -57,22 +58,21 @@ export class Game {
     Object.values(this.board.squares).forEach((square) =>
       square.removeExpiredTokens(this.currentTurn)
     );
-    this.nextTurn();
   }
 
   nextTurn(): void {
-    const nextPlayer = this.nextAlivePlayer(this.currentPlayerIndex);
-    if (nextPlayer !== undefined) {
-      this.currentPlayerIndex = nextPlayer;
-      this.clock?.setActivePlayers([this.players[nextPlayer].name]);
+    const nextPlayerIndex = this.nextAlivePlayerIndex(this.currentPlayerIndex);
+    if (nextPlayerIndex !== undefined) {
+      this.currentPlayerIndex = nextPlayerIndex;
+      this.clock?.setActivePlayers([this.players[nextPlayerIndex].name]);
       this.currentTurn++;
     }
   }
 
-  nextAlivePlayer(currentPlayer: number): number | undefined {
+  nextAlivePlayerIndex(currentPlayerIndex: number): number | undefined {
     let index: number;
-    for (let i = 0; i < this.players.length; i++) {
-      index = (currentPlayer + 1 + i) % this.players.length;
+    for (let i = 1; i <= this.players.length; i++) {
+      index = (currentPlayerIndex + i) % this.players.length;
       if (this.players[index].alive) return index;
     }
     return undefined;

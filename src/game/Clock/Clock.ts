@@ -33,11 +33,4 @@ export class Clock {
   stop(): void {
     this.timers.values().forEach((t) => t.freeze());
   }
-
-  getPlayersWithNonzeroAllowance(): PlayerName[] {
-    return this.timers.keys().filter((k) => {
-      const t = this.timers.get(k);
-      return t && t.getTimeRemaining() > 0;
-    });
-  }
 }

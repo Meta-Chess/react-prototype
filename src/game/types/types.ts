@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { Direction } from "./Direction";
-import { Piece, VariantName, Rule } from "game";
+import { Piece, Rule, VariantName } from "game";
 import { Path } from "game/Pather/Path";
 import { TraitName } from "game/variants";
 
@@ -38,6 +38,7 @@ export interface PieceDelta {
   path: Path;
 }
 
+// The order of colors in this enum corresponds to the order of colors in Colors.PLAYER
 export enum PlayerName {
   White,
   Black,
@@ -59,18 +60,6 @@ export const PlayerDisplayNames: { [key in PlayerName]: string } = {
   [PlayerName.Yellow]: "Yellow",
   [PlayerName.Green]: "Green",
 };
-
-export class Player {
-  constructor(
-    public name: PlayerName,
-    public alive: boolean = true,
-    public endGameMessage: string = " died."
-  ) {}
-
-  clone(): Player {
-    return new Player(this.name, this.alive, this.endGameMessage);
-  }
-}
 
 export enum PieceName {
   Pawn,
@@ -101,7 +90,6 @@ export enum TokenName {
   PassiveCastling,
   CaptureToken,
   Fatigue,
-  EvadeToken,
 }
 
 interface TokenData {

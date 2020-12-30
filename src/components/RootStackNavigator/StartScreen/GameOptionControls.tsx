@@ -108,7 +108,6 @@ const variantOptions = variantNames.map((k) => ({
 
 const timeOptions = [
   { label: "No timers", value: undefined },
-  { label: "5 seconds", value: 5000 },
   { label: "1 minute", value: 60000 },
   // { label: "5 minutes", value: 300000 },
   { label: "10 minutes", value: 600000 },

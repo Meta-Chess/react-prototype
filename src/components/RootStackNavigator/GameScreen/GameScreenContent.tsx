@@ -7,7 +7,7 @@ import {
   calculateBoardMeasurements,
 } from "components/shared/Board";
 import { Sidebar } from "./Sidebar";
-import { Player, SquareShape, TokenName } from "game/types";
+import { PlayerName, SquareShape, TokenName } from "game/types";
 import { useFlipDelay } from "components/shared/Board/useFlipDelay";
 import { PlayerRow } from "./PlayerRow";
 import { Spinner } from "ui";
@@ -21,7 +21,7 @@ export const GameScreenContent: FC = () => {
   const portrait = height > width;
 
   const { gameMaster } = useContext(GameContext);
-  const { flipBoard } = useFlipDelay(gameMaster?.game?.currentPlayer);
+  const { flipBoard } = useFlipDelay(gameMaster?.game?.currentPlayerIndex);
   if (!gameMaster) return <Spinner />;
 
   const shape = gameMaster.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape;
@@ -44,7 +44,7 @@ export const GameScreenContent: FC = () => {
     <StyledContainer style={{ flexDirection: portrait ? "column" : "row", padding }}>
       <View>
         <PlayerRow
-          player={flipBoard ? Player.White : Player.Black}
+          player={flipBoard ? PlayerName.White : PlayerName.Black}
           style={{ height: PLAYER_ROW_HEIGHT }}
         />
         <Board
@@ -53,7 +53,7 @@ export const GameScreenContent: FC = () => {
           flipBoard={flipBoard}
         />
         <PlayerRow
-          player={flipBoard ? Player.Black : Player.White}
+          player={flipBoard ? PlayerName.Black : PlayerName.White}
           style={{ height: PLAYER_ROW_HEIGHT }}
         />
       </View>

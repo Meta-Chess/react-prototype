@@ -16,18 +16,19 @@ const Timer: SFC<Props> = ({ style, player, hidden, alignment = "center" }) => {
   const { gameMaster } = useContext(GameContext);
   const [dummy, setDummy] = useState(false);
 
-  const clock = gameMaster?.game.clock?.getPlayerTimer(player);
+  const timer = gameMaster?.game.clock?.getPlayerTimer(player);
 
-  const formattedTime = clock?.getFormattedTime();
+  const formattedTime = timer?.getFormattedTime();
   const displayTime = formattedTime?.time;
   const validFor = formattedTime?.validFor;
-  const timeRemaining = clock?.getTimeRemaining();
+  const timeRemaining = timer?.getTimeRemaining();
 
   useEffect(() => {
     if (timeRemaining && timeRemaining <= 0) {
+      timer?.stop();
       gameMaster?.handleTimerFinish();
     }
-  }, [displayTime, gameMaster, timeRemaining]);
+  }, [timer, gameMaster, timeRemaining]);
 
   const timeout = setTimeout(
     () => {
@@ -40,13 +41,13 @@ const Timer: SFC<Props> = ({ style, player, hidden, alignment = "center" }) => {
     return (): void => clearTimeout(timeout);
   }, [timeout]);
 
-  if (!clock) return null; // Consider throwing an error?
+  if (!timer) return null; // Consider throwing an error?
 
   return hidden === true ? (
     <View style={style} />
   ) : (
     <Container style={style}>
-      {clock.getTimeRemaining() <= 0 && (
+      {timer.getTimeRemaining() <= 0 && (
         <AbsoluteView
           style={{ backgroundColor: Colors.HIGHLIGHT.ERROR.fade(0.6).toString() }}
         />

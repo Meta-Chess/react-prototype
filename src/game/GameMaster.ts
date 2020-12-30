@@ -1,6 +1,6 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, Modal, Move, PlayerDisplayNames } from "./types";
+import { GameOptions, Move, PlayerDisplayNames } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants/variants";
@@ -17,8 +17,7 @@ export class GameMaster {
   public title: string;
   public variant: VariantName;
   public rules: Rule[];
-  public result = ""; // TODO: what is this?
-  public modal?: Modal;
+  public result: string | undefined;
   public gameOver: boolean;
 
   // TODO: Consider restructure to encapsulate visualisation details in a nice abstraction
@@ -70,22 +69,16 @@ export class GameMaster {
     if (clock) {
       this.game
         .alivePlayers()
-        .filter((p) => {
-          const timer = clock.getPlayerTimer(p.name);
+        .filter((player) => {
+          const timer = clock.getPlayerTimer(player.name);
           return timer && timer.getAllowance() <= 0;
         })
-        .forEach((p) => {
-          p.alive = false;
-          p.endGameMessage = " ran out of time!";
+        .forEach((player) => {
+          player.alive = false;
+          player.endGameMessage = "ran out of time";
         });
 
-      const remainingPlayers = clock.getPlayersWithNonzeroAllowance();
-      if (remainingPlayers.length == 1) {
-        const winner = remainingPlayers[0];
-        this.result = PlayerDisplayNames[winner] + " won on time!";
-        this.setGameOver();
-        this.endGame();
-      }
+      this.doMove();
     }
   }
 
@@ -113,14 +106,14 @@ export class GameMaster {
     this.render();
   }
 
-  doMove(move?: Move): void {
+  doMove(move?: Move, unselect = true): void {
     if (move) {
       this.game.doMove(move);
-      this.unselectAllPieces();
-    } else {
-      this.game.nextTurn();
+      if (unselect) this.unselectAllPieces();
     }
     this.checkGameEndConditions();
+    this.game.nextTurn();
+    this.render();
   }
 
   unselectAllPieces(): void {
@@ -144,14 +137,14 @@ export class GameMaster {
   }
 
   applyLossConditions(): void {
-    this.game.alivePlayers().forEach((p) => {
+    this.game.alivePlayers().forEach((player) => {
       const { dead } = this.interrupt.for.lethalCondition({
         board: this.game.board,
-        player: p.name,
+        player: player.name,
         dead: false,
       });
-      p.alive = !dead;
-      if (dead) p.endGameMessage = " slayed on the field of battle";
+      player.alive = !dead;
+      if (dead) player.endGameMessage = "slayed on the field of battle";
     });
 
     //TODO: the same for loss conditions once they exist.
@@ -160,9 +153,8 @@ export class GameMaster {
 
   checkWinConditions(): void {
     const remainingPlayers = this.game.alivePlayers();
-    if (remainingPlayers.length == 1) {
-      this.result = PlayerDisplayNames[remainingPlayers[0].name] + " won";
-      this.setGameOver();
+    if (remainingPlayers.length === 1) {
+      this.result = PlayerDisplayNames[remainingPlayers[0].name] + " won!";
       this.endGame();
     }
     //TODO: once there are other win conditions check those with an interruption point
@@ -171,26 +163,12 @@ export class GameMaster {
   checkDrawConditions(): void {
     if (this.game.alivePlayers().length == 0) {
       this.result = "Draw by mutual destruction";
-      this.setGameOver();
       this.endGame();
     }
   }
 
-  setModal(modal: Modal): void {
-    this.modal = modal;
-    this.render();
-  }
-
-  hideModal(): void {
-    this.modal = undefined;
-    this.render();
-  }
-
   endGame(): void {
     this.game.clock?.stop();
-  }
-
-  setGameOver(): void {
     this.gameOver = true;
   }
 }

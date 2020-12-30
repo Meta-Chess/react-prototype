@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { Colors, SFC, Text } from "primitives";
-import { Player } from "game/types";
+import { PlayerName } from "game/types";
 import { Row } from "ui";
 import { Timer } from "./Timer";
 import { randomChoice, randomInt } from "utilities";
 
 interface Props {
-  player: Player;
+  player: PlayerName;
 }
 
 export const PlayerRow: SFC<Props> = ({ style, player }) => {
