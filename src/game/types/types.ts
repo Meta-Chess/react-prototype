@@ -4,7 +4,7 @@ import { Piece, Rule, VariantName } from "game";
 import { Path } from "game/Pather/Path";
 import { TraitName } from "game/variants";
 
-export interface gaitData {
+export interface GaitData {
   interceptable?: boolean;
   interceptionCondition?: (piece: Piece) => boolean;
 }
@@ -16,10 +16,10 @@ export interface Gait {
   nonBlocking?: boolean;
   mustNotCapture?: boolean;
   mustCapture?: boolean;
-  data?: gaitData;
+  data?: GaitData;
 }
 
-export interface moveData {
+export interface MoveData {
   interceptable?: boolean;
   interceptionCondition?: (piece: Piece) => boolean;
   interceptableAtStart?: boolean;
@@ -30,7 +30,7 @@ export interface Move {
   location: string;
   pieceDeltas: PieceDelta[];
   player: PlayerName;
-  data?: moveData;
+  data?: MoveData;
 }
 
 export interface PieceDelta {
@@ -140,6 +140,7 @@ export interface TraitsInSetInfo {
 
 export enum Region {
   center = "center",
+  promotion = "promotion",
 }
 
 export type Regions = { [key in Region]?: string[] };

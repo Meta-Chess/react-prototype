@@ -11,16 +11,8 @@ export const longBoard: Rule = {
     "The setup includes a long board and extra rows of pawns. It's designed to work well with vertical wrapping rules.",
   forSquareGenerationModify: ({ board }) => {
     board.addSquares(generateStandardSquares());
-    board.defineRegion(Region.center, [
-      toLocation({ rank: 1, file: 4 }),
-      toLocation({ rank: 1, file: 5 }),
-      toLocation({ rank: 7, file: 4 }),
-      toLocation({ rank: 7, file: 5 }),
-      toLocation({ rank: 8, file: 4 }),
-      toLocation({ rank: 8, file: 5 }),
-      toLocation({ rank: 14, file: 4 }),
-      toLocation({ rank: 14, file: 5 }),
-    ]);
+    board.defineRegion(Region.center, centerRegion);
+    board.defineRegion(Region.promotion, promotionRegion);
     return { board };
   },
   onBoardCreate: ({ board }) => {
@@ -94,3 +86,36 @@ const toroidalPiecesRule = (square: Square): Piece[] => {
 
   return [];
 };
+
+const centerRegion = [
+  toLocation({ rank: 1, file: 4 }),
+  toLocation({ rank: 1, file: 5 }),
+  toLocation({ rank: 7, file: 4 }),
+  toLocation({ rank: 7, file: 5 }),
+  toLocation({ rank: 8, file: 4 }),
+  toLocation({ rank: 8, file: 5 }),
+  toLocation({ rank: 14, file: 4 }),
+  toLocation({ rank: 14, file: 5 }),
+];
+const promotionRegion = [
+  ...[
+    toLocation({ rank: 11, file: 1 }),
+    toLocation({ rank: 11, file: 2 }),
+    toLocation({ rank: 11, file: 3 }),
+    toLocation({ rank: 11, file: 4 }),
+    toLocation({ rank: 11, file: 5 }),
+    toLocation({ rank: 11, file: 6 }),
+    toLocation({ rank: 11, file: 7 }),
+    toLocation({ rank: 11, file: 8 }),
+  ],
+  ...[
+    toLocation({ rank: 4, file: 1 }),
+    toLocation({ rank: 4, file: 2 }),
+    toLocation({ rank: 4, file: 3 }),
+    toLocation({ rank: 4, file: 4 }),
+    toLocation({ rank: 4, file: 5 }),
+    toLocation({ rank: 4, file: 6 }),
+    toLocation({ rank: 4, file: 7 }),
+    toLocation({ rank: 4, file: 8 }),
+  ],
+];
