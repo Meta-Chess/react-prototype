@@ -29,7 +29,11 @@ const creatorCreditLink = (
 export const PieceCredit: SFC = ({ style }) => {
   return (
     <View style={style}>
-      <Text cat="BodyXS" color={Colors.TEXT.LIGHT.toString()} alignment="center">
+      <Text
+        cat="BodyXS"
+        color={Colors.TEXT.LIGHT_SECONDARY.toString()}
+        alignment="center"
+      >
         Chess pieces originally by {creatorCreditLink} under creative commons license,
         found {pieceCreditLink}.
       </Text>
