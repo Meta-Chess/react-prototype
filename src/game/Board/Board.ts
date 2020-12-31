@@ -8,8 +8,8 @@ import {
   RankAndFileBounds,
   Token,
   Player,
+  Region,
   Regions,
-  RegionsInfo,
 } from "game/types";
 import { isPresent } from "utilities";
 import { CompactRules } from "game/Rules/Rules";
@@ -26,7 +26,7 @@ interface PieceIdMap {
 // TODO: This class is too long!
 class Board extends TokenOwner {
   private idGenerator: IdGenerator;
-  private regions: RegionsInfo = { center: {} };
+  private regions: Regions = {};
 
   constructor(
     public interrupt: CompactRules,
@@ -82,7 +82,6 @@ class Board extends TokenOwner {
     });
   }
 
-  // TODO: consider making this a "property" or whatever it's called?
   getPieces(): Piece[] {
     return Object.values(this.pieces);
   }
@@ -119,15 +118,14 @@ class Board extends TokenOwner {
     squares?.forEach((s) => this.addSquare(s));
   }
 
-  defineRegion(region: Regions, squareLocations: Record<string, undefined>): void {
+  defineRegion(region: Region, squareLocations: string[]): void {
     this.regions[region] = squareLocations;
   }
 
-  // why can this not be Square[], since we are filtering?
-  getRegion(region: Regions): (Square | undefined)[] {
-    return Object.keys(this.regions[region])
+  getRegion(region: Region): Square[] {
+    return (this.regions[region] || [])
       .map((loc) => this.squareAt(loc))
-      .filter((s) => isPresent(s));
+      .filter(isPresent);
   }
 
   addAdjacenciesByRule(rule: ((square: Square) => Adjacency[]) | undefined): void {

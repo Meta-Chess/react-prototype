@@ -120,8 +120,8 @@ export interface TraitsInSetInfo {
   count: number;
 }
 
-export enum Regions {
+export enum Region {
   center = "center",
 }
 
-export type RegionsInfo = Record<keyof typeof Regions, Record<string, undefined>>;
+export type Regions = { [key in Region]?: string[] };
