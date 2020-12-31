@@ -14,6 +14,7 @@ export * from "./polar";
 export * from "./standard";
 export * from "./longBoard";
 export * from "./Interception";
+export * from "./centerEvasion";
 //END: named rules
 
 export * from "./Rules";

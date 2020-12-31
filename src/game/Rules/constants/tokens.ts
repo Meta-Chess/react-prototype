@@ -41,3 +41,11 @@ export const passiveCastlingToken = {
   },
   data: undefined,
 };
+
+export const evadeToken = {
+  name: TokenName.EvadeToken,
+  expired: (): boolean => {
+    return false;
+  },
+  data: undefined,
+};

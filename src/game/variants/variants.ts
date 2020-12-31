@@ -13,6 +13,7 @@ import {
   atomic,
   fatigue,
   Interception,
+  centerEvasion,
 } from "../Rules";
 import { verticallyCylindrical } from "game/Rules/verticallyCylindrical";
 import { TraitName } from "game/variants";
@@ -109,7 +110,7 @@ export enum FutureVariantName {
   threeCheck = "threeCheck",
   armageddon = "armageddon",
   atomic = "atomic",
-  centerRemoval = "centerRemoval",
+  centerEvasion = "centerEvasion",
   cylinder = "cylinder",
   kingOfTheHill = "kingOfTheHill",
   patheticKing = "patheticKing",
@@ -143,13 +144,13 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     implemented: true,
     rules: [atomic],
   },
-  [FutureVariantName.centerRemoval]: {
-    title: "Center Removal",
-    shortDescription: "Center squares and the pieces on them are removed from the game.",
-    traits: ["Terraform"],
-    imageName: "centerRemovalImage",
-    implemented: false,
-    rules: [],
+  [FutureVariantName.centerEvasion]: {
+    title: "Center Evasion",
+    shortDescription: "Center squares cannot be selected for movement.",
+    traits: ["Restrict"],
+    imageName: "centerEvasionImage",
+    implemented: true,
+    rules: [centerEvasion],
   },
   [FutureVariantName.crazyhouse]: {
     title: "Crazyhouse",

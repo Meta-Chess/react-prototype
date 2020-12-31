@@ -7,8 +7,8 @@ export { armageddonImage };
 import atomicImage from "./atomicImage.png";
 export { atomicImage };
 
-import centerRemovalImage from "./centerRemovalImage.png";
-export { centerRemovalImage };
+import centerEvasionImage from "./centerEvasionImage.png";
+export { centerEvasionImage };
 
 import cylinderImage from "./cylinderImage.png";
 export { cylinderImage };

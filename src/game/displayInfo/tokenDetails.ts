@@ -44,4 +44,8 @@ export const tokenDetails: { [k in TokenName]: Details } = {
     name: "Fatigue",
     description: "This piece can't move until next turn!",
   },
+  [TokenName.EvadeToken]: {
+    name: "Evade square",
+    description: "This square cannot be selected as a movement destination",
+  },
 };
