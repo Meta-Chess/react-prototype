@@ -1,6 +1,6 @@
 import { range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
-import { Direction, PieceName, Player, RankAndFileBounds } from "../types";
+import { Direction, PieceName, Player, RankAndFileBounds, Region } from "../types";
 import { Rule } from "./Rules";
 import { createPiece } from "./utilities";
 
@@ -10,6 +10,12 @@ export const standard: Rule = {
     "This rule takes care of all the details of your usual bog-standard board and piece set-up.",
   forSquareGenerationModify: ({ board }) => {
     board.addSquares(generateStandardSquares());
+    board.defineRegion(Region.center, [
+      toLocation({ rank: 4, file: 4 }),
+      toLocation({ rank: 4, file: 5 }),
+      toLocation({ rank: 5, file: 4 }),
+      toLocation({ rank: 5, file: 5 }),
+    ]);
     return { board };
   },
   onBoardCreate: ({ board }) => {

@@ -1,6 +1,6 @@
 import { range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
-import { Direction, PieceName, Player, RankAndFileBounds } from "../types";
+import { Direction, PieceName, Player, RankAndFileBounds, Region } from "../types";
 import { Rule } from "./Rules";
 import { createPiece } from "./utilities";
 import { standardGaits } from "game/Rules/constants";
@@ -11,6 +11,16 @@ export const longBoard: Rule = {
     "The setup includes a long board and extra rows of pawns. It's designed to work well with vertical wrapping rules.",
   forSquareGenerationModify: ({ board }) => {
     board.addSquares(generateStandardSquares());
+    board.defineRegion(Region.center, [
+      toLocation({ rank: 1, file: 4 }),
+      toLocation({ rank: 1, file: 5 }),
+      toLocation({ rank: 7, file: 4 }),
+      toLocation({ rank: 7, file: 5 }),
+      toLocation({ rank: 8, file: 4 }),
+      toLocation({ rank: 8, file: 5 }),
+      toLocation({ rank: 14, file: 4 }),
+      toLocation({ rank: 14, file: 5 }),
+    ]);
     return { board };
   },
   onBoardCreate: ({ board }) => {

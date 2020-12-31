@@ -2,7 +2,15 @@ import { Piece } from "./Piece";
 import { Square } from "./Square";
 import { Adjacency } from "./Adjacencies";
 import { TokenOwner } from "./TokenOwner";
-import { Direction, PieceDelta, RankAndFileBounds, Token, Player } from "game/types";
+import {
+  Direction,
+  PieceDelta,
+  RankAndFileBounds,
+  Token,
+  Player,
+  Region,
+  Regions,
+} from "game/types";
 import { isPresent } from "utilities";
 import { CompactRules } from "game/Rules/Rules";
 import { IdGenerator } from "utilities/IdGenerator";
@@ -18,6 +26,7 @@ interface PieceIdMap {
 // TODO: This class is too long!
 class Board extends TokenOwner {
   private idGenerator: IdGenerator;
+  private regions: Regions = {};
 
   constructor(
     public interrupt: CompactRules,
@@ -73,7 +82,6 @@ class Board extends TokenOwner {
     });
   }
 
-  // TODO: consider making this a "property" or whatever it's called?
   getPieces(): Piece[] {
     return Object.values(this.pieces);
   }
@@ -108,6 +116,16 @@ class Board extends TokenOwner {
 
   addSquares(squares: { location: string; square: Square }[] | undefined): void {
     squares?.forEach((s) => this.addSquare(s));
+  }
+
+  defineRegion(region: Region, squareLocations: string[]): void {
+    this.regions[region] = squareLocations;
+  }
+
+  getRegion(region: Region): Square[] {
+    return (this.regions[region] || [])
+      .map((loc) => this.squareAt(loc))
+      .filter(isPresent);
   }
 
   addAdjacenciesByRule(rule: ((square: Square) => Adjacency[]) | undefined): void {

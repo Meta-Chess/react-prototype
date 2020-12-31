@@ -10,6 +10,7 @@ import {
   TokenName,
 } from "../types";
 import { createPiece, PieceSet } from "./utilities";
+import { Region } from "../types";
 
 export const hex: Rule = {
   name: "Hexagon",
@@ -17,6 +18,7 @@ export const hex: Rule = {
     "Every place on the board has a hexagonal geometry rather than a square geometry. Note that diagonal steps are a bit longer than usual. Click on a piece to find out how it moves!",
   forSquareGenerationModify: ({ board }) => {
     board.addSquares(generateHexSquares());
+    board.defineRegion(Region.center, [toLocation({ rank: 11, file: 6 })]);
     return { board };
   },
   onBoardCreate: ({ board }) => {

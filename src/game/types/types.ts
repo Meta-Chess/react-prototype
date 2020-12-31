@@ -72,6 +72,7 @@ export enum TokenName {
   PassiveCastling,
   CaptureToken,
   Fatigue,
+  EvadeToken,
 }
 
 interface TokenData {
@@ -118,3 +119,9 @@ export interface TraitsInSetInfo {
   name: TraitName;
   count: number;
 }
+
+export enum Region {
+  center = "center",
+}
+
+export type Regions = { [key in Region]?: string[] };
