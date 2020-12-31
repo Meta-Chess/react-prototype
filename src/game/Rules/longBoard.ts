@@ -1,6 +1,6 @@
 import { range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
-import { Direction, PieceName, Player, RankAndFileBounds } from "../types";
+import { Direction, PieceName, Player, RankAndFileBounds, Regions } from "../types";
 import { Rule } from "./Rules";
 import { createPiece } from "./utilities";
 import { standardGaits } from "game/Rules/constants";
@@ -11,6 +11,7 @@ export const longBoard: Rule = {
     "The setup includes a long board and extra rows of pawns. It's designed to work well with vertical wrapping rules.",
   forSquareGenerationModify: ({ board }) => {
     board.addSquares(generateStandardSquares());
+    board.defineRegion(Regions.center, defineCenter());
     return { board };
   },
   onBoardCreate: ({ board }) => {
@@ -28,6 +29,19 @@ const generateStandardSquares = (): { location: string; square: Square }[] =>
       const location = toLocation({ rank: y, file: x });
       return { location, square: new Square(location, { rank: y, file: x }) };
     });
+
+const defineCenter = (): { [id: string]: undefined } => {
+  const centerSquares: { [id: string]: undefined } = {};
+  centerSquares[toLocation({ rank: 1, file: 4 })] = undefined;
+  centerSquares[toLocation({ rank: 1, file: 5 })] = undefined;
+  centerSquares[toLocation({ rank: 7, file: 4 })] = undefined;
+  centerSquares[toLocation({ rank: 7, file: 5 })] = undefined;
+  centerSquares[toLocation({ rank: 8, file: 4 })] = undefined;
+  centerSquares[toLocation({ rank: 8, file: 5 })] = undefined;
+  centerSquares[toLocation({ rank: 14, file: 4 })] = undefined;
+  centerSquares[toLocation({ rank: 14, file: 5 })] = undefined;
+  return centerSquares;
+};
 
 const toroidalAdjacencies = (_bounds: RankAndFileBounds) => (
   square: Square

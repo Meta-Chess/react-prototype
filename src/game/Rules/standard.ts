@@ -1,6 +1,6 @@
 import { range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
-import { Direction, PieceName, Player, RankAndFileBounds } from "../types";
+import { Direction, PieceName, Player, RankAndFileBounds, Regions } from "../types";
 import { Rule } from "./Rules";
 import { createPiece } from "./utilities";
 
@@ -10,6 +10,7 @@ export const standard: Rule = {
     "This rule takes care of all the details of your usual bog-standard board and piece set-up.",
   forSquareGenerationModify: ({ board }) => {
     board.addSquares(generateStandardSquares());
+    board.defineRegion(Regions.center, defineCenter());
     return { board };
   },
   onBoardCreate: ({ board }) => {
@@ -27,6 +28,15 @@ const generateStandardSquares = (): { location: string; square: Square }[] =>
       const location = toLocation({ rank: y, file: x });
       return { location, square: new Square(location, { rank: y, file: x }) };
     });
+
+const defineCenter = (): { [id: string]: undefined } => {
+  const centerSquares: { [id: string]: undefined } = {};
+  centerSquares[toLocation({ rank: 4, file: 4 })] = undefined;
+  centerSquares[toLocation({ rank: 4, file: 5 })] = undefined;
+  centerSquares[toLocation({ rank: 5, file: 4 })] = undefined;
+  centerSquares[toLocation({ rank: 5, file: 5 })] = undefined;
+  return centerSquares;
+};
 
 const standardAdjacencies = (_bounds: RankAndFileBounds) => (
   square: Square

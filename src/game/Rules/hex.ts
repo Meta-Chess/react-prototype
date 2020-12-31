@@ -10,6 +10,7 @@ import {
   TokenName,
 } from "../types";
 import { createPiece, PieceSet } from "./utilities";
+import { Regions } from "../types";
 
 export const hex: Rule = {
   name: "Hexagon",
@@ -17,6 +18,7 @@ export const hex: Rule = {
     "Every place on the board has a hexagonal geometry rather than a square geometry. Note that diagonal steps are a bit longer than usual. Click on a piece to find out how it moves!",
   forSquareGenerationModify: ({ board }) => {
     board.addSquares(generateHexSquares());
+    board.defineRegion(Regions.center, defineCenter());
     return { board };
   },
   onBoardCreate: ({ board }) => {
@@ -46,6 +48,12 @@ const generateHexSquares = (): { location: string; square: Square }[] =>
       const location = toLocation({ rank: y, file: x });
       return { location, square: new Square(location, { rank: y, file: x }) };
     });
+
+const defineCenter = (): { [id: string]: undefined } => {
+  const centerSquares: { [id: string]: undefined } = {};
+  centerSquares[toLocation({ rank: 11, file: 6 })] = undefined;
+  return centerSquares;
+};
 
 const hexAdjacencies = (_bounds: RankAndFileBounds) => (square: Square): Adjacency[] => {
   const { rank, file } = square.getCoordinates();

@@ -2,7 +2,15 @@ import { Piece } from "./Piece";
 import { Square } from "./Square";
 import { Adjacency } from "./Adjacencies";
 import { TokenOwner } from "./TokenOwner";
-import { Direction, PieceDelta, RankAndFileBounds, Token, Player } from "game/types";
+import {
+  Direction,
+  PieceDelta,
+  RankAndFileBounds,
+  Token,
+  Player,
+  Regions,
+  RegionsInfo,
+} from "game/types";
 import { isPresent } from "utilities";
 import { CompactRules } from "game/Rules/Rules";
 import { IdGenerator } from "utilities/IdGenerator";
@@ -18,6 +26,7 @@ interface PieceIdMap {
 // TODO: This class is too long!
 class Board extends TokenOwner {
   private idGenerator: IdGenerator;
+  private regions: RegionsInfo = { center: {} };
 
   constructor(
     public interrupt: CompactRules,
@@ -108,6 +117,17 @@ class Board extends TokenOwner {
 
   addSquares(squares: { location: string; square: Square }[] | undefined): void {
     squares?.forEach((s) => this.addSquare(s));
+  }
+
+  defineRegion(region: Regions, squareLocations: Record<string, undefined>): void {
+    this.regions[region] = squareLocations;
+  }
+
+  // why can this not be Square[], since we are filtering?
+  getRegion(region: Regions): (Square | undefined)[] {
+    return Object.keys(this.regions[region])
+      .map((loc) => this.squareAt(loc))
+      .filter((s) => isPresent(s));
   }
 
   addAdjacenciesByRule(rule: ((square: Square) => Adjacency[]) | undefined): void {
