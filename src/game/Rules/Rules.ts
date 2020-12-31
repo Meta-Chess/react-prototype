@@ -31,6 +31,7 @@ export class CompactRules {
 }
 
 const identityRule = {
+  afterBoardCreation: (x: { board: Board }) => x,
   afterStepModify: (x: {
     gait: Gait;
     remainingSteps: Direction[];
@@ -43,11 +44,6 @@ const identityRule = {
     interrupt: CompactRules;
     moves: Move[];
   }) => x,
-  onGaitsGeneratedModify: (x: { gaits: Gait[]; piece: Piece }) => x,
-  onPieceGeneratedModify: (x: { piece: Piece }) => x,
-  onBoardCreate: (x: { board: Board }) => x,
-  afterBoardCreation: (x: { board: Board }) => x,
-  postMove: (x: { board: Board; move: Move; currentTurn: number }) => x,
   inCanStayFilter: (x: {
     move: Move;
     game: Game;
@@ -57,14 +53,18 @@ const identityRule = {
     filtered: boolean;
   }) => x,
   lethalCondition: (x: { board: Board; player: PlayerName; dead: boolean }) => x,
-  postCapture: (x: { board: Board; square: Square }) => x,
-  piecesUnderSquare: (x: { square: Square; board: Board; pieceIds: string[] }) => x,
+  onBoardCreate: (x: { board: Board }) => x,
   onCapture: (x: {
     board: Board;
     piece: Piece;
     location: string;
     captureHappened: boolean;
   }) => x,
+  onGaitsGeneratedModify: (x: { gaits: Gait[]; piece: Piece }) => x,
+  onPieceGeneratedModify: (x: { piece: Piece }) => x,
+  piecesUnderSquare: (x: { square: Square; board: Board; pieceIds: string[] }) => x,
+  postCapture: (x: { board: Board; square: Square }) => x,
+  postMove: (x: { board: Board; move: Move; currentTurn: number }) => x,
 };
 
 export type CompleteRule = typeof identityRule;
