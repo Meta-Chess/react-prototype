@@ -6,6 +6,7 @@ export class Timer {
   private startTime: Moment;
   private stopTime: Moment;
   private running = false;
+  private frozen = false;
 
   constructor(allowance: number) {
     this.timer = [allowance];
@@ -24,10 +25,15 @@ export class Timer {
   }
 
   start(): void {
-    if (!this.running) {
+    if (!this.running && !this.frozen) {
       this.startTime = moment();
       this.running = true;
     }
+  }
+
+  freeze(): void {
+    this.stop();
+    this.frozen = true;
   }
 
   isRunning(): boolean {

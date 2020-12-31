@@ -49,7 +49,7 @@ export class OnlineGameMaster extends GameMaster {
     );
 
     gameClient.setOnMove((move: Move) => {
-      onlineGameMaster.game.doMove(move);
+      onlineGameMaster.doMove(move, false);
       onlineGameMaster.render();
     });
 

@@ -2,7 +2,7 @@ import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
 import { mockRenderer } from "../helpers/mockRenderer";
 import { createPiece } from "game/Rules/utilities";
-import { PieceName, Player } from "game/types";
+import { PieceName, PlayerName } from "game/types";
 
 describe("In standard chess", () => {
   it("Players should not be able to move into check on mostly empty board", () => {
@@ -16,11 +16,11 @@ describe("In standard chess", () => {
 
     // Place a king and a rook
     board.addPiece({
-      piece: createPiece({ owner: Player.Black, name: PieceName.King }),
+      piece: createPiece({ owner: PlayerName.Black, name: PieceName.King }),
       location: toLocation({ rank: 5, file: 5 }),
     });
     board.addPiece({
-      piece: createPiece({ owner: Player.White, name: PieceName.Rook }),
+      piece: createPiece({ owner: PlayerName.White, name: PieceName.Rook }),
       location: toLocation({ rank: 4, file: 4 }),
     });
 

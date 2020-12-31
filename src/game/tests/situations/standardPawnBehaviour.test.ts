@@ -1,4 +1,4 @@
-import { PieceName, Player } from "game/types";
+import { PieceName, PlayerName } from "game/types";
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
 import { mockRenderer } from "../helpers/mockRenderer";
@@ -45,7 +45,7 @@ describe("In standard chess", () => {
     // There should be a white pawn at the end square
     expect(board.getPiecesAt(toLocation({ rank: 4, file: 5 })).length).toEqual(1);
     expect(board.getPiecesAt(toLocation({ rank: 4, file: 5 }))[0]).toEqual(
-      expect.objectContaining({ name: PieceName.Pawn, owner: Player.White })
+      expect.objectContaining({ name: PieceName.Pawn, owner: PlayerName.White })
     );
 
     // There start square should be empty
@@ -63,7 +63,7 @@ describe("In standard chess", () => {
     // There should be a white pawn at the end square
     expect(board.getPiecesAt(toLocation({ rank: 3, file: 5 })).length).toEqual(1);
     expect(board.getPiecesAt(toLocation({ rank: 3, file: 5 }))[0]).toEqual(
-      expect.objectContaining({ name: PieceName.Pawn, owner: Player.White })
+      expect.objectContaining({ name: PieceName.Pawn, owner: PlayerName.White })
     );
 
     // There start square should be empty

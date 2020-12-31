@@ -1,4 +1,4 @@
-import { PieceName, Player } from "game/types";
+import { PieceName, PlayerName } from "game/types";
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
 import { mockRenderer } from "../helpers/mockRenderer";
@@ -105,11 +105,11 @@ describe("In standard chess", () => {
     // King and rook should be in correct places
     expect(board.getPiecesAt(toLocation({ rank: 1, file: 3 })).length).toEqual(1);
     expect(board.getPiecesAt(toLocation({ rank: 1, file: 3 }))[0]).toEqual(
-      expect.objectContaining({ name: PieceName.King, owner: Player.White })
+      expect.objectContaining({ name: PieceName.King, owner: PlayerName.White })
     );
     expect(board.getPiecesAt(toLocation({ rank: 1, file: 4 })).length).toEqual(1);
     expect(board.getPiecesAt(toLocation({ rank: 1, file: 4 }))[0]).toEqual(
-      expect.objectContaining({ name: PieceName.Rook, owner: Player.White })
+      expect.objectContaining({ name: PieceName.Rook, owner: PlayerName.White })
     );
   });
 });

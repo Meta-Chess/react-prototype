@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { Direction } from "./Direction";
-import { Piece, VariantName, Rule } from "game";
+import { Piece, Rule, VariantName } from "game";
 import { Path } from "game/Pather/Path";
 import { TraitName } from "game/variants";
 
@@ -29,7 +29,7 @@ export interface Move {
   pieceId: string;
   location: string;
   pieceDeltas: PieceDelta[];
-  player: Player;
+  player: PlayerName;
   data?: moveData;
 }
 
@@ -38,10 +38,28 @@ export interface PieceDelta {
   path: Path;
 }
 
-export enum Player {
+// The order of colors in this enum corresponds to the order of colors in Colors.PLAYER
+export enum PlayerName {
   White,
   Black,
+  Silver,
+  Gold,
+  Blue,
+  Red,
+  Yellow,
+  Green,
 }
+
+export const PlayerDisplayNames: { [key in PlayerName]: string } = {
+  [PlayerName.White]: "White",
+  [PlayerName.Black]: "Black",
+  [PlayerName.Silver]: "Silver",
+  [PlayerName.Gold]: "Gold",
+  [PlayerName.Blue]: "Blue",
+  [PlayerName.Red]: "Red",
+  [PlayerName.Yellow]: "Yellow",
+  [PlayerName.Green]: "Green",
+};
 
 export enum PieceName {
   Pawn,
@@ -72,7 +90,6 @@ export enum TokenName {
   PassiveCastling,
   CaptureToken,
   Fatigue,
-  EvadeToken,
 }
 
 interface TokenData {
@@ -110,9 +127,10 @@ export interface GameOptions {
 
 export interface Modal {
   id: number;
-  top: number;
-  left: number;
+  top?: number;
+  left?: number;
   content?: ReactElement;
+  fullScreen?: boolean;
 }
 
 export interface TraitsInSetInfo {

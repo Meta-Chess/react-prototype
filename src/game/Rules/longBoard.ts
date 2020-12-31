@@ -1,6 +1,6 @@
 import { range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
-import { Direction, PieceName, Player, RankAndFileBounds, Region } from "../types";
+import { Direction, PieceName, PlayerName, RankAndFileBounds, Region } from "../types";
 import { Rule } from "./Rules";
 import { createPiece } from "./utilities";
 import { standardGaits } from "game/Rules/constants";
@@ -58,7 +58,7 @@ const toroidalAdjacencies = (_bounds: RankAndFileBounds) => (
 const toroidalPiecesRule = (square: Square): Piece[] => {
   const { rank, file } = square.getCoordinates();
   const location = toLocation({ rank, file });
-  const owner = [10, 11, 12].includes(rank) ? Player.Black : Player.White;
+  const owner = [10, 11, 12].includes(rank) ? PlayerName.Black : PlayerName.White;
 
   if (rank === 5) return [createPiece({ location, owner, name: PieceName.Pawn })];
   if (rank === 3)

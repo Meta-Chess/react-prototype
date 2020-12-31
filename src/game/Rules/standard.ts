@@ -1,6 +1,6 @@
 import { range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
-import { Direction, PieceName, Player, RankAndFileBounds, Region } from "../types";
+import { Direction, PieceName, PlayerName, RankAndFileBounds, Region } from "../types";
 import { Rule } from "./Rules";
 import { createPiece } from "./utilities";
 
@@ -53,7 +53,7 @@ const standardAdjacencies = (_bounds: RankAndFileBounds) => (
 const standardPiecesRule = (square: Square): Piece[] => {
   const { rank, file } = square.getCoordinates();
   const location = toLocation({ rank, file });
-  const owner = rank > 4 ? Player.Black : Player.White;
+  const owner = rank > 4 ? PlayerName.Black : PlayerName.White;
 
   if (rank === 2) return [createPiece({ location, owner, name: PieceName.Pawn })];
   if (rank === 1) {

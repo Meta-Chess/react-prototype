@@ -1,9 +1,8 @@
-import { Player } from "game/types";
 import { useContext, useEffect, useState } from "react";
 import { GameContext } from "game";
 
 export const useFlipDelay = (
-  currentPlayer?: Player,
+  currentPlayerIndex?: number,
   delay = 400
 ): { flipBoard: boolean } => {
   const [flipBoard, setFlipBoard] = useState(false);
@@ -11,14 +10,14 @@ export const useFlipDelay = (
   const flipBoardEnabled = !!gameMaster?.flipBoard;
 
   useEffect((): (() => void) | undefined => {
-    const boardShouldBeFlipped = currentPlayer === Player.Black && flipBoardEnabled;
+    const boardShouldBeFlipped = currentPlayerIndex !== 0 && flipBoardEnabled;
     if (flipBoard !== boardShouldBeFlipped) {
       const timer = setTimeout(() => {
         setFlipBoard(boardShouldBeFlipped);
       }, delay);
       return (): void => clearTimeout(timer);
     }
-  }, [currentPlayer, flipBoard, setFlipBoard, delay, flipBoardEnabled]);
+  }, [currentPlayerIndex, flipBoard, setFlipBoard, delay, flipBoardEnabled]);
 
   return { flipBoard };
 };

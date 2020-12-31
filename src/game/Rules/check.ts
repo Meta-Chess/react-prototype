@@ -19,6 +19,7 @@ export const check: Rule = {
     if (newPatherParams.checkDepth > 0) {
       newPatherParams.checkDepth -= 1;
       gameClones[0].doMove(move);
+      gameClones[0].nextTurn();
       const pieces = gameClones[0].board.piecesNotBelongingTo(move.player);
 
       gameClones[1].resetTo(gameClones[0]);
@@ -28,6 +29,7 @@ export const check: Rule = {
         const hypotheticalMoves = pather.findPaths();
         for (let j = 0; j < hypotheticalMoves.length; j++) {
           gameClones[1].doMove(hypotheticalMoves[j]);
+          gameClones[1].nextTurn();
           const { dead } = interrupt.for.lethalCondition({
             board: gameClones[1].board,
             player: move.player,

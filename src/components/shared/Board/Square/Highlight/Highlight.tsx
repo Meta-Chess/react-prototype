@@ -24,7 +24,8 @@ const Highlight: FC<Props> = ({ gameMaster, square, size, shape }) => {
 
   const selectedPieceOwner = gameMaster.selectedPieces[0]?.owner;
   const highlightColor =
-    selectedPieceOwner !== gameMaster.game.currentPlayer
+    selectedPieceOwner !==
+    gameMaster.game.players[gameMaster.game.currentPlayerIndex].name
       ? Colors.HIGHLIGHT.INFO
       : square.hasPieceOf(gameMaster.selectedPieces)
       ? Colors.HIGHLIGHT.WARNING

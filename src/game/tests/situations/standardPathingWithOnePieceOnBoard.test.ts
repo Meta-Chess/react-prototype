@@ -1,5 +1,5 @@
 import { createPiece } from "game/Rules/utilities";
-import { PieceName, Player } from "game/types";
+import { PieceName, PlayerName } from "game/types";
 import { toLocation } from "utilities";
 import { GameMaster } from "../../GameMaster";
 import { mockRenderer } from "game/tests/helpers/mockRenderer";
@@ -15,7 +15,7 @@ describe("In standard chess", () => {
   it("A queen in the middle of the board should be able to move to lots of squares", () => {
     const location = toLocation({ rank: 4, file: 4 });
     board.addPiece({
-      piece: createPiece({ owner: Player.White, name: PieceName.Queen }),
+      piece: createPiece({ owner: PlayerName.White, name: PieceName.Queen }),
       location,
     });
     gameMaster.onPress(location);
@@ -35,7 +35,7 @@ describe("In standard chess", () => {
   it("A king in the middle of the board should be able to move to eight squares", () => {
     const location = toLocation({ rank: 4, file: 4 });
     board.addPiece({
-      piece: createPiece({ owner: Player.White, name: PieceName.King }),
+      piece: createPiece({ owner: PlayerName.White, name: PieceName.King }),
       location,
     });
     gameMaster.onPress(location);
@@ -55,7 +55,7 @@ describe("In standard chess", () => {
   it("A knight in the middle of the board should be able to move to eight squares in two ways each", () => {
     const location = toLocation({ rank: 4, file: 4 });
     board.addPiece({
-      piece: createPiece({ owner: Player.White, name: PieceName.Knight }),
+      piece: createPiece({ owner: PlayerName.White, name: PieceName.Knight }),
       location,
     });
     gameMaster.onPress(location);
@@ -75,7 +75,7 @@ describe("In standard chess", () => {
   it("A rook in the middle of the board should be able to move to fourteen squares", () => {
     const location = toLocation({ rank: 4, file: 4 });
     board.addPiece({
-      piece: createPiece({ owner: Player.White, name: PieceName.Rook }),
+      piece: createPiece({ owner: PlayerName.White, name: PieceName.Rook }),
       location,
     });
     gameMaster.onPress(location);
@@ -91,7 +91,7 @@ describe("In standard chess", () => {
   it("A bishop in the middle of the board should be able to move to thirteen squares", () => {
     const location = toLocation({ rank: 4, file: 4 });
     board.addPiece({
-      piece: createPiece({ owner: Player.White, name: PieceName.Bishop }),
+      piece: createPiece({ owner: PlayerName.White, name: PieceName.Bishop }),
       location,
     });
     gameMaster.onPress(location);

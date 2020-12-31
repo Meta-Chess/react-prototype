@@ -1,6 +1,6 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, Move } from "./types";
+import { GameOptions, Move, PlayerDisplayNames } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants/variants";
@@ -17,6 +17,8 @@ export class GameMaster {
   public title: string;
   public variant: VariantName;
   public rules: Rule[];
+  public result: string | undefined;
+  public gameOver: boolean;
 
   // TODO: Consider restructure to encapsulate visualisation details in a nice abstraction
   public flipBoard: boolean;
@@ -55,18 +57,43 @@ export class GameMaster {
     this.rules = rules;
     this.flipBoard = !!flipBoard;
     this.overTheBoard = !!overTheBoard;
+    this.gameOver = false;
   }
 
   render(): void {
     this.renderer.render();
   }
 
+  handleTimerFinish(): void {
+    const clock = this.game.clock;
+    if (clock) {
+      this.game
+        .alivePlayers()
+        .filter((player) => {
+          const timer = clock.getPlayerTimer(player.name);
+          return timer && timer.getAllowance() <= 0;
+        })
+        .forEach((player) => {
+          player.alive = false;
+          player.endGameMessage = "ran out of time";
+        });
+
+      this.doMove();
+    }
+  }
+
   onPress(location: string): Move | undefined {
     this.gameClones.forEach((clone) => clone.resetTo(this.game));
     const move = this.allowableMoves.find((m) => m.location === location);
-    if (move && this.game.currentPlayer === this.selectedPieces[0]?.owner) {
-      this.game.doMove(move);
-      this.unselectAllPieces();
+    if (
+      move &&
+      this.game.players[this.game.currentPlayerIndex].name ===
+        this.selectedPieces[0]?.owner
+    ) {
+      this.doMove(move);
+      if (!this.game.players[this.game.currentPlayerIndex].alive) {
+        this.doMove();
+      }
       this.render();
       return move;
     } else if (this.selectedPieces.some((p) => p.location === location)) {
@@ -79,8 +106,14 @@ export class GameMaster {
     this.render();
   }
 
-  doMove(move: Move): void {
-    this.game.doMove(move);
+  doMove(move?: Move, unselect = true): void {
+    if (move) {
+      this.game.doMove(move);
+      if (unselect) this.unselectAllPieces();
+    }
+    this.checkGameEndConditions();
+    this.game.nextTurn();
+    this.render();
   }
 
   unselectAllPieces(): void {
@@ -97,7 +130,45 @@ export class GameMaster {
     );
   }
 
-  // All games can be ended, but only online games need to do something with it at the moment
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  endGame(): void {}
+  checkGameEndConditions(): void {
+    this.applyLossConditions();
+    this.checkWinConditions();
+    this.checkDrawConditions();
+  }
+
+  applyLossConditions(): void {
+    this.game.alivePlayers().forEach((player) => {
+      const { dead } = this.interrupt.for.lethalCondition({
+        board: this.game.board,
+        player: player.name,
+        dead: false,
+      });
+      player.alive = !dead;
+      if (dead) player.endGameMessage = "slayed on the field of battle";
+    });
+
+    //TODO: the same for loss conditions once they exist.
+    //TODO: set loss message here by forcing loss conditions to provide one.
+  }
+
+  checkWinConditions(): void {
+    const remainingPlayers = this.game.alivePlayers();
+    if (remainingPlayers.length === 1) {
+      this.result = PlayerDisplayNames[remainingPlayers[0].name] + " won!";
+      this.endGame();
+    }
+    //TODO: once there are other win conditions check those with an interruption point
+  }
+
+  checkDrawConditions(): void {
+    if (this.game.alivePlayers().length == 0) {
+      this.result = "Draw by mutual destruction";
+      this.endGame();
+    }
+  }
+
+  endGame(): void {
+    this.game.clock?.stop();
+    this.gameOver = true;
+  }
 }

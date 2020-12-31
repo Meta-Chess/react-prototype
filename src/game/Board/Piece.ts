@@ -1,11 +1,11 @@
-import { PieceName, Player, Token, Gait, GaitParams } from "game/types";
+import { PieceName, PlayerName, Token, Gait, GaitParams } from "game/types";
 import { TokenOwner } from "./TokenOwner";
 
 class Piece extends TokenOwner {
   constructor(
     public name: PieceName,
     public generateGaits: (_?: GaitParams) => Gait[],
-    public owner: Player,
+    public owner: PlayerName,
     public location: string = "unassigned",
     public tokens: Token[] = [],
     public id = "0"

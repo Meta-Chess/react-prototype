@@ -7,4 +7,6 @@ export const AbsoluteTouchableOpacity = styled(TouchableOpacity)`
   bottom: 0;
   left: 0;
   right: 0;
+  justify-content: center;
+  align-items: center;
 `;
