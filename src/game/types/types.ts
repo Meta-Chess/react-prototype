@@ -34,8 +34,9 @@ export interface Move {
 }
 
 export interface PieceDelta {
-  pId: string;
+  pieceId: string;
   path: Path;
+  promoteTo?: PieceName;
 }
 
 // The order of colors in this enum corresponds to the order of colors in Colors.PLAYER

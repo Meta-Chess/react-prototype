@@ -9,7 +9,7 @@ import {
   SquareShape,
   TokenName,
 } from "../types";
-import { createPiece, PieceSet } from "./utilities";
+import { createPiece, determineGaitGenerator, PieceSet } from "./utilities";
 import { Region } from "../types";
 
 export const hex: Rule = {
@@ -28,6 +28,18 @@ export const hex: Rule = {
     board.addPiecesByRule(hexPieceSetupRule);
     board.addToken(hexShapeToken);
     return { board };
+  },
+  getGaitGenerator: ({ gaitGenerator, name, owner }) => {
+    return {
+      gaitGenerator: determineGaitGenerator({
+        gaitGenerators: gaitGenerator ? [gaitGenerator] : [],
+        name,
+        set: PieceSet.HexStandard,
+        owner: owner || PlayerName.White,
+      }),
+      name,
+      owner,
+    };
   },
 };
 

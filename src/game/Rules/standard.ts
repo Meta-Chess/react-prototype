@@ -2,7 +2,7 @@ import { range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
 import { Direction, PieceName, PlayerName, RankAndFileBounds, Region } from "../types";
 import { Rule } from "./Rules";
-import { createPiece } from "./utilities";
+import { createPiece, determineGaitGenerator } from "./utilities";
 
 export const standard: Rule = {
   name: "Standard",
@@ -19,6 +19,17 @@ export const standard: Rule = {
     board.addAdjacenciesByRule(standardAdjacencies(bounds));
     board.addPiecesByRule(standardPiecesRule);
     return { board };
+  },
+  getGaitGenerator: ({ gaitGenerator, name, owner }) => {
+    return {
+      gaitGenerator: determineGaitGenerator({
+        gaitGenerators: gaitGenerator ? [gaitGenerator] : [],
+        name,
+        owner: owner || PlayerName.White,
+      }),
+      name,
+      owner,
+    };
   },
 };
 

@@ -1,4 +1,12 @@
-import { Direction, Gait, Move, PlayerName } from "../types";
+import {
+  Direction,
+  Gait,
+  GaitParams,
+  Move,
+  PieceDelta,
+  PieceName,
+  PlayerName,
+} from "../types";
 import { applyInSequence, isPresent } from "utilities";
 import { Board, Piece, Square } from "../Board";
 import { Game } from "game/Game";
@@ -37,6 +45,11 @@ const identityRule = {
     remainingSteps: Direction[];
     currentSquare: Square;
   }) => x,
+  getGaitGenerator: (x: {
+    gaitGenerator?: (_?: GaitParams) => Gait[];
+    name: PieceName;
+    owner?: PlayerName;
+  }) => x,
   forSquareGenerationModify: (x: { board: Board }) => x,
   generateSpecialMoves: (x: {
     game: Game;
@@ -61,10 +74,12 @@ const identityRule = {
     captureHappened: boolean;
   }) => x,
   onGaitsGeneratedModify: (x: { gaits: Gait[]; piece: Piece }) => x,
+  onPieceDisplaced: (x: { board: Board; pieceDelta: PieceDelta }) => x,
   onPieceGeneratedModify: (x: { piece: Piece }) => x,
   piecesUnderSquare: (x: { square: Square; board: Board; pieceIds: string[] }) => x,
   postCapture: (x: { board: Board; square: Square }) => x,
   postMove: (x: { board: Board; move: Move; currentTurn: number }) => x,
+  processMoves: (x: { board: Board; moves: Move[] }) => x,
 };
 
 export type CompleteRule = typeof identityRule;

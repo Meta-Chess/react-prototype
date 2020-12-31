@@ -29,30 +29,30 @@ export class Pather {
     }).map(({ path, gait }) => ({
       pieceId: this.piece.id,
       location: path.getEnd(),
-      pieceDeltas: [{ pId: this.piece.id, path }],
+      pieceDeltas: [{ pieceId: this.piece.id, path }],
       player: this.piece.owner,
       data: gait.data,
     }));
 
-    let { moves: specialMoves } = this.interrupt.for.generateSpecialMoves({
+    const specialMoves = this.interrupt.for.generateSpecialMoves({
       game: this.game,
       piece: this.piece,
       interrupt: this.interrupt,
       moves: [],
-    });
+    }).moves;
 
-    specialMoves = specialMoves.filter((m) => {
-      return !this.interrupt.for.inCanStayFilter({
-        move: m,
-        game: this.game,
-        gameClones: this.gameClones,
-        interrupt: this.interrupt,
-        patherParams: this.params,
-        filtered: false,
-      }).filtered;
-    });
-
-    return moves.concat(specialMoves);
+    return this.interrupt.for
+      .processMoves({ moves: moves.concat(specialMoves), board: this.game.board })
+      .moves.filter((m) => {
+        return !this.interrupt.for.inCanStayFilter({
+          move: m,
+          game: this.game,
+          gameClones: this.gameClones,
+          interrupt: this.interrupt,
+          patherParams: this.params,
+          filtered: false,
+        }).filtered;
+      });
   }
 
   path({
@@ -164,7 +164,7 @@ export class Pather {
       move: {
         pieceId: this.piece.id,
         location: square.location,
-        pieceDeltas: [{ pId: this.piece.id, path: hypotheticalPath }],
+        pieceDeltas: [{ pieceId: this.piece.id, path: hypotheticalPath }],
         player: this.piece.owner,
       },
       game: this.game,

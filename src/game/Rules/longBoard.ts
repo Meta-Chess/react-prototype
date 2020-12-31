@@ -2,7 +2,7 @@ import { range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
 import { Direction, PieceName, PlayerName, RankAndFileBounds, Region } from "../types";
 import { Rule } from "./Rules";
-import { createPiece } from "./utilities";
+import { createPiece, determineGaitGenerator, PieceSet } from "./utilities";
 import { standardGaits } from "game/Rules/constants";
 
 export const longBoard: Rule = {
@@ -20,6 +20,18 @@ export const longBoard: Rule = {
     board.addAdjacenciesByRule(toroidalAdjacencies(bounds));
     board.addPiecesByRule(toroidalPiecesRule);
     return { board };
+  },
+  getGaitGenerator: ({ gaitGenerator, name, owner }) => {
+    // Note: this method doesn't attempt to work out whether the piece should be a backwards pawn
+    return {
+      gaitGenerator: determineGaitGenerator({
+        gaitGenerators: gaitGenerator ? [gaitGenerator] : [],
+        name,
+        owner: owner || PlayerName.White,
+      }),
+      name,
+      owner,
+    };
   },
 };
 
