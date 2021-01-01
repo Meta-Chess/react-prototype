@@ -1,8 +1,9 @@
 import { isPresent } from "utilities";
 import { CompactRules, Game, Piece, Square } from "game";
-import { Direction, Gait, Move, TokenName } from "../types";
+import { Direction, Gait, TokenName } from "../types";
 import { flatMap } from "lodash";
 import { Path } from "./Path";
+import { Move } from "game/Move";
 
 const MAX_STEPS = 64; // To be considered further
 

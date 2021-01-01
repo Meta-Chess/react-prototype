@@ -6,6 +6,7 @@ import { SquareBoard } from "./SquareBoard";
 import { BoardMeasurements } from "./calculateBoardMeasurements";
 import { WinModal } from "./WinModal";
 import { AbsoluteView } from "ui";
+import { MoveDisambiguationModal } from "components/shared/Board/MoveDisambiguationModal";
 
 export interface BoardProps {
   backboard?: boolean;
@@ -19,6 +20,9 @@ export const Board: FC<BoardProps> = (props) => {
   const [winModalHidden, setWinModalHidden] = useState(false);
   const hideWinModal = useCallback(() => setWinModalHidden(true), []);
 
+  const moveDisambiguationRequired =
+    gameMaster?.locationSelected && (gameMaster?.allowableMoves.length || 0) > 1;
+
   return (
     <>
       {shapeToken?.data?.shape === SquareShape.Hex ? (
@@ -26,11 +30,15 @@ export const Board: FC<BoardProps> = (props) => {
       ) : (
         <SquareBoard {...props} />
       )}
-      {gameMaster?.gameOver && !winModalHidden && (
+      {gameMaster?.gameOver && !winModalHidden ? (
         <AbsoluteView>
           <WinModal onClose={hideWinModal} />
         </AbsoluteView>
-      )}
+      ) : moveDisambiguationRequired ? (
+        <AbsoluteView>
+          <MoveDisambiguationModal />
+        </AbsoluteView>
+      ) : null}
     </>
   );
 };

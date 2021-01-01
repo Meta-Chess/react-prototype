@@ -1,7 +1,6 @@
 import { ReactElement } from "react";
 import { Direction } from "./Direction";
 import { Piece, Rule, VariantName } from "game";
-import { Path } from "game/Pather/Path";
 import { TraitName } from "game/variants";
 
 export interface GaitData {
@@ -18,27 +17,6 @@ export interface Gait {
   mustCapture?: boolean;
   data?: GaitData;
 }
-
-export interface MoveData {
-  interceptable?: boolean;
-  interceptionCondition?: (piece: Piece) => boolean;
-  interceptableAtStart?: boolean;
-}
-
-export interface Move {
-  pieceId: string;
-  location: string;
-  pieceDeltas: PieceDelta[];
-  player: PlayerName;
-  data?: MoveData;
-}
-
-export interface PieceDelta {
-  pieceId: string;
-  path: Path;
-  promoteTo?: PieceName;
-}
-
 // The order of colors in this enum corresponds to the order of colors in Colors.PLAYER
 export enum PlayerName {
   White,

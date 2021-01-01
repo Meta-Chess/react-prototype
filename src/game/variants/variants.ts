@@ -33,7 +33,7 @@ export type VariantName = keyof typeof variants;
 export const variants = {
   Chess: {
     description: "Your usual bog-standard game of chess",
-    rules: [standard, loseWithNoKings, pawnDoubleStep, castling, Interception],
+    rules: [standard, loseWithNoKings, pawnDoubleStep, castling, Interception, promotion],
   },
   ["Cylindrical Chess"]: {
     description: "Chess on a Cylinder! You can move through the sides of the board.",

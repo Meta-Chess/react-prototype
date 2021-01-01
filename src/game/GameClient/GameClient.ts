@@ -1,6 +1,7 @@
-import { GameOptions, Move, PieceDelta } from "game/types";
+import { GameOptions } from "game/types";
 import { Path } from "game/Pather/Path";
 import { sleep } from "utilities/sleep";
+import { Move, PieceDelta } from "game/Move";
 
 class GameClient {
   private socket: WebSocket;

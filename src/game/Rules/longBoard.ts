@@ -2,7 +2,7 @@ import { range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
 import { Direction, PieceName, PlayerName, RankAndFileBounds, Region } from "../types";
 import { Rule } from "./Rules";
-import { createPiece, determineGaitGenerator, PieceSet } from "./utilities";
+import { createPiece, determineGaitGenerator } from "./utilities";
 import { standardGaits } from "game/Rules/constants";
 
 export const longBoard: Rule = {

@@ -8,8 +8,10 @@ describe("In standard chess", () => {
   it("Players should not be able to move into check on mostly empty board", () => {
     // Setup standard empty board
     const gameMaster = new GameMaster(
-      { variant: "Chess", checkEnabled: true },
-      mockRenderer
+      ...GameMaster.processConstructorInputs(
+        { variant: "Chess", checkEnabled: true },
+        mockRenderer
+      )
     );
     const board = gameMaster.game.board;
     board.getLocations().forEach((location) => board.killPiecesAt(location));
@@ -39,8 +41,10 @@ describe("In standard chess", () => {
 
   it("Players should not be able to move into check in standard chess situation", () => {
     const gameMaster = new GameMaster(
-      { variant: "Chess", checkEnabled: true },
-      mockRenderer
+      ...GameMaster.processConstructorInputs(
+        { variant: "Chess", checkEnabled: true },
+        mockRenderer
+      )
     );
     const board = gameMaster.game.board;
 
@@ -66,8 +70,10 @@ describe("In standard chess", () => {
 
   it("Players in check must move out of check", () => {
     const gameMaster = new GameMaster(
-      { variant: "Chess", checkEnabled: true },
-      mockRenderer
+      ...GameMaster.processConstructorInputs(
+        { variant: "Chess", checkEnabled: true },
+        mockRenderer
+      )
     );
     const board = gameMaster.game.board;
 

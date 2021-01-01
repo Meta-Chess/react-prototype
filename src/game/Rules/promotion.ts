@@ -1,8 +1,9 @@
-import { Move, PieceDelta, PieceName, Region } from "../types";
+import { PieceName, Region } from "../types";
 import { Rule } from "./Rules";
 import { Board } from "game";
 import { nthCartesianPower } from "utilities/nthCartesianPower";
 import { Gait } from "game/types/types";
+import { Move, PieceDelta } from "game/Move";
 
 const PROMOTION_PIECES = [
   PieceName.Queen,

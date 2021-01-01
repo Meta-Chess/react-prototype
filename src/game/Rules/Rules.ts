@@ -1,15 +1,8 @@
-import {
-  Direction,
-  Gait,
-  GaitParams,
-  Move,
-  PieceDelta,
-  PieceName,
-  PlayerName,
-} from "../types";
+import { Direction, Gait, GaitParams, PieceName, PlayerName } from "../types";
 import { applyInSequence, isPresent } from "utilities";
 import { Board, Piece, Square } from "../Board";
 import { Game } from "game/Game";
+import { Move, PieceDelta } from "game/Move";
 
 // Note: These linting exceptions should only ever be used with great caution
 // Take care to check extra carefully for errors in this file because we have less type safety

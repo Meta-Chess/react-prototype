@@ -4,7 +4,6 @@ import { Adjacency } from "./Adjacencies";
 import { TokenOwner } from "./TokenOwner";
 import {
   Direction,
-  PieceDelta,
   RankAndFileBounds,
   Token,
   PlayerName,
@@ -14,6 +13,7 @@ import {
 import { isPresent } from "utilities";
 import { CompactRules } from "game/Rules/Rules";
 import { IdGenerator } from "utilities/IdGenerator";
+import { PieceDelta } from "game/Move";
 
 interface LocationMap {
   [location: string]: Square;

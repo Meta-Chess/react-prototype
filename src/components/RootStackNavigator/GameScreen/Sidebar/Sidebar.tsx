@@ -40,12 +40,12 @@ const Sidebar: SFC<Props> = ({ style }) => {
   return (
     <Container style={style}>
       <ScrollView
-        contentContainerStyle={{ paddingBottom: 24, flexGrow: 1 }}
+        contentContainerStyle={{ flexGrow: 1 }}
         onScroll={(): void => modals.hideAll()}
         scrollEventThrottle={100}
       >
         <TouchableOpacity
-          style={{ flex: 1 }}
+          style={{ flex: 1, paddingBottom: 24 }}
           onPress={(): void => modals.hideAll()}
           activeOpacity={1}
         >
