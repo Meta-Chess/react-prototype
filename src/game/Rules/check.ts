@@ -2,7 +2,6 @@ import { CompactRules, Rule } from "./Rules";
 import { Pather } from "../Pather";
 import { cloneDeep } from "lodash";
 import { Game, Move } from "game";
-import { PieceName } from "game/types";
 
 export const check: Rule = {
   name: "Check",
