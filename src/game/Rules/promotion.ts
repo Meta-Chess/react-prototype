@@ -7,8 +7,8 @@ import { Move, PieceDelta } from "game/Move";
 
 const PROMOTION_PIECES = [
   PieceName.Queen,
-  PieceName.Knight,
   PieceName.Rook,
+  PieceName.Knight,
   PieceName.Bishop,
 ];
 
