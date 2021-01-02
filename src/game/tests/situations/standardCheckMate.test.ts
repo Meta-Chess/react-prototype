@@ -6,8 +6,10 @@ import { PlayerName } from "game/types";
 describe("In standard chess", () => {
   it("Fool's mate should end game", () => {
     const gameMaster = new GameMaster(
-      { variant: "Chess", checkEnabled: true },
-      mockRenderer
+      ...GameMaster.processConstructorInputs(
+        { variant: "Chess", checkEnabled: true },
+        mockRenderer
+      )
     );
     const board = gameMaster.game.board;
 
