@@ -73,6 +73,7 @@ export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
 
 const Container = styled(Card)`
   width: 350px;
+  padding: 0px;
 `;
 
 const TitleRow = styled(Row)`
