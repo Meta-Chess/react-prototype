@@ -82,4 +82,8 @@ export class Game {
   alivePlayers(): Player[] {
     return this.players.filter((player) => player.alive);
   }
+
+  getCurrentPlayerName(): PlayerName {
+    return this.players[this.currentPlayerIndex].name;
+  }
 }

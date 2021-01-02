@@ -98,6 +98,10 @@ class Board extends TokenOwner {
     return this.getPiecesByRule((piece) => piece.owner !== player);
   }
 
+  piecesBelongingTo(player: PlayerName): Piece[] {
+    return this.getPiecesByRule((piece) => piece.owner === player);
+  }
+
   findPieceById(id: string): Piece | undefined {
     return this.pieces[id];
   }

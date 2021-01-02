@@ -50,6 +50,13 @@ const identityRule = {
     interrupt: CompactRules;
     moves: Move[];
   }) => x,
+  lossCondition: (x: {
+    playerName: PlayerName;
+    game: Game;
+    gameClones: Game[];
+    interrupt: CompactRules;
+    dead: string | false;
+  }) => x,
   inCanStayFilter: (x: {
     move: Move;
     game: Game;
@@ -58,7 +65,7 @@ const identityRule = {
     patherParams: { checkDepth?: number };
     filtered: boolean;
   }) => x,
-  lethalCondition: (x: { board: Board; player: PlayerName; dead: boolean }) => x,
+  lethalCondition: (x: { board: Board; player: PlayerName; dead: string | false }) => x,
   moveIsAggressive: (x: { board: Board; move: Move; aggressive: boolean }) => x,
   onBoardCreate: (x: { board: Board }) => x,
   onCapture: (x: {
