@@ -22,7 +22,12 @@ export const GameScreenContent: FC = () => {
 
   const { gameMaster } = useContext(GameContext);
   const { flipBoard } = useFlipDelay(gameMaster?.game?.currentPlayerIndex);
-  if (!gameMaster) return <Spinner />;
+  if (!gameMaster)
+    return (
+      <StyledContainer>
+        <Spinner />
+      </StyledContainer>
+    );
 
   const shape = gameMaster.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape;
 
