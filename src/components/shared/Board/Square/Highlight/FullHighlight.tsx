@@ -1,6 +1,6 @@
 import React from "react";
 import { SFC } from "primitives";
-import { HexTile, SquareTile } from "../Tiles";
+import { HexTile, SquareTile } from "primitives/Tiles";
 import Color from "color";
 import { SquareShape } from "game/types";
 

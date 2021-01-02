@@ -1,7 +1,7 @@
 import React from "react";
 import { SFC } from "primitives";
 import { SquareShape } from "game/types";
-import { SquareTile, HexTile } from "./Tiles";
+import { SquareTile, HexTile } from "primitives/Tiles";
 
 interface TileAppearanceProps {
   shape: SquareShape | undefined;

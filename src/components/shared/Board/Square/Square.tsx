@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { Piece } from "./Piece";
@@ -10,6 +10,7 @@ import { Square } from "game/Board";
 import { SquareShape, Token, TokenName } from "game/types";
 import { TileAppearance } from "./TileAppearance";
 import { TilePressableContainer } from "./TilePressableContainer";
+import { TileAnimationOverlay } from "./TileAnimationOverlay";
 import { Highlight } from "./Highlight";
 import { useModals } from "ui";
 
@@ -20,8 +21,8 @@ interface Props {
 }
 
 const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
-  const GRAPHIC_HEX_TILING = true; //true for Hex over Circle, TODO: bundle into graphic options, or choose one over the other
   const modals = useModals();
+  const HEX_SQUARE_EMPTY_RATIO = 2 / Math.sqrt(3) - 1;
   const { gameMaster } = useContext(GameContext);
   if (!gameMaster) return null;
 
@@ -47,14 +48,6 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
     modals.hideAll();
     gameMaster.onPress(square.location);
   };
-
-  let renderAnimation = false;
-  const animationHandler = gameMaster.game.board.animationHandler;
-  if (animationHandler.inAnimation(square.location)) {
-    if (animationHandler.liveAnimation) {
-      renderAnimation = true;
-    }
-  }
 
   return (
     <OuterContainer size={size}>
@@ -96,7 +89,18 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
           </>
         }
       />
-      {explosionId && <Explosion id={explosionId} />}
+      {square
+        .tokensSatisfyingRule(
+          (token: Token): boolean => token.name === TokenName.AnimationToken
+        )
+        .map((token) => (
+          <TileAnimationOverlay
+            shape={shape}
+            size={size}
+            token={token}
+            key={token.data?.id}
+          />
+        ))}
     </OuterContainer>
   );
 };
@@ -118,12 +122,6 @@ const OuterContainer = styled(View)<{ size: number }>`
   width: ${({ size }): number => size}px;
   height: ${({ size }): number => size}px;
   background-color: transparent;
-`;
-
-const PressableContainer = styled(TouchableOpacity)<{ size: number }>`
-  position: absolute;
-  width: ${({ size }): number => size}px;
-  height: ${({ size }): number => size}px;
 `;
 
 const PositioningContainer = styled(View)<{ size: number }>`

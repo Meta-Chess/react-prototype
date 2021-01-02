@@ -1,4 +1,4 @@
-import { PieceName } from "../types";
+import { PieceName, TokenName, AnimationTypes } from "../types";
 import { Rule } from "./Rules";
 import { Board } from "game";
 
@@ -23,12 +23,14 @@ export const atomic: Rule = {
 
 const addVisualTokenToSquare = (squareLocation: string, board: Board): void => {
   const creationTimeInMilliseconds = Date.now();
+  const duration = 1000;
   board.squareAt(squareLocation)?.addToken({
     name: TokenName.AnimationToken,
-    expired: () => Date.now() > creationTimeInMilliseconds + 1000,
+    expired: () => Date.now() > creationTimeInMilliseconds + duration,
     data: {
-      type: "atomic",
+      type: AnimationTypes.explosion,
       createdAt: creationTimeInMilliseconds,
+      duration: duration,
       id: Math.random(),
     },
   });
