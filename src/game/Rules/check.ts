@@ -1,8 +1,7 @@
 import { CompactRules, Rule } from "./Rules";
 import { Pather } from "../Pather";
 import { cloneDeep } from "lodash";
-import { Move } from "game/types";
-import { Game } from "game";
+import { Game, Move } from "game";
 
 export const check: Rule = {
   name: "Check",
@@ -50,7 +49,7 @@ function checkAllowsMove({
 
   if (newPatherParams.checkDepth > 0) {
     const player =
-      move?.playerName === undefined ? game.getCurrentPlayerName() : move?.player;
+      move?.playerName === undefined ? game.getCurrentPlayerName() : move?.playerName;
     newPatherParams.checkDepth -= 1;
     gameClones[0].resetTo(game);
     gameClones[0].doMove(move);
