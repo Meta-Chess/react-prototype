@@ -20,7 +20,7 @@ export const check: Rule = {
       newPatherParams.checkDepth -= 1;
       gameClones[0].doMove(move);
       gameClones[0].nextTurn();
-      const pieces = gameClones[0].board.piecesNotBelongingTo(move.player);
+      const pieces = gameClones[0].board.piecesNotBelongingTo(move.playerName);
 
       gameClones[1].resetTo(gameClones[0]);
       for (let i = 0; i < pieces.length; i++) {
@@ -32,7 +32,7 @@ export const check: Rule = {
           gameClones[1].nextTurn();
           const { dead } = interrupt.for.lethalCondition({
             board: gameClones[1].board,
-            player: move.player,
+            player: move.playerName,
             dead: false,
           });
           if (dead) {

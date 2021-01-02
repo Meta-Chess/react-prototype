@@ -25,6 +25,7 @@ export const Colors = {
   HIGHLIGHT: {
     INFO: Color("#007BFF"),
     SUCCESS: Color("#26EF10"),
+    WARNING_LIGHT: Color("#FFD500"),
     WARNING: Color("#FF8800"),
     ERROR: Color("#FF1900"),
   },

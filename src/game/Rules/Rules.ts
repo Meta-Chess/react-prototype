@@ -59,6 +59,7 @@ const identityRule = {
     filtered: boolean;
   }) => x,
   lethalCondition: (x: { board: Board; player: PlayerName; dead: boolean }) => x,
+  moveIsAggressive: (x: { board: Board; move: Move; aggressive: boolean }) => x,
   onBoardCreate: (x: { board: Board }) => x,
   onCapture: (x: {
     board: Board;

@@ -1,7 +1,7 @@
 import { PieceName, TokenName } from "../types";
 import { Piece, Rule } from "game";
 import { activeCastlingToken, passiveCastlingToken } from "./constants";
-import { isPresent } from "utilities";
+import { isPresent, hasPresentKey } from "ts-is-present";
 import { Pather, Scanner } from "../Pather";
 import { Path } from "game/Pather/Path";
 
@@ -60,26 +60,27 @@ export const castling: Rule = {
       }
     );
 
-    const filteredCastlePiecesAndLocations = castlePiecesAndLocations.filter(
-      ({ passivePiece, passiveDestination }) => {
+    const castlePiecesAndPaths = castlePiecesAndLocations
+      .map(({ passivePiece, passiveDestination, activePath }) => {
         const passivePieceMoveSet = new Pather(game, [], passivePiece, interrupt, {
           checkDepth: 0,
         }).findPaths();
-        return passivePieceMoveSet
-          .map((move) => move.location)
-          .includes(passiveDestination.location);
-      }
-    );
+        const passivePath = passivePieceMoveSet.find(
+          (move) => move.location === passiveDestination.location
+        )?.pieceDeltas[0].path;
+        return { passivePiece, passivePath, activePath };
+      })
+      .filter(hasPresentKey("passivePath"));
 
-    const newMoves = filteredCastlePiecesAndLocations.map(
-      ({ passivePiece, passiveDestination, activePath }) => ({
+    const newMoves = castlePiecesAndPaths.map(
+      ({ passivePiece, passivePath, activePath }) => ({
         pieceId: activePiece.id,
         location: activePath.getEnd(),
         pieceDeltas: [
-          { pieceId: passivePiece.id, path: new Path(passiveDestination.location) },
+          { pieceId: passivePiece.id, path: passivePath },
           { pieceId: activePiece.id, path: activePath },
         ],
-        player: activePiece.owner,
+        playerName: activePiece.owner,
         data: {
           interceptable: true,
           interceptionCondition: (): boolean => true,

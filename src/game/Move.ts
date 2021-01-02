@@ -13,7 +13,7 @@ export interface Move {
   pieceId: string;
   location: string;
   pieceDeltas: PieceDelta[];
-  player: PlayerName;
+  playerName: PlayerName;
   data?: MoveData;
 }
 
@@ -27,7 +27,7 @@ export function movesAreEqual(m1: Move, m2: Move): boolean {
   return (
     m1.pieceId === m2.pieceId &&
     m1.location === m2.location &&
-    m1.player === m2.player &&
+    m1.playerName === m2.playerName &&
     isEqual(m1.data, m2.data) &&
     m1.pieceDeltas.length === m2.pieceDeltas.length &&
     m1.pieceDeltas.reduce<boolean>(
