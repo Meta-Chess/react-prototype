@@ -7,6 +7,7 @@ import styled from "styled-components/native";
 import { View } from "react-native";
 import { SquareShape } from "game/types";
 import { FullHighlight } from "./FullHighlight";
+import { SquareInfo } from "game/SquaresInfo";
 
 interface Props {
   gameMaster: GameMaster;
@@ -16,28 +17,36 @@ interface Props {
 }
 
 const Highlight: FC<Props> = ({ gameMaster, square, size, shape }) => {
-  if (
-    !gameMaster.allowableMoves.map((m) => m.location).includes(square.location) &&
-    !square.hasPieceOf(gameMaster.selectedPieces)
-  )
-    return null;
-
-  const selectedPieceOwner = gameMaster.selectedPieces[0]?.owner;
-  const highlightColor =
-    selectedPieceOwner !==
-    gameMaster.game.players[gameMaster.game.currentPlayerIndex].name
-      ? Colors.HIGHLIGHT.INFO
-      : square.hasPieceOf(gameMaster.selectedPieces)
-      ? Colors.HIGHLIGHT.WARNING
-      : gameMaster.game.board.squareHasPieceNotBelongingTo(square, selectedPieceOwner)
-      ? Colors.HIGHLIGHT.ERROR
-      : Colors.HIGHLIGHT.SUCCESS;
-
-  return square.hasPiece() ? (
-    <FullHighlight color={highlightColor} size={size} shape={shape} />
-  ) : (
-    <CenterHighlight color={highlightColor} />
+  return (
+    <>
+      {gameMaster.squaresInfo
+        .get(square.location)
+        .map((info) =>
+          info !== SquareInfo.LastMovePath &&
+          (![
+            SquareInfo.PossibleMovePassiveEndPoint,
+            SquareInfo.PossibleMoveAggressiveEndPoint,
+            SquareInfo.PossibleOtherPlayerMoveEndPoint,
+          ].includes(info) ||
+            square.hasPiece()) ? (
+            <FullHighlight color={HIGHLIGHT_COLORS[info]} size={size} shape={shape} />
+          ) : (
+            <CenterHighlight color={HIGHLIGHT_COLORS[info]} />
+          )
+        )}
+    </>
   );
+};
+
+const HIGHLIGHT_COLORS: { [key in SquareInfo]: Color } = {
+  [SquareInfo.PossibleMovePassiveEndPoint]: Colors.HIGHLIGHT.SUCCESS,
+  [SquareInfo.PossibleMoveAggressiveEndPoint]: Colors.HIGHLIGHT.ERROR,
+  [SquareInfo.PossibleOtherPlayerMoveEndPoint]: Colors.HIGHLIGHT.INFO,
+  [SquareInfo.SelectedCurrentPlayerPiece]: Colors.HIGHLIGHT.WARNING,
+  [SquareInfo.SelectedOtherPlayerPiece]: Colors.HIGHLIGHT.INFO,
+  [SquareInfo.LastMoveStartPoint]: Colors.HIGHLIGHT.WARNING_LIGHT,
+  [SquareInfo.LastMoveEndPoint]: Colors.HIGHLIGHT.WARNING_LIGHT.fade(0.2),
+  [SquareInfo.LastMovePath]: Colors.HIGHLIGHT.WARNING_LIGHT.fade(0.3),
 };
 
 interface HighlightProps {

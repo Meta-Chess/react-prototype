@@ -34,6 +34,8 @@ export const Interception: Rule = {
 
   onCapture: ({ board, piece, location, captureHappened }) => {
     const square = board.squares[location];
+
+    // TODO: Handle multiple capture tokens on the same square
     const captureToken = square.firstTokenWithName(TokenName.CaptureToken);
 
     const captureIsAllowed = captureToken?.data?.condition?.(piece) || false;
@@ -49,4 +51,19 @@ export const Interception: Rule = {
     captureHappened = captureHappened || captureIsAllowed;
     return { board, piece, location, captureHappened };
   },
+
+  moveIsAggressive: ({ move, board, aggressive }) => ({
+    move,
+    board,
+    aggressive:
+      aggressive ||
+      board
+        .squareAt(move.location)
+        ?.tokensWithName(TokenName.CaptureToken)
+        .some((token) => {
+          const piece = board.getPiece(move.pieceId);
+          return piece && token.data?.condition?.(piece);
+        }) ||
+      false,
+  }),
 };

@@ -4,21 +4,24 @@ import { GameOptions, PlayerDisplayNames } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants/variants";
-import { check, CompactRules, fatigue, atomic, Rule } from "./Rules";
+import { atomic, check, CompactRules, fatigue, Rule } from "./Rules";
 import { uniqWith } from "lodash";
 import { randomChoice } from "utilities";
 import { Move, movesAreEqual } from "game/Move";
+import { SquareInfo, SquaresInfo } from "game/SquaresInfo";
 
 export class GameMaster {
   public gameClones: Game[];
   public title: string;
   public result: string | undefined;
   public gameOver = false;
+  public moveHistory: (Move | undefined)[] = [];
 
   // TODO: Consider restructure to extract player interaction logic?
   public selectedPieces: Piece[] = [];
   public allowableMoves: Move[] = [];
   public locationSelected = false;
+  public squaresInfo = new SquaresInfo();
 
   // TODO: Consider restructure to encapsulate visualisation details in a nice abstraction
   public flipBoard: boolean;
@@ -78,7 +81,44 @@ export class GameMaster {
   }
 
   render(): void {
+    this.recalculateSquaresInfo();
     this.renderer.render();
+  }
+
+  recalculateSquaresInfo(): void {
+    this.squaresInfo.clear();
+    this.moveHistory[this.moveHistory.length - 1]?.pieceDeltas.forEach((delta) => {
+      this.squaresInfo.add(delta.path.getStart(), SquareInfo.LastMoveStartPoint);
+      this.squaresInfo.add(delta.path.getEnd(), SquareInfo.LastMoveEndPoint);
+      const path = delta.path.getPath();
+      path
+        .slice(1, path.length - 1)
+        .forEach((pathSquare) =>
+          this.squaresInfo.add(pathSquare, SquareInfo.LastMovePath)
+        );
+    });
+    this.selectedPieces.forEach((piece) => {
+      if (piece.owner !== this.game.players[this.game.currentPlayerIndex].name) {
+        this.squaresInfo.add(piece.location, SquareInfo.SelectedOtherPlayerPiece);
+      } else {
+        this.squaresInfo.add(piece.location, SquareInfo.SelectedCurrentPlayerPiece);
+      }
+    });
+    this.allowableMoves.forEach((move) => {
+      if (move.playerName !== this.game.players[this.game.currentPlayerIndex].name) {
+        this.squaresInfo.add(move.location, SquareInfo.PossibleOtherPlayerMoveEndPoint);
+      } else if (
+        this.interrupt.for.moveIsAggressive({
+          move,
+          board: this.game.board,
+          aggressive: false,
+        }).aggressive
+      ) {
+        this.squaresInfo.add(move.location, SquareInfo.PossibleMoveAggressiveEndPoint);
+      } else {
+        this.squaresInfo.add(move.location, SquareInfo.PossibleMovePassiveEndPoint);
+      }
+    });
   }
 
   handleTimerFinish(): void {
@@ -134,6 +174,7 @@ export class GameMaster {
       this.game.doMove(move);
       if (unselect) this.unselectAllPieces();
     }
+    this.moveHistory.push(move);
     this.checkGameEndConditions();
     this.game.nextTurn();
     this.render();

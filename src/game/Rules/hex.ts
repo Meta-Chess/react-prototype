@@ -11,6 +11,7 @@ import {
 } from "../types";
 import { createPiece, determineGaitGenerator, PieceSet } from "./utilities";
 import { Region } from "../types";
+import { moveIsAggressive } from "./defaults";
 
 export const hex: Rule = {
   name: "Hexagon",
@@ -41,6 +42,7 @@ export const hex: Rule = {
       owner,
     };
   },
+  moveIsAggressive,
 };
 
 const hexShapeToken = {

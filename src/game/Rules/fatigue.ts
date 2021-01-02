@@ -44,7 +44,7 @@ export const fatigue: Rule = {
         .filter(
           (piece) =>
             piece.name === PieceName.King &&
-            piece.owner !== move.player &&
+            piece.owner !== move.playerName &&
             piece.location === move.location
         );
       filtered = capturedKings.length === 0;

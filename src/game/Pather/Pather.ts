@@ -31,7 +31,7 @@ export class Pather {
       pieceId: this.piece.id,
       location: path.getEnd(),
       pieceDeltas: [{ pieceId: this.piece.id, path }],
-      player: this.piece.owner,
+      playerName: this.piece.owner,
       data: gait.data,
     }));
 
@@ -171,7 +171,7 @@ export class Pather {
         pieceId: this.piece.id,
         location: square.location,
         pieceDeltas: [{ pieceId: this.piece.id, path: hypotheticalPath }],
-        player: this.piece.owner,
+        playerName: this.piece.owner,
       },
       game: this.game,
       gameClones: this.gameClones,
