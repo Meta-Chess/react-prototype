@@ -22,13 +22,11 @@ const Highlight: FC<Props> = ({ gameMaster, square, size, shape }) => {
       {gameMaster.squaresInfo
         .get(square.location)
         .map((info) =>
-          info !== SquareInfo.LastMovePath &&
-          (![
+          ![
             SquareInfo.PossibleMovePassiveEndPoint,
             SquareInfo.PossibleMoveAggressiveEndPoint,
             SquareInfo.PossibleOtherPlayerMoveEndPoint,
-          ].includes(info) ||
-            square.hasPiece()) ? (
+          ].includes(info) || square.hasPiece() ? (
             <FullHighlight color={HIGHLIGHT_COLORS[info]} size={size} shape={shape} />
           ) : (
             <CenterHighlight color={HIGHLIGHT_COLORS[info]} />
@@ -44,9 +42,9 @@ const HIGHLIGHT_COLORS: { [key in SquareInfo]: Color } = {
   [SquareInfo.PossibleOtherPlayerMoveEndPoint]: Colors.HIGHLIGHT.INFO,
   [SquareInfo.SelectedCurrentPlayerPiece]: Colors.HIGHLIGHT.WARNING,
   [SquareInfo.SelectedOtherPlayerPiece]: Colors.HIGHLIGHT.INFO,
-  [SquareInfo.LastMoveStartPoint]: Colors.HIGHLIGHT.WARNING_LIGHT,
-  [SquareInfo.LastMoveEndPoint]: Colors.HIGHLIGHT.WARNING_LIGHT.fade(0.2),
-  [SquareInfo.LastMovePath]: Colors.HIGHLIGHT.WARNING_LIGHT.fade(0.3),
+  [SquareInfo.LastMoveStartPoint]: Colors.HIGHLIGHT.WARNING_LIGHT.fade(0.3),
+  [SquareInfo.LastMoveEndPoint]: Colors.HIGHLIGHT.WARNING_LIGHT.fade(0.3),
+  [SquareInfo.LastMovePath]: Colors.HIGHLIGHT.WARNING_LIGHT.fade(0.5),
 };
 
 interface HighlightProps {
