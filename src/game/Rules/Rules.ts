@@ -1,7 +1,8 @@
-import { Direction, Gait, Move, PlayerName } from "../types";
+import { Direction, Gait, GaitParams, PieceName, PlayerName } from "../types";
 import { applyInSequence, isPresent } from "utilities";
 import { Board, Piece, Square } from "../Board";
 import { Game } from "game/Game";
+import { Move, PieceDelta } from "game/Move";
 
 // Note: These linting exceptions should only ever be used with great caution
 // Take care to check extra carefully for errors in this file because we have less type safety
@@ -31,10 +32,16 @@ export class CompactRules {
 }
 
 const identityRule = {
+  afterBoardCreation: (x: { board: Board }) => x,
   afterStepModify: (x: {
     gait: Gait;
     remainingSteps: Direction[];
     currentSquare: Square;
+  }) => x,
+  getGaitGenerator: (x: {
+    gaitGenerator?: (_?: GaitParams) => Gait[];
+    name: PieceName;
+    owner?: PlayerName;
   }) => x,
   forSquareGenerationModify: (x: { board: Board }) => x,
   generateSpecialMoves: (x: {
@@ -43,11 +50,6 @@ const identityRule = {
     interrupt: CompactRules;
     moves: Move[];
   }) => x,
-  onGaitsGeneratedModify: (x: { gaits: Gait[]; piece: Piece }) => x,
-  onPieceGeneratedModify: (x: { piece: Piece }) => x,
-  onBoardCreate: (x: { board: Board }) => x,
-  afterBoardCreation: (x: { board: Board }) => x,
-  postMove: (x: { board: Board; move: Move; currentTurn: number }) => x,
   inCanStayFilter: (x: {
     move: Move;
     game: Game;
@@ -57,14 +59,20 @@ const identityRule = {
     filtered: boolean;
   }) => x,
   lethalCondition: (x: { board: Board; player: PlayerName; dead: boolean }) => x,
-  postCapture: (x: { board: Board; square: Square }) => x,
-  piecesUnderSquare: (x: { square: Square; board: Board; pieceIds: string[] }) => x,
+  onBoardCreate: (x: { board: Board }) => x,
   onCapture: (x: {
     board: Board;
     piece: Piece;
     location: string;
     captureHappened: boolean;
   }) => x,
+  onGaitsGeneratedModify: (x: { gaits: Gait[]; piece: Piece }) => x,
+  onPieceDisplaced: (x: { board: Board; pieceDelta: PieceDelta }) => x,
+  onPieceGeneratedModify: (x: { piece: Piece }) => x,
+  piecesUnderSquare: (x: { square: Square; board: Board; pieceIds: string[] }) => x,
+  postCapture: (x: { board: Board; square: Square }) => x,
+  postMove: (x: { board: Board; move: Move; currentTurn: number }) => x,
+  processMoves: (x: { board: Board; moves: Move[] }) => x,
 };
 
 export type CompleteRule = typeof identityRule;

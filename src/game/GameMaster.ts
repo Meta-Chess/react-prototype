@@ -1,39 +1,53 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, Move, PlayerDisplayNames } from "./types";
+import { GameOptions, PlayerDisplayNames } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants/variants";
 import { check, CompactRules, fatigue, atomic, Rule } from "./Rules";
-import { flatMap } from "lodash";
+import { uniqWith } from "lodash";
 import { randomChoice } from "utilities";
+import { Move, movesAreEqual } from "game/Move";
 
 export class GameMaster {
-  public interrupt: CompactRules;
-  public game: Game;
   public gameClones: Game[];
-  public selectedPieces: Piece[];
-  public allowableMoves: Move[];
   public title: string;
-  public variant: VariantName;
-  public rules: Rule[];
   public result: string | undefined;
-  public gameOver: boolean;
+  public gameOver = false;
+
+  // TODO: Consider restructure to extract player interaction logic?
+  public selectedPieces: Piece[] = [];
+  public allowableMoves: Move[] = [];
+  public locationSelected = false;
 
   // TODO: Consider restructure to encapsulate visualisation details in a nice abstraction
   public flipBoard: boolean;
   public overTheBoard: boolean;
 
-  constructor(gameOptions: GameOptions, private renderer: Renderer) {
+  constructor(
+    public interrupt: CompactRules,
+    public rules: Rule[],
+    public variant: VariantName,
+    public game: Game,
+    private renderer: Renderer,
+    gameOptions?: GameOptions
+  ) {
+    this.gameClones = [game.clone(), game.clone(), game.clone(), game.clone()];
+    this.title = gameOptions?.customTitle || "Chess"; //TODO bundle this into other info
+    this.flipBoard = !!gameOptions?.flipBoard;
+    this.overTheBoard = !!gameOptions?.overTheBoard;
+  }
+
+  static processConstructorInputs(
+    gameOptions: GameOptions,
+    renderer: Renderer
+  ): [CompactRules, Rule[], VariantName, Game, Renderer, GameOptions] {
     const {
-      customTitle,
       customRules,
       time,
       checkEnabled,
       fatigueEnabled,
       atomicEnabled,
-      flipBoard,
-      overTheBoard,
     } = gameOptions;
     const variant =
       gameOptions.variant || (randomChoice(Object.keys(variants)) as VariantName);
@@ -42,22 +56,25 @@ export class GameMaster {
     if (checkEnabled && !customRules?.length) rules.push(check);
     if (fatigueEnabled && !customRules?.length) rules.push(fatigue);
     if (atomicEnabled && !customRules?.length) rules.push(atomic);
-    this.interrupt = new CompactRules(rules);
-    this.game = Game.createGame(this.interrupt, time);
-    this.gameClones = [
+
+    const interrupt = new CompactRules(rules);
+    const game = Game.createGame(interrupt, time);
+    return [interrupt, rules, variant, game, renderer, gameOptions];
+  }
+
+  clone(renderer?: Renderer): GameMaster {
+    return new GameMaster(
+      this.interrupt,
+      this.rules,
+      this.variant,
       this.game.clone(),
-      this.game.clone(),
-      this.game.clone(),
-      this.game.clone(),
-    ];
-    this.selectedPieces = [];
-    this.allowableMoves = [];
-    this.title = customTitle || "Chess"; //TODO bundle this into other info
-    this.variant = variant;
-    this.rules = rules;
-    this.flipBoard = !!flipBoard;
-    this.overTheBoard = !!overTheBoard;
-    this.gameOver = false;
+      renderer || new Renderer(),
+      {
+        customTitle: this.title,
+        flipBoard: this.flipBoard,
+        overTheBoard: this.overTheBoard,
+      }
+    );
   }
 
   render(): void {
@@ -84,18 +101,24 @@ export class GameMaster {
 
   onPress(location: string): Move | undefined {
     this.gameClones.forEach((clone) => clone.resetTo(this.game));
-    const move = this.allowableMoves.find((m) => m.location === location);
-    if (
-      move &&
+    const moves = uniqWith(
+      this.allowableMoves.filter((m) => m.location === location),
+      movesAreEqual
+    );
+    const isSelectedPieceOwnersTurn =
       this.game.players[this.game.currentPlayerIndex].name ===
-        this.selectedPieces[0]?.owner
-    ) {
-      this.doMove(move);
+      this.selectedPieces[0]?.owner;
+
+    if (moves.length === 1 && isSelectedPieceOwnersTurn) {
+      this.doMove(moves[0]);
       if (!this.game.players[this.game.currentPlayerIndex].alive) {
         this.doMove();
       }
       this.render();
-      return move;
+      return moves[0];
+    } else if (moves.length > 1 && isSelectedPieceOwnersTurn) {
+      this.allowableMoves = moves;
+      this.locationSelected = true;
     } else if (this.selectedPieces.some((p) => p.location === location)) {
       // pressing again on a selected piece
       this.unselectAllPieces();
@@ -119,13 +142,14 @@ export class GameMaster {
   unselectAllPieces(): void {
     this.selectedPieces = [];
     this.allowableMoves = [];
+    this.locationSelected = false;
   }
 
   selectPieces(location: string): void {
     const square = this.game.board.squareAt(location);
     this.selectedPieces =
       square?.pieces.map((pieceId) => this.game.board.pieces[pieceId]) || [];
-    this.allowableMoves = flatMap(this.selectedPieces, (piece: Piece) =>
+    this.allowableMoves = this.selectedPieces.flatMap((piece: Piece) =>
       new Pather(this.game, this.gameClones, piece, this.interrupt).findPaths()
     );
   }

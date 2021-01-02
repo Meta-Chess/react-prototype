@@ -1,11 +1,10 @@
 import React, { useContext } from "react";
-import { View, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { Colors, PieceImage, SFC, Text } from "primitives";
 import { GameContext } from "game";
 import { PieceName, PlayerDisplayNames } from "game/types";
-import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
-import { ButtonTertiaryLight, Row } from "ui";
+import { ButtonTertiaryLight, Card, Row } from "ui";
 import { Screens, useNavigation } from "navigation";
 
 export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
@@ -72,12 +71,8 @@ export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
   );
 };
 
-const Container = styled(View)`
-  background-color: ${Colors.DARK.toString()};
-  border-radius: 4px;
-  ${Styles.BOX_SHADOW}
+const Container = styled(Card)`
   width: 350px;
-  overflow: hidden;
 `;
 
 const TitleRow = styled(Row)`

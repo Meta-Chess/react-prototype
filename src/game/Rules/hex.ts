@@ -9,7 +9,7 @@ import {
   SquareShape,
   TokenName,
 } from "../types";
-import { createPiece, PieceSet } from "./utilities";
+import { createPiece, determineGaitGenerator, PieceSet } from "./utilities";
 import { Region } from "../types";
 
 export const hex: Rule = {
@@ -18,7 +18,8 @@ export const hex: Rule = {
     "Every place on the board has a hexagonal geometry rather than a square geometry. Note that diagonal steps are a bit longer than usual. Click on a piece to find out how it moves!",
   forSquareGenerationModify: ({ board }) => {
     board.addSquares(generateHexSquares());
-    board.defineRegion(Region.center, [toLocation({ rank: 11, file: 6 })]);
+    board.defineRegion(Region.center, centerRegion);
+    board.defineRegion(Region.promotion, promotionRegion);
     return { board };
   },
   onBoardCreate: ({ board }) => {
@@ -27,6 +28,18 @@ export const hex: Rule = {
     board.addPiecesByRule(hexPieceSetupRule);
     board.addToken(hexShapeToken);
     return { board };
+  },
+  getGaitGenerator: ({ gaitGenerator, name, owner }) => {
+    return {
+      gaitGenerator: determineGaitGenerator({
+        gaitGenerators: gaitGenerator ? [gaitGenerator] : [],
+        name,
+        set: PieceSet.HexStandard,
+        owner: owner || PlayerName.White,
+      }),
+      name,
+      owner,
+    };
   },
 };
 
@@ -107,3 +120,33 @@ const hexPieceSetupRule = (square: Square): Piece[] => {
 
   return [];
 };
+
+const centerRegion = [toLocation({ rank: 11, file: 6 })];
+const promotionRegion = [
+  ...[
+    toLocation({ rank: 6, file: 1 }),
+    toLocation({ rank: 5, file: 2 }),
+    toLocation({ rank: 4, file: 3 }),
+    toLocation({ rank: 3, file: 4 }),
+    toLocation({ rank: 2, file: 5 }),
+    toLocation({ rank: 1, file: 6 }),
+    toLocation({ rank: 2, file: 7 }),
+    toLocation({ rank: 3, file: 8 }),
+    toLocation({ rank: 4, file: 9 }),
+    toLocation({ rank: 5, file: 10 }),
+    toLocation({ rank: 6, file: 11 }),
+  ],
+  ...[
+    toLocation({ rank: 16, file: 1 }),
+    toLocation({ rank: 17, file: 2 }),
+    toLocation({ rank: 18, file: 3 }),
+    toLocation({ rank: 19, file: 4 }),
+    toLocation({ rank: 20, file: 5 }),
+    toLocation({ rank: 21, file: 6 }),
+    toLocation({ rank: 20, file: 7 }),
+    toLocation({ rank: 19, file: 8 }),
+    toLocation({ rank: 18, file: 9 }),
+    toLocation({ rank: 17, file: 10 }),
+    toLocation({ rank: 16, file: 11 }),
+  ],
+];

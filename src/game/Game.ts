@@ -1,8 +1,9 @@
 import { Board } from "./Board";
 import { Clock } from "./Clock";
-import { Move, PlayerName } from "./types";
+import { PlayerName } from "./types";
 import { CompactRules } from "./Rules/Rules";
 import { Player } from "game/Player";
+import { Move } from "game/Move";
 
 export class Game {
   constructor(

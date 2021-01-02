@@ -1,18 +1,19 @@
 import {
+  Interception,
+  atomic,
   castling,
   cylindrical,
+  fatigue,
   hex,
   hexCylindrical,
+  longBoard,
   loseWithNoKings,
   mobius,
   passiveMoveThroughBoard,
   pawnDoubleStep,
   polar,
+  promotion,
   standard,
-  longBoard,
-  atomic,
-  fatigue,
-  Interception,
 } from "../Rules";
 import { verticallyCylindrical } from "game/Rules/verticallyCylindrical";
 import { TraitName } from "game/variants";
@@ -32,7 +33,7 @@ export type VariantName = keyof typeof variants;
 export const variants = {
   Chess: {
     description: "Your usual bog-standard game of chess",
-    rules: [standard, loseWithNoKings, pawnDoubleStep, castling, Interception],
+    rules: [standard, loseWithNoKings, pawnDoubleStep, castling, Interception, promotion],
   },
   ["Cylindrical Chess"]: {
     description: "Chess on a Cylinder! You can move through the sides of the board.",
@@ -43,6 +44,7 @@ export const variants = {
       cylindrical,
       castling,
       Interception,
+      promotion,
     ],
   },
   ["Spherical Chess"]: {
@@ -56,16 +58,25 @@ export const variants = {
       polar,
       castling,
       Interception,
+      promotion,
     ],
   },
   ["Hex Chess"]: {
     description:
       "Chess but with hexagons instead of squares. Watch out for the sneaky bishops.",
-    rules: [hex, loseWithNoKings, pawnDoubleStep, castling, Interception],
+    rules: [hex, loseWithNoKings, pawnDoubleStep, castling, Interception, promotion],
   },
   ["Cylindrical Hex Chess"]: {
     description: "Hexagonal chess where you can move through the sides of the board!",
-    rules: [hex, loseWithNoKings, pawnDoubleStep, hexCylindrical, castling, Interception],
+    rules: [
+      hex,
+      loseWithNoKings,
+      pawnDoubleStep,
+      hexCylindrical,
+      castling,
+      Interception,
+      promotion,
+    ],
   },
   ["Toroidal Chess"]: {
     description:
@@ -78,6 +89,7 @@ export const variants = {
       pawnDoubleStep,
       castling,
       Interception,
+      promotion,
     ],
   },
   ["Möbius Chess"]: {
@@ -92,6 +104,7 @@ export const variants = {
       pawnDoubleStep,
       castling,
       Interception,
+      promotion,
     ],
   },
 };

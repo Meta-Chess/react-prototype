@@ -1,8 +1,9 @@
 import { isPresent } from "utilities";
 import { CompactRules, Game, Piece, Square } from "game";
-import { Direction, Gait, Move, TokenName } from "../types";
+import { Direction, Gait, TokenName } from "../types";
 import { flatMap } from "lodash";
 import { Path } from "./Path";
+import { Move } from "game/Move";
 
 const MAX_STEPS = 64; // To be considered further
 
@@ -29,19 +30,26 @@ export class Pather {
     }).map(({ path, gait }) => ({
       pieceId: this.piece.id,
       location: path.getEnd(),
-      pieceDeltas: [{ pId: this.piece.id, path }],
+      pieceDeltas: [{ pieceId: this.piece.id, path }],
       player: this.piece.owner,
       data: gait.data,
     }));
 
-    let { moves: specialMoves } = this.interrupt.for.generateSpecialMoves({
+    const specialMoves = this.interrupt.for.generateSpecialMoves({
       game: this.game,
       piece: this.piece,
       interrupt: this.interrupt,
       moves: [],
-    });
+    }).moves;
 
-    specialMoves = specialMoves.filter((m) => {
+    const allMoves = moves.concat(specialMoves);
+
+    const processedMoves = this.interrupt.for.processMoves({
+      moves: allMoves,
+      board: this.game.board,
+    }).moves;
+
+    return processedMoves.filter((m) => {
       return !this.interrupt.for.inCanStayFilter({
         move: m,
         game: this.game,
@@ -51,8 +59,6 @@ export class Pather {
         filtered: false,
       }).filtered;
     });
-
-    return moves.concat(specialMoves);
   }
 
   path({
@@ -164,7 +170,7 @@ export class Pather {
       move: {
         pieceId: this.piece.id,
         location: square.location,
-        pieceDeltas: [{ pId: this.piece.id, path: hypotheticalPath }],
+        pieceDeltas: [{ pieceId: this.piece.id, path: hypotheticalPath }],
         player: this.piece.owner,
       },
       game: this.game,

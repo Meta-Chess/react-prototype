@@ -1,8 +1,9 @@
 import { GameMaster } from "./GameMaster";
 import { Renderer } from "./Renderer";
-import { GameOptions, Move } from "game/types";
+import { GameOptions } from "game/types";
 import { GameClient } from "game/GameClient";
 import { sleep } from "utilities/sleep";
+import { Move } from "game/Move";
 
 export class OnlineGameMaster extends GameMaster {
   constructor(
@@ -11,7 +12,7 @@ export class OnlineGameMaster extends GameMaster {
     public roomId: string,
     private gameClient: GameClient
   ) {
-    super(gameOptions, renderer);
+    super(...GameMaster.processConstructorInputs(gameOptions, renderer));
     this.doMovesSlowly(gameClient.moves);
   }
 

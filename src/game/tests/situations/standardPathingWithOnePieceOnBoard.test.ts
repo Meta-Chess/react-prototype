@@ -5,7 +5,9 @@ import { GameMaster } from "../../GameMaster";
 import { mockRenderer } from "game/tests/helpers/mockRenderer";
 
 describe("In standard chess", () => {
-  const gameMaster = new GameMaster({ variant: "Chess" }, mockRenderer);
+  const gameMaster = new GameMaster(
+    ...GameMaster.processConstructorInputs({ variant: "Chess" }, mockRenderer)
+  );
   const board = gameMaster.game.board;
   beforeEach(() => {
     board.getLocations().forEach((location) => board.killPiecesAt(location));

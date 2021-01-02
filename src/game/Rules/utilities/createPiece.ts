@@ -25,7 +25,7 @@ export function createPiece(input: PieceCreationInput): Piece {
   return new Piece(name, gaitGenerator, owner, location, tokens);
 }
 
-const determineGaitGenerator = (input: PieceCreationInput): GaitGenerator => {
+export function determineGaitGenerator(input: PieceCreationInput): GaitGenerator {
   const gaitGenerators = input.gaitGenerators || [];
   const gaits = input.gaits;
   if (gaits) gaitGenerators.push(() => gaits);
@@ -34,7 +34,7 @@ const determineGaitGenerator = (input: PieceCreationInput): GaitGenerator => {
     ? defaultGaitGenerator({ name: input.name, owner: input.owner, set: input.set })
     : (params: GaitParams | undefined): Gait[] =>
         gaitGenerators.map((generator) => generator(params)).flat();
-};
+}
 
 const defaultGaitGenerator = ({
   name,

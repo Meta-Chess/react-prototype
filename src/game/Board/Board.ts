@@ -4,7 +4,6 @@ import { Adjacency } from "./Adjacencies";
 import { TokenOwner } from "./TokenOwner";
 import {
   Direction,
-  PieceDelta,
   RankAndFileBounds,
   Token,
   PlayerName,
@@ -14,9 +13,10 @@ import {
 import { isPresent } from "utilities";
 import { CompactRules } from "game/Rules/Rules";
 import { IdGenerator } from "utilities/IdGenerator";
+import { PieceDelta } from "game/Move";
 
 interface LocationMap {
-  [key: string]: Square;
+  [location: string]: Square;
 }
 
 interface PieceIdMap {
@@ -84,6 +84,10 @@ class Board extends TokenOwner {
 
   getPieces(): Piece[] {
     return Object.values(this.pieces);
+  }
+
+  getPiece(pieceId: string): Piece | undefined {
+    return this.pieces[pieceId];
   }
 
   getPiecesByRule(rule: (p: Piece) => boolean): Piece[] {
@@ -193,7 +197,8 @@ class Board extends TokenOwner {
     return Object.values(this.squares).find(condition);
   }
 
-  displace({ pId: pieceId, path }: PieceDelta): void {
+  displace(delta: PieceDelta): void {
+    const { pieceId, path } = delta;
     const startSquare = this.squareAt(this.pieces[pieceId].location);
     const endSquare = this.squareAt(path.getEnd());
     if (startSquare && endSquare) {
@@ -201,13 +206,14 @@ class Board extends TokenOwner {
       this.pieces[pieceId].location = path.getEnd();
       endSquare.pieces.push(pieceId);
     }
+    this.interrupt.for.onPieceDisplaced({ board: this, pieceDelta: delta });
   }
 
   displacePieces(pieceDeltas: PieceDelta[]): void {
     pieceDeltas.forEach((pieceDelta) => {
       const captureHappened = this.capturePiecesAt(
         pieceDelta.path.getEnd(),
-        this.pieces[pieceDelta.pId]
+        this.pieces[pieceDelta.pieceId]
       );
       this.displace(pieceDelta);
       if (captureHappened) {

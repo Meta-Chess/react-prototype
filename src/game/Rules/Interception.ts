@@ -10,7 +10,7 @@ export const Interception: Rule = {
       const start = move.data?.interceptableAtStart ? 0 : 1;
 
       move.pieceDeltas
-        .find((delta) => delta.pId === move.pieceId)
+        .find((delta) => delta.pieceId === move.pieceId)
         ?.path.getPath()
         .slice(start, -1)
         .forEach((location) => {

@@ -9,7 +9,7 @@ export const fatigue: Rule = {
     "Moving is hard work! If you moved one of your pieces last turn, it's too tired to move this turn (unless you can capture the king!)",
   postMove: ({ board, move, currentTurn }) => {
     const piecesMoved = move.pieceDeltas
-      .map((delta) => board.pieces[delta.pId])
+      .map((delta) => board.pieces[delta.pieceId])
       .filter(isPresent);
     piecesMoved.forEach((piece: Piece) => {
       const fatigueToken = {
