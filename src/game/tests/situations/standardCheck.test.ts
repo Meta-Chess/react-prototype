@@ -68,7 +68,7 @@ describe("In standard chess", () => {
     expect(gameMaster.allowableMoves.length).toEqual(0);
   });
 
-  it("Players in check must move out of check", () => {
+  it("Players in check (not mate) can and must move out of check", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
         { variant: "Chess", checkEnabled: true },
@@ -101,6 +101,10 @@ describe("In standard chess", () => {
     gameMaster.onPress(toLocation({ rank: 5, file: 8 }));
     gameMaster.onPress(toLocation({ rank: 7, file: 6 }));
     expect(board.getPiecesAt(toLocation({ rank: 7, file: 6 })).length).toEqual(1);
+
+    // Game should not have ended
+    expect(gameMaster.gameOver).toEqual(false);
+    expect(gameMaster.game.alivePlayers().length).toEqual(2);
 
     // King should have one allowable move: take the queen
     gameMaster.onPress(toLocation({ rank: 8, file: 5 }));
