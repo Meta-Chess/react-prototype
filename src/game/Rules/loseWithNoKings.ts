@@ -9,6 +9,6 @@ export const loseWithNoKings: Rule = {
     const hasKing = board
       .getPieces()
       .some((piece) => piece.name === PieceName.King && piece.owner === player);
-    return { board, player, dead: hasKing ? false : "slayed on the battlefield" };
+    return { board, player, dead: hasKing ? false : "lost their king" };
   },
 };

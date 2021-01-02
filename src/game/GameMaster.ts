@@ -208,21 +208,18 @@ export class GameMaster {
         player: player.name,
         dead: false,
       });
-      dead =
-        dead ||
-        this.interrupt.for.lossCondition({
+      if (dead === false) {
+        dead = this.interrupt.for.lossCondition({
           playerName: player.name,
           game: this.game,
           gameClones: this.gameClones,
           interrupt: this.interrupt,
           dead: false,
         }).dead;
-      player.alive = !dead;
+      }
+      player.alive = dead === false;
       if (dead) player.endGameMessage = dead;
     });
-
-    //TODO: the same for loss conditions once they exist.
-    //TODO: set loss message here by forcing loss conditions to provide one.
   }
 
   checkWinConditions(): void {
