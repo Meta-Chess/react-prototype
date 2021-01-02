@@ -42,18 +42,23 @@ export class Pather {
       moves: [],
     }).moves;
 
-    return this.interrupt.for
-      .processMoves({ moves: moves.concat(specialMoves), board: this.game.board })
-      .moves.filter((m) => {
-        return !this.interrupt.for.inCanStayFilter({
-          move: m,
-          game: this.game,
-          gameClones: this.gameClones,
-          interrupt: this.interrupt,
-          patherParams: this.params,
-          filtered: false,
-        }).filtered;
-      });
+    const allMoves = moves.concat(specialMoves);
+
+    const processedMoves = this.interrupt.for.processMoves({
+      moves: allMoves,
+      board: this.game.board,
+    }).moves;
+
+    return processedMoves.filter((m) => {
+      return !this.interrupt.for.inCanStayFilter({
+        move: m,
+        game: this.game,
+        gameClones: this.gameClones,
+        interrupt: this.interrupt,
+        patherParams: this.params,
+        filtered: false,
+      }).filtered;
+    });
   }
 
   path({
