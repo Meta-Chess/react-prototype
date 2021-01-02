@@ -1,7 +1,7 @@
 import { CompactRules, Rule } from "./Rules";
 import { Pather } from "../Pather";
 import { cloneDeep } from "lodash";
-import { Move, PieceName } from "game/types";
+import { Move } from "game/types";
 import { Game } from "game";
 
 export const check: Rule = {
@@ -15,10 +15,8 @@ export const check: Rule = {
   lossCondition: ({ playerName, game, gameClones, interrupt, dead }) => {
     if (dead || game.getCurrentPlayerName() !== playerName)
       return { playerName, game, gameClones, interrupt, dead };
-    console.log("A", gameClones);
     if (checkAllowsMove({ move: undefined, game, gameClones, interrupt }))
       return { playerName, game, gameClones, interrupt, dead: false };
-    console.log("B");
 
     const pieces = game.board.piecesBelongingTo(playerName);
     pieces.forEach((piece) => {
@@ -59,19 +57,13 @@ function checkAllowsMove({
     gameClones[0].nextTurn();
     const pieces = gameClones[0].board.piecesNotBelongingTo(player);
 
-    gameClones[1].resetTo(gameClones[0]);
     for (let i = 0; i < pieces.length; i++) {
       const piece = pieces[i];
-
-      if (piece.name === PieceName.Queen)
-        console.log("before", piece, piece.location, gameClones[0]);
-
       const pather = new Pather(gameClones[0], [], piece, interrupt, newPatherParams);
       const hypotheticalMoves = pather.findPaths();
 
-      if (piece.name === PieceName.Queen) console.log("after", hypotheticalMoves);
-
       for (let j = 0; j < hypotheticalMoves.length; j++) {
+        gameClones[1].resetTo(gameClones[0]);
         gameClones[1].doMove(hypotheticalMoves[j]);
         gameClones[1].nextTurn();
         const { dead } = interrupt.for.lethalCondition({
@@ -80,13 +72,10 @@ function checkAllowsMove({
           dead: false,
         });
         if (dead) {
-          gameClones[0].resetTo(game);
           return false;
         }
-        gameClones[1].resetTo(gameClones[0]);
       }
     }
-    gameClones[0].resetTo(game);
   }
   return true;
 }

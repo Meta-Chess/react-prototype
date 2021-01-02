@@ -141,7 +141,6 @@ export class GameMaster {
   }
 
   onPress(location: string): Move | undefined {
-    this.gameClones.forEach((clone) => clone.resetTo(this.game));
     const moves = uniqWith(
       this.allowableMoves.filter((m) => m.location === location),
       movesAreEqual
