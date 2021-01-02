@@ -1,12 +1,10 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import { Board, calculateBoardMeasurements } from "components/shared/Board";
-import { Colors, SFC } from "primitives";
-import { AbsoluteView } from "ui";
+import { Colors, SFC, useHover } from "primitives";
+import { AbsoluteTouchableOpacity } from "ui";
 import { TokenName } from "game/types";
 import { GameMaster, SimpleGameProvider } from "game";
-import { View, Pressable } from "react-native";
-import styled from "styled-components/native";
-import { PressableState } from "ui/Pressable/PressableState";
+import { View } from "react-native";
 
 interface Props {
   gameMaster: GameMaster;
@@ -22,6 +20,7 @@ export const StaticBoard: SFC<Props> = ({
   height = 200,
   style,
 }) => {
+  const [ref, hovered] = useHover();
   const shape = gameMaster.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape;
   const boardMeasurements = calculateBoardMeasurements({
     board: gameMaster.game.board,
@@ -32,29 +31,17 @@ export const StaticBoard: SFC<Props> = ({
   });
 
   return (
-    <Container style={[style, { width, height }]}>
-      <Pressable onPress={onPress}>
-        {({ pressed, hovered, focused }: PressableState): ReactElement => (
-          <>
-            <SimpleGameProvider gameMaster={gameMaster}>
-              <Board measurements={boardMeasurements} backboard={false} />
-            </SimpleGameProvider>
-            <AbsoluteView
-              style={{
-                backgroundColor: pressed
-                  ? Colors.DARKISH.fade(0.5).toString()
-                  : hovered || focused
-                  ? Colors.DARKISH.fade(0.3).toString()
-                  : "transparent",
-              }}
-            />
-          </>
-        )}
-      </Pressable>
-    </Container>
+    <View style={[style, { width, height, overflow: "hidden" }]}>
+      <SimpleGameProvider gameMaster={gameMaster}>
+        <Board measurements={boardMeasurements} backboard={false} />
+      </SimpleGameProvider>
+      <AbsoluteTouchableOpacity
+        onPress={onPress}
+        ref={ref}
+        style={{
+          backgroundColor: hovered ? Colors.DARKISH.fade(0.8).toString() : "transparent",
+        }}
+      />
+    </View>
   );
 };
-
-const Container = styled(View)`
-  overflow: hidden;
-`;

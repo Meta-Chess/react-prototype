@@ -1,10 +1,11 @@
 import React, { useContext, FC } from "react";
 import { GameContext } from "game";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Platform } from "react-native";
 import { CloseIcon, Colors, Text } from "primitives";
-import { Card } from "ui";
 import { StaticBoard } from "components/shared/StaticBoard";
 import { IconButton } from "ui/Buttons/IconButton";
+import styled from "styled-components/native";
+import { Styles } from "primitives/Styles";
 
 export const MoveDisambiguationModal: FC = () => {
   const { gameMaster } = useContext(GameContext);
@@ -14,7 +15,7 @@ export const MoveDisambiguationModal: FC = () => {
   if (!moves) return null; // TODO: consider throwing an error?
 
   return (
-    <Card style={{ alignSelf: "stretch", marginHorizontal: 24, padding: 0 }}>
+    <Container>
       <Text cat={"DisplayM"} alignment={"center"} style={{ marginTop: 8 }}>
         {"Pick a move!"}
       </Text>
@@ -23,7 +24,7 @@ export const MoveDisambiguationModal: FC = () => {
         contentContainerStyle={{
           flexGrow: 1,
           justifyContent: "space-around",
-          paddingHorizontal: 20,
+          paddingHorizontal: Platform.OS === "web" ? 24 : 8,
           paddingVertical: 12,
         }}
         showsHorizontalScrollIndicator={false}
@@ -56,6 +57,14 @@ export const MoveDisambiguationModal: FC = () => {
           gameMaster.render();
         }}
       />
-    </Card>
+    </Container>
   );
 };
+
+const Container = styled(View)`
+  align-self: stretch;
+  margin-horizontal: ${Platform.OS === "web" ? 24 : 0}px;
+  border-radius: ${Platform.OS === "web" ? 4 : 0}px;
+  background-color: ${Colors.DARKISH.toString()};
+  ${Styles.BOX_SHADOW}
+`;

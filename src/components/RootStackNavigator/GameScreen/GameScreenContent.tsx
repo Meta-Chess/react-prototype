@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useCallback, useState } from "react";
 import { Platform, useWindowDimensions, View } from "react-native";
 import { GameContext } from "game";
 import {
@@ -10,9 +10,11 @@ import { Sidebar } from "./Sidebar";
 import { PlayerName, SquareShape, TokenName } from "game/types";
 import { useFlipDelay } from "components/shared/Board/useFlipDelay";
 import { PlayerRow } from "./PlayerRow";
-import { Spinner } from "ui";
+import { AbsoluteView, Spinner } from "ui";
 import styled from "styled-components/native";
 import { ScreenContainer } from "components/shared";
+import { WinModal } from "components/shared/Board/WinModal";
+import { MoveDisambiguationModal } from "components/shared/Board/MoveDisambiguationModal";
 
 const PLAYER_ROW_HEIGHT = 64;
 
@@ -21,6 +23,10 @@ export const GameScreenContent: FC = () => {
   const portrait = height > width;
 
   const { gameMaster } = useContext(GameContext);
+  const [winModalHidden, setWinModalHidden] = useState(false);
+  const hideWinModal = useCallback(() => setWinModalHidden(true), []);
+  const moveDisambiguationRequired =
+    gameMaster?.locationSelected && (gameMaster?.allowableMoves.length || 0) > 1;
   const { flipBoard } = useFlipDelay(gameMaster?.game?.currentPlayerIndex);
   if (!gameMaster) return <Spinner />;
 
@@ -56,6 +62,15 @@ export const GameScreenContent: FC = () => {
           player={flipBoard ? PlayerName.Black : PlayerName.White}
           style={{ height: PLAYER_ROW_HEIGHT }}
         />
+        {gameMaster?.gameOver && !winModalHidden ? (
+          <AbsoluteView>
+            <WinModal onClose={hideWinModal} />
+          </AbsoluteView>
+        ) : moveDisambiguationRequired ? (
+          <AbsoluteView>
+            <MoveDisambiguationModal />
+          </AbsoluteView>
+        ) : null}
       </View>
       <SidebarContainer portrait={portrait} boardMeasurements={boardMeasurements}>
         <Sidebar short={portrait} style={{ flex: 1 }} />
