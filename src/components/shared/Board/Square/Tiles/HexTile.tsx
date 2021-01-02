@@ -3,26 +3,26 @@ import { SFC } from "primitives";
 import { View } from "react-native";
 
 interface HexTileProps {
-  radius: number;
+  size: number;
   color: string;
 }
 
-const HexTile: SFC<HexTileProps> = ({ radius, color }) => {
-  const height = 2 * radius;
+const HexTile: SFC<HexTileProps> = ({ size, color }) => {
+  const radius = size / 2;
   const centerWidth = radius * (2 / Math.sqrt(3));
   const endWidth = radius / Math.sqrt(3);
   return (
     <View
       style={{
         flexDirection: "row",
-        marginLeft: -height / (8 * Math.sqrt(3)),
+        marginLeft: -size / (8 * Math.sqrt(3)),
         position: "absolute",
       }}
     >
       <View
         style={{
-          borderTopWidth: height / 2,
-          borderBottomWidth: height / 2,
+          borderTopWidth: size / 2,
+          borderBottomWidth: size / 2,
           borderRightWidth: endWidth,
           borderTopColor: "transparent",
           borderBottomColor: "transparent",
@@ -32,14 +32,14 @@ const HexTile: SFC<HexTileProps> = ({ radius, color }) => {
       <View
         style={{
           width: centerWidth,
-          height: height,
+          height: size,
           backgroundColor: color,
         }}
       />
       <View
         style={{
-          borderTopWidth: height / 2,
-          borderBottomWidth: height / 2,
+          borderTopWidth: size / 2,
+          borderBottomWidth: size / 2,
           borderLeftWidth: endWidth,
           borderTopColor: "transparent",
           borderBottomColor: "transparent",

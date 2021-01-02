@@ -7,8 +7,9 @@ import { ShadowPiece } from "./ShadowPiece";
 import { GridArrangement } from "./GridArrangement";
 import { GameContext } from "game";
 import { Square } from "game/Board";
-import { SquareShape } from "game/types";
-import { HexTile } from "./HexTile";
+import { SquareShape, Token, TokenName } from "game/types";
+import { TileAppearance } from "./TileAppearance";
+import { TilePressableContainer } from "./TilePressableContainer";
 import { Highlight } from "./Highlight";
 import { useModals } from "ui";
 
@@ -57,51 +58,45 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
 
   return (
     <OuterContainer size={size}>
-      {shape === SquareShape.Hex && GRAPHIC_HEX_TILING && (
-        <HexTile radius={size / 2} color={backgroundColor} />
-      )}
-      <PressableContainer
+      <TileAppearance shape={shape} size={size} color={backgroundColor} />
+      <TilePressableContainer
+        shape={shape}
         size={size}
-        style={[
-          style,
-          {
-            backgroundColor:
-              shape === SquareShape.Hex && GRAPHIC_HEX_TILING
-                ? "transparent"
-                : backgroundColor,
-            borderRadius: shape === SquareShape.Hex ? 50 : 0,
-            overflow:
-              shape === SquareShape.Hex && GRAPHIC_HEX_TILING ? "visible" : "hidden",
-          },
-        ]}
         onPress={onPress}
-        activeOpacity={1}
-      >
-        <PositioningContainer size={pieceScaleFactor * size}>
-          <GridArrangement>
-            {piecesUnderSquare.map((piece) => (
-              <ShadowPiece
-                piece={gameMaster.game.board.pieces[piece]}
-                size={pieceSize}
-                key={piece}
-              />
-            ))}
-          </GridArrangement>
-        </PositioningContainer>
-        <Highlight gameMaster={gameMaster} square={square} size={size} shape={shape} />
-        <PositioningContainer size={pieceScaleFactor * size}>
-          <GridArrangement>
-            {piecesOnSquare.map((piece) => (
-              <Piece
-                piece={gameMaster.game.board.pieces[piece]}
-                size={pieceSize}
-                key={piece}
-              />
-            ))}
-          </GridArrangement>
-        </PositioningContainer>
-      </PressableContainer>
-      {renderAnimation && <Explosion key={square.location} size={size} />}
+        contents={
+          <>
+            <PositioningContainer size={pieceScaleFactor * size}>
+              <GridArrangement>
+                {piecesUnderSquare.map((piece) => (
+                  <ShadowPiece
+                    piece={gameMaster.game.board.pieces[piece]}
+                    size={pieceSize}
+                    key={piece}
+                  />
+                ))}
+              </GridArrangement>
+            </PositioningContainer>
+            <Highlight
+              gameMaster={gameMaster}
+              square={square}
+              size={size}
+              shape={shape}
+            />
+            <PositioningContainer size={pieceScaleFactor * size}>
+              <GridArrangement>
+                {piecesOnSquare.map((piece) => (
+                  <Piece
+                    piece={gameMaster.game.board.pieces[piece]}
+                    size={pieceSize}
+                    key={piece}
+                  />
+                ))}
+              </GridArrangement>
+            </PositioningContainer>
+          </>
+        }
+      />
+      {explosionId && <Explosion id={explosionId} />}
     </OuterContainer>
   );
 };

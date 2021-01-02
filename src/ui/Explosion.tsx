@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Animated, Easing, Platform, View } from "react-native";
-import { SFC } from "primitives";
+import React, { useEffect, FC, useRef } from "react";
+import { Animated, Easing, Platform } from "react-native";
+import { AbsoluteView } from "ui/Containers";
+import { HexTileAnimated } from "components/shared/Board/Square/Tiles";
 
 interface Props {
   size: number;
