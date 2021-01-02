@@ -1,6 +1,6 @@
 import { isPresent } from "utilities";
 import { CompactRules, Game, Piece, Square } from "game";
-import { Direction, Gait, TokenName } from "../types";
+import { Direction, Gait, PieceName, TokenName } from "../types";
 import { flatMap } from "lodash";
 import { Path } from "./Path";
 import { Move } from "game/Move";
@@ -18,6 +18,7 @@ export class Pather {
 
   findPaths(): Move[] {
     const currentSquare = this.game.board.squareAt(this.piece.location);
+    console.log({ currentSquare, location: this.piece.location });
     if (!currentSquare) return [];
 
     const { gaits } = this.interrupt.for.onGaitsGeneratedModify({

@@ -1,49 +1,92 @@
-import { Rule } from "./Rules";
+import { CompactRules, Rule } from "./Rules";
 import { Pather } from "../Pather";
 import { cloneDeep } from "lodash";
+import { Move, PieceName } from "game/types";
+import { Game } from "game";
 
 export const check: Rule = {
   name: "Check",
   description:
     "You can't do any moves that would allow an opponent to take your king on their next turn. Something something win condition? Something something multiple opponents?",
+  inCanStayFilter: (input) => {
+    if (input.filtered) return input;
+    return { ...input, filtered: !checkAllowsMove(input) };
+  },
+  lossCondition: ({ playerName, game, gameClones, interrupt, dead }) => {
+    if (dead || game.getCurrentPlayerName() !== playerName)
+      return { playerName, game, gameClones, interrupt, dead };
+    console.log("A", gameClones);
+    if (checkAllowsMove({ move: undefined, game, gameClones, interrupt }))
+      return { playerName, game, gameClones, interrupt, dead: false };
+    console.log("B");
 
-  inCanStayFilter: ({ move, game, gameClones, interrupt, patherParams, filtered }) => {
-    if (filtered) return { move, game, gameClones, interrupt, patherParams, filtered };
-
-    const newPatherParams = cloneDeep(patherParams);
-
-    if (newPatherParams.checkDepth === undefined) {
-      newPatherParams.checkDepth = 1;
-    }
-
-    if (newPatherParams.checkDepth > 0) {
-      newPatherParams.checkDepth -= 1;
-      gameClones[0].doMove(move);
-      gameClones[0].nextTurn();
-      const pieces = gameClones[0].board.piecesNotBelongingTo(move.playerName);
-
-      gameClones[1].resetTo(gameClones[0]);
-      for (let i = 0; i < pieces.length; i++) {
-        const piece = pieces[i];
-        const pather = new Pather(gameClones[0], [], piece, interrupt, newPatherParams);
-        const hypotheticalMoves = pather.findPaths();
-        for (let j = 0; j < hypotheticalMoves.length; j++) {
-          gameClones[1].doMove(hypotheticalMoves[j]);
-          gameClones[1].nextTurn();
-          const { dead } = interrupt.for.lethalCondition({
-            board: gameClones[1].board,
-            player: move.playerName,
-            dead: false,
-          });
-          if (dead) {
-            gameClones[0].resetTo(game);
-            return { move, game, gameClones, interrupt, patherParams, filtered: true };
-          }
-          gameClones[1].resetTo(gameClones[0]);
-        }
-      }
-      gameClones[0].resetTo(game);
-    }
-    return { move, game, gameClones, interrupt, patherParams, filtered: false };
+    const pieces = game.board.piecesBelongingTo(playerName);
+    pieces.forEach((piece) => {
+      const pather = new Pather(game, gameClones, piece, interrupt);
+      const hypotheticalMoves = pather.findPaths();
+      if (hypotheticalMoves.length > 0)
+        return { playerName, game, gameClones, interrupt, dead: false };
+    });
+    return { playerName, game, gameClones, interrupt, dead: "checkmated" };
   },
 };
+
+function checkAllowsMove({
+  move,
+  game,
+  gameClones,
+  interrupt,
+  patherParams = {},
+}: {
+  move: Move | undefined;
+  game: Game;
+  gameClones: Game[];
+  interrupt: CompactRules;
+  patherParams?: { checkDepth?: number };
+}): boolean {
+  const newPatherParams = cloneDeep(patherParams);
+
+  if (newPatherParams.checkDepth === undefined) {
+    newPatherParams.checkDepth = 1;
+  }
+
+  if (newPatherParams.checkDepth > 0) {
+    const player =
+      move?.playerName === undefined ? game.getCurrentPlayerName() : move?.player;
+    newPatherParams.checkDepth -= 1;
+    gameClones[0].resetTo(game);
+    gameClones[0].doMove(move);
+    gameClones[0].nextTurn();
+    const pieces = gameClones[0].board.piecesNotBelongingTo(player);
+
+    gameClones[1].resetTo(gameClones[0]);
+    for (let i = 0; i < pieces.length; i++) {
+      const piece = pieces[i];
+
+      if (piece.name === PieceName.Queen)
+        console.log("before", piece, piece.location, gameClones[0]);
+
+      const pather = new Pather(gameClones[0], [], piece, interrupt, newPatherParams);
+      const hypotheticalMoves = pather.findPaths();
+
+      if (piece.name === PieceName.Queen) console.log("after", hypotheticalMoves);
+
+      for (let j = 0; j < hypotheticalMoves.length; j++) {
+        gameClones[1].doMove(hypotheticalMoves[j]);
+        gameClones[1].nextTurn();
+        const { dead } = interrupt.for.lethalCondition({
+          board: gameClones[1].board,
+          player: player,
+          dead: false,
+        });
+        if (dead) {
+          gameClones[0].resetTo(game);
+          return false;
+        }
+        gameClones[1].resetTo(gameClones[0]);
+      }
+    }
+    gameClones[0].resetTo(game);
+  }
+  return true;
+}

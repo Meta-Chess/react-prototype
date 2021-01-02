@@ -39,6 +39,7 @@ export class GameMaster {
     this.title = gameOptions?.customTitle || "Chess"; //TODO bundle this into other info
     this.flipBoard = !!gameOptions?.flipBoard;
     this.overTheBoard = !!gameOptions?.overTheBoard;
+    this.checkGameEndConditions();
   }
 
   static processConstructorInputs(
@@ -175,8 +176,8 @@ export class GameMaster {
       if (unselect) this.unselectAllPieces();
     }
     this.moveHistory.push(move);
-    this.checkGameEndConditions();
     this.game.nextTurn();
+    this.checkGameEndConditions();
     this.render();
   }
 
@@ -203,13 +204,22 @@ export class GameMaster {
 
   applyLossConditions(): void {
     this.game.alivePlayers().forEach((player) => {
-      const { dead } = this.interrupt.for.lethalCondition({
+      let { dead } = this.interrupt.for.lethalCondition({
         board: this.game.board,
         player: player.name,
         dead: false,
       });
+      dead =
+        dead ||
+        this.interrupt.for.lossCondition({
+          playerName: player.name,
+          game: this.game,
+          gameClones: this.gameClones,
+          interrupt: this.interrupt,
+          dead: false,
+        }).dead;
       player.alive = !dead;
-      if (dead) player.endGameMessage = "slayed on the field of battle";
+      if (dead) player.endGameMessage = dead;
     });
 
     //TODO: the same for loss conditions once they exist.
