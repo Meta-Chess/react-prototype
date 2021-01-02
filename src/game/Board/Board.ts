@@ -14,7 +14,6 @@ import { isPresent } from "utilities";
 import { CompactRules } from "game/Rules/Rules";
 import { IdGenerator } from "utilities/IdGenerator";
 import { PieceDelta } from "game/Move";
-import { AnimationHandler } from "./AnimationHandler";
 
 interface LocationMap {
   [location: string]: Square;
@@ -33,8 +32,7 @@ class Board extends TokenOwner {
     public interrupt: CompactRules,
     public squares: LocationMap = {},
     public pieces: PieceIdMap = {},
-    public tokens: Token[] = [],
-    public animationHandler: AnimationHandler = new AnimationHandler()
+    public tokens: Token[] = []
   ) {
     super(tokens);
     this.idGenerator = new IdGenerator();

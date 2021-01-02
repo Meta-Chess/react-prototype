@@ -44,6 +44,10 @@ export class TokenOwner {
   }
 
   tokensWithName(name: TokenName): Token[] {
-    return this.tokens.filter((token) => token.name === name);
+    return this.tokensSatisfyingRule((token) => token.name === name);
+  }
+
+  tokensSatisfyingRule(rule: (token: Token) => boolean): Token[] {
+    return this.tokens.filter(rule);
   }
 }

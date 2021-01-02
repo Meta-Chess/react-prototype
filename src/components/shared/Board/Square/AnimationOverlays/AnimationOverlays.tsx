@@ -1,9 +1,8 @@
 import React from "react";
-import { View } from "react-native";
 import { SFC } from "primitives";
 import { SquareShape } from "game/types";
-import { Explosion } from "ui/VariantContent";
 import { Token, TokenName } from "game/types";
+import { AbsoluteView } from "ui/Containers";
 import { Square } from "game/Board";
 import { TileAnimation } from "./TileAnimation";
 
@@ -15,7 +14,7 @@ interface AnimationOverlaysProps {
 
 const AnimationOverlays: SFC<AnimationOverlaysProps> = ({ square, shape, size }) => {
   return (
-    <View>
+    <AbsoluteView pointerEvents={"none"}>
       {square
         .tokensSatisfyingRule(
           (token: Token): boolean => token.name === TokenName.AnimationToken
@@ -23,7 +22,7 @@ const AnimationOverlays: SFC<AnimationOverlaysProps> = ({ square, shape, size })
         .map((token) => (
           <TileAnimation shape={shape} size={size} token={token} key={token.data?.id} />
         ))}
-    </View>
+    </AbsoluteView>
   );
 };
 

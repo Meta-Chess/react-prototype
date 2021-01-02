@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import { Direction } from "./Direction";
 import { Piece, VariantName, Rule } from "game";
 import { Path } from "game/Pather/Path";
-import { FutureVariantName, TraitName } from "game/variants";
+import { TraitName } from "game/variants";
 
 export interface GaitData {
   interceptable?: boolean;
@@ -70,6 +70,7 @@ export enum TokenName {
   PassiveCastling,
   CaptureToken,
   Fatigue,
+  AnimationToken,
 }
 
 export enum AnimationTypes {
@@ -131,9 +132,3 @@ export enum Region {
 }
 
 export type Regions = { [key in Region]?: string[] };
-
-export interface AnimationData {
-  duration: number;
-  type: string;
-  locations: { [id in string]: undefined };
-}

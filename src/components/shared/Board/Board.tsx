@@ -15,10 +15,6 @@ export const Board: FC<BoardProps> = (props) => {
   const { gameMaster } = useContext(GameContext);
   const shapeToken = gameMaster?.game.board.firstTokenWithName(TokenName.Shape);
   const loading = !gameMaster || !dimensions.width;
-  const animationHandler = gameMaster?.game.board.animationHandler;
-  if (animationHandler?.animations.length !== 0) {
-    animationHandler?.animationRun();
-  }
 
   return (
     <>

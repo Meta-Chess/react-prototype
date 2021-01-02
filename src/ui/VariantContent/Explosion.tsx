@@ -26,8 +26,8 @@ const Explosion: FC<Props> = ({ shape, size, duration }) => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const animatedColor = colorValue.interpolate({
-    inputRange: [0, 9, 10],
-    outputRange: ["rgba(235,52,52,0.4)", "rgba(255,97,0,0.4)", "rgba(0,0,0,0)"],
+    inputRange: [0, 10],
+    outputRange: ["rgba(235,52,52,0.4)", "rgba(0,0,0,0)"],
   });
 
   const options = {
