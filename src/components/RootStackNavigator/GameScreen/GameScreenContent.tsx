@@ -28,7 +28,12 @@ export const GameScreenContent: FC = () => {
   const moveDisambiguationRequired =
     gameMaster?.locationSelected && (gameMaster?.allowableMoves.length || 0) > 1;
   const { flipBoard } = useFlipDelay(gameMaster?.game?.currentPlayerIndex);
-  if (!gameMaster) return <Spinner />;
+  if (!gameMaster)
+    return (
+      <StyledContainer>
+        <Spinner />
+      </StyledContainer>
+    );
 
   const shape = gameMaster.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape;
 
