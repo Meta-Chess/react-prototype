@@ -46,6 +46,6 @@ export const tokenDetails: { [k in TokenName]: Details } = {
   },
   [TokenName.AnimationToken]: {
     name: "Animation",
-    description: "This is temporary - and probably shouldn't be here.",
+    description: "This object might look cool!",
   },
 };
