@@ -5,13 +5,13 @@ import { SquareShape } from "game/types";
 import { Explosion } from "ui/VariantContent";
 import { Token } from "game/types";
 
-interface TileAnimationOverlayProps {
+interface TileAnimationProps {
   shape: SquareShape | undefined;
   size: number;
   token: Token;
 }
 
-const TileAnimationOverlay: SFC<TileAnimationOverlayProps> = ({ shape, size, token }) => {
+const TileAnimation: SFC<TileAnimationProps> = ({ shape, size, token }) => {
   const animationType = token.data?.type;
   const animationDuration = token.data?.duration;
 
@@ -21,4 +21,4 @@ const TileAnimationOverlay: SFC<TileAnimationOverlayProps> = ({ shape, size, tok
   return animationType ? options[animationType] : <View />;
 };
 
-export { TileAnimationOverlay };
+export { TileAnimation };

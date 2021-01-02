@@ -7,10 +7,10 @@ import { ShadowPiece } from "./ShadowPiece";
 import { GridArrangement } from "./GridArrangement";
 import { GameContext } from "game";
 import { Square } from "game/Board";
-import { SquareShape, Token, TokenName } from "game/types";
+import { SquareShape } from "game/types";
 import { TileAppearance } from "./TileAppearance";
 import { TilePressableContainer } from "./TilePressableContainer";
-import { TileAnimationOverlay } from "./TileAnimationOverlay";
+import { AnimationOverlays } from "./AnimationOverlays";
 import { Highlight } from "./Highlight";
 import { useModals } from "ui";
 
@@ -89,18 +89,7 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
           </>
         }
       />
-      {square
-        .tokensSatisfyingRule(
-          (token: Token): boolean => token.name === TokenName.AnimationToken
-        )
-        .map((token) => (
-          <TileAnimationOverlay
-            shape={shape}
-            size={size}
-            token={token}
-            key={token.data?.id}
-          />
-        ))}
+      <AnimationOverlays square={square} shape={shape} size={size} />
     </OuterContainer>
   );
 };
