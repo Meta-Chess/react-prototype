@@ -57,6 +57,12 @@ const identityRule = {
     interrupt: CompactRules;
     dead: string | false;
   }) => x,
+  drawCondition: (x: {
+    game: Game;
+    gameClones: Game[];
+    interrupt: CompactRules;
+    draw: string | false;
+  }) => x,
   inCanStayFilter: (x: {
     move: Move;
     game: Game;

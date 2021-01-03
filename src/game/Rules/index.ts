@@ -3,6 +3,7 @@ export * from "./Interception";
 export * from "./atomic";
 export * from "./castling";
 export * from "./check";
+export * from "./stalemate";
 export * from "./cylindrical";
 export * from "./fatigue";
 export * from "./hex";

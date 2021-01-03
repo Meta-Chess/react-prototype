@@ -1,5 +1,6 @@
 import {
   Interception,
+  stalemate,
   atomic,
   castling,
   cylindrical,
@@ -33,7 +34,15 @@ export type VariantName = keyof typeof variants;
 export const variants = {
   Chess: {
     description: "Your usual bog-standard game of chess",
-    rules: [standard, loseWithNoKings, pawnDoubleStep, castling, Interception, promotion],
+    rules: [
+      standard,
+      loseWithNoKings,
+      pawnDoubleStep,
+      castling,
+      Interception,
+      promotion,
+      stalemate,
+    ],
   },
   ["Cylindrical Chess"]: {
     description: "Chess on a Cylinder! You can move through the sides of the board.",
@@ -45,6 +54,7 @@ export const variants = {
       castling,
       Interception,
       promotion,
+      stalemate,
     ],
   },
   ["Spherical Chess"]: {
@@ -59,6 +69,7 @@ export const variants = {
       castling,
       Interception,
       promotion,
+      stalemate,
     ],
   },
   ["Hex Chess"]: {
@@ -76,6 +87,7 @@ export const variants = {
       castling,
       Interception,
       promotion,
+      stalemate,
     ],
   },
   ["Toroidal Chess"]: {
@@ -90,6 +102,7 @@ export const variants = {
       castling,
       Interception,
       promotion,
+      stalemate,
     ],
   },
   ["Möbius Chess"]: {
@@ -105,6 +118,7 @@ export const variants = {
       castling,
       Interception,
       promotion,
+      stalemate,
     ],
   },
 };
