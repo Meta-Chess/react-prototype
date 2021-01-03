@@ -12,6 +12,8 @@ const HexTile: SFC<TileProps> = ({ size, color }) => {
     <AbsoluteView
       style={{
         flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
         marginLeft: -size / (8 * Math.sqrt(3)),
       }}
     >
