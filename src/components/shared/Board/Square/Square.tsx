@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { Piece } from "./Piece";
@@ -8,18 +8,18 @@ import { GridArrangement } from "./GridArrangement";
 import { GameContext } from "game";
 import { Square } from "game/Board";
 import { SquareShape } from "game/types";
-import { HexTile } from "./HexTile";
+import { TilePressableContainer } from "./TilePressableContainer";
+import { AnimationOverlays } from "./AnimationOverlays";
 import { Highlight } from "./Highlight";
-import { useModals } from "ui";
+import { useModals, Tile } from "ui";
 
 interface Props {
   square: Square | undefined;
   size: number;
-  shape?: SquareShape;
+  shape: SquareShape;
 }
 
 const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
-  const GRAPHIC_HEX_TILING = true; //true for Hex over Circle, TODO: bundle into graphic options, or choose one over the other
   const modals = useModals();
   const { gameMaster } = useContext(GameContext);
   if (!gameMaster) return null;
@@ -49,26 +49,8 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
 
   return (
     <OuterContainer size={size}>
-      {shape === SquareShape.Hex && GRAPHIC_HEX_TILING && (
-        <HexTile radius={size / 2} color={backgroundColor} />
-      )}
-      <PressableContainer
-        size={size}
-        style={[
-          style,
-          {
-            backgroundColor:
-              shape === SquareShape.Hex && GRAPHIC_HEX_TILING
-                ? "transparent"
-                : backgroundColor,
-            borderRadius: shape === SquareShape.Hex ? 50 : 0,
-            overflow:
-              shape === SquareShape.Hex && GRAPHIC_HEX_TILING ? "visible" : "hidden",
-          },
-        ]}
-        onPress={onPress}
-        activeOpacity={1}
-      >
+      <Tile shape={shape} size={size} color={backgroundColor} />
+      <TilePressableContainer shape={shape} size={size} onPress={onPress}>
         <PositioningContainer size={pieceScaleFactor * size}>
           <GridArrangement>
             {piecesUnderSquare.map((piece) => (
@@ -92,7 +74,8 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
             ))}
           </GridArrangement>
         </PositioningContainer>
-      </PressableContainer>
+      </TilePressableContainer>
+      <AnimationOverlays square={square} shape={shape} size={size} />
     </OuterContainer>
   );
 };
@@ -114,12 +97,6 @@ const OuterContainer = styled(View)<{ size: number }>`
   width: ${({ size }): number => size}px;
   height: ${({ size }): number => size}px;
   background-color: transparent;
-`;
-
-const PressableContainer = styled(TouchableOpacity)<{ size: number }>`
-  position: absolute;
-  width: ${({ size }): number => size}px;
-  height: ${({ size }): number => size}px;
 `;
 
 const PositioningContainer = styled(View)<{ size: number }>`

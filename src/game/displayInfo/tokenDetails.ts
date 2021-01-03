@@ -44,4 +44,8 @@ export const tokenDetails: { [k in TokenName]: Details } = {
     name: "Fatigue",
     description: "This piece can't move until next turn!",
   },
+  [TokenName.AnimationToken]: {
+    name: "Animation",
+    description: "This object might look cool!",
+  },
 };

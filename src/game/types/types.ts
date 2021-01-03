@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { Direction } from "./Direction";
-import { Piece, Rule, VariantName } from "game";
+import { Piece, VariantName, Rule } from "game";
 import { TraitName } from "game/variants";
 
 export interface GaitData {
@@ -69,6 +69,11 @@ export enum TokenName {
   PassiveCastling,
   CaptureToken,
   Fatigue,
+  AnimationToken,
+}
+
+export enum AnimationType {
+  explosion = "explosion",
 }
 
 interface TokenData {
@@ -76,6 +81,10 @@ interface TokenData {
   shape?: SquareShape;
   pieceId?: string;
   condition?: (piece: Piece) => boolean;
+  type?: AnimationType;
+  createdAt?: number;
+  duration?: number;
+  id?: number;
 }
 
 export interface RankAndFileBounds {

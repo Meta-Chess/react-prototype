@@ -1,45 +1,40 @@
-import React from "react";
-import { SFC } from "primitives";
-import { View } from "react-native";
+import React, { FC } from "react";
+import { View, Animated } from "react-native";
+import { AnimatedTileProps } from "./TileProps";
 
-interface HexTileProps {
-  radius: number;
-  color: string;
-}
-
-const HexTile: SFC<HexTileProps> = ({ radius, color }) => {
-  const height = 2 * radius;
+const HexTileAnimated: FC<AnimatedTileProps> = ({ size, color }) => {
+  const radius = size / 2;
   const centerWidth = radius * (2 / Math.sqrt(3));
   const endWidth = radius / Math.sqrt(3);
   return (
     <View
       style={{
         flexDirection: "row",
-        marginLeft: -height / (8 * Math.sqrt(3)),
+        marginLeft: -size / (8 * Math.sqrt(3)),
         position: "absolute",
       }}
     >
-      <View
+      <Animated.View
         style={{
-          borderTopWidth: height / 2,
-          borderBottomWidth: height / 2,
+          borderTopWidth: size / 2,
+          borderBottomWidth: size / 2,
           borderRightWidth: endWidth,
           borderTopColor: "transparent",
           borderBottomColor: "transparent",
           borderRightColor: color,
         }}
       />
-      <View
+      <Animated.View
         style={{
           width: centerWidth,
-          height: height,
+          height: size,
           backgroundColor: color,
         }}
       />
-      <View
+      <Animated.View
         style={{
-          borderTopWidth: height / 2,
-          borderBottomWidth: height / 2,
+          borderTopWidth: size / 2,
+          borderBottomWidth: size / 2,
           borderLeftWidth: endWidth,
           borderTopColor: "transparent",
           borderBottomColor: "transparent",
@@ -50,4 +45,4 @@ const HexTile: SFC<HexTileProps> = ({ radius, color }) => {
   );
 };
 
-export { HexTile };
+export { HexTileAnimated };
