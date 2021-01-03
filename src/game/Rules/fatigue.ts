@@ -35,7 +35,14 @@ export const fatigue: Rule = {
           piece,
         }
       : { piece, gaits },
-  inCanStayFilter: ({ move, game, gameClones, interrupt, patherParams, filtered }) => {
+  inPostMoveGenerationFilter: ({
+    move,
+    game,
+    gameClones,
+    interrupt,
+    patherParams,
+    filtered,
+  }) => {
     /* Fatigued pieces can only move to capture king */
     const movedPiece = game.board.findPieceById(move.pieceId);
     if (movedPiece && movedPiece.hasTokenWithName(TokenName.Fatigue)) {

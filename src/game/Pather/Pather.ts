@@ -49,16 +49,7 @@ export class Pather {
       board: this.game.board,
     }).moves;
 
-    return processedMoves.filter((m) => {
-      return !this.interrupt.for.inCanStayFilter({
-        move: m,
-        game: this.game,
-        gameClones: this.gameClones,
-        interrupt: this.interrupt,
-        patherParams: this.params,
-        filtered: false,
-      }).filtered;
-    });
+    return processedMoves.filter((m) => this.postMoveGenerationFilter(m));
   }
 
   path({
@@ -146,19 +137,8 @@ export class Pather {
     return true;
   }
 
-  canStay({
-    square,
-    pathSoFar,
-    gait,
-    remainingSteps,
-  }: HypotheticalDisplacement): boolean {
+  canStay({ square, gait, remainingSteps }: HypotheticalDisplacement): boolean {
     if (!gait.interruptable && remainingSteps.length > 1) return false;
-    if (
-      !this.piece.AccessMarkers.some((marker) =>
-        square.whiteListedMarkers.includes(marker)
-      )
-    )
-      return false;
     if (this.game.board.squareHasPieceBelongingTo(square, this.piece.owner)) return false;
 
     if (this.capturePossible(square)) {
@@ -167,17 +147,28 @@ export class Pather {
       return false;
     }
 
-    const hypotheticalPath = pathSoFar.clone();
-    hypotheticalPath.push(square.location);
+    return true;
+  }
 
-    // should be lifted to findPaths
-    const { filtered } = this.interrupt.for.inCanStayFilter({
-      move: {
-        pieceId: this.piece.id,
-        location: square.location,
-        pieceDeltas: [{ pieceId: this.piece.id, path: hypotheticalPath }],
-        playerName: this.piece.owner,
-      },
+  canContinue({ gait, square }: HypotheticalDisplacement): boolean {
+    return !(square.hasPiece() && !gait.nonBlocking);
+  }
+
+  postMoveGenerationFilter(move: Move): boolean {
+    const board = this.game.board;
+    for (let i = 0; i < move.pieceDeltas.length; i++) {
+      const piece = board.findPieceById(move.pieceDeltas[i].pieceId);
+      const square = board.squareAt(move.pieceDeltas[i].path.getEnd());
+
+      if (!piece || !square) return false;
+
+      if (
+        !piece.AccessMarkers.some((marker) => square.whiteListedMarkers.includes(marker))
+      )
+        return false;
+    }
+    const { filtered } = this.interrupt.for.inPostMoveGenerationFilter({
+      move,
       game: this.game,
       gameClones: this.gameClones,
       interrupt: this.interrupt,
@@ -185,10 +176,6 @@ export class Pather {
       filtered: false,
     });
     return !filtered;
-  }
-
-  canContinue({ gait, square }: HypotheticalDisplacement): boolean {
-    return !(square.hasPiece() && !gait.nonBlocking);
   }
 
   go({ from, direction }: { from: Square; direction: Direction }): Square[] {
