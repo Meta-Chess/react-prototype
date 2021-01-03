@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
-import { SFC, Colors, Tile } from "primitives";
+import { SFC, Colors } from "primitives";
 import { Piece } from "./Piece";
 import { ShadowPiece } from "./ShadowPiece";
 import { GridArrangement } from "./GridArrangement";
@@ -11,7 +11,7 @@ import { SquareShape } from "game/types";
 import { TilePressableContainer } from "./TilePressableContainer";
 import { AnimationOverlays } from "./AnimationOverlays";
 import { Highlight } from "./Highlight";
-import { useModals } from "ui";
+import { useModals, Tile } from "ui";
 
 interface Props {
   square: Square | undefined;
@@ -21,7 +21,6 @@ interface Props {
 
 const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
   const modals = useModals();
-  const HEX_SQUARE_EMPTY_RATIO = 2 / Math.sqrt(3) - 1;
   const { gameMaster } = useContext(GameContext);
   if (!gameMaster) return null;
 

@@ -14,7 +14,6 @@ export interface BoardProps {
 export const Board: FC<BoardProps> = (props) => {
   const { gameMaster } = useContext(GameContext);
   const shapeToken = gameMaster?.game.board.firstTokenWithName(TokenName.Shape);
-  const loading = !gameMaster || !dimensions.width;
 
   return (
     <>

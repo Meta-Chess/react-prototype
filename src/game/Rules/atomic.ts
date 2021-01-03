@@ -31,7 +31,7 @@ const addVisualTokenToSquare = (squareLocation: string, board: Board): void => {
       type: AnimationType.explosion,
       createdAt: creationTimeInMilliseconds,
       duration: duration,
-      id: Math.random(),
+      id: Math.random(), // TODO: We should change this sometime because collisions would be bad
     },
   });
 };

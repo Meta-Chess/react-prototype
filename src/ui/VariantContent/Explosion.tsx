@@ -2,7 +2,7 @@ import React, { useEffect, FC, useRef } from "react";
 import { Animated, Easing, Platform } from "react-native";
 import { AbsoluteView } from "ui/Containers";
 import { AnimationComponentProps } from "./AnimationComponentProps";
-import { AnimatedTile } from "primitives/Tiles/AnimatedTile";
+import { AnimatedTile } from "ui";
 
 const Explosion: FC<AnimationComponentProps> = ({ shape, size, duration }) => {
   const colorValue = useRef(new Animated.Value(0)).current;

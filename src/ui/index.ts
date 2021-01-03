@@ -6,3 +6,4 @@ export * from "./Modals";
 export * from "./Row";
 export * from "./Separators";
 export * from "./Spinner";
+export * from "./Tiles";
