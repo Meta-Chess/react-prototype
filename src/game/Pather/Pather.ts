@@ -153,7 +153,12 @@ export class Pather {
     remainingSteps,
   }: HypotheticalDisplacement): boolean {
     if (!gait.interruptable && remainingSteps.length > 1) return false;
-
+    if (
+      !this.piece.AccessMarkers.some((marker) =>
+        square.whiteListedMarkers.includes(marker)
+      )
+    )
+      return false;
     if (this.game.board.squareHasPieceBelongingTo(square, this.piece.owner)) return false;
 
     if (this.capturePossible(square)) {

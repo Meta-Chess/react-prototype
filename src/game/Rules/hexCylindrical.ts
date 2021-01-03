@@ -21,7 +21,7 @@ const generateEdgeStitchingSquares = (): { location: string; square: Square }[] 
     const location = toLocation({ rank, file: 0, prefix: "E" });
     return {
       location,
-      square: new Square(location, { rank, file: 0 }, [invisibilityToken]),
+      square: new Square(location, { rank, file: 0 }, [], [invisibilityToken]),
     };
   });
 

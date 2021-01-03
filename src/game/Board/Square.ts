@@ -1,6 +1,6 @@
 import { Piece } from "./Piece";
 import { Adjacencies, Adjacency } from "./Adjacencies";
-import { Direction, Token } from "game/types";
+import { Direction, Token, AccessMarker } from "game/types";
 import { TokenOwner } from "./TokenOwner";
 import { clone } from "lodash";
 import { resetArrayTo } from "utilities";
@@ -14,6 +14,7 @@ export class Square extends TokenOwner {
   constructor(
     public location: string,
     public coordinates: Coordinates,
+    public whiteListedMarkers: AccessMarker[] = [AccessMarker.Normal],
     public tokens: Token[] = [],
     public adjacencies: Adjacencies = new Adjacencies(),
     public pieces: string[] = []
@@ -25,6 +26,7 @@ export class Square extends TokenOwner {
     return new Square(
       this.location,
       clone(this.coordinates),
+      clone(this.whiteListedMarkers),
       clone(this.tokens),
       this.adjacencies.clone(),
       clone(this.pieces)
@@ -35,6 +37,7 @@ export class Square extends TokenOwner {
     this.location = savePoint.location;
     this.coordinates.rank = savePoint.coordinates.rank;
     this.coordinates.file = savePoint.coordinates.file;
+    resetArrayTo({ from: this.whiteListedMarkers, to: savePoint.whiteListedMarkers });
     resetArrayTo({ from: this.tokens, to: savePoint.tokens });
     this.adjacencies.resetTo(savePoint.adjacencies);
     resetArrayTo({ from: this.pieces, to: savePoint.pieces });
