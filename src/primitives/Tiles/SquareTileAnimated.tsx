@@ -1,13 +1,8 @@
-import React from "react";
-import { SFC } from "primitives";
+import React, { FC } from "react";
 import { Animated } from "react-native";
+import { AnimatedTileProps } from "./TileProps";
 
-interface SquareTileAnimatedProps {
-  size: number;
-  color: Animated.AnimatedInterpolation;
-}
-
-const SquareTileAnimated: SFC<SquareTileAnimatedProps> = ({ size, color }) => {
+const SquareTileAnimated: FC<AnimatedTileProps> = ({ size, color }) => {
   return <Animated.View style={{ height: size, width: size, backgroundColor: color }} />;
 };
 

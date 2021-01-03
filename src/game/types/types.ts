@@ -73,15 +73,16 @@ export enum TokenName {
   AnimationToken,
 }
 
-export enum AnimationTypes {
+export enum AnimationType {
   explosion = "explosion",
 }
+
 interface TokenData {
   history?: string[];
   shape?: SquareShape;
   pieceId?: string;
   condition?: (piece: Piece) => boolean;
-  type?: AnimationTypes;
+  type?: AnimationType;
   createdAt?: number;
   duration?: number;
   id?: number;

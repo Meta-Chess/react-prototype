@@ -1,13 +1,8 @@
-import React from "react";
-import { SFC } from "primitives";
+import React, { FC } from "react";
 import { View, Animated } from "react-native";
+import { AnimatedTileProps } from "./TileProps";
 
-interface HexTileAnimatedProps {
-  size: number;
-  color: Animated.AnimatedInterpolation;
-}
-
-const HexTileAnimated: SFC<HexTileAnimatedProps> = ({ size, color }) => {
+const HexTileAnimated: FC<AnimatedTileProps> = ({ size, color }) => {
   const radius = size / 2;
   const centerWidth = radius * (2 / Math.sqrt(3));
   const endWidth = radius / Math.sqrt(3);

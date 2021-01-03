@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { objectMatches, range } from "utilities";
 import { GameContext } from "game";
-import { TokenName } from "game/types";
+import { SquareShape, TokenName } from "game/types";
 import { Square } from "./Square";
 import { BoardProps } from "components/shared/Board/Board";
 import { Styles } from "primitives/Styles";
@@ -34,6 +34,7 @@ const SquareBoard: SFC<BoardProps> = ({
           {rankCoordinates.map((rank) => (
             <Square
               size={measurements.squareSize}
+              shape={SquareShape.Square}
               square={game.board.firstSquareSatisfyingRule(
                 (square) =>
                   objectMatches({

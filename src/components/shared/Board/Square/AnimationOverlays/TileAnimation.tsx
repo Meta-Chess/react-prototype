@@ -1,24 +1,28 @@
-import React from "react";
-import { View } from "react-native";
+import React, { FC } from "react";
 import { SFC } from "primitives";
-import { SquareShape } from "game/types";
+import { AnimationType, SquareShape } from "game/types";
 import { Explosion } from "ui/VariantContent";
 import { Token } from "game/types";
+import { AnimationComponentProps } from "ui/VariantContent/AnimationComponentProps";
 
 interface TileAnimationProps {
-  shape: SquareShape | undefined;
+  shape: SquareShape;
   size: number;
   token: Token;
 }
+
+const ANIMATIONS: { [type in AnimationType]: FC<AnimationComponentProps> } = {
+  explosion: Explosion,
+};
 
 const TileAnimation: SFC<TileAnimationProps> = ({ shape, size, token }) => {
   const animationType = token.data?.type;
   const animationDuration = token.data?.duration;
 
-  const options = {
-    ["explosion"]: <Explosion shape={shape} size={size} duration={animationDuration} />,
-  };
-  return animationType ? options[animationType] : <View />;
+  if (!animationDuration || !animationType) return null;
+
+  const AnimationComponent = ANIMATIONS[animationType];
+  return <AnimationComponent shape={shape} size={size} duration={animationDuration} />;
 };
 
 export { TileAnimation };

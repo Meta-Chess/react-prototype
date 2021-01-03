@@ -8,7 +8,7 @@ import { TileAnimation } from "./TileAnimation";
 
 interface AnimationOverlaysProps {
   square: Square;
-  shape: SquareShape | undefined;
+  shape: SquareShape;
   size: number;
 }
 

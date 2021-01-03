@@ -1,13 +1,9 @@
 import React from "react";
 import { SFC } from "primitives";
 import { View } from "react-native";
+import { TileProps } from "./TileProps";
 
-interface HexTileProps {
-  size: number;
-  color: string;
-}
-
-const HexTile: SFC<HexTileProps> = ({ size, color }) => {
+const HexTile: SFC<TileProps> = ({ size, color }) => {
   const radius = size / 2;
   const centerWidth = radius * (2 / Math.sqrt(3));
   const endWidth = radius / Math.sqrt(3);

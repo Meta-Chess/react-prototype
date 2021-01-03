@@ -1,4 +1,4 @@
-import { PieceName, TokenName, AnimationTypes } from "../types";
+import { PieceName, TokenName, AnimationType } from "../types";
 import { Rule } from "./Rules";
 import { Board } from "game";
 
@@ -28,7 +28,7 @@ const addVisualTokenToSquare = (squareLocation: string, board: Board): void => {
     name: TokenName.AnimationToken,
     expired: () => Date.now() > creationTimeInMilliseconds + duration,
     data: {
-      type: AnimationTypes.explosion,
+      type: AnimationType.explosion,
       createdAt: creationTimeInMilliseconds,
       duration: duration,
       id: Math.random(),

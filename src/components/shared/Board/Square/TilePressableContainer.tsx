@@ -1,40 +1,8 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import { SFC } from "primitives";
 import { TouchableOpacity } from "react-native";
 import { SquareShape } from "game/types";
 import styled from "styled-components/native";
-
-interface TilePressableContainerProps {
-  shape: SquareShape | undefined;
-  size: number;
-  onPress: () => void;
-  contents: ReactElement;
-}
-
-const TilePressableContainer: SFC<TilePressableContainerProps> = ({
-  shape,
-  size,
-  onPress,
-  contents,
-}) => {
-  const SquarePressable: ReactElement = (
-    <SquareContainer size={size} onPress={onPress} activeOpacity={1}>
-      {contents}
-    </SquareContainer>
-  );
-  const HexPressable: ReactElement = (
-    <HexContainer size={size} onPress={onPress} activeOpacity={1}>
-      {contents}
-    </HexContainer>
-  );
-
-  const options = {
-    [SquareShape.Hex]: HexPressable,
-  };
-  return shape ? options[shape] : SquarePressable;
-};
-
-export { TilePressableContainer };
 
 const SquareContainer = styled(TouchableOpacity)<{ size: number }>`
   position: absolute;
@@ -49,3 +17,31 @@ const HexContainer = styled(TouchableOpacity)<{ size: number }>`
   width: ${({ size }): number => size}px;
   border-radius: 50%;
 `;
+
+// All the containers should have the same type as the square container
+const CONTAINERS: { [shape in SquareShape]: typeof SquareContainer } = {
+  [SquareShape.Square]: SquareContainer,
+  [SquareShape.Hex]: HexContainer,
+};
+
+interface TilePressableContainerProps {
+  shape: SquareShape;
+  size: number;
+  onPress: () => void;
+}
+
+const TilePressableContainer: SFC<TilePressableContainerProps> = ({
+  shape,
+  size,
+  onPress,
+  children,
+}) => {
+  const Container = CONTAINERS[shape];
+  return (
+    <Container size={size} onPress={onPress} activeOpacity={1}>
+      {children}
+    </Container>
+  );
+};
+
+export { TilePressableContainer };

@@ -1,16 +1,10 @@
 import React, { useEffect, FC, useRef } from "react";
 import { Animated, Easing, Platform } from "react-native";
 import { AbsoluteView } from "ui/Containers";
-import { SquareShape } from "game/types";
-import { SquareTileAnimated, HexTileAnimated } from "primitives/Tiles";
+import { AnimationComponentProps } from "./AnimationComponentProps";
+import { AnimatedTile } from "primitives/Tiles/AnimatedTile";
 
-interface Props {
-  shape: SquareShape | undefined;
-  size: number;
-  duration: number | undefined;
-}
-
-const Explosion: FC<Props> = ({ shape, size, duration }) => {
+const Explosion: FC<AnimationComponentProps> = ({ shape, size, duration }) => {
   const colorValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -27,16 +21,12 @@ const Explosion: FC<Props> = ({ shape, size, duration }) => {
 
   const animatedColor = colorValue.interpolate({
     inputRange: [0, 10],
-    outputRange: ["rgba(235,52,52,0.4)", "rgba(0,0,0,0)"],
+    outputRange: ["rgba(235,52,52,0.5)", "rgba(255,200,100,0)"],
   });
-
-  const options = {
-    [SquareShape.Hex]: <HexTileAnimated size={size} color={animatedColor} />,
-  };
 
   return (
     <AbsoluteView pointerEvents={"none"}>
-      {shape ? options[shape] : <SquareTileAnimated size={size} color={animatedColor} />}
+      <AnimatedTile shape={shape} size={size} color={animatedColor} />
     </AbsoluteView>
   );
 };

@@ -1,14 +1,13 @@
 import React, { useContext } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
-import { SFC, Colors } from "primitives";
+import { SFC, Colors, Tile } from "primitives";
 import { Piece } from "./Piece";
 import { ShadowPiece } from "./ShadowPiece";
 import { GridArrangement } from "./GridArrangement";
 import { GameContext } from "game";
 import { Square } from "game/Board";
 import { SquareShape } from "game/types";
-import { TileAppearance } from "./TileAppearance";
 import { TilePressableContainer } from "./TilePressableContainer";
 import { AnimationOverlays } from "./AnimationOverlays";
 import { Highlight } from "./Highlight";
@@ -17,7 +16,7 @@ import { useModals } from "ui";
 interface Props {
   square: Square | undefined;
   size: number;
-  shape?: SquareShape;
+  shape: SquareShape;
 }
 
 const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
@@ -51,44 +50,32 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
 
   return (
     <OuterContainer size={size}>
-      <TileAppearance shape={shape} size={size} color={backgroundColor} />
-      <TilePressableContainer
-        shape={shape}
-        size={size}
-        onPress={onPress}
-        contents={
-          <>
-            <PositioningContainer size={pieceScaleFactor * size}>
-              <GridArrangement>
-                {piecesUnderSquare.map((piece) => (
-                  <ShadowPiece
-                    piece={gameMaster.game.board.pieces[piece]}
-                    size={pieceSize}
-                    key={piece}
-                  />
-                ))}
-              </GridArrangement>
-            </PositioningContainer>
-            <Highlight
-              gameMaster={gameMaster}
-              square={square}
-              size={size}
-              shape={shape}
-            />
-            <PositioningContainer size={pieceScaleFactor * size}>
-              <GridArrangement>
-                {piecesOnSquare.map((piece) => (
-                  <Piece
-                    piece={gameMaster.game.board.pieces[piece]}
-                    size={pieceSize}
-                    key={piece}
-                  />
-                ))}
-              </GridArrangement>
-            </PositioningContainer>
-          </>
-        }
-      />
+      <Tile shape={shape} size={size} color={backgroundColor} />
+      <TilePressableContainer shape={shape} size={size} onPress={onPress}>
+        <PositioningContainer size={pieceScaleFactor * size}>
+          <GridArrangement>
+            {piecesUnderSquare.map((piece) => (
+              <ShadowPiece
+                piece={gameMaster.game.board.pieces[piece]}
+                size={pieceSize}
+                key={piece}
+              />
+            ))}
+          </GridArrangement>
+        </PositioningContainer>
+        <Highlight gameMaster={gameMaster} square={square} size={size} shape={shape} />
+        <PositioningContainer size={pieceScaleFactor * size}>
+          <GridArrangement>
+            {piecesOnSquare.map((piece) => (
+              <Piece
+                piece={gameMaster.game.board.pieces[piece]}
+                size={pieceSize}
+                key={piece}
+              />
+            ))}
+          </GridArrangement>
+        </PositioningContainer>
+      </TilePressableContainer>
       <AnimationOverlays square={square} shape={shape} size={size} />
     </OuterContainer>
   );

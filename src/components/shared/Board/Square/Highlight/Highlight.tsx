@@ -6,14 +6,14 @@ import Color from "color";
 import styled from "styled-components/native";
 import { View } from "react-native";
 import { SquareShape } from "game/types";
-import { FullHighlight } from "./FullHighlight";
+import { Tile } from "primitives/Tiles/Tile";
 import { SquareInfo } from "game/SquaresInfo";
 
 interface Props {
   gameMaster: GameMaster;
   square: Square;
   size: number;
-  shape?: SquareShape;
+  shape: SquareShape;
 }
 
 const Highlight: FC<Props> = ({ gameMaster, square, size, shape }) => {
@@ -27,7 +27,7 @@ const Highlight: FC<Props> = ({ gameMaster, square, size, shape }) => {
             SquareInfo.PossibleMoveAggressiveEndPoint,
             SquareInfo.PossibleOtherPlayerMoveEndPoint,
           ].includes(info) || square.hasPiece() ? (
-            <FullHighlight color={HIGHLIGHT_COLORS[info]} size={size} shape={shape} />
+            <Tile color={HIGHLIGHT_COLORS[info].fade(0.3).toString()} size={size} shape={shape} />
           ) : (
             <CenterHighlight color={HIGHLIGHT_COLORS[info]} />
           )

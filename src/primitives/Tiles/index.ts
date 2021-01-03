@@ -1,4 +1,2 @@
-export * from "./SquareTile";
-export * from "./SquareTileAnimated";
-export * from "./HexTile";
-export * from "./HexTileAnimated";
+export * from "./Tile";
+export * from "./AnimatedTile";
