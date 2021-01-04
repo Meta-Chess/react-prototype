@@ -51,7 +51,6 @@ export enum PieceName {
 
 export enum AccessMarker {
   Normal,
-  Centre,
 }
 
 export interface GaitParams {
