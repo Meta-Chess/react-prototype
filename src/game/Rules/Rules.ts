@@ -63,7 +63,7 @@ const identityRule = {
     interrupt: CompactRules;
     draw: string | false;
   }) => x,
-  inCanStayFilter: (x: {
+  inPostMoveGenerationFilter: (x: {
     move: Move;
     game: Game;
     gameClones: Game[];

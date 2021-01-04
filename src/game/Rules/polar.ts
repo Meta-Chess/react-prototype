@@ -90,20 +90,24 @@ const generatePolarSetup = ({
         const location = toLocation({ rank: maxRank + 1, file: x, prefix: "P" });
         return {
           location,
-          square: new Square(location, { rank: 9, file: x }, [
-            polarToken,
-            invisibilityToken,
-          ]),
+          square: new Square(
+            location,
+            { rank: 9, file: x },
+            [],
+            [polarToken, invisibilityToken]
+          ),
         };
       }),
       ...range(minFile, numberOfFiles).map((x) => {
         const location = toLocation({ rank: minRank - 1, file: x, prefix: "P" });
         return {
           location,
-          square: new Square(location, { rank: 0, file: x }, [
-            polarToken,
-            invisibilityToken,
-          ]),
+          square: new Square(
+            location,
+            { rank: 0, file: x },
+            [],
+            [polarToken, invisibilityToken]
+          ),
         };
       }),
     ],

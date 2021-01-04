@@ -49,6 +49,10 @@ export enum PieceName {
   Knight,
 }
 
+export enum AccessMarker {
+  Normal,
+}
+
 export interface GaitParams {
   tokens: Token[];
 }

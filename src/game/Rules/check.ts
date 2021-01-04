@@ -8,7 +8,7 @@ export const check: Rule = {
   name: "Check",
   description:
     "You can't do any moves that would allow an opponent to take your king on their next turn. Something something win condition? Something something multiple opponents?",
-  inCanStayFilter: (input) => {
+  inPostMoveGenerationFilter: (input) => {
     if (input.filtered) return input;
     return { ...input, filtered: !checkAllowsMove(input) };
   },
