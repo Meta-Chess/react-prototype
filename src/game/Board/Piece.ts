@@ -1,5 +1,7 @@
-import { PieceName, PlayerName, Token, Gait, GaitParams } from "game/types";
+import { PieceName, PlayerName, Token, Gait, GaitParams, AccessMarker } from "game/types";
 import { TokenOwner } from "./TokenOwner";
+import { clone } from "lodash";
+import { resetArrayTo } from "utilities";
 
 class Piece extends TokenOwner {
   constructor(
@@ -8,7 +10,8 @@ class Piece extends TokenOwner {
     public owner: PlayerName,
     public location: string = "unassigned",
     public tokens: Token[] = [],
-    public id = "0"
+    public id = "0",
+    public AccessMarkers: AccessMarker[] = [AccessMarker.Normal]
   ) {
     super(tokens);
   }
@@ -19,8 +22,9 @@ class Piece extends TokenOwner {
       this.generateGaits,
       this.owner,
       this.location,
-      this.tokens,
-      this.id
+      clone(this.tokens),
+      this.id,
+      clone(this.AccessMarkers)
     );
   }
 
@@ -29,8 +33,9 @@ class Piece extends TokenOwner {
     this.name = savePoint.name;
     this.generateGaits = savePoint.generateGaits;
     this.owner = savePoint.owner;
-    this.tokens = savePoint.tokens;
+    resetArrayTo({ from: this.tokens, to: savePoint.tokens });
     this.id = savePoint.id;
+    resetArrayTo({ from: this.AccessMarkers, to: savePoint.AccessMarkers });
   }
 }
 

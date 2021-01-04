@@ -21,7 +21,7 @@ const Highlight: FC<Props> = ({ gameMaster, square, size, shape }) => {
     <>
       {gameMaster.squaresInfo
         .get(square.location)
-        .map((info) =>
+        .map((info, index) =>
           ![
             SquareInfo.PossibleMovePassiveEndPoint,
             SquareInfo.PossibleMoveAggressiveEndPoint,
@@ -31,9 +31,10 @@ const Highlight: FC<Props> = ({ gameMaster, square, size, shape }) => {
               color={HIGHLIGHT_COLORS[info].fade(0.3).toString()}
               size={size}
               shape={shape}
+              key={index}
             />
           ) : (
-            <CenterHighlight color={HIGHLIGHT_COLORS[info]} />
+            <CenterHighlight color={HIGHLIGHT_COLORS[info]} key={index} />
           )
         )}
     </>
