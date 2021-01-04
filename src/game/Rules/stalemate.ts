@@ -1,5 +1,5 @@
 import { Rule } from "./Rules";
-import { Pather } from "../Pather";
+import { hasLegalMoves } from "./utilities";
 
 export const stalemate: Rule = {
   name: "Stalemate",
@@ -8,13 +8,8 @@ export const stalemate: Rule = {
   drawCondition: ({ game, gameClones, interrupt, draw }) => {
     if (draw !== false) return { game, gameClones, interrupt, draw };
 
-    const pieces = game.board.piecesBelongingTo(game.getCurrentPlayerName());
-    for (let i = 0; i < pieces.length; i++) {
-      const pather = new Pather(game, gameClones, pieces[i], interrupt);
-      const hypotheticalMoves = pather.findPaths();
-      if (hypotheticalMoves.length > 0)
-        return { game, gameClones, interrupt, draw: false };
-    }
+    if (hasLegalMoves(game.getCurrentPlayerName(), game, gameClones, interrupt))
+      return { game, gameClones, interrupt, draw: false };
 
     game.alivePlayers().forEach((p) => {
       if (p.name === game.getCurrentPlayerName()) {

@@ -62,6 +62,9 @@ export class Game {
   }
 
   nextTurn(): void {
+    this.players.forEach((p) => {
+      p.hasLegalMoves = undefined;
+    });
     const nextPlayerIndex = this.nextAlivePlayerIndex(this.currentPlayerIndex);
     if (nextPlayerIndex !== undefined) {
       this.currentPlayerIndex = nextPlayerIndex;
