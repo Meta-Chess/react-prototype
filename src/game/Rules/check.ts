@@ -2,6 +2,7 @@ import { CompactRules, Rule } from "./CompactRules";
 import { Pather } from "../Pather";
 import { cloneDeep } from "lodash";
 import { Game, Move } from "game";
+import { hasLegalMoves } from "./utilities";
 
 export const check: Rule = {
   title: "Check",
@@ -17,13 +18,9 @@ export const check: Rule = {
     if (checkAllowsMove({ move: undefined, game, gameClones, interrupt }))
       return { playerName, game, gameClones, interrupt, dead: false };
 
-    const pieces = game.board.piecesBelongingTo(playerName);
-    for (let i = 0; i < pieces.length; i++) {
-      const pather = new Pather(game, gameClones, pieces[i], interrupt);
-      const hypotheticalMoves = pather.findPaths();
-      if (hypotheticalMoves.length > 0)
-        return { playerName, game, gameClones, interrupt, dead: false };
-    }
+    if (hasLegalMoves(playerName, game, gameClones, interrupt))
+      return { playerName, game, gameClones, interrupt, dead: false };
+
     return { playerName, game, gameClones, interrupt, dead: "checkmated" };
   },
 };
