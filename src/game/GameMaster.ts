@@ -57,7 +57,7 @@ export class GameMaster {
       gameOptions.variant || (randomChoice(Object.keys(variants)) as VariantName);
 
     const rules = !customRules?.length ? [...variants[variant].rules] : customRules;
-    if (checkEnabled && !customRules?.length) rules.push(check);
+    if (checkEnabled) rules.push(check);
     if (fatigueEnabled && !customRules?.length) rules.push(fatigue);
     if (atomicEnabled && !customRules?.length) rules.push(atomic);
 

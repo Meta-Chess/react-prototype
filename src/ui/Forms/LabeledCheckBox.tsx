@@ -17,7 +17,7 @@ export const LabeledCheckBox: SFC<Props> = ({ value, setValue, label, style }) =
       accessibilityRole={"checkbox"}
       activeOpacity={0.8}
     >
-      <Text cat="BodyM" color={Colors.TEXT.LIGHT.toString()}>
+      <Text cat={"BodyM"} color={Colors.TEXT.LIGHT.toString()}>
         {label}
       </Text>
       {value ? (

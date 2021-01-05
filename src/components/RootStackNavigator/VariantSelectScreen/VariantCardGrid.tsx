@@ -45,9 +45,7 @@ const VariantCardGrid: SFC<Props> = ({
 };
 
 const CardContainer = styled(View)`
-  justify-content: center;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
 `;
 
 export { VariantCardGrid };

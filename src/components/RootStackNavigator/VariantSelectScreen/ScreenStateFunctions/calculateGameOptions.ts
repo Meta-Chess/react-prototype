@@ -1,14 +1,16 @@
 import { GameOptions } from "game/types";
-import { variants, VariantName } from "game";
+import { variants } from "game";
 import {
   integrateWithOtherRules,
   futureVariants,
   FutureVariantName,
 } from "game/variants/variants";
 import { deduplicateByName } from "utilities";
-import { check } from "game/Rules";
 
-export function calculateGameOptions(selectedVariants: FutureVariantName[]): GameOptions {
+export function calculateGameOptions(
+  gameOptions: GameOptions,
+  selectedVariants: FutureVariantName[]
+): GameOptions {
   const rules = deduplicateByName(
     selectedVariants
       .flatMap((variantName) => futureVariants[variantName].rules)
@@ -19,22 +21,7 @@ export function calculateGameOptions(selectedVariants: FutureVariantName[]): Gam
           : [rule]
       )
       .sort((r1) => (r1.name === "Fatigue" ? 1 : -1)) //just temp ordering fatigue later TODO: Fix the bug that this handles properly - reset cloned pieces properly?
-      .concat([check]) //just temp adding check
   );
 
-  return {
-    variant: "Variant Fusion" as VariantName,
-    customTitle:
-      selectedVariants
-        .flatMap((variantName) => futureVariants[variantName].title)
-        .join(" ") + " Chess",
-    customRules: rules,
-    time: undefined,
-    checkEnabled: true,
-    fatigueEnabled: false,
-    atomicEnabled: false,
-    flipBoard: false,
-    overTheBoard: false,
-    online: false,
-  } as GameOptions;
+  return { ...gameOptions, customRules: rules };
 }
