@@ -207,7 +207,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
   },
   [FutureVariantName.kleinBottle]: {
     title: "Klein Bottle",
-    shortDescription: "Wawaweewa",
+    shortDescription: "Chess on a klein bottle!? [Mobius and Cylinder]",
     traits: ["Terraform", "Geometry"],
     imageName: "kleinBottleImage",
     implemented: true,
@@ -268,7 +268,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
   },
   [FutureVariantName.spherical]: {
     title: "Spherical",
-    shortDescription: "The board wrapped around a sphere. Cylinder together with Polar.",
+    shortDescription: "The board wrapped around a sphere. [Polar and Cylinder]",
     traits: ["Geometry"],
     imageName: "sphericalImage",
     implemented: true,
@@ -286,7 +286,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
   },
   [FutureVariantName.toroidal]: {
     title: "Toroidal",
-    shortDescription: "Double the cylinder and pawns on a long board.",
+    shortDescription: "Double the cylinder and pawns!",
     traits: ["Terraform", "Geometry"],
     imageName: "toroidalImage",
     implemented: true,

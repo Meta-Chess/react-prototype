@@ -49,5 +49,5 @@ export { mobiusImage };
 import vetoImage from "./vetoImage.png";
 export { vetoImage };
 
-import kleinBottleImage from "./mobiusImage.png";
+import kleinBottleImage from "./kleinBottleImage.png";
 export { kleinBottleImage };
