@@ -7,8 +7,8 @@ export { armageddonImage };
 import atomicImage from "./atomicImage.png";
 export { atomicImage };
 
-import centerRemovalImage from "./centerRemovalImage.png";
-export { centerRemovalImage };
+import emptyCenterImage from "./emptyCenterImage.png";
+export { emptyCenterImage };
 
 import cylinderImage from "./cylinderImage.png";
 export { cylinderImage };
@@ -45,3 +45,9 @@ export { toroidalImage };
 
 import mobiusImage from "./mobiusImage.png";
 export { mobiusImage };
+
+import vetoImage from "./vetoImage.png";
+export { vetoImage };
+
+import kleinBottleImage from "./mobiusImage.png";
+export { kleinBottleImage };

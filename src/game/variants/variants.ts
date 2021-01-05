@@ -116,37 +116,30 @@ export interface FutureVariant {
   imageName: keyof typeof VariantImages;
   implemented: boolean;
   rules: Rule[];
+  complexity: number;
 }
 
 export enum FutureVariantName {
-  threeCheck = "threeCheck",
-  armageddon = "armageddon",
   atomic = "atomic",
-  centerRemoval = "centerRemoval",
   cylinder = "cylinder",
-  kingOfTheHill = "kingOfTheHill",
-  patheticKing = "patheticKing",
-  push = "push",
-  crazyhouse = "crazyhouse",
   fatigue = "fatigue",
-  noFork = "noFork",
   polar = "polar",
   spherical = "spherical",
   hex = "hex",
   toroidal = "toroidal",
   mobius = "mobius",
+  kleinBottle = "kleinBottle",
+  threeCheck = "threeCheck",
+  emptyCenter = "emptyCenter",
+  kingOfTheHill = "kingOfTheHill",
+  patheticKing = "patheticKing",
+  push = "push",
+  crazyhouse = "crazyhouse",
+  noFork = "noFork",
+  veto = "veto",
 }
 
 export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
-  [FutureVariantName.armageddon]: {
-    title: "Armageddon",
-    shortDescription:
-      "Captures lead to a large explosion. Pawns are immune to the blast zone.",
-    traits: ["Ability"],
-    imageName: "armageddonImage",
-    implemented: false,
-    rules: [],
-  },
   [FutureVariantName.atomic]: {
     title: "Atomic",
     shortDescription:
@@ -155,14 +148,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     imageName: "atomicImage",
     implemented: true,
     rules: [atomic],
-  },
-  [FutureVariantName.centerRemoval]: {
-    title: "Center Removal",
-    shortDescription: "Center squares and the pieces on them are removed from the game.",
-    traits: ["Terraform"],
-    imageName: "centerRemovalImage",
-    implemented: false,
-    rules: [],
+    complexity: 1,
   },
   [FutureVariantName.crazyhouse]: {
     title: "Crazyhouse",
@@ -171,6 +157,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     imageName: "crazyhouseImage",
     implemented: false,
     rules: [],
+    complexity: 0,
   },
   [FutureVariantName.cylinder]: {
     title: "Cylinder",
@@ -179,6 +166,16 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     imageName: "cylinderImage",
     implemented: true,
     rules: [cylindrical],
+    complexity: 1,
+  },
+  [FutureVariantName.emptyCenter]: {
+    title: "Empty Center",
+    shortDescription: "Pieces cannot live in the center.",
+    traits: ["Restrict"],
+    imageName: "emptyCenterImage",
+    implemented: false,
+    rules: [],
+    complexity: 0,
   },
   [FutureVariantName.fatigue]: {
     title: "Fatigue",
@@ -188,6 +185,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     imageName: "fatigueImage",
     implemented: true,
     rules: [fatigue],
+    complexity: 1,
   },
   [FutureVariantName.hex]: {
     title: "Hex",
@@ -196,6 +194,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     imageName: "hexImage",
     implemented: true,
     rules: [hex],
+    complexity: 3,
   },
   [FutureVariantName.kingOfTheHill]: {
     title: "King of the Hill",
@@ -204,15 +203,32 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     imageName: "kingOfTheHillImage",
     implemented: false,
     rules: [],
+    complexity: 0,
+  },
+  [FutureVariantName.kleinBottle]: {
+    title: "Klein Bottle",
+    shortDescription: "Wawaweewa",
+    traits: ["Terraform", "Geometry"],
+    imageName: "kleinBottleImage",
+    implemented: true,
+    rules: [
+      mobius,
+      longBoard,
+      passiveMoveThroughBoard,
+      verticallyCylindrical,
+      cylindrical,
+    ],
+    complexity: 7,
   },
   [FutureVariantName.mobius]: {
     title: "Mobius",
     shortDescription:
       "A long board mobius strip, with the ability to phase through to empty squares.",
-    traits: ["Geometry", "Terraform"],
+    traits: ["Terraform", "Geometry"],
     imageName: "mobiusImage",
     implemented: true,
     rules: [mobius, longBoard, passiveMoveThroughBoard, verticallyCylindrical],
+    complexity: 6,
   },
   [FutureVariantName.noFork]: {
     title: "No Fork",
@@ -221,6 +237,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     imageName: "noForkImage",
     implemented: false,
     rules: [],
+    complexity: 0,
   },
   [FutureVariantName.patheticKing]: {
     title: "Pathetic King",
@@ -229,6 +246,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     imageName: "patheticKingImage",
     implemented: false,
     rules: [],
+    complexity: 0,
   },
   [FutureVariantName.polar]: {
     title: "Polar",
@@ -237,6 +255,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     imageName: "polarImage",
     implemented: true,
     rules: [polar],
+    complexity: 2,
   },
   [FutureVariantName.push]: {
     title: "Push",
@@ -245,6 +264,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     imageName: "pushImage",
     implemented: false,
     rules: [],
+    complexity: 0,
   },
   [FutureVariantName.spherical]: {
     title: "Spherical",
@@ -253,6 +273,7 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     imageName: "sphericalImage",
     implemented: true,
     rules: [cylindrical, polar],
+    complexity: 3,
   },
   [FutureVariantName.threeCheck]: {
     title: "3-Check",
@@ -261,14 +282,25 @@ export const futureVariants: { [id in FutureVariantName]: FutureVariant } = {
     imageName: "threeCheckImage",
     implemented: false,
     rules: [],
+    complexity: 0,
   },
   [FutureVariantName.toroidal]: {
     title: "Toroidal",
     shortDescription: "Double the cylinder and pawns on a long board.",
-    traits: ["Geometry", "Terraform"],
+    traits: ["Terraform", "Geometry"],
     imageName: "toroidalImage",
     implemented: true,
     rules: [longBoard, cylindrical, verticallyCylindrical],
+    complexity: 4,
+  },
+  [FutureVariantName.veto]: {
+    title: "Veto",
+    shortDescription: "A move may be vetoed each turn.",
+    traits: ["New Phase", "Restrict"],
+    imageName: "vetoImage",
+    implemented: false,
+    rules: [],
+    complexity: 0,
   },
 };
 
