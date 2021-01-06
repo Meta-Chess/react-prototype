@@ -16,3 +16,4 @@ export * from "./promotion";
 export * from "./standard";
 export * from "./verticallyCylindrical";
 export * from "./stalemate";
+export * from "./threeCheck";
