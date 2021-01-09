@@ -40,7 +40,7 @@ const VariantSelectScreen: FC = () => {
     >
       <LeftContainer style={{ flex: 1 }}>
         <VariantCardGrid
-          style={{ flex: 1, paddingHorizontal: 16, paddingVertical: 16 }}
+          style={{ flex: 1, paddingHorizontal: 24 }}
           displayVariants={displayVariants}
           selectedVariants={selectedVariants}
           setSelectedVariants={setSelectedVariants}
@@ -48,7 +48,12 @@ const VariantSelectScreen: FC = () => {
         />
       </LeftContainer>
       <Sidebar>
-        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          style={{ flex: 1 }}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingVertical: 24 }}
+          bounces={true}
+        >
           <SelectedVariantsCard
             selectedVariants={selectedVariants}
             setSelectedVariants={setSelectedVariants}
@@ -64,15 +69,7 @@ const VariantSelectScreen: FC = () => {
             style={{ marginTop: 16 }}
           />
         </ScrollView>
-        <View
-          style={{
-            width: "100%",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignSelf: "flex-end",
-            paddingTop: 8,
-          }}
-        >
+        <NavigationContainer>
           <ButtonSecondary
             text="Back"
             onPress={(): void => navigation.goBack()}
@@ -88,7 +85,7 @@ const VariantSelectScreen: FC = () => {
             }
             style={{ flex: 1, marginLeft: 8 }}
           />
-        </View>
+        </NavigationContainer>
       </Sidebar>
     </ScreenContainer>
   );
@@ -102,9 +99,13 @@ const Sidebar = styled(View)`
   flex-direction: column;
   width: 400;
   background-color: ${Colors.DARKER.toString()};
-  padding-vertical: 24;
-  padding-horizontal: 32;
+  padding: 0px 24px 24px;
   ${Styles.BOX_SHADOW}
+`;
+
+const NavigationContainer = styled(View)`
+  flex-direction: row;
+  margin-top: 16;
 `;
 
 export { VariantSelectScreen };

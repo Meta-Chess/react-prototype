@@ -34,7 +34,7 @@ const GameOptionsCard: SFC<Props> = ({ style, gameOptions, setGameOptions }) => 
         <TextInput
           placeholder={"Please enter an invite key"}
           onChangeText={(text: string): void => setRoomId(text)}
-          style={{ width: "100%", marginVertical: 4 }}
+          style={{ marginVertical: 4 }}
         />
         <LabeledCheckBox
           value={!!gameOptions.online}
@@ -92,8 +92,7 @@ const defaultGameOptions = {
 
 const Container = styled(View)`
   flex-direction: column-reverse;
-  width: 90%;
-  padding-left: 10%;
+  padding-horizontal: 4;
 `;
 
 export { GameOptionsCard, defaultGameOptions };
