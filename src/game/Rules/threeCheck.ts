@@ -1,9 +1,6 @@
-import { CompactRules, Rule } from "./CompactRules";
-import { Pather } from "../Pather";
-import { cloneDeep } from "lodash";
-import { Game, Move } from "game";
-import { TokenName, PlayerCounter, PlayerName } from "game/types";
-import { Player } from "game/Player";
+import { Rule } from "./CompactRules";
+import { TokenName } from "game/types";
+import { inCheck } from "./check";
 
 export const threeCheck: Rule = {
   title: "Three Check",
@@ -15,41 +12,29 @@ export const threeCheck: Rule = {
         return false;
       },
       data: {
-        playerCounter: initializePlayerCounter(game),
+        counters: game.players.map(() => 0),
       },
     };
     game.board.addToken(CheckCounter);
     return { game };
   },
-  postCapture: ({ board, square }) => {
-    const playerCounter = board.firstTokenWithName(TokenName.CheckCounter)?.data
-      ?.playerCounter;
-    if (playerCounter === undefined) return { board, square };
-    if (playerCounter[PlayerName.Black] === undefined) return { board, square };
-    playerCounter[PlayerName.Black]! += 1;
-    return { board, square };
-  },
   lossCondition: ({ playerName, game, gameClones, interrupt, dead }) => {
-    if (dead || game.getCurrentPlayerName() !== playerName)
+    if (dead || game.getCurrentPlayerName() !== playerName) {
       return { playerName, game, gameClones, interrupt, dead };
-    const checkCounterToken = game.board.firstTokenWithName(TokenName.CheckCounter);
-    const playerCounter = checkCounterToken?.data?.playerCounter;
-    if (playerCounter !== undefined) {
-      const currentPlayerCheckCount = playerCounter[playerName];
-      if (currentPlayerCheckCount !== undefined && currentPlayerCheckCount >= 3)
-        return { playerName, game, gameClones, interrupt, dead: "checked thrice" };
     }
+
+    const checkCounters = game.board.firstTokenWithName(TokenName.CheckCounter)?.data
+      ?.counters;
+    if (checkCounters === undefined)
+      return { playerName, game, gameClones, interrupt, dead };
+    const playerIndex = game.players.findIndex((player) => player.name === playerName);
+    if (inCheck(game, gameClones, interrupt)) {
+      checkCounters[playerIndex] += 1;
+    }
+
+    if (checkCounters[playerIndex] >= 3)
+      return { playerName, game, gameClones, interrupt, dead: "checked thrice" };
 
     return { playerName, game, gameClones, interrupt, dead: false };
   },
 };
-
-function initializePlayerCounter(game: Game): PlayerCounter {
-  return Object.assign(
-    {},
-    ...game
-      .alivePlayers()
-      .map((player) => player.name)
-      .map((k) => ({ [k]: 0 }))
-  );
-}

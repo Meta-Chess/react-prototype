@@ -15,7 +15,6 @@ import { CompactRules } from "game/Rules/CompactRules";
 import { IdGenerator } from "utilities/IdGenerator";
 import { PieceDelta } from "game/Move";
 import { cloneDeep } from "lodash";
-import { resetArrayTo } from "utilities";
 interface LocationMap {
   [location: string]: Square;
 }
@@ -61,7 +60,6 @@ class Board extends TokenOwner {
 
   resetTo(savePoint: Board): void {
     this.tokens = cloneDeep(savePoint.tokens);
-    this.tokens = savePoint.tokens;
     Object.keys(this.squares).forEach((key) => {
       if (savePoint.squares[key] === undefined) delete this.squares[key];
     });

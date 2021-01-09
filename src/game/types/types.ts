@@ -80,10 +80,6 @@ export enum TokenName {
 export enum AnimationType {
   explosion = "explosion",
 }
-
-export type PlayerCounter = {
-  [key in PlayerName]?: number;
-};
 interface TokenData {
   history?: string[];
   shape?: SquareShape;
@@ -93,7 +89,7 @@ interface TokenData {
   createdAt?: number;
   duration?: number;
   id?: number;
-  playerCounter?: PlayerCounter;
+  counters?: number[];
 }
 
 export interface RankAndFileBounds {
