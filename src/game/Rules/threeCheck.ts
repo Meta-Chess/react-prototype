@@ -30,7 +30,8 @@ export const threeCheck: Rule = {
     return { board, square };
   },
   lossCondition: ({ playerName, game, gameClones, interrupt, dead }) => {
-    playerName = game.getCurrentPlayerName();
+    if (dead || game.getCurrentPlayerName() !== playerName)
+      return { playerName, game, gameClones, interrupt, dead };
     const checkCounterToken = game.board.firstTokenWithName(TokenName.CheckCounter);
     const playerCounter = checkCounterToken?.data?.playerCounter;
     if (playerCounter !== undefined) {

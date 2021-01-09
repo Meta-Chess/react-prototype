@@ -14,7 +14,8 @@ import { isPresent } from "utilities";
 import { CompactRules } from "game/Rules/CompactRules";
 import { IdGenerator } from "utilities/IdGenerator";
 import { PieceDelta } from "game/Move";
-
+import { cloneDeep } from "lodash";
+import { resetArrayTo } from "utilities";
 interface LocationMap {
   [location: string]: Square;
 }
@@ -39,6 +40,7 @@ class Board extends TokenOwner {
   }
 
   clone(): Board {
+    const tokens = cloneDeep(this.tokens);
     const squaresClone = Object.keys(this.squares).reduce(
       (acc, key) => ({
         ...acc,
@@ -54,10 +56,11 @@ class Board extends TokenOwner {
       {}
     );
     //TODO: actually clone rules
-    return new Board(this.interrupt, squaresClone, piecesClone, this.tokens);
+    return new Board(this.interrupt, squaresClone, piecesClone, tokens);
   }
 
   resetTo(savePoint: Board): void {
+    this.tokens = cloneDeep(savePoint.tokens);
     this.tokens = savePoint.tokens;
     Object.keys(this.squares).forEach((key) => {
       if (savePoint.squares[key] === undefined) delete this.squares[key];
