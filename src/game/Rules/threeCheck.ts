@@ -33,7 +33,13 @@ export const threeCheck: Rule = {
     }
 
     if (checkCounters[playerIndex] >= 3)
-      return { playerName, game, gameClones, interrupt, dead: "checked thrice" };
+      return {
+        playerName,
+        game,
+        gameClones,
+        interrupt,
+        dead: "has been checked 3 times",
+      };
 
     return { playerName, game, gameClones, interrupt, dead: false };
   },
