@@ -37,26 +37,25 @@ export const VariantTileHeader: SFC<Props> = ({ variant, selected, clash }) => {
 };
 
 const Container = styled(View)<{ color: Color }>`
+  height: 30px;
   flex-grow: 1;
   flex-direction: row;
+  align-items: center;
   background-color: ${({ color }): string => color.toString()};
 `;
 
 const TitleText = styled(Text)`
   padding-horizontal: 8px;
-  padding-vertical: 4px;
-  height: 30px;
   text-align: center;
 `;
 
 const ComplexityDot = styled(View)`
-  margin-right: 8;
   width: 20;
   height: 20;
   position: absolute;
-  right: 0;
+  right: 8;
   align-self: center;
   justify-content: center;
-  border-radius: 50;
-  background-color: ${Colors.BLACK.fade(0.75).toString()};
+  border-radius: 50%;
+  background-color: ${Colors.BLACK.fade(0.7).toString()};
 `;

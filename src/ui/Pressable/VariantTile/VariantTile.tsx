@@ -22,7 +22,7 @@ export const VariantTile: SFC<Props> = ({ style, variant, selected, clash, onPre
     <TouchableContainer
       style={style}
       onPress={onPress}
-      activeOpacity={1}
+      activeOpacity={0.6}
       disabled={!implemented}
     >
       <VariantTileHeader variant={variant} selected={selected} clash={clash} />

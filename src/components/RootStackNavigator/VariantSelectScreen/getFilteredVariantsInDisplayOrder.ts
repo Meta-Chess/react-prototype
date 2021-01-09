@@ -16,8 +16,8 @@ export function getFilteredVariantsInDisplayOrder(
         ? -1
         : futureVariants[v2].implemented && !futureVariants[v1].implemented
         ? 1
-        : futureVariants[v1].complexity < futureVariants[v2].complexity
-        ? -1
-        : futureVariants[v1].title.localeCompare(futureVariants[v2].title)
+        : futureVariants[v1].complexity === futureVariants[v2].complexity
+        ? futureVariants[v1].title.localeCompare(futureVariants[v2].title)
+        : futureVariants[v1].complexity - futureVariants[v2].complexity
     );
 }
