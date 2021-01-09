@@ -65,6 +65,7 @@ const Text: FC<Props> = (props) => {
           fontWeight: weight === "normal" ? "normal" : "600",
           fontFamily: fontFamily,
           textAlign: alignment,
+          overflow: "visible",
         },
         style,
       ]}

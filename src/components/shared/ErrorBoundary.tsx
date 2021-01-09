@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
-import { Colors, MChessLogo, Text } from "primitives";
-import { View } from "react-native";
+import { Colors, Text } from "primitives";
+import { ErrorScreen } from "primitives/images";
+import { View, Image } from "react-native";
 
 interface Props {
   fallback?: ReactNode;
@@ -27,7 +28,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
       return (
         this.props.fallback ?? (
           <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <MChessLogo size={180} />
+            <Image source={ErrorScreen} style={{ width: 220, height: 220 }} />
             <Text cat={"DisplayM"} style={{ marginTop: 24 }}>
               {"Something went wrong"}
             </Text>
