@@ -23,14 +23,15 @@ export class Square extends TokenOwner {
   }
 
   clone(): Square {
-    return new Square(
+    const cloneConstructorInput: Required<ConstructorParameters<typeof Square>> = [
       this.location,
       clone(this.coordinates),
       clone(this.whiteListedMarkers),
       clone(this.tokens),
       this.adjacencies.clone(),
-      clone(this.pieces)
-    );
+      clone(this.pieces),
+    ];
+    return new Square(...cloneConstructorInput);
   }
 
   resetTo(savePoint: Square): void {

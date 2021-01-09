@@ -13,12 +13,13 @@ export class Player {
   ) {}
 
   clone(): Player {
-    return new Player(
+    const cloneConstructorInput: Required<ConstructorParameters<typeof Player>> = [
       this.name,
       this.alive,
       this.endGameMessage,
-      cloneDeep(this.hasLegalMoves)
-    );
+      cloneDeep(this.hasLegalMoves),
+    ];
+    return new Player(...cloneConstructorInput);
   }
 
   resetTo(savePoint: Player): void {

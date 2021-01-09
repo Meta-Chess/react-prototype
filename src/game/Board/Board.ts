@@ -39,7 +39,6 @@ class Board extends TokenOwner {
   }
 
   clone(): Board {
-    const tokens = clone(this.tokens);
     const squaresClone = Object.keys(this.squares).reduce(
       (acc, key) => ({
         ...acc,
@@ -55,7 +54,13 @@ class Board extends TokenOwner {
       {}
     );
     //TODO: actually clone rules
-    return new Board(this.interrupt, squaresClone, piecesClone, tokens);
+    const cloneConstructorInput: Required<ConstructorParameters<typeof Board>> = [
+      this.interrupt,
+      squaresClone,
+      piecesClone,
+      clone(this.tokens),
+    ];
+    return new Board(...cloneConstructorInput);
   }
 
   resetTo(savePoint: Board): void {

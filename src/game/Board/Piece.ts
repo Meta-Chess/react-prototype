@@ -17,15 +17,16 @@ class Piece extends TokenOwner {
   }
 
   clone(): Piece {
-    return new Piece(
+    const cloneConstructorInput: Required<ConstructorParameters<typeof Piece>> = [
       this.name,
       this.generateGaits,
       this.owner,
       this.location,
       clone(this.tokens),
       this.id,
-      clone(this.AccessMarkers)
-    );
+      clone(this.AccessMarkers),
+    ];
+    return new Piece(...cloneConstructorInput);
   }
 
   resetTo(savePoint: Piece): void {

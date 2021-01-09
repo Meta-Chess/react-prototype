@@ -19,14 +19,15 @@ export class Game {
   ) {}
 
   clone(): Game {
-    return new Game(
+    const cloneConstructorInput: Required<ConstructorParameters<typeof Game>> = [
       this.interrupt, // When we start updating the rules, we'll need to clone the interrupt, perhaps by storing the list of rules and regenerating
       this.board.clone(),
       undefined, // Clones don't need a clock at the moment
       this.players.map((p) => p.clone()),
       this.currentPlayerIndex,
-      this.currentTurn
-    );
+      this.currentTurn,
+    ];
+    return new Game(...cloneConstructorInput);
   }
 
   resetTo(savePoint: Game): void {

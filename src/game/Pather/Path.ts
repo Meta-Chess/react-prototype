@@ -26,6 +26,10 @@ export class Path {
   }
 
   clone(): Path {
-    return new Path(this.start, clone(this.path.slice(1)));
+    const cloneConstructorInput: Required<ConstructorParameters<typeof Path>> = [
+      this.start,
+      clone(this.path.slice(1)),
+    ];
+    return new Path(...cloneConstructorInput);
   }
 }

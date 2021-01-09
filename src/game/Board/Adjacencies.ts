@@ -10,7 +10,10 @@ export interface Adjacency {
 
 export class Adjacencies extends Map<Direction, string[]> {
   clone(): Adjacencies {
-    return new Adjacencies(clone(this.dictionary));
+    const cloneConstructorInput: Required<ConstructorParameters<typeof Adjacencies>> = [
+      clone(this.dictionary),
+    ];
+    return new Adjacencies(...cloneConstructorInput);
   }
 
   go(direction: Direction): string[] {
