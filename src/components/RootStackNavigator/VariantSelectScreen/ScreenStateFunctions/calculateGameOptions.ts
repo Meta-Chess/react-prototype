@@ -5,23 +5,22 @@ import {
   futureVariants,
   FutureVariantName,
 } from "game/variants/variants";
-import { deduplicateByName } from "utilities";
+import { uniq } from "lodash";
 
 export function calculateGameOptions(
   gameOptions: GameOptions,
   selectedVariants: FutureVariantName[]
 ): GameOptions {
-  const rules = deduplicateByName(
+  const ruleNames = uniq(
     selectedVariants
-      .flatMap((variantName) => futureVariants[variantName].rules)
-      .concat(variants["Chess"].rules)
-      .flatMap((rule, index, rules) =>
-        integrateWithOtherRules[rule.name]
-          ? integrateWithOtherRules[rule.name](rules)
-          : [rule]
-      )
-      .sort((r1) => (r1.name === "Fatigue" ? 1 : -1)) //just temp ordering fatigue later TODO: Fix the bug that this handles properly - reset cloned pieces properly?
+      .flatMap((variantName) => futureVariants[variantName].ruleNames)
+      .concat(variants.chess.ruleNames)
+      .flatMap((ruleName, index, ruleNames) => {
+        const integration = integrateWithOtherRules[ruleName];
+        return integration ? integration(ruleNames) : [ruleName];
+      })
+      .sort((r1) => (r1 === "fatigue" ? 1 : -1)) //just temp ordering fatigue later TODO: Fix the bug that this handles properly - reset cloned pieces properly?
   );
 
-  return { ...gameOptions, customRules: rules };
+  return { ...gameOptions, customRuleNames: ruleNames };
 }

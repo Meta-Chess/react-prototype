@@ -1,8 +1,8 @@
 import { Direction } from "../types";
-import { Rule } from "./Rules";
+import { Rule } from "./CompactRules";
 
 export const passiveMoveThroughBoard: Rule = {
-  name: "Passive Move Through Board",
+  title: "Passive Move Through Board",
   description:
     "All pieces can move through the board (assuming there's a square on the other side)!",
   onGaitsGeneratedModify: ({ gaits, piece }) => ({

@@ -1,5 +1,5 @@
 import { PieceName, Region } from "../types";
-import { Rule } from "./Rules";
+import { Rule } from "./CompactRules";
 import { Board } from "game";
 import { nthCartesianPower } from "utilities/nthCartesianPower";
 import { Gait } from "game/types/types";
@@ -13,7 +13,7 @@ const PROMOTION_PIECES = [
 ];
 
 export const promotion: Rule = {
-  name: "Promotion",
+  title: "Promotion",
   description:
     "When pawns reach a promotion square, they can be turned into a queen, knight, rook, or bishop",
 

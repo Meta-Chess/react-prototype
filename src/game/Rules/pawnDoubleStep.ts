@@ -1,11 +1,11 @@
 import { Gait, PieceName, TokenName } from "../types";
 import { Piece } from "../Board";
-import { Rule } from "./Rules";
+import { Rule } from "./CompactRules";
 import { pawnDoubleStepToken } from "./constants";
 import { isPresent } from "utilities";
 
 export const pawnDoubleStep: Rule = {
-  name: "Pawn Double Step",
+  title: "Pawn Double Step",
   description:
     "For their first move, pawns can do two steps in their direction of travel!",
   postMove: ({ board, move, currentTurn }) => {

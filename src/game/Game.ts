@@ -1,7 +1,7 @@
 import { Board } from "./Board";
 import { Clock } from "./Clock";
 import { PlayerName } from "./types";
-import { CompactRules } from "./Rules/Rules";
+import { CompactRules } from "./Rules/CompactRules";
 import { Player } from "game/Player";
 import { Move } from "game/Move";
 

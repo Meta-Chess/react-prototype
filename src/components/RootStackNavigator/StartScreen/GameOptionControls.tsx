@@ -102,7 +102,7 @@ const GameOptionControls: SFC<Props> = ({
 
 const variantNames = Object.keys(variants) as VariantName[];
 const variantOptions = variantNames.map((k) => ({
-  label: k,
+  label: variants[k].title,
   value: k,
 }));
 

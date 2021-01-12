@@ -17,7 +17,7 @@ const RulesInfoCard: SFC<Props> = ({ rules, style }) => {
       <Text cat="DisplayM">Rules</Text>
       <View style={{ flexWrap: "wrap", flexDirection: "row", marginTop: 8 }}>
         {rules.map((rule, index) => (
-          <LabelWithDetails label={rule.name} details={rule.description} key={index} />
+          <LabelWithDetails label={rule.title} details={rule.description} key={index} />
         ))}
       </View>
     </Card>

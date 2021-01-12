@@ -1,10 +1,10 @@
 import { Adjacency, Board, Square } from "../Board";
-import { Rule } from "./Rules";
+import { Rule } from "./CompactRules";
 import { Direction, RankAndFileBounds } from "../types";
 import { toLocation } from "utilities";
 
 export const verticallyCylindrical: Rule = {
-  name: "Vertical Cylinder",
+  title: "Vertical Cylinder",
   description:
     "The board has been wrapped onto a cylinder, and the top and bottom ranks have been glued together. This allows pieces to move off the top edge of the board onto the bottom edge, and vice versa.",
   afterBoardCreation: ({ board }) => {

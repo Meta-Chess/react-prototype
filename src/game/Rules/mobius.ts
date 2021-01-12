@@ -1,10 +1,10 @@
 import { Adjacency, Square } from "../Board";
 import { Direction, RankAndFileBounds } from "../types";
 import { wrapToCylinder } from "utilities";
-import { Rule } from "./Rules";
+import { Rule } from "./CompactRules";
 
 export const mobius: Rule = {
-  name: "Möbius",
+  title: "Möbius",
   description: "You can see the pieces on the other side of the Möbius Strip",
   piecesUnderSquare: ({ square, board, pieceIds }) => {
     const bounds = board.rankAndFileBounds();

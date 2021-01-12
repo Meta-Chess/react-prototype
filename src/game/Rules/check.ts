@@ -1,10 +1,10 @@
-import { CompactRules, Rule } from "./Rules";
+import { CompactRules, Rule } from "./CompactRules";
 import { Pather } from "../Pather";
 import { cloneDeep } from "lodash";
 import { Game, Move } from "game";
 
 export const check: Rule = {
-  name: "Check",
+  title: "Check",
   description:
     "You can't do any moves that would allow an opponent to take your king on their next turn. Something something win condition? Something something multiple opponents?",
   inPostMoveGenerationFilter: (input) => {
