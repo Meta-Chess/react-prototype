@@ -334,7 +334,8 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
 };
 
 export const variantsBlacklist: { [key in FutureVariantName]?: FutureVariantName[] } = {
-  hex: ["toroidal", "mobius", "spherical", "polar", "kleinBottle"],
+  kleinBottle: ["hex", "polar", "spherical"],
+  hex: ["toroidal", "mobius", "spherical", "polar"],
   mobius: ["polar", "spherical"],
   polar: ["toroidal"],
   spherical: ["toroidal"],
