@@ -1,5 +1,5 @@
 import { Board } from "game/Board";
-import { CompactRules, rules } from "game/Rules";
+import { CompactRules, rules } from "game/rules";
 import { Direction } from "game/types";
 import { toLocation } from "utilities";
 

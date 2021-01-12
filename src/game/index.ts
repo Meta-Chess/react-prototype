@@ -3,5 +3,5 @@ export * from "./Game";
 export * from "./GameContext";
 export * from "./GameMaster";
 export * from "./Move";
-export * from "./Rules";
+export * from "./rules";
 export * from "./variants/variants";

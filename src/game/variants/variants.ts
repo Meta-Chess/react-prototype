@@ -1,4 +1,4 @@
-import { RuleName } from "../Rules";
+import { RuleName } from "../rules";
 import { TraitName } from "game/variants";
 import * as VariantImages from "primitives/VariantImage";
 
@@ -37,7 +37,7 @@ export const variants: { [name in VariantName]: Variant } = {
       "loseWithNoKings",
       "pawnDoubleStep",
       "castling",
-      "Interception",
+      "interception",
       "promotion",
       "stalemate",
     ],
@@ -51,7 +51,7 @@ export const variants: { [name in VariantName]: Variant } = {
       "pawnDoubleStep",
       "cylindrical",
       "castling",
-      "Interception",
+      "interception",
       "promotion",
       "stalemate",
     ],
@@ -67,7 +67,7 @@ export const variants: { [name in VariantName]: Variant } = {
       "cylindrical",
       "polar",
       "castling",
-      "Interception",
+      "interception",
       "promotion",
       "stalemate",
     ],
@@ -81,7 +81,7 @@ export const variants: { [name in VariantName]: Variant } = {
       "loseWithNoKings",
       "pawnDoubleStep",
       "castling",
-      "Interception",
+      "interception",
       "promotion",
     ],
   },
@@ -94,7 +94,7 @@ export const variants: { [name in VariantName]: Variant } = {
       "pawnDoubleStep",
       "hexCylindrical",
       "castling",
-      "Interception",
+      "interception",
       "promotion",
       "stalemate",
     ],
@@ -110,7 +110,7 @@ export const variants: { [name in VariantName]: Variant } = {
       "loseWithNoKings",
       "pawnDoubleStep",
       "castling",
-      "Interception",
+      "interception",
       "promotion",
       "stalemate",
     ],
@@ -127,7 +127,7 @@ export const variants: { [name in VariantName]: Variant } = {
       "loseWithNoKings",
       "pawnDoubleStep",
       "castling",
-      "Interception",
+      "interception",
       "promotion",
       "stalemate",
     ],

@@ -4,7 +4,7 @@ import { GameOptions, PlayerDisplayNames } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants/variants";
-import { rules as allRules, CompactRules, Rule } from "./Rules";
+import { rules as allRules, CompactRules, Rule } from "./rules";
 import { uniqWith } from "lodash";
 import { randomChoice } from "utilities";
 import { Move, movesAreEqual } from "game/Move";

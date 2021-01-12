@@ -11,7 +11,7 @@ import {
   Regions,
 } from "game/types";
 import { isPresent } from "utilities";
-import { CompactRules } from "game/Rules/CompactRules";
+import { CompactRules } from "game/rules/CompactRules";
 import { IdGenerator } from "utilities/IdGenerator";
 import { PieceDelta } from "game/Move";
 import { clone } from "lodash";

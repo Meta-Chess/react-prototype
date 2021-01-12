@@ -1,7 +1,7 @@
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
 import { mockRenderer } from "../helpers/mockRenderer";
-import { createPiece } from "game/Rules/utilities";
+import { createPiece } from "game/rules/utilities";
 import { PieceName, PlayerName } from "game/types";
 
 describe("In standard chess", () => {

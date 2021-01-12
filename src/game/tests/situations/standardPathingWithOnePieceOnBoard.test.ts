@@ -1,4 +1,4 @@
-import { createPiece } from "game/Rules/utilities";
+import { createPiece } from "game/rules/utilities";
 import { PieceName, PlayerName } from "game/types";
 import { toLocation } from "utilities";
 import { GameMaster } from "../../GameMaster";
