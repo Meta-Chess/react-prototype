@@ -6,7 +6,7 @@ import { Pather, Scanner } from "../Pather";
 import { Path } from "game/Pather/Path";
 
 export const castling: Rule = {
-  name: "Castling",
+  title: "Castling",
   description:
     "Can your king move two squares in some direction? Is this your king's first move? Is there a rook in this direction from your king? Can that rook get to the square your king moves through? Is this that rook's first move? If so, your king and rook can do those moves at the same time!",
   postMove: ({ board, move, currentTurn }) => {

@@ -22,9 +22,9 @@ const TraitFilter: SFC<TraitFilterProps> = ({
 }) => {
   const baseColor = traitInfo[trait].color.fade(0.5);
   const color = selected ? baseColor : baseColor.fade(0.5);
-  const labelPadding = 8;
-  const counterPadding = 6;
-  const verticalPadding = 2;
+  const labelPadding = 4;
+  const counterPadding = 4;
+  const verticalPadding = 1;
   return (
     <TouchableLabel
       labelPadding={labelPadding}
@@ -34,7 +34,7 @@ const TraitFilter: SFC<TraitFilterProps> = ({
       color={color}
       onPress={onPress}
     >
-      <Text cat={"BodyS"} color={Colors.TEXT.LIGHT.toString()}>
+      <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()}>
         {trait}
       </Text>
       <CountContainer
@@ -57,7 +57,7 @@ const TouchableLabel = styled(TouchableOpacity)<{
   verticalPadding: number;
 }>`
   flex-direction: row;
-  border-radius: 6px;
+  border-radius: 4px;
   padding-left: ${({ labelPadding }): number => labelPadding}px;
   padding-vertical: ${({ verticalPadding }): number => verticalPadding}px;
   background-color: ${({ color }): string => color.string()};

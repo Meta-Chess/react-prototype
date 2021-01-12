@@ -1,11 +1,11 @@
 import { Adjacency, Square } from "../Board";
 import { Direction, RankAndFileBounds, TokenName } from "../types";
 import { range, toLocation, wrapToCylinder } from "utilities";
-import { Rule } from "./Rules";
+import { Rule } from "./CompactRules";
 import { invisibilityToken, polarToken } from "./constants";
 
 export const polar: Rule = {
-  name: "Polar",
+  title: "Polar",
   description:
     "The top and bottom of the board behave like the poles of a sphere. The top edge of the board is wrapped around the edge of an invisible octagonal 'square' that pieces can cross but can't stop on. The bottom edge of the board is similarly wrapped around its own octagonal square.",
   afterStepModify: ({ gait, remainingSteps, currentSquare }) => {

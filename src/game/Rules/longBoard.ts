@@ -1,13 +1,13 @@
 import { range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
 import { Direction, PieceName, PlayerName, RankAndFileBounds, Region } from "../types";
-import { Rule } from "./Rules";
+import { Rule } from "./CompactRules";
 import { createPiece, determineGaitGenerator } from "./utilities";
 import { standardGaits } from "./constants";
 import { moveIsAggressive } from "./defaults";
 
 export const longBoard: Rule = {
-  name: "Long board",
+  title: "Long board",
   description:
     "The setup includes a long board and extra rows of pawns. It's designed to work well with vertical wrapping rules.",
   forSquareGenerationModify: ({ board }) => {

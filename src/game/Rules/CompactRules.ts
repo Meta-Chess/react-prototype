@@ -1,5 +1,6 @@
+import { isPresent } from "ts-is-present";
 import { Direction, Gait, GaitParams, PieceName, PlayerName } from "../types";
-import { applyInSequence, isPresent } from "utilities";
+import { applyInSequence } from "utilities";
 import { Board, Piece, Square } from "../Board";
 import { Game } from "game/Game";
 import { Move, PieceDelta } from "game/Move";
@@ -86,6 +87,6 @@ const identityRule = {
 export type CompleteRule = typeof identityRule;
 type InterruptionName = keyof CompleteRule;
 export type Rule = Partial<CompleteRule> & {
-  name: string;
+  title: string;
   description: string;
 };

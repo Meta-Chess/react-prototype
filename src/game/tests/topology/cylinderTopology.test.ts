@@ -1,10 +1,10 @@
 import { Board } from "game/Board";
-import { CompactRules, cylindrical, standard } from "game/Rules";
+import { CompactRules, rules } from "game/Rules";
 import { Direction } from "game/types";
 import { toLocation } from "utilities";
 
 describe("On the cylindrical board", () => {
-  const board = Board.createBoard(new CompactRules([standard, cylindrical]));
+  const board = Board.createBoard(new CompactRules([rules.standard, rules.cylindrical]));
 
   describe("on a square in the middle of the board", () => {
     const square = board.squareAt(toLocation({ rank: 4, file: 4 }));

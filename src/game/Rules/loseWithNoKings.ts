@@ -1,8 +1,8 @@
 import { PieceName } from "../types";
-import { Rule } from "./Rules";
+import { Rule } from "./CompactRules";
 
 export const loseWithNoKings: Rule = {
-  name: "Lose with no kings",
+  title: "Lose with no kings",
   description: "If you have no kings, you've lost the game!",
   lethalCondition: ({ board, player, dead }) => {
     if (dead) return { board, player, dead };

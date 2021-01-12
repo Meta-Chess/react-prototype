@@ -7,7 +7,7 @@ describe("In standard chess", () => {
   it("Fool's mate should end game", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        { variant: "Chess", checkEnabled: true },
+        { variant: "chess", checkEnabled: true },
         mockRenderer
       )
     );

@@ -22,7 +22,7 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange, zIndex }) =>
         items={simplifiedOptions}
         defaultValue={options[0].label}
         style={{
-          backgroundColor: Colors.DARKEST.toString(),
+          backgroundColor: "transparent",
           borderWidth: 2,
           borderColor: Colors.GREY.fade(0.4).toString(),
           borderRadius: 4,

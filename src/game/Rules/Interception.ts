@@ -2,7 +2,7 @@ import { TokenName } from "game/types";
 import { Rule } from ".";
 
 export const Interception: Rule = {
-  name: "Interception",
+  title: "Interception",
   description:
     "Enables interceptable moves where pieces can be captured by moving to a square that they moved through",
   postMove: ({ board, move, currentTurn }) => {

@@ -42,7 +42,7 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
             ...baseStyle,
             borderRadius: 4,
             border: `2px solid ${Colors.GREY.fade(0.4).toString()}`,
-            backgroundColor: Colors.DARKEST.toString(),
+            backgroundColor: "transparent",
             boxShadow: isFocused ? "0" : "0",
           }),
           menu: (baseStyle): CSSProperties => ({

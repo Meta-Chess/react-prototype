@@ -7,7 +7,7 @@ import { Board } from "game";
 describe("In standard chess", () => {
   it("There should be four possible castling moves", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ variant: "Chess" }, mockRenderer)
+      ...GameMaster.processConstructorInputs({ variant: "chess" }, mockRenderer)
     );
     killBishopsKnightsAndQueens(gameMaster.game.board);
 
@@ -38,7 +38,7 @@ describe("In standard chess", () => {
 
   it("After moving the king, it should be unable to castle", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ variant: "Chess" }, mockRenderer)
+      ...GameMaster.processConstructorInputs({ variant: "chess" }, mockRenderer)
     );
     killBishopsKnightsAndQueens(gameMaster.game.board);
 
@@ -59,7 +59,7 @@ describe("In standard chess", () => {
 
   it("Moving queen-side rook should stop queen-side castling", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ variant: "Chess" }, mockRenderer)
+      ...GameMaster.processConstructorInputs({ variant: "chess" }, mockRenderer)
     );
     killBishopsKnightsAndQueens(gameMaster.game.board);
 
@@ -81,7 +81,7 @@ describe("In standard chess", () => {
 
   it("Moving king-side rook should stop king-side castling", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ variant: "Chess" }, mockRenderer)
+      ...GameMaster.processConstructorInputs({ variant: "chess" }, mockRenderer)
     );
     killBishopsKnightsAndQueens(gameMaster.game.board);
 
@@ -103,7 +103,7 @@ describe("In standard chess", () => {
 
   it("Castling queen-side should have correct end position", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ variant: "Chess" }, mockRenderer)
+      ...GameMaster.processConstructorInputs({ variant: "chess" }, mockRenderer)
     );
     const board = gameMaster.game.board;
     killBishopsKnightsAndQueens(board);

@@ -20,7 +20,10 @@ const VariantCardGrid: SFC<Props> = ({
 }) => {
   return (
     <View style={style}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingVertical: 24 }}
+      >
         <CardContainer>
           {displayVariants.map((variant) => {
             return (
@@ -45,9 +48,7 @@ const VariantCardGrid: SFC<Props> = ({
 };
 
 const CardContainer = styled(View)`
-  justify-content: center;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
 `;
 
 export { VariantCardGrid };

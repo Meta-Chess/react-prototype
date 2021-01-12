@@ -4,7 +4,7 @@ import { GameOptions, PlayerDisplayNames } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants/variants";
-import { atomic, check, CompactRules, fatigue, Rule } from "./Rules";
+import { rules as allRules, CompactRules, Rule } from "./Rules";
 import { uniqWith } from "lodash";
 import { randomChoice } from "utilities";
 import { Move, movesAreEqual } from "game/Move";
@@ -47,7 +47,7 @@ export class GameMaster {
     renderer: Renderer
   ): [CompactRules, Rule[], VariantName, Game, Renderer, GameOptions] {
     const {
-      customRules,
+      customRuleNames,
       time,
       checkEnabled,
       fatigueEnabled,
@@ -56,10 +56,13 @@ export class GameMaster {
     const variant =
       gameOptions.variant || (randomChoice(Object.keys(variants)) as VariantName);
 
-    const rules = !customRules?.length ? [...variants[variant].rules] : customRules;
-    if (checkEnabled && !customRules?.length) rules.push(check);
-    if (fatigueEnabled && !customRules?.length) rules.push(fatigue);
-    if (atomicEnabled && !customRules?.length) rules.push(atomic);
+    const ruleNames = !customRuleNames?.length
+      ? [...variants[variant].ruleNames]
+      : customRuleNames;
+    const rules = ruleNames.map((name) => allRules[name]);
+    if (checkEnabled) rules.push(allRules.check);
+    if (fatigueEnabled && !customRuleNames?.length) rules.push(allRules.fatigue);
+    if (atomicEnabled && !customRuleNames?.length) rules.push(allRules.atomic);
 
     const interrupt = new CompactRules(rules);
     const game = Game.createGame(interrupt, time);

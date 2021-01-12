@@ -15,7 +15,6 @@ export const TextInput: SFC<Props> = ({ style, ...rest }) => {
 
   const defaultStyle = {
     height: 44,
-    width: 300,
     borderWidth: 2,
     borderRadius: 4,
     borderColor: focused

@@ -1,9 +1,9 @@
 import { PieceName, TokenName, AnimationType } from "../types";
-import { Rule } from "./Rules";
+import { Rule } from "./CompactRules";
 import { Board } from "game";
 
 export const atomic: Rule = {
-  name: "Atomic",
+  title: "Atomic",
   description:
     "When a piece is captured, all pieces on adjacent squares are destroyed. Pawns shield their square from this effect. The capturing piece is also destroyed.",
   postCapture: ({ board, square }) => {

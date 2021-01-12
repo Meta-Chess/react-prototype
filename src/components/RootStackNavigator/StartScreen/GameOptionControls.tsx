@@ -44,7 +44,7 @@ const GameOptionControls: SFC<Props> = ({
       <TextInput
         placeholder={"Please enter an invite key"}
         onChangeText={(text: string): void => setRoomId(text)}
-        style={{ marginTop: 20 }}
+        style={{ marginTop: 20, width: 300 }}
         onSubmitEditing={onSubmit}
       />
       <LabeledCheckBox
@@ -102,7 +102,7 @@ const GameOptionControls: SFC<Props> = ({
 
 const variantNames = Object.keys(variants) as VariantName[];
 const variantOptions = variantNames.map((k) => ({
-  label: k,
+  label: variants[k].title,
   value: k,
 }));
 

@@ -1,12 +1,12 @@
 import { range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
 import { Direction, PieceName, PlayerName, RankAndFileBounds, Region } from "../types";
-import { Rule } from "./Rules";
+import { Rule } from "./CompactRules";
 import { createPiece, determineGaitGenerator } from "./utilities";
 import { moveIsAggressive } from "./defaults";
 
 export const standard: Rule = {
-  name: "Standard",
+  title: "Standard",
   description:
     "This rule takes care of all the details of your usual bog-standard board and piece set-up.",
   forSquareGenerationModify: ({ board }) => {

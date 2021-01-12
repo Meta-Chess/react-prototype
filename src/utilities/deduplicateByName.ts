@@ -1,6 +1,5 @@
-import { Rule } from "game/Rules";
 import { uniqBy } from "lodash";
 
-export function deduplicateByName(rules: Rule[]): Rule[] {
-  return uniqBy(rules, (rule: Rule): string => rule.name);
+export function deduplicateByName<T extends { name: string }>(rules: T[]): T[] {
+  return uniqBy(rules, (rule: T): string => rule.name);
 }

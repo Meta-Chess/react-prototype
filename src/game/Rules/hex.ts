@@ -1,5 +1,5 @@
 import { range, toLocation } from "utilities";
-import { Rule } from "./Rules";
+import { Rule } from "./CompactRules";
 import { Adjacency, Piece, Square } from "../Board";
 import {
   Direction,
@@ -14,7 +14,7 @@ import { Region } from "../types";
 import { moveIsAggressive } from "./defaults";
 
 export const hex: Rule = {
-  name: "Hexagon",
+  title: "Hexagon",
   description:
     "Every place on the board has a hexagonal geometry rather than a square geometry. Note that diagonal steps are a bit longer than usual. Click on a piece to find out how it moves!",
   forSquareGenerationModify: ({ board }) => {

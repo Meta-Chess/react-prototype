@@ -6,7 +6,7 @@ import { mockRenderer } from "../helpers/mockRenderer";
 describe("In standard chess", () => {
   it("A white pawn should have allowable moves one or two squares forwards from its starting position", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ variant: "Chess" }, mockRenderer)
+      ...GameMaster.processConstructorInputs({ variant: "chess" }, mockRenderer)
     );
 
     // Select white pawn at E2
@@ -23,7 +23,7 @@ describe("In standard chess", () => {
 
   it("A black pawn should have allowable moves one or two squares forwards from its starting position", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ variant: "Chess" }, mockRenderer)
+      ...GameMaster.processConstructorInputs({ variant: "chess" }, mockRenderer)
     );
 
     // Select black pawn at E7
@@ -40,7 +40,7 @@ describe("In standard chess", () => {
 
   it("A pawn should be able to move two squares forwards from its starting position", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ variant: "Chess" }, mockRenderer)
+      ...GameMaster.processConstructorInputs({ variant: "chess" }, mockRenderer)
     );
     const board = gameMaster.game.board;
 
@@ -60,7 +60,7 @@ describe("In standard chess", () => {
 
   it("A pawn should be able to move one square forwards from its starting position", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ variant: "Chess" }, mockRenderer)
+      ...GameMaster.processConstructorInputs({ variant: "chess" }, mockRenderer)
     );
     const board = gameMaster.game.board;
 
@@ -80,7 +80,7 @@ describe("In standard chess", () => {
 
   it("After moving one square, a pawn should only have one allowable move", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ variant: "Chess" }, mockRenderer)
+      ...GameMaster.processConstructorInputs({ variant: "chess" }, mockRenderer)
     );
 
     // White pawn to E3
@@ -104,7 +104,7 @@ describe("In standard chess", () => {
 
   it("After moving two squares, a pawn should only have one allowable move", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ variant: "Chess" }, mockRenderer)
+      ...GameMaster.processConstructorInputs({ variant: "chess" }, mockRenderer)
     );
 
     // White pawn to E3
@@ -132,7 +132,7 @@ describe("In standard chess", () => {
 
   it("Pawns can take diagonally but not forwards", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ variant: "Chess" }, mockRenderer)
+      ...GameMaster.processConstructorInputs({ variant: "chess" }, mockRenderer)
     );
     const board = gameMaster.game.board;
 

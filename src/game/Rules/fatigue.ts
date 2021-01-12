@@ -1,10 +1,10 @@
 import { PieceName, TokenName } from "../types";
 import { Piece } from "../Board";
-import { Rule } from "./Rules";
+import { Rule } from "./CompactRules";
 import { isPresent } from "utilities";
 
 export const fatigue: Rule = {
-  name: "Fatigue",
+  title: "Fatigue",
   description:
     "Moving is hard work! If you moved one of your pieces last turn, it's too tired to move this turn (unless you can capture the king!)",
   postMove: ({ board, move, currentTurn }) => {
