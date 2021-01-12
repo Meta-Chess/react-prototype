@@ -39,6 +39,7 @@ export const variants: { [name in VariantName]: Variant } = {
       "castling",
       "Interception",
       "promotion",
+      "stalemate",
     ],
   },
   cylindrical: {
@@ -52,6 +53,7 @@ export const variants: { [name in VariantName]: Variant } = {
       "castling",
       "Interception",
       "promotion",
+      "stalemate",
     ],
   },
   spherical: {
@@ -67,6 +69,7 @@ export const variants: { [name in VariantName]: Variant } = {
       "castling",
       "Interception",
       "promotion",
+      "stalemate",
     ],
   },
   hex: {
@@ -93,6 +96,7 @@ export const variants: { [name in VariantName]: Variant } = {
       "castling",
       "Interception",
       "promotion",
+      "stalemate",
     ],
   },
   toroidal: {
@@ -108,6 +112,7 @@ export const variants: { [name in VariantName]: Variant } = {
       "castling",
       "Interception",
       "promotion",
+      "stalemate",
     ],
   },
   mobius: {
@@ -124,6 +129,7 @@ export const variants: { [name in VariantName]: Variant } = {
       "castling",
       "Interception",
       "promotion",
+      "stalemate",
     ],
   },
 };

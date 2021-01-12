@@ -201,7 +201,7 @@ export class GameMaster {
   checkGameEndConditions(): void {
     this.applyLossConditions();
     this.checkWinConditions();
-    this.checkDrawConditions();
+    if (!this.gameOver) this.checkDrawConditions();
   }
 
   applyLossConditions(): void {
@@ -236,8 +236,20 @@ export class GameMaster {
 
   checkDrawConditions(): void {
     if (this.game.alivePlayers().length == 0) {
-      this.result = "Draw by mutual destruction";
+      this.result = "Draw by mutual destruction!";
       this.endGame();
+    } else {
+      const draw = this.interrupt.for.drawCondition({
+        game: this.game,
+        gameClones: this.gameClones,
+        interrupt: this.interrupt,
+        draw: false,
+      }).draw;
+
+      if (draw !== false) {
+        this.result = `Draw by ${draw}!`;
+        this.endGame();
+      }
     }
   }
 

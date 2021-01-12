@@ -15,3 +15,4 @@ export * from "./polar";
 export * from "./promotion";
 export * from "./standard";
 export * from "./verticallyCylindrical";
+export * from "./stalemate";
