@@ -23,9 +23,7 @@ export function hasLegalMoves(
     }
     player.hasLegalMoves = { value: false, turn: game.currentTurn };
     return false;
-  } else if (hasLegalMoves.value) {
-    return true;
   } else {
-    return false;
+    return hasLegalMoves.value;
   }
 }
