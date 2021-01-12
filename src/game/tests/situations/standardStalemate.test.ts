@@ -24,5 +24,6 @@ describe("In standard chess", () => {
     // Game should be stalemate
     gameMaster.checkGameEndConditions();
     expect(gameMaster.result).toEqual("Draw by stalemate!");
+    expect(gameMaster.gameOver).toEqual(true);
   });
 });
