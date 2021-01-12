@@ -1,15 +1,17 @@
 import { Board } from "./Board";
 import { Clock } from "./Clock";
+import { EventCenter } from "./EventCenter";
+import { Player } from "./Player";
+import { Move } from "./Move";
 import { PlayerName } from "./types";
-import { CompactRules } from "./rules/CompactRules";
-import { Player } from "game/Player";
-import { Move } from "game/Move";
+import { CompactRules } from "./rules";
 
 export class Game {
   constructor(
     public interrupt: CompactRules,
     public board: Board,
     public clock: Clock | undefined,
+    public eventCenter: EventCenter,
     public players: Player[] = [
       new Player(PlayerName.White),
       new Player(PlayerName.Black),
@@ -23,6 +25,7 @@ export class Game {
       this.interrupt, // When we start updating the rules, we'll need to clone the interrupt, perhaps by storing the list of rules and regenerating
       this.board.clone(),
       undefined, // Clones don't need a clock at the moment
+      this.eventCenter.clone(),
       this.players.map((p) => p.clone()),
       this.currentPlayerIndex,
       this.currentTurn,
@@ -45,7 +48,11 @@ export class Game {
       ? new Clock([PlayerName.White, PlayerName.Black], time)
       : undefined;
     clock?.setActivePlayers([PlayerName.White]);
-    return new Game(interrupt, Board.createBoard(interrupt), clock);
+
+    const eventCenter = new EventCenter({});
+    // TODO: interrupt.for.subscribeToEvents({ eventCenter });
+
+    return new Game(interrupt, Board.createBoard(interrupt), clock, eventCenter);
   }
 
   doMove(move?: Move): void {
