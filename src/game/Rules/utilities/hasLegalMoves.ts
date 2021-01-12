@@ -11,22 +11,21 @@ export function hasLegalMoves(
 ): boolean {
   const player = game.players.filter((p) => p.name === playerName)[0];
   const hasLegalMoves = player.hasLegalMoves;
-  if (hasLegalMoves === undefined) {
+  if (hasLegalMoves.turn !== game.currentTurn) {
     const pieces = game.board.piecesBelongingTo(playerName);
     for (let i = 0; i < pieces.length; i++) {
       const pather = new Pather(game, gameClones, pieces[i], interrupt);
       const hypotheticalMoves = pather.findPaths();
       if (hypotheticalMoves.length > 0) {
-        player.hasLegalMoves = true;
+        player.hasLegalMoves = { value: true, turn: game.currentTurn };
         return true;
       }
     }
+    player.hasLegalMoves = { value: false, turn: game.currentTurn };
     return false;
-  } else if (hasLegalMoves) {
-    player.hasLegalMoves = true;
+  } else if (hasLegalMoves.value) {
     return true;
   } else {
-    player.hasLegalMoves = false;
     return false;
   }
 }

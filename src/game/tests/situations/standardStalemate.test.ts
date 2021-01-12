@@ -7,7 +7,7 @@ describe("In standard chess", () => {
     // Setup standard board
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        { variant: "Chess", checkEnabled: true },
+        { variant: "chess", checkEnabled: true },
         mockRenderer
       )
     );
@@ -17,6 +17,9 @@ describe("In standard chess", () => {
     board.getPieces().forEach((p) => {
       p.generateGaits = (): Gait[] => [];
     });
+
+    // Forget results of hasLegalMove()
+    gameMaster.game.players.forEach((p) => (p.hasLegalMoves.turn = -1));
 
     // Game should be stalemate
     gameMaster.checkGameEndConditions();

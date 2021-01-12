@@ -32,7 +32,9 @@ export class Game {
   resetTo(savePoint: Game): void {
     this.interrupt = savePoint.interrupt; // .resetTo(savePoint.interrupt);
     this.board.resetTo(savePoint.board);
-    this.players = savePoint.players;
+    for (let i = 0; i < savePoint.players.length; i++) {
+      this.players[i].resetTo(savePoint.players[i]);
+    }
     this.currentPlayerIndex = savePoint.currentPlayerIndex;
     this.currentTurn = savePoint.currentTurn;
   }
@@ -62,9 +64,6 @@ export class Game {
   }
 
   nextTurn(): void {
-    this.players.forEach((p) => {
-      p.hasLegalMoves = undefined;
-    });
     const nextPlayerIndex = this.nextAlivePlayerIndex(this.currentPlayerIndex);
     if (nextPlayerIndex !== undefined) {
       this.currentPlayerIndex = nextPlayerIndex;

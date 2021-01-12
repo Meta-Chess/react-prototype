@@ -1,8 +1,8 @@
-import { Rule } from "./Rules";
+import { Rule } from "./CompactRules";
 import { hasLegalMoves } from "./utilities";
 
 export const stalemate: Rule = {
-  name: "Stalemate",
+  title: "Stalemate",
   description: "If a player has no legal moves the game is declared a draw by stalemate.",
 
   drawCondition: ({ game, gameClones, interrupt, draw }) => {
