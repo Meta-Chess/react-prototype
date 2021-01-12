@@ -74,12 +74,12 @@ export enum TokenName {
   CaptureToken,
   Fatigue,
   AnimationToken,
+  CheckCounter,
 }
 
 export enum AnimationType {
   explosion = "explosion",
 }
-
 interface TokenData {
   history?: string[];
   shape?: SquareShape;
@@ -89,6 +89,7 @@ interface TokenData {
   createdAt?: number;
   duration?: number;
   id?: number;
+  counters?: number[];
 }
 
 export interface RankAndFileBounds {

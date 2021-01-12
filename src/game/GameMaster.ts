@@ -65,7 +65,10 @@ export class GameMaster {
     if (atomicEnabled && !customRuleNames?.length) rules.push(allRules.atomic);
 
     const interrupt = new CompactRules(rules);
-    const game = Game.createGame(interrupt, time);
+    const game = interrupt.for.afterGameCreation({
+      game: Game.createGame(interrupt, time),
+    }).game;
+
     return [interrupt, rules, variant, game, renderer, gameOptions];
   }
 

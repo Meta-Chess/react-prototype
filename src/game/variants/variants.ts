@@ -309,9 +309,9 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     shortDescription: "3 checks and you're out.",
     traits: ["Game End"],
     imageName: "threeCheckImage",
-    implemented: false,
-    ruleNames: [],
-    complexity: 0,
+    implemented: true,
+    ruleNames: ["threeCheck"],
+    complexity: 1,
   },
   toroidal: {
     title: "Toroidal",

@@ -15,7 +15,7 @@ export const check: Rule = {
   lossCondition: ({ playerName, game, gameClones, interrupt, dead }) => {
     if (dead || game.getCurrentPlayerName() !== playerName)
       return { playerName, game, gameClones, interrupt, dead };
-    if (checkAllowsMove({ move: undefined, game, gameClones, interrupt }))
+    if (!inCheck(game, gameClones, interrupt))
       return { playerName, game, gameClones, interrupt, dead: false };
 
     if (hasLegalMoves(playerName, game, gameClones, interrupt))
@@ -24,6 +24,15 @@ export const check: Rule = {
     return { playerName, game, gameClones, interrupt, dead: "checkmated" };
   },
 };
+
+// do not copy this pattern will be moved soon
+export function inCheck(
+  game: Game,
+  gameClones: Game[],
+  interrupt: CompactRules
+): boolean {
+  return !checkAllowsMove({ move: undefined, game, gameClones, interrupt });
+}
 
 function checkAllowsMove({
   move,

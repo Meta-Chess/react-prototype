@@ -48,4 +48,9 @@ export const tokenDetails: { [k in TokenName]: Details } = {
     name: "Animation",
     description: "This object might look cool!",
   },
+  [TokenName.CheckCounter]: {
+    name: "Check counter",
+    description:
+      "How many times has each player been in check? The board is keeping count.",
+  },
 };

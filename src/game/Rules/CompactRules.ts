@@ -34,6 +34,7 @@ export class CompactRules {
 
 const identityRule = {
   afterBoardCreation: (x: { board: Board }) => x,
+  afterGameCreation: (x: { game: Game }) => x,
   afterStepModify: (x: {
     gait: Gait;
     remainingSteps: Direction[];
