@@ -1,7 +1,7 @@
-import { CompactRules } from "../..";
-import { Game } from "../..";
-import { PlayerName } from "../../types";
-import { Pather } from "../../Pather";
+import { CompactRules } from "game/Rules";
+import { Game } from "game/Game";
+import { PlayerName } from "game/Types";
+import { Pather } from "game/Pather";
 
 export function hasLegalMoves(
   playerName: PlayerName,
