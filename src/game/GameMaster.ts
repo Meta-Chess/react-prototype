@@ -247,7 +247,7 @@ export class GameMaster {
       }).draw;
 
       if (draw !== false) {
-        this.result = "Draw by " + draw + "!";
+        this.result = `Draw by ${draw}!`;
         this.endGame();
       }
     }
