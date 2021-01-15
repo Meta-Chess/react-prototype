@@ -97,7 +97,7 @@ const LeftContainer = styled(View)`
 
 const Sidebar = styled(View)`
   flex-direction: column;
-  width: 400;
+  width: 400px;
   background-color: ${Colors.DARKER.toString()};
   padding: 0px 24px 24px;
   ${Styles.BOX_SHADOW}
@@ -105,7 +105,7 @@ const Sidebar = styled(View)`
 
 const NavigationContainer = styled(View)`
   flex-direction: row;
-  margin-top: 16;
+  margin-top: 16px;
 `;
 
 export { VariantSelectScreen };

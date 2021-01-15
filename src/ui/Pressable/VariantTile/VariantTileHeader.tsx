@@ -50,10 +50,10 @@ const TitleText = styled(Text)`
 `;
 
 const ComplexityDot = styled(View)`
-  width: 20;
-  height: 20;
+  width: 20px;
+  height: 20px;
   position: absolute;
-  right: 8;
+  right: 8px;
   align-self: center;
   justify-content: center;
   border-radius: 50%;

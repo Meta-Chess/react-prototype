@@ -92,7 +92,7 @@ const defaultGameOptions = {
 
 const Container = styled(View)`
   flex-direction: column-reverse;
-  padding-horizontal: 4;
+  padding-horizontal: 4px;
 `;
 
 export { GameOptionsCard, defaultGameOptions };
