@@ -1,8 +1,9 @@
 import { PlayerName } from "./types";
 import { cloneDeep } from "lodash";
+import { Game } from "game/Game";
 
 interface EventData {
-  check: { player: PlayerName };
+  check: { playerName: PlayerName; game: Game };
   capture: { location: string };
 }
 
@@ -26,7 +27,7 @@ export class EventCenter {
   ) {}
 
   subscribe({ name, consequence }: SubscribeInput): void {
-    // We give type security to the caller, but typescript will not check the types for us inside this function (well) - be very careful
+    // We give type security to the caller, but typescript will not check the types for us inside this function (well) - be very careful when editing this method
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (this.subscriptions[name]) this.subscriptions[name]?.push(consequence as any);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,7 +35,7 @@ export class EventCenter {
   }
 
   notify({ name, data }: NotifyInput): void {
-    // We give type security to the caller, but typescript will not check the types for us inside this function (well) - be very careful
+    // We give type security to the caller, but typescript will not check the types for us inside this function (well) - be very careful when editing this method
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.subscriptions[name]?.forEach((consequence: any) => consequence(data));
   }

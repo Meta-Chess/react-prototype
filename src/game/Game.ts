@@ -50,9 +50,10 @@ export class Game {
     clock?.setActivePlayers([PlayerName.White]);
 
     const eventCenter = new EventCenter({});
-    // TODO: interrupt.for.subscribeToEvents({ eventCenter });
+    const game = new Game(interrupt, Board.createBoard(interrupt), clock, eventCenter);
+    interrupt.for.subscribeToEvents({ eventCenter });
 
-    return new Game(interrupt, Board.createBoard(interrupt), clock, eventCenter);
+    return game;
   }
 
   doMove(move?: Move): void {

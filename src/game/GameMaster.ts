@@ -60,7 +60,7 @@ export class GameMaster {
       ? [...variants[variant].ruleNames]
       : customRuleNames;
     const rules = ruleNames.map((name) => allRules[name]);
-    if (checkEnabled) rules.push(allRules.check);
+    if (checkEnabled) rules.unshift(allRules.check); // Using unshift here is important for 3-check. We should use priorities to sort rules at each interruption point instead.
     if (fatigueEnabled && !customRuleNames?.length) rules.push(allRules.fatigue);
     if (atomicEnabled && !customRuleNames?.length) rules.push(allRules.atomic);
 
