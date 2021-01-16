@@ -42,19 +42,19 @@ export const threeCheck: Rule = {
     return { playerName, game, gameClones, interrupt, dead: false };
   },
 
-  subscribeToEvents: ({ eventCenter }) => {
-    eventCenter.subscribe({
+  subscribeToEvents: ({ events }) => {
+    events.subscribe({
       name: "check",
       consequence: ({ game, playerName }) => {
         const checkCounters = game.board.firstTokenWithName(TokenName.CheckCounter)?.data
           ?.counters;
-        if (!checkCounters) return { eventCenter };
+        if (!checkCounters) return { events };
         const playerIndex = game.players.findIndex(
           (player) => player.name === playerName
         );
         checkCounters[playerIndex] += 1;
       },
     });
-    return { eventCenter };
+    return { events };
   },
 };

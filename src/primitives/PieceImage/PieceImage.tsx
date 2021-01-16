@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { PieceName } from "game/types";
+import { PieceName } from "game";
 import { Svg, G } from "react-native-svg";
 import { Colors } from "../Colors";
 import { Bishop, King, Knight, Pawn, Queen, Rook } from "./sprites";

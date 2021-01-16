@@ -1,8 +1,7 @@
 import React, { useContext } from "react";
 import { ScrollView } from "react-native";
 import { Colors, PieceImage, SFC, Text } from "primitives";
-import { GameContext } from "game";
-import { PieceName, PlayerDisplayNames } from "game/types";
+import { GameContext, PieceName, PlayerDisplayNames } from "game";
 import styled from "styled-components/native";
 import { ButtonTertiaryLight, Card, Row } from "ui";
 import { Screens, useNavigation } from "navigation";

@@ -1,8 +1,6 @@
 import React, { FC, useContext } from "react";
-import { GameContext } from "game";
+import { GameContext, Piece as PieceClass, TokenName, PlayerName } from "game";
 import { PieceImage, Colors } from "primitives";
-import { Piece as PieceClass } from "game/Board";
-import { TokenName, PlayerName } from "game/types";
 
 interface Props {
   piece: PieceClass;

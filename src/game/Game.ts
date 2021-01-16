@@ -11,7 +11,7 @@ export class Game {
     public interrupt: CompactRules,
     public board: Board,
     public clock: Clock | undefined,
-    public eventCenter: EventCenter,
+    public events: EventCenter,
     public players: Player[] = [
       new Player(PlayerName.White),
       new Player(PlayerName.Black),
@@ -25,7 +25,7 @@ export class Game {
       this.interrupt, // When we start updating the rules, we'll need to clone the interrupt, perhaps by storing the list of rules and regenerating
       this.board.clone(),
       undefined, // Clones don't need a clock at the moment
-      this.eventCenter.clone(),
+      this.events.clone(),
       this.players.map((p) => p.clone()),
       this.currentPlayerIndex,
       this.currentTurn,
@@ -49,9 +49,9 @@ export class Game {
       : undefined;
     clock?.setActivePlayers([PlayerName.White]);
 
-    const eventCenter = new EventCenter({});
-    const game = new Game(interrupt, Board.createBoard(interrupt), clock, eventCenter);
-    interrupt.for.subscribeToEvents({ eventCenter });
+    const events = new EventCenter({});
+    const game = new Game(interrupt, Board.createBoard(interrupt, events), clock, events);
+    interrupt.for.subscribeToEvents({ events });
 
     return game;
   }

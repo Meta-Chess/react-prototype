@@ -90,7 +90,7 @@ const identityRule = {
   postCapture: (x: { board: Board; square: Square }) => x,
   postMove: (x: { board: Board; move: Move; currentTurn: number }) => x,
   processMoves: (x: { board: Board; moves: Move[] }) => x,
-  subscribeToEvents: (x: { eventCenter: EventCenter }) => x,
+  subscribeToEvents: (x: { events: EventCenter }) => x,
 };
 
 export type CompleteRule = typeof identityRule;

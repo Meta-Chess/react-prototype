@@ -2,8 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
-import { GameContext } from "game";
-import { PlayerName } from "game/types";
+import { GameContext, PlayerName } from "game";
 import { AbsoluteView, Card } from "ui";
 
 interface Props {

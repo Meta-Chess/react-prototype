@@ -3,7 +3,7 @@ import { SFC } from "primitives";
 import { TouchableOpacity, View } from "react-native";
 import { Text, Colors } from "primitives";
 import styled from "styled-components/native";
-import { FutureVariantName, futureVariants } from "game/variants";
+import { FutureVariantName, futureVariants } from "game";
 import { CollapsableCard } from "ui/Containers";
 
 interface Props {

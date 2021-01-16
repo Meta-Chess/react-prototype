@@ -1,10 +1,11 @@
 import { PlayerName } from "./types";
 import { cloneDeep } from "lodash";
-import { Game } from "game/Game";
+import { Game } from "./Game";
+import { Board, Square } from "./Board";
 
 interface EventData {
   check: { playerName: PlayerName; game: Game };
-  capture: { location: string };
+  capture: { board: Board; square: Square };
 }
 
 type EventName = keyof EventData;

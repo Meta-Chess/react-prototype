@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { AnimatedTileProps } from "./TileProps";
-import { SquareShape } from "game/types";
+import { SquareShape } from "game";
 import { SquareTileAnimated } from "./SquareTileAnimated";
 import { HexTileAnimated } from "./HexTileAnimated";
 

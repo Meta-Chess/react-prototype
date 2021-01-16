@@ -1,6 +1,6 @@
 import { ParamListBase } from "@react-navigation/native";
 import { Screens } from "./Screens";
-import { GameOptions } from "game/types";
+import { GameOptions } from "game";
 
 export interface NavigatorParamList extends ParamListBase {
   [Screens.GameScreen]: {

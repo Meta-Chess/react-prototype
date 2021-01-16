@@ -2,8 +2,7 @@ import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
 import { mockRenderer } from "../helpers/mockRenderer";
 import { PlayerName } from "game/types";
-// TODO: Move this function:
-import { calculateGameOptions } from "components/RootStackNavigator/VariantSelectScreen/ScreenStateFunctions";
+import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
 
 const mockCheckConsequence = jest.fn();
 
@@ -17,7 +16,7 @@ describe("With three check enabled", () => {
     );
     const board = gameMaster.game.board;
 
-    gameMaster.game.eventCenter.subscribe({
+    gameMaster.game.events.subscribe({
       name: "check",
       consequence: mockCheckConsequence,
     });

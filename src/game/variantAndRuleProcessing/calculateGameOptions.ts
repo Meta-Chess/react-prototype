@@ -1,6 +1,6 @@
 import { GameOptions } from "game/types";
-import { variants } from "game";
 import {
+  variants,
   integrateWithOtherRules,
   futureVariants,
   FutureVariantName,

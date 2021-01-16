@@ -1,9 +1,7 @@
 import React, { FC, useContext } from "react";
 import { View, Image } from "react-native";
-import { GameContext } from "game";
+import { GameContext, Piece as PieceClass, TokenName, PlayerName } from "game";
 import { PieceImage, Colors, BlackCircle } from "primitives";
-import { Piece as PieceClass } from "game/Board";
-import { TokenName, PlayerName } from "game/types";
 import { AbsoluteView } from "ui";
 
 interface Props {

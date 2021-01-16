@@ -1,21 +1,21 @@
 import React, { FC, useState } from "react";
 import { View, ScrollView } from "react-native";
-import { FutureVariantName } from "game/variants/variants";
-import { TraitName } from "game/variants";
-import { useNavigation, Screens } from "navigation";
-import { VariantCardGrid } from "./VariantCardGrid";
 import {
+  TraitName,
   calculateGameOptions,
   determineIfVariantClash,
-  getFilteredVariantsInDisplayOrder,
-} from "./ScreenStateFunctions";
+  FutureVariantName,
+  GameOptions,
+} from "game";
+import { useNavigation, Screens } from "navigation";
+import { VariantCardGrid } from "./VariantCardGrid";
+import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
 import {
   SelectedVariantsCard,
   FiltersCard,
   GameOptionsCard,
   defaultGameOptions,
 } from "./CollapsableCards";
-import { GameOptions } from "game/types";
 import { Button, ButtonSecondary } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors } from "primitives";

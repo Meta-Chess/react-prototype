@@ -19,7 +19,7 @@ export const check: Rule = {
     if (!inCheck(game, gameClones, interrupt))
       return { playerName, game, gameClones, interrupt, dead: false };
 
-    game.eventCenter.notify({ name: "check", data: { playerName, game } });
+    game.events.notify({ name: "check", data: { playerName, game } });
 
     if (hasLegalMoves(playerName, game, gameClones, interrupt))
       return { playerName, game, gameClones, interrupt, dead: false };

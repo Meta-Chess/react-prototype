@@ -6,18 +6,24 @@ export const atomic: Rule = {
   title: "Atomic",
   description:
     "When a piece is captured, all pieces on adjacent squares are destroyed. Pawns shield their square from this effect. The capturing piece is also destroyed.",
-  postCapture: ({ board, square }) => {
-    const atomicImpactSquares = square.adjacencies.getAllAdjacencies();
-    const captureSquare = square.location;
-    board.killPiecesAt(captureSquare);
-    atomicImpactSquares.forEach((location) => {
-      if (!board.getPiecesAt(location).some((piece) => piece.name === PieceName.Pawn)) {
-        board.killPiecesAt(location);
-      }
-      addVisualTokenToSquare(location, board);
+
+  subscribeToEvents: ({ events }) => {
+    events.subscribe({
+      name: "capture",
+      consequence: ({ board, square }) => {
+        const atomicImpactSquares = square.adjacencies.getAllAdjacencies();
+        const captureSquare = square.location;
+        board.killPiecesAt(captureSquare);
+        atomicImpactSquares.forEach((location) => {
+          if (!board.getPiecesAt(location).some((piece) => piece.name === PieceName.Pawn))
+            board.killPiecesAt(location);
+          addVisualTokenToSquare(location, board);
+        });
+        addVisualTokenToSquare(captureSquare, board);
+        return { board, square };
+      },
     });
-    addVisualTokenToSquare(captureSquare, board);
-    return { board, square };
+    return { events };
   },
 };
 

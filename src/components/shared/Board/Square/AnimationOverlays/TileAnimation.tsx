@@ -1,8 +1,7 @@
 import React, { FC } from "react";
 import { SFC } from "primitives";
-import { AnimationType, SquareShape } from "game/types";
+import { AnimationType, SquareShape, Token } from "game";
 import { Explosion } from "ui/VariantContent";
-import { Token } from "game/types";
 import { AnimationComponentProps } from "ui/VariantContent/AnimationComponentProps";
 
 interface TileAnimationProps {

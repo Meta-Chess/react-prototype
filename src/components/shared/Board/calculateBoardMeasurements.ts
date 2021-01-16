@@ -1,5 +1,4 @@
-import { Board } from "game";
-import { SquareShape, TokenName } from "game/types";
+import { Board, SquareShape, TokenName } from "game";
 
 export interface BoardMeasurements {
   width: number;
