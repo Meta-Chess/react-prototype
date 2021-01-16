@@ -1,5 +1,5 @@
 import { GameOptions } from "game/types";
-import { Path } from "game/Pather/Path";
+import { Path } from "game/Pather";
 import { sleep } from "utilities/sleep";
 import { Move, PieceDelta } from "game/Move";
 

@@ -3,8 +3,7 @@ import { Board, calculateBoardMeasurements } from "components/shared/Board";
 import { Colors } from "primitives";
 import { AbsoluteView } from "ui";
 import styled from "styled-components/native";
-import { GameContext } from "game";
-import { TokenName } from "game/types";
+import { GameContext, TokenName } from "game";
 
 const ShadowBoard: FC = () => {
   const { gameMaster } = useContext(GameContext);

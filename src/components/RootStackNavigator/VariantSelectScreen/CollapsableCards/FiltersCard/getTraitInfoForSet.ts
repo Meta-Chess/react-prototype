@@ -1,6 +1,4 @@
-import { futureVariants, FutureVariantName } from "game/variants/variants";
-import { TraitName } from "game/variants";
-import { TraitsInSetInfo } from "game/types";
+import { futureVariants, FutureVariantName, TraitsInSetInfo, TraitName } from "game";
 
 //TODO: soon sets will be groups of variants, and be passed into this function
 export function getTraitInfoForSet(): TraitsInSetInfo[] {

@@ -1,4 +1,4 @@
-import { Coordinates } from "game/board";
+import { Coordinates } from "game";
 
 export const toLocation = ({
   rank,

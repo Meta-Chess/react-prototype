@@ -7,7 +7,7 @@ import {
   calculateBoardMeasurements,
 } from "components/shared/Board";
 import { Sidebar } from "./Sidebar";
-import { PlayerName, SquareShape, TokenName } from "game/types";
+import { PlayerName, SquareShape, TokenName } from "game";
 import { useFlipDelay } from "components/shared/Board/useFlipDelay";
 import { PlayerRow } from "./PlayerRow";
 import { AbsoluteView, Spinner } from "ui";

@@ -1,10 +1,9 @@
 import React from "react";
 import { SFC } from "primitives";
 import { SelectInput, LabeledCheckBox, TextInput } from "ui";
-import { VariantName, variants } from "game";
+import { VariantName, variants, GameOptions } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
-import { GameOptions } from "game/types";
 
 interface Props {
   gameOptions: GameOptions;

@@ -1,10 +1,9 @@
 import React from "react";
 import { SFC, Text } from "primitives";
 import { Card } from "ui/Containers/Card";
-import { Piece } from "game";
+import { Piece, tokenDetails, pieceDetails } from "game";
 import { LabelWithDetails } from "ui";
 import { View } from "react-native";
-import { tokenDetails, pieceDetails } from "game/displayInfo";
 
 interface Props {
   pieces?: Piece[];

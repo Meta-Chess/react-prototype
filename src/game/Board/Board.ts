@@ -15,6 +15,7 @@ import { CompactRules } from "game/rules/CompactRules";
 import { IdGenerator } from "utilities/IdGenerator";
 import { PieceDelta } from "game/Move";
 import { clone } from "lodash";
+import { EventCenter } from "game/EventCenter";
 interface LocationMap {
   [location: string]: Square;
 }
@@ -30,6 +31,7 @@ class Board extends TokenOwner {
 
   constructor(
     public interrupt: CompactRules,
+    private events: EventCenter,
     public squares: LocationMap = {},
     public pieces: PieceIdMap = {},
     public tokens: Token[] = []
@@ -53,9 +55,9 @@ class Board extends TokenOwner {
       }),
       {}
     );
-    //TODO: actually clone rules
     const cloneConstructorInput: Required<ConstructorParameters<typeof Board>> = [
-      this.interrupt,
+      this.interrupt, // TODO: interrupt and events should be cloned in the game and passed down to the corresponding clone of the board
+      this.events,
       squaresClone,
       piecesClone,
       clone(this.tokens),
@@ -227,9 +229,12 @@ class Board extends TokenOwner {
       );
       this.displace(pieceDelta);
       if (captureHappened) {
-        this.interrupt.for.postCapture({
-          board: this,
-          square: this.squares[pieceDelta.path.getEnd()],
+        this.events.notify({
+          name: "capture",
+          data: {
+            board: this,
+            square: this.squares[pieceDelta.path.getEnd()],
+          },
         });
       }
     });
@@ -280,8 +285,8 @@ class Board extends TokenOwner {
     return currentSquares.filter(isPresent);
   }
 
-  static createBoard(interrupt: CompactRules): Board {
-    let board = new Board(interrupt);
+  static createBoard(interrupt: CompactRules, events: EventCenter): Board {
+    let board = new Board(interrupt, events);
 
     ({ board } = interrupt.for.forSquareGenerationModify({ board }));
     ({ board } = interrupt.for.onBoardCreate({ board }));

@@ -1,6 +1,5 @@
 import React, { useContext, FC } from "react";
-import { GameContext } from "game";
-import { TokenName, SquareShape } from "game/types";
+import { GameContext, TokenName, SquareShape } from "game";
 import { HexBoard } from "./HexBoard";
 import { SquareBoard } from "./SquareBoard";
 import { BoardMeasurements } from "./calculateBoardMeasurements";

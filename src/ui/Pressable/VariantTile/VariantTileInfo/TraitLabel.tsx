@@ -1,7 +1,7 @@
 import React from "react";
 import { SFC, Text } from "primitives";
 import { View } from "react-native";
-import { TraitName, traitInfo } from "game/variants";
+import { TraitName, traitInfo } from "game";
 import { opacify } from "utilities";
 import { Colors } from "primitives";
 import styled from "styled-components/native";

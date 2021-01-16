@@ -1,9 +1,8 @@
 import React from "react";
 import { SFC, Text, Colors } from "primitives";
 import { View } from "react-native";
-import { FutureVariant } from "game";
+import { FutureVariant, TraitName } from "game";
 import { TraitLabel } from "./TraitLabel";
-import { TraitName } from "game/variants";
 import styled from "styled-components/native";
 
 interface VariantTileInfoProps {

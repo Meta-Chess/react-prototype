@@ -1,9 +1,7 @@
 import React from "react";
 import { SFC } from "primitives";
-import { SquareShape } from "game/types";
-import { Token, TokenName } from "game/types";
+import { SquareShape, Token, TokenName, Square } from "game";
 import { AbsoluteView } from "ui/Containers";
-import { Square } from "game/Board";
 import { TileAnimation } from "./TileAnimation";
 
 interface AnimationOverlaysProps {

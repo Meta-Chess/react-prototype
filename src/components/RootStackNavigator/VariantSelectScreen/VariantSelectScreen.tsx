@@ -1,21 +1,21 @@
 import React, { FC, useState } from "react";
 import { View, ScrollView } from "react-native";
-import { FutureVariantName } from "game/variants/variants";
-import { TraitName } from "game/variants";
-import { useNavigation, Screens } from "navigation";
-import { VariantCardGrid } from "./VariantCardGrid";
 import {
+  TraitName,
   calculateGameOptions,
   determineIfVariantClash,
-  getFilteredVariantsInDisplayOrder,
-} from "./ScreenStateFunctions";
+  FutureVariantName,
+  GameOptions,
+} from "game";
+import { useNavigation, Screens } from "navigation";
+import { VariantCardGrid } from "./VariantCardGrid";
+import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
 import {
   SelectedVariantsCard,
   FiltersCard,
   GameOptionsCard,
   defaultGameOptions,
 } from "./CollapsableCards";
-import { GameOptions } from "game/types";
 import { Button, ButtonSecondary } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors } from "primitives";
@@ -97,7 +97,7 @@ const LeftContainer = styled(View)`
 
 const Sidebar = styled(View)`
   flex-direction: column;
-  width: 400;
+  width: 400px;
   background-color: ${Colors.DARKER.toString()};
   padding: 0px 24px 24px;
   ${Styles.BOX_SHADOW}
@@ -105,7 +105,7 @@ const Sidebar = styled(View)`
 
 const NavigationContainer = styled(View)`
   flex-direction: row;
-  margin-top: 16;
+  margin-top: 16px;
 `;
 
 export { VariantSelectScreen };

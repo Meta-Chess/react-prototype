@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { Colors, SFC, Text } from "primitives";
-import { PlayerName } from "game/types";
+import { PlayerName } from "game";
 import { Row } from "ui";
 import { Timer } from "./Timer";
 import { randomChoice, randomInt } from "utilities";

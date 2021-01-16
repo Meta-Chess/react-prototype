@@ -30,7 +30,7 @@ const Container = styled(View)`
 
 const Header = styled(TouchableOpacity)`
   justify-content: center;
-  height: 32;
+  height: 32px;
   background-color: ${Colors.DARKISH.toString()};
 `;
 

@@ -3,13 +3,12 @@ import { useWindowDimensions, ScrollView, View, TouchableOpacity } from "react-n
 import { Button, Card, useModals } from "ui";
 import { Screens, useNavigation } from "navigation";
 import { Colors, SFC } from "primitives";
-import { GameContext } from "game";
+import { GameContext, OnlineGameMaster } from "game";
 import { RoomIdCard } from "./RoomIdCard";
 import { VariantInfoCard } from "./VariantInfoCard";
 import { RulesInfoCard } from "./RulesInfoCard";
 import { PieceCredit } from "./PieceCredit";
 import { SelectedPieceInfoCard } from "./SelectedPieceInfoCard";
-import { OnlineGameMaster } from "game/OnlineGameMaster";
 import styled from "styled-components/native";
 
 interface Props {

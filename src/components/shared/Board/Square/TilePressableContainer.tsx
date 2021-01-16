@@ -1,7 +1,7 @@
 import React from "react";
 import { SFC } from "primitives";
 import { TouchableOpacity } from "react-native";
-import { SquareShape } from "game/types";
+import { SquareShape } from "game";
 import styled from "styled-components/native";
 
 const SquareContainer = styled(TouchableOpacity)<{ size: number }>`

@@ -1,13 +1,10 @@
 import React, { FC } from "react";
 import { Colors } from "primitives";
-import { Square } from "game/Board";
-import { GameMaster } from "game";
+import { Square, SquareShape, GameMaster, SquareInfo } from "game";
 import Color from "color";
 import styled from "styled-components/native";
 import { View } from "react-native";
-import { SquareShape } from "game/types";
 import { Tile } from "ui";
-import { SquareInfo } from "game/SquaresInfo";
 
 interface Props {
   gameMaster: GameMaster;

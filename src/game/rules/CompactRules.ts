@@ -4,6 +4,7 @@ import { applyInSequence } from "utilities";
 import { Board, Piece, Square } from "../Board";
 import { Game } from "game/Game";
 import { Move, PieceDelta } from "game/Move";
+import { EventCenter } from "game/EventCenter";
 
 // Note: These linting exceptions should only ever be used with great caution
 // Take care to check extra carefully for errors in this file because we have less type safety
@@ -89,6 +90,7 @@ const identityRule = {
   postCapture: (x: { board: Board; square: Square }) => x,
   postMove: (x: { board: Board; move: Move; currentTurn: number }) => x,
   processMoves: (x: { board: Board; moves: Move[] }) => x,
+  subscribeToEvents: (x: { events: EventCenter }) => x,
 };
 
 export type CompleteRule = typeof identityRule;

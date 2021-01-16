@@ -15,8 +15,11 @@ export const check: Rule = {
   lossCondition: ({ playerName, game, gameClones, interrupt, dead }) => {
     if (dead || game.getCurrentPlayerName() !== playerName)
       return { playerName, game, gameClones, interrupt, dead };
+
     if (!inCheck(game, gameClones, interrupt))
       return { playerName, game, gameClones, interrupt, dead: false };
+
+    game.events.notify({ name: "check", data: { playerName, game } });
 
     if (hasLegalMoves(playerName, game, gameClones, interrupt))
       return { playerName, game, gameClones, interrupt, dead: false };
@@ -25,12 +28,7 @@ export const check: Rule = {
   },
 };
 
-// do not copy this pattern will be moved soon
-export function inCheck(
-  game: Game,
-  gameClones: Game[],
-  interrupt: CompactRules
-): boolean {
+function inCheck(game: Game, gameClones: Game[], interrupt: CompactRules): boolean {
   return !checkAllowsMove({ move: undefined, game, gameClones, interrupt });
 }
 

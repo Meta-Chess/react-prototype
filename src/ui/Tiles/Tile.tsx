@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { TileProps } from "./TileProps";
-import { SquareShape } from "game/types";
+import { SquareShape } from "game";
 import { SquareTile } from "./SquareTile";
 import { HexTile } from "./HexTile";
 

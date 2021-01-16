@@ -1,4 +1,4 @@
-import { SquareShape } from "game/types";
+import { SquareShape } from "game";
 
 export interface AnimationComponentProps {
   shape: SquareShape;
