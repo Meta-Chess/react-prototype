@@ -113,11 +113,10 @@ describe("In standard chess", () => {
       expect.objectContaining({ location: toLocation({ rank: 7, file: 6 }) }),
     ]);
 
-    // Knight should have two allowable moves: take the queen with either L-shaped path
+    // Knight should have one allowable moves: take the queen.
     gameMaster.onPress(toLocation({ rank: 5, file: 5 }));
-    expect(gameMaster.allowableMoves.length).toEqual(2);
+    expect(gameMaster.allowableMoves.length).toEqual(1);
     expect(gameMaster.allowableMoves).toEqual([
-      expect.objectContaining({ location: toLocation({ rank: 7, file: 6 }) }),
       expect.objectContaining({ location: toLocation({ rank: 7, file: 6 }) }),
     ]);
 
