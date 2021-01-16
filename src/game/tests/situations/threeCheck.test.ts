@@ -59,7 +59,7 @@ describe("With three check enabled", () => {
     expect(board.getPiecesAt(toLocation({ rank: 7, file: 4 })).length).toEqual(1);
     expect(mockCheckConsequence).toHaveBeenCalledTimes(3);
 
-    // Should be checkmate
+    // Should be game over
     expect(gameMaster.gameOver).toEqual(true);
     expect(gameMaster.game.alivePlayers().length).toEqual(1);
     expect(gameMaster.game.alivePlayers()[0].name).toEqual(PlayerName.White);
