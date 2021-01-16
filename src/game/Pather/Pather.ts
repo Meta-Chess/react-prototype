@@ -16,7 +16,7 @@ export class Pather {
     private params: { checkDepth?: number } = {}
   ) {}
 
-  findPaths(filterPacifistMoves = false): Move[] {
+  findPaths({ filterPacifistMoves } = { filterPacifistMoves: false }): Move[] {
     const currentSquare = this.game.board.squareAt(this.piece.location);
     if (!currentSquare) return [];
 

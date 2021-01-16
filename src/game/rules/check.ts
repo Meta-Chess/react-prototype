@@ -65,7 +65,7 @@ function checkAllowsMove({
     for (let i = 0; i < pieces.length; i++) {
       const piece = pieces[i];
       const pather = new Pather(gameClones[0], [], piece, interrupt, newPatherParams);
-      const hypotheticalMoves = pather.findPaths(true);
+      const hypotheticalMoves = pather.findPaths({ filterPacifistMoves: true });
 
       for (let j = 0; j < hypotheticalMoves.length; j++) {
         gameClones[1].resetTo(gameClones[0]);
