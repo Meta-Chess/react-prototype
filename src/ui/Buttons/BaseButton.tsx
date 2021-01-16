@@ -3,7 +3,6 @@ import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors, useHover } from "primitives";
 import Color from "color";
-import { Styles } from "primitives/Styles";
 
 interface Props {
   text: string;

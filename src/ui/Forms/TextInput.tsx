@@ -7,9 +7,10 @@ interface Props {
   value?: string;
   placeholder?: string;
   onSubmitEditing?: () => void;
+  multiline?: boolean;
 }
 
-export const TextInput: SFC<Props> = ({ style, ...rest }) => {
+export const TextInput: SFC<Props> = ({ style, multiline, ...rest }) => {
   const [focused, setFocused] = useState(false);
   const [ref, hovered] = useHover();
 
@@ -25,6 +26,7 @@ export const TextInput: SFC<Props> = ({ style, ...rest }) => {
     paddingHorizontal: 12,
     color: Colors.TEXT.LIGHT.toString(),
     ...(Platform.OS === "web" ? { outlineWidth: 0 } : {}),
+    ...(multiline ? { paddingVertical: 12 } : {}),
   } as TextStyle;
 
   return (
@@ -38,6 +40,7 @@ export const TextInput: SFC<Props> = ({ style, ...rest }) => {
         setFocused(false);
       }}
       placeholderTextColor={Colors.TEXT.LIGHT_SECONDARY.toString()}
+      multiline={multiline}
       {...rest}
     />
   );

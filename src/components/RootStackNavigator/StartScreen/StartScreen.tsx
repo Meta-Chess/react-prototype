@@ -9,6 +9,7 @@ import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
 import { Screens, useNavigation } from "navigation";
 import { SetupGameButton } from "./SetupGameButton";
 import { ScreenContainer } from "components/shared";
+import { HelpMenu } from "components/shared";
 
 const StartScreen: FC = () => {
   const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
@@ -49,6 +50,7 @@ const StartScreen: FC = () => {
             </>
           }
         />
+        <HelpMenu context={{ gameOptions }} />
       </ScreenContainer>
     </GameProvider>
   );

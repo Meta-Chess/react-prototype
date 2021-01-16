@@ -12,7 +12,7 @@ import { useFlipDelay } from "components/shared/Board/useFlipDelay";
 import { PlayerRow } from "./PlayerRow";
 import { AbsoluteView, Spinner } from "ui";
 import styled from "styled-components/native";
-import { ScreenContainer } from "components/shared";
+import { HelpMenu, ScreenContainer } from "components/shared";
 import { WinModal } from "components/shared/Board/WinModal";
 import { MoveDisambiguationModal } from "components/shared/Board/MoveDisambiguationModal";
 
@@ -78,8 +78,9 @@ export const GameScreenContent: FC = () => {
         ) : null}
       </View>
       <SidebarContainer portrait={portrait} boardMeasurements={boardMeasurements}>
-        <Sidebar short={portrait} style={{ flex: 1 }} />
+        <Sidebar style={{ flex: 1 }} />
       </SidebarContainer>
+      <HelpMenu context={{ gameMaster }} />
     </StyledContainer>
   );
 };
