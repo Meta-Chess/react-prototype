@@ -273,9 +273,9 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     shortDescription: "Kings cannot capture.",
     traits: ["Piece", "Restrict"],
     imageName: "patheticKingImage",
-    implemented: false,
-    ruleNames: [],
-    complexity: 0,
+    implemented: true,
+    ruleNames: ["patheticKing"],
+    complexity: 1,
   },
   polar: {
     title: "Polar",
