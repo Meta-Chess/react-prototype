@@ -36,6 +36,7 @@ describe("With empty center", () => {
       expect.objectContaining({ location: toLocation({ rank: 6, file: 5 }) }),
     ]);
   });
+
   it("center pawn has no allowable move on a hex board", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
@@ -52,6 +53,7 @@ describe("With empty center", () => {
     gameMaster.onPress(toLocation({ rank: 13, file: 6 }));
     expect(gameMaster.allowableMoves.length).toEqual(0);
   });
+
   it("center pawns only have one allowable move on a toroidal board", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
@@ -104,6 +106,7 @@ describe("With empty center", () => {
       expect.objectContaining({ location: toLocation({ rank: 13, file: 5 }) }),
     ]);
   });
+
   it("bishops can move through, but not on, the center on a standard board", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
