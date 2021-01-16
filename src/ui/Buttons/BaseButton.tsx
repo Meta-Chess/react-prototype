@@ -48,8 +48,6 @@ const TouchableContainer = styled(TouchableOpacity)<{
   background-color: ${({ backgroundColor }): string => backgroundColor.toString()};
   border: 1px solid ${({ borderColor }): string => borderColor.toString()};
   border-radius: 4px;
-  ${({ backgroundColor }): string =>
-    backgroundColor.alpha() > 0.5 ? Styles.BOX_SHADOW : ""}
   justify-content: center;
   align-items: center;
 `;
