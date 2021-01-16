@@ -35,14 +35,14 @@ export class Pather {
       data: gait.data,
     }));
 
-    const specialMoves = this.interrupt.for.generateSpecialMoves({
+    const specialPacifistMoves = this.interrupt.for.generateSpecialPacifistMoves({
       game: this.game,
       piece: this.piece,
       interrupt: this.interrupt,
       moves: [],
     }).moves;
 
-    const allMoves = moves.concat(specialMoves);
+    const allMoves = moves.concat(specialPacifistMoves);
 
     const processedMoves = this.interrupt.for.processMoves({
       moves: allMoves,
