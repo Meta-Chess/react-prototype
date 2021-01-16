@@ -16,14 +16,18 @@ export class Pather {
     private params: { checkDepth?: number } = {}
   ) {}
 
-  findPaths(): Move[] {
+  findPaths(filterPacifistMoves = false): Move[] {
     const currentSquare = this.game.board.squareAt(this.piece.location);
     if (!currentSquare) return [];
 
-    const { gaits } = this.interrupt.for.onGaitsGeneratedModify({
+    const allGaits = this.interrupt.for.onGaitsGeneratedModify({
       gaits: this.piece.generateGaits(),
       piece: this.piece,
-    });
+    }).gaits;
+
+    const gaits = filterPacifistMoves
+      ? allGaits.filter((g) => !g.mustNotCapture)
+      : allGaits;
 
     const moves: Move[] = flatMap(gaits, (gait) => {
       return this.path({ currentSquare, gait }).map((path) => ({ path, gait }));
@@ -35,12 +39,20 @@ export class Pather {
       data: gait.data,
     }));
 
-    const specialPacifistMoves = this.interrupt.for.generateSpecialPacifistMoves({
-      game: this.game,
-      piece: this.piece,
-      interrupt: this.interrupt,
-      moves: [],
-    }).moves;
+    const specialPacifistMoves = filterPacifistMoves
+      ? []
+      : this.interrupt.for
+          .generateSpecialPacifistMoves({
+            game: this.game,
+            piece: this.piece,
+            interrupt: this.interrupt,
+            moves: [],
+          })
+          .moves.filter((m) =>
+            m.pieceDeltas.some(
+              (pd) => !this.capturePossible(this.game.board.squareAt(pd.path.getEnd()))
+            )
+          );
 
     const allMoves = moves.concat(specialPacifistMoves);
 
@@ -194,7 +206,8 @@ export class Pather {
     return repeat ? gait.pattern : remainingSteps.slice(1);
   }
 
-  private capturePossible(square: Square): boolean {
+  private capturePossible(square: Square | undefined): boolean {
+    if (square === undefined) return false;
     if (this.game.board.squareHasPieceNotBelongingTo(square, this.piece.owner)) {
       return true;
     }
