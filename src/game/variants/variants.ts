@@ -194,12 +194,12 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   },
   emptyCenter: {
     title: "Empty Center",
-    shortDescription: "Pieces cannot live in the center.",
+    shortDescription: "No pieces allowed in the center!",
     traits: ["Restrict"],
     imageName: "emptyCenterImage",
-    implemented: false,
-    ruleNames: [],
-    complexity: 0,
+    implemented: true,
+    ruleNames: ["emptyCenter"],
+    complexity: 1,
   },
   fatigue: {
     title: "Fatigue",

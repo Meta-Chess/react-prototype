@@ -18,5 +18,6 @@ export { verticallyCylindrical } from "./verticallyCylindrical";
 export { stalemate } from "./stalemate";
 export { threeCheck } from "./threeCheck";
 export { patheticKing } from "./patheticKing";
+export { emptyCenter } from "./emptyCenter";
 
 // Note: Only rules should be exported from this file
