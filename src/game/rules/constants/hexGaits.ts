@@ -61,10 +61,7 @@ const BISHOP_GAITS: Gait[] = DiagonalDirections.map((A) => ({
 }));
 
 const KNIGHT_GAITS: Gait[] = NonDiagonalDirections.map((A) =>
-  knightTurnDirections(A).map((B) => [
-    { pattern: [A, A, B], nonBlocking: true },
-    { pattern: [B, A, A], nonBlocking: true },
-  ])
+  knightTurnDirections(A).map((B) => [{ pattern: [A, A, B], nonBlocking: true }])
 )
   .flat()
   .flat();

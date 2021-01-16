@@ -46,7 +46,7 @@ const identityRule = {
     owner?: PlayerName;
   }) => x,
   forSquareGenerationModify: (x: { board: Board }) => x,
-  generateSpecialMoves: (x: {
+  generateSpecialPacifistMoves: (x: {
     game: Game;
     piece: Piece;
     interrupt: CompactRules;

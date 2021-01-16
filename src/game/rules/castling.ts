@@ -18,7 +18,7 @@ export const castling: Rule = {
     });
     return { board, move, currentTurn };
   },
-  generateSpecialMoves: (input) => {
+  generateSpecialPacifistMoves: (input) => {
     if (!input.piece.hasTokenWithName(TokenName.ActiveCastling)) return input;
 
     const { game, piece: activePiece, interrupt, moves } = input;

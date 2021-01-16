@@ -1,6 +1,23 @@
 import { Gait } from "game/types";
 import { Direction } from "game/types";
 
+const NonDiagonalDirections = [Direction.N, Direction.E, Direction.S, Direction.W];
+
+const knightTurnDirections = (A: Direction): Direction[] => {
+  switch (A) {
+    case Direction.N:
+      return [Direction.E, Direction.W];
+    case Direction.E:
+      return [Direction.N, Direction.S];
+    case Direction.S:
+      return [Direction.E, Direction.W];
+    case Direction.W:
+      return [Direction.N, Direction.S];
+    default:
+      throw new Error("Invalid knight direction");
+  }
+};
+
 const ROOK_GAITS: Gait[] = [
   { pattern: [Direction.N], repeats: true },
   { pattern: [Direction.E], repeats: true },
@@ -14,24 +31,12 @@ const BISHOP_GAITS: Gait[] = [
   { pattern: [Direction.SW], repeats: true },
   { pattern: [Direction.NW], repeats: true },
 ];
-const KNIGHT_GAITS: Gait[] = [
-  { pattern: [Direction.N, Direction.N, Direction.E], nonBlocking: true },
-  { pattern: [Direction.E, Direction.N, Direction.N], nonBlocking: true },
-  { pattern: [Direction.N, Direction.N, Direction.W], nonBlocking: true },
-  { pattern: [Direction.W, Direction.N, Direction.N], nonBlocking: true },
-  { pattern: [Direction.E, Direction.E, Direction.S], nonBlocking: true },
-  { pattern: [Direction.S, Direction.E, Direction.E], nonBlocking: true },
-  { pattern: [Direction.E, Direction.E, Direction.N], nonBlocking: true },
-  { pattern: [Direction.N, Direction.E, Direction.E], nonBlocking: true },
-  { pattern: [Direction.S, Direction.S, Direction.E], nonBlocking: true },
-  { pattern: [Direction.E, Direction.S, Direction.S], nonBlocking: true },
-  { pattern: [Direction.S, Direction.S, Direction.W], nonBlocking: true },
-  { pattern: [Direction.W, Direction.S, Direction.S], nonBlocking: true },
-  { pattern: [Direction.W, Direction.W, Direction.S], nonBlocking: true },
-  { pattern: [Direction.S, Direction.W, Direction.W], nonBlocking: true },
-  { pattern: [Direction.W, Direction.W, Direction.N], nonBlocking: true },
-  { pattern: [Direction.N, Direction.W, Direction.W], nonBlocking: true },
-];
+
+const KNIGHT_GAITS: Gait[] = NonDiagonalDirections.map((A) =>
+  knightTurnDirections(A).map((B) => [{ pattern: [A, A, B], nonBlocking: true }])
+)
+  .flat()
+  .flat();
 
 const QUEEN_GAITS: Gait[] = [...ROOK_GAITS, ...BISHOP_GAITS];
 
