@@ -49,10 +49,10 @@ export const HelpMenu: FC<Props> = ({ context }) => {
       {menuOpen && (
         <MenuContainer ref={menuRef}>
           {MENU_OPTIONS.map((option) => (
-            <>
+            <View key={option.category}>
               <FeedbackListItem {...option} context={contextWithRoute} />
               <HorizontalSeparator />
-            </>
+            </View>
           ))}
         </MenuContainer>
       )}
