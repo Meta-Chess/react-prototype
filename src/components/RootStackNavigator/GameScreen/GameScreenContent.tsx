@@ -42,7 +42,9 @@ export const GameScreenContent: FC = () => {
 
   const boardMeasurements = calculateBoardMeasurements({
     board: gameMaster.game.board,
-    boardAreaWidth: portrait ? width - 2 * padding : (2 * width) / 3 - 2 * padding,
+    boardAreaWidth: portrait
+      ? width - 2 * padding
+      : Math.min((2 * width) / 3, width - 280) - 2 * padding,
     boardAreaHeight:
       (portrait ? Math.min((3 * height) / 4, height - 200) : height) -
       2 * PLAYER_ROW_HEIGHT -
@@ -53,26 +55,30 @@ export const GameScreenContent: FC = () => {
 
   return (
     <StyledContainer style={{ flexDirection: portrait ? "column" : "row", padding }}>
-      <View>
-        <PlayerRow
-          player={flipBoard ? PlayerName.White : PlayerName.Black}
-          style={{ height: PLAYER_ROW_HEIGHT }}
-        />
-        <Board
-          measurements={boardMeasurements}
-          backboard={backboard}
-          flipBoard={flipBoard}
-        />
-        <PlayerRow
-          player={flipBoard ? PlayerName.Black : PlayerName.White}
-          style={{ height: PLAYER_ROW_HEIGHT }}
-        />
+      <View
+        style={[portrait ? { width: "100%" } : { flex: 2 }, { alignItems: "center" }]}
+      >
+        <View>
+          <PlayerRow
+            player={flipBoard ? PlayerName.White : PlayerName.Black}
+            style={{ height: PLAYER_ROW_HEIGHT }}
+          />
+          <Board
+            measurements={boardMeasurements}
+            backboard={backboard}
+            flipBoard={flipBoard}
+          />
+          <PlayerRow
+            player={flipBoard ? PlayerName.Black : PlayerName.White}
+            style={{ height: PLAYER_ROW_HEIGHT }}
+          />
+        </View>
         {gameMaster?.gameOver && !winModalHidden ? (
           <AbsoluteView>
             <WinModal onClose={hideWinModal} />
           </AbsoluteView>
         ) : moveDisambiguationRequired ? (
-          <AbsoluteView>
+          <AbsoluteView style={{ justifyContent: "center", flexDirection: "row" }}>
             <MoveDisambiguationModal />
           </AbsoluteView>
         ) : null}
@@ -100,7 +106,7 @@ const SidebarContainer = styled(View)<SidebarContainerProps>`
     portrait ? "" : `height: ${boardMeasurements.height}px;`}
   ${({ portrait, boardMeasurements }): string =>
     portrait ? `width: ${boardMeasurements.width}px;` : ""}
-  min-width: 300px;
+  min-width: 280px;
   max-width: 450px;
   padding: ${Platform.OS === "web" ? 0 : 8}px;
   margin-left: ${({ portrait }): number => (portrait ? 0 : 16)}px;
