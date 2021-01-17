@@ -51,6 +51,7 @@ export class OnlineGameMaster extends GameMaster {
 
     gameClient.setOnMove((move: Move) => {
       onlineGameMaster.doMove(move, false);
+      onlineGameMaster.calculateAllowableMovesForSelectedPieces();
       onlineGameMaster.render();
     });
 
