@@ -2,6 +2,7 @@ import React, { FC, useCallback, useState } from "react";
 import { AbsoluteView, ButtonSecondary, Card, Row, Spinner, TextInput } from "ui";
 import { Text, Colors, CloseIcon } from "primitives";
 import { IconButton } from "ui/Buttons/IconButton";
+import styled from "styled-components/native";
 
 interface Props {
   category: Category;
@@ -13,12 +14,12 @@ export type Category = "BUG" | "SUGGESTION";
 
 const HEADERS: { [cat in Category]: string } = {
   BUG: "What went wrong?",
-  SUGGESTION: "What do you think?",
+  SUGGESTION: "What could we do better?",
 };
 
 const PLACEHOLDERS: { [cat in Category]: string } = {
-  BUG: "Please enter lots of details",
-  SUGGESTION: "Please be detailed",
+  BUG: "Please enter lots of details!",
+  SUGGESTION: "Please give details!",
 };
 
 export const FeedbackModal: FC<Props> = ({ category, context, onClose }) => {
@@ -64,14 +65,16 @@ export const FeedbackModal: FC<Props> = ({ category, context, onClose }) => {
         onChangeText={(text: string): void => setMessage(text)}
         style={{ marginTop: 16, flex: 1 }}
       />
-      <Text cat={"BodyXS"} color={Colors.ERROR.toString()} style={{ marginTop: 8 }}>
-        {error ? "Failed to send. Try again?" : " "}
-      </Text>
-      <ButtonSecondary
-        text={"Submit"}
-        onPress={(): void => submit(message)}
-        style={{ alignSelf: "flex-end", width: 140, marginTop: 4 }}
-      />
+      <ButtonRow>
+        <Text cat={"BodyXS"} color={Colors.ERROR.toString()} style={{ marginTop: 8 }}>
+          {error ? "Failed to send. Try again?" : " "}
+        </Text>
+        <ButtonSecondary
+          text={"Submit"}
+          onPress={(): void => submit(message)}
+          style={{ width: 140, marginTop: 16 }}
+        />
+      </ButtonRow>
       {loading && (
         <AbsoluteView style={{ backgroundColor: Colors.DARKEST.fade(0.2).toString() }}>
           <Spinner />
@@ -80,3 +83,7 @@ export const FeedbackModal: FC<Props> = ({ category, context, onClose }) => {
     </Card>
   );
 };
+
+const ButtonRow = styled(Row)`
+  justify-content: space-between;
+`;
