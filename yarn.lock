@@ -11148,10 +11148,9 @@ react-native-vector-icons@^7.0.0:
     prop-types "^15.7.2"
     yargs "^15.0.2"
 
-react-native-web@^0.13.18:
-  version "0.13.18"
-  resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.13.18.tgz#964f058a16521a3b9a31b091415edfef5b6ef305"
-  integrity sha512-WR/0ECAmwLQ2+2cL2Ur+0/swXFAtcSM0URoADJmG6D4MnY+wGc91JO8LoOTlgY0USBOY+qG/beRrjFa+RAuOiA==
+"react-native-web@https://github.com/Meta-Chess/react-native-web.git":
+  version "0.14.10"
+  resolved "https://github.com/Meta-Chess/react-native-web.git#8499facc26d14f9172aebf5510054adc30f3b2a8"
   dependencies:
     array-find-index "^1.0.2"
     create-react-class "^15.6.2"

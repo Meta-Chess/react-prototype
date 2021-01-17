@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { TextInput as NativeTextInput, TextStyle, Platform } from "react-native";
+import { TextStyle, Platform } from "react-native";
+import { TextInput as NativeTextInput } from "react-native";
 import { SFC, Colors, useHover } from "primitives";
 
 interface Props {
