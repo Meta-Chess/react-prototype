@@ -71,8 +71,8 @@ const Sidebar: SFC<Props> = ({ style }) => {
         <Button
           text="Finish Game"
           onPress={(): void => {
-            gameMaster?.endGame();
-            navigation.navigate(Screens.StartScreen);
+            if (navigation.canGoBack()) navigation.goBack();
+            else navigation.replace(Screens.StartScreen);
           }}
         />
       </ButtonContainer>

@@ -261,6 +261,7 @@ export class GameMaster {
   }
 
   endGame(): void {
+    console.log("endgame");
     this.game.clock?.stop();
     this.gameOver = true;
   }
