@@ -1,7 +1,7 @@
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
 import { mockRenderer } from "../helpers/mockRenderer";
-import { calculateGameOptions } from "components/RootStackNavigator/VariantSelectScreen/ScreenStateFunctions/calculateGameOptions";
+import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
 import { PlayerName } from "game/types";
 
 describe("With pathetic king", () => {
