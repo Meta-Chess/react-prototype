@@ -43,7 +43,11 @@ const SelectedVariantsCard: SFC<Props> = ({
           })}
         </Container>
       ) : (
-        <Text cat="BodyXS" style={{ fontStyle: "italic" }}>
+        <Text
+          color={Colors.TEXT.LIGHT_SECONDARY.toString()}
+          cat="BodyXS"
+          style={{ fontStyle: "italic" }}
+        >
           {"No variant selected"}
         </Text>
       )}

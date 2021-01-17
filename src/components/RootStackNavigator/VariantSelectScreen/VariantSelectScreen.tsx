@@ -40,7 +40,7 @@ const VariantSelectScreen: FC = () => {
     >
       <LeftContainer style={{ flex: 1 }}>
         <VariantCardGrid
-          style={{ flex: 1, paddingHorizontal: 24 }}
+          style={{ flex: 1, paddingLeft: 24, paddingRight: 4 }}
           displayVariants={displayVariants}
           selectedVariants={selectedVariants}
           setSelectedVariants={setSelectedVariants}
@@ -52,7 +52,6 @@ const VariantSelectScreen: FC = () => {
           style={{ flex: 1 }}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingVertical: 24 }}
-          bounces={true}
         >
           <SelectedVariantsCard
             selectedVariants={selectedVariants}
