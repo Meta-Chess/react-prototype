@@ -15,7 +15,7 @@ const HexContainer = styled(TouchableOpacity)<{ size: number }>`
   position: absolute;
   height: ${({ size }): number => size}px;
   width: ${({ size }): number => size}px;
-  border-radius: 50%;
+  border-radius: 50px;
 `;
 
 // All the containers should have the same type as the square container

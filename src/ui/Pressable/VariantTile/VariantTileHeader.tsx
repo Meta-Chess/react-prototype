@@ -56,6 +56,6 @@ const ComplexityDot = styled(View)`
   right: 8px;
   align-self: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 50px;
   background-color: ${Colors.BLACK.fade(0.7).toString()};
 `;

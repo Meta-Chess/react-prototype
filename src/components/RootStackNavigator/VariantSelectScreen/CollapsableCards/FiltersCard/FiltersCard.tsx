@@ -2,10 +2,11 @@ import React from "react";
 import { View } from "react-native";
 import { SFC } from "primitives";
 import { TraitFilter } from "./TraitFilter";
-import { TraitName, TraitsInSetInfo } from "game";
 import styled from "styled-components/native";
 import { getTraitInfoForSet } from "./getTraitInfoForSet";
 import { CollapsableCard } from "ui/Containers";
+import { TraitsInSetInfo } from "game";
+import { TraitName } from "game/variants/traitInfo";
 
 interface Props {
   activeFilters: TraitName[];

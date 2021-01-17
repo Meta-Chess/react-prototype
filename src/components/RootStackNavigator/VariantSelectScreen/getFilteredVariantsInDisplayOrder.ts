@@ -1,4 +1,5 @@
-import { FutureVariantName, futureVariants, TraitName } from "game";
+import { FutureVariantName, futureVariants } from "game";
+import { TraitName } from "game/variants/traitInfo";
 
 export function getFilteredVariantsInDisplayOrder(
   activeFilters: TraitName[]
