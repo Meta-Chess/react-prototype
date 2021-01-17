@@ -1,0 +1,46 @@
+import React, { useState, useCallback } from "react";
+import { TextInput } from "./TextInput";
+import { SFC } from "primitives";
+import { debounce } from "lodash";
+
+interface Props {
+  afterChangeText: (text: string) => void;
+  placeholder?: string;
+  delay?: number;
+  onSubmitEditing?: (text: string) => void;
+}
+
+export const DebouncedTextInput: SFC<Props> = ({
+  afterChangeText,
+  placeholder,
+  style,
+  delay = 100,
+  onSubmitEditing,
+}) => {
+  const [text, setText] = useState("");
+
+  // We need to suppress exhaustive-deps because it struggles with debounce.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedAfterChange = useCallback(
+    debounce((text: string): void => afterChangeText(text), delay),
+    []
+  );
+
+  const onChangeText = useCallback(
+    (text) => {
+      setText(text);
+      debouncedAfterChange(text);
+    },
+    [debouncedAfterChange]
+  );
+
+  return (
+    <TextInput
+      value={text}
+      placeholder={placeholder}
+      onChangeText={onChangeText}
+      style={style}
+      onSubmitEditing={(): void => onSubmitEditing?.(text)}
+    />
+  );
+};

@@ -14,12 +14,12 @@ const StartScreen: FC = () => {
   const navigation = useNavigation();
 
   const startGame = useCallback(
-    (): void =>
+    (gameOptions): void =>
       navigation.navigate(Screens.GameScreen, {
         gameOptions,
         roomId: gameOptions.roomId,
       }),
-    [gameOptions, navigation]
+    [navigation]
   );
 
   return (
@@ -38,11 +38,18 @@ const StartScreen: FC = () => {
             <>
               <GameOptionControls
                 gameOptions={gameOptions}
-                setGameOptions={setGameOptions}
+                setGameOptions={(options: GameOptions): GameOptions => {
+                  setGameOptions(options);
+                  return options;
+                }}
                 onSubmit={startGame}
               />
               <Row style={{ marginTop: 24, width: 300 }}>
-                <Button onPress={startGame} text={"Play"} style={{ flex: 1 }} />
+                <Button
+                  onPress={(): void => startGame(gameOptions)}
+                  text={"Play"}
+                  style={{ flex: 1 }}
+                />
                 <SetupGameButton style={{ flex: 1, marginLeft: 8 }} />
               </Row>
             </>
