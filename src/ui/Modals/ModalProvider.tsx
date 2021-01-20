@@ -7,6 +7,8 @@ import React, {
   useContext,
 } from "react";
 import { View } from "react-native";
+import styled from "styled-components/native";
+import { Colors } from "primitives";
 
 const defaultModalController = {
   show: (_modal: Modal): void => {
@@ -27,8 +29,8 @@ const ModalContext = createContext(defaultModalController);
 
 export interface Modal {
   id: number;
-  top: number;
-  left: number;
+  top?: number;
+  left?: number;
   content: ReactNode;
 }
 
@@ -55,16 +57,25 @@ export const ModalProvider: FC = ({ children }) => {
     <ModalContext.Provider value={contextMethods}>
       {children}
       {modals.map((modal) => (
-        <View
-          key={modal.id}
-          style={{ position: "absolute", top: modal.top, left: modal.left }}
-        >
+        // TODO: Pressable background for full screen modals - maybe upgrade react-native and use pressable?
+        <ModalContainer key={modal.id} top={modal.top} left={modal.left}>
           {modal.content}
-        </View>
+        </ModalContainer>
       ))}
     </ModalContext.Provider>
   );
 };
+
+const ModalContainer = styled(View)<{ top?: number; left?: number }>`
+  position: absolute;
+  ${({ top, left }): string =>
+    top === undefined && left === undefined
+      ? `top: 0; left: 0; bottom: 0; right: 0; 
+      background-color: ${Colors.DARKEST.fade(0.4).toString()}
+      align-items: center;
+      justify-content: center;`
+      : `top: ${top}; left: ${left}`}
+`;
 
 export function useModals(): typeof defaultModalController {
   return useContext(ModalContext);

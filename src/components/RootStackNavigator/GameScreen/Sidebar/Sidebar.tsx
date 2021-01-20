@@ -11,11 +11,7 @@ import { PieceCredit } from "./PieceCredit";
 import { SelectedPieceInfoCard } from "./SelectedPieceInfoCard";
 import styled from "styled-components/native";
 
-interface Props {
-  short?: boolean;
-}
-
-const Sidebar: SFC<Props> = ({ style }) => {
+const Sidebar: SFC = ({ style }) => {
   const navigation = useNavigation();
   const modals = useModals();
   const { gameMaster } = useContext(GameContext);

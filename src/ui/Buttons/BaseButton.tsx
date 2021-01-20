@@ -3,7 +3,6 @@ import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors, useHover } from "primitives";
 import Color from "color";
-import { Styles } from "primitives/Styles";
 
 interface Props {
   text: string;
@@ -48,8 +47,6 @@ const TouchableContainer = styled(TouchableOpacity)<{
   background-color: ${({ backgroundColor }): string => backgroundColor.toString()};
   border: 1px solid ${({ borderColor }): string => borderColor.toString()};
   border-radius: 4px;
-  ${({ backgroundColor }): string =>
-    backgroundColor.alpha() > 0.5 ? Styles.BOX_SHADOW : ""}
   justify-content: center;
   align-items: center;
 `;
