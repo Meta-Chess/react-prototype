@@ -35,7 +35,7 @@ describe("With fatigue enabled", () => {
     gameMaster.onPress(toLocation({ rank: 4, file: 4 }));
     expect(board.getPiecesAt(toLocation({ rank: 4, file: 4 })).length).toEqual(1);
 
-    // Pawn at E3 should no longer have capture token
+    // Pawn at E3 should no longer have a fatigue token
     expect(
       board
         .getPiecesAt(toLocation({ rank: 3, file: 5 }))[0]

@@ -43,7 +43,7 @@ describe("With the standard set of rules", () => {
     gameMaster.onPress(toLocation({ rank: 3, file: 1 }));
     expect(board.getPiecesAt(toLocation({ rank: 3, file: 1 })).length).toEqual(1);
 
-    // Black queen to E2 - check
+    // Black queen to E7 - check
     gameMaster.onPress(toLocation({ rank: 8, file: 4 }));
     gameMaster.onPress(toLocation({ rank: 7, file: 5 }));
     expect(board.getPiecesAt(toLocation({ rank: 7, file: 5 })).length).toEqual(1);

@@ -39,6 +39,7 @@ describe("With the standard set of rules", () => {
     expect(board.getPiecesAt(toLocation({ rank: 12, file: 7 }))[0].owner).toEqual(
       PlayerName.White
     );
-    expect(board.getPiecesAt(toLocation({ rank: 11, file: 7 })).length).toEqual(0);
+    expect(board.getPiecesAt(toLocation({ rank: 10, file: 7 })).length).toEqual(0);
+    expect(board.getPiecesAt(toLocation({ rank: 11, file: 8 })).length).toEqual(0);
   });
 });

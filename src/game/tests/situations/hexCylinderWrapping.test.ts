@@ -25,6 +25,7 @@ describe("With fatigue enabled", () => {
 
     // Select the white bishop we just moved
     gameMaster.onPress(toLocation({ rank: 15, file: 10 }));
+    expect(gameMaster.allowableMoves.length).toEqual(10);
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ location: toLocation({ rank: 12, file: 11 }) }),
@@ -33,6 +34,10 @@ describe("With fatigue enabled", () => {
         expect.objectContaining({ location: toLocation({ rank: 9, file: 8 }) }),
         expect.objectContaining({ location: toLocation({ rank: 6, file: 7 }) }),
         expect.objectContaining({ location: toLocation({ rank: 3, file: 6 }) }),
+        expect.objectContaining({ location: toLocation({ rank: 15, file: 2 }) }),
+        expect.objectContaining({ location: toLocation({ rank: 15, file: 4 }) }),
+        expect.objectContaining({ location: toLocation({ rank: 15, file: 8 }) }),
+        expect.objectContaining({ location: toLocation({ rank: 18, file: 9 }) }),
       ])
     );
 
@@ -43,6 +48,7 @@ describe("With fatigue enabled", () => {
 
     // Select free black rook
     gameMaster.onPress(toLocation({ rank: 18, file: 9 }));
+    expect(gameMaster.allowableMoves.length).toEqual(11);
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ location: toLocation({ rank: 17, file: 8 }) }),
