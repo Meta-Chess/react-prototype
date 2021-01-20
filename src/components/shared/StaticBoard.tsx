@@ -8,29 +8,29 @@ import { View } from "react-native";
 interface Props {
   gameMaster: GameMaster;
   onPress?: () => void;
-  width?: number;
-  height?: number;
+  maxWidth?: number;
+  maxHeight?: number;
 }
 
 export const StaticBoard: SFC<Props> = ({
   gameMaster,
   onPress,
-  width = 200,
-  height = 200,
+  maxWidth = 200,
+  maxHeight = 200,
   style,
 }) => {
   const [ref, hovered] = useHover();
   const shape = gameMaster.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape;
   const boardMeasurements = calculateBoardMeasurements({
     board: gameMaster.game.board,
-    boardAreaWidth: width,
-    boardAreaHeight: height,
+    boardAreaWidth: maxWidth,
+    boardAreaHeight: maxHeight,
     shape,
     backboard: false,
   });
 
   return (
-    <View style={[style, { width, height, overflow: "hidden" }]}>
+    <View style={[style, { overflow: "hidden" }]}>
       <SimpleGameProvider gameMaster={gameMaster}>
         <Board measurements={boardMeasurements} backboard={false} />
       </SimpleGameProvider>

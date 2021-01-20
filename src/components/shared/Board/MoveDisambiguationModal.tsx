@@ -62,7 +62,7 @@ export const MoveDisambiguationModal: FC = () => {
 };
 
 const Container = styled(View)`
-  align-self: stretch;
+  flex-shrink: 1;
   margin-horizontal: ${Platform.OS === "web" ? 24 : 0}px;
   border-radius: ${Platform.OS === "web" ? 4 : 0}px;
   background-color: ${Colors.DARKISH.toString()};

@@ -196,6 +196,10 @@ export class GameMaster {
     const square = this.game.board.squareAt(location);
     this.selectedPieces =
       square?.pieces.map((pieceId) => this.game.board.pieces[pieceId]) || [];
+    this.calculateAllowableMovesForSelectedPieces();
+  }
+
+  calculateAllowableMovesForSelectedPieces(): void {
     this.allowableMoves = this.selectedPieces.flatMap((piece: Piece) =>
       new Pather(this.game, this.gameClones, piece, this.interrupt).findPaths()
     );

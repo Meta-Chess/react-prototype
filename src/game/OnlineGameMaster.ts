@@ -51,6 +51,8 @@ export class OnlineGameMaster extends GameMaster {
 
     gameClient.setOnMove((move: Move) => {
       onlineGameMaster.doMove(move, false);
+      onlineGameMaster.calculateAllowableMovesForSelectedPieces();
+      if (onlineGameMaster.gameOver) onlineGameMaster.disconnect();
       onlineGameMaster.render();
     });
 
@@ -60,10 +62,11 @@ export class OnlineGameMaster extends GameMaster {
   onPress(location: string): Move | undefined {
     const move = super.onPress(location);
     if (move) this.gameClient.sendMove(move);
+    if (this.gameOver) this.disconnect();
     return move;
   }
 
-  endGame(): void {
+  disconnect(): void {
     this.gameClient?.close();
   }
 }

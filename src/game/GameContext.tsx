@@ -12,7 +12,9 @@ interface SimpleProps {
 
 export const SimpleGameProvider: FC<SimpleProps> = ({ children, gameMaster }) => {
   useEffect((): (() => void) => {
-    return (): void => gameMaster?.endGame();
+    return (): void => {
+      if (gameMaster instanceof OnlineGameMaster) gameMaster.disconnect();
+    };
   }, [gameMaster]);
 
   return <GameContext.Provider value={{ gameMaster }}>{children}</GameContext.Provider>;
@@ -34,7 +36,9 @@ export const GameProvider: FC<Props> = ({ children, gameOptions, roomId }) => {
   }, [gameOptions]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect((): (() => void) => {
-    return (): void => gameMaster?.endGame();
+    return (): void => {
+      if (gameMaster instanceof OnlineGameMaster) gameMaster.disconnect();
+    };
   }, [gameMaster]);
 
   return <GameContext.Provider value={{ gameMaster }}>{children}</GameContext.Provider>;
