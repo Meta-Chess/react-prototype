@@ -161,7 +161,8 @@ export type FutureVariantName =
   | "spherical"
   | "threeCheck"
   | "toroidal"
-  | "veto";
+  | "veto"
+  | "chemicallyExcitedKnight";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   atomic: {
@@ -261,12 +262,21 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   },
   noFork: {
     title: "No Fork",
-    shortDescription: "Knights can no longer attack 2 or more pieces.",
+    shortDescription: "Knights attacking multiple pieces are 'forked' on turn start.",
     traits: ["Piece", "Restrict"],
     imageName: "noForkImage",
     implemented: false,
     ruleNames: [],
     complexity: 0,
+  },
+  chemicallyExcitedKnight: {
+    title: "Chemically Excited Knight",
+    shortDescription: "Knights that can see 3 enemy pieces explode.",
+    traits: ["Piece"],
+    imageName: "chemicallyExcitedKnight",
+    implemented: true,
+    ruleNames: ["chemicallyExcitedKnight"],
+    complexity: 1,
   },
   patheticKing: {
     title: "Pathetic King",

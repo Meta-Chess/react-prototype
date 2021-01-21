@@ -79,6 +79,7 @@ export enum TokenName {
 
 export enum AnimationType {
   explosion = "explosion",
+  pieceAnimation = "pieceAnimation",
 }
 interface TokenData {
   history?: string[];
@@ -88,8 +89,18 @@ interface TokenData {
   type?: AnimationType;
   createdAt?: number;
   duration?: number;
+  delay?: number;
   id?: number;
   counters?: number[];
+  pieceVisualData?: PieceVisualData;
+}
+
+export interface PieceVisualData {
+  owner: PlayerName;
+  type: PieceName;
+  fatigued: boolean;
+  bodyColorChange?: string;
+  outlineColorChange?: string;
 }
 
 export interface RankAndFileBounds {

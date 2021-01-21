@@ -8,7 +8,7 @@ export const pawnDoubleStep: Rule = {
   title: "Pawn Double Step",
   description:
     "For their first move, pawns can do two steps in their direction of travel!",
-  postMove: ({ board, move, currentTurn }) => {
+  postMove: ({ game, interrupt, board, move, currentTurn }) => {
     const piecesMoved = move.pieceDeltas
       .map((delta) => board.pieces[delta.pieceId])
       .filter(isPresent);
@@ -16,7 +16,7 @@ export const pawnDoubleStep: Rule = {
       if (piece?.name === PieceName.Pawn)
         piece.removeTokensByName(TokenName.PawnDoubleStep);
     });
-    return { board, move, currentTurn };
+    return { game, interrupt, board, move, currentTurn };
   },
   onGaitsGeneratedModify: ({ gaits, piece }) => ({
     gaits: [

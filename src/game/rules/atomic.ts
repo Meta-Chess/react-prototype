@@ -1,6 +1,7 @@
 import { PieceName, TokenName, AnimationType } from "../types";
 import { Rule } from "./CompactRules";
 import { Board } from "game";
+import { standardKingStep } from "./utilities";
 
 export const atomic: Rule = {
   title: "Atomic",
@@ -11,7 +12,7 @@ export const atomic: Rule = {
     events.subscribe({
       name: "capture",
       consequence: ({ board, square }) => {
-        const atomicImpactSquares = square.adjacencies.getAllAdjacencies();
+        const atomicImpactSquares = standardKingStep(board, square);
         const captureSquare = square.location;
         board.killPiecesAt(captureSquare);
         atomicImpactSquares.forEach((location) => {

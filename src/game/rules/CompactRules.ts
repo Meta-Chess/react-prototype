@@ -88,7 +88,13 @@ const identityRule = {
   onPieceGeneratedModify: (x: { piece: Piece }) => x,
   piecesUnderSquare: (x: { square: Square; board: Board; pieceIds: string[] }) => x,
   postCapture: (x: { board: Board; square: Square }) => x,
-  postMove: (x: { board: Board; move: Move; currentTurn: number }) => x,
+  postMove: (x: {
+    game: Game;
+    interrupt: CompactRules;
+    board: Board;
+    move: Move;
+    currentTurn: number;
+  }) => x,
   processMoves: (x: { board: Board; moves: Move[] }) => x,
   subscribeToEvents: (x: { events: EventCenter }) => x,
 };

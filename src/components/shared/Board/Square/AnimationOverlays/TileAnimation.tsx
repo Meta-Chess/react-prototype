@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { SFC } from "primitives";
 import { AnimationType, SquareShape, Token } from "game";
-import { Explosion } from "ui/VariantContent";
+import { Explosion, PieceAnimation } from "ui/VariantContent";
 import { AnimationComponentProps } from "ui/VariantContent/AnimationComponentProps";
 
 interface TileAnimationProps {
@@ -12,16 +12,27 @@ interface TileAnimationProps {
 
 const ANIMATIONS: { [type in AnimationType]: FC<AnimationComponentProps> } = {
   explosion: Explosion,
+  pieceAnimation: PieceAnimation,
 };
 
 const TileAnimation: SFC<TileAnimationProps> = ({ shape, size, token }) => {
   const animationType = token.data?.type;
   const animationDuration = token.data?.duration;
+  const animationDelay = token.data?.delay;
+  const pieceVisualData = token.data?.pieceVisualData;
 
   if (!animationDuration || !animationType) return null;
 
   const AnimationComponent = ANIMATIONS[animationType];
-  return <AnimationComponent shape={shape} size={size} duration={animationDuration} />;
+  return (
+    <AnimationComponent
+      shape={shape}
+      size={size}
+      duration={animationDuration}
+      delay={animationDelay}
+      pieceVisualData={pieceVisualData}
+    />
+  );
 };
 
 export { TileAnimation };
