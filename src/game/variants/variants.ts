@@ -273,7 +273,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Chemically Excited Knight",
     shortDescription: "Knights that can see 3 enemy pieces explode.",
     traits: ["Piece", "Ability"],
-    imageName: "chemicallyExcitedKnight",
+    imageName: "chemicallyExcitedKnightImage",
     implemented: true,
     ruleNames: ["chemicallyExcitedKnight"],
     complexity: 1,

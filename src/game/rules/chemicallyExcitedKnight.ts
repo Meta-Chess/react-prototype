@@ -1,6 +1,6 @@
-import { PieceName, TokenName, AnimationType, PieceVisualData } from "../types";
+import { PieceName, TokenName, AnimationType, PieceVisualData } from "game/types";
 import { Rule } from "./CompactRules";
-import { Pather } from "game";
+import { Pather } from "game/Pather";
 import { Board } from "game/Board";
 import { standardKingStep } from "./utilities";
 
