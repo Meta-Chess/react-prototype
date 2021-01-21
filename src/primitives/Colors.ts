@@ -31,9 +31,9 @@ export const Colors = {
   },
   TRAIT: {
     PIECE: Color("#6C7A86"),
-    RESTRICT: Color("#FF2222"),
+    RESTRICTION: Color("#FF2222"),
     ABILITY: Color("#FF5D00"),
-    GAME_END: Color("#D4AF37"),
+    ENDING: Color("#D4AF37"),
     PHASE: Color("#FF47EE"),
     GEOMETRY: Color("#00C1FF"),
     BOARD: Color("#0064FD"),

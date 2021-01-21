@@ -196,7 +196,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   emptyCenter: {
     title: "Empty Center",
     shortDescription: "No pieces allowed in the center!",
-    traits: ["Restrict"],
+    traits: ["Restriction"],
     imageName: "emptyCenterImage",
     implemented: true,
     ruleNames: ["emptyCenter"],
@@ -206,7 +206,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Fatigue",
     shortDescription:
       "Pieces can't be moved twice in a row, unless they can kill the king.",
-    traits: ["Restrict"],
+    traits: ["Restriction"],
     imageName: "fatigueImage",
     implemented: true,
     ruleNames: ["fatigue"],
@@ -224,7 +224,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   kingOfTheHill: {
     title: "King of the Hill",
     shortDescription: "Win the game with a king reaching the center.",
-    traits: ["Game End"],
+    traits: ["Ending"],
     imageName: "kingOfTheHillImage",
     implemented: false,
     ruleNames: [],
@@ -263,7 +263,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   noFork: {
     title: "No Fork",
     shortDescription: "Knights attacking multiple pieces are 'forked' on turn start.",
-    traits: ["Piece", "Restrict"],
+    traits: ["Piece", "Restriction"],
     imageName: "noForkImage",
     implemented: false,
     ruleNames: [],
@@ -281,7 +281,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   patheticKing: {
     title: "Pathetic King",
     shortDescription: "Kings cannot capture.",
-    traits: ["Piece", "Restrict"],
+    traits: ["Piece", "Restriction"],
     imageName: "patheticKingImage",
     implemented: true,
     ruleNames: ["patheticKing"],
@@ -317,7 +317,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   threeCheck: {
     title: "3-Check",
     shortDescription: "3 checks and you're out.",
-    traits: ["Game End"],
+    traits: ["Ending"],
     imageName: "threeCheckImage",
     implemented: true,
     ruleNames: ["threeCheck"],
@@ -335,7 +335,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   veto: {
     title: "Veto",
     shortDescription: "A move may be vetoed each turn.",
-    traits: ["Phase", "Restrict"],
+    traits: ["Phase", "Restriction"],
     imageName: "vetoImage",
     implemented: false,
     ruleNames: [],

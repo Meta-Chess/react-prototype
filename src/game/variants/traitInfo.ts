@@ -4,9 +4,9 @@ export type TraitName = keyof typeof traitInfo;
 
 export const traitInfo = {
   Piece: { color: Colors.TRAIT.PIECE },
-  Restrict: { color: Colors.TRAIT.RESTRICT },
+  Restriction: { color: Colors.TRAIT.RESTRICTION },
   Ability: { color: Colors.TRAIT.ABILITY },
-  "Game End": { color: Colors.TRAIT.GAME_END },
+  Ending: { color: Colors.TRAIT.ENDING },
   Phase: { color: Colors.TRAIT.PHASE },
   Geometry: { color: Colors.TRAIT.GEOMETRY },
   Board: { color: Colors.TRAIT.BOARD },
