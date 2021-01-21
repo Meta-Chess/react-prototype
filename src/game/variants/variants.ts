@@ -215,7 +215,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   hex: {
     title: "Hex",
     shortDescription: "A board tiled with hexagons.",
-    traits: ["Terraform"],
+    traits: ["Board"],
     imageName: "hexImage",
     implemented: true,
     ruleNames: ["hex"],
@@ -233,7 +233,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   kleinBottle: {
     title: "Klein Bottle",
     shortDescription: "Chess on a klein bottle!? [Mobius and Cylinder]",
-    traits: ["Terraform", "Geometry"],
+    traits: ["Board", "Geometry"],
     imageName: "kleinBottleImage",
     implemented: true,
     ruleNames: [
@@ -249,7 +249,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Möbius",
     shortDescription:
       "A long board möbius strip, with the ability to phase through to empty squares.",
-    traits: ["Terraform", "Geometry"],
+    traits: ["Board", "Geometry"],
     imageName: "mobiusImage",
     implemented: true,
     ruleNames: [
@@ -272,7 +272,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   chemicallyExcitedKnight: {
     title: "Chemically Excited Knight",
     shortDescription: "Knights that can see 3 enemy pieces explode.",
-    traits: ["Piece"],
+    traits: ["Piece", "Ability"],
     imageName: "chemicallyExcitedKnight",
     implemented: true,
     ruleNames: ["chemicallyExcitedKnight"],
@@ -326,7 +326,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   toroidal: {
     title: "Toroidal",
     shortDescription: "Double the cylinder and pawns!",
-    traits: ["Terraform", "Geometry"],
+    traits: ["Board", "Geometry"],
     imageName: "toroidalImage",
     implemented: true,
     ruleNames: ["longBoard", "cylindrical", "verticallyCylindrical"],
@@ -335,7 +335,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   veto: {
     title: "Veto",
     shortDescription: "A move may be vetoed each turn.",
-    traits: ["New Phase", "Restrict"],
+    traits: ["Phase", "Restrict"],
     imageName: "vetoImage",
     implemented: false,
     ruleNames: [],
