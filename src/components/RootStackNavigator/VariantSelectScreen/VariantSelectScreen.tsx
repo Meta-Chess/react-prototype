@@ -76,12 +76,13 @@ const VariantSelectScreen: FC = () => {
           />
           <Button
             text="Start Game"
-            onPress={(): void =>
+            onPress={(): void => {
+              // console.log(`const gameMaster = new GameMaster(...GameMaster.processConstructorInputs(calculateGameOptions(${JSON.stringify((Object.keys(gameOptions) as (keyof typeof gameOptions)[]).reduce((acc, k) => gameOptions[k] && gameOptions[k] !== "chess" ? { ...acc, [k]: gameOptions[k] } : { ...acc }, {}))}, ${JSON.stringify(selectedVariants)}), mockRenderer)); const board = gameMaster.game.board;`); // TEST WRITING HELPER COMMENT
               navigation.navigate(Screens.GameScreen, {
                 gameOptions: calculateGameOptions(gameOptions, selectedVariants),
                 roomId: gameOptions.roomId,
-              })
-            }
+              });
+            }}
             style={{ flex: 1, marginLeft: 8 }}
           />
         </NavigationContainer>
