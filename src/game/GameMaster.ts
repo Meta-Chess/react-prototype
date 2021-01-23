@@ -147,6 +147,8 @@ export class GameMaster {
   }
 
   onPress(location: string): Move | undefined {
+    // console.log(`gameMaster.onPress(${location});`); // TEST WRITING HELPER COMMENT
+
     const moves = uniqWith(
       this.allowableMoves.filter((m) => m.location === location),
       movesAreEqual
