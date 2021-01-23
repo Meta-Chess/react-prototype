@@ -10,6 +10,7 @@ export { hexCylindrical } from "./hexCylindrical";
 export { longBoard } from "./longBoard";
 export { loseWithNoKings } from "./loseWithNoKings";
 export { mobius } from "./mobius";
+export { noFork } from "./noFork";
 export { passiveMoveThroughBoard } from "./passiveMoveThroughBoard";
 export { pawnDoubleStep } from "./pawnDoubleStep";
 export { polar } from "./polar";

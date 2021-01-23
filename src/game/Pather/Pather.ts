@@ -13,7 +13,7 @@ export class Pather {
     private gameClones: Game[] = [game.clone(), game.clone(), game.clone(), game.clone()],
     private piece: Piece,
     private interrupt: CompactRules,
-    private params: { checkDepth?: number } = {}
+    private params: { checkDepth?: number; noForkSearch?: boolean } = {}
   ) {}
 
   findPaths({ filterPacifistMoves } = { filterPacifistMoves: false }): Move[] {

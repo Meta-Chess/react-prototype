@@ -262,12 +262,13 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   },
   noFork: {
     title: "No Fork",
-    shortDescription: "Knights attacking multiple pieces are 'forked' on turn start.",
+    shortDescription:
+      "No moves are allowed which result in knights attacking more than 1 enemy piece.",
     traits: ["Piece", "Restriction"],
     imageName: "noForkImage",
-    implemented: false,
-    ruleNames: [],
-    complexity: 0,
+    implemented: true,
+    ruleNames: ["noFork"],
+    complexity: 4,
   },
   chemicallyExcitedKnight: {
     title: "Chemically Excited Knight",

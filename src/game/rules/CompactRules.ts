@@ -71,7 +71,7 @@ const identityRule = {
     game: Game;
     gameClones: Game[];
     interrupt: CompactRules;
-    patherParams: { checkDepth?: number };
+    patherParams: { checkDepth?: number; noForkSearch?: boolean };
     filtered: boolean;
   }) => x,
   lethalCondition: (x: { board: Board; player: PlayerName; dead: string | false }) => x,
