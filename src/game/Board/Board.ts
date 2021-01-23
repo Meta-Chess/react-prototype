@@ -256,17 +256,19 @@ class Board extends TokenOwner {
 
   killPiecesAt(location: string): void {
     // This should actually move the pieces to a special square - to be taken care of when displaying dead pieces
-    const square = this.squares[location];
-    this.pieces = Object.keys(this.pieces)
-      .filter((id: string) => !square.pieces.includes(id))
-      .reduce(
-        (acc, id) => ({
-          ...acc,
-          [id]: this.pieces[id],
-        }),
-        {}
-      );
-    square.pieces = [];
+    const square = this.squareAt(location);
+    if (square) {
+      this.pieces = Object.keys(this.pieces)
+        .filter((id: string) => !square?.pieces.includes(id))
+        .reduce(
+          (acc, id) => ({
+            ...acc,
+            [id]: this.pieces[id],
+          }),
+          {}
+        );
+      square.pieces = [];
+    }
   }
 
   squareAt(location?: string): Square | undefined {
