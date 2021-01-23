@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { Direction } from "./Direction";
 import { Piece, VariantName, RuleName } from "game";
-import { TraitName } from "game/variants";
+import { TraitName } from "game/variants/traitInfo";
 
 export interface GaitData {
   interceptable?: boolean;

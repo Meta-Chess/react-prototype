@@ -28,7 +28,7 @@ export function calculateBoardMeasurements({
   shape: SquareShape | undefined;
   backboard: boolean;
 }): BoardMeasurements {
-  const boardPaddingHorizontal = backboard ? (shape === SquareShape.Hex ? 12 : 8) : 0;
+  const boardPaddingHorizontal = shape === SquareShape.Hex ? 12 : backboard ? 8 : 0;
   const boardPaddingVertical = backboard ? (shape === SquareShape.Hex ? 16 : 8) : 0;
 
   const { minRank, maxRank, minFile, maxFile } = board.rankAndFileBoundsWithFilter(

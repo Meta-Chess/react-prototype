@@ -1,12 +1,12 @@
 import React, { FC, useState } from "react";
 import { View, ScrollView } from "react-native";
 import {
-  TraitName,
   calculateGameOptions,
   determineIfVariantClash,
   FutureVariantName,
   GameOptions,
 } from "game";
+import { TraitName } from "game/variants/traitInfo";
 import { useNavigation, Screens } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";

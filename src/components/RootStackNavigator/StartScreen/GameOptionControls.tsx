@@ -1,14 +1,14 @@
 import React from "react";
 import { SFC } from "primitives";
-import { SelectInput, LabeledCheckBox, TextInput } from "ui";
+import { SelectInput, LabeledCheckBox, DebouncedTextInput } from "ui";
 import { VariantName, variants, GameOptions } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
 
 interface Props {
   gameOptions: GameOptions;
-  setGameOptions: (gameOptions: GameOptions) => void;
-  onSubmit: () => void;
+  setGameOptions: (gameOptions: GameOptions) => GameOptions;
+  onSubmit: (gameOptions: GameOptions) => void;
 }
 
 const GameOptionControls: SFC<Props> = ({
@@ -17,34 +17,35 @@ const GameOptionControls: SFC<Props> = ({
   setGameOptions,
   onSubmit,
 }) => {
-  const setRoomId = (roomId: string): void =>
+  const setRoomId = (roomId: string): GameOptions =>
     setGameOptions({
       ...gameOptions,
       roomId,
       online: roomId && !gameOptions.roomId ? true : gameOptions.online,
     });
-  const setOnline = (online: boolean): void => setGameOptions({ ...gameOptions, online });
-  const setOverTheBoard = (overTheBoard: boolean): void =>
+  const setOnline = (online: boolean): GameOptions =>
+    setGameOptions({ ...gameOptions, online });
+  const setOverTheBoard = (overTheBoard: boolean): GameOptions =>
     setGameOptions({ ...gameOptions, overTheBoard });
-  const setFlipBoard = (flipBoard: boolean): void =>
+  const setFlipBoard = (flipBoard: boolean): GameOptions =>
     setGameOptions({ ...gameOptions, flipBoard });
-  const setCheckEnabled = (checkEnabled: boolean): void =>
+  const setCheckEnabled = (checkEnabled: boolean): GameOptions =>
     setGameOptions({ ...gameOptions, checkEnabled });
-  const setFatigueEnabled = (fatigueEnabled: boolean): void =>
+  const setFatigueEnabled = (fatigueEnabled: boolean): GameOptions =>
     setGameOptions({ ...gameOptions, fatigueEnabled });
-  const setAtomicEnabled = (atomicEnabled: boolean): void =>
+  const setAtomicEnabled = (atomicEnabled: boolean): GameOptions =>
     setGameOptions({ ...gameOptions, atomicEnabled });
-  const setTime = (time: number): void => setGameOptions({ ...gameOptions, time });
-  const setVariant = (variant: VariantName): void =>
+  const setTime = (time: number): GameOptions => setGameOptions({ ...gameOptions, time });
+  const setVariant = (variant: VariantName): GameOptions =>
     setGameOptions({ ...gameOptions, variant });
 
   return (
     <ControlsContainer style={style}>
-      <TextInput
+      <DebouncedTextInput
         placeholder={"Please enter an invite key"}
-        onChangeText={(text: string): void => setRoomId(text)}
-        style={{ marginTop: 20, width: 300 }}
-        onSubmitEditing={onSubmit}
+        afterChangeText={setRoomId}
+        style={{ marginVertical: 4 }}
+        onSubmitEditing={(roomId): void => onSubmit(setRoomId(roomId))}
       />
       <LabeledCheckBox
         value={!!gameOptions.online}
@@ -84,15 +85,13 @@ const GameOptionControls: SFC<Props> = ({
       />
       <SelectInput
         options={timeOptions}
-        onChange={(value): void => {
-          setTime(value);
-        }}
+        onChange={setTime}
         style={{ marginTop: 20 }}
         zIndex={5000}
       />
       <SelectInput //note: windows scrollbar is gross
         options={variantOptions}
-        onChange={(value): void => setVariant(value)}
+        onChange={setVariant}
         zIndex={4000}
       />
     </ControlsContainer>

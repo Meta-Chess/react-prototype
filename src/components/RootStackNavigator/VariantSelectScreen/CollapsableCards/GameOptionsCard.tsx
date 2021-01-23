@@ -1,6 +1,6 @@
 import React from "react";
 import { SFC } from "primitives";
-import { SelectInput, LabeledCheckBox, TextInput } from "ui";
+import { SelectInput, LabeledCheckBox, DebouncedTextInput } from "ui";
 import { VariantName, variants, GameOptions } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
@@ -30,9 +30,9 @@ const GameOptionsCard: SFC<Props> = ({ style, gameOptions, setGameOptions }) => 
   return (
     <CollapsableCard title={"Options"} style={style}>
       <Container>
-        <TextInput
+        <DebouncedTextInput
           placeholder={"Please enter an invite key"}
-          onChangeText={(text: string): void => setRoomId(text)}
+          afterChangeText={setRoomId}
           style={{ marginVertical: 4 }}
         />
         <LabeledCheckBox
