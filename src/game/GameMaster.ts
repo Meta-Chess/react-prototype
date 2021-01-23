@@ -147,6 +147,8 @@ export class GameMaster {
   }
 
   onPress(location: string): Move | undefined {
+    // console.log(`${this.selectedPieces.length ? "" : "\n\n// Move ... ???\n"}gameMaster.onPress("${location}");`); // TEST WRITING HELPER COMMENT
+
     const moves = uniqWith(
       this.allowableMoves.filter((m) => m.location === location),
       movesAreEqual
@@ -176,6 +178,7 @@ export class GameMaster {
   }
 
   doMove(move?: Move, unselect = true): void {
+    // if (move) console.log(`expect(board.getPiecesAt("${move.location}").length).toEqual(1);`); // TEST WRITING HELPER COMMENT
     if (move) {
       this.game.doMove(move);
       if (unselect) this.unselectAllPieces();
@@ -203,6 +206,7 @@ export class GameMaster {
     this.allowableMoves = this.selectedPieces.flatMap((piece: Piece) =>
       new Pather(this.game, this.gameClones, piece, this.interrupt).findPaths()
     );
+    // console.log(`// Expect allowable moves to be ... ??? \n expect(gameMaster.allowableMoves).toEqual(expect.arrayContaining([${this.allowableMoves.map((move) => `expect.objectContaining({ location: "${move.location}"})`)}]));`); // TEST WRITING HELPER COMMENT
   }
 
   checkGameEndConditions(): void {
