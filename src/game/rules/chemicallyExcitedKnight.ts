@@ -15,8 +15,8 @@ export const chemicallyExcitedKnight: Rule = {
   //thinking maybe have this variant be 'see' 3 enemy pieces (with scanner update)
   description: "Knights that could capture 3 enemy pieces explode.",
   postMove: ({ game, interrupt, board, move, currentTurn }) => {
-    const triggeredKnights: { [id: string]: undefined } = {}; //piece ids
-    const deadPieces: { [id: string]: undefined } = {}; //piece ids
+    const triggeredKnights: { [id: string]: number } = {}; //piece ids
+    const deadPieces: { [id: string]: number } = {}; //piece ids
     const addVisualToSquares: string[] = []; //locations
 
     const pieces = board.pieces;
@@ -37,17 +37,26 @@ export const chemicallyExcitedKnight: Rule = {
               ).length > 0
           ).length > 2 // more than 2 enemy piece captures possible
         ) {
-          triggeredKnights[knight.id] = undefined;
+          const knightSquarePieces = board.getPiecesAt(knight.location);
+          knightSquarePieces.forEach((piece) => {
+            if (piece.id === knight.id) {
+              triggeredKnights[knight.id] = knightSquarePieces.indexOf(piece);
+              return;
+            }
+            deadPieces[piece.id] = knightSquarePieces.indexOf(piece);
+          });
+
           const explosionSquareLocations = standardKingStep(
             board,
             board.squareAt(knight.location)
           );
+
           addVisualToSquares.push(knight.location);
           explosionSquareLocations.forEach((location) => {
             const pieces = board.getPiecesAt(location);
-            if (pieces.length > 0) {
-              deadPieces[pieces[0].id] = undefined; //todo: handle chess+
-            }
+            pieces.forEach((piece) => {
+              deadPieces[piece.id] = pieces.indexOf(piece);
+            });
             addVisualToSquares.push(location);
           });
         }
@@ -60,10 +69,10 @@ export const chemicallyExcitedKnight: Rule = {
       const knightVisuals = {
         piece: knight,
         pieceAnimationType: PieceAnimationType.chemicallyExcited,
-        positionOnSquare: 0,
+        positionOnSquare: triggeredKnights[pieceId],
         outlineColorChange: "rgba(235,52,52,1)",
       };
-      addPieceVisualToSquare(board, knight.location, knightVisuals); //todo: handle chess+ piece visuals
+      addPieceVisualToSquare(board, knight.location, knightVisuals);
     });
     Object.keys(deadPieces).map((pieceId) => {
       const piece = board.getPiece(pieceId);
@@ -72,9 +81,9 @@ export const chemicallyExcitedKnight: Rule = {
       const pieceVisuals = {
         piece: piece,
         pieceAnimationType: PieceAnimationType.chemicallyExcited,
-        positionOnSquare: 0,
+        positionOnSquare: deadPieces[pieceId],
       };
-      addPieceVisualToSquare(board, piece.location, pieceVisuals); //todo: handle chess+ for piece visuals
+      addPieceVisualToSquare(board, piece.location, pieceVisuals);
     });
     addVisualToSquares.map((location) => {
       addExplosionVisualToSquare(board, location);

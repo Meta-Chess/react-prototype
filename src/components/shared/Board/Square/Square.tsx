@@ -4,12 +4,13 @@ import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { Piece, ShadowPiece, PieceAnimation } from "../Piece";
 import { GridArrangement } from "./GridArrangement";
-import { GameContext, Square, SquareShape, TokenName } from "game";
+import { GameContext, Square, SquareShape } from "game";
 import { TilePressableContainer } from "./TilePressableContainer";
 import { AnimationOverlays } from "./AnimationOverlays";
 import { Highlight } from "./Highlight";
 import { useModals, Tile } from "ui";
-import { AnimationType, Token } from "game/types";
+import { Token } from "game/types";
+import { getPiecesDisplayOnSquare } from "./getPiecesDisplayOnSquare";
 
 interface Props {
   square: Square | undefined;
@@ -28,34 +29,18 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
     colorIndex({ ...square.getCoordinates(), shape })
   ].string();
 
-  const piecesOrPieceTokensOnSquare: (string | Token)[] = square.pieces.slice();
-  square
-    .tokensWithName(TokenName.AnimationToken)
-    .filter((token) => token.data?.pieceVisualData !== undefined)
-    .sort((t1, t2) =>
-      t1.data?.pieceVisualData === undefined || t2.data?.pieceVisualData === undefined
-        ? 1
-        : t1.data.pieceVisualData.positionOnSquare <
-          t2.data.pieceVisualData.positionOnSquare
-        ? -1
-        : 1
-    )
-    .forEach((token) => {
-      if (token.data?.pieceVisualData?.positionOnSquare === undefined) return;
-      piecesOrPieceTokensOnSquare.splice(
-        token.data?.pieceVisualData?.positionOnSquare,
-        0,
-        token
-      );
-    });
+  const piecesOrPieceAnimationsOnSquare: (string | Token)[] = getPiecesDisplayOnSquare(
+    square
+  );
   const { pieceIds: piecesUnderSquare } = gameMaster.interrupt.for.piecesUnderSquare({
+    //todo: handle piece animation with chess+ and shadows
     square,
     board: gameMaster.game.board,
     pieceIds: [],
   });
 
   const pieceGridDimension =
-    Math.ceil(Math.sqrt(piecesOrPieceTokensOnSquare.length)) || 1;
+    Math.ceil(Math.sqrt(piecesOrPieceAnimationsOnSquare.length)) || 1;
   const pieceScaleFactor = shape === SquareShape.Hex ? 0.9 : 1;
   const pieceSize = (pieceScaleFactor * size) / pieceGridDimension;
   // TODO: For chess plus add and use shadowPieceSize
@@ -83,7 +68,7 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
         <Highlight gameMaster={gameMaster} square={square} size={size} shape={shape} />
         <PositioningContainer size={pieceScaleFactor * size}>
           <GridArrangement>
-            {piecesOrPieceTokensOnSquare.map((pieceOrToken, index) =>
+            {piecesOrPieceAnimationsOnSquare.map((pieceOrToken, index) =>
               typeof pieceOrToken === "string" ? (
                 <Piece
                   piece={gameMaster.game.board.findPieceById(pieceOrToken)}
