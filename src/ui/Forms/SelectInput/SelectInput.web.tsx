@@ -27,7 +27,7 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
         components={{ DropdownIndicator }}
         formatOptionLabel={OptionLabel}
         defaultValue={options[0]}
-        searchable={false}
+        isSearchable={false}
         theme={(theme): Theme => ({
           ...theme,
           colors: {
@@ -38,12 +38,19 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
           },
         })}
         styles={{
+          valueContainer: (baseStyle): CSSProperties => ({
+            ...baseStyle,
+            height: 36,
+            marginTop: -4,
+          }),
           control: (baseStyle, { isFocused }): CSSProperties => ({
             ...baseStyle,
             borderRadius: 4,
-            border: `2px solid ${Colors.GREY.fade(0.4).toString()}`,
+            border: `1px solid ${Colors.GREY.fade(0.4).toString()}`,
             backgroundColor: "transparent",
             boxShadow: isFocused ? "0" : "0",
+            height: 36,
+            minHeight: 36,
           }),
           menu: (baseStyle): CSSProperties => ({
             ...baseStyle,
@@ -57,6 +64,7 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
               : isFocused
               ? Colors.GREY.fade(0.9).toString()
               : Colors.DARK.toString(),
+            height: 36,
           }),
           indicatorSeparator: (baseStyle): CSSProperties => ({
             ...baseStyle,
@@ -70,7 +78,7 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
 
 const OptionLabel: React.FC<Option> = ({ label }) => {
   return (
-    <Text cat="BodyM" color={Colors.TEXT.LIGHT.toString()}>
+    <Text alignment="center" cat="BodyXS" color={Colors.TEXT.LIGHT.toString()}>
       {label}
     </Text>
   );

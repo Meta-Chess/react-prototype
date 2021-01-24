@@ -33,7 +33,7 @@ const GameOptionsCard: SFC<Props> = ({ style, gameOptions, setGameOptions }) => 
         <DebouncedTextInput
           placeholder={"Please enter an invite key"}
           afterChangeText={setRoomId}
-          style={{ marginVertical: 4 }}
+          style={{ marginBottom: 4, marginTop: 12 }}
         />
         <LabeledCheckBox
           value={!!gameOptions.online}
@@ -57,7 +57,7 @@ const GameOptionsCard: SFC<Props> = ({ style, gameOptions, setGameOptions }) => 
           value={!!gameOptions.checkEnabled}
           setValue={setCheckEnabled}
           label={"Check enabled"}
-          style={{ marginTop: 8 }}
+          style={{ marginTop: 12 }}
         />
         <SelectInput
           options={timeOptions}

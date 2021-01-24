@@ -44,7 +44,7 @@ const GameOptionControls: SFC<Props> = ({
       <DebouncedTextInput
         placeholder={"Please enter an invite key"}
         afterChangeText={setRoomId}
-        style={{ marginVertical: 4 }}
+        style={{ marginBottom: 4, marginTop: 20 }}
         onSubmitEditing={(roomId): void => onSubmit(setRoomId(roomId))}
       />
       <LabeledCheckBox
