@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { SFC } from "primitives";
 import { AnimationType, SquareShape, Token } from "game";
-import { Explosion, PieceAnimation } from "ui/VariantContent";
+import { Explosion } from "ui/VariantContent";
 import { AnimationComponentProps } from "ui/VariantContent/AnimationComponentProps";
 
 interface TileAnimationProps {
@@ -12,7 +12,6 @@ interface TileAnimationProps {
 
 const ANIMATIONS: { [type in AnimationType]: FC<AnimationComponentProps> } = {
   explosion: Explosion,
-  pieceAnimation: PieceAnimation,
 };
 
 const TileAnimation: SFC<TileAnimationProps> = ({ shape, size, token }) => {

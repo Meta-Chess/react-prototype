@@ -15,7 +15,9 @@ const AnimationOverlays: SFC<AnimationOverlaysProps> = ({ square, shape, size })
     <AbsoluteView pointerEvents={"none"}>
       {square
         .tokensSatisfyingRule(
-          (token: Token): boolean => token.name === TokenName.AnimationToken
+          (token: Token): boolean =>
+            token.name === TokenName.AnimationToken &&
+            token.data?.pieceVisualData === undefined
         )
         .map((token) => (
           <TileAnimation shape={shape} size={size} token={token} key={token.data?.id} />

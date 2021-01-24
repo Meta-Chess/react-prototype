@@ -79,7 +79,10 @@ export enum TokenName {
 
 export enum AnimationType {
   explosion = "explosion",
-  pieceAnimation = "pieceAnimation",
+}
+
+export enum PieceAnimationType {
+  chemicallyExcited = "chemicallyExcited",
 }
 interface TokenData {
   history?: string[];
@@ -96,9 +99,9 @@ interface TokenData {
 }
 
 export interface PieceVisualData {
-  owner: PlayerName;
-  type: PieceName;
-  fatigued: boolean;
+  piece: Piece;
+  positionOnSquare: number;
+  pieceAnimationType: PieceAnimationType;
   bodyColorChange?: string;
   outlineColorChange?: string;
 }

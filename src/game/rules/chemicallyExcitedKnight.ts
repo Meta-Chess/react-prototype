@@ -1,4 +1,10 @@
-import { PieceName, TokenName, AnimationType, PieceVisualData } from "game/types";
+import {
+  PieceName,
+  TokenName,
+  AnimationType,
+  PieceAnimationType,
+  PieceVisualData,
+} from "game/types";
 import { Rule } from "./CompactRules";
 import { Pather } from "game/Pather";
 import { Board } from "game/Board";
@@ -52,9 +58,9 @@ export const chemicallyExcitedKnight: Rule = {
       if (knight === undefined) return;
       board.killPiecesAt(knight.location);
       const knightVisuals = {
-        owner: knight.owner,
-        type: PieceName.Knight,
-        fatigued: knight.hasTokenWithName(TokenName.Fatigue),
+        piece: knight,
+        pieceAnimationType: PieceAnimationType.chemicallyExcited,
+        positionOnSquare: 0,
         outlineColorChange: "rgba(235,52,52,1)",
       };
       addPieceVisualToSquare(board, knight.location, knightVisuals); //todo: handle chess+ piece visuals
@@ -64,9 +70,9 @@ export const chemicallyExcitedKnight: Rule = {
       if (piece === undefined) return;
       board.killPiecesAt(piece.location);
       const pieceVisuals = {
-        owner: piece.owner,
-        type: piece.name,
-        fatigued: piece.hasTokenWithName(TokenName.Fatigue),
+        piece: piece,
+        pieceAnimationType: PieceAnimationType.chemicallyExcited,
+        positionOnSquare: 0,
       };
       addPieceVisualToSquare(board, piece.location, pieceVisuals); //todo: handle chess+ for piece visuals
     });
@@ -94,7 +100,6 @@ const addPieceVisualToSquare = (
     name: TokenName.AnimationToken,
     expired: () => Date.now() > creationTimeInMilliseconds + duration,
     data: {
-      type: AnimationType.pieceAnimation,
       createdAt: creationTimeInMilliseconds,
       duration: duration,
       id: Math.random(), // TODO: We should change this sometime because collisions would be bad

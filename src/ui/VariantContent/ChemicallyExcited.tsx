@@ -1,19 +1,15 @@
 import React, { useEffect, FC, useRef } from "react";
 import { Animated, Easing, Platform } from "react-native";
-import { AbsoluteView } from "ui/Containers";
 import { AnimationComponentProps } from "./AnimationComponentProps";
-import { PieceImageAnimated } from "primitives/PieceImage";
 import { Colors } from "primitives";
-import { SquareShape } from "game/types";
+import { Piece } from "components/shared/Board";
 
-const PieceAnimation: FC<AnimationComponentProps> = ({
-  shape,
+const ChemicallyExcited: FC<AnimationComponentProps> = ({
   size,
   duration,
   pieceVisualData,
 }) => {
   const colorValue = useRef(new Animated.Value(0)).current;
-
   useEffect(() => {
     colorValue.stopAnimation();
     colorValue.setValue(0);
@@ -35,7 +31,7 @@ const PieceAnimation: FC<AnimationComponentProps> = ({
 
   if (pieceVisualData === undefined) return null;
 
-  const startingBodyColor = Colors.PLAYER[pieceVisualData.owner].string();
+  const startingBodyColor = Colors.PLAYER[pieceVisualData.piece.owner].string();
   const startingOutlineColor = Colors.DARKEST.string(); //todo: piece color schema should be somewhere
   const endingBodyColor =
     pieceVisualData.bodyColorChange === undefined
@@ -57,17 +53,15 @@ const PieceAnimation: FC<AnimationComponentProps> = ({
   });
 
   return (
-    //todo: refactor piece templating and visuals duplication (e.g. fatigue and hex placement)
-    <AbsoluteView pointerEvents={"none"}>
-      <PieceImageAnimated
-        type={pieceVisualData.type}
-        color={animatedBodyColor}
-        outlineColor={animatedOutlineColor}
-        size={shape === SquareShape.Hex ? 0.9 * size : 1 * size}
-        opacity={pieceVisualData.fatigued ? 0.4 : 1}
-      />
-    </AbsoluteView>
+    <Piece
+      piece={pieceVisualData.piece}
+      animatedData={{
+        animatedColor: animatedBodyColor,
+        animatedOutlineColor: animatedOutlineColor,
+      }}
+      size={size}
+    />
   );
 };
 
-export { PieceAnimation };
+export { ChemicallyExcited };

@@ -4,14 +4,18 @@ import { Svg, G } from "react-native-svg";
 import { Colors } from "../Colors";
 import { Bishop, King, Knight, Pawn, Queen, Rook } from "./sprites";
 import { SFC } from "primitives/SFC";
+import { Animated } from "react-native";
 
 interface Props {
   type: PieceName;
-  color: string;
+  color?: string | undefined;
   size: number;
   opacity?: number;
   rotatePiece?: boolean;
   glowColor?: string;
+  animated?: boolean;
+  animatedColor?: Animated.AnimatedInterpolation | undefined;
+  animatedOutlineColor?: Animated.AnimatedInterpolation | undefined;
 }
 
 const PieceImage: SFC<Props> = ({
@@ -22,10 +26,15 @@ const PieceImage: SFC<Props> = ({
   rotatePiece,
   glowColor,
   style,
+  animated = false,
+  animatedColor,
+  animatedOutlineColor,
 }) => {
   if (size < 0) return null;
   const primary = color;
   const secondary = Colors.DARKEST.string();
+  const primaryAnimated = animated ? animatedColor : undefined;
+  const secondaryAnimated = animated ? animatedOutlineColor : undefined;
   const alphaModifier = opacity === undefined ? 1 : opacity;
   const paths =
     type === PieceName.Pawn ? (
@@ -43,6 +52,7 @@ const PieceImage: SFC<Props> = ({
     );
 
   const glowAlphas = [0.03, 0.1, 0.1, 0.2, 0.3, 0.4, 1];
+  const AnimatedG = Animated.createAnimatedComponent(G);
 
   return (
     <Svg
@@ -64,9 +74,20 @@ const PieceImage: SFC<Props> = ({
             {paths}
           </G>
         ))}
-      <G fill={primary} stroke={secondary} strokeWidth={0.9} opacity={alphaModifier}>
-        {paths}
-      </G>
+      {animated ? (
+        <AnimatedG
+          fill={primaryAnimated}
+          stroke={secondaryAnimated}
+          strokeWidth={0.9}
+          opacity={alphaModifier}
+        >
+          {paths}
+        </AnimatedG>
+      ) : (
+        <G fill={primary} stroke={secondary} strokeWidth={0.9} opacity={alphaModifier}>
+          {paths}
+        </G>
+      )}
     </Svg>
   );
 };
