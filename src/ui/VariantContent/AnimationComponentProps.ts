@@ -2,9 +2,9 @@ import { SquareShape } from "game";
 import { PieceVisualData } from "game/types";
 
 export interface AnimationComponentProps {
-  shape?: SquareShape;
   size: number;
   duration: number;
+  shape?: SquareShape;
   delay?: number;
   pieceVisualData?: PieceVisualData;
   bodyColorChange?: string;

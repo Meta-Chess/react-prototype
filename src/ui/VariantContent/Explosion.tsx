@@ -3,8 +3,14 @@ import { Animated, Easing, Platform } from "react-native";
 import { AbsoluteView } from "ui/Containers";
 import { AnimationComponentProps } from "./AnimationComponentProps";
 import { AnimatedTile } from "ui";
+import { SquareShape } from "game/types";
 
-const Explosion: FC<AnimationComponentProps> = ({ shape, size, duration, delay = 0 }) => {
+const Explosion: FC<AnimationComponentProps> = ({
+  size,
+  duration,
+  delay = 0,
+  shape = SquareShape.Square,
+}) => {
   const colorValue = useRef(new Animated.Value(10)).current;
 
   useEffect(() => {
