@@ -25,7 +25,8 @@ function isThereAnyKnightFork({
   interrupt: CompactRules;
   patherParams: { noForkSearch?: boolean };
 }): boolean {
-  if (patherParams.noForkSearch === false) return false;
+  if (patherParams.noForkSearch === false && patherParams.noForkSearch !== undefined)
+    return false;
 
   gameClones[0].resetTo(game);
   gameClones[0].doMove(move);
