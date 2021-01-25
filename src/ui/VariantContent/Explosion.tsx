@@ -11,11 +11,10 @@ const Explosion: FC<AnimationComponentProps> = ({
   delay = 0,
   shape = SquareShape.Square,
 }) => {
-  const colorValue = useRef(new Animated.Value(10)).current;
+  const colorValue = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    colorValue.stopAnimation();
-    colorValue.setValue(10);
+    colorValue.setValue(1);
     Animated.sequence([
       Animated.delay(delay),
       Animated.timing(colorValue, {

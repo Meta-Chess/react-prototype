@@ -11,7 +11,6 @@ const ChemicallyExcited: FC<AnimationComponentProps> = ({
 }) => {
   const colorValue = useRef(new Animated.Value(0)).current;
   useEffect(() => {
-    colorValue.stopAnimation();
     colorValue.setValue(0);
     Animated.sequence([
       Animated.timing(colorValue, {
