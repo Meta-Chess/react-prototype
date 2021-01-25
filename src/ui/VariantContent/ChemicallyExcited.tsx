@@ -15,14 +15,14 @@ const ChemicallyExcited: FC<AnimationComponentProps> = ({
     colorValue.setValue(0);
     Animated.sequence([
       Animated.timing(colorValue, {
-        toValue: 10,
+        toValue: 1,
         duration: duration,
         easing: Easing.linear,
         isInteraction: false,
         useNativeDriver: Platform.OS === "ios",
       }),
       Animated.timing(colorValue, {
-        toValue: 11,
+        toValue: 2,
         duration: 0,
         useNativeDriver: Platform.OS === "ios",
       }),
@@ -43,12 +43,12 @@ const ChemicallyExcited: FC<AnimationComponentProps> = ({
       : pieceVisualData.outlineColorChange;
 
   const animatedBodyColor = colorValue.interpolate({
-    inputRange: [0, 10, 11],
+    inputRange: [0, 1, 2],
     outputRange: [startingBodyColor, endingBodyColor, "transparent"],
   });
 
   const animatedOutlineColor = colorValue.interpolate({
-    inputRange: [0, 10, 11],
+    inputRange: [0, 1, 2],
     outputRange: [startingOutlineColor, endingOutlineColor, "transparent"],
   });
 

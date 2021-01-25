@@ -24,7 +24,7 @@ const Explosion: FC<AnimationComponentProps> = ({
         useNativeDriver: Platform.OS === "ios",
       }),
       Animated.timing(colorValue, {
-        toValue: 10,
+        toValue: 1,
         duration: duration,
         easing: Easing.linear,
         isInteraction: false,
@@ -34,7 +34,7 @@ const Explosion: FC<AnimationComponentProps> = ({
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const animatedColor = colorValue.interpolate({
-    inputRange: [0, 10],
+    inputRange: [0, 1],
     outputRange: ["rgba(235,52,52,0.5)", "rgba(255,200,100,0)"],
   });
 
