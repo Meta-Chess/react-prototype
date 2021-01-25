@@ -32,15 +32,9 @@ const ChemicallyExcited: FC<AnimationComponentProps> = ({
   if (pieceVisualData === undefined) return null;
 
   const startingBodyColor = Colors.PLAYER[pieceVisualData.piece.owner].string();
-  const startingOutlineColor = Colors.DARKEST.string(); //todo: piece color schema should be somewhere
-  const endingBodyColor =
-    pieceVisualData.bodyColorChange === undefined
-      ? startingBodyColor
-      : pieceVisualData.bodyColorChange;
-  const endingOutlineColor =
-    pieceVisualData.outlineColorChange === undefined
-      ? startingOutlineColor
-      : pieceVisualData.outlineColorChange;
+  const startingOutlineColor = Colors.DARKEST.string(); //todo: piece color scheme should be somewhere
+  const endingBodyColor = pieceVisualData.bodyColorChange || startingBodyColor;
+  const endingOutlineColor = pieceVisualData.outlineColorChange || startingOutlineColor;
 
   const animatedBodyColor = colorValue.interpolate({
     inputRange: [0, 1, 2],
