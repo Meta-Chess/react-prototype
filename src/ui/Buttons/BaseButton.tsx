@@ -31,7 +31,7 @@ export const BaseButton: SFC<Props> = ({
       accessibilityRole={"button"}
       {...rest}
     >
-      <Text cat="DisplayS" color={textColor.fade(fade).toString()}>
+      <Text cat="DisplayXS" color={textColor.fade(fade).toString()}>
         {text}
       </Text>
     </TouchableContainer>
@@ -43,7 +43,7 @@ const TouchableContainer = styled(TouchableOpacity)<{
   borderColor: Color;
 }>`
   padding-horizontal: 16px;
-  height: 40px;
+  height: 36px;
   background-color: ${({ backgroundColor }): string => backgroundColor.toString()};
   border: 1px solid ${({ borderColor }): string => borderColor.toString()};
   border-radius: 4px;

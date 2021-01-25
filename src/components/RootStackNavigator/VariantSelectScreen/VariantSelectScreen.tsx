@@ -57,14 +57,14 @@ const VariantSelectScreen: FC = () => {
             selectedVariants={selectedVariants}
             setSelectedVariants={setSelectedVariants}
           />
-          <FiltersCard
-            activeFilters={activeFilters}
-            setActiveFilters={setActiveFilters}
-            style={{ marginTop: 16 }}
-          />
           <GameOptionsCard
             gameOptions={gameOptions}
             setGameOptions={setGameOptions}
+            style={{ marginTop: 16 }}
+          />
+          <FiltersCard
+            activeFilters={activeFilters}
+            setActiveFilters={setActiveFilters}
             style={{ marginTop: 16 }}
           />
         </ScrollView>

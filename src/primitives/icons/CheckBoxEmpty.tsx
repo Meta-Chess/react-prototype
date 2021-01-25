@@ -6,7 +6,7 @@ interface Props {
   size?: number;
 }
 
-export const CheckBoxEmpty: FC<Props> = ({ color, size = 24 }) => {
+export const CheckBoxEmpty: FC<Props> = ({ color, size = 20 }) => {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24">
       <Path
