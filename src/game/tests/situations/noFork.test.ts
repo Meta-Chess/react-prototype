@@ -10,8 +10,6 @@ describe("With no fork enabled", () => {
         mockRenderer
       )
     );
-    const board = gameMaster.game.board;
-
     // Move white knight F6
     gameMaster.onPress("R1F7");
     gameMaster.onPress("R3F6");
