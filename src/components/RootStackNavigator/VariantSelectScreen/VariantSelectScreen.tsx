@@ -2,7 +2,8 @@ import React, { FC, useState } from "react";
 import { View, ScrollView } from "react-native";
 import {
   calculateGameOptions,
-  determineIfVariantClash,
+  AdviceLevel,
+  findVariantConflicts,
   FutureVariantName,
   GameOptions,
 } from "game";
@@ -21,6 +22,7 @@ import { ScreenContainer } from "components/shared";
 import { Colors } from "primitives";
 import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
+import { AdviceCard } from "components/RootStackNavigator/VariantSelectScreen/CollapsableCards/AdviceCard";
 
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
@@ -32,7 +34,16 @@ const VariantSelectScreen: FC = () => {
     activeFilters
   );
   const [selectedVariants, setSelectedVariants] = useState<FutureVariantName[]>([]);
-  const existsVariantsClash: boolean = determineIfVariantClash(selectedVariants);
+
+  const variantConflicts: {
+    message: string;
+    level: AdviceLevel;
+  }[] = findVariantConflicts(selectedVariants);
+  const conflictLevel = variantConflicts.some((conflict) => conflict.level === "ERROR")
+    ? "ERROR"
+    : variantConflicts.some((conflict) => conflict.level === "WARNING")
+    ? "WARNING"
+    : undefined;
 
   return (
     <ScreenContainer
@@ -44,7 +55,7 @@ const VariantSelectScreen: FC = () => {
           displayVariants={displayVariants}
           selectedVariants={selectedVariants}
           setSelectedVariants={setSelectedVariants}
-          variantClash={existsVariantsClash}
+          conflictLevel={conflictLevel}
         />
       </LeftContainer>
       <Sidebar>
@@ -65,6 +76,11 @@ const VariantSelectScreen: FC = () => {
           <FiltersCard
             activeFilters={activeFilters}
             setActiveFilters={setActiveFilters}
+            style={{ marginTop: 16 }}
+          />
+          <AdviceCard
+            selectedVariants={selectedVariants}
+            variantConflicts={variantConflicts}
             style={{ marginTop: 16 }}
           />
         </ScrollView>

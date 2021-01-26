@@ -1,6 +1,7 @@
 import { RuleName } from "../rules";
 import * as VariantImages from "primitives/VariantImage";
 import { TraitName } from "game/variants/traitInfo";
+import { englishList } from "utilities/englishList";
 
 export const integrateWithOtherRules: {
   [key in RuleName]?: (rules: RuleName[]) => RuleName[];
@@ -333,10 +334,86 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   },
 };
 
-export const variantsBlacklist: { [key in FutureVariantName]?: FutureVariantName[] } = {
-  kleinBottle: ["hex", "polar", "spherical"],
-  hex: ["toroidal", "mobius", "spherical", "polar"],
-  mobius: ["polar", "spherical"],
-  polar: ["toroidal"],
-  spherical: ["toroidal"],
-};
+export type AdviceLevel = "SUCCESS" | "ERROR" | "WARNING";
+
+interface VariantConflict {
+  variant1: FutureVariantName;
+  variant2: FutureVariantName;
+  message: string;
+  level: AdviceLevel;
+}
+
+export const variantConflicts: {
+  mainVariantGroup: FutureVariantName[];
+  conflictingVariants: FutureVariantName[];
+  mitigatingVariants?: FutureVariantName[];
+  messageBuilder: (
+    mainVariantTitles: string[],
+    conflictingVariantTitles: string[],
+    mitigatingVariantTitles?: string[]
+  ) => string;
+  level: "ERROR" | "WARNING";
+}[] = [
+  {
+    mainVariantGroup: ["hex"],
+    conflictingVariants: ["toroidal", "mobius", "kleinBottle"],
+    messageBuilder: (variant1Titles: string[], variant2Titles: string[]): string =>
+      `${englishList(variant1Titles, {
+        singular: "does",
+        plural: "do",
+      })} not work with different board shapes yet, and ${englishList(variant2Titles, {
+        singular: "uses",
+        plural: "use",
+      })} an 8 × 14 board`,
+    level: "ERROR",
+  },
+  {
+    mainVariantGroup: ["polar", "spherical"],
+    conflictingVariants: ["toroidal", "kleinBottle", "mobius"],
+    messageBuilder: (variant1Titles: string[], variant2Titles: string[]): string =>
+      `${englishList(variant1Titles, {
+        singular: "includes",
+        plural: "include",
+      })} polar wrapping across the top and bottom edges of the board, which breaks the game at the moment when combined with cylindrical wrapping along those edges as found in ${englishList(
+        variant2Titles
+      )}`,
+    level: "ERROR", // TODO: This should just be a warning, but interactions with the polar squares breaks things - fix this
+  },
+  {
+    mainVariantGroup: ["polar", "spherical"],
+    conflictingVariants: ["hex"],
+    messageBuilder: (variant1Titles: string[], variant2Titles: string[]): string =>
+      `${englishList(variant1Titles, {
+        singular: "only applies",
+        plural: "only apply",
+      })} to rectangular boards at the moment, so cannot work with ${englishList(
+        variant2Titles,
+        {
+          connector: "or",
+        }
+      )}`,
+    level: "ERROR",
+  },
+  {
+    mainVariantGroup: ["atomic"],
+    conflictingVariants: ["mobius", "kleinBottle"],
+    messageBuilder: (variant1Titles: string[], variant2Titles: string[]): string =>
+      `Combining ${englishList(variant1Titles, {
+        connector: "or",
+      })} with ${englishList(variant2Titles, {
+        connector: "or",
+      })} leads to some strongly forcing paths that can make the game less fun`,
+    level: "WARNING",
+  },
+  {
+    mainVariantGroup: ["fatigue"],
+    conflictingVariants: ["noFork"],
+    messageBuilder: (variant1Titles: string[], variant2Titles: string[]): string =>
+      `Combining ${englishList(variant1Titles, {
+        connector: "or",
+      })} with ${englishList(variant2Titles, {
+        connector: "or",
+      })} leads very easily to unexpected stalemates`,
+    level: "WARNING",
+  },
+];

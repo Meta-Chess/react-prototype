@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
-import { FutureVariant } from "game";
+import { AdviceLevel, FutureVariant } from "game";
 import { VariantTileHeader } from "./VariantTileHeader";
 import { VariantTileInfo } from "./VariantTileInfo";
 import { VariantTileImage } from "./VariantTileImage";
@@ -12,11 +12,17 @@ import { AbsoluteView } from "ui";
 interface Props {
   variant: FutureVariant;
   selected: boolean;
-  clash: boolean;
+  conflictLevel: AdviceLevel | undefined;
   onPress: () => void;
 }
 
-export const VariantTile: SFC<Props> = ({ style, variant, selected, clash, onPress }) => {
+export const VariantTile: SFC<Props> = ({
+  style,
+  variant,
+  selected,
+  conflictLevel,
+  onPress,
+}) => {
   const implemented = variant.implemented;
   return (
     <TouchableContainer
@@ -25,7 +31,11 @@ export const VariantTile: SFC<Props> = ({ style, variant, selected, clash, onPre
       activeOpacity={0.6}
       disabled={!implemented}
     >
-      <VariantTileHeader variant={variant} selected={selected} clash={clash} />
+      <VariantTileHeader
+        variant={variant}
+        selected={selected}
+        conflictLevel={conflictLevel}
+      />
       <VariantTileBody>
         <VariantTileInfo variant={variant} style={{ flex: 1 }} />
         <VariantTileImage

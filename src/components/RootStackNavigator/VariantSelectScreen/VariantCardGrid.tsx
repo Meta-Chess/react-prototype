@@ -2,14 +2,14 @@ import React from "react";
 import { View, ScrollView } from "react-native";
 import { SFC } from "primitives";
 import { VariantTile } from "ui/Pressable/VariantTile";
-import { FutureVariantName, futureVariants } from "game";
+import { AdviceLevel, FutureVariantName, futureVariants } from "game";
 import styled from "styled-components/native";
 import { HelpMenu } from "components/shared";
 interface Props {
   displayVariants: FutureVariantName[];
   selectedVariants: FutureVariantName[];
   setSelectedVariants: (x: FutureVariantName[]) => void;
-  variantClash: boolean;
+  conflictLevel: AdviceLevel | undefined;
 }
 
 const VariantCardGrid: SFC<Props> = ({
@@ -17,7 +17,7 @@ const VariantCardGrid: SFC<Props> = ({
   displayVariants,
   selectedVariants,
   setSelectedVariants,
-  variantClash,
+  conflictLevel,
 }) => {
   return (
     <View style={style}>
@@ -32,7 +32,7 @@ const VariantCardGrid: SFC<Props> = ({
                 key={variant}
                 variant={futureVariants[variant]}
                 selected={selectedVariants.includes(variant)}
-                clash={variantClash}
+                conflictLevel={conflictLevel}
                 onPress={(): void =>
                   selectedVariants.includes(variant)
                     ? setSelectedVariants(selectedVariants.filter((x) => x !== variant))
@@ -44,7 +44,7 @@ const VariantCardGrid: SFC<Props> = ({
           })}
         </CardContainer>
       </ScrollView>
-      <HelpMenu context={{ selectedVariants, displayVariants, variantClash }} />
+      <HelpMenu context={{ selectedVariants, displayVariants, conflictLevel }} />
     </View>
   );
 };

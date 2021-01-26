@@ -33,7 +33,7 @@ const SelectedVariantsCard: SFC<Props> = ({
                   paddingHorizontal: 4,
                   paddingVertical: 2,
                   backgroundColor: Colors.DARKISH.toString(),
-                  borderRadius: 2,
+                  borderRadius: 4,
                   margin: 4,
                 }}
               >
@@ -46,7 +46,7 @@ const SelectedVariantsCard: SFC<Props> = ({
         <Text
           color={Colors.TEXT.LIGHT_SECONDARY.toString()}
           cat="BodyXS"
-          style={{ fontStyle: "italic" }}
+          style={{ fontStyle: "italic", marginVertical: 6, marginLeft: 8 }}
         >
           {"No variant selected"}
         </Text>

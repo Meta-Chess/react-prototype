@@ -40,7 +40,7 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
         styles={{
           valueContainer: (baseStyle): CSSProperties => ({
             ...baseStyle,
-            height: 36,
+            height: 34,
             marginTop: -4,
           }),
           control: (baseStyle, { isFocused }): CSSProperties => ({
