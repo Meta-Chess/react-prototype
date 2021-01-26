@@ -207,7 +207,7 @@ export class GameMaster {
       new Pather(this.game, this.gameClones, piece, this.interrupt).findPaths()
     );
     // console.log(`// Expect allowable moves to be ... ??? \n expect(gameMaster.allowableMoves).toEqual(expect.arrayContaining([${this.allowableMoves.map((move) => `expect.objectContaining({ location: "${move.location}"})`)}]));`); // TEST WRITING HELPER COMMENT
-    // console.log(`// Expect number of allowable moves to be ${this.allowableMoves.length} \n expect(gameMaster.allowableMoves.length).toEqual(${this.allowableMoves.length});`); // TEST WRITING HELPER COMMENT
+    // console.log(`expect(gameMaster.allowableMoves.length).toEqual(${this.allowableMoves.length});`); // TEST WRITING HELPER COMMENT
   }
 
   checkGameEndConditions(): void {

@@ -14,29 +14,11 @@ describe("With no fork enabled", () => {
 
     // Move white knight F6
     gameMaster.onPress("R1F7");
-    // Expect allowable moves to be normal
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R3F8" }),
-        expect.objectContaining({ location: "R3F6" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R3F6");
-    expect(board.getPiecesAt("R3F6").length).toEqual(1);
 
     // Move black pawn to A6
     gameMaster.onPress("R7F1");
-    // Expect allowable moves to be normal
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R6F1" }),
-        expect.objectContaining({ location: "R5F1" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R6F1");
-    expect(board.getPiecesAt("R6F1").length).toEqual(1);
 
     // Select white knight
     gameMaster.onPress("R3F6");
@@ -52,39 +34,15 @@ describe("With no fork enabled", () => {
 
     // Move white pawn to E4
     gameMaster.onPress("R2F5");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R3F5" }),
-        expect.objectContaining({ location: "R4F5" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R4F5");
-    expect(board.getPiecesAt("R4F5").length).toEqual(1);
 
     // Move black pawn to E5
     gameMaster.onPress("R7F5");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R6F5" }),
-        expect.objectContaining({ location: "R5F5" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R5F5");
-    expect(board.getPiecesAt("R5F5").length).toEqual(1);
 
     // Move white pawn to D4
     gameMaster.onPress("R2F4");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R3F4" }),
-        expect.objectContaining({ location: "R4F4" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R4F4");
-    expect(board.getPiecesAt("R4F4").length).toEqual(1);
 
     // Select black pawn on G7
     gameMaster.onPress("R7F7");
@@ -105,6 +63,7 @@ describe("With no fork enabled", () => {
     );
     expect(gameMaster.allowableMoves.length).toEqual(2);
   });
+
   it("it is not check if the king destination would allow the knight to hit 2 enemy pieces", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
@@ -116,31 +75,11 @@ describe("With no fork enabled", () => {
 
     // Move white knight C3
     gameMaster.onPress("R1F2");
-    // Expect allowable moves to be normal
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R3F3" }),
-        expect.objectContaining({ location: "R3F1" }),
-      ])
-    );
-    // Expect number of allowable moves to be 2
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R3F3");
-    expect(board.getPiecesAt("R3F3").length).toEqual(1);
 
     // Move black pawn A5
     gameMaster.onPress("R7F1");
-    // Expect allowable moves to be normal
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R6F1" }),
-        expect.objectContaining({ location: "R5F1" }),
-      ])
-    );
-    // Expect number of allowable moves to be 2
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R5F1");
-    expect(board.getPiecesAt("R5F1").length).toEqual(1);
 
     // Move white knight B5
     gameMaster.onPress("R3F3");
@@ -160,70 +99,23 @@ describe("With no fork enabled", () => {
 
     // Move black pawn to B6
     gameMaster.onPress("R7F2");
-    // Expect allowable moves to be normal
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([expect.objectContaining({ location: "R6F2" })])
-    );
-    // Expect number of allowable moves to be 1
-    expect(gameMaster.allowableMoves.length).toEqual(1);
     gameMaster.onPress("R6F2");
-    expect(board.getPiecesAt("R6F2").length).toEqual(1);
 
     // Move white pawn E4
     gameMaster.onPress("R2F5");
-    // Expect allowable moves to be normal
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R3F5" }),
-        expect.objectContaining({ location: "R4F5" }),
-      ])
-    );
-    // Expect number of allowable moves to be 2
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R4F5");
-    expect(board.getPiecesAt("R4F5").length).toEqual(1);
 
     // Move black pawn F6
     gameMaster.onPress("R7F6");
-    // Expect allowable moves to be normal
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R6F6" }),
-        expect.objectContaining({ location: "R5F6" }),
-      ])
-    );
-    // Expect number of allowable moves to be 2
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R6F6");
-    expect(board.getPiecesAt("R6F6").length).toEqual(1);
 
     // Move white pawn D3
     gameMaster.onPress("R2F4");
-    // Expect allowable moves to be normal
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R3F4" }),
-        expect.objectContaining({ location: "R4F4" }),
-      ])
-    );
-    // Expect number of allowable moves to be 2
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R3F4");
-    expect(board.getPiecesAt("R3F4").length).toEqual(1);
 
     // Move black bishop A6
     gameMaster.onPress("R8F3");
-    // Expect allowable moves to be normal
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R7F2" }),
-        expect.objectContaining({ location: "R6F1" }),
-      ])
-    );
-    // Expect number of allowable moves to be 2
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R6F1");
-    expect(board.getPiecesAt("R6F1").length).toEqual(1);
 
     // Move white knight to D6
     gameMaster.onPress("R5F2");
@@ -270,6 +162,7 @@ describe("With no fork enabled", () => {
     );
     expect(gameMaster.allowableMoves.length).toEqual(2);
   });
+
   it("fatigue makes it very easy to stalemate", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
@@ -281,54 +174,20 @@ describe("With no fork enabled", () => {
 
     // Move white knight to F6
     gameMaster.onPress("R1F7");
-    // Expect allowable moves to be normal
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R3F8" }),
-        expect.objectContaining({ location: "R3F6" }),
-      ])
-    );
-    // Expect number of allowable moves to be 2
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R3F6");
-    expect(board.getPiecesAt("R3F6").length).toEqual(1);
 
     // Dummy moves
     // A6
     gameMaster.onPress("R7F1");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R6F1" }),
-        expect.objectContaining({ location: "R5F1" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R6F1");
-    expect(board.getPiecesAt("R6F1").length).toEqual(1);
 
     // A3
     gameMaster.onPress("R2F1");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R3F1" }),
-        expect.objectContaining({ location: "R4F1" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R3F1");
-    expect(board.getPiecesAt("R3F1").length).toEqual(1);
 
     // B6
     gameMaster.onPress("R7F2");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R6F2" }),
-        expect.objectContaining({ location: "R5F2" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R6F2");
-    expect(board.getPiecesAt("R6F2").length).toEqual(1);
 
     // Move knight again so that it would attack 2 pawns, but is fatigued
     gameMaster.onPress("R3F6");
@@ -347,15 +206,7 @@ describe("With no fork enabled", () => {
 
     // H6
     gameMaster.onPress("R7F8");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R6F8" }),
-        expect.objectContaining({ location: "R5F8" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R6F8");
-    expect(board.getPiecesAt("R6F8").length).toEqual(1);
 
     // Draw by stalemate
     expect(gameMaster.gameOver).toEqual(true);

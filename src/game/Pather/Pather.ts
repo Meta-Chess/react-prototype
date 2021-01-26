@@ -5,6 +5,11 @@ import { flatMap } from "lodash";
 import { Path } from "./Path";
 import { Move } from "game/Move";
 
+export interface PatherParams {
+  checkDepth?: number;
+  noForkSearch?: boolean;
+}
+
 const MAX_STEPS = 64; // To be considered further
 
 export class Pather {
@@ -13,7 +18,7 @@ export class Pather {
     private gameClones: Game[] = [game.clone(), game.clone(), game.clone(), game.clone()],
     private piece: Piece,
     private interrupt: CompactRules,
-    private params: { checkDepth?: number; noForkSearch?: boolean } = {}
+    private params: PatherParams = {}
   ) {}
 
   findPaths({ filterPacifistMoves } = { filterPacifistMoves: false }): Move[] {
