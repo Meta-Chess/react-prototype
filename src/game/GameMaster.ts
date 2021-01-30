@@ -233,7 +233,11 @@ export class GameMaster {
 
   checkGameEndConditions(): void {
     this.applyLossConditions();
-    if (!this.game.players[this.game.currentPlayerIndex].alive) {
+    if (
+      !this.gameOver &&
+      !this.game.players[this.game.currentPlayerIndex].alive &&
+      this.game.alivePlayers().length > 1
+    ) {
       this.doMove();
       return;
     }
