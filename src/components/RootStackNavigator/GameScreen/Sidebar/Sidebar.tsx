@@ -10,6 +10,7 @@ import { RulesInfoCard } from "./RulesInfoCard";
 import { PieceCredit } from "./PieceCredit";
 import { SelectedPieceInfoCard } from "./SelectedPieceInfoCard";
 import styled from "styled-components/native";
+import { PlayersCard } from "./PlayersCard";
 
 const Sidebar: SFC = ({ style }) => {
   const navigation = useNavigation();
@@ -45,19 +46,20 @@ const Sidebar: SFC = ({ style }) => {
           activeOpacity={1}
         >
           <View>
-            <RoomIdCard roomId={roomId} />
+            <RoomIdCard roomId={roomId} style={{ marginBottom: 8 }} />
             <VariantInfoCard
               variant={variant}
               title={title}
-              style={{ marginTop: roomId ? 8 : 0 }}
+              style={{ marginBottom: 8 }}
             />
-            <RulesInfoCard rules={rules} key={key} style={{ marginTop: 8 }} />
+            <PlayersCard style={{ marginBottom: 8 }} />
+            <RulesInfoCard rules={rules} key={key} style={{ marginBottom: 8 }} />
             <SelectedPieceInfoCard
               pieces={pieces}
               key={key + 0.5}
-              style={{ marginTop: 8 }}
+              style={{ marginBottom: 8 }}
             />
-            <Card style={{ marginTop: 8 }}>
+            <Card>
               <PieceCredit />
             </Card>
           </View>

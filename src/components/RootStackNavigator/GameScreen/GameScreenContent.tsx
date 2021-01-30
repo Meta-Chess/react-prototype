@@ -7,16 +7,13 @@ import {
   calculateBoardMeasurements,
 } from "components/shared/Board";
 import { Sidebar } from "./Sidebar";
-import { PlayerName, SquareShape, TokenName } from "game";
+import { SquareShape, TokenName } from "game";
 import { useFlipDelay } from "components/shared/Board/useFlipDelay";
-import { PlayerRow } from "./PlayerRow";
 import { AbsoluteView, Spinner } from "ui";
 import styled from "styled-components/native";
 import { HelpMenu, ScreenContainer } from "components/shared";
 import { WinModal } from "components/shared/Board/WinModal";
 import { MoveDisambiguationModal } from "components/shared/Board/MoveDisambiguationModal";
-
-const PLAYER_ROW_HEIGHT = 64;
 
 export const GameScreenContent: FC = () => {
   const { height, width } = useWindowDimensions();
@@ -46,9 +43,7 @@ export const GameScreenContent: FC = () => {
       ? width - 2 * padding
       : Math.min((2 * width) / 3, width - 280) - 2 * padding,
     boardAreaHeight:
-      (portrait ? Math.min((3 * height) / 4, height - 200) : height) -
-      2 * PLAYER_ROW_HEIGHT -
-      2 * padding,
+      (portrait ? Math.min((3 * height) / 4, height - 200) : height) - 2 * padding,
     shape,
     backboard,
   });
@@ -59,18 +54,10 @@ export const GameScreenContent: FC = () => {
         style={[portrait ? { width: "100%" } : { flex: 2 }, { alignItems: "center" }]}
       >
         <View>
-          <PlayerRow
-            player={flipBoard ? PlayerName.White : PlayerName.Black}
-            style={{ height: PLAYER_ROW_HEIGHT }}
-          />
           <Board
             measurements={boardMeasurements}
             backboard={backboard}
             flipBoard={flipBoard}
-          />
-          <PlayerRow
-            player={flipBoard ? PlayerName.Black : PlayerName.White}
-            style={{ height: PLAYER_ROW_HEIGHT }}
           />
         </View>
         {gameMaster?.gameOver && !winModalHidden ? (
@@ -103,6 +90,7 @@ interface SidebarContainerProps {
 
 const SidebarContainer = styled(View)<SidebarContainerProps>`
   flex: 1;
+  ${({ portrait }): string => (portrait ? "margin-top: 24px;" : "")}
   ${({ portrait, boardMeasurements }): string =>
     portrait ? "" : `height: ${boardMeasurements.height}px;`}
   ${({ portrait, boardMeasurements }): string =>

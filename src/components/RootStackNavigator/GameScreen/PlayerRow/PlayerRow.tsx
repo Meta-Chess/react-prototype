@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import { Colors, SFC, Text } from "primitives";
 import { PlayerName } from "game";
 import { Row } from "ui";
-import { Timer } from "./Timer";
+import { Timer } from "components/shared";
 import { randomChoice, randomInt } from "utilities";
 
 interface Props {
@@ -27,7 +27,7 @@ export const PlayerRow: SFC<Props> = ({ style, player }) => {
           </Text>
         </View>
       </Row>
-      <Timer player={player} />
+      <Timer playerName={player} />
     </StyledRow>
   );
 };

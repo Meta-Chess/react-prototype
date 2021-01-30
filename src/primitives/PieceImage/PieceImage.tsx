@@ -1,8 +1,9 @@
-import React, { FC } from "react";
+import React from "react";
 import { PieceName } from "game";
 import { Svg, G } from "react-native-svg";
 import { Colors } from "../Colors";
 import { Bishop, King, Knight, Pawn, Queen, Rook } from "./sprites";
+import { SFC } from "primitives/SFC";
 
 interface Props {
   type: PieceName;
@@ -13,13 +14,14 @@ interface Props {
   glowColor?: string;
 }
 
-const PieceImage: FC<Props> = ({
+const PieceImage: SFC<Props> = ({
   type,
   color,
   size,
   opacity,
   rotatePiece,
   glowColor,
+  style,
 }) => {
   if (size < 0) return null;
   const primary = color;
@@ -49,6 +51,7 @@ const PieceImage: FC<Props> = ({
       originX={rotatePiece ? 0 : 1}
       rotation={rotatePiece ? 180 : 0}
       viewBox="0 0 45 45"
+      style={style}
     >
       {glowColor &&
         glowAlphas.map((alpha, i) => (
