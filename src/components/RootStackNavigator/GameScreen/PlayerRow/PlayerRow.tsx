@@ -12,9 +12,9 @@ interface Props {
 }
 
 export const PlayerRow: SFC<Props> = ({ style, player }) => {
-  const [name] = useState(randomChoice(["Emmanuel", "Gus", "Angus", "Seb", "Matt"]));
+  const [name] = useState(randomChoice(["Emmanuel", "Gus", "Angus", "Seb", "Stockfish"]));
   const [iconColor] = useState(randomChoice([Colors.MCHESS_ORANGE, Colors.MCHESS_BLUE]));
-  const [rating] = useState(randomInt(400, 2000));
+  const [rating] = useState(randomInt(100, 3000));
 
   return (
     <StyledRow style={style}>

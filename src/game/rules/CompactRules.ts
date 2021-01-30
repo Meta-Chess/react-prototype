@@ -80,9 +80,16 @@ const identityRule = {
   onBoardCreate: (x: { board: Board }) => x,
   onCapture: (x: {
     board: Board;
-    piece: Piece;
+    movingPiece: Piece;
     location: string;
+    mover: PlayerName | undefined;
     captureHappened: boolean;
+  }) => x,
+  onSendPieceToGrave: (x: {
+    piece: Piece;
+    mover: PlayerName | undefined;
+    captured: boolean;
+    destination: string;
   }) => x,
   onGaitsGeneratedModify: (x: { gaits: Gait[]; piece: Piece }) => x,
   onPieceDisplaced: (x: { board: Board; pieceDelta: PieceDelta }) => x,

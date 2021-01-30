@@ -1,4 +1,5 @@
 import { PieceName } from "../types";
+import { LocationPrefix } from "game/Board/location";
 import { Rule } from "./CompactRules";
 
 export const loseWithNoKings: Rule = {
@@ -8,7 +9,12 @@ export const loseWithNoKings: Rule = {
     if (dead) return { board, player, dead };
     const hasKing = board
       .getPieces()
-      .some((piece) => piece.name === PieceName.King && piece.owner === player);
+      .some(
+        (piece) =>
+          piece.name === PieceName.King &&
+          piece.owner === player &&
+          piece.location.charAt(0) !== LocationPrefix.graveyard
+      );
     return { board, player, dead: hasKing ? false : "lost their king" };
   },
 };

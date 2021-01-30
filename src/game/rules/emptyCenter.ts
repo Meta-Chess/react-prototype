@@ -8,7 +8,7 @@ export const emptyCenter: Rule = {
     //note: interruption point may change depending on rolling variants.
     const centerSquares = board.getRegion(Region.center);
     centerSquares.map((square) => {
-      board.killPiecesAt(square.location);
+      board.killPiecesAt({ piecesLocation: square.location });
       square.whiteListedMarkers = [];
     });
     return { board };

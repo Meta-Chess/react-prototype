@@ -181,9 +181,9 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     shortDescription: "Play captured pieces on the board.",
     traits: ["Ability"],
     imageName: "crazyhouseImage",
-    implemented: false,
-    ruleNames: [],
-    complexity: 0,
+    implemented: true,
+    ruleNames: ["crazyhouse"],
+    complexity: 2,
   },
   cylinder: {
     title: "Cylinder",

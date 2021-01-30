@@ -146,9 +146,8 @@ export class GameMaster {
     }
   }
 
-  onPress(location: string): Move | undefined {
+  onPress(location: string, pieceId?: string): Move | undefined {
     // console.log(`${this.selectedPieces.length ? "" : "\n\n// Move ... ???\n"}gameMaster.onPress("${location}");`); // TEST WRITING HELPER COMMENT
-
     const moves = uniqWith(
       this.allowableMoves.filter((m) => m.location === location),
       movesAreEqual
@@ -169,10 +168,14 @@ export class GameMaster {
       this.locationSelected = true;
     } else if (this.selectedPieces.some((p) => p.location === location)) {
       // pressing again on a selected piece
-      this.unselectAllPieces();
+      pieceId !== undefined
+        ? this.selectedPieces.every((p) => p.id === pieceId)
+          ? this.unselectAllPieces()
+          : this.selectPiece(pieceId)
+        : this.unselectAllPieces();
     } else {
       this.unselectAllPieces();
-      this.selectPieces(location);
+      pieceId !== undefined ? this.selectPiece(pieceId) : this.selectPieces(location);
     }
     this.render();
   }
@@ -208,6 +211,16 @@ export class GameMaster {
     );
     // console.log(`// Expect allowable moves to be ... ??? \n expect(gameMaster.allowableMoves).toEqual(expect.arrayContaining([${this.allowableMoves.map((move) => `expect.objectContaining({ location: "${move.location}"})`)}]));`); // TEST WRITING HELPER COMMENT
     // console.log(`expect(gameMaster.allowableMoves.length).toEqual(${this.allowableMoves.length});`); // TEST WRITING HELPER COMMENT
+  }
+
+  selectPiece(pieceId: string): void {
+    this.selectedPieces = [this.game.board.pieces[pieceId]];
+    this.allowableMoves = new Pather(
+      this.game,
+      this.gameClones,
+      this.selectedPieces[0],
+      this.interrupt
+    ).findPaths();
   }
 
   checkGameEndConditions(): void {

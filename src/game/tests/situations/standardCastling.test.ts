@@ -132,5 +132,5 @@ function killBishopsKnightsAndQueens(board: Board): void {
     ])
     .flat()
     .map(toLocation)
-    .forEach((location) => board.killPiecesAt(location));
+    .forEach((location) => board.killPiecesAt({ piecesLocation: location }));
 }

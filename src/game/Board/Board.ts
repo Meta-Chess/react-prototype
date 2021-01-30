@@ -10,12 +10,14 @@ import {
   Region,
   Regions,
 } from "game/types";
+import { SpecialLocation } from "game/board/location";
 import { isPresent } from "utilities";
 import { CompactRules } from "game/rules/CompactRules";
 import { IdGenerator } from "utilities/IdGenerator";
-import { PieceDelta } from "game/Move";
+import { Move, PieceDelta } from "game/Move";
 import { clone } from "lodash";
 import { EventCenter } from "game/EventCenter";
+import { invisibilityToken } from "game/rules/constants";
 interface LocationMap {
   [location: string]: Square;
 }
@@ -221,11 +223,12 @@ class Board extends TokenOwner {
     this.interrupt.for.onPieceDisplaced({ board: this, pieceDelta: delta });
   }
 
-  displacePieces(pieceDeltas: PieceDelta[]): void {
-    pieceDeltas.forEach((pieceDelta) => {
+  displacePieces(move: Move): void {
+    move.pieceDeltas.forEach((pieceDelta) => {
       const captureHappened = this.capturePiecesAt(
         pieceDelta.path.getEnd(),
-        this.pieces[pieceDelta.pieceId]
+        this.pieces[pieceDelta.pieceId],
+        move.playerName
       );
       this.displace(pieceDelta);
       if (captureHappened) {
@@ -240,35 +243,73 @@ class Board extends TokenOwner {
     });
   }
 
-  capturePiecesAt(location: string, piece: Piece): boolean {
+  capturePiecesAt(location: string, movingPiece: Piece, mover?: PlayerName): boolean {
     let captureHappened = (this.squareAt(location)?.pieces.length || 0) > 0;
-    this.killPiecesAt(location);
+    this.killPiecesAt({
+      piecesLocation: location,
+      individualPieceId: undefined,
+      mover: mover,
+      captured: true,
+    });
 
     ({ captureHappened } = this.interrupt.for.onCapture({
       board: this,
-      piece,
+      movingPiece,
       location,
+      mover,
       captureHappened,
     }));
 
     return captureHappened;
   }
 
-  killPiecesAt(location: string): void {
-    // This should actually move the pieces to a special square - to be taken care of when displaying dead pieces
-    const square = this.squareAt(location);
-    if (square) {
-      this.pieces = Object.keys(this.pieces)
-        .filter((id: string) => !square?.pieces.includes(id))
-        .reduce(
-          (acc, id) => ({
-            ...acc,
-            [id]: this.pieces[id],
-          }),
-          {}
-        );
-      square.pieces = [];
-    }
+  //TODO: refactor this
+  //we want to avoid duplication of capture logic - it should all be in capturePiecesAt
+  //can't have onCapture here because interception would cause an infinite loop
+  //this isn't really capture an individual piece
+  //capture refactor within pather should make this nice to fix...
+  capturePiece(capturedPieceId: string, mover?: PlayerName): void {
+    const pieceLocation = this.pieces[capturedPieceId].location;
+    this.killPiecesAt({
+      piecesLocation: pieceLocation,
+      individualPieceId: capturedPieceId,
+      mover,
+      captured: true,
+    });
+  }
+
+  killPiecesAt({
+    piecesLocation,
+    individualPieceId,
+    mover,
+    captured = false,
+  }: {
+    piecesLocation: string;
+    individualPieceId?: string;
+    mover?: PlayerName;
+    captured?: boolean;
+  }): void {
+    const square = this.squares[piecesLocation];
+    const pieces = individualPieceId === undefined ? square.pieces : [individualPieceId];
+
+    pieces.forEach((pieceId) => {
+      let destination = SpecialLocation.graveyard;
+      const piece = this.pieces[pieceId];
+      ({ destination } = this.interrupt.for.onSendPieceToGrave({
+        piece,
+        mover,
+        captured,
+        destination,
+      }));
+
+      this.squareAt(destination)?.addPieces([pieceId]);
+      this.pieces[pieceId].location = destination;
+    });
+
+    square.pieces =
+      individualPieceId === undefined
+        ? []
+        : square.pieces.filter((id) => id != individualPieceId);
   }
 
   squareAt(location?: string): Square | undefined {
@@ -294,6 +335,18 @@ class Board extends TokenOwner {
     ({ board } = interrupt.for.onBoardCreate({ board }));
     ({ board } = interrupt.for.afterBoardCreation({ board }));
 
+    //graveyard storage for all pieces
+    const graveyardLocation = SpecialLocation.graveyard;
+    board.addSquare({
+      location: graveyardLocation,
+      square: new Square(
+        graveyardLocation,
+        { rank: 99, file: 99 },
+        [],
+        [invisibilityToken]
+      ),
+    });
+
     return board;
   }
 
@@ -309,18 +362,6 @@ class Board extends TokenOwner {
     return Object.values(this.pieces)
       .filter((p) => square.pieces.some((pId) => p.id === pId))
       .filter(rule);
-  }
-
-  killPiece(pieceId: string): void {
-    this.pieces = Object.keys(this.pieces)
-      .filter((id: string) => !(id === pieceId))
-      .reduce(
-        (acc, id) => ({
-          ...acc,
-          [id]: this.pieces[id],
-        }),
-        {}
-      );
   }
 }
 
