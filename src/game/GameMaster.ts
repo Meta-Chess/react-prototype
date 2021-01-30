@@ -166,13 +166,14 @@ export class GameMaster {
     } else if (moves.length > 1 && isSelectedPieceOwnersTurn) {
       this.allowableMoves = moves;
       this.locationSelected = true;
-    } else if (this.selectedPieces.some((p) => p.location === location)) {
+    } else if (
+      (pieceId && this.selectedPieces.some((p) => p.id === pieceId)) ||
+      (!pieceId && this.selectedPieces.some((p) => p.location === location))
+    ) {
       // pressing again on a selected piece
-      pieceId !== undefined
-        ? this.selectedPieces.every((p) => p.id === pieceId)
-          ? this.unselectAllPieces()
-          : this.selectPiece(pieceId)
-        : this.unselectAllPieces();
+      this.unselectPieces(
+        pieceId ? [pieceId] : this.game.board.squareAt(location)?.pieces
+      );
     } else {
       this.unselectAllPieces();
       pieceId !== undefined ? this.selectPiece(pieceId) : this.selectPieces(location);
@@ -195,7 +196,13 @@ export class GameMaster {
   unselectAllPieces(): void {
     this.selectedPieces = [];
     this.allowableMoves = [];
-    this.locationSelected = false;
+    this.locationSelected = false; //QUESTION: how is this used?
+  }
+
+  unselectPieces(pieceIds?: string[]): void {
+    this.selectedPieces = this.selectedPieces.filter((p) => !pieceIds?.includes(p.id));
+    this.allowableMoves = [];
+    this.calculateAllowableMovesForSelectedPieces();
   }
 
   selectPieces(location: string): void {

@@ -16,10 +16,13 @@ describe("with crazyhouse", () => {
 
     gameMaster.onPress(toLocation({ rank: 2, file: 5 }));
     gameMaster.onPress(toLocation({ rank: 4, file: 5 })); // White pawn to E4
+    expect(board.getPiecesAt("R4F5").length).toEqual(1);
     gameMaster.onPress(toLocation({ rank: 7, file: 4 }));
     gameMaster.onPress(toLocation({ rank: 5, file: 4 })); // Black pawn to D5
+    expect(board.getPiecesAt("R5F4").length).toEqual(1);
     gameMaster.onPress(toLocation({ rank: 4, file: 5 }));
     gameMaster.onPress(toLocation({ rank: 5, file: 4 })); // White pawn capture at D5
+    expect(board.getPiecesAt("R5F4").length).toEqual(1);
 
     // Expecting pawn in white piece bank
     const whitePawnId = board.getPiecesAt("gpb0")[0].id;
@@ -164,10 +167,13 @@ describe("with crazyhouse", () => {
 
     gameMaster.onPress(toLocation({ rank: 2, file: 5 }));
     gameMaster.onPress(toLocation({ rank: 4, file: 5 })); // White pawn to E4
+    expect(board.getPiecesAt("R4F5").length).toEqual(1);
     gameMaster.onPress(toLocation({ rank: 7, file: 5 }));
     gameMaster.onPress(toLocation({ rank: 5, file: 5 })); // Black pawn to E5
+    expect(board.getPiecesAt("R5F5").length).toEqual(1);
     gameMaster.onPress(toLocation({ rank: 1, file: 6 }));
     gameMaster.onPress(toLocation({ rank: 7, file: 8 })); // White bishop capture at H7
+    expect(board.getPiecesAt("R7F8").length).toEqual(0);
 
     // Expecting only single pawn in white piece bank
     const pawnId = board.getPiecesAt("gpb0")[0].id;
@@ -209,12 +215,16 @@ describe("with crazyhouse", () => {
 
     gameMaster.onPress(toLocation({ rank: 2, file: 5 }));
     gameMaster.onPress(toLocation({ rank: 3, file: 5 })); // White pawn to E3
+    expect(board.getPiecesAt("R3F5").length).toEqual(1);
     gameMaster.onPress(toLocation({ rank: 7, file: 5 }));
     gameMaster.onPress(toLocation({ rank: 6, file: 5 })); // Black pawn to E6
+    expect(board.getPiecesAt("R6F5").length).toEqual(1);
     gameMaster.onPress(toLocation({ rank: 1, file: 6 }));
     gameMaster.onPress(toLocation({ rank: 7, file: 8 })); // White bishop capture at H7
+    expect(board.getPiecesAt("R7F8").length).toEqual(1);
     gameMaster.onPress(toLocation({ rank: 8, file: 8 }));
     gameMaster.onPress(toLocation({ rank: 7, file: 8 })); // Black rook capture at H7
+    expect(board.getPiecesAt("R7F8").length).toEqual(1);
 
     // Expecting a pawn in white piece bank
     const pawnId = board.getPiecesAt("gpb0")[0].id;
@@ -287,10 +297,13 @@ describe("with crazyhouse", () => {
 
     gameMaster.onPress(toLocation({ rank: 3, file: 5 }));
     gameMaster.onPress(toLocation({ rank: 1, file: 5 })); // Doublestep backward white king pawn
+    expect(board.getPiecesAt("R1F5").length).toEqual(1);
     gameMaster.onPress(toLocation({ rank: 12, file: 5 }));
     gameMaster.onPress(toLocation({ rank: 14, file: 5 })); // Doublestep backward black king pawn
+    expect(board.getPiecesAt("R14F5").length).toEqual(1);
     gameMaster.onPress(toLocation({ rank: 4, file: 6 }));
     gameMaster.onPress(toLocation({ rank: 12, file: 8 })); // White bishop capture rook backwards pawn
+    expect(board.getPiecesAt("R12F8").length).toEqual(1);
 
     // Expecting a pawn in white piece bank
     const pawnId = board.getPiecesAt("gpb0")[0].id;
@@ -303,6 +316,7 @@ describe("with crazyhouse", () => {
 
     gameMaster.onPress(toLocation({ rank: 11, file: 8 }));
     gameMaster.onPress(toLocation({ rank: 12, file: 8 })); // Rook captures bishop
+    expect(board.getPiecesAt("R12F8").length).toEqual(1);
 
     // Expecting a bishop in black piece bank
     const bishopId = board.getPiecesAt("gpb1")[0].id;
@@ -326,10 +340,13 @@ describe("with crazyhouse", () => {
     // Dummy moves timing out fatigue
     gameMaster.onPress(toLocation({ rank: 10, file: 1 }));
     gameMaster.onPress(toLocation({ rank: 9, file: 1 }));
+    expect(board.getPiecesAt("R9F1").length).toEqual(1);
     gameMaster.onPress(toLocation({ rank: 5, file: 1 }));
     gameMaster.onPress(toLocation({ rank: 6, file: 1 }));
+    expect(board.getPiecesAt("R6F1").length).toEqual(1);
     gameMaster.onPress(toLocation({ rank: 10, file: 8 }));
     gameMaster.onPress(toLocation({ rank: 9, file: 8 }));
+    expect(board.getPiecesAt("R9F8").length).toEqual(1);
 
     gameMaster.onPress(toLocation({ rank: 8, file: 4 })); // Select crazyhouse played pawn
 
