@@ -62,7 +62,7 @@ export const chemicallyExcitedKnight: Rule = {
     uniq(triggeredKnights).forEach(({ knightId, positionOnSquare }) => {
       const knight = board.getPiece(knightId);
       if (knight === undefined) return;
-      board.killPiecesAt(knight.location);
+      board.killPiecesAt({ piecesLocation: knight.location });
       const knightVisuals = {
         piece: knight,
         pieceAnimationType: PieceAnimationType.chemicallyExcited,
@@ -83,7 +83,7 @@ export const chemicallyExcitedKnight: Rule = {
       if (triggeredKnights.some(({ knightId }) => knightId === deadPieceId)) return;
       const piece = board.getPiece(deadPieceId);
       if (piece === undefined) return;
-      board.killPiecesAt(piece.location);
+      board.killPiecesAt({ piecesLocation: piece.location });
       const pieceVisuals = {
         piece: piece,
         pieceAnimationType: PieceAnimationType.chemicallyExcited,

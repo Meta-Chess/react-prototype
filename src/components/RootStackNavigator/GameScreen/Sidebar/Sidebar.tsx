@@ -55,12 +55,12 @@ const Sidebar: SFC = ({ style }) => {
               style={{ marginBottom: 8 }}
             />
             <PlayersCard style={{ marginBottom: 8 }} />
-            <RulesInfoCard rules={rules} key={key} style={{ marginBottom: 8 }} />
             <VariantCards
               gameMaster={gameMaster}
               rules={rules} //TEMP: later we will grab this from gameMaster - variants aren't passed/customRules are distinct
               style={{ marginBottom: 8 }}
             />
+            <RulesInfoCard rules={rules} key={key} style={{ marginBottom: 8 }} />
             <SelectedPieceInfoCard
               pieces={pieces}
               key={key + 0.5}

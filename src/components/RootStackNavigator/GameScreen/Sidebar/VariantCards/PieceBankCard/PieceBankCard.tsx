@@ -29,7 +29,7 @@ const PieceBankCard: SFC<Props> = ({ gameMaster, style }) => {
                 <Text
                   cat="BodyM"
                   color={Colors.TEXT.LIGHT.toString()}
-                  style={{ minWidth: pieces.length === 0 ? 0 : 60 }}
+                  style={{ minWidth: pieces.length === 0 ? 0 : 55 }}
                 >
                   {PlayerDisplayNames[player.name]}
                 </Text>
@@ -37,7 +37,7 @@ const PieceBankCard: SFC<Props> = ({ gameMaster, style }) => {
                   <Text
                     cat="BodyS"
                     color={Colors.TEXT.LIGHT_SECONDARY.toString()}
-                    style={{ fontStyle: "italic", paddingLeft: 15 }}
+                    style={{ fontStyle: "italic", marginLeft: 10 }}
                   >
                     {"no pieces captured"}
                   </Text>
@@ -47,7 +47,7 @@ const PieceBankCard: SFC<Props> = ({ gameMaster, style }) => {
                 pieces={pieces}
                 pieceSize={pieceSize}
                 gameMaster={gameMaster}
-                style={{ flex: 1, paddingLeft: 10 }}
+                style={{ flex: 1 }}
               />
             </Container>
           );
