@@ -51,3 +51,6 @@ export { vetoImage };
 
 import kleinBottleImage from "./kleinBottleImage.png";
 export { kleinBottleImage };
+
+import chemicallyExcitedKnightImage from "./chemicallyExcitedKnightImage.png";
+export { chemicallyExcitedKnightImage };

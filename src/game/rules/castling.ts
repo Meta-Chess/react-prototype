@@ -9,14 +9,14 @@ export const castling: Rule = {
   title: "Castling",
   description:
     "Can your king move two squares in some direction? Is this your king's first move? Is there a rook in this direction from your king? Can that rook get to the square your king moves through? Is this that rook's first move? If so, your king and rook can do those moves at the same time!",
-  postMove: ({ board, move, currentTurn }) => {
+  postMove: ({ game, interrupt, board, move, currentTurn }) => {
     const piecesMoved = move.pieceDeltas
       .map((delta) => board.pieces[delta.pieceId])
       .filter((piece) => piece !== undefined);
     piecesMoved.forEach((piece: Piece) => {
       piece.removeTokensByNames([TokenName.ActiveCastling, TokenName.PassiveCastling]);
     });
-    return { board, move, currentTurn };
+    return { game, interrupt, board, move, currentTurn };
   },
   generateSpecialPacifistMoves: (input) => {
     if (!input.piece.hasTokenWithName(TokenName.ActiveCastling)) return input;

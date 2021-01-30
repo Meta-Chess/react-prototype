@@ -80,6 +80,10 @@ export enum TokenName {
 export enum AnimationType {
   explosion = "explosion",
 }
+
+export enum PieceAnimationType {
+  chemicallyExcited = "chemicallyExcited",
+}
 interface TokenData {
   history?: string[];
   shape?: SquareShape;
@@ -88,8 +92,18 @@ interface TokenData {
   type?: AnimationType;
   createdAt?: number;
   duration?: number;
+  delay?: number;
   id?: number;
   counters?: number[];
+  pieceVisualData?: PieceVisualData;
+}
+
+export interface PieceVisualData {
+  piece: Piece;
+  positionOnSquare: number;
+  pieceAnimationType: PieceAnimationType;
+  bodyColorChange?: string;
+  outlineColorChange?: string;
 }
 
 export interface RankAndFileBounds {
@@ -137,3 +151,5 @@ export enum Region {
 }
 
 export type Regions = { [key in Region]?: string[] };
+
+export type Location = string;

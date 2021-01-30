@@ -5,7 +5,7 @@ export const interception: Rule = {
   title: "Interception",
   description:
     "Enables interceptable moves where pieces can be captured by moving to a square that they moved through",
-  postMove: ({ board, move, currentTurn }) => {
+  postMove: ({ game, interrupt, board, move, currentTurn }) => {
     if (move.data?.interceptable) {
       const start = move.data?.interceptableAtStart ? 0 : 1;
 
@@ -29,7 +29,7 @@ export const interception: Rule = {
         });
     }
 
-    return { board, move, currentTurn };
+    return { game, interrupt, board, move, currentTurn };
   },
 
   onCapture: ({ board, piece, location, captureHappened }) => {

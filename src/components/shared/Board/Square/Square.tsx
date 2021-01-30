@@ -2,14 +2,15 @@ import React, { useContext } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
-import { Piece } from "./Piece";
-import { ShadowPiece } from "./ShadowPiece";
+import { Piece, ShadowPiece, PieceAnimation } from "../Piece";
 import { GridArrangement } from "./GridArrangement";
 import { GameContext, Square, SquareShape } from "game";
 import { TilePressableContainer } from "./TilePressableContainer";
 import { AnimationOverlays } from "./AnimationOverlays";
 import { Highlight } from "./Highlight";
 import { useModals, Tile } from "ui";
+import { Token } from "game/types";
+import { getDisplayPiecesAndTokens } from "./getDisplayPiecesAndTokens";
 
 interface Props {
   square: Square | undefined;
@@ -28,14 +29,18 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
     colorIndex({ ...square.getCoordinates(), shape })
   ].string();
 
-  const piecesOnSquare = square.pieces;
+  const piecesOrPieceAnimationsOnSquare: (string | Token)[] = getDisplayPiecesAndTokens(
+    square
+  );
   const { pieceIds: piecesUnderSquare } = gameMaster.interrupt.for.piecesUnderSquare({
+    //todo: handle piece animation with chess+ and shadows
     square,
     board: gameMaster.game.board,
     pieceIds: [],
   });
 
-  const pieceGridDimension = Math.ceil(Math.sqrt(piecesOnSquare.length)) || 1;
+  const pieceGridDimension =
+    Math.ceil(Math.sqrt(piecesOrPieceAnimationsOnSquare.length)) || 1;
   const pieceScaleFactor = shape === SquareShape.Hex ? 0.9 : 1;
   const pieceSize = (pieceScaleFactor * size) / pieceGridDimension;
   // TODO: For chess plus add and use shadowPieceSize
@@ -63,13 +68,21 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
         <Highlight gameMaster={gameMaster} square={square} size={size} shape={shape} />
         <PositioningContainer size={pieceScaleFactor * size}>
           <GridArrangement>
-            {piecesOnSquare.map((piece) => (
-              <Piece
-                piece={gameMaster.game.board.pieces[piece]}
-                size={pieceSize}
-                key={piece}
-              />
-            ))}
+            {piecesOrPieceAnimationsOnSquare.map((pieceOrToken, index) =>
+              typeof pieceOrToken === "string" ? (
+                <Piece
+                  piece={gameMaster.game.board.findPieceById(pieceOrToken)}
+                  size={pieceSize}
+                  key={index}
+                />
+              ) : (
+                <PieceAnimation
+                  token={pieceOrToken}
+                  size={pieceSize}
+                  key={pieceOrToken?.data?.id}
+                />
+              )
+            )}
           </GridArrangement>
         </PositioningContainer>
       </TilePressableContainer>

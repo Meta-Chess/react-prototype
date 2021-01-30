@@ -161,7 +161,8 @@ export type FutureVariantName =
   | "spherical"
   | "threeCheck"
   | "toroidal"
-  | "veto";
+  | "veto"
+  | "chemicallyExcitedKnight";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   atomic: {
@@ -195,7 +196,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   emptyCenter: {
     title: "Empty Center",
     shortDescription: "No pieces allowed in the center!",
-    traits: ["Restrict"],
+    traits: ["Restriction"],
     imageName: "emptyCenterImage",
     implemented: true,
     ruleNames: ["emptyCenter"],
@@ -205,7 +206,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Fatigue",
     shortDescription:
       "Pieces can't be moved twice in a row, unless they can kill the king.",
-    traits: ["Restrict"],
+    traits: ["Restriction"],
     imageName: "fatigueImage",
     implemented: true,
     ruleNames: ["fatigue"],
@@ -214,7 +215,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   hex: {
     title: "Hex",
     shortDescription: "A board tiled with hexagons.",
-    traits: ["Terraform"],
+    traits: ["Board"],
     imageName: "hexImage",
     implemented: true,
     ruleNames: ["hex"],
@@ -223,7 +224,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   kingOfTheHill: {
     title: "King of the Hill",
     shortDescription: "Win the game with a king reaching the center.",
-    traits: ["Game End"],
+    traits: ["Ending"],
     imageName: "kingOfTheHillImage",
     implemented: false,
     ruleNames: [],
@@ -232,7 +233,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   kleinBottle: {
     title: "Klein Bottle",
     shortDescription: "Chess on a klein bottle!? [Mobius and Cylinder]",
-    traits: ["Terraform", "Geometry"],
+    traits: ["Board", "Geometry"],
     imageName: "kleinBottleImage",
     implemented: true,
     ruleNames: [
@@ -248,7 +249,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Möbius",
     shortDescription:
       "A long board möbius strip, with the ability to phase through to empty squares.",
-    traits: ["Terraform", "Geometry"],
+    traits: ["Board", "Geometry"],
     imageName: "mobiusImage",
     implemented: true,
     ruleNames: [
@@ -261,17 +262,26 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   },
   noFork: {
     title: "No Fork",
-    shortDescription: "Knights can no longer attack 2 or more pieces.",
-    traits: ["Piece", "Restrict"],
+    shortDescription: "Knights attacking multiple pieces are 'forked' on turn start.",
+    traits: ["Piece", "Restriction"],
     imageName: "noForkImage",
     implemented: false,
     ruleNames: [],
     complexity: 0,
   },
+  chemicallyExcitedKnight: {
+    title: "Chemically Excited Knight",
+    shortDescription: "Knights that can see 3 enemy pieces explode.",
+    traits: ["Piece", "Ability"],
+    imageName: "chemicallyExcitedKnightImage",
+    implemented: true,
+    ruleNames: ["chemicallyExcitedKnight"],
+    complexity: 1,
+  },
   patheticKing: {
     title: "Pathetic King",
     shortDescription: "Kings cannot capture.",
-    traits: ["Piece", "Restrict"],
+    traits: ["Piece", "Restriction"],
     imageName: "patheticKingImage",
     implemented: true,
     ruleNames: ["patheticKing"],
@@ -307,7 +317,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   threeCheck: {
     title: "3-Check",
     shortDescription: "3 checks and you're out.",
-    traits: ["Game End"],
+    traits: ["Ending"],
     imageName: "threeCheckImage",
     implemented: true,
     ruleNames: ["threeCheck"],
@@ -316,7 +326,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   toroidal: {
     title: "Toroidal",
     shortDescription: "Double the cylinder and pawns!",
-    traits: ["Terraform", "Geometry"],
+    traits: ["Board", "Geometry"],
     imageName: "toroidalImage",
     implemented: true,
     ruleNames: ["longBoard", "cylindrical", "verticallyCylindrical"],
@@ -325,7 +335,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   veto: {
     title: "Veto",
     shortDescription: "A move may be vetoed each turn.",
-    traits: ["New Phase", "Restrict"],
+    traits: ["Phase", "Restriction"],
     imageName: "vetoImage",
     implemented: false,
     ruleNames: [],

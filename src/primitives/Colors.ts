@@ -30,13 +30,13 @@ export const Colors = {
     ERROR: Color("#FF1900"),
   },
   TRAIT: {
-    PIECE: Color("#FF47EE"),
-    RESTRICT: Color("#FF2222"),
+    PIECE: Color("#6C7A86"),
+    RESTRICTION: Color("#FF2222"),
     ABILITY: Color("#FF5D00"),
-    GAME_END: Color("#F0FF00"),
-    NEW_PHASE: Color("#8B00FF"),
+    ENDING: Color("#D4AF37"),
+    PHASE: Color("#FF47EE"),
     GEOMETRY: Color("#00C1FF"),
-    TERRAFORM: Color("#0335FC"),
+    BOARD: Color("#0064FD"),
     ALGORITHM: Color("#696867"),
   },
   PLAYER: [

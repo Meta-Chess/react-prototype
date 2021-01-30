@@ -60,6 +60,8 @@ export class Game {
     if (!move) return;
     this.board.displacePieces(move.pieceDeltas);
     this.interrupt.for.postMove({
+      game: this,
+      interrupt: this.interrupt,
       board: this.board,
       move,
       currentTurn: this.currentTurn,

@@ -17,11 +17,19 @@ const ANIMATIONS: { [type in AnimationType]: FC<AnimationComponentProps> } = {
 const TileAnimation: SFC<TileAnimationProps> = ({ shape, size, token }) => {
   const animationType = token.data?.type;
   const animationDuration = token.data?.duration;
+  const animationDelay = token.data?.delay;
 
   if (!animationDuration || !animationType) return null;
 
   const AnimationComponent = ANIMATIONS[animationType];
-  return <AnimationComponent shape={shape} size={size} duration={animationDuration} />;
+  return (
+    <AnimationComponent
+      shape={shape}
+      size={size}
+      duration={animationDuration}
+      delay={animationDelay}
+    />
+  );
 };
 
 export { TileAnimation };
