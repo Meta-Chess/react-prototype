@@ -23,12 +23,12 @@ export const hex: Rule = {
     board.defineRegion(Region.promotion, promotionRegion);
     return { board, numberOfPlayers };
   },
-  onBoardCreate: ({ board }) => {
+  onBoardCreate: ({ board, numberOfPlayers }) => {
     const bounds = board.rankAndFileBounds();
     board.addAdjacenciesByRule(hexAdjacencies(bounds));
     board.addPiecesByRule(hexPieceSetupRule);
     board.addToken(hexShapeToken);
-    return { board };
+    return { board, numberOfPlayers };
   },
   getGaitGenerator: ({ gaitGenerator, name, owner }) => {
     return {

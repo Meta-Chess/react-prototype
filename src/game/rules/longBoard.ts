@@ -16,11 +16,11 @@ export const longBoard: Rule = {
     board.defineRegion(Region.promotion, promotionRegion(numberOfPlayers));
     return { board, numberOfPlayers };
   },
-  onBoardCreate: ({ board }) => {
+  onBoardCreate: ({ board, numberOfPlayers }) => {
     const bounds = board.rankAndFileBounds();
     board.addAdjacenciesByRule(toroidalAdjacencies(bounds));
-    board.addPiecesByRule(toroidalPiecesRule);
-    return { board };
+    board.addPiecesByRule(toroidalPiecesRule(numberOfPlayers));
+    return { board, numberOfPlayers };
   },
   getGaitGenerator: ({ gaitGenerator, name, owner }) => {
     // Note: this method doesn't attempt to work out whether the piece should be a backwards pawn
@@ -40,7 +40,7 @@ export const longBoard: Rule = {
 const generateStandardSquares = (
   numberOfPlayers: number
 ): { location: string; square: Square }[] =>
-  range2(1, 8, 1, 7 * numberOfPlayers)
+  range2(1, 8, 1, 7 * numberOfPlayers - numberOfPlayers * (numberOfPlayers % 2))
     .flat()
     .map(({ x, y }) => {
       const location = toLocation({ rank: y, file: x });
@@ -63,12 +63,13 @@ const toroidalAdjacencies = (_bounds: RankAndFileBounds) => (
   ];
 };
 
-const toroidalPiecesRule = (square: Square): Piece[] => {
+const toroidalPiecesRule = (numberOfPlayers: number) => (square: Square): Piece[] => {
   const { rank, file } = square.getCoordinates();
   const location = toLocation({ rank, file });
-  const owner: PlayerName = Math.floor(rank / 7);
+  const ranks_per_player = 7 - (numberOfPlayers % 2);
+  const owner: PlayerName = Math.floor(rank / ranks_per_player);
   // [10, 11, 12].includes(rank) ? PlayerName.Black : PlayerName.White;
-  const relativeRank = rank % 7;
+  const relativeRank = rank % ranks_per_player;
 
   if (relativeRank === 3)
     return [
@@ -94,12 +95,13 @@ const toroidalPiecesRule = (square: Square): Piece[] => {
 
 function centerRegion(numberOfPlayers: number): string[] {
   const locations: string[][] = [];
+  const ranks_per_player = 7 - (numberOfPlayers % 2);
   for (let i = 0; i < numberOfPlayers; i++) {
     locations[i] = [
-      toLocation({ rank: 1 + 7 * i, file: 4 }),
-      toLocation({ rank: 1 + 7 * i, file: 5 }),
-      toLocation({ rank: 7 + 7 * i, file: 4 }),
-      toLocation({ rank: 7 + 7 * i, file: 5 }),
+      toLocation({ rank: 1 + ranks_per_player * i, file: 4 }),
+      toLocation({ rank: 1 + ranks_per_player * i, file: 5 }),
+      toLocation({ rank: 7 + ranks_per_player * i, file: 4 }),
+      toLocation({ rank: 7 + ranks_per_player * i, file: 5 }),
     ];
   }
 
@@ -107,16 +109,17 @@ function centerRegion(numberOfPlayers: number): string[] {
 }
 function promotionRegion(numberOfPlayers: number): string[] {
   const locations: string[][] = [];
+  const ranks_per_player = 7 - (numberOfPlayers % 2);
   for (let i = 0; i < numberOfPlayers; i++) {
     locations[i] = [
-      toLocation({ rank: 4 + 7 * i, file: 1 }),
-      toLocation({ rank: 4 + 7 * i, file: 2 }),
-      toLocation({ rank: 4 + 7 * i, file: 3 }),
-      toLocation({ rank: 4 + 7 * i, file: 4 }),
-      toLocation({ rank: 4 + 7 * i, file: 5 }),
-      toLocation({ rank: 4 + 7 * i, file: 6 }),
-      toLocation({ rank: 4 + 7 * i, file: 7 }),
-      toLocation({ rank: 4 + 7 * i, file: 8 }),
+      toLocation({ rank: 4 + ranks_per_player * i, file: 1 }),
+      toLocation({ rank: 4 + ranks_per_player * i, file: 2 }),
+      toLocation({ rank: 4 + ranks_per_player * i, file: 3 }),
+      toLocation({ rank: 4 + ranks_per_player * i, file: 4 }),
+      toLocation({ rank: 4 + ranks_per_player * i, file: 5 }),
+      toLocation({ rank: 4 + ranks_per_player * i, file: 6 }),
+      toLocation({ rank: 4 + ranks_per_player * i, file: 7 }),
+      toLocation({ rank: 4 + ranks_per_player * i, file: 8 }),
     ];
   }
   return locations.flat();

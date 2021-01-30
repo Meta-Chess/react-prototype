@@ -348,7 +348,7 @@ class Board extends TokenOwner {
     let board = new Board(interrupt, events);
 
     ({ board } = interrupt.for.forSquareGenerationModify({ board, numberOfPlayers }));
-    ({ board } = interrupt.for.onBoardCreate({ board }));
+    ({ board } = interrupt.for.onBoardCreate({ board, numberOfPlayers }));
     ({ board } = interrupt.for.afterBoardCreation({ board }));
 
     //graveyard storage for all pieces

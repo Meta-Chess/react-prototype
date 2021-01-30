@@ -15,11 +15,11 @@ export const standard: Rule = {
     board.defineRegion(Region.promotion, promotionRegion);
     return { board, numberOfPlayers };
   },
-  onBoardCreate: ({ board }) => {
+  onBoardCreate: ({ board, numberOfPlayers }) => {
     const bounds = board.rankAndFileBounds();
     board.addAdjacenciesByRule(standardAdjacencies(bounds));
     board.addPiecesByRule(standardPiecesRule);
-    return { board };
+    return { board, numberOfPlayers };
   },
   getGaitGenerator: ({ gaitGenerator, name, owner }) => {
     return {

@@ -181,11 +181,12 @@ export class GameMaster {
   }
 
   doMove(move?: Move, unselect = true): void {
-    // if (move) console.log(`expect(board.getPiecesAt("${move.location}").length).toEqual(1);`); // TEST WRITING HELPER COMMENT
-    if (move) {
-      this.game.doMove(move);
-      if (unselect) this.unselectAllPieces();
-    }
+    if (move)
+      if (move) {
+        // console.log(`expect(board.getPiecesAt("${move.location}").length).toEqual(1);`); // TEST WRITING HELPER COMMENT
+        this.game.doMove(move);
+        if (unselect) this.unselectAllPieces();
+      }
     this.moveHistory.push(move);
     this.game.nextTurn();
     this.checkGameEndConditions();
