@@ -119,6 +119,7 @@ export enum SquareShape {
 }
 
 export interface GameOptions {
+  numberOfPlayers?: number;
   variant?: VariantName;
   customTitle?: string;
   customRuleNames?: RuleName[];

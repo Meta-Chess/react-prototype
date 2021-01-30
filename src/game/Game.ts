@@ -43,14 +43,28 @@ export class Game {
     this.currentTurn = savePoint.currentTurn;
   }
 
-  static createGame(interrupt: CompactRules, time: number | undefined): Game {
+  static createGame(
+    interrupt: CompactRules,
+    time: number | undefined,
+    numberOfPlayers = 2
+  ): Game {
     const clock = time
-      ? new Clock([PlayerName.White, PlayerName.Black], time)
+      ? new Clock(Array.from(Array(numberOfPlayers).keys()), time)
       : undefined;
     clock?.setActivePlayers([PlayerName.White]);
 
     const events = new EventCenter({});
-    const game = new Game(interrupt, Board.createBoard(interrupt, events), clock, events);
+    const players = Array.from(Array(numberOfPlayers).keys()).map(
+      (name) => new Player(name, true)
+    );
+
+    const game = new Game(
+      interrupt,
+      Board.createBoard(interrupt, events, numberOfPlayers),
+      clock,
+      events,
+      players
+    );
     interrupt.for.subscribeToEvents({ events });
 
     return game;

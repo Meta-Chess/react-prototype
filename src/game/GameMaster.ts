@@ -66,7 +66,7 @@ export class GameMaster {
 
     const interrupt = new CompactRules(rules);
     const game = interrupt.for.afterGameCreation({
-      game: Game.createGame(interrupt, time),
+      game: Game.createGame(interrupt, time, gameOptions.numberOfPlayers),
     }).game;
 
     return [interrupt, rules, variant, game, renderer, gameOptions];
@@ -140,9 +140,8 @@ export class GameMaster {
         .forEach((player) => {
           player.alive = false;
           player.endGameMessage = "ran out of time";
+          if (player.name === this.game.getCurrentPlayerName()) this.doMove();
         });
-
-      this.doMove();
     }
   }
 
@@ -233,6 +232,10 @@ export class GameMaster {
 
   checkGameEndConditions(): void {
     this.applyLossConditions();
+    if (!this.game.players[this.game.currentPlayerIndex].alive) {
+      this.doMove();
+      return;
+    }
     this.checkWinConditions();
     if (!this.gameOver) this.checkDrawConditions();
   }

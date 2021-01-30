@@ -340,10 +340,14 @@ class Board extends TokenOwner {
     return currentSquares.filter(isPresent);
   }
 
-  static createBoard(interrupt: CompactRules, events: EventCenter): Board {
+  static createBoard(
+    interrupt: CompactRules,
+    events: EventCenter,
+    numberOfPlayers = 2
+  ): Board {
     let board = new Board(interrupt, events);
 
-    ({ board } = interrupt.for.forSquareGenerationModify({ board }));
+    ({ board } = interrupt.for.forSquareGenerationModify({ board, numberOfPlayers }));
     ({ board } = interrupt.for.onBoardCreate({ board }));
     ({ board } = interrupt.for.afterBoardCreation({ board }));
 

@@ -9,11 +9,11 @@ export const standard: Rule = {
   title: "Standard",
   description:
     "This rule takes care of all the details of your usual bog-standard board and piece set-up.",
-  forSquareGenerationModify: ({ board }) => {
+  forSquareGenerationModify: ({ board, numberOfPlayers }) => {
     board.addSquares(generateStandardSquares());
     board.defineRegion(Region.center, centerRegion);
     board.defineRegion(Region.promotion, promotionRegion);
-    return { board };
+    return { board, numberOfPlayers };
   },
   onBoardCreate: ({ board }) => {
     const bounds = board.rankAndFileBounds();

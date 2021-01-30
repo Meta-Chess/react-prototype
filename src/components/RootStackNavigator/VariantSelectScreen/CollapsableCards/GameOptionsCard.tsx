@@ -12,6 +12,8 @@ interface Props {
 }
 
 const GameOptionsCard: SFC<Props> = ({ style, gameOptions, setGameOptions }) => {
+  const setNumberOfPlayers = (numberOfPlayers: number): void =>
+    setGameOptions({ ...gameOptions, numberOfPlayers });
   const setRoomId = (roomId: string): void =>
     setGameOptions({
       ...gameOptions,
@@ -60,6 +62,14 @@ const GameOptionsCard: SFC<Props> = ({ style, gameOptions, setGameOptions }) => 
           style={{ marginTop: 12 }}
         />
         <SelectInput
+          options={numberOfPlayerOptions}
+          onChange={(value): void => {
+            setNumberOfPlayers(value);
+          }}
+          style={{ marginTop: 4 }}
+          zIndex={5000}
+        />
+        <SelectInput
           options={timeOptions}
           onChange={(value): void => {
             setTime(value);
@@ -76,12 +86,22 @@ const variantNames = Object.keys(variants) as VariantName[];
 
 const timeOptions = [
   { label: "No timers", value: undefined },
-  { label: "1 minute", value: 60000 },
+  { label: "1 minute", value: 10000 },
   // { label: "5 minutes", value: 300000 },
   { label: "10 minutes", value: 600000 },
   // { label: "20 minutes", value: 1200000 },
   { label: "1 hour", value: 3600000 },
   // { label: "3 hours", value: 7200000 },
+];
+
+const numberOfPlayerOptions = [
+  { label: "2 players", value: 2 },
+  { label: "3 players", value: 3 },
+  { label: "4 players", value: 4 },
+  { label: "5 players", value: 5 },
+  { label: "6 players", value: 6 },
+  { label: "7 players", value: 7 },
+  { label: "8 players", value: 8 },
 ];
 
 const defaultGameOptions = {

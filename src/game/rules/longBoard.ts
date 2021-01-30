@@ -10,11 +10,11 @@ export const longBoard: Rule = {
   title: "Long board",
   description:
     "The setup includes a long board and extra rows of pawns. It's designed to work well with vertical wrapping rules.",
-  forSquareGenerationModify: ({ board }) => {
-    board.addSquares(generateStandardSquares());
-    board.defineRegion(Region.center, centerRegion);
-    board.defineRegion(Region.promotion, promotionRegion);
-    return { board };
+  forSquareGenerationModify: ({ board, numberOfPlayers }) => {
+    board.addSquares(generateStandardSquares(numberOfPlayers));
+    board.defineRegion(Region.center, centerRegion(numberOfPlayers));
+    board.defineRegion(Region.promotion, promotionRegion(numberOfPlayers));
+    return { board, numberOfPlayers };
   },
   onBoardCreate: ({ board }) => {
     const bounds = board.rankAndFileBounds();
@@ -37,8 +37,10 @@ export const longBoard: Rule = {
   moveIsAggressive,
 };
 
-const generateStandardSquares = (): { location: string; square: Square }[] =>
-  range2(1, 8, 1, 14)
+const generateStandardSquares = (
+  numberOfPlayers: number
+): { location: string; square: Square }[] =>
+  range2(1, 8, 1, 7 * numberOfPlayers)
     .flat()
     .map(({ x, y }) => {
       const location = toLocation({ rank: y, file: x });
@@ -64,14 +66,15 @@ const toroidalAdjacencies = (_bounds: RankAndFileBounds) => (
 const toroidalPiecesRule = (square: Square): Piece[] => {
   const { rank, file } = square.getCoordinates();
   const location = toLocation({ rank, file });
-  const owner = [10, 11, 12].includes(rank) ? PlayerName.Black : PlayerName.White;
+  const owner: PlayerName = Math.floor(rank / 7);
+  // [10, 11, 12].includes(rank) ? PlayerName.Black : PlayerName.White;
+  const relativeRank = rank % 7;
 
-  if (rank === 5) return [createPiece({ location, owner, name: PieceName.Pawn })];
-  if (rank === 3)
+  if (relativeRank === 3)
     return [
       new Piece(PieceName.Pawn, () => standardGaits.BLACK_PAWN_GAITS, owner, location),
     ];
-  if (rank === 4) {
+  if (relativeRank === 4) {
     if (file === 1 || file === 8)
       return [createPiece({ location, owner, name: PieceName.Rook })];
     if (file === 2 || file === 7)
@@ -81,55 +84,40 @@ const toroidalPiecesRule = (square: Square): Piece[] => {
     if (file === 4) return [createPiece({ location, owner, name: PieceName.Queen })];
     if (file === 5) return [createPiece({ location, owner, name: PieceName.King })];
   }
-
-  if (rank === 10) return [createPiece({ location, owner, name: PieceName.Pawn })];
-  if (rank === 12)
+  if (relativeRank === 5)
     return [
       new Piece(PieceName.Pawn, () => standardGaits.WHITE_PAWN_GAITS, owner, location),
     ];
-  if (rank === 11) {
-    if (file === 1 || file === 8)
-      return [createPiece({ location, owner, name: PieceName.Rook })];
-    if (file === 2 || file === 7)
-      return [createPiece({ location, owner, name: PieceName.Knight })];
-    if (file === 3 || file === 6)
-      return [createPiece({ location, owner, name: PieceName.Bishop })];
-    if (file === 4) return [createPiece({ location, owner, name: PieceName.Queen })];
-    if (file === 5) return [createPiece({ location, owner, name: PieceName.King })];
-  }
 
   return [];
 };
 
-const centerRegion = [
-  toLocation({ rank: 1, file: 4 }),
-  toLocation({ rank: 1, file: 5 }),
-  toLocation({ rank: 7, file: 4 }),
-  toLocation({ rank: 7, file: 5 }),
-  toLocation({ rank: 8, file: 4 }),
-  toLocation({ rank: 8, file: 5 }),
-  toLocation({ rank: 14, file: 4 }),
-  toLocation({ rank: 14, file: 5 }),
-];
-const promotionRegion = [
-  ...[
-    toLocation({ rank: 11, file: 1 }),
-    toLocation({ rank: 11, file: 2 }),
-    toLocation({ rank: 11, file: 3 }),
-    toLocation({ rank: 11, file: 4 }),
-    toLocation({ rank: 11, file: 5 }),
-    toLocation({ rank: 11, file: 6 }),
-    toLocation({ rank: 11, file: 7 }),
-    toLocation({ rank: 11, file: 8 }),
-  ],
-  ...[
-    toLocation({ rank: 4, file: 1 }),
-    toLocation({ rank: 4, file: 2 }),
-    toLocation({ rank: 4, file: 3 }),
-    toLocation({ rank: 4, file: 4 }),
-    toLocation({ rank: 4, file: 5 }),
-    toLocation({ rank: 4, file: 6 }),
-    toLocation({ rank: 4, file: 7 }),
-    toLocation({ rank: 4, file: 8 }),
-  ],
-];
+function centerRegion(numberOfPlayers: number): string[] {
+  const locations: string[][] = [];
+  for (let i = 0; i < numberOfPlayers; i++) {
+    locations[i] = [
+      toLocation({ rank: 1 + 7 * i, file: 4 }),
+      toLocation({ rank: 1 + 7 * i, file: 5 }),
+      toLocation({ rank: 7 + 7 * i, file: 4 }),
+      toLocation({ rank: 7 + 7 * i, file: 5 }),
+    ];
+  }
+
+  return locations.flat();
+}
+function promotionRegion(numberOfPlayers: number): string[] {
+  const locations: string[][] = [];
+  for (let i = 0; i < numberOfPlayers; i++) {
+    locations[i] = [
+      toLocation({ rank: 4 + 7 * i, file: 1 }),
+      toLocation({ rank: 4 + 7 * i, file: 2 }),
+      toLocation({ rank: 4 + 7 * i, file: 3 }),
+      toLocation({ rank: 4 + 7 * i, file: 4 }),
+      toLocation({ rank: 4 + 7 * i, file: 5 }),
+      toLocation({ rank: 4 + 7 * i, file: 6 }),
+      toLocation({ rank: 4 + 7 * i, file: 7 }),
+      toLocation({ rank: 4 + 7 * i, file: 8 }),
+    ];
+  }
+  return locations.flat();
+}
