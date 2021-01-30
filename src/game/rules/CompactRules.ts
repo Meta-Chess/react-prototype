@@ -5,6 +5,7 @@ import { Board, Piece, Square } from "../Board";
 import { Game } from "game/Game";
 import { Move, PieceDelta } from "game/Move";
 import { EventCenter } from "game/EventCenter";
+import { PatherParams } from "game/Pather";
 
 // Note: These linting exceptions should only ever be used with great caution
 // Take care to check extra carefully for errors in this file because we have less type safety
@@ -71,7 +72,7 @@ const identityRule = {
     game: Game;
     gameClones: Game[];
     interrupt: CompactRules;
-    patherParams: { checkDepth?: number };
+    patherParams: PatherParams;
     filtered: boolean;
   }) => x,
   lethalCondition: (x: { board: Board; player: PlayerName; dead: string | false }) => x,

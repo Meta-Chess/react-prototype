@@ -19,6 +19,10 @@ export const chemicallyExcitedKnight: Rule = {
       .forEach((knight) => {
         const moves = new Pather(game, [], knight, interrupt, {
           checkDepth: 0,
+          //todo: refactor - we need gameClones here or a better patherParams structure.
+          //we might have intended behaviour by chance in this case, because chemKnight and noFork are related mechanics
+          //but we should have a solution for if we wanted noForkSearch: true here.
+          noForkSearch: false,
         }).findPaths();
         if (moves.filter(doesCapture(game, knight)).length > 2) {
           const knightSquarePieces = board.getPiecesAt(knight.location);
