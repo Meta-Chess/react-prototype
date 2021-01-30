@@ -1,0 +1,38 @@
+import React, { useContext } from "react";
+import { SFC, Text } from "primitives";
+import { Card } from "ui/Containers/Card";
+import { GameContext } from "game";
+import styled from "styled-components/native";
+import { PlayerListItem } from "components/RootStackNavigator/GameScreen/Sidebar/PlayersCard/PlayerListItem";
+
+const PlayersCard: SFC = ({ style }) => {
+  const { gameMaster } = useContext(GameContext);
+  const players = gameMaster?.game.players;
+  const currentPlayerName = gameMaster?.game.getCurrentPlayerName();
+  const clock = gameMaster?.game.clock;
+
+  if (!players || !players.length || !clock) return null;
+
+  return (
+    <StyledCard style={style}>
+      <Text cat="DisplayM" style={{ marginLeft: 16, marginBottom: 12 }}>
+        Players
+      </Text>
+      {players.map((player) => (
+        <PlayerListItem
+          player={player}
+          currentPlayerName={currentPlayerName}
+          key={player.name}
+        />
+      ))}
+    </StyledCard>
+  );
+};
+
+const StyledCard = styled(Card)`
+  padding-bottom: 8;
+  padding-left: 0;
+  padding-right: 0;
+`;
+
+export { PlayersCard };

@@ -3,19 +3,18 @@ import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
 import { GameContext, PlayerName } from "game";
-import { AbsoluteView, Card } from "ui";
 
 interface Props {
-  player: PlayerName;
+  playerName: PlayerName;
   hidden?: boolean;
   alignment?: "left" | "center" | "right";
 }
 
-const Timer: SFC<Props> = ({ style, player, hidden, alignment = "center" }) => {
+const Timer: SFC<Props> = ({ style, playerName, hidden, alignment = "center" }) => {
   const { gameMaster } = useContext(GameContext);
   const [dummy, setDummy] = useState(false);
 
-  const timer = gameMaster?.game.clock?.getPlayerTimer(player);
+  const timer = gameMaster?.game.clock?.getPlayerTimer(playerName);
 
   const formattedTime = timer?.getFormattedTime();
   const displayTime = formattedTime?.time;
@@ -40,17 +39,12 @@ const Timer: SFC<Props> = ({ style, player, hidden, alignment = "center" }) => {
     return (): void => clearTimeout(timeout);
   }, [timeout]);
 
-  if (!timer) return null; // Consider throwing an error?
+  if (!timer) return null;
 
   return hidden === true ? (
     <View style={style} />
   ) : (
-    <Container style={style}>
-      {timer.getTimeRemaining() <= 0 && (
-        <AbsoluteView
-          style={{ backgroundColor: Colors.HIGHLIGHT.ERROR.fade(0.6).toString() }}
-        />
-      )}
+    <Container style={style} timeRemaining={timer.getTimeRemaining()}>
       <Text
         cat="BodyM"
         color={Colors.TEXT.LIGHT.toString()}
@@ -63,8 +57,12 @@ const Timer: SFC<Props> = ({ style, player, hidden, alignment = "center" }) => {
   );
 };
 
-const Container = styled(Card)`
+const Container = styled(View)<{ timeRemaining: number }>`
   padding: 8px 12px;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: ${({ timeRemaining }): string =>
+    timeRemaining <= 0 ? Colors.HIGHLIGHT.ERROR.fade(0.6).toString() : "transparent"};
 `;
 
 export { Timer };
