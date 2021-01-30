@@ -9,9 +9,8 @@ const PlayersCard: SFC = ({ style }) => {
   const { gameMaster } = useContext(GameContext);
   const players = gameMaster?.game.players;
   const currentPlayerName = gameMaster?.game.getCurrentPlayerName();
-  const clock = gameMaster?.game.clock;
 
-  if (!players || !players.length || !clock) return null;
+  if (!players || !players.length) return null;
 
   return (
     <StyledCard style={style}>
