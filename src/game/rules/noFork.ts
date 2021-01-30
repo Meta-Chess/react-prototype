@@ -1,8 +1,8 @@
 import { CompactRules, Rule } from "./CompactRules";
 import { Pather } from "../Pather";
 import { Game, Move } from "game";
-import { Piece } from "game/Board";
 import { PieceName } from "game/types";
+import { doesCapture } from "./utilities";
 
 export const noFork: Rule = {
   title: "No Fork",
@@ -33,9 +33,9 @@ function isThereAnyKnightFork({
   gameClones[0].resetTo(game);
   gameClones[0].doMove(move);
   gameClones[0].nextTurn();
-  const pieces = gameClones[0].board.pieces;
 
-  return Object.values(pieces)
+  return gameClones[0].board
+    .getPieces()
     .filter((piece) => piece.name === PieceName.Knight)
     .some((knight) => {
       const moves = new Pather(gameClones[0], [], knight, interrupt, {
@@ -45,9 +45,3 @@ function isThereAnyKnightFork({
       return moves.filter(doesCapture(gameClones[0], knight)).length > 1;
     });
 }
-
-const doesCapture = (gameClone: Game, piece: Piece) => (move: Move): boolean => {
-  return move.pieceDeltas.some((delta) =>
-    gameClone.board.getPiecesAt(delta.path.getEnd()).some((p) => p.owner !== piece.owner)
-  );
-};

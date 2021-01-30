@@ -1,4 +1,4 @@
-import { isPresent } from "ts-is-present"; //QUESTION: should this be imported from utilities instead?
+import { isPresent } from "ts-is-present";
 import { Direction, Gait, GaitParams, PieceName, PlayerName } from "../types";
 import { applyInSequence } from "utilities";
 import { Board, Piece, Square } from "../Board";
