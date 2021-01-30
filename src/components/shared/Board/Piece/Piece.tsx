@@ -25,7 +25,6 @@ const Piece: FC<Props> = ({ piece, animatedData, size }) => {
       size={size}
       rotatePiece={gameMaster?.overTheBoard && piece.owner === PlayerName.Black}
       opacity={piece.hasTokenWithName(TokenName.Fatigue) ? 0.4 : 1}
-      animated={animated}
       animatedColor={animated ? animatedData?.animatedColor : undefined}
       animatedOutlineColor={animated ? animatedData?.animatedOutlineColor : undefined}
     />

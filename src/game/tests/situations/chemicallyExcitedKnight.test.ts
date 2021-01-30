@@ -17,73 +17,31 @@ describe("With chemically excited knights", () => {
 
     // Move white knight to F3
     gameMaster.onPress("R1F7");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R3F8" }),
-        expect.objectContaining({ location: "R3F6" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R3F6");
     expect(board.getPiecesAt("R3F6").length).toEqual(1);
 
     // Move black pawn to E6
     gameMaster.onPress("R7F5");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R6F5" }),
-        expect.objectContaining({ location: "R5F5" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R6F5");
     expect(board.getPiecesAt("R6F5").length).toEqual(1);
 
     // Move white pawn to A3
     gameMaster.onPress("R2F1");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R3F1" }),
-        expect.objectContaining({ location: "R4F1" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R3F1");
     expect(board.getPiecesAt("R3F1").length).toEqual(1);
 
     // Move black bishop to D6
     gameMaster.onPress("R8F6");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R7F5" }),
-        expect.objectContaining({ location: "R6F4" }),
-        expect.objectContaining({ location: "R5F3" }),
-        expect.objectContaining({ location: "R4F2" }),
-        expect.objectContaining({ location: "R3F1" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(5);
     gameMaster.onPress("R6F4");
     expect(board.getPiecesAt("R6F4").length).toEqual(1);
 
     // Move white pawn to A4
     gameMaster.onPress("R3F1");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([expect.objectContaining({ location: "R4F1" })])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(1);
     gameMaster.onPress("R4F1");
     expect(board.getPiecesAt("R4F1").length).toEqual(1);
 
     // Move black pawn to C6
     gameMaster.onPress("R7F3");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R6F3" }),
-        expect.objectContaining({ location: "R5F3" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R6F3");
     expect(board.getPiecesAt("R6F3").length).toEqual(1);
 
@@ -127,162 +85,66 @@ describe("With chemically excited knights", () => {
 
     // Move white knight to F3
     gameMaster.onPress("R1F7");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R3F8" }),
-        expect.objectContaining({ location: "R3F6" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R3F6");
     expect(board.getPiecesAt("R3F6").length).toEqual(1);
 
     // Move black pawn to E5
     gameMaster.onPress("R7F5");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R6F5" }),
-        expect.objectContaining({ location: "R5F5" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R5F5");
     expect(board.getPiecesAt("R5F5").length).toEqual(1);
 
     // Move white knight to C3
     gameMaster.onPress("R1F2");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R3F3" }),
-        expect.objectContaining({ location: "R3F1" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R3F3");
     expect(board.getPiecesAt("R3F3").length).toEqual(1);
 
     // Move black pawn to D5
     gameMaster.onPress("R7F4");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R6F4" }),
-        expect.objectContaining({ location: "R5F4" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R5F4");
     expect(board.getPiecesAt("R5F4").length).toEqual(1);
 
     // Move white knight to E4
     gameMaster.onPress("R3F3");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R5F4" }),
-        expect.objectContaining({ location: "R5F2" }),
-        expect.objectContaining({ location: "R4F5" }),
-        expect.objectContaining({ location: "R1F2" }),
-        expect.objectContaining({ location: "R4F1" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(5);
     gameMaster.onPress("R4F5");
     expect(board.getPiecesAt("R4F5").length).toEqual(1);
 
     // Move black pawn to D4
     gameMaster.onPress("R5F4");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R4F4" }),
-        expect.objectContaining({ location: "R4F5" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R4F4");
     expect(board.getPiecesAt("R4F4").length).toEqual(1);
 
     // Move white pawn to A3
     gameMaster.onPress("R2F1");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R3F1" }),
-        expect.objectContaining({ location: "R4F1" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R3F1");
     expect(board.getPiecesAt("R3F1").length).toEqual(1);
 
     // Move black pawn to C5
     gameMaster.onPress("R7F3");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R6F3" }),
-        expect.objectContaining({ location: "R5F3" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(2);
     gameMaster.onPress("R5F3");
     expect(board.getPiecesAt("R5F3").length).toEqual(1);
 
     // Move white pawn to A4
     gameMaster.onPress("R3F1");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([expect.objectContaining({ location: "R4F1" })])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(1);
     gameMaster.onPress("R4F1");
     expect(board.getPiecesAt("R4F1").length).toEqual(1);
 
     // Move black queen to D6
     gameMaster.onPress("R8F4");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R7F4" }),
-        expect.objectContaining({ location: "R6F4" }),
-        expect.objectContaining({ location: "R5F4" }),
-        expect.objectContaining({ location: "R7F5" }),
-        expect.objectContaining({ location: "R6F6" }),
-        expect.objectContaining({ location: "R5F7" }),
-        expect.objectContaining({ location: "R4F8" }),
-        expect.objectContaining({ location: "R7F3" }),
-        expect.objectContaining({ location: "R6F2" }),
-        expect.objectContaining({ location: "R5F1" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(10);
     gameMaster.onPress("R6F4");
     expect(board.getPiecesAt("R6F4").length).toEqual(1);
 
     // Move white pawn to A5
     gameMaster.onPress("R4F1");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([expect.objectContaining({ location: "R5F1" })])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(1);
     gameMaster.onPress("R5F1");
     expect(board.getPiecesAt("R5F1").length).toEqual(1);
 
     // Move black bishop to G4
     gameMaster.onPress("R8F3");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ location: "R7F4" }),
-        expect.objectContaining({ location: "R6F5" }),
-        expect.objectContaining({ location: "R5F6" }),
-        expect.objectContaining({ location: "R4F7" }),
-        expect.objectContaining({ location: "R3F8" }),
-      ])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(5);
     gameMaster.onPress("R4F7");
     expect(board.getPiecesAt("R4F7").length).toEqual(1);
 
     // Move white pawn to A6
     gameMaster.onPress("R5F1");
-    expect(gameMaster.allowableMoves).toEqual(
-      expect.arrayContaining([expect.objectContaining({ location: "R6F1" })])
-    );
-    expect(gameMaster.allowableMoves.length).toEqual(1);
     gameMaster.onPress("R6F1");
     expect(board.getPiecesAt("R6F1").length).toEqual(1);
 

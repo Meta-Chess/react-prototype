@@ -1,134 +1,113 @@
-import {
-  PieceName,
-  TokenName,
-  AnimationType,
-  PieceAnimationType,
-  PieceVisualData,
-} from "game/types";
+import { PieceName, AnimationType, PieceAnimationType, Location } from "game/types";
 import { Rule } from "./CompactRules";
 import { Pather } from "game/Pather";
-import { Board } from "game/Board";
-import { standardKingStep } from "./utilities";
+import { allAdjacencies, addAnimationTokenToSquare, doesCapture } from "./utilities";
+import { uniq } from "lodash";
 
 export const chemicallyExcitedKnight: Rule = {
   title: "Chemically Excited Knight",
   //thinking maybe have this variant be 'see' 3 enemy pieces (with scanner update)
   description: "Knights that could capture 3 enemy pieces explode.",
   postMove: ({ game, interrupt, board, move, currentTurn }) => {
-    const triggeredKnights: { [id: string]: number } = {}; //piece ids
-    const deadPieces: { [id: string]: number } = {}; //piece ids
-    const addVisualToSquares: string[] = []; //locations
+    const triggeredKnights: { knightId: string; positionOnSquare: number }[] = [];
+    const deadPieces: { deadPieceId: string; positionOnSquare: number }[] = [];
+    const visualsToAddToSquare: Location[] = [];
 
-    const pieces = board.pieces;
-    Object.values(pieces)
+    board
+      .getPieces()
       .filter((piece) => piece.name === PieceName.Knight)
       .forEach((knight) => {
         const moves = new Pather(game, [], knight, interrupt, {
           checkDepth: 0,
         }).findPaths();
-        if (
-          moves.filter(
-            (m) =>
-              m.pieceDeltas.filter(
-                (delta) =>
-                  board
-                    .getPiecesAt(delta.path.getEnd())
-                    .filter((p) => p.owner !== knight.owner).length > 0
-              ).length > 0
-          ).length > 2 // more than 2 enemy piece captures possible
-        ) {
+        if (moves.filter(doesCapture(game, knight)).length > 2) {
           const knightSquarePieces = board.getPiecesAt(knight.location);
-          knightSquarePieces.forEach((piece) => {
+          knightSquarePieces.forEach((piece, index) => {
             if (piece.id === knight.id) {
-              triggeredKnights[knight.id] = knightSquarePieces.indexOf(piece);
-              return;
+              triggeredKnights.push({
+                knightId: knight.id,
+                positionOnSquare: index,
+              });
+            } else {
+              deadPieces.push({
+                deadPieceId: piece.id,
+                positionOnSquare: index,
+              });
             }
-            deadPieces[piece.id] = knightSquarePieces.indexOf(piece);
           });
 
-          const explosionSquareLocations = standardKingStep(
+          const otherExplosionSquareLocations = allAdjacencies(
             board,
             board.squareAt(knight.location)
           );
 
-          addVisualToSquares.push(knight.location);
-          explosionSquareLocations.forEach((location) => {
+          visualsToAddToSquare.push(knight.location);
+          otherExplosionSquareLocations.forEach((location) => {
             const pieces = board.getPiecesAt(location);
-            pieces.forEach((piece) => {
-              deadPieces[piece.id] = pieces.indexOf(piece);
+            pieces.forEach((piece, index) => {
+              deadPieces.push({
+                deadPieceId: piece.id,
+                positionOnSquare: index,
+              });
             });
-            addVisualToSquares.push(location);
+            visualsToAddToSquare.push(location);
           });
         }
       });
 
-    Object.keys(triggeredKnights).map((pieceId) => {
-      const knight = board.getPiece(pieceId);
+    uniq(triggeredKnights).forEach(({ knightId, positionOnSquare }) => {
+      const knight = board.getPiece(knightId);
       if (knight === undefined) return;
       board.killPiecesAt(knight.location);
       const knightVisuals = {
         piece: knight,
         pieceAnimationType: PieceAnimationType.chemicallyExcited,
-        positionOnSquare: triggeredKnights[pieceId],
+        positionOnSquare: positionOnSquare,
         outlineColorChange: "rgba(235,52,52,1)",
       };
-      addPieceVisualToSquare(board, knight.location, knightVisuals);
+      addAnimationTokenToSquare({
+        board: board,
+        squareLocation: knight.location,
+        duration: PRE_EXPLODE_ANIMATION_DURATION,
+        delay: 0,
+        animationType: undefined,
+        pieceVisualData: knightVisuals,
+      });
     });
-    Object.keys(deadPieces).map((pieceId) => {
-      const piece = board.getPiece(pieceId);
+
+    uniq(deadPieces).forEach(({ deadPieceId, positionOnSquare }) => {
+      if (triggeredKnights.some(({ knightId }) => knightId === deadPieceId)) return;
+      const piece = board.getPiece(deadPieceId);
       if (piece === undefined) return;
       board.killPiecesAt(piece.location);
       const pieceVisuals = {
         piece: piece,
         pieceAnimationType: PieceAnimationType.chemicallyExcited,
-        positionOnSquare: deadPieces[pieceId],
+        positionOnSquare: positionOnSquare,
       };
-      addPieceVisualToSquare(board, piece.location, pieceVisuals);
+      addAnimationTokenToSquare({
+        board: board,
+        squareLocation: piece.location,
+        duration: PRE_EXPLODE_ANIMATION_DURATION,
+        delay: 0,
+        animationType: undefined,
+        pieceVisualData: pieceVisuals,
+      });
     });
-    addVisualToSquares.map((location) => {
-      addExplosionVisualToSquare(board, location);
+
+    visualsToAddToSquare.forEach((location) => {
+      addAnimationTokenToSquare({
+        board: board,
+        squareLocation: location,
+        duration: EXPLODE_ANIMATION_DURATION,
+        delay: PRE_EXPLODE_ANIMATION_DURATION,
+        animationType: AnimationType.explosion,
+      });
     });
 
     return { game, interrupt, board, move, currentTurn };
   },
 };
 
-const preExplodeAnimationDuration = 500;
-const explodeAnimationDuration = 1000;
-
-//consider: maybe want to change expire time so that everything disappears when new move is made
-//wouldn't want it to be reset by any random re-render though...
-const addPieceVisualToSquare = (
-  board: Board,
-  squareLocation: string,
-  pieceVisualData: PieceVisualData
-): void => {
-  const creationTimeInMilliseconds = Date.now();
-  const duration = preExplodeAnimationDuration;
-  board.squareAt(squareLocation)?.addToken({
-    name: TokenName.AnimationToken,
-    expired: () => Date.now() > creationTimeInMilliseconds + duration,
-    data: {
-      createdAt: creationTimeInMilliseconds,
-      duration: duration,
-      id: Math.random(), // TODO: We should change this sometime because collisions would be bad
-      pieceVisualData: pieceVisualData,
-    },
-  });
-};
-
-const addExplosionVisualToSquare = (board: Board, squareLocation: string): void => {
-  const creationTimeInMilliseconds = Date.now();
-  const duration = explodeAnimationDuration;
-  board.squareAt(squareLocation)?.addToken({
-    name: TokenName.AnimationToken,
-    expired: () => Date.now() > creationTimeInMilliseconds + duration,
-    data: {
-      type: AnimationType.explosion,
-      createdAt: creationTimeInMilliseconds,
-      duration: duration,
-      delay: preExplodeAnimationDuration,
-      id: Math.random(), // TODO: We should change this sometime because collisions would be bad
-    },
-  });
-};
+const PRE_EXPLODE_ANIMATION_DURATION = 500;
+const EXPLODE_ANIMATION_DURATION = 1000;

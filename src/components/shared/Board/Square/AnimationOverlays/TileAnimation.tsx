@@ -18,7 +18,6 @@ const TileAnimation: SFC<TileAnimationProps> = ({ shape, size, token }) => {
   const animationType = token.data?.type;
   const animationDuration = token.data?.duration;
   const animationDelay = token.data?.delay;
-  const pieceVisualData = token.data?.pieceVisualData;
 
   if (!animationDuration || !animationType) return null;
 
@@ -29,7 +28,6 @@ const TileAnimation: SFC<TileAnimationProps> = ({ shape, size, token }) => {
       size={size}
       duration={animationDuration}
       delay={animationDelay}
-      pieceVisualData={pieceVisualData}
     />
   );
 };

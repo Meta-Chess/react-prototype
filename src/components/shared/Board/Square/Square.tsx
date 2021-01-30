@@ -10,7 +10,7 @@ import { AnimationOverlays } from "./AnimationOverlays";
 import { Highlight } from "./Highlight";
 import { useModals, Tile } from "ui";
 import { Token } from "game/types";
-import { getPiecesDisplayOnSquare } from "./getPiecesDisplayOnSquare";
+import { getDisplayPiecesAndTokens } from "./getDisplayPiecesAndTokens";
 
 interface Props {
   square: Square | undefined;
@@ -29,7 +29,7 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
     colorIndex({ ...square.getCoordinates(), shape })
   ].string();
 
-  const piecesOrPieceAnimationsOnSquare: (string | Token)[] = getPiecesDisplayOnSquare(
+  const piecesOrPieceAnimationsOnSquare: (string | Token)[] = getDisplayPiecesAndTokens(
     square
   );
   const { pieceIds: piecesUnderSquare } = gameMaster.interrupt.for.piecesUnderSquare({

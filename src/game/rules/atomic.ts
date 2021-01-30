@@ -1,7 +1,6 @@
-import { PieceName, TokenName, AnimationType } from "../types";
+import { PieceName, AnimationType } from "../types";
 import { Rule } from "./CompactRules";
-import { Board } from "game";
-import { standardKingStep } from "./utilities";
+import { allAdjacencies, addAnimationTokenToSquare } from "./utilities";
 
 export const atomic: Rule = {
   title: "Atomic",
@@ -12,15 +11,27 @@ export const atomic: Rule = {
     events.subscribe({
       name: "capture",
       consequence: ({ board, square }) => {
-        const atomicImpactSquares = standardKingStep(board, square);
+        const atomicImpactSquares = allAdjacencies(board, square);
         const captureSquare = square.location;
         board.killPiecesAt(captureSquare);
         atomicImpactSquares.forEach((location) => {
           if (!board.getPiecesAt(location).some((piece) => piece.name === PieceName.Pawn))
             board.killPiecesAt(location);
-          addVisualTokenToSquare(location, board);
+          addAnimationTokenToSquare({
+            board: board,
+            squareLocation: location,
+            duration: ANIMATION_DURATION,
+            delay: 0,
+            animationType: AnimationType.explosion,
+          });
         });
-        addVisualTokenToSquare(captureSquare, board);
+        addAnimationTokenToSquare({
+          board: board,
+          squareLocation: captureSquare,
+          duration: ANIMATION_DURATION,
+          delay: 0,
+          animationType: AnimationType.explosion,
+        });
         return { board, square };
       },
     });
@@ -28,17 +39,4 @@ export const atomic: Rule = {
   },
 };
 
-const addVisualTokenToSquare = (squareLocation: string, board: Board): void => {
-  const creationTimeInMilliseconds = Date.now();
-  const duration = 1000;
-  board.squareAt(squareLocation)?.addToken({
-    name: TokenName.AnimationToken,
-    expired: () => Date.now() > creationTimeInMilliseconds + duration,
-    data: {
-      type: AnimationType.explosion,
-      createdAt: creationTimeInMilliseconds,
-      duration: duration,
-      id: Math.random(), // TODO: We should change this sometime because collisions would be bad
-    },
-  });
-};
+const ANIMATION_DURATION = 1000;

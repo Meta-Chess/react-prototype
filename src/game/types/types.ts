@@ -151,3 +151,5 @@ export enum Region {
 }
 
 export type Regions = { [key in Region]?: string[] };
+
+export type Location = string;

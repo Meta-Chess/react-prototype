@@ -18,6 +18,8 @@ interface Props {
   animatedOutlineColor?: Animated.AnimatedInterpolation | undefined;
 }
 
+const AnimatedGroup = Animated.createAnimatedComponent(G);
+
 const PieceImage: SFC<Props> = ({
   type,
   color,
@@ -26,15 +28,14 @@ const PieceImage: SFC<Props> = ({
   rotatePiece,
   glowColor,
   style,
-  animated = false,
   animatedColor,
   animatedOutlineColor,
 }) => {
   if (size < 0) return null;
   const primary = color;
   const secondary = Colors.DARKEST.string();
-  const primaryAnimated = animated ? animatedColor : undefined;
-  const secondaryAnimated = animated ? animatedOutlineColor : undefined;
+  const primaryAnimated = animatedColor;
+  const secondaryAnimated = animatedOutlineColor;
   const alphaModifier = opacity === undefined ? 1 : opacity;
   const paths =
     type === PieceName.Pawn ? (
@@ -52,7 +53,6 @@ const PieceImage: SFC<Props> = ({
     );
 
   const glowAlphas = [0.03, 0.1, 0.1, 0.2, 0.3, 0.4, 1];
-  const AnimatedG = Animated.createAnimatedComponent(G);
 
   return (
     <Svg
@@ -74,15 +74,15 @@ const PieceImage: SFC<Props> = ({
             {paths}
           </G>
         ))}
-      {animated ? (
-        <AnimatedG
+      {animatedColor || animatedOutlineColor ? (
+        <AnimatedGroup
           fill={primaryAnimated}
           stroke={secondaryAnimated}
           strokeWidth={0.9}
           opacity={alphaModifier}
         >
           {paths}
-        </AnimatedG>
+        </AnimatedGroup>
       ) : (
         <G fill={primary} stroke={secondary} strokeWidth={0.9} opacity={alphaModifier}>
           {paths}

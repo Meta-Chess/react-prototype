@@ -1,1 +1,1 @@
-export * from "./standardKingStep";
+export * from "./allAdjacencies";
