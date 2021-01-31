@@ -14,8 +14,8 @@ interface Props {
 }
 
 export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
-  const [name] = useState(randomChoice(["Emmanuel", "Gus", "Angus", "Seb", "Matt"]));
-  const [rating] = useState(randomInt(400, 2000));
+  const [name] = useState(randomChoice(["Emmanuel", "Gus", "Angus", "Seb"]));
+  const [rating] = useState(randomInt(100, 3000));
 
   return (
     <Container active={player.name === currentPlayerName}>

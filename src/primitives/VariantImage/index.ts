@@ -19,9 +19,6 @@ export { kingOfTheHillImage };
 import patheticKingImage from "./patheticKingImage.png";
 export { patheticKingImage };
 
-import pushImage from "./pushImage.png";
-export { pushImage };
-
 import crazyhouseImage from "./crazyhouseImage.png";
 export { crazyhouseImage };
 
@@ -46,11 +43,26 @@ export { toroidalImage };
 import mobiusImage from "./mobiusImage.png";
 export { mobiusImage };
 
-import vetoImage from "./vetoImage.png";
-export { vetoImage };
-
 import kleinBottleImage from "./kleinBottleImage.png";
 export { kleinBottleImage };
 
 import chemicallyExcitedKnightImage from "./chemicallyExcitedKnightImage.png";
 export { chemicallyExcitedKnightImage };
+
+import pullImage from "./pullImage.png";
+export { pullImage };
+
+import zoneOfControlImage from "./zoneOfControlImage.png";
+export { zoneOfControlImage };
+
+import loseOnStalemateImage from "./loseOnStalemateImage.png";
+export { loseOnStalemateImage };
+
+import gambitImage from "./gambitImage.png";
+export { gambitImage };
+
+import centerfoldImage from "./centerfoldImage.png";
+export { centerfoldImage };
+
+import fortificationsImage from "./fortificationsImage.png";
+export { fortificationsImage };

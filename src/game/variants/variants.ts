@@ -158,12 +158,16 @@ export type FutureVariantName =
   | "noFork"
   | "patheticKing"
   | "polar"
-  | "push"
   | "spherical"
   | "threeCheck"
   | "toroidal"
-  | "veto"
-  | "chemicallyExcitedKnight";
+  | "chemicallyExcitedKnight"
+  | "pull"
+  | "zoneOfControl"
+  | "loseOnStalemate"
+  | "gambit"
+  | "centerfold"
+  | "fortifications";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   atomic: {
@@ -298,15 +302,6 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     ruleNames: ["polar"],
     complexity: 2,
   },
-  push: {
-    title: "Push",
-    shortDescription: "Push chains of neighbouring friendly pieces.",
-    traits: ["Ability"],
-    imageName: "pushImage",
-    implemented: false,
-    ruleNames: [],
-    complexity: 0,
-  },
   spherical: {
     title: "Spherical",
     shortDescription: "The board wrapped around a sphere. [Polar and Cylinder]",
@@ -334,11 +329,58 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     ruleNames: ["longBoard", "cylindrical", "verticallyCylindrical"],
     complexity: 4,
   },
-  veto: {
-    title: "Veto",
-    shortDescription: "A move may be vetoed each turn.",
-    traits: ["Phase", "Restriction"],
-    imageName: "vetoImage",
+  pull: {
+    title: "Pull",
+    shortDescription: "Pull friendly pieces along a path.",
+    traits: ["Ability"],
+    imageName: "pullImage",
+    implemented: false,
+    ruleNames: [],
+    complexity: 0,
+  },
+  zoneOfControl: {
+    title: "Zone of Control",
+    shortDescription:
+      "Pieces can only continue for a single step after entering enemy territory.",
+    traits: ["Ability", "Restriction"],
+    imageName: "zoneOfControlImage",
+    implemented: false,
+    ruleNames: [],
+    complexity: 0,
+  },
+  loseOnStalemate: {
+    title: "Lose on Stalemate",
+    shortDescription: "A player is eliminated if they have no moves on their turn.",
+    traits: ["Ending"],
+    imageName: "loseOnStalemateImage",
+    implemented: false,
+    ruleNames: [],
+    complexity: 0,
+  },
+  gambit: {
+    title: "Gambit",
+    shortDescription: "A player can capture their own pieces.",
+    traits: ["Ability"],
+    imageName: "gambitImage",
+    implemented: false,
+    ruleNames: [],
+    complexity: 0,
+  },
+  centerfold: {
+    title: "Centerfold",
+    shortDescription:
+      "North and south sides of a board connect to themselves like a racetrack.",
+    traits: ["Geometry"],
+    imageName: "centerfoldImage",
+    implemented: false,
+    ruleNames: [],
+    complexity: 0,
+  },
+  fortifications: {
+    title: "Fortifications",
+    shortDescription: "Rooks cannot capture or be captured.",
+    traits: ["Ability"],
+    imageName: "fortificationsImage",
     implemented: false,
     ruleNames: [],
     complexity: 0,

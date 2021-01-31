@@ -34,10 +34,9 @@ export const Colors = {
     RESTRICTION: Color("#FF2222"),
     ABILITY: Color("#FF5D00"),
     ENDING: Color("#D4AF37"),
-    PHASE: Color("#FF47EE"),
+    PHASE: Color("#6780FB"),
     GEOMETRY: Color("#00C1FF"),
     BOARD: Color("#0064FD"),
-    ALGORITHM: Color("#696867"),
   },
   PLAYER: [
     Color("#FCFCFC"),
