@@ -1,10 +1,9 @@
 import React from "react";
-import { SFC, Colors, Text } from "primitives";
+import { SFC, Colors } from "primitives";
 import { GameMaster, Piece as PieceClass } from "game";
 import { Piece } from "components/shared";
 import { View } from "react-native";
 import styled from "styled-components/native";
-import { AbsoluteView } from "ui";
 
 interface Props {
   pieces: PieceClass[];
@@ -12,9 +11,9 @@ interface Props {
   gameMaster: GameMaster;
 }
 
-const PieceBank: SFC<Props> = ({ pieces, pieceSize, gameMaster, style }) => {
+const PieceBank: SFC<Props> = ({ pieces, pieceSize, gameMaster }) => {
   return (
-    <Container style={[style, { minHeight: pieceSize }]}>
+    <Container>
       {pieces.map((piece, index) => (
         <Piece
           piece={piece}
@@ -30,17 +29,7 @@ const PieceBank: SFC<Props> = ({ pieces, pieceSize, gameMaster, style }) => {
           key={index}
         />
       ))}
-      {pieces.length === 0 && (
-        <AbsoluteView style={{ alignItems: "flex-start" }}>
-          <Text
-            cat="BodyS"
-            color={Colors.TEXT.LIGHT_SECONDARY.toString()}
-            style={{ fontStyle: "italic", marginLeft: 4 }}
-          >
-            {"No pieces captured"}
-          </Text>
-        </AbsoluteView>
-      )}
+      {pieces.length === 0 && <View style={{ height: pieceSize, width: pieceSize }} />}
     </Container>
   );
 };
