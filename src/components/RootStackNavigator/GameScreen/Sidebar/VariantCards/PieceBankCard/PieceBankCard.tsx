@@ -21,35 +21,27 @@ const PieceBankCard: SFC<Props> = ({ gameMaster, style }) => {
     <Card style={style}>
       <Text cat="DisplayM">Piece Bank</Text>
       <PlayerBankContainer>
-        {players.map((player) => {
+        {players.map((player, index) => {
           const pieces = orderedPieceBankPieces(gameMaster, player.name);
           return (
-            <Container key={player.name}>
-              <PlayerTitleContainer empty={pieces.length === 0}>
-                <Text
-                  cat="BodyM"
-                  color={Colors.TEXT.LIGHT.toString()}
-                  style={{ minWidth: pieces.length === 0 ? 0 : 55 }}
-                >
-                  {PlayerDisplayNames[player.name]}
-                </Text>
-                {pieces.length === 0 && (
-                  <Text
-                    cat="BodyS"
-                    color={Colors.TEXT.LIGHT_SECONDARY.toString()}
-                    style={{ fontStyle: "italic", marginLeft: 10 }}
-                  >
-                    {"no pieces captured"}
-                  </Text>
-                )}
-              </PlayerTitleContainer>
+            <View key={player.name}>
+              <Text
+                cat="BodyM"
+                color={Colors.TEXT.LIGHT.toString()}
+                style={{ minWidth: pieces.length === 0 ? 0 : 55 }}
+              >
+                {PlayerDisplayNames[player.name]}
+              </Text>
               <PieceBank
                 pieces={pieces}
                 pieceSize={pieceSize}
                 gameMaster={gameMaster}
-                style={{ flex: 1 }}
+                style={{
+                  marginLeft: 8,
+                  marginBottom: index === players.length - 1 ? 0 : 4,
+                }}
               />
-            </Container>
+            </View>
           );
         })}
       </PlayerBankContainer>
@@ -61,16 +53,6 @@ export { PieceBankCard };
 
 const PlayerBankContainer = styled(View)`
   margin-top: 6px;
-`;
-
-const Container = styled(View)`
-  flex-direction: row;
-  align-items: center;
-`;
-
-const PlayerTitleContainer = styled(View)<{ empty: boolean }>`
-  justify-content: center;
-  flex-direction: row;
 `;
 
 function orderedPieceBankPieces(gameMaster: GameMaster, player: PlayerName): Piece[] {
