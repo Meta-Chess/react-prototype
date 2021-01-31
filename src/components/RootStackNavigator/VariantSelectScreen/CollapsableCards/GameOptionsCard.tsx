@@ -63,9 +63,7 @@ const GameOptionsCard: SFC<Props> = ({ style, gameOptions, setGameOptions }) => 
         />
         <SelectInput
           options={numberOfPlayerOptions}
-          onChange={(value): void => {
-            setNumberOfPlayers(value);
-          }}
+          onChange={setNumberOfPlayers}
           style={{ marginTop: 4 }}
           zIndex={5000}
         />
