@@ -57,7 +57,6 @@ export const crazyhouse: Rule = {
       .getSquares()
       .filter((square) => {
         if (square === undefined) return false;
-        if (square.location.charAt(0) === LocationPrefix.graveyard) return false;
         if (
           piece.name === PieceName.Pawn &&
           game.board.getRegion(Region.promotion).includes(square)
