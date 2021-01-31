@@ -2,19 +2,23 @@ import React from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
-import { FutureVariant } from "game";
+import { AdviceLevel, FutureVariant } from "game";
 import Color from "color";
 
 interface Props {
   variant: FutureVariant;
   selected: boolean;
-  clash: boolean;
+  conflictLevel: AdviceLevel | undefined;
 }
 
-export const VariantTileHeader: SFC<Props> = ({ variant, selected, clash }) => {
-  const success = Colors.SUCCESS.fade(0.25);
-  const fail = Colors.ERROR.fade(0.25);
-  const color = !selected ? Colors.DARKISH : clash ? fail : success;
+const BACKGROUND_COLOR: { [key in AdviceLevel]: Color } = {
+  SUCCESS: Colors.SUCCESS.fade(0.25),
+  ERROR: Colors.ERROR.fade(0.25),
+  WARNING: Colors.WARNING.fade(0.25),
+};
+
+export const VariantTileHeader: SFC<Props> = ({ variant, selected, conflictLevel }) => {
+  const color = !selected ? Colors.DARKISH : BACKGROUND_COLOR[conflictLevel || "SUCCESS"];
   return (
     <Container color={color}>
       <View style={{ flex: 1 }}>
