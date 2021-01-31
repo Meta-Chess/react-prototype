@@ -1,4 +1,4 @@
-import { PieceName, Gait, Region, TokenName } from "../types";
+import { PieceName, Gait, Region } from "../types";
 import { Path } from "game/Pather";
 import { Square } from "../Board";
 import { Rule } from "./CompactRules";
