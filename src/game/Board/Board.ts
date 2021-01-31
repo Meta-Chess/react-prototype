@@ -10,7 +10,7 @@ import {
   Region,
   Regions,
 } from "game/types";
-import { SpecialLocation } from "game/board/location";
+import { LocationPrefix, SpecialLocation } from "game/board/location";
 import { isPresent } from "utilities";
 import { CompactRules } from "game/rules/CompactRules";
 import { IdGenerator } from "utilities/IdGenerator";
@@ -92,8 +92,12 @@ class Board extends TokenOwner {
     });
   }
 
-  getPieces(): Piece[] {
-    return Object.values(this.pieces);
+  getPieces(includeGraveyards = false): Piece[] {
+    return includeGraveyards
+      ? Object.values(this.pieces)
+      : Object.values(this.pieces).filter(
+          (piece) => piece.location.charAt(0) !== LocationPrefix.graveyard
+        );
   }
 
   getPiece(pieceId: string): Piece | undefined {
