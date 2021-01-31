@@ -57,7 +57,6 @@ export const crazyhouse: Rule = {
       .filter((location) => {
         const square = game.board.squareAt(location);
         if (square === undefined) return false;
-        if (square.hasTokenWithName(TokenName.InvisibilityToken)) return false;
         if (location.charAt(0) === LocationPrefix.graveyard) return false;
         if (
           piece.name === PieceName.Pawn &&

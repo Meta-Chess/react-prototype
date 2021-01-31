@@ -1,9 +1,10 @@
-// If a location has a prefix it will be interpreted in a certain way
+// LocationPrefixes determine how a location is treated logically
 export const LocationPrefix = {
   ["graveyard"]: "g",
   ["pieceBank"]: "gpb",
 };
 
+// Actual locations
 export const SpecialLocation = {
   ["graveyard"]: LocationPrefix["graveyard"],
 };

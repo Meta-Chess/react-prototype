@@ -196,7 +196,7 @@ export class GameMaster {
   unselectAllPieces(): void {
     this.selectedPieces = [];
     this.allowableMoves = [];
-    this.locationSelected = false; //QUESTION: how is this used?
+    this.locationSelected = false;
   }
 
   unselectPieces(pieceIds?: string[]): void {
@@ -213,6 +213,7 @@ export class GameMaster {
   }
 
   calculateAllowableMovesForSelectedPieces(): void {
+    this.locationSelected = false;
     this.allowableMoves = this.selectedPieces.flatMap((piece: Piece) =>
       new Pather(this.game, this.gameClones, piece, this.interrupt).findPaths()
     );
