@@ -53,11 +53,10 @@ export const crazyhouse: Rule = {
     const pieceLocation = piece.location;
     if (piece === undefined || pieceLocation.slice(0, 3) !== LocationPrefix.pieceBank)
       return { game, piece, interrupt, moves };
-    const newMoves = Object.keys(game.board.squares)
-      .filter((location) => {
-        const square = game.board.squareAt(location);
+    const newMoves = game.board
+      .getSquares()
+      .filter((square) => {
         if (square === undefined) return false;
-        if (location.charAt(0) === LocationPrefix.graveyard) return false;
         if (
           piece.name === PieceName.Pawn &&
           game.board.getRegion(Region.promotion).includes(square)
@@ -66,13 +65,13 @@ export const crazyhouse: Rule = {
         if (square.pieces.length > 0) return false;
         return true;
       })
-      .map((placementLocation) => ({
+      .map((placementSquare) => ({
         pieceId: piece.id,
-        location: placementLocation,
+        location: placementSquare.location,
         pieceDeltas: [
           {
             pieceId: piece.id,
-            path: new Path(pieceLocation, [placementLocation]),
+            path: new Path(pieceLocation, [placementSquare.location]),
           },
         ],
         playerName: parseInt(pieceLocation.charAt(pieceLocation.length - 1)),

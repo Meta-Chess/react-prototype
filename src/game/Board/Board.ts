@@ -132,6 +132,14 @@ class Board extends TokenOwner {
     return Object.keys(this.squares);
   }
 
+  getSquares(includeGraveyards = false): Square[] {
+    return includeGraveyards
+      ? Object.values(this.squares)
+      : Object.values(this.squares).filter(
+          (square) => square.location.charAt(0) !== LocationPrefix.graveyard
+        );
+  }
+
   addSquare({ location, square }: { location: string; square: Square }): void {
     this.squares = { ...this.squares, [location]: square };
   }
