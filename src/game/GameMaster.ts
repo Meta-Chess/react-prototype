@@ -1,6 +1,6 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, PlayerDisplayNames } from "./types";
+import { GameOptions, PlayerName } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants/variants";
@@ -269,7 +269,7 @@ export class GameMaster {
   checkWinConditions(): void {
     const remainingPlayers = this.game.alivePlayers();
     if (remainingPlayers.length === 1) {
-      this.result = PlayerDisplayNames[remainingPlayers[0].name] + " won!";
+      this.result = PlayerName[remainingPlayers[0].name] + " won!";
       this.endGame();
     }
     //TODO: once there are other win conditions check those with an interruption point
