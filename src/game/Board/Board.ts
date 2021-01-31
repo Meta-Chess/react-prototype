@@ -10,7 +10,7 @@ import {
   Region,
   Regions,
 } from "game/types";
-import { LocationPrefix, SpecialLocation } from "game/board/location";
+import { LocationPrefix, SpecialLocation } from "game/Board/location";
 import { isPresent } from "utilities";
 import { CompactRules } from "game/rules/CompactRules";
 import { IdGenerator } from "utilities/IdGenerator";
