@@ -14,7 +14,9 @@ describe("In standard chess", () => {
       )
     );
     const board = gameMaster.game.board;
-    board.getLocations().forEach((location) => board.killPiecesAt(location));
+    board
+      .getLocations()
+      .forEach((location) => board.killPiecesAt({ piecesLocation: location }));
 
     // Place a king and a rook
     board.addPiece({

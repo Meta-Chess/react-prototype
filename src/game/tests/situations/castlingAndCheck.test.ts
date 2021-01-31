@@ -77,5 +77,5 @@ function killMostPawnsKnightsBishopsAndWhiteQueen(board: Board): void {
     .flat()
     .concat({ rank: 1, file: 4 })
     .map(toLocation)
-    .forEach((location) => board.killPiecesAt(location));
+    .forEach((location) => board.killPiecesAt({ piecesLocation: location }));
 }

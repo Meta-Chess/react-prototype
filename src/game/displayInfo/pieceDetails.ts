@@ -20,3 +20,12 @@ export const pieceDetails = {
     name: "Knight",
   },
 };
+
+export const pieceDisplayOrder = [
+  PieceName.King,
+  PieceName.Queen,
+  PieceName.Rook,
+  PieceName.Bishop,
+  PieceName.Knight,
+  PieceName.Pawn,
+];

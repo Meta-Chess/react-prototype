@@ -3,6 +3,7 @@ export { atomic } from "./atomic";
 export { castling } from "./castling";
 export { check } from "./check";
 export { chemicallyExcitedKnight } from "./chemicallyExcitedKnight";
+export { crazyhouse } from "./crazyhouse";
 export { cylindrical } from "./cylindrical";
 export { fatigue } from "./fatigue";
 export { hex } from "./hex";

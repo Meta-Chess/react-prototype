@@ -10,7 +10,9 @@ describe("In standard chess", () => {
   );
   const board = gameMaster.game.board;
   beforeEach(() => {
-    board.getLocations().forEach((location) => board.killPiecesAt(location));
+    board
+      .getLocations()
+      .forEach((location) => board.killPiecesAt({ piecesLocation: location }));
     gameMaster.unselectAllPieces();
   });
 

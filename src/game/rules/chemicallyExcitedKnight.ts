@@ -62,16 +62,17 @@ export const chemicallyExcitedKnight: Rule = {
     uniq(triggeredKnights).forEach(({ knightId, positionOnSquare }) => {
       const knight = board.getPiece(knightId);
       if (knight === undefined) return;
-      board.killPiecesAt(knight.location);
+      const location = knight.location;
+      board.killPiecesAt({ piecesLocation: location });
       const knightVisuals = {
-        piece: knight,
+        piece: knight.clone(),
         pieceAnimationType: PieceAnimationType.chemicallyExcited,
         positionOnSquare: positionOnSquare,
         outlineColorChange: "rgba(235,52,52,1)",
       };
       addAnimationTokenToSquare({
         board: board,
-        squareLocation: knight.location,
+        squareLocation: location,
         duration: PRE_EXPLODE_ANIMATION_DURATION,
         delay: 0,
         animationType: undefined,
@@ -83,15 +84,16 @@ export const chemicallyExcitedKnight: Rule = {
       if (triggeredKnights.some(({ knightId }) => knightId === deadPieceId)) return;
       const piece = board.getPiece(deadPieceId);
       if (piece === undefined) return;
-      board.killPiecesAt(piece.location);
+      const location = piece.location;
+      board.killPiecesAt({ piecesLocation: location });
       const pieceVisuals = {
-        piece: piece,
+        piece: piece.clone(),
         pieceAnimationType: PieceAnimationType.chemicallyExcited,
         positionOnSquare: positionOnSquare,
       };
       addAnimationTokenToSquare({
         board: board,
-        squareLocation: piece.location,
+        squareLocation: location,
         duration: PRE_EXPLODE_ANIMATION_DURATION,
         delay: 0,
         animationType: undefined,

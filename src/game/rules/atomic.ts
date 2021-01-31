@@ -13,10 +13,10 @@ export const atomic: Rule = {
       consequence: ({ board, square }) => {
         const atomicImpactSquares = allAdjacencies(board, square);
         const captureSquare = square.location;
-        board.killPiecesAt(captureSquare);
+        board.killPiecesAt({ piecesLocation: captureSquare });
         atomicImpactSquares.forEach((location) => {
           if (!board.getPiecesAt(location).some((piece) => piece.name === PieceName.Pawn))
-            board.killPiecesAt(location);
+            board.killPiecesAt({ piecesLocation: location });
           addAnimationTokenToSquare({
             board: board,
             squareLocation: location,

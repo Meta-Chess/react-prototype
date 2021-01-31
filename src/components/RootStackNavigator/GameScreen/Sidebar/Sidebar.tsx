@@ -9,6 +9,7 @@ import { VariantInfoCard } from "./VariantInfoCard";
 import { RulesInfoCard } from "./RulesInfoCard";
 import { PieceCredit } from "./PieceCredit";
 import { SelectedPieceInfoCard } from "./SelectedPieceInfoCard";
+import { VariantCards } from "./VariantCards";
 import styled from "styled-components/native";
 import { PlayersCard } from "./PlayersCard";
 
@@ -39,6 +40,7 @@ const Sidebar: SFC = ({ style }) => {
         contentContainerStyle={{ flexGrow: 1 }}
         onScroll={(): void => modals.hideAll()}
         scrollEventThrottle={100}
+        showsVerticalScrollIndicator={false}
       >
         <TouchableOpacity
           style={{ flex: 1, paddingBottom: 24 }}
@@ -53,6 +55,11 @@ const Sidebar: SFC = ({ style }) => {
               style={{ marginBottom: 8 }}
             />
             <PlayersCard style={{ marginBottom: 8 }} />
+            <VariantCards
+              gameMaster={gameMaster}
+              rules={rules} //TEMP: later we will grab this from gameMaster - variants aren't passed/customRules are distinct
+              style={{ marginBottom: 8 }}
+            />
             <RulesInfoCard rules={rules} key={key} style={{ marginBottom: 8 }} />
             <SelectedPieceInfoCard
               pieces={pieces}
