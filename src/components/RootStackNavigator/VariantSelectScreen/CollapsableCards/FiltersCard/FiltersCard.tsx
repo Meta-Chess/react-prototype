@@ -16,7 +16,7 @@ interface Props {
 const FiltersCard: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => {
   const traitsInSet: TraitsInSetInfo[] = getTraitInfoForSet();
   return (
-    <CollapsableCard title={"Filters"} style={style}>
+    <CollapsableCard title={"Filters"} lastCardInStack={true} style={style}>
       <Container>
         {Object.values(traitsInSet).map((info) => (
           <TraitFilter

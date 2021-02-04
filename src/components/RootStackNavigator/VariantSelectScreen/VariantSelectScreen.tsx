@@ -61,28 +61,25 @@ const VariantSelectScreen: FC = () => {
       </LeftContainer>
       <Sidebar>
         <ScrollView
-          style={{ flex: 1 }}
+          style={{
+            flex: 1,
+            marginHorizontal: -24,
+          }}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingVertical: 24 }}
+          contentContainerStyle={{ paddingBottom: 12 }}
         >
           <SelectedVariantsCard
             selectedVariants={selectedVariants}
             setSelectedVariants={setSelectedVariants}
           />
-          <GameOptionsCard
-            gameOptions={gameOptions}
-            setGameOptions={setGameOptions}
-            style={{ marginTop: 16 }}
-          />
-          <FiltersCard
-            activeFilters={activeFilters}
-            setActiveFilters={setActiveFilters}
-            style={{ marginTop: 16 }}
-          />
           <AdviceCard
             selectedVariants={selectedVariants}
             variantConflicts={variantConflicts}
-            style={{ marginTop: 16 }}
+          />
+          <GameOptionsCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
+          <FiltersCard
+            activeFilters={activeFilters}
+            setActiveFilters={setActiveFilters}
           />
         </ScrollView>
         <NavigationContainer>

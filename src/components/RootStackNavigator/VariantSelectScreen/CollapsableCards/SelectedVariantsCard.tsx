@@ -17,7 +17,7 @@ const SelectedVariantsCard: SFC<Props> = ({
   style,
 }) => {
   return (
-    <CollapsableCard title={"Selected Variants"} style={style}>
+    <CollapsableCard title={"Variant Composition"} style={style}>
       {selectedVariants.length !== 0 ? (
         <Container>
           {selectedVariants.map((variant) => {
