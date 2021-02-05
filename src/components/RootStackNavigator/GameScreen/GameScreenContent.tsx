@@ -1,19 +1,16 @@
-import React, { FC, useContext, useCallback, useState } from "react";
+import React, { FC, useContext, useCallback, useState, useMemo } from "react";
 import { Platform, useWindowDimensions, View } from "react-native";
-import { GameContext } from "game";
-import {
-  Board,
-  BoardMeasurements,
-  calculateBoardMeasurements,
-} from "components/shared/Board";
+import { Board, BoardMeasurements, calculateBoardMeasurements } from "components/shared";
 import { Sidebar } from "./Sidebar";
-import { SquareShape, TokenName } from "game";
-import { useFlipDelay } from "components/shared/Board/useFlipDelay";
+import { SquareShape, TokenName, GameContext } from "game";
+import { useFlipDelay } from "./useFlipDelay";
 import { AbsoluteView, Spinner } from "ui";
 import styled from "styled-components/native";
 import { HelpMenu, ScreenContainer } from "components/shared";
-import { WinModal } from "components/shared/Board/WinModal";
-import { MoveDisambiguationModal } from "components/shared/Board/MoveDisambiguationModal";
+import { WinModal } from "./WinModal";
+import { MoveDisambiguationModal } from "./MoveDisambiguationModal";
+import { gerPromotionDisambiguationOpportunities } from "./getPromotionDisambiguationOpportunities";
+import { PromotionDisambiguationModal } from "components/RootStackNavigator/GameScreen/PromotionDisambiguationModal";
 
 export const GameScreenContent: FC = () => {
   const { height, width } = useWindowDimensions();
@@ -22,8 +19,16 @@ export const GameScreenContent: FC = () => {
   const { gameMaster } = useContext(GameContext);
   const [winModalHidden, setWinModalHidden] = useState(false);
   const hideWinModal = useCallback(() => setWinModalHidden(true), []);
+  const allowableMoves = gameMaster?.allowableMoves;
   const moveDisambiguationRequired =
-    gameMaster?.locationSelected && (gameMaster?.allowableMoves.length || 0) > 1;
+    gameMaster?.locationSelected && (allowableMoves?.length || 0) > 1;
+  const promotionDisambiguationOpportunities = useMemo(
+    () =>
+      moveDisambiguationRequired
+        ? gerPromotionDisambiguationOpportunities(allowableMoves)
+        : [],
+    [moveDisambiguationRequired, allowableMoves]
+  );
   const { flipBoard } = useFlipDelay(gameMaster?.game?.currentPlayerIndex);
   if (!gameMaster)
     return (
@@ -63,6 +68,13 @@ export const GameScreenContent: FC = () => {
         {gameMaster?.gameOver && !winModalHidden ? (
           <AbsoluteView>
             <WinModal onClose={hideWinModal} />
+          </AbsoluteView>
+        ) : promotionDisambiguationOpportunities?.length > 0 ? (
+          <AbsoluteView>
+            <PromotionDisambiguationModal
+              promotion={promotionDisambiguationOpportunities[0]}
+              pieceSize={boardMeasurements.squareSize}
+            />
           </AbsoluteView>
         ) : moveDisambiguationRequired ? (
           <AbsoluteView style={{ justifyContent: "center", flexDirection: "row" }}>

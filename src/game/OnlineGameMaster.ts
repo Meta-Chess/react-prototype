@@ -59,6 +59,14 @@ export class OnlineGameMaster extends GameMaster {
     return onlineGameMaster;
   }
 
+  // TODO: Can we do anything about the duplication across filterAllowableMoves and onPress?
+  filterAllowableMoves(filter: (move: Move) => boolean): Move | undefined {
+    const move = super.filterAllowableMoves(filter);
+    if (move) this.gameClient.sendMove(move);
+    if (this.gameOver) this.disconnect();
+    return move;
+  }
+
   onPress(location: string, pieceId?: string): Move | undefined {
     const move = super.onPress(location, pieceId);
     if (move) this.gameClient.sendMove(move);

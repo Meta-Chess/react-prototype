@@ -79,7 +79,7 @@ const toroidalPiecesRule = (numberOfPlayers: number) => (square: Square): Piece[
 
   if (relativeRank === 3)
     return [
-      new Piece(PieceName.Pawn, () => standardGaits.BLACK_PAWN_GAITS, owner, location),
+      new Piece(PieceName.Pawn, owner, () => standardGaits.BLACK_PAWN_GAITS, location),
     ];
   if (relativeRank === 4) {
     if (file === 1 || file === 8)
@@ -93,7 +93,7 @@ const toroidalPiecesRule = (numberOfPlayers: number) => (square: Square): Piece[
   }
   if (relativeRank === 5)
     return [
-      new Piece(PieceName.Pawn, () => standardGaits.WHITE_PAWN_GAITS, owner, location),
+      new Piece(PieceName.Pawn, owner, () => standardGaits.WHITE_PAWN_GAITS, location),
     ];
 
   return [];

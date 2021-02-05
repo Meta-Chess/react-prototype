@@ -152,6 +152,15 @@ export class GameMaster {
     }
   }
 
+  filterAllowableMoves(filter: (move: Move) => boolean): Move | undefined {
+    this.allowableMoves = this.allowableMoves.filter(filter);
+    if (this.allowableMoves.length === 1) {
+      const move = this.allowableMoves[0];
+      this.doMove(move);
+      return move;
+    }
+  }
+
   onPress(location: string, pieceId?: string): Move | undefined {
     // console.log(`${this.selectedPieces.length ? "" : "\n\n// Move ... ???\n"}gameMaster.onPress("${location}");`); // TEST WRITING HELPER COMMENT
     const moves = uniqWith(
