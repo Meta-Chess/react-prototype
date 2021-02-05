@@ -9,8 +9,8 @@ import styled from "styled-components/native";
 import { HelpMenu, ScreenContainer } from "components/shared";
 import { WinModal } from "./WinModal";
 import { MoveDisambiguationModal } from "./MoveDisambiguationModal";
-import { gerPromotionDisambiguationOpportunities } from "./getPromotionDisambiguationOpportunities";
-import { PromotionDisambiguationModal } from "components/RootStackNavigator/GameScreen/PromotionDisambiguationModal";
+import { getPromotionDisambiguationOpportunities } from "./getPromotionDisambiguationOpportunities";
+import { PromotionDisambiguationModal } from "./PromotionDisambiguationModal";
 
 export const GameScreenContent: FC = () => {
   const { height, width } = useWindowDimensions();
@@ -25,7 +25,7 @@ export const GameScreenContent: FC = () => {
   const promotionDisambiguationOpportunities = useMemo(
     () =>
       moveDisambiguationRequired
-        ? gerPromotionDisambiguationOpportunities(allowableMoves)
+        ? getPromotionDisambiguationOpportunities(allowableMoves)
         : [],
     [moveDisambiguationRequired, allowableMoves]
   );

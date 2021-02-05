@@ -28,7 +28,7 @@ export const PromotionDisambiguationModal: FC<Props> = ({ promotion, pieceSize }
       if (!delta || !delta.promoteTo) return undefined;
       return {
         pieceType: delta.promoteTo,
-        owner: gameMaster.game.board.findPieceById(delta.pieceId)?.owner || 0, // TODO: Use list of all players introduced in PR-52
+        owner: gameMaster.game.board.findPieceById(delta.pieceId)?.owner || 0, // TODO: Use list of all players introduced in PR-52 for default value
       };
     }),
     isEqual

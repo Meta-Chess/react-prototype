@@ -15,6 +15,7 @@ module.exports = function (api) {
             navigation: "./src/navigation",
             "primitives/*": "./src/primitives/*",
             primitives: "./src/primitives",
+            testHelpers: "./src/testHelpers",
             "ui/*": "./src/ui/*",
             ui: "./src/ui",
             "utilities/*": "./src/utilities/*",

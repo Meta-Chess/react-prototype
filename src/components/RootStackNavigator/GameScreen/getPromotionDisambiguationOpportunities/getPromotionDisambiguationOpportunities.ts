@@ -1,18 +1,19 @@
 import { Move } from "game";
 import { hasPresentKey } from "ts-is-present";
+import { isEqual } from "lodash";
 
 interface Promotion {
   pieceId: string;
   location: string;
 }
 
-export function gerPromotionDisambiguationOpportunities(moves?: Move[]): Promotion[] {
+export function getPromotionDisambiguationOpportunities(moves?: Move[]): Promotion[] {
   if (!moves || moves.length < 2) return [];
   let promotionDisambiguationOpportunities = getPromotions(moves[0]);
-  for (const move of moves) {
-    const nextPromotions = getPromotions(move);
+  for (let i = 1; i < moves.length; i++) {
+    const nextPromotions = getPromotions(moves[i]);
     promotionDisambiguationOpportunities = promotionDisambiguationOpportunities.filter(
-      (promotion): boolean => nextPromotions.includes(promotion)
+      (promotion): boolean => nextPromotions.some((x) => isEqual(x, promotion))
     );
     if (promotionDisambiguationOpportunities.length === 0) return [];
   }
