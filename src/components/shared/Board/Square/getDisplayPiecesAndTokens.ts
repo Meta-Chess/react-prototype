@@ -1,4 +1,4 @@
-import { Square } from "game/board";
+import { Square } from "game/Board";
 import { Token, TokenName } from "game/types";
 
 export function getDisplayPiecesAndTokens(square: Square): (string | Token)[] {

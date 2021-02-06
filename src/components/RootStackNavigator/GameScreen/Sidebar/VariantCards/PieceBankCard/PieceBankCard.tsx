@@ -5,7 +5,7 @@ import { GameMaster } from "game";
 import { Piece } from "game/Board";
 import { LocationPrefix } from "game/Board/location";
 import { View } from "react-native";
-import { PlayerName, PlayerDisplayNames } from "game/types";
+import { PlayerName } from "game/types";
 import { PieceBank } from "./PieceBank";
 import styled from "styled-components/native";
 import { pieceDisplayOrder } from "game/displayInfo";
@@ -31,7 +31,7 @@ const PieceBankCard: SFC<Props> = ({ gameMaster, style }) => {
                   color={Colors.TEXT.LIGHT.toString()}
                   style={{ minWidth: pieces.length === 0 ? 0 : 55 }}
                 >
-                  {PlayerDisplayNames[player.name]}
+                  {PlayerName[player.name]}
                 </Text>
                 {pieces.length === 0 && (
                   <Text
