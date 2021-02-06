@@ -2,7 +2,7 @@ import { PieceName, TokenName } from "../types";
 import { Piece, Rule } from "game";
 import { activeCastlingToken, passiveCastlingToken } from "./constants";
 import { isPresent, hasPresentKey } from "ts-is-present";
-import { Pather, Scanner } from "../Pather";
+import { Pather } from "../Pather";
 import { Path } from "game/Pather/Path";
 
 export const castling: Rule = {
@@ -27,16 +27,17 @@ export const castling: Rule = {
       .generateGaits()
       .map((g) => g.pattern[0])
       .filter(isPresent);
-    const scanner = new Scanner(game.board, activePiece);
+    const pather = new Pather(game, [], activePiece, interrupt);
 
-    const castlePiecesAndDirections = directions.flatMap((direction) =>
-      scanner
-        .scan({
-          pattern: [direction],
-          pieceMatcher: (p) => p.hasTokenWithName(TokenName.PassiveCastling),
-        })
-        .map((piece) => ({ piece, direction }))
-    );
+    const castlePiecesAndDirections = directions.flatMap((direction) => {
+      const paths = pather.path({
+        gait: { pattern: [direction], repeats: true, phaser: true },
+      });
+      return game.board
+        .getPiecesAt(paths[paths.length - 1]?.getEnd())
+        .filter((p) => p.hasTokenWithName(TokenName.PassiveCastling))
+        .map((piece) => ({ piece, direction }));
+    });
 
     const castlePiecesAndLocations = castlePiecesAndDirections.flatMap(
       ({ piece: passivePiece, direction }) => {

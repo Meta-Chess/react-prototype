@@ -156,12 +156,16 @@ export class Pather {
 
   canStay({ square, gait, remainingSteps }: HypotheticalDisplacement): boolean {
     if (!gait.interruptable && remainingSteps.length > 1) return false;
-    if (this.game.board.squareHasPieceBelongingTo(square, this.piece.owner)) return false;
 
-    if (this.capturePossible(square)) {
-      if (gait.mustNotCapture) return false;
-    } else if (gait.mustCapture) {
-      return false;
+    if (!gait.phaser) {
+      if (this.game.board.squareHasPieceBelongingTo(square, this.piece.owner))
+        return false;
+
+      if (this.capturePossible(square)) {
+        if (gait.mustNotCapture) return false;
+      } else if (gait.mustCapture) {
+        return false;
+      }
     }
 
     return true;

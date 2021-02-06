@@ -15,6 +15,7 @@ export interface Gait {
   nonBlocking?: boolean;
   mustNotCapture?: boolean;
   mustCapture?: boolean;
+  phaser?: boolean;
   data?: GaitData;
 }
 // The order of colors in this enum corresponds to the order of colors in Colors.PLAYER
