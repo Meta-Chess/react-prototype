@@ -1,4 +1,4 @@
-import { Move } from "game";
+import { allPossiblePlayerNames, Move } from "game";
 import { randomChoice, randomInt } from "utilities";
 import { PieceDelta } from "game/Move";
 import { givenARandomLocation } from "./givenARandomLocation";
@@ -19,7 +19,7 @@ export function givenAMove(
   const playerName =
     details.playerName !== undefined
       ? details.playerName
-      : randomChoice([0, 1, 2, 3, 4, 5]); // TODO: use player list from PR-52
+      : randomChoice(allPossiblePlayerNames);
 
   return { pieceId, location, pieceDeltas, playerName, data: details.data };
 }

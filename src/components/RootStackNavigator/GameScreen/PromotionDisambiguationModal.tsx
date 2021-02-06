@@ -1,5 +1,5 @@
 import React, { useContext, FC } from "react";
-import { GameContext, Piece as PieceClass } from "game";
+import { allPossiblePlayerNames, GameContext, Piece as PieceClass } from "game";
 import { View, ScrollView, Platform } from "react-native";
 import { CloseIcon, Colors, Text } from "primitives";
 import { IconButton } from "ui/Buttons/IconButton";
@@ -28,7 +28,9 @@ export const PromotionDisambiguationModal: FC<Props> = ({ promotion, pieceSize }
       if (!delta || !delta.promoteTo) return undefined;
       return {
         pieceType: delta.promoteTo,
-        owner: gameMaster.game.board.findPieceById(delta.pieceId)?.owner || 0, // TODO: Use list of all players introduced in PR-52 for default value
+        owner:
+          gameMaster.game.board.findPieceById(delta.pieceId)?.owner ||
+          allPossiblePlayerNames[0],
       };
     }),
     isEqual
