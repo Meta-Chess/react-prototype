@@ -3,7 +3,7 @@ import { Clock } from "./Clock";
 import { EventCenter } from "./EventCenter";
 import { Player } from "./Player";
 import { Move } from "./Move";
-import { PlayerName } from "./types";
+import { allPossiblePlayerNames, PlayerName } from "./types";
 import { CompactRules } from "./rules";
 
 export class Game {
@@ -49,14 +49,14 @@ export class Game {
     numberOfPlayers = 2
   ): Game {
     const clock = time
-      ? new Clock(Array.from(Array(numberOfPlayers).keys()), time)
+      ? new Clock(allPossiblePlayerNames.slice(0, numberOfPlayers), time)
       : undefined;
     clock?.setActivePlayers([PlayerName.White]);
 
     const events = new EventCenter({});
-    const players = Array.from(Array(numberOfPlayers).keys()).map(
-      (name) => new Player(name, true)
-    );
+    const players = allPossiblePlayerNames
+      .slice(0, numberOfPlayers)
+      .map((name) => new Player(name, true));
 
     const game = new Game(
       interrupt,
