@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useWindowDimensions, ScrollView, View, TouchableOpacity } from "react-native";
 import { Button, Card, useModals } from "ui";
-import { Screens, useNavigation } from "navigation";
+import { useGoBackOrToStartScreen } from "navigation";
 import { Colors, SFC } from "primitives";
 import { GameContext, OnlineGameMaster } from "game";
 import { RoomIdCard } from "./RoomIdCard";
@@ -14,7 +14,6 @@ import styled from "styled-components/native";
 import { PlayersCard } from "./PlayersCard";
 
 const Sidebar: SFC = ({ style }) => {
-  const navigation = useNavigation();
   const modals = useModals();
   const { gameMaster } = useContext(GameContext);
   const pieces = gameMaster?.selectedPieces;
@@ -33,6 +32,8 @@ const Sidebar: SFC = ({ style }) => {
   if (k !== key) {
     setKey(k);
   }
+
+  const goBackOrToStartScreen = useGoBackOrToStartScreen();
 
   return (
     <Container style={style}>
@@ -73,13 +74,7 @@ const Sidebar: SFC = ({ style }) => {
         </TouchableOpacity>
       </ScrollView>
       <ButtonContainer>
-        <Button
-          text="Finish Game"
-          onPress={(): void => {
-            if (navigation.canGoBack()) navigation.goBack();
-            else navigation.replace(Screens.StartScreen);
-          }}
-        />
+        <Button text="Finish Game" onPress={goBackOrToStartScreen} />
       </ButtonContainer>
     </Container>
   );

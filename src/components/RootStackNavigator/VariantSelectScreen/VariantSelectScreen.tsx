@@ -8,7 +8,7 @@ import {
   GameOptions,
 } from "game";
 import { TraitName } from "game/variants/traitInfo";
-import { useNavigation, Screens } from "navigation";
+import { useNavigation, Screens, useGoBackOrToStartScreen } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
 import {
@@ -26,6 +26,7 @@ import { AdviceCard } from "components/RootStackNavigator/VariantSelectScreen/Co
 
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
+  const goBackOrToStartScreen = useGoBackOrToStartScreen();
 
   const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
 
@@ -87,7 +88,7 @@ const VariantSelectScreen: FC = () => {
         <NavigationContainer>
           <ButtonSecondary
             text="Back"
-            onPress={(): void => navigation.goBack()}
+            onPress={goBackOrToStartScreen}
             style={{ flex: 1 }}
           />
           <Button
