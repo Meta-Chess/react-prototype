@@ -17,12 +17,13 @@ import {
   GameOptionsCard,
   defaultGameOptions,
 } from "./CollapsableCards";
-import { Button, ButtonSecondary } from "ui";
+import { Button, ButtonSecondary, HorizontalSeparator } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors } from "primitives";
 import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
 import { AdviceCard } from "components/RootStackNavigator/VariantSelectScreen/CollapsableCards/AdviceCard";
+import { HelpMenu } from "components/shared";
 
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
@@ -48,22 +49,16 @@ const VariantSelectScreen: FC = () => {
 
   return (
     <ScreenContainer
-      style={{ paddingHorizontal: 0, paddingVertical: 0, flexDirection: "row" }}
+      style={{
+        paddingHorizontal: 0,
+        paddingVertical: 0,
+        flexDirection: "row-reverse",
+      }}
     >
-      <LeftContainer style={{ flex: 1 }}>
-        <VariantCardGrid
-          style={{ flex: 1, paddingLeft: 24, paddingRight: 4 }}
-          displayVariants={displayVariants}
-          selectedVariants={selectedVariants}
-          setSelectedVariants={setSelectedVariants}
-          conflictLevel={conflictLevel}
-        />
-      </LeftContainer>
       <Sidebar>
         <ScrollView
           style={{
             flex: 1,
-            marginHorizontal: -24,
           }}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 12 }}
@@ -82,6 +77,7 @@ const VariantSelectScreen: FC = () => {
             setActiveFilters={setActiveFilters}
           />
         </ScrollView>
+        <HorizontalSeparator color={Colors.DARKISH.fade(0.55).toString()} />
         <NavigationContainer>
           <ButtonSecondary
             text="Back"
@@ -101,6 +97,20 @@ const VariantSelectScreen: FC = () => {
           />
         </NavigationContainer>
       </Sidebar>
+      <LeftContainer style={{ flex: 1, flexDirection: "column-reverse" }}>
+        <VariantCardGrid
+          style={{ flex: 1, paddingLeft: 24, paddingRight: 4 }}
+          displayVariants={displayVariants}
+          selectedVariants={selectedVariants}
+          setSelectedVariants={setSelectedVariants}
+          conflictLevel={conflictLevel}
+        />
+        <Topbar style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1, marginTop: -4 }}>
+            <HelpMenu context={{ selectedVariants, displayVariants, conflictLevel }} />
+          </View>
+        </Topbar>
+      </LeftContainer>
     </ScreenContainer>
   );
 };
@@ -109,17 +119,28 @@ const LeftContainer = styled(View)`
   flex: 1;
 `;
 
+const Topbar = styled(View)`
+  height: 40px;
+  align-content: center;
+  background-color: ${Colors.DARK.toString()};
+  border-bottom-width: 1px;
+  border-bottom-color: ${Colors.DARKISH.toString()};
+`;
+
 const Sidebar = styled(View)`
   flex-direction: column;
   width: 400px;
   background-color: ${Colors.DARKER.toString()};
-  padding: 0px 24px 24px;
+  padding: 0px 0px 24px;
+  border-left-width: 1px;
+  border-left-color: ${Colors.DARKISH.toString()};
   ${Styles.BOX_SHADOW}
 `;
 
 const NavigationContainer = styled(View)`
   flex-direction: row;
-  margin-top: 16px;
+  margin-top: 24px;
+  margin-horizontal: 24px;
 `;
 
 export { VariantSelectScreen };

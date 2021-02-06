@@ -11,7 +11,7 @@ export const HorizontalSeparator: FC<Props> = ({
 }) => {
   return (
     <View style={{ width: "100%" }}>
-      <View style={{ flex: 1, borderTopWidth: 2, borderTopColor: color }} />
+      <View style={{ flex: 1, borderTopWidth: 1, borderTopColor: color }} />
     </View>
   );
 };

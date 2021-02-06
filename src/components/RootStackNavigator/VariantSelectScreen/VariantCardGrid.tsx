@@ -44,7 +44,6 @@ const VariantCardGrid: SFC<Props> = ({
           })}
         </CardContainer>
       </ScrollView>
-      <HelpMenu context={{ selectedVariants, displayVariants, conflictLevel }} />
     </View>
   );
 };
