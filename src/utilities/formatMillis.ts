@@ -50,6 +50,11 @@ export const formatMillis = (millis: number): { time: string; validFor: number }
       time: sign + `${seconds}.${tenths} seconds`,
       validFor: tenth,
     };
+  if (seconds <= 0)
+    return {
+      time: sign + `${seconds}.${tenths} seconds`,
+      validFor: Number.POSITIVE_INFINITY,
+    };
   return {
     time: sign + `${seconds}.${tenths}${hundredths} seconds`,
     validFor: hundredth,

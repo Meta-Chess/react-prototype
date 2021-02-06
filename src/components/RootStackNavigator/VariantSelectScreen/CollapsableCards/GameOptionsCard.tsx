@@ -5,6 +5,7 @@ import { VariantName, variants, GameOptions } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
 import { CollapsableCard } from "ui/Containers";
+import { range } from "utilities/range";
 
 interface Props {
   gameOptions: GameOptions;
@@ -12,6 +13,8 @@ interface Props {
 }
 
 const GameOptionsCard: SFC<Props> = ({ style, gameOptions, setGameOptions }) => {
+  const setNumberOfPlayers = (numberOfPlayers: number): void =>
+    setGameOptions({ ...gameOptions, numberOfPlayers });
   const setRoomId = (roomId: string): void =>
     setGameOptions({
       ...gameOptions,
@@ -60,6 +63,12 @@ const GameOptionsCard: SFC<Props> = ({ style, gameOptions, setGameOptions }) => 
           style={{ marginTop: 12 }}
         />
         <SelectInput
+          options={numberOfPlayerOptions}
+          onChange={setNumberOfPlayers}
+          style={{ marginTop: 8 }}
+          zIndex={5000}
+        />
+        <SelectInput
           options={timeOptions}
           onChange={(value): void => {
             setTime(value);
@@ -83,6 +92,11 @@ const timeOptions = [
   { label: "1 hour", value: 3600000 },
   // { label: "3 hours", value: 7200000 },
 ];
+
+const numberOfPlayerOptions = range(2, 7).map((n) => ({
+  label: `${n} players`,
+  value: n,
+}));
 
 const defaultGameOptions = {
   variant: variantNames[0] as VariantName,

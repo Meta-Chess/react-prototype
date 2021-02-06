@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { ScrollView } from "react-native";
 import { Colors, PieceImage, SFC, Text } from "primitives";
-import { GameContext, PieceName, PlayerDisplayNames } from "game";
+import { GameContext, PieceName, PlayerName } from "game";
 import styled from "styled-components/native";
 import { ButtonTertiaryLight, Card, Row } from "ui";
 import { Screens, useNavigation } from "navigation";
@@ -46,7 +46,7 @@ export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
                 size={32}
               />
               <Text cat="BodyM" style={{ marginLeft: 8, marginTop: 4 }} numberOfLines={1}>
-                {[PlayerDisplayNames[player.name], player.endGameMessage].join(" ") + "!"}
+                {[PlayerName[player.name], player.endGameMessage].join(" ") + "!"}
               </Text>
             </Row>
           ))}

@@ -1,6 +1,6 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, PlayerDisplayNames } from "./types";
+import { GameOptions, PlayerName } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants/variants";
@@ -66,7 +66,7 @@ export class GameMaster {
 
     const interrupt = new CompactRules(rules);
     const game = interrupt.for.afterGameCreation({
-      game: Game.createGame(interrupt, time),
+      game: Game.createGame(interrupt, time, gameOptions.numberOfPlayers),
     }).game;
 
     return [interrupt, rules, variant, game, renderer, gameOptions];
@@ -140,9 +140,8 @@ export class GameMaster {
         .forEach((player) => {
           player.alive = false;
           player.endGameMessage = "ran out of time";
+          if (player.name === this.game.getCurrentPlayerName()) this.doMove();
         });
-
-      this.doMove();
     }
   }
 
@@ -233,6 +232,14 @@ export class GameMaster {
 
   checkGameEndConditions(): void {
     this.applyLossConditions();
+    if (
+      !this.gameOver &&
+      !this.game.players[this.game.currentPlayerIndex].alive &&
+      this.game.alivePlayers().length > 1
+    ) {
+      this.doMove();
+      return;
+    }
     this.checkWinConditions();
     if (!this.gameOver) this.checkDrawConditions();
   }
@@ -261,7 +268,7 @@ export class GameMaster {
   checkWinConditions(): void {
     const remainingPlayers = this.game.alivePlayers();
     if (remainingPlayers.length === 1) {
-      this.result = PlayerDisplayNames[remainingPlayers[0].name] + " won!";
+      this.result = PlayerName[remainingPlayers[0].name] + " won!";
       this.endGame();
     }
     //TODO: once there are other win conditions check those with an interruption point

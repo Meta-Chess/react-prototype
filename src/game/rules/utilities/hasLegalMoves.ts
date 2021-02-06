@@ -1,6 +1,6 @@
 import { CompactRules } from "game/rules";
 import { Game } from "game/Game";
-import { PlayerName } from "game/Types";
+import { PlayerName } from "game/types";
 import { Pather } from "game/Pather";
 
 export function hasLegalMoves(

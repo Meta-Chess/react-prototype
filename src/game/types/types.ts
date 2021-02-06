@@ -2,6 +2,7 @@ import { ReactElement } from "react";
 import { Direction } from "./Direction";
 import { Piece, VariantName, RuleName } from "game";
 import { TraitName } from "game/variants/traitInfo";
+import { getValues } from "utilities";
 
 export interface GaitData {
   interceptable?: boolean;
@@ -29,16 +30,7 @@ export enum PlayerName {
   Green,
 }
 
-export const PlayerDisplayNames: { [key in PlayerName]: string } = {
-  [PlayerName.White]: "White",
-  [PlayerName.Black]: "Black",
-  [PlayerName.Silver]: "Silver",
-  [PlayerName.Gold]: "Gold",
-  [PlayerName.Blue]: "Blue",
-  [PlayerName.Red]: "Red",
-  [PlayerName.Yellow]: "Yellow",
-  [PlayerName.Green]: "Green",
-};
+export const allPossiblePlayerNames = getValues<PlayerName>(PlayerName);
 
 export enum PieceName {
   Pawn,
@@ -119,6 +111,7 @@ export enum SquareShape {
 }
 
 export interface GameOptions {
+  numberOfPlayers?: number;
   variant?: VariantName;
   customTitle?: string;
   customRuleNames?: RuleName[];

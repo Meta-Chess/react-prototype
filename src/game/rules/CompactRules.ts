@@ -47,7 +47,7 @@ const identityRule = {
     name: PieceName;
     owner?: PlayerName;
   }) => x,
-  forSquareGenerationModify: (x: { board: Board }) => x,
+  forSquareGenerationModify: (x: { board: Board; numberOfPlayers: number }) => x,
   generateSpecialPacifistMoves: (x: {
     game: Game;
     piece: Piece;
@@ -77,7 +77,7 @@ const identityRule = {
   }) => x,
   lethalCondition: (x: { board: Board; player: PlayerName; dead: string | false }) => x,
   moveIsAggressive: (x: { board: Board; move: Move; aggressive: boolean }) => x,
-  onBoardCreate: (x: { board: Board }) => x,
+  onBoardCreate: (x: { board: Board; numberOfPlayers: number }) => x,
   onCapture: (x: {
     board: Board;
     movingPiece: Piece;

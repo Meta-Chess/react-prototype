@@ -17,18 +17,18 @@ export const hex: Rule = {
   title: "Hexagon",
   description:
     "Every place on the board has a hexagonal geometry rather than a square geometry. Note that diagonal steps are a bit longer than usual. Click on a piece to find out how it moves!",
-  forSquareGenerationModify: ({ board }) => {
+  forSquareGenerationModify: ({ board, numberOfPlayers }) => {
     board.addSquares(generateHexSquares());
     board.defineRegion(Region.center, centerRegion);
     board.defineRegion(Region.promotion, promotionRegion);
-    return { board };
+    return { board, numberOfPlayers };
   },
-  onBoardCreate: ({ board }) => {
+  onBoardCreate: ({ board, numberOfPlayers }) => {
     const bounds = board.rankAndFileBounds();
     board.addAdjacenciesByRule(hexAdjacencies(bounds));
     board.addPiecesByRule(hexPieceSetupRule);
     board.addToken(hexShapeToken);
-    return { board };
+    return { board, numberOfPlayers };
   },
   getGaitGenerator: ({ gaitGenerator, name, owner }) => {
     return {

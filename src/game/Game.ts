@@ -3,7 +3,7 @@ import { Clock } from "./Clock";
 import { EventCenter } from "./EventCenter";
 import { Player } from "./Player";
 import { Move } from "./Move";
-import { PlayerName } from "./types";
+import { allPossiblePlayerNames, PlayerName } from "./types";
 import { CompactRules } from "./rules";
 
 export class Game {
@@ -43,14 +43,28 @@ export class Game {
     this.currentTurn = savePoint.currentTurn;
   }
 
-  static createGame(interrupt: CompactRules, time: number | undefined): Game {
+  static createGame(
+    interrupt: CompactRules,
+    time: number | undefined,
+    numberOfPlayers = 2
+  ): Game {
     const clock = time
-      ? new Clock([PlayerName.White, PlayerName.Black], time)
+      ? new Clock(allPossiblePlayerNames.slice(0, numberOfPlayers), time)
       : undefined;
     clock?.setActivePlayers([PlayerName.White]);
 
     const events = new EventCenter({});
-    const game = new Game(interrupt, Board.createBoard(interrupt, events), clock, events);
+    const players = allPossiblePlayerNames
+      .slice(0, numberOfPlayers)
+      .map((name) => new Player(name, true));
+
+    const game = new Game(
+      interrupt,
+      Board.createBoard(interrupt, events, numberOfPlayers),
+      clock,
+      events,
+      players
+    );
     interrupt.for.subscribeToEvents({ events });
 
     return game;

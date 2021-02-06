@@ -4,6 +4,7 @@ export * from "./applyInSequence";
 export * from "./arrayHelper";
 export * from "./color";
 export * from "./deduplicateByName";
+export * from "./enum";
 export * from "./filterByValue";
 export * from "./flatMapValues";
 export * from "./formatMillis";
