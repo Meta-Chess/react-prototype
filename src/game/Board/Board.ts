@@ -120,7 +120,7 @@ class Board extends TokenOwner {
     return this.pieces[id];
   }
 
-  getPiecesAt(location: string): Piece[] {
+  getPiecesAt(location?: string): Piece[] {
     let pieces: Piece[] = [];
     this.squareAt(location)?.pieces.forEach((id) => {
       pieces = pieces.concat(this.pieces[id]);
