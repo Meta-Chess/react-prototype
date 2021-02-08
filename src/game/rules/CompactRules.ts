@@ -20,7 +20,10 @@ export class CompactRules {
 
     const interruptionPoints = interruptionNames.map((name) => ({
       name,
-      functions: rules.map((r) => r[name]).filter(isPresent),
+      functions: rules
+        .sort(compareRulesPerInterruptionPoint(name))
+        .map((r) => r[name])
+        .filter(isPresent),
     }));
 
     this.for = interruptionPoints.reduce(
@@ -112,4 +115,30 @@ type InterruptionName = keyof CompleteRule;
 export type Rule = Partial<CompleteRule> & {
   title: string;
   description: string;
+};
+
+function compareRulesPerInterruptionPoint(
+  name: InterruptionName
+): (r1: Rule, r2: Rule) => number {
+  const list = ruleOrderPerInterruptionPoint[name];
+  if (list) return (r1, r2) => compareRulesByList(r1.title, r2.title, list);
+  else return () => 0;
+}
+
+function compareRulesByList(t1: string, t2: string, list: string[]): number {
+  if (!list.includes("theRest"))
+    return compareRulesByList(t1, t2, [...["theRest"], ...list]); //this prevents the possiblity of an infinite loop
+  if (!list.includes(t1)) return compareRulesByList("theRest", t2, list);
+  if (!list.includes(t2)) return compareRulesByList(t1, "theRest", list);
+
+  return list.indexOf(t1) - list.indexOf(t2);
+}
+
+// TODO: replace string[] with (RuleName || "theRest")[] for greater type securuity.
+// Determines execution order for rules at the mentioned interruption point.
+// The order rules are written in is the order they will be executed in.
+// Rules are referenced by their title, "theRest" referes to all the rules not mentioned in the list.
+// If an interuption point is not listed below then the rules will have default ordering for that interruption point.
+const ruleOrderPerInterruptionPoint: { [key in InterruptionName]?: string[] } = {
+  processMoves: ["Pull", "theRest", "Promotion"],
 };
