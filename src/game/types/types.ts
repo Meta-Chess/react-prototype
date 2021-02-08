@@ -7,6 +7,7 @@ import { getValues } from "utilities";
 export interface GaitData {
   interceptable?: boolean;
   interceptionCondition?: (piece: Piece) => boolean;
+  linearMover?: Direction;
 }
 
 export interface Gait {

@@ -2,11 +2,13 @@ import { Piece } from "game/Board";
 import { Path } from "game/Pather/Path";
 import { PieceName, PlayerName } from "game/types";
 import { isEqual } from "lodash";
+import { Direction } from "game/types";
 
 export interface MoveData {
   interceptable?: boolean;
   interceptionCondition?: (piece: Piece) => boolean;
   interceptableAtStart?: boolean;
+  linearMover?: Direction;
 }
 
 export interface Move {

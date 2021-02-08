@@ -22,5 +22,6 @@ export { stalemate } from "./stalemate";
 export { threeCheck } from "./threeCheck";
 export { patheticKing } from "./patheticKing";
 export { emptyCenter } from "./emptyCenter";
+export { pull } from "./pull";
 
 // Note: Only rules should be exported from this file

@@ -29,7 +29,7 @@ const PlayersCard: SFC = ({ style }) => {
 };
 
 const StyledCard = styled(Card)`
-  padding-bottom: 8;
+  padding-bottom: 8px;
   padding-left: 0;
   padding-right: 0;
 `;
