@@ -3,7 +3,6 @@ import { Adjacency, Piece, Square } from "../Board";
 import { Direction, PieceName, PlayerName, RankAndFileBounds, Region } from "../types";
 import { Rule } from "./CompactRules";
 import { createPiece, determineGaitGenerator } from "./utilities";
-import { moveIsAggressive } from "./defaults";
 
 export const standard: Rule = {
   title: "Standard",
@@ -32,7 +31,6 @@ export const standard: Rule = {
       owner,
     };
   },
-  moveIsAggressive,
 };
 
 const generateStandardSquares = (): { location: string; square: Square }[] =>

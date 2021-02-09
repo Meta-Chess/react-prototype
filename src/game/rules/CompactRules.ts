@@ -76,15 +76,7 @@ const identityRule = {
     filtered: boolean;
   }) => x,
   lethalCondition: (x: { board: Board; player: PlayerName; dead: string | false }) => x,
-  moveIsAggressive: (x: { board: Board; move: Move; aggressive: boolean }) => x,
   onBoardCreate: (x: { board: Board; numberOfPlayers: number }) => x,
-  onCapture: (x: {
-    board: Board;
-    movingPiece: Piece;
-    location: string;
-    mover: PlayerName | undefined;
-    captureHappened: boolean;
-  }) => x,
   onSendPieceToGrave: (x: {
     piece: Piece;
     mover: PlayerName | undefined;

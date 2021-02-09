@@ -22,7 +22,7 @@ export const pawnDoubleStep: Rule = {
     gaits: [
       ...gaits,
       ...(piece.hasTokenWithName(TokenName.PawnDoubleStep)
-        ? gaits.filter((g) => g.mustNotCapture).map(doubleStep)
+        ? gaits.filter((g) => g.mustNotCapture).map(doubleStep(piece))
         : []),
     ],
     piece,
@@ -35,13 +35,15 @@ export const pawnDoubleStep: Rule = {
   },
 };
 
-const doubleStep = (originalGait: Gait): Gait => ({
-  ...originalGait,
-  pattern: [...originalGait.pattern, ...originalGait.pattern],
-  data: {
-    interceptable: true,
-    interceptionCondition: (piece: Piece): boolean => {
-      return piece.name === PieceName.Pawn;
+function doubleStep(originalPiece: Piece): (originalGait: Gait) => Gait {
+  return (originalGait: Gait): Gait => ({
+    ...originalGait,
+    pattern: [...originalGait.pattern, ...originalGait.pattern],
+    data: {
+      interceptable: true,
+      interceptionCondition: (piece: Piece): boolean => {
+        return piece.name === PieceName.Pawn && piece.owner !== originalPiece.owner;
+      },
     },
-  },
-});
+  });
+}

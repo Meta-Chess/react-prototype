@@ -114,16 +114,10 @@ export class GameMaster {
     this.allowableMoves.forEach((move) => {
       if (move.playerName !== this.game.players[this.game.currentPlayerIndex].name) {
         this.squaresInfo.add(move.location, SquareInfo.PossibleOtherPlayerMoveEndPoint);
-      } else if (
-        this.interrupt.for.moveIsAggressive({
-          move,
-          board: this.game.board,
-          aggressive: false,
-        }).aggressive
-      ) {
-        this.squaresInfo.add(move.location, SquareInfo.PossibleMoveAggressiveEndPoint);
-      } else {
+      } else if (move.capture === undefined) {
         this.squaresInfo.add(move.location, SquareInfo.PossibleMovePassiveEndPoint);
+      } else {
+        this.squaresInfo.add(move.location, SquareInfo.PossibleMoveAggressiveEndPoint);
       }
     });
   }
