@@ -30,7 +30,9 @@ export const MoveDisambiguationModal: FC = () => {
         showsHorizontalScrollIndicator={false}
       >
         {moves.map((move, index) => {
-          const moveDemoGameMaster = gameMaster.clone();
+          const moveDemoGameMaster = gameMaster.clone({
+            evaluateEndGameConditions: false,
+          });
           moveDemoGameMaster.doMove(move);
           return (
             <View key={index}>
