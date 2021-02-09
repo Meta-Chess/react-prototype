@@ -34,7 +34,7 @@ export class GameMaster {
     public game: Game,
     private renderer: Renderer,
     gameOptions?: GameOptions,
-    private noEvalEndCons?: boolean
+    private evaluateEndGameConditions = true
   ) {
     this.gameClones = [game.clone(), game.clone(), game.clone(), game.clone()];
     this.title = gameOptions?.customTitle || "Chess"; //TODO bundle this into other info
@@ -73,7 +73,13 @@ export class GameMaster {
     return [interrupt, rules, variant, game, renderer, gameOptions];
   }
 
-  clone(renderer?: Renderer, noEvalEndCons?: boolean): GameMaster {
+  clone({
+    renderer,
+    evaluateEndGameConditions = true,
+  }: {
+    renderer?: Renderer;
+    evaluateEndGameConditions?: boolean;
+  }): GameMaster {
     return new GameMaster(
       this.interrupt,
       this.rules,
@@ -85,7 +91,7 @@ export class GameMaster {
         flipBoard: this.flipBoard,
         overTheBoard: this.overTheBoard,
       },
-      noEvalEndCons
+      evaluateEndGameConditions
     );
   }
 
@@ -233,7 +239,7 @@ export class GameMaster {
   }
 
   checkGameEndConditions(): void {
-    if (this.noEvalEndCons) return;
+    if (!this.evaluateEndGameConditions) return;
     this.applyLossConditions();
     if (
       !this.gameOver &&
