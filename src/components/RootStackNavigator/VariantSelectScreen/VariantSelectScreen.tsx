@@ -12,7 +12,7 @@ import { useNavigation, Screens, useGoBackOrToStartScreen } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
 import {
-  SelectedVariantsCard,
+  FormatCard,
   FiltersCard,
   GameOptionsCard,
   defaultGameOptions,
@@ -74,7 +74,8 @@ const VariantSelectScreen: FC = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 12 }}
         >
-          <SelectedVariantsCard
+          <FormatCard
+            selectedFormat={selectedFormat}
             selectedVariants={selectedVariants}
             setSelectedVariants={setSelectedVariants}
           />

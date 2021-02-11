@@ -3,33 +3,47 @@ import { SFC } from "primitives";
 import { TouchableOpacity, View } from "react-native";
 import { Text, Colors } from "primitives";
 import styled from "styled-components/native";
+import { PlusIcon, MinusIcon } from "primitives/icons";
 
 interface CollapsableCardProps {
   title: string;
+  TitleComponent?: React.FC<{ size?: number }>;
   lastCardInStack?: boolean;
 }
 
 const CollapsableCard: SFC<CollapsableCardProps> = ({
   title,
-  children,
+  TitleComponent = undefined,
   lastCardInStack = false,
+  children,
   style,
 }) => {
   const [open, setOpen] = useState(true);
+  const plusMinusColor = Colors.DARKISH.toString();
   return (
-    <>
-      <Container style={style}>
-        <Header
-          onPress={(): void => setOpen(!open)}
-          includeSeperator={!open && !lastCardInStack}
-        >
-          <Text cat="DisplayXS" style={{ marginLeft: 12 }}>
-            {title}
-          </Text>
-        </Header>
-        {open && <Body>{children}</Body>}
-      </Container>
-    </>
+    <Container style={style}>
+      <Header
+        onPress={(): void => setOpen(!open)}
+        includeSeperator={!open && !lastCardInStack}
+      >
+        <LeftHeaderContainer>
+          <Text cat="DisplayXS">{title}</Text>
+          {TitleComponent && (
+            <View style={{ marginLeft: 6 }}>
+              <TitleComponent size={20} />
+            </View>
+          )}
+        </LeftHeaderContainer>
+        <View style={{ marginRight: 6 }}>
+          {open ? (
+            <MinusIcon color={plusMinusColor} />
+          ) : (
+            <PlusIcon color={plusMinusColor} />
+          )}
+        </View>
+      </Header>
+      {open && <Body>{children}</Body>}
+    </Container>
   );
 };
 
@@ -39,11 +53,19 @@ const Container = styled(View)`
 `;
 
 const Header = styled(TouchableOpacity)<{ includeSeperator: boolean }>`
-  justify-content: center;
+  flex-direction: row;
+  align-items: center;
   height: ${({ includeSeperator }): number => (includeSeperator ? 38 : 36)}px;
   background-color: ${Colors.DARK.toString()};
   border-bottom-width: ${({ includeSeperator }): number => (includeSeperator ? 2 : 0)};
   border-bottom-color: ${Colors.DARKER.toString()};
+`;
+
+const LeftHeaderContainer = styled(View)`
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 12;
 `;
 
 const Body = styled(View)`

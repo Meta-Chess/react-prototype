@@ -3,21 +3,22 @@ import { SFC } from "primitives";
 import { TouchableOpacity, View } from "react-native";
 import { Text, Colors } from "primitives";
 import styled from "styled-components/native";
-import { FutureVariantName, futureVariants } from "game";
+import { futureVariants } from "game";
 import { CollapsableCard } from "ui/Containers";
+import { CurrentCardProps } from "./CurrentCardProps";
+import { VariantCompositionIcon } from "primitives/icons/Formats";
 
-interface Props {
-  selectedVariants: FutureVariantName[];
-  setSelectedVariants: (x: FutureVariantName[]) => void;
-}
-
-const SelectedVariantsCard: SFC<Props> = ({
+const VariantCompositionCard: SFC<CurrentCardProps> = ({
   selectedVariants,
   setSelectedVariants,
   style,
 }) => {
   return (
-    <CollapsableCard title={"Variant Composition"} style={style}>
+    <CollapsableCard
+      title={"Variant Composition"}
+      TitleComponent={VariantCompositionIcon}
+      style={style}
+    >
       {selectedVariants.length !== 0 ? (
         <Container>
           {selectedVariants.map((variant) => {
@@ -59,4 +60,4 @@ const Container = styled(View)`
   flex-flow: row wrap;
 `;
 
-export { SelectedVariantsCard };
+export { VariantCompositionCard };
