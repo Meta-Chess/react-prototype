@@ -49,7 +49,7 @@ const VariantCompositionCard: SFC<CurrentCardProps> = ({
           cat="BodyXS"
           style={{ fontStyle: "italic", marginVertical: 6, marginLeft: 8 }}
         >
-          {"No variant selected"}
+          {"Selected variants are fused"}
         </Text>
       )}
     </CollapsableCard>

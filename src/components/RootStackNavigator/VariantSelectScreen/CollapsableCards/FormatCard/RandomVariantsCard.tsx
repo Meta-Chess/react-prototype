@@ -49,7 +49,7 @@ const RandomVariantsCard: SFC<CurrentCardProps> = ({
           cat="BodyXS"
           style={{ fontStyle: "italic", marginVertical: 6, marginLeft: 8 }}
         >
-          {"No variant selected"}
+          {"A variant composition is chosen at random"}
         </Text>
       )}
     </CollapsableCard>

@@ -49,7 +49,7 @@ const RollingVariantsCard: SFC<CurrentCardProps> = ({
           cat="BodyXS"
           style={{ fontStyle: "italic", marginVertical: 6, marginLeft: 8 }}
         >
-          {"No variant selected"}
+          {"Active variants change throughout the game"}
         </Text>
       )}
     </CollapsableCard>

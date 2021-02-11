@@ -36,7 +36,7 @@ const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
 
-  //we should think about putting these together
+  //we should think about putting these together - we start to pass a lot around e.g. Topbar
   const [selectedPlayers, setSelectedPlayers] = useState<PlayersType>(2);
   const [selectedFormat, setSelectedFormat] = useState<FormatType>("Variant Composition");
 
@@ -46,6 +46,7 @@ const VariantSelectScreen: FC = () => {
   const displayVariants: FutureVariantName[] = getFilteredVariantsInDisplayOrder(
     activeFilters
   );
+  //want selected variants state for each of the formats - not sure how to do this nicely
   const [selectedVariants, setSelectedVariants] = useState<FutureVariantName[]>([]);
 
   const variantConflicts: {
@@ -101,7 +102,12 @@ const VariantSelectScreen: FC = () => {
             onPress={(): void => {
               // console.log(`const gameMaster = new GameMaster(...GameMaster.processConstructorInputs(calculateGameOptions(${JSON.stringify((Object.keys(gameOptions) as (keyof typeof gameOptions)[]).reduce((acc, k) => gameOptions[k] && gameOptions[k] !== "chess" ? { ...acc, [k]: gameOptions[k] } : { ...acc }, {}))}, ${JSON.stringify(selectedVariants)}), mockRenderer));\n const board = gameMaster.game.board;\n\n`); // TEST WRITING HELPER COMMENT
               navigation.navigate(Screens.GameScreen, {
-                gameOptions: calculateGameOptions(gameOptions, selectedVariants),
+                gameOptions: calculateGameOptions(
+                  gameOptions,
+                  selectedVariants,
+                  selectedPlayers,
+                  selectedFormat
+                ),
                 roomId: gameOptions.roomId,
               });
             }}

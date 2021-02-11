@@ -7,7 +7,6 @@ import { HelpMenu } from "components/shared";
 import { PlayerOptions } from "./PlayerOptions";
 import { FormatOptions } from "./FormatOptions";
 import { FormatType, PlayersType } from "../VariantSelectScreen"; //temp
-
 interface Props {
   selectedPlayers: PlayersType;
   setSelectedPlayers: (x: PlayersType) => void;
