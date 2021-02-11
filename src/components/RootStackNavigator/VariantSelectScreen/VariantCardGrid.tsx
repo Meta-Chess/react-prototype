@@ -4,7 +4,6 @@ import { SFC } from "primitives";
 import { VariantTile } from "ui/Pressable/VariantTile";
 import { AdviceLevel, FutureVariantName, futureVariants } from "game";
 import styled from "styled-components/native";
-import { HelpMenu } from "components/shared";
 interface Props {
   displayVariants: FutureVariantName[];
   selectedVariants: FutureVariantName[];

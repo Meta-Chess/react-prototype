@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { SFC } from "primitives";
 import { TouchableOpacity, View } from "react-native";
 import { Text, Colors } from "primitives";
-import { HorizontalSeparator } from "ui/Separators";
 import styled from "styled-components/native";
-import { AbsoluteView } from "ui/Containers";
 
 interface CollapsableCardProps {
   title: string;
@@ -33,7 +31,7 @@ const CollapsableCard: SFC<CollapsableCardProps> = ({
       </Container>
     </>
   );
-}; //headerBorder={!lastCardInStack || open}
+};
 
 const Container = styled(View)`
   flex-direction: column;

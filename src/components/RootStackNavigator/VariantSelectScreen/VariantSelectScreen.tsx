@@ -23,11 +23,22 @@ import { Colors } from "primitives";
 import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
 import { AdviceCard } from "components/RootStackNavigator/VariantSelectScreen/CollapsableCards/AdviceCard";
-import { HelpMenu } from "components/shared";
+import { Topbar } from "./Topbar";
+
+//these should be replaced by other branches
+export const Players = [2, 3, 4, 5, 6, 7, 8];
+export type PlayersType = typeof Players[number];
+export const Formats = ["Variant Composition", "Random Variants", "Rolling Variants"];
+export type FormatType = typeof Formats[number];
+//
 
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
+
+  //we should think about putting these together
+  const [selectedPlayers, setSelectedPlayers] = useState<PlayersType>(2);
+  const [selectedFormat, setSelectedFormat] = useState<FormatType>("Variant Composition");
 
   const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
 
@@ -105,11 +116,15 @@ const VariantSelectScreen: FC = () => {
           setSelectedVariants={setSelectedVariants}
           conflictLevel={conflictLevel}
         />
-        <Topbar style={{ flexDirection: "row" }}>
-          <View style={{ flex: 1, marginTop: -4 }}>
-            <HelpMenu context={{ selectedVariants, displayVariants, conflictLevel }} />
-          </View>
-        </Topbar>
+        <Topbar
+          displayVariants={displayVariants}
+          selectedVariants={selectedVariants}
+          conflictLevel={conflictLevel}
+          selectedPlayers={selectedPlayers}
+          setSelectedPlayers={setSelectedPlayers}
+          selectedFormat={selectedFormat}
+          setSelectedFormat={setSelectedFormat}
+        />
       </LeftContainer>
     </ScreenContainer>
   );
@@ -117,14 +132,6 @@ const VariantSelectScreen: FC = () => {
 
 const LeftContainer = styled(View)`
   flex: 1;
-`;
-
-const Topbar = styled(View)`
-  height: 40px;
-  align-content: center;
-  background-color: ${Colors.DARK.toString()};
-  border-bottom-width: 1px;
-  border-bottom-color: ${Colors.DARKISH.toString()};
 `;
 
 const Sidebar = styled(View)`
