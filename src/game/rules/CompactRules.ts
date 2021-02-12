@@ -6,6 +6,7 @@ import { Game } from "game/Game";
 import { Move, PieceDelta } from "game/Move";
 import { EventCenter } from "game/EventCenter";
 import { PatherParams } from "game/Pather";
+import { RuleName, rules as allRules } from "game/rules/index";
 
 // Note: These linting exceptions should only ever be used with great caution
 // Take care to check extra carefully for errors in this file because we have less type safety
@@ -15,14 +16,14 @@ import { PatherParams } from "game/Pather";
 export class CompactRules {
   public for: CompleteRule;
 
-  constructor(rules: Rule[]) {
+  constructor(ruleNames: RuleName[]) {
     const interruptionNames = Object.keys(identityRule) as InterruptionName[];
 
-    const interruptionPoints = interruptionNames.map((name) => ({
-      name,
-      functions: rules
-        .sort(compareRulesPerInterruptionPoint(name))
-        .map((r) => r[name])
+    const interruptionPoints = interruptionNames.map((interruptionPointName) => ({
+      name: interruptionPointName,
+      functions: ruleNames
+        .sort(compareRulesPerInterruptionPoint(interruptionPointName))
+        .map((ruleName) => allRules[ruleName][interruptionPointName])
         .filter(isPresent),
     }));
 
@@ -119,9 +120,9 @@ export type Rule = Partial<CompleteRule> & {
 
 function compareRulesPerInterruptionPoint(
   name: InterruptionName
-): (r1: Rule, r2: Rule) => number {
+): (r1: RuleName, r2: RuleName) => number {
   const list = ruleOrderPerInterruptionPoint[name];
-  if (list) return (r1, r2) => compareRulesByList(r1.title, r2.title, list);
+  if (list) return (r1, r2) => compareRulesByList(r1, r2, list);
   else return () => 0;
 }
 
@@ -139,6 +140,8 @@ function compareRulesByList(t1: string, t2: string, list: string[]): number {
 // The order rules are written in is the order they will be executed in.
 // Rules are referenced by their title, "theRest" referes to all the rules not mentioned in the list.
 // If an interuption point is not listed below then the rules will have default ordering for that interruption point.
-const ruleOrderPerInterruptionPoint: { [key in InterruptionName]?: string[] } = {
-  processMoves: ["Pull", "theRest", "Promotion"],
+const ruleOrderPerInterruptionPoint: {
+  [key in InterruptionName]?: (RuleName | "pull" | "theRest")[];
+} = {
+  processMoves: ["pull", "theRest", "promotion"],
 };

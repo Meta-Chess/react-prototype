@@ -3,7 +3,7 @@ import { useWindowDimensions, ScrollView, View, TouchableOpacity } from "react-n
 import { Button, Card, useModals } from "ui";
 import { useGoBackOrToStartScreen } from "navigation";
 import { Colors, SFC } from "primitives";
-import { GameContext, OnlineGameMaster } from "game";
+import { GameContext, OnlineGameMaster, rules as allRules } from "game";
 import { RoomIdCard } from "./RoomIdCard";
 import { VariantInfoCard } from "./VariantInfoCard";
 import { RulesInfoCard } from "./RulesInfoCard";
@@ -17,7 +17,7 @@ const Sidebar: SFC = ({ style }) => {
   const modals = useModals();
   const { gameMaster } = useContext(GameContext);
   const pieces = gameMaster?.selectedPieces;
-  const rules = gameMaster?.rules;
+  const rules = gameMaster?.ruleNames.map((r) => allRules[r]);
   const title = gameMaster?.title;
   const variant = gameMaster?.variant;
   const roomId = gameMaster instanceof OnlineGameMaster ? gameMaster?.roomId : undefined;
