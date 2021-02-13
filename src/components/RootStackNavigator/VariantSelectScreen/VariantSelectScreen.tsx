@@ -24,16 +24,11 @@ import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
 import { AdviceCard } from "components/RootStackNavigator/VariantSelectScreen/CollapsableCards/AdviceCard";
 import { Topbar } from "./Topbar";
+import { FormatName } from "game/formats";
 
 //these should be replaced by other branches
 export const Players = [2, 3, 4, 5, 6, 7, 8];
 export type PlayersType = typeof Players[number];
-export const Formats = [
-  "Variant Composition",
-  "Random Variants",
-  "Rolling Variants",
-] as const;
-export type FormatType = typeof Formats[number];
 //
 
 const VariantSelectScreen: FC = () => {
@@ -42,7 +37,7 @@ const VariantSelectScreen: FC = () => {
 
   //we should think about putting these together - we start to pass a lot around e.g. Topbar
   const [selectedPlayers, setSelectedPlayers] = useState<PlayersType>(2);
-  const [selectedFormat, setSelectedFormat] = useState<FormatType>("Variant Composition");
+  const [selectedFormat, setSelectedFormat] = useState<FormatName>("variantComposition");
 
   const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
 
@@ -52,11 +47,11 @@ const VariantSelectScreen: FC = () => {
   );
 
   const [selectedVariants, setSelectedVariants] = useState<
-    { [key in FormatType]: FutureVariantName[] }
+    { [key in FormatName]: FutureVariantName[] }
   >({
-    "Variant Composition": [],
-    "Random Variants": [...displayVariants],
-    "Rolling Variants": [],
+    variantComposition: [],
+    randomVariants: [],
+    rollingVariants: [],
   });
   const selectedVariantsForFormat = selectedVariants[selectedFormat];
   const setSelectedVariantsForFormat = useCallback(
