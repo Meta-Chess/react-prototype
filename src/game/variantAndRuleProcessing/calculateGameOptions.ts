@@ -6,7 +6,8 @@ import {
   FutureVariantName,
 } from "game/variants/variants";
 import { FormatName } from "game/formats";
-import { uniq, random } from "lodash";
+import { chooseRandomVariants } from "./formatProcessing";
+import { uniq } from "lodash";
 
 export function calculateGameOptions(
   gameOptions: GameOptions,
@@ -18,19 +19,7 @@ export function calculateGameOptions(
   if (selectedFormat === "variantComposition") {
     variantsInPlay = selectedVariants;
   } else if (selectedFormat === "randomVariants") {
-    //quickly handling 2 default
-    if (selectedVariants.length <= 2) {
-      variantsInPlay = selectedVariants;
-    } else {
-      const firstIndex = random(0, selectedVariants.length - 1, false);
-      let secondIndex = firstIndex;
-      do {
-        secondIndex = random(0, selectedVariants.length - 1, false);
-      } while (firstIndex === secondIndex);
-      variantsInPlay = selectedVariants.filter((variant, i) =>
-        [firstIndex, secondIndex].includes(i)
-      );
-    }
+    variantsInPlay = chooseRandomVariants(selectedVariants);
   } else {
     // if not handled, just do variant composition for now
     variantsInPlay = selectedVariants;

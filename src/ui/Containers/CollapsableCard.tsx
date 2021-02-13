@@ -8,13 +8,11 @@ import { PlusIcon, MinusIcon } from "primitives/icons";
 interface CollapsableCardProps {
   title: string;
   TitleComponent?: React.FC<{ size?: number }>;
-  lastCardInStack?: boolean;
 }
 
 const CollapsableCard: SFC<CollapsableCardProps> = ({
   title,
   TitleComponent = undefined,
-  lastCardInStack = false,
   children,
   style,
 }) => {
@@ -22,10 +20,7 @@ const CollapsableCard: SFC<CollapsableCardProps> = ({
   const plusMinusColor = Colors.DARKISH.toString();
   return (
     <Container style={style}>
-      <Header
-        onPress={(): void => setOpen(!open)}
-        includeSeperator={!open && !lastCardInStack}
-      >
+      <Header onPress={(): void => setOpen(!open)} includeSeperator={!open}>
         <LeftHeaderContainer>
           <Text cat="DisplayXS">{title}</Text>
           {TitleComponent && (
