@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useCallback } from "react";
 import { View, ScrollView } from "react-native";
 import {
   calculateGameOptions,
@@ -28,7 +28,11 @@ import { Topbar } from "./Topbar";
 //these should be replaced by other branches
 export const Players = [2, 3, 4, 5, 6, 7, 8];
 export type PlayersType = typeof Players[number];
-export const Formats = ["Variant Composition", "Random Variants", "Rolling Variants"];
+export const Formats = [
+  "Variant Composition",
+  "Random Variants",
+  "Rolling Variants",
+] as const;
 export type FormatType = typeof Formats[number];
 //
 
@@ -46,13 +50,25 @@ const VariantSelectScreen: FC = () => {
   const displayVariants: FutureVariantName[] = getFilteredVariantsInDisplayOrder(
     activeFilters
   );
-  //want selected variants state for each of the formats - not sure how to do this nicely
-  const [selectedVariants, setSelectedVariants] = useState<FutureVariantName[]>([]);
+
+  const [selectedVariants, setSelectedVariants] = useState<
+    { [key in FormatType]: FutureVariantName[] }
+  >({
+    "Variant Composition": [],
+    "Random Variants": [...displayVariants],
+    "Rolling Variants": [],
+  });
+  const selectedVariantsForFormat = selectedVariants[selectedFormat];
+  const setSelectedVariantsForFormat = useCallback(
+    (variants: FutureVariantName[]) =>
+      setSelectedVariants({ ...selectedVariants, [selectedFormat]: variants }),
+    [selectedVariants, selectedFormat]
+  );
 
   const variantConflicts: {
     message: string;
     level: AdviceLevel;
-  }[] = findVariantConflicts(selectedVariants);
+  }[] = findVariantConflicts(selectedVariantsForFormat);
   const conflictLevel = variantConflicts.some((conflict) => conflict.level === "ERROR")
     ? "ERROR"
     : variantConflicts.some((conflict) => conflict.level === "WARNING")
@@ -77,11 +93,11 @@ const VariantSelectScreen: FC = () => {
         >
           <FormatCard
             selectedFormat={selectedFormat}
-            selectedVariants={selectedVariants}
-            setSelectedVariants={setSelectedVariants}
+            selectedVariants={selectedVariantsForFormat}
+            setSelectedVariants={setSelectedVariantsForFormat}
           />
           <AdviceCard
-            selectedVariants={selectedVariants}
+            selectedVariants={selectedVariantsForFormat}
             variantConflicts={variantConflicts}
           />
           <GameOptionsCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
@@ -104,7 +120,7 @@ const VariantSelectScreen: FC = () => {
               navigation.navigate(Screens.GameScreen, {
                 gameOptions: calculateGameOptions(
                   gameOptions,
-                  selectedVariants,
+                  selectedVariantsForFormat,
                   selectedPlayers,
                   selectedFormat
                 ),
@@ -119,13 +135,13 @@ const VariantSelectScreen: FC = () => {
         <VariantCardGrid
           style={{ flex: 1, paddingLeft: 24, paddingRight: 4 }}
           displayVariants={displayVariants}
-          selectedVariants={selectedVariants}
-          setSelectedVariants={setSelectedVariants}
+          selectedVariants={selectedVariantsForFormat}
+          setSelectedVariants={setSelectedVariantsForFormat}
           conflictLevel={conflictLevel}
         />
         <Topbar
           displayVariants={displayVariants}
-          selectedVariants={selectedVariants}
+          selectedVariants={selectedVariantsForFormat}
           conflictLevel={conflictLevel}
           selectedPlayers={selectedPlayers}
           setSelectedPlayers={setSelectedPlayers}
