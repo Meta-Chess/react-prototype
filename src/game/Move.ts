@@ -8,13 +8,13 @@ export interface MoveData {
   interceptable?: boolean;
   interceptionCondition?: (piece: Piece) => boolean;
   interceptableAtStart?: boolean;
-  linearMover?: Direction;
+  linearMoverDirection?: Direction;
 }
 
 export interface Move {
   pieceId: string;
   location: string;
-  pieceDeltas: PieceDelta[];
+  pieceDeltas: PieceDelta[]; //TODO: [PieceDelta, ...PieceDelta[]]?
   playerName: PlayerName;
   capture?: { at: string; pieceIds: string[] };
   data?: MoveData;

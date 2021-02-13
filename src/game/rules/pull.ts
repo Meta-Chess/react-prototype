@@ -9,13 +9,13 @@ import { clone } from "lodash";
 import { Path } from "game/Pather";
 
 const MAX_CHAIN_LENGTH = 5;
-const FORCE_PULL = true;
+const FORCE_PULL = false;
 
 export const pull: Rule = {
   title: "Pull",
   description: `When moving linearly a piece ${
     FORCE_PULL ? "must" : "may"
-  } pull adjacent (behind) allied pieces along with it. Max chain: ${MAX_CHAIN_LENGTH} pieces. Pull moves are calculated based off the lead piece's allowable moves if pull was off.`,
+  } pull allied pieces along with it. Max chain length: ${MAX_CHAIN_LENGTH} pieces. Pull moves are calculated based on the way the lead piece would move if Pull was not enabled.`,
 
   onGaitsGeneratedModify: ({ gaits, piece }) => {
     gaits.filter(isLinear).forEach(addLinearMoverToGaitData);
@@ -26,58 +26,47 @@ export const pull: Rule = {
   processMoves: ({ moves, board }) => {
     const processedMoves = moves.flatMap((move) => {
       if (
-        move.data?.linearMover !== undefined &&
-        allPiecesLeaveStartSquare(move, board)
+        move.data?.linearMoverDirection !== undefined &&
+        allPiecesOnStartSquareLeave(move, board)
       ) {
-        const forward = move.data.linearMover;
-        const backward = rotate180([move.data.linearMover])[0];
+        const forwards = move.data.linearMoverDirection;
+        const backwards = rotate180([forwards])[0];
         const startSquare = board.squareAt(move.pieceDeltas[0].path.getStart());
-        if (!startSquare) return [move];
-        const theSquares: Square[] = [startSquare];
+        if (!startSquare) return move;
 
-        for (let i = 1; i < MAX_CHAIN_LENGTH; i++) {
-          const newSquare = board.squareAt(theSquares[i - 1]?.go(backward)[0]);
-          if (
-            !newSquare ||
-            !squareBehindHasOnlyFriendlyPieces(
-              theSquares[i - 1],
-              newSquare,
-              move.playerName,
-              forward,
-              board
-            )
-          ) {
-            break;
-          }
-
-          theSquares[i] = newSquare;
-        }
+        const tail: Square[] = calculateTail(
+          startSquare,
+          board,
+          backwards,
+          forwards,
+          move
+        );
 
         const extendedPath = [
-          ...[...theSquares].reverse().map((s) => s.location),
+          ...[...tail].reverse().map((s) => s.location),
           ...move.pieceDeltas[0].path.getPath().slice(1),
         ];
 
         const moves = [move];
-        for (let i = 1; i < theSquares.length; i++) {
-          const newDeltas = theSquares[i].pieces.map((pieceId) => {
-            const delta: PieceDelta = {
+        for (let i = 1; i < tail.length; i++) {
+          const newDeltas = tail[i].pieces.map(
+            (pieceId): PieceDelta => ({
               pieceId: pieceId,
               path: new Path(
-                theSquares[i].location,
-                extendedPath.slice(theSquares.length - i, extendedPath.length - i)
+                tail[i].location,
+                extendedPath.slice(tail.length - i, extendedPath.length - i)
               ),
-            };
-            return delta;
-          });
+            })
+          );
 
           const newMove = clone(move);
           newMove.pieceDeltas = [...clone(moves[i - 1].pieceDeltas), ...newDeltas];
+
           moves.push(newMove);
         }
         return FORCE_PULL ? moves[moves.length - 1] : moves;
       }
-      return [move];
+      return move;
     });
     return { moves: processedMoves, board };
   },
@@ -89,7 +78,7 @@ function isLinear(gait: Gait): boolean {
 
 function addLinearMoverToGaitData(gait: Gait): void {
   if (gait.data === undefined) gait.data = {};
-  gait.data.linearMover = gait.pattern[0];
+  gait.data.linearMoverDirection = gait.pattern[0];
 }
 
 function squareBehindHasOnlyFriendlyPieces(
@@ -106,10 +95,40 @@ function squareBehindHasOnlyFriendlyPieces(
   );
 }
 
-function allPiecesLeaveStartSquare(move: Move, board: Board): boolean {
+function allPiecesOnStartSquareLeave(move: Move, board: Board): boolean {
   return move.pieceDeltas.every((pieceDelta) =>
     board
       .getPiecesAt(move.pieceDeltas[0].path.getStart())
       .some((p) => p.id === pieceDelta.pieceId)
   );
+}
+
+function calculateTail(
+  startSquare: Square,
+  board: Board,
+  backwards: Direction,
+  forwards: Direction,
+  move: Move
+): Square[] {
+  const tail: Square[] = [startSquare];
+
+  for (let i = 1; i < MAX_CHAIN_LENGTH; i++) {
+    const newSquare = board.squareAt(tail[i - 1]?.go(backwards)[0]);
+    if (
+      !newSquare ||
+      !squareBehindHasOnlyFriendlyPieces(
+        tail[i - 1],
+        newSquare,
+        move.playerName,
+        forwards,
+        board
+      )
+    ) {
+      break;
+    }
+
+    tail[i] = newSquare;
+  }
+
+  return tail;
 }
