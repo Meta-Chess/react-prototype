@@ -58,7 +58,10 @@ function checkAllowsMove({
     gameClones[0].resetTo(game);
     gameClones[0].doMove(move);
     gameClones[0].nextTurn();
-    const pieces = gameClones[0].board.piecesNotBelongingTo(player);
+    const alivePlayerNames = game.alivePlayers().map((player) => player.name);
+    const pieces = gameClones[0].board
+      .piecesNotBelongingTo(player)
+      .filter((piece) => alivePlayerNames.includes(piece.owner));
 
     for (let i = 0; i < pieces.length; i++) {
       const piece = pieces[i];
