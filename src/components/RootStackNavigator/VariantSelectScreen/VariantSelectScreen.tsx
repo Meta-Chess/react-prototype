@@ -3,20 +3,16 @@ import { View, ScrollView } from "react-native";
 import {
   calculateGameOptions,
   AdviceLevel,
-  findVariantConflicts,
+  findConflicts,
   FutureVariantName,
   GameOptions,
+  defaultGameOptions,
 } from "game";
 import { TraitName } from "game/variants/traitInfo";
 import { useNavigation, Screens, useGoBackOrToStartScreen } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
-import {
-  FormatCard,
-  FiltersCard,
-  GameOptionsCard,
-  defaultGameOptions,
-} from "./CollapsableCards";
+import { FormatCard, FiltersCard, GameOptionsCard } from "./CollapsableCards";
 import { Button, ButtonSecondary, HorizontalSeparator } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors } from "primitives";
@@ -29,10 +25,6 @@ import { FormatName } from "game/formats";
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
-
-  //we should think about putting these together - we start to pass a lot around e.g. Topbar
-  const [selectedPlayers, setSelectedPlayers] = useState(2);
-  const [selectedFormat, setSelectedFormat] = useState<FormatName>("variantComposition");
 
   const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
 
@@ -48,17 +40,17 @@ const VariantSelectScreen: FC = () => {
     randomVariants: [],
     rollingVariants: [],
   });
-  const selectedVariantsForFormat = selectedVariants[selectedFormat];
+  const selectedVariantsForFormat = selectedVariants[gameOptions.format];
   const setSelectedVariantsForFormat = useCallback(
     (variants: FutureVariantName[]) =>
-      setSelectedVariants({ ...selectedVariants, [selectedFormat]: variants }),
-    [selectedVariants, selectedFormat]
+      setSelectedVariants({ ...selectedVariants, [gameOptions.format]: variants }),
+    [selectedVariants, gameOptions.format]
   );
 
   const variantConflicts: {
     message: string;
     level: AdviceLevel;
-  }[] = findVariantConflicts(selectedVariantsForFormat);
+  }[] = findConflicts("variantComposition", selectedVariantsForFormat);
   const conflictLevel = variantConflicts.some((conflict) => conflict.level === "ERROR")
     ? "ERROR"
     : variantConflicts.some((conflict) => conflict.level === "WARNING")
@@ -82,7 +74,7 @@ const VariantSelectScreen: FC = () => {
           contentContainerStyle={{ paddingBottom: 12 }}
         >
           <FormatCard
-            selectedFormat={selectedFormat}
+            selectedFormat={gameOptions.format}
             selectedVariants={selectedVariantsForFormat}
             setSelectedVariants={setSelectedVariantsForFormat}
           />
@@ -106,14 +98,9 @@ const VariantSelectScreen: FC = () => {
           <Button
             text="Start Game"
             onPress={(): void => {
-              // console.log(`const gameMaster = new GameMaster(...GameMaster.processConstructorInputs(calculateGameOptions(${JSON.stringify((Object.keys(gameOptions) as (keyof typeof gameOptions)[]).reduce((acc, k) => gameOptions[k] && gameOptions[k] !== "chess" ? { ...acc, [k]: gameOptions[k] } : { ...acc }, {}))}, ${JSON.stringify(selectedVariants)}), mockRenderer));\n const board = gameMaster.game.board;\n\n`); // TEST WRITING HELPER COMMENT
+              // console.log(`const gameMaster = new GameMaster(...GameMaster.processConstructorInputs(calculateGameOptions(${JSON.stringify((Object.keys(gameOptions) as (keyof typeof gameOptions)[]).reduce((acc, k) => gameOptions[k] && gameOptions[k] !== "chess" ? { ...acc, [k]: gameOptions[k] } : { ...acc }, {}))}, ${JSON.stringify(selectedVariants)}), ));\n const board = gameMaster.game.board;\n\n`); // TEST WRITING HELPER COMMENT
               navigation.navigate(Screens.GameScreen, {
-                gameOptions: calculateGameOptions(
-                  gameOptions,
-                  selectedVariantsForFormat,
-                  selectedPlayers,
-                  selectedFormat
-                ),
+                gameOptions: calculateGameOptions(gameOptions, selectedVariantsForFormat),
                 roomId: gameOptions.roomId,
               });
             }}
@@ -133,10 +120,8 @@ const VariantSelectScreen: FC = () => {
           displayVariants={displayVariants}
           selectedVariants={selectedVariantsForFormat}
           conflictLevel={conflictLevel}
-          selectedPlayers={selectedPlayers}
-          setSelectedPlayers={setSelectedPlayers}
-          selectedFormat={selectedFormat}
-          setSelectedFormat={setSelectedFormat}
+          gameOptions={gameOptions}
+          setGameOptions={setGameOptions}
         />
       </LeftContainer>
     </ScreenContainer>

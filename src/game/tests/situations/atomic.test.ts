@@ -1,6 +1,5 @@
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
-import { mockRenderer } from "../helpers/mockRenderer";
 import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
 import { Board } from "game/Board";
 import { AnimationType, TokenName } from "game/types";
@@ -11,8 +10,7 @@ describe("With atomic enabled", () => {
   it("pieces should blow up on capture", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({}, ["atomic", "cylinder"]),
-        mockRenderer
+        calculateGameOptions({}, ["atomic", "cylindrical"])
       )
     );
     const board = gameMaster.game.board;

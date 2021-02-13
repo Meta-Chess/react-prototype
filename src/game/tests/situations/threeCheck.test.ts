@@ -1,6 +1,6 @@
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
-import { mockRenderer } from "../helpers/mockRenderer";
+
 import { PlayerName } from "game/types";
 import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
 
@@ -10,8 +10,7 @@ describe("With three check enabled", () => {
   it("checking three times should end the game", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true }, ["threeCheck"]),
-        mockRenderer
+        calculateGameOptions({ checkEnabled: true }, ["threeCheck"])
       )
     );
     const board = gameMaster.game.board;

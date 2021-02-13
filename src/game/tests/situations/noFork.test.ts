@@ -1,14 +1,11 @@
 import { GameMaster } from "game/GameMaster";
-import { mockRenderer } from "../helpers/mockRenderer";
+
 import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
 
 describe("With no fork enabled", () => {
   it("knight cannot fork and pieces cannot allow knight to fork", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({}, ["noFork"]),
-        mockRenderer
-      )
+      ...GameMaster.processConstructorInputs(calculateGameOptions({}, ["noFork"]))
     );
     const board = gameMaster.game.board;
 
@@ -72,8 +69,7 @@ describe("With no fork enabled", () => {
   it("it is not check if the king destination would allow the knight to hit 2 enemy pieces", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true }, ["noFork"]),
-        mockRenderer
+        calculateGameOptions({ checkEnabled: true }, ["noFork"])
       )
     );
     const board = gameMaster.game.board;
@@ -178,8 +174,7 @@ describe("With no fork enabled", () => {
   it("fatigue makes it very easy to stalemate", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true }, ["noFork", "fatigue"]),
-        mockRenderer
+        calculateGameOptions({ checkEnabled: true }, ["noFork", "fatigue"])
       )
     );
     const board = gameMaster.game.board;

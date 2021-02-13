@@ -1,7 +1,7 @@
 import React from "react";
 import { SFC } from "primitives";
 import { SelectInput, LabeledCheckBox, DebouncedTextInput } from "ui";
-import { VariantName, variants, GameOptions } from "game";
+import { VariantName, variants, GameOptions, FutureVariantName, FormatName } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
 
@@ -31,13 +31,12 @@ const GameOptionControls: SFC<Props> = ({
     setGameOptions({ ...gameOptions, flipBoard });
   const setCheckEnabled = (checkEnabled: boolean): GameOptions =>
     setGameOptions({ ...gameOptions, checkEnabled });
-  const setFatigueEnabled = (fatigueEnabled: boolean): GameOptions =>
-    setGameOptions({ ...gameOptions, fatigueEnabled });
-  const setAtomicEnabled = (atomicEnabled: boolean): GameOptions =>
-    setGameOptions({ ...gameOptions, atomicEnabled });
   const setTime = (time: number): GameOptions => setGameOptions({ ...gameOptions, time });
   const setVariant = (variant: VariantName): GameOptions =>
-    setGameOptions({ ...gameOptions, variant });
+    setGameOptions({
+      ...gameOptions,
+      baseVariants: variant === "chess" ? [] : [variant],
+    });
 
   return (
     <ControlsContainer style={style}>
@@ -71,18 +70,6 @@ const GameOptionControls: SFC<Props> = ({
         label={"Check enabled"}
         style={{ marginTop: 16 }}
       />
-      <LabeledCheckBox
-        value={!!gameOptions.fatigueEnabled}
-        setValue={setFatigueEnabled}
-        label={"Fatigue enabled"}
-        style={{ marginTop: 16 }}
-      />
-      <LabeledCheckBox
-        value={!!gameOptions.atomicEnabled}
-        setValue={setAtomicEnabled}
-        label={"Atomic enabled"}
-        style={{ marginTop: 20 }}
-      />
       <SelectInput
         options={timeOptions}
         onChange={setTime}
@@ -115,7 +102,8 @@ const timeOptions = [
 ];
 
 const defaultGameOptions = {
-  variant: variantNames[0] as VariantName,
+  baseVariants: [] as FutureVariantName[],
+  format: "variantComposition" as FormatName,
   checkEnabled: true,
 };
 

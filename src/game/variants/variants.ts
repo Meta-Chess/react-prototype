@@ -25,7 +25,6 @@ export type VariantName =
   | "cylindrical"
   | "spherical"
   | "hex"
-  | "cylindricalHex"
   | "toroidal"
   | "mobius";
 
@@ -86,20 +85,6 @@ export const variants: { [name in VariantName]: Variant } = {
       "promotion",
     ],
   },
-  cylindricalHex: {
-    title: "Cylindrical Hex Chess",
-    description: "Hexagonal chess where you can move through the sides of the board!",
-    ruleNames: [
-      "hex",
-      "loseWithNoKings",
-      "pawnDoubleStep",
-      "hexCylindrical",
-      "castling",
-      "interception",
-      "promotion",
-      "stalemate",
-    ],
-  },
   toroidal: {
     title: "Toroidal Chess",
     description:
@@ -148,7 +133,7 @@ export interface FutureVariant {
 export type FutureVariantName =
   | "atomic"
   | "crazyhouse"
-  | "cylinder"
+  | "cylindrical"
   | "emptyCenter"
   | "fatigue"
   | "hex"
@@ -190,8 +175,8 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     ruleNames: ["crazyhouse"],
     complexity: 2,
   },
-  cylinder: {
-    title: "Cylinder",
+  cylindrical: {
+    title: "Cylindrical",
     shortDescription: "End columns of the board are glued together.",
     traits: ["Geometry"],
     imageName: "cylinderImage",

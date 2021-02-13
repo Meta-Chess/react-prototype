@@ -3,19 +3,20 @@ import { Renderer } from "./Renderer";
 import { GameOptions, PlayerName } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
-import { VariantName, variants } from "./variants/variants";
 import { CompactRules, RuleName } from "./rules";
+import { FutureVariantName } from "./variants";
 import { uniqWith } from "lodash";
-import { randomChoice } from "utilities";
 import { Move, movesAreEqual } from "game/Move";
 import { SquareInfo, SquaresInfo } from "game/SquaresInfo";
+import { FormatName } from "game/formats";
 
 export class GameMaster {
   public gameClones: Game[];
-  public title: string;
   public result: string | undefined;
   public gameOver = false;
   public moveHistory: (Move | undefined)[] = [];
+  public formatVariants: FutureVariantName[] = [];
+  public deck: FutureVariantName[] | undefined;
 
   // TODO: Consider restructure to extract player interaction logic?
   public selectedPieces: Piece[] = [];
@@ -28,48 +29,51 @@ export class GameMaster {
   public overTheBoard: boolean;
 
   constructor(
-    public interrupt: CompactRules,
-    public ruleNames: RuleName[],
-    public variant: VariantName,
     public game: Game,
-    private renderer: Renderer,
-    gameOptions?: GameOptions,
+    public interrupt: CompactRules, // This should probably be private
+    public gameOptions: GameOptions,
+    private renderer?: Renderer,
     private evaluateEndGameConditions = true
   ) {
     this.gameClones = [game.clone(), game.clone(), game.clone(), game.clone()];
-    this.title = gameOptions?.customTitle || "Chess"; //TODO bundle this into other info
+
+    // TODO: These can be taken from gameOptions? maybe?
     this.flipBoard = !!gameOptions?.flipBoard;
     this.overTheBoard = !!gameOptions?.overTheBoard;
-    this.checkGameEndConditions();
+    this.deck = gameOptions?.deck;
+
+    this.startOfTurn();
   }
 
   static processConstructorInputs(
-    gameOptions: GameOptions,
-    renderer: Renderer
-  ): [CompactRules, RuleName[], VariantName, Game, Renderer, GameOptions] {
+    gameOptions?: Partial<GameOptions>,
+    renderer?: Renderer
+  ): ConstructorParameters<typeof GameMaster> {
     const {
-      customRuleNames,
       time,
       checkEnabled,
-      fatigueEnabled,
-      atomicEnabled,
-    } = gameOptions;
-    const variant =
-      gameOptions.variant || (randomChoice(Object.keys(variants)) as VariantName);
+      format = "variantComposition",
+      baseVariants = [],
+      numberOfPlayers = 2,
+    } = gameOptions || {};
 
-    const ruleNames = !customRuleNames?.length
-      ? [...variants[variant].ruleNames]
-      : customRuleNames;
-    if (checkEnabled) ruleNames.push("check");
-    if (fatigueEnabled && !customRuleNames?.length) ruleNames.push("fatigue");
-    if (atomicEnabled && !customRuleNames?.length) ruleNames.push("atomic");
+    const completeGameOptions: GameOptions = {
+      ...gameOptions,
+      format,
+      baseVariants,
+      numberOfPlayers,
+    };
 
-    const interrupt = new CompactRules(ruleNames);
+    const interrupt = new CompactRules(
+      baseVariants,
+      [format],
+      checkEnabled ? ["check"] : []
+    );
     const game = interrupt.for.afterGameCreation({
-      game: Game.createGame(interrupt, time, gameOptions.numberOfPlayers),
+      game: Game.createGame(interrupt, time, numberOfPlayers),
     }).game;
 
-    return [interrupt, ruleNames, variant, game, renderer, gameOptions];
+    return [game, interrupt, completeGameOptions, renderer];
   }
 
   clone({
@@ -80,23 +84,31 @@ export class GameMaster {
     evaluateEndGameConditions?: boolean;
   }): GameMaster {
     return new GameMaster(
-      this.interrupt,
-      this.ruleNames,
-      this.variant,
       this.game.clone(),
+      this.interrupt,
+      this.gameOptions,
       renderer || new Renderer(),
-      {
-        customTitle: this.title,
-        flipBoard: this.flipBoard,
-        overTheBoard: this.overTheBoard,
-      },
       evaluateEndGameConditions
     );
   }
 
   render(): void {
     this.recalculateSquaresInfo();
-    this.renderer.render();
+    this.renderer?.render();
+  }
+
+  setActiveVariants(variants: FutureVariantName[]): void {
+    this.formatVariants = variants;
+    this.recalculateRules();
+  }
+
+  recalculateRules(): void {
+    this.interrupt = new CompactRules(
+      [...this.formatVariants, ...(this.gameOptions.baseVariants || [])],
+      this.gameOptions.format ? [this.gameOptions.format] : [],
+      this.gameOptions.checkEnabled ? ["check"] : []
+    );
+    this.game.setInterrupt(this.interrupt);
   }
 
   recalculateSquaresInfo(): void {
@@ -198,7 +210,12 @@ export class GameMaster {
     }
     this.moveHistory.push(move);
     this.game.nextTurn();
+    this.startOfTurn();
+  }
+
+  startOfTurn(): void {
     this.checkGameEndConditions();
+    this.interrupt.for.formatControlAtTurnStart({ gameMaster: this });
     this.render();
   }
 
@@ -306,5 +323,17 @@ export class GameMaster {
   endGame(): void {
     this.game.clock?.stop();
     this.gameOver = true;
+  }
+
+  getRuleNames(): RuleName[] {
+    return this.interrupt.getRuleNames();
+  }
+
+  getVariantNames(): FutureVariantName[] {
+    return [...(this.gameOptions.baseVariants || []), ...(this.formatVariants || [])];
+  }
+
+  getFormatName(): FormatName {
+    return this.gameOptions.format;
   }
 }

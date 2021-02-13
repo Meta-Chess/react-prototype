@@ -6,7 +6,12 @@ import { Game } from "game/Game";
 import { Move, PieceDelta } from "game/Move";
 import { EventCenter } from "game/EventCenter";
 import { PatherParams } from "game/Pather";
-import { RuleName, rules as allRules } from "game/rules/index";
+import { GameMaster } from "game/GameMaster";
+import { FutureVariantName } from "game/variants";
+import { FormatName, formats as allFormats } from "game/formats";
+import { RuleName, rules as allRules } from "game/rules";
+import { variantsToRules } from "game/variantAndRuleProcessing/variantsToRules";
+import { uniq } from "lodash";
 
 // Note: These linting exceptions should only ever be used with great caution
 // Take care to check extra carefully for errors in this file because we have less type safety
@@ -15,13 +20,25 @@ import { RuleName, rules as allRules } from "game/rules/index";
 
 export class CompactRules {
   public for: CompleteRule;
+  private readonly ruleNames: RuleName[];
 
-  constructor(ruleNames: RuleName[]) {
+  constructor(
+    variants: FutureVariantName[],
+    formats: FormatName[] = [],
+    otherRules: RuleName[] = []
+  ) {
+    // TODO: Combine rules from formats more neatly?
+    this.ruleNames = uniq([
+      ...variantsToRules(variants),
+      ...formats.flatMap((f) => allFormats[f].ruleNames || []),
+      ...otherRules,
+    ]);
+
     const interruptionNames = Object.keys(identityRule) as InterruptionName[];
 
     const interruptionPoints = interruptionNames.map((interruptionPointName) => ({
       name: interruptionPointName,
-      functions: ruleNames
+      functions: this.ruleNames
         .filter((ruleName) => !!allRules[ruleName][interruptionPointName])
         .sort(compareRulesPerInterruptionPoint(interruptionPointName))
         .map((ruleName) => allRules[ruleName][interruptionPointName])
@@ -36,6 +53,10 @@ export class CompactRules {
       }),
       {}
     ) as CompleteRule;
+  }
+
+  getRuleNames(): RuleName[] {
+    return this.ruleNames;
   }
 }
 
@@ -72,6 +93,7 @@ const identityRule = {
     interrupt: CompactRules;
     draw: string | false;
   }) => x,
+  formatControlAtTurnStart: (x: { gameMaster: GameMaster }) => x,
   inPostMoveGenerationFilter: (x: {
     move: Move;
     game: Game;

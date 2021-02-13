@@ -1,6 +1,6 @@
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
-import { mockRenderer } from "../helpers/mockRenderer";
+
 import { createPiece } from "game/rules/utilities";
 import { PieceName, PlayerName } from "game/types";
 
@@ -8,10 +8,7 @@ describe("In standard chess", () => {
   it("Players should not be able to move into check on mostly empty board", () => {
     // Setup standard empty board
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        { variant: "chess", checkEnabled: true },
-        mockRenderer
-      )
+      ...GameMaster.processConstructorInputs({ checkEnabled: true })
     );
     const board = gameMaster.game.board;
     board
@@ -43,10 +40,7 @@ describe("In standard chess", () => {
 
   it("Players should not be able to move into check in standard chess situation", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        { variant: "chess", checkEnabled: true },
-        mockRenderer
-      )
+      ...GameMaster.processConstructorInputs({ checkEnabled: true })
     );
     const board = gameMaster.game.board;
 
@@ -72,10 +66,7 @@ describe("In standard chess", () => {
 
   it("Players in check (not mate) can and must move out of check", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        { variant: "chess", checkEnabled: true },
-        mockRenderer
-      )
+      ...GameMaster.processConstructorInputs({ checkEnabled: true })
     );
     const board = gameMaster.game.board;
 

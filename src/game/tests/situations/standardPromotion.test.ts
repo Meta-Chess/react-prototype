@@ -1,11 +1,10 @@
 import { GameMaster } from "game/GameMaster";
-import { mockRenderer } from "../helpers/mockRenderer";
 import { calculateGameOptions, PieceName } from "game";
 
 describe("In standard chess, when a piece gets to the end of the board", () => {
   it("should be able to promote", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(calculateGameOptions({}, []), mockRenderer)
+      ...GameMaster.processConstructorInputs(calculateGameOptions({}, []))
     );
     const board = gameMaster.game.board;
 

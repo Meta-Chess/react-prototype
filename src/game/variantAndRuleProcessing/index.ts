@@ -1,2 +1,2 @@
 export * from "./calculateGameOptions";
-export * from "./findVariantConflicts";
+export * from "./findConflicts";
