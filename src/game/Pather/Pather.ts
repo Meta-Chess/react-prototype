@@ -181,10 +181,8 @@ export class Pather {
 
   // TODO: handle moves that self interfere better.
   handlePieceCollisions(move: Move, gait: Gait): Move[] {
-    const moves: Move[] = [];
-
     const terminalSquare = this.game.board.squareAt(move.pieceDeltas[0].path.getEnd());
-    if (!terminalSquare) return moves;
+    if (!terminalSquare) return [];
 
     // what's on the square?
     const optionalCapturePossible = this.optionalCapturePossible(
@@ -200,54 +198,54 @@ export class Pather {
       move.playerName
     );
 
-    // what moves are theoretically possible?
-    const passiveMove = move;
-    const captureMove = {
-      ...clone(move),
-      capture: {
-        at: terminalSquare.location,
-        pieceIds: this.game.board
-          .getEnemeyPiecesAt(terminalSquare.location, move.playerName)
-          .map((p) => p.id),
-      },
-    };
-    const optionalCaptureMove = optionalCapturePossible
-      ? {
-          ...clone(move),
-          capture: optionalCapturePossible,
-        }
-      : undefined;
-    const optionalCaptureMoveAndCaptureMove = optionalCapturePossible
-      ? {
-          ...clone(move),
-          capture: {
-            at: terminalSquare.location,
-            pieceIds: [
-              ...captureMove.capture.pieceIds,
-              ...optionalCapturePossible.pieceIds,
-            ],
-          },
-        }
-      : undefined;
-
     // what moves am I allowed to make?
     const canMovePassively =
       !gait.mustCapture && (gait.phaser || (!enemiesPresent && !friendliesPresent));
     const canCaptureNormally =
       !gait.mustNotCapture && (!friendliesPresent || gait.phaser) && enemiesPresent;
-    const canMakeOptionalCapture =
-      !gait.mustNotCapture &&
-      (!friendliesPresent || gait.phaser) &&
-      !!optionalCapturePossible;
+    const mayMakeOptionalCapture =
+      !gait.mustNotCapture && (!friendliesPresent || gait.phaser);
 
-    // add all allowable moves to list
-    if (canMovePassively) moves.push(passiveMove);
-    if (canCaptureNormally) moves.push(captureMove);
-    if (canMakeOptionalCapture && optionalCaptureMove) moves.push(optionalCaptureMove);
-    if (canCaptureNormally && canMakeOptionalCapture && optionalCaptureMoveAndCaptureMove)
-      moves.push(optionalCaptureMoveAndCaptureMove);
+    // what moves are theoretically possible?
+    const passiveMove = canMovePassively ? move : undefined;
+    const captureMove = canCaptureNormally
+      ? {
+          ...clone(move),
+          capture: {
+            at: terminalSquare.location,
+            pieceIds: this.game.board
+              .getEnemyPiecesAt(terminalSquare.location, move.playerName)
+              .map((p) => p.id),
+          },
+        }
+      : undefined;
+    const optionalCaptureMove =
+      mayMakeOptionalCapture && !!optionalCapturePossible
+        ? {
+            ...clone(move),
+            capture: optionalCapturePossible,
+          }
+        : undefined;
+    const optionalCaptureAndCaptureMove =
+      optionalCaptureMove && captureMove
+        ? {
+            ...clone(move),
+            capture: {
+              at: terminalSquare.location,
+              pieceIds: [
+                ...captureMove.capture.pieceIds,
+                ...optionalCaptureMove.capture.pieceIds,
+              ],
+            },
+          }
+        : undefined;
 
-    return moves;
+    return [
+      passiveMove,
+      captureMove,
+      optionalCaptureMove,
+      optionalCaptureAndCaptureMove,
+    ].filter(isPresent);
   }
 
   go({ from, direction }: { from: Square; direction: Direction }): Square[] {
