@@ -1,15 +1,12 @@
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
-import { mockRenderer } from "../helpers/mockRenderer";
+
 import { PlayerName } from "game/types";
 
 describe("In standard chess", () => {
   it("Fool's mate should end game", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        { variant: "chess", checkEnabled: true },
-        mockRenderer
-      )
+      ...GameMaster.processConstructorInputs({ checkEnabled: true })
     );
     const board = gameMaster.game.board;
 

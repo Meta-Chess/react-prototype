@@ -70,6 +70,11 @@ export class Game {
     return game;
   }
 
+  setInterrupt(interrupt: CompactRules): void {
+    this.interrupt = interrupt;
+    this.board.interrupt = interrupt;
+  }
+
   doMove(move?: Move): void {
     if (!move) return;
     this.board.displacePieces(move);

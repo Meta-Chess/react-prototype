@@ -1,6 +1,5 @@
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
-import { mockRenderer } from "../helpers/mockRenderer";
 import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
 import { Board } from "game/Board";
 import { AnimationType, PieceAnimationType, TokenName } from "game/types";
@@ -9,8 +8,7 @@ describe("With chemically excited knights", () => {
   it("explosions kill all pieces (and create some animations)", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({}, ["chemicallyExcitedKnight"]),
-        mockRenderer
+        calculateGameOptions({}, ["chemicallyExcitedKnight"])
       )
     );
     const board = gameMaster.game.board;
@@ -77,8 +75,7 @@ describe("With chemically excited knights", () => {
   it("multiple knights can be triggered at the same time (and create overlapping animations)", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({}, ["chemicallyExcitedKnight"]),
-        mockRenderer
+        calculateGameOptions({}, ["chemicallyExcitedKnight"])
       )
     );
     const board = gameMaster.game.board;

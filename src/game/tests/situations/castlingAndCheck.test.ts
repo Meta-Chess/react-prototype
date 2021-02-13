@@ -1,6 +1,5 @@
 import { range, toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
-import { mockRenderer } from "../helpers/mockRenderer";
 import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
 import { Board } from "../../Board";
 
@@ -8,8 +7,7 @@ describe("With the standard set of rules", () => {
   it("should be impossible to castle through check", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true }, []),
-        mockRenderer
+        calculateGameOptions({ checkEnabled: true }, [])
       )
     );
     const board = gameMaster.game.board;
@@ -31,8 +29,7 @@ describe("With the standard set of rules", () => {
   it("should be impossible to castle out of check", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true }, []),
-        mockRenderer
+        calculateGameOptions({ checkEnabled: true }, [])
       )
     );
     const board = gameMaster.game.board;

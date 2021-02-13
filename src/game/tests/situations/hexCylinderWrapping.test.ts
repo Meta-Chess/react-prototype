@@ -1,14 +1,13 @@
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
-import { mockRenderer } from "../helpers/mockRenderer";
+
 import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
 
 describe("With fatigue enabled", () => {
   it("pieces shouldn't be able to move two turns in a row", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true }, ["hex", "cylinder"]),
-        mockRenderer
+        calculateGameOptions({ checkEnabled: true }, ["hex", "cylindrical"])
       )
     );
     const board = gameMaster.game.board;

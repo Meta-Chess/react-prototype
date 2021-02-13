@@ -28,7 +28,7 @@ const FormatCard: SFC<Props> = ({
         cat="BodyXS"
         style={{ fontStyle: "italic", marginVertical: 6, marginLeft: 8 }}
       >
-        {formats[selectedFormat].variantScreenHelpText}
+        {formats[selectedFormat].shortExplanation}
       </Text>
       <Container>
         {selectedVariants.map((variant) => {

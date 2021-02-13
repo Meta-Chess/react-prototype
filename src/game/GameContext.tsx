@@ -58,8 +58,6 @@ async function setGameMasterToNewGame({
   const newGameMaster =
     gameOptions?.online === true || (gameOptions?.online !== false && roomId)
       ? await OnlineGameMaster.connectNewGame(renderer, gameOptions, roomId)
-      : new GameMaster(
-          ...GameMaster.processConstructorInputs(gameOptions || {}, renderer)
-        );
+      : new GameMaster(...GameMaster.processConstructorInputs(gameOptions, renderer));
   setGameMaster(newGameMaster);
 }

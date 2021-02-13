@@ -1,27 +1,47 @@
-import React from "react";
-import { SFC, Text } from "primitives";
+import React, { useContext } from "react";
+import { Colors, SFC, Text } from "primitives";
 import { Card } from "ui/Containers/Card";
-import { VariantName, variants } from "game";
+import { GameContext, futureVariants as allVariants, formats } from "game";
+import { LabelWithDetails } from "ui";
+import { View } from "react-native";
 
-interface Props {
-  variant?: VariantName;
-  title?: string;
-}
-
-const VariantInfoCard: SFC<Props> = ({ variant, title, style }) => {
-  if (!variant || !variants[variant]) return null;
-
-  // Later: This should maybe be a more complicated way of calculating a name
-  // for the current combination of rules and combining descriptions?
-  // Or maybe just a list?
-  const variantDescription = variants[variant].description;
+const VariantInfoCard: SFC = ({ style }) => {
+  const { gameMaster } = useContext(GameContext);
+  if (!gameMaster) return null;
+  const format = formats[gameMaster.getFormatName()];
+  const variants = gameMaster.getVariantNames().map((name) => allVariants[name]);
+  const title =
+    gameMaster.getFormatName() === "variantComposition"
+      ? [...variants.map((v) => v.title), "Chess"].join(" ")
+      : format.title;
+  const noCheck = !gameMaster.getRuleNames().includes("check");
 
   return (
     <Card style={style}>
-      <Text cat="DisplayM">{title ? title : variant}</Text>
-      <Text cat="BodyM" style={{ marginTop: 8 }}>
-        {variantDescription}
-      </Text>
+      <Text cat="DisplayM">{title}</Text>
+      <View style={{ flexWrap: "wrap", flexDirection: "row", marginTop: 8 }}>
+        <LabelWithDetails
+          label={format.title}
+          details={format.description}
+          key={format.title}
+          color={Colors.MCHESS_ORANGE}
+        />
+        {variants.map((variant) => (
+          <LabelWithDetails
+            label={variant.title}
+            details={variant.shortDescription}
+            key={variant.title}
+          />
+        ))}
+        {noCheck && (
+          <LabelWithDetails
+            label={"No Check"}
+            details={"Check and Checkmate do not apply to this game!"}
+            key={"noCheck"}
+            color={Colors.GREY}
+          />
+        )}
+      </View>
     </Card>
   );
 };

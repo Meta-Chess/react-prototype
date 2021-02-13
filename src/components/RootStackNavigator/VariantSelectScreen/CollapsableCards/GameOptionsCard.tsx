@@ -1,7 +1,7 @@
 import React from "react";
 import { SFC } from "primitives";
 import { SelectInput, LabeledCheckBox, DebouncedTextInput } from "ui";
-import { VariantName, variants, GameOptions } from "game";
+import { GameOptions } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
 import { CollapsableCard } from "ui/Containers";
@@ -72,8 +72,6 @@ const GameOptionsCard: SFC<Props> = ({ style, gameOptions, setGameOptions }) => 
   );
 };
 
-const variantNames = Object.keys(variants) as VariantName[];
-
 const timeOptions = [
   { label: "No timers", value: undefined },
   { label: "1 minute", value: 60000 },
@@ -84,14 +82,9 @@ const timeOptions = [
   // { label: "3 hours", value: 7200000 },
 ];
 
-const defaultGameOptions = {
-  variant: variantNames[0] as VariantName,
-  checkEnabled: true,
-};
-
 const Container = styled(View)`
   flex-direction: column-reverse;
   padding-horizontal: 4px;
 `;
 
-export { GameOptionsCard, defaultGameOptions };
+export { GameOptionsCard };

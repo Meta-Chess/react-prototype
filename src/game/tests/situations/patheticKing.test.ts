@@ -1,6 +1,6 @@
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
-import { mockRenderer } from "../helpers/mockRenderer";
+
 import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
 import { PlayerName } from "game/types";
 
@@ -8,8 +8,7 @@ describe("With pathetic king", () => {
   it("fools mate with queen alone", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true }, ["patheticKing"]),
-        mockRenderer
+        calculateGameOptions({ checkEnabled: true }, ["patheticKing"])
       )
     );
     const board = gameMaster.game.board;

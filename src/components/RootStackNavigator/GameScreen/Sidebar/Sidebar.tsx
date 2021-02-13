@@ -3,10 +3,9 @@ import { useWindowDimensions, ScrollView, View, TouchableOpacity } from "react-n
 import { Button, Card, useModals } from "ui";
 import { useGoBackOrToStartScreen } from "navigation";
 import { Colors, SFC } from "primitives";
-import { GameContext, OnlineGameMaster, rules as allRules } from "game";
+import { GameContext, OnlineGameMaster } from "game";
 import { RoomIdCard } from "./RoomIdCard";
 import { VariantInfoCard } from "./VariantInfoCard";
-import { RulesInfoCard } from "./RulesInfoCard";
 import { PieceCredit } from "./PieceCredit";
 import { SelectedPieceInfoCard } from "./SelectedPieceInfoCard";
 import { VariantCards } from "./VariantCards";
@@ -17,9 +16,6 @@ const Sidebar: SFC = ({ style }) => {
   const modals = useModals();
   const { gameMaster } = useContext(GameContext);
   const pieces = gameMaster?.selectedPieces;
-  const rules = gameMaster?.ruleNames.map((r) => allRules[r]);
-  const title = gameMaster?.title;
-  const variant = gameMaster?.variant;
   const roomId = gameMaster instanceof OnlineGameMaster ? gameMaster?.roomId : undefined;
 
   const { width, height } = useWindowDimensions();
@@ -50,18 +46,9 @@ const Sidebar: SFC = ({ style }) => {
         >
           <View>
             <RoomIdCard roomId={roomId} style={{ marginBottom: 8 }} />
-            <VariantInfoCard
-              variant={variant}
-              title={title}
-              style={{ marginBottom: 8 }}
-            />
+            <VariantInfoCard style={{ marginBottom: 8 }} />
             <PlayersCard style={{ marginBottom: 8 }} />
-            <VariantCards
-              gameMaster={gameMaster}
-              rules={rules} //TEMP: later we will grab this from gameMaster - variants aren't passed/customRules are distinct
-              style={{ marginBottom: 8 }}
-            />
-            <RulesInfoCard rules={rules} key={key} style={{ marginBottom: 8 }} />
+            <VariantCards style={{ marginBottom: 8 }} />
             <SelectedPieceInfoCard
               pieces={pieces}
               key={key + 0.5}

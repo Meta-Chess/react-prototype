@@ -5,11 +5,11 @@ import { OptionGroup } from "ui/Forms";
 import { allPossiblePlayerNames } from "game/types";
 
 interface Props {
-  selectedPlayers: number;
-  setSelectedPlayers: (x: number) => void;
+  numberOfPlayers: number;
+  setNumberOfPlayers: (x: number) => void;
 }
 
-const PlayerOptions: SFC<Props> = ({ selectedPlayers, setSelectedPlayers, style }) => {
+const PlayerOptions: SFC<Props> = ({ numberOfPlayers, setNumberOfPlayers, style }) => {
   const options = range(2, allPossiblePlayerNames.length - 1).map((n) => {
     return { label: <Text cat={"BodyL"}>{n}</Text>, value: n };
   });
@@ -17,8 +17,8 @@ const PlayerOptions: SFC<Props> = ({ selectedPlayers, setSelectedPlayers, style 
   return (
     <OptionGroup
       options={options}
-      setSelected={setSelectedPlayers}
-      selected={selectedPlayers}
+      setSelected={setNumberOfPlayers}
+      selected={numberOfPlayers}
       style={style}
       title={"Players"}
     />

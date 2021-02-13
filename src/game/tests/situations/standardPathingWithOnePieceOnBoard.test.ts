@@ -2,12 +2,9 @@ import { createPiece } from "game/rules/utilities";
 import { PieceName, PlayerName } from "game/types";
 import { toLocation } from "utilities";
 import { GameMaster } from "../../GameMaster";
-import { mockRenderer } from "game/tests/helpers/mockRenderer";
 
 describe("In standard chess", () => {
-  const gameMaster = new GameMaster(
-    ...GameMaster.processConstructorInputs({ variant: "chess" }, mockRenderer)
-  );
+  const gameMaster = new GameMaster(...GameMaster.processConstructorInputs({}));
   const board = gameMaster.game.board;
   beforeEach(() => {
     board

@@ -4,11 +4,11 @@ import { OptionGroup } from "ui/Forms";
 import { FormatName, formats } from "game/formats";
 
 interface Props {
-  selectedFormat: FormatName;
-  setSelectedFormat: (x: FormatName) => void;
+  format: FormatName;
+  setFormat: (x: FormatName) => void;
 }
 
-const FormatOptions: SFC<Props> = ({ selectedFormat, setSelectedFormat, style }) => {
+const FormatOptions: SFC<Props> = ({ format, setFormat, style }) => {
   const formatNames = Object.keys(formats) as FormatName[];
 
   const options = formatNames.map((format) => {
@@ -19,8 +19,8 @@ const FormatOptions: SFC<Props> = ({ selectedFormat, setSelectedFormat, style })
   return (
     <OptionGroup
       options={options}
-      setSelected={setSelectedFormat}
-      selected={selectedFormat}
+      setSelected={setFormat}
+      selected={format}
       style={style}
       title={"Formats"}
     />

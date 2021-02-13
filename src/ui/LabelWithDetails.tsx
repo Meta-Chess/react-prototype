@@ -6,16 +6,23 @@ import styled from "styled-components/native";
 import { TriangleUp } from "./TriangleUp";
 import { Styles } from "primitives/Styles";
 import { useModals } from "ui/Modals";
+import Color from "color";
 
 interface Props {
   label: string;
   details?: string;
+  color?: Color;
 }
 
 const MODAL_WIDTH = 240;
 const TRIANGLE_HEIGHT = 8;
 
-export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
+export const LabelWithDetails: SFC<Props> = ({
+  label,
+  details,
+  color = Colors.MCHESS_BLUE,
+  style,
+}) => {
   const anchorRef = useRef<TouchableOpacity>(null);
   const [modalId] = useState(Math.random());
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
@@ -121,6 +128,7 @@ export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
           }
         }}
         ref={anchorRef}
+        color={color}
       >
         <Text cat={"BodyS"}>{label}</Text>
       </LabelContainer>
@@ -128,7 +136,7 @@ export const LabelWithDetails: SFC<Props> = ({ label, details, style }) => {
   );
 };
 
-const LabelContainer = styled(TouchableOpacity)`
+const LabelContainer = styled(TouchableOpacity)<{ color: Color }>`
   border-radius: 4px;
   padding-horizontal: 8px;
   margin-right: 4px;
@@ -136,7 +144,7 @@ const LabelContainer = styled(TouchableOpacity)`
   align-self: flex-start;
   align-items: center;
   z-index: 9;
-  background-color: ${Colors.MCHESS_BLUE.fade(0.8).toString()};
+  background-color: ${({ color }): string => color.fade(0.6).toString()};
 `;
 
 const ModalContainer = styled(ScrollView)`
