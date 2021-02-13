@@ -22,6 +22,10 @@ export class Pather {
   ) {}
 
   findPaths({ filterPacifistMoves } = { filterPacifistMoves: false }): Move[] {
+    filterPacifistMoves = this.interrupt.for.inFindPathsModifyInputParams({
+      filterPacifistMoves: filterPacifistMoves,
+    }).filterPacifistMoves;
+
     const currentSquare = this.game.board.squareAt(this.piece.location);
     if (!currentSquare) return [];
 

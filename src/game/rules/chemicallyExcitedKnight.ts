@@ -8,6 +8,9 @@ export const chemicallyExcitedKnight: Rule = {
   title: "Chemically Excited Knight",
   //thinking maybe have this variant be 'see' 3 enemy pieces (with scanner update)
   description: "Knights that could capture 3 enemy pieces explode.",
+
+  inFindPathsModifyInputParams: () => ({ filterPacifistMoves: false }),
+
   postMove: ({ game, interrupt, board, move, currentTurn }) => {
     const triggeredKnights: { knightId: string; positionOnSquare: number }[] = [];
     const deadPieces: { deadPieceId: string; positionOnSquare: number }[] = [];
@@ -24,7 +27,7 @@ export const chemicallyExcitedKnight: Rule = {
           //but we should have a solution for if we wanted noForkSearch: true here.
           noForkSearch: false,
         }).findPaths();
-        if (moves.filter(doesCapture(game, knight)).length > 2) {
+        if (moves.filter(doesCapture).length > 2) {
           const knightSquarePieces = board.getPiecesAt(knight.location);
           knightSquarePieces.forEach((piece, index) => {
             if (piece.id === knight.id) {

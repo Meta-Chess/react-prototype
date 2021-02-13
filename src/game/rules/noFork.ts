@@ -42,6 +42,6 @@ function isThereAnyKnightFork({
         checkDepth: 0,
         noForkSearch: false,
       }).findPaths();
-      return moves.filter(doesCapture(gameClones[0], knight)).length > 1;
+      return moves.filter(doesCapture).length > 1;
     });
 }

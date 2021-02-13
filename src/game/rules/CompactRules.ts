@@ -102,6 +102,7 @@ const identityRule = {
   }) => x,
   processMoves: (x: { board: Board; moves: Move[] }) => x,
   subscribeToEvents: (x: { events: EventCenter }) => x,
+  inFindPathsModifyInputParams: (x: { filterPacifistMoves: boolean }) => x,
 };
 
 export type CompleteRule = typeof identityRule;
