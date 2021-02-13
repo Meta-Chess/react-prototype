@@ -128,7 +128,7 @@ class Board extends TokenOwner {
     return pieces;
   }
 
-  getEnemeyPiecesAt(location?: string, player?: PlayerName): Piece[] {
+  getEnemyPiecesAt(location?: string, player?: PlayerName): Piece[] {
     if (location === undefined || player === undefined) return [];
     else return this.getPiecesAt(location).filter((p) => p.owner !== player);
   }
