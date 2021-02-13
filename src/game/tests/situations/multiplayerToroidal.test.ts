@@ -5,7 +5,7 @@ describe("On a klein bottle with 3 players", () => {
   it("the following moves should checkmate black", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true, numberOfPlayers: 3 }, ["kleinBottle"]),
+        calculateGameOptions({ checkEnabled: true }, ["kleinBottle"], 3),
         mockRenderer
       )
     );
@@ -55,11 +55,11 @@ describe("On a klein bottle with 3 players", () => {
   it("should be a win for white if they check the other two players 3 times", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true, numberOfPlayers: 3 }, [
-          "kleinBottle",
-          "threeCheck",
-          "atomic",
-        ]),
+        calculateGameOptions(
+          { checkEnabled: true },
+          ["kleinBottle", "threeCheck", "atomic"],
+          3
+        ),
         mockRenderer
       )
     );

@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useCallback } from "react";
 import { View, ScrollView } from "react-native";
 import {
   calculateGameOptions,
@@ -12,21 +12,27 @@ import { useNavigation, Screens, useGoBackOrToStartScreen } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
 import {
-  SelectedVariantsCard,
+  FormatCard,
   FiltersCard,
   GameOptionsCard,
   defaultGameOptions,
 } from "./CollapsableCards";
-import { Button, ButtonSecondary } from "ui";
+import { Button, ButtonSecondary, HorizontalSeparator } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors } from "primitives";
 import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
 import { AdviceCard } from "components/RootStackNavigator/VariantSelectScreen/CollapsableCards/AdviceCard";
+import { Topbar } from "./Topbar";
+import { FormatName } from "game/formats";
 
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
+
+  //we should think about putting these together - we start to pass a lot around e.g. Topbar
+  const [selectedPlayers, setSelectedPlayers] = useState(2);
+  const [selectedFormat, setSelectedFormat] = useState<FormatName>("variantComposition");
 
   const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
 
@@ -34,12 +40,25 @@ const VariantSelectScreen: FC = () => {
   const displayVariants: FutureVariantName[] = getFilteredVariantsInDisplayOrder(
     activeFilters
   );
-  const [selectedVariants, setSelectedVariants] = useState<FutureVariantName[]>([]);
+
+  const [selectedVariants, setSelectedVariants] = useState<
+    { [key in FormatName]: FutureVariantName[] }
+  >({
+    variantComposition: [],
+    randomVariants: [],
+    rollingVariants: [],
+  });
+  const selectedVariantsForFormat = selectedVariants[selectedFormat];
+  const setSelectedVariantsForFormat = useCallback(
+    (variants: FutureVariantName[]) =>
+      setSelectedVariants({ ...selectedVariants, [selectedFormat]: variants }),
+    [selectedVariants, selectedFormat]
+  );
 
   const variantConflicts: {
     message: string;
     level: AdviceLevel;
-  }[] = findVariantConflicts(selectedVariants);
+  }[] = findVariantConflicts(selectedVariantsForFormat);
   const conflictLevel = variantConflicts.some((conflict) => conflict.level === "ERROR")
     ? "ERROR"
     : variantConflicts.some((conflict) => conflict.level === "WARNING")
@@ -48,43 +67,36 @@ const VariantSelectScreen: FC = () => {
 
   return (
     <ScreenContainer
-      style={{ paddingHorizontal: 0, paddingVertical: 0, flexDirection: "row" }}
+      style={{
+        paddingHorizontal: 0,
+        paddingVertical: 0,
+        flexDirection: "row-reverse",
+      }}
     >
-      <LeftContainer style={{ flex: 1 }}>
-        <VariantCardGrid
-          style={{ flex: 1, paddingLeft: 24, paddingRight: 4 }}
-          displayVariants={displayVariants}
-          selectedVariants={selectedVariants}
-          setSelectedVariants={setSelectedVariants}
-          conflictLevel={conflictLevel}
-        />
-      </LeftContainer>
       <Sidebar>
         <ScrollView
-          style={{ flex: 1 }}
+          style={{
+            flex: 1,
+          }}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingVertical: 24 }}
+          contentContainerStyle={{ paddingBottom: 12 }}
         >
-          <SelectedVariantsCard
-            selectedVariants={selectedVariants}
-            setSelectedVariants={setSelectedVariants}
+          <FormatCard
+            selectedFormat={selectedFormat}
+            selectedVariants={selectedVariantsForFormat}
+            setSelectedVariants={setSelectedVariantsForFormat}
           />
-          <GameOptionsCard
-            gameOptions={gameOptions}
-            setGameOptions={setGameOptions}
-            style={{ marginTop: 16 }}
+          <AdviceCard
+            selectedVariants={selectedVariantsForFormat}
+            variantConflicts={variantConflicts}
           />
+          <GameOptionsCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
           <FiltersCard
             activeFilters={activeFilters}
             setActiveFilters={setActiveFilters}
-            style={{ marginTop: 16 }}
-          />
-          <AdviceCard
-            selectedVariants={selectedVariants}
-            variantConflicts={variantConflicts}
-            style={{ marginTop: 16 }}
           />
         </ScrollView>
+        <HorizontalSeparator color={Colors.DARKISH.fade(0.55).toString()} />
         <NavigationContainer>
           <ButtonSecondary
             text="Back"
@@ -96,7 +108,12 @@ const VariantSelectScreen: FC = () => {
             onPress={(): void => {
               // console.log(`const gameMaster = new GameMaster(...GameMaster.processConstructorInputs(calculateGameOptions(${JSON.stringify((Object.keys(gameOptions) as (keyof typeof gameOptions)[]).reduce((acc, k) => gameOptions[k] && gameOptions[k] !== "chess" ? { ...acc, [k]: gameOptions[k] } : { ...acc }, {}))}, ${JSON.stringify(selectedVariants)}), mockRenderer));\n const board = gameMaster.game.board;\n\n`); // TEST WRITING HELPER COMMENT
               navigation.navigate(Screens.GameScreen, {
-                gameOptions: calculateGameOptions(gameOptions, selectedVariants),
+                gameOptions: calculateGameOptions(
+                  gameOptions,
+                  selectedVariantsForFormat,
+                  selectedPlayers,
+                  selectedFormat
+                ),
                 roomId: gameOptions.roomId,
               });
             }}
@@ -104,6 +121,24 @@ const VariantSelectScreen: FC = () => {
           />
         </NavigationContainer>
       </Sidebar>
+      <LeftContainer style={{ flex: 1, flexDirection: "column-reverse" }}>
+        <VariantCardGrid
+          style={{ flex: 1, paddingLeft: 24, paddingRight: 4 }}
+          displayVariants={displayVariants}
+          selectedVariants={selectedVariantsForFormat}
+          setSelectedVariants={setSelectedVariantsForFormat}
+          conflictLevel={conflictLevel}
+        />
+        <Topbar
+          displayVariants={displayVariants}
+          selectedVariants={selectedVariantsForFormat}
+          conflictLevel={conflictLevel}
+          selectedPlayers={selectedPlayers}
+          setSelectedPlayers={setSelectedPlayers}
+          selectedFormat={selectedFormat}
+          setSelectedFormat={setSelectedFormat}
+        />
+      </LeftContainer>
     </ScreenContainer>
   );
 };
@@ -116,13 +151,16 @@ const Sidebar = styled(View)`
   flex-direction: column;
   width: 400px;
   background-color: ${Colors.DARKER.toString()};
-  padding: 0px 24px 24px;
+  padding: 0px 0px 24px;
+  border-left-width: 1px;
+  border-left-color: ${Colors.DARKISH.toString()};
   ${Styles.BOX_SHADOW}
 `;
 
 const NavigationContainer = styled(View)`
   flex-direction: row;
-  margin-top: 16px;
+  margin-top: 24px;
+  margin-horizontal: 24px;
 `;
 
 export { VariantSelectScreen };

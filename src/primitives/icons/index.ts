@@ -5,3 +5,5 @@ export * from "./CloseIcon";
 export * from "./DownCaretIcon";
 export * from "./FeedbackIcon";
 export * from "./HelpIcon";
+export * from "./PlusIcon";
+export * from "./MinusIcon";
