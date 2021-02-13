@@ -98,7 +98,7 @@ class Board extends TokenOwner {
       : Object.values(this.pieces).filter(
           (piece) =>
             piece.location.charAt(0) !== LocationPrefix.graveyard ||
-            piece.location.slice(0, 3) === LocationPrefix.pieceBank
+            piece.location.slice(0, 3) === LocationPrefix.pieceBank // TODO: maybe turn this into an interruption point or change the way graveyard prefixes work.
         );
   }
 
