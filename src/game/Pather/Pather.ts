@@ -1,7 +1,7 @@
 import { isPresent } from "utilities";
 import { CompactRules, Game, Piece, Square } from "game";
 import { Direction, Gait, TokenName } from "../types";
-import { flatMap } from "lodash";
+import { clone, flatMap } from "lodash";
 import { Path } from "./Path";
 import { Move } from "game/Move";
 
@@ -36,28 +36,28 @@ export class Pather {
 
     const moves: Move[] = flatMap(gaits, (gait) => {
       return this.path({ currentSquare, gait }).map((path) => ({ path, gait }));
-    }).map(({ path, gait }) => ({
-      pieceId: this.piece.id,
-      location: path.getEnd(),
-      pieceDeltas: [{ pieceId: this.piece.id, path }],
-      playerName: this.piece.owner,
-      data: gait.data,
-    }));
+    }).flatMap(({ path, gait }) =>
+      this.handlePieceCollisions(
+        {
+          pieceId: this.piece.id,
+          location: path.getEnd(),
+          pieceDeltas: [{ pieceId: this.piece.id, path }],
+          playerName: this.piece.owner,
+          data: gait.data,
+          capture: undefined,
+        },
+        gait
+      )
+    );
 
     const specialPacifistMoves = filterPacifistMoves
       ? []
-      : this.interrupt.for
-          .generateSpecialPacifistMoves({
-            game: this.game,
-            piece: this.piece,
-            interrupt: this.interrupt,
-            moves: [],
-          })
-          .moves.filter((m) =>
-            m.pieceDeltas.some(
-              (pd) => !this.capturePossible(this.game.board.squareAt(pd.path.getEnd()))
-            )
-          );
+      : this.interrupt.for.generateSpecialPacifistMoves({
+          game: this.game,
+          piece: this.piece,
+          interrupt: this.interrupt,
+          moves: [],
+        }).moves;
 
     const allMoves = moves.concat(specialPacifistMoves);
 
@@ -129,13 +129,10 @@ export class Pather {
     gait: Gait;
     pathSoFar: Path;
   }): { continuingSquares: Square[]; newAllowableSquares: Square[] } {
-    const possibleLandingSquares = this.go({
+    const landingSquares = this.go({
       from: currentSquare,
       direction: remainingSteps[0],
     });
-    const landingSquares = possibleLandingSquares.filter((square) =>
-      this.canLand({ square, pathSoFar, gait, remainingSteps })
-    );
     const stayingSquares = landingSquares.filter((square) =>
       this.canStay({ square, pathSoFar, gait, remainingSteps })
     );
@@ -149,25 +146,8 @@ export class Pather {
     };
   }
 
-  canLand(_displacement: HypotheticalDisplacement): boolean {
-    // TODO: Check for valid key once keys exist
-    return true;
-  }
-
-  canStay({ square, gait, remainingSteps }: HypotheticalDisplacement): boolean {
+  canStay({ gait, remainingSteps }: HypotheticalDisplacement): boolean {
     if (!gait.interruptable && remainingSteps.length > 1) return false;
-
-    if (!gait.phaser) {
-      if (this.game.board.squareHasPieceBelongingTo(square, this.piece.owner))
-        return false;
-
-      if (this.capturePossible(square)) {
-        if (gait.mustNotCapture) return false;
-      } else if (gait.mustCapture) {
-        return false;
-      }
-    }
-
     return true;
   }
 
@@ -199,6 +179,75 @@ export class Pather {
     return !filtered;
   }
 
+  // TODO: handle moves that self interfere better.
+  handlePieceCollisions(move: Move, gait: Gait): Move[] {
+    const terminalSquare = this.game.board.squareAt(move.pieceDeltas[0].path.getEnd());
+    if (!terminalSquare) return [];
+
+    // what's on the square?
+    const optionalCapturePossible = this.optionalCapturePossible(
+      terminalSquare,
+      this.piece
+    );
+    const enemiesPresent = this.game.board.squareHasPieceNotBelongingTo(
+      terminalSquare,
+      move.playerName
+    );
+    const friendliesPresent = this.game.board.squareHasPieceBelongingTo(
+      terminalSquare,
+      move.playerName
+    );
+
+    // what moves am I allowed to make?
+    const canMovePassively =
+      !gait.mustCapture && (gait.phaser || (!enemiesPresent && !friendliesPresent));
+    const canCaptureNormally =
+      !gait.mustNotCapture && (!friendliesPresent || gait.phaser) && enemiesPresent;
+    const mayMakeOptionalCapture =
+      !gait.mustNotCapture && (!friendliesPresent || gait.phaser);
+
+    // what moves are theoretically possible?
+    const passiveMove = canMovePassively ? move : undefined;
+    const captureMove = canCaptureNormally
+      ? {
+          ...clone(move),
+          capture: {
+            at: terminalSquare.location,
+            pieceIds: this.game.board
+              .getEnemyPiecesAt(terminalSquare.location, move.playerName)
+              .map((p) => p.id),
+          },
+        }
+      : undefined;
+    const optionalCaptureMove =
+      mayMakeOptionalCapture && !!optionalCapturePossible
+        ? {
+            ...clone(move),
+            capture: optionalCapturePossible,
+          }
+        : undefined;
+    const optionalCaptureAndCaptureMove =
+      optionalCaptureMove && captureMove
+        ? {
+            ...clone(move),
+            capture: {
+              at: terminalSquare.location,
+              pieceIds: [
+                ...captureMove.capture.pieceIds,
+                ...optionalCaptureMove.capture.pieceIds,
+              ],
+            },
+          }
+        : undefined;
+
+    return [
+      passiveMove,
+      captureMove,
+      optionalCaptureMove,
+      optionalCaptureAndCaptureMove,
+    ].filter(isPresent);
+  }
+
   go({ from, direction }: { from: Square; direction: Direction }): Square[] {
     return (
       from.adjacencies
@@ -215,26 +264,20 @@ export class Pather {
     return repeat ? gait.pattern : remainingSteps.slice(1);
   }
 
-  private capturePossible(square: Square | undefined): boolean {
-    if (square === undefined) return false;
-    if (this.game.board.squareHasPieceNotBelongingTo(square, this.piece.owner)) {
-      return true;
-    }
-
+  private optionalCapturePossible(
+    square: Square,
+    piece: Piece = this.piece
+  ): { at: string; pieceIds: string[] } | false {
     return (
-      square.tokens
+      square?.tokens
         .filter((token) => token.name === TokenName.CaptureToken)
         .map((token) => {
-          const capturablePiece = token?.data?.pieceId
-            ? this.game.board.findPieceById(token?.data?.pieceId)
-            : undefined;
-          if (capturablePiece?.owner === this.piece.owner) {
-            return false;
-          }
-
-          return token?.data?.condition?.(this.piece) || false;
+          const pieceId = token?.data?.pieceId;
+          return token?.data?.condition?.(piece) && pieceId
+            ? { at: square.location, pieceIds: [pieceId] }
+            : false;
         })
-        .find((capturePossible) => capturePossible) || false
+        .find((optionalCapturePossible) => optionalCapturePossible) || false
     );
   }
 }

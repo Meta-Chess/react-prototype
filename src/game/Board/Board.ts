@@ -128,6 +128,11 @@ class Board extends TokenOwner {
     return pieces;
   }
 
+  getEnemyPiecesAt(location?: string, player?: PlayerName): Piece[] {
+    if (location === undefined || player === undefined) return [];
+    else return this.getPiecesAt(location).filter((p) => p.owner !== player);
+  }
+
   getLocations(): string[] {
     return Object.keys(this.squares);
   }
@@ -237,91 +242,53 @@ class Board extends TokenOwner {
 
   displacePieces(move: Move): void {
     move.pieceDeltas.forEach((pieceDelta) => {
-      const captureHappened = this.capturePiecesAt(
-        pieceDelta.path.getEnd(),
-        this.pieces[pieceDelta.pieceId],
-        move.playerName
-      );
       this.displace(pieceDelta);
-      if (captureHappened) {
-        this.events.notify({
-          name: "capture",
-          data: {
-            board: this,
-            square: this.squares[pieceDelta.path.getEnd()],
-          },
-        });
-      }
     });
+    if (move.capture) {
+      this.capturePieces(move.capture.pieceIds, move.playerName);
+      this.events.notify({
+        name: "capture",
+        data: {
+          board: this,
+          square: this.squares[move.capture.at],
+        },
+      });
+    }
   }
 
-  capturePiecesAt(location: string, movingPiece: Piece, mover?: PlayerName): boolean {
-    let captureHappened = (this.squareAt(location)?.pieces.length || 0) > 0;
-    this.killPiecesAt({
-      piecesLocation: location,
-      individualPieceId: undefined,
-      mover: mover,
-      captured: true,
-    });
-
-    ({ captureHappened } = this.interrupt.for.onCapture({
-      board: this,
-      movingPiece,
-      location,
-      mover,
-      captureHappened,
-    }));
-
-    return captureHappened;
+  capturePieces(capturedPieceIds: string[], mover: PlayerName): void {
+    capturedPieceIds.forEach((pieceId) => this.killPiece(pieceId, mover, true));
   }
 
-  //TODO: refactor this
-  //we want to avoid duplication of capture logic - it should all be in capturePiecesAt
-  //can't have onCapture here because interception would cause an infinite loop
-  //this isn't really capture an individual piece
-  //capture refactor within pather should make this nice to fix...
-  capturePiece(capturedPieceId: string, mover?: PlayerName): void {
-    const pieceLocation = this.pieces[capturedPieceId].location;
-    this.killPiecesAt({
-      piecesLocation: pieceLocation,
-      individualPieceId: capturedPieceId,
+  killPiece(pieceId: string, mover?: PlayerName, captured = false): void {
+    const piece = this.getPiece(pieceId);
+    const square = this.squareAt(piece?.location);
+
+    if (!piece || !square) return;
+    const { destination } = this.interrupt.for.onSendPieceToGrave({
+      piece,
       mover,
-      captured: true,
+      captured,
+      destination: SpecialLocation.graveyard,
     });
+
+    square.pieces = square.pieces.filter((pId) => pId !== pieceId);
+    this.squareAt(destination)?.addPieces([pieceId]);
+    piece.location = destination;
   }
 
   killPiecesAt({
     piecesLocation,
-    individualPieceId,
     mover,
     captured = false,
   }: {
     piecesLocation: string;
-    individualPieceId?: string;
     mover?: PlayerName;
     captured?: boolean;
   }): void {
-    const square = this.squares[piecesLocation];
-    const pieces = individualPieceId === undefined ? square.pieces : [individualPieceId];
-
-    pieces.forEach((pieceId) => {
-      let destination = SpecialLocation.graveyard;
-      const piece = this.pieces[pieceId];
-      ({ destination } = this.interrupt.for.onSendPieceToGrave({
-        piece,
-        mover,
-        captured,
-        destination,
-      }));
-
-      this.squareAt(destination)?.addPieces([pieceId]);
-      this.pieces[pieceId].location = destination;
-    });
-
-    square.pieces =
-      individualPieceId === undefined
-        ? []
-        : square.pieces.filter((id) => id != individualPieceId);
+    this.squareAt(piecesLocation)?.pieces.forEach((p) =>
+      this.killPiece(p, mover, captured)
+    );
   }
 
   squareAt(location?: string): Square | undefined {

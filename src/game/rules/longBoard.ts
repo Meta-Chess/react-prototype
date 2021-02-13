@@ -11,7 +11,6 @@ import {
 import { Rule } from "./CompactRules";
 import { createPiece, determineGaitGenerator } from "./utilities";
 import { standardGaits } from "./constants";
-import { moveIsAggressive } from "./defaults";
 
 export const longBoard: Rule = {
   title: "Long board",
@@ -41,7 +40,6 @@ export const longBoard: Rule = {
       owner,
     };
   },
-  moveIsAggressive,
 };
 
 const generateStandardSquares = (

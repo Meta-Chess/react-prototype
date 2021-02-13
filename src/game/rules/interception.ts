@@ -31,35 +31,4 @@ export const interception: Rule = {
 
     return { game, interrupt, board, move, currentTurn };
   },
-
-  onCapture: ({ board, movingPiece, location, mover, captureHappened }) => {
-    const square = board.squares[location];
-
-    // TODO: Handle multiple capture tokens on the same square
-    const captureToken = square.firstTokenWithName(TokenName.CaptureToken);
-
-    const captureIsAllowed = captureToken?.data?.condition?.(movingPiece) || false;
-
-    if (captureToken?.data?.pieceId && captureToken?.data?.condition?.(movingPiece)) {
-      board.capturePiece(captureToken?.data?.pieceId, mover);
-    }
-
-    captureHappened = captureHappened || captureIsAllowed;
-    return { board, movingPiece, location, mover, captureHappened };
-  },
-
-  moveIsAggressive: ({ move, board, aggressive }) => ({
-    move,
-    board,
-    aggressive:
-      aggressive ||
-      board
-        .squareAt(move.location)
-        ?.tokensWithName(TokenName.CaptureToken)
-        .some((token) => {
-          const piece = board.getPiece(move.pieceId);
-          return piece && token.data?.condition?.(piece);
-        }) ||
-      false,
-  }),
 };
