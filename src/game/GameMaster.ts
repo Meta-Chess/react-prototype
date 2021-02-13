@@ -146,6 +146,15 @@ export class GameMaster {
     }
   }
 
+  filterAllowableMoves(filter: (move: Move) => boolean): Move | undefined {
+    this.allowableMoves = this.allowableMoves.filter(filter);
+    if (this.allowableMoves.length === 1) {
+      const move = this.allowableMoves[0];
+      this.doMove(move);
+      return move;
+    }
+  }
+
   onPress(location: string, pieceId?: string): Move | undefined {
     // console.log(`${this.selectedPieces.length ? "" : "\n\n// Move ... ???\n"}gameMaster.onPress("${location}");`); // TEST WRITING HELPER COMMENT
     const moves = uniqWith(
@@ -217,8 +226,7 @@ export class GameMaster {
     this.allowableMoves = this.selectedPieces.flatMap((piece: Piece) =>
       new Pather(this.game, this.gameClones, piece, this.interrupt).findPaths()
     );
-    // console.log(`// Expect allowable moves to be ... ??? \n expect(gameMaster.allowableMoves).toEqual(expect.arrayContaining([${this.allowableMoves.map((move) => `expect.objectContaining({ location: "${move.location}"})`)}]));`); // TEST WRITING HELPER COMMENT
-    // console.log(`expect(gameMaster.allowableMoves.length).toEqual(${this.allowableMoves.length});`); // TEST WRITING HELPER COMMENT
+    // console.log(`// Expect allowable moves to be ... ??? \n expect(gameMaster.allowableMoves).toEqual(expect.arrayContaining([${this.allowableMoves.map((move) => `expect.objectContaining({ location: "${move.location}"})`)}])); \n expect(gameMaster.allowableMoves.length).toEqual(${this.allowableMoves.length});`); // TEST WRITING HELPER COMMENT
   }
 
   selectPiece(pieceId: string): void {

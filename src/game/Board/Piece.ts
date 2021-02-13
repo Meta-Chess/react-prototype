@@ -6,8 +6,8 @@ import { resetArrayTo } from "utilities";
 class Piece extends TokenOwner {
   constructor(
     public name: PieceName,
-    public generateGaits: (_?: GaitParams) => Gait[],
     public owner: PlayerName,
+    public generateGaits: (_?: GaitParams) => Gait[] = (): Gait[] => [],
     public location: string = "unassigned",
     public tokens: Token[] = [],
     public id = "0",
@@ -19,8 +19,8 @@ class Piece extends TokenOwner {
   clone(): Piece {
     const cloneConstructorInput: Required<ConstructorParameters<typeof Piece>> = [
       this.name,
-      this.generateGaits,
       this.owner,
+      this.generateGaits,
       this.location,
       clone(this.tokens),
       this.id,

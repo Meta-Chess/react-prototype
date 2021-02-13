@@ -59,11 +59,21 @@ export class OnlineGameMaster extends GameMaster {
     return onlineGameMaster;
   }
 
-  onPress(location: string, pieceId?: string): Move | undefined {
-    const move = super.onPress(location, pieceId);
+  filterAllowableMoves(filter: (move: Move) => boolean): Move | undefined {
+    const move = super.filterAllowableMoves(filter);
+    this.sendMove(move);
+    return move;
+  }
+
+  onPress(location: string): Move | undefined {
+    const move = super.onPress(location);
+    this.sendMove(move);
+    return move;
+  }
+
+  sendMove(move?: Move): void {
     if (move) this.gameClient.sendMove(move);
     if (this.gameOver) this.disconnect();
-    return move;
   }
 
   disconnect(): void {

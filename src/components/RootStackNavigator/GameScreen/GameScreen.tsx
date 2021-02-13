@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { GameProvider } from "game";
 import { Screens, useRoute } from "navigation";
-import { GameScreenContent } from "components/RootStackNavigator/GameScreen/GameScreenContent";
+import { GameScreenContent } from "./GameScreenContent";
 
 interface Props {
   portrait: boolean;
