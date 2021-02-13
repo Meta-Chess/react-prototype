@@ -1,12 +1,12 @@
 import { Board } from "game/Board";
-import { CompactRules, rules } from "game/rules";
+import { CompactRules } from "game/rules";
 import { Direction } from "game/types";
 import { toLocation } from "utilities";
 import { EventCenter } from "game/EventCenter";
 
 describe("On the cylindrical board", () => {
   const board = Board.createBoard(
-    new CompactRules([rules.standard, rules.cylindrical]),
+    new CompactRules(["standard", "cylindrical"]),
     new EventCenter({})
   );
 

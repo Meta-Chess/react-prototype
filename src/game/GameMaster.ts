@@ -4,7 +4,7 @@ import { GameOptions, PlayerName } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { VariantName, variants } from "./variants/variants";
-import { rules as allRules, CompactRules, Rule } from "./rules";
+import { CompactRules, RuleName } from "./rules";
 import { uniqWith } from "lodash";
 import { randomChoice } from "utilities";
 import { Move, movesAreEqual } from "game/Move";
@@ -29,7 +29,7 @@ export class GameMaster {
 
   constructor(
     public interrupt: CompactRules,
-    public rules: Rule[],
+    public ruleNames: RuleName[],
     public variant: VariantName,
     public game: Game,
     private renderer: Renderer,
@@ -46,7 +46,7 @@ export class GameMaster {
   static processConstructorInputs(
     gameOptions: GameOptions,
     renderer: Renderer
-  ): [CompactRules, Rule[], VariantName, Game, Renderer, GameOptions] {
+  ): [CompactRules, RuleName[], VariantName, Game, Renderer, GameOptions] {
     const {
       customRuleNames,
       time,
@@ -60,17 +60,16 @@ export class GameMaster {
     const ruleNames = !customRuleNames?.length
       ? [...variants[variant].ruleNames]
       : customRuleNames;
-    const rules = ruleNames.map((name) => allRules[name]);
-    if (checkEnabled) rules.unshift(allRules.check); // Using unshift here is important for 3-check. We should use priorities to sort rules at each interruption point instead.
-    if (fatigueEnabled && !customRuleNames?.length) rules.push(allRules.fatigue);
-    if (atomicEnabled && !customRuleNames?.length) rules.push(allRules.atomic);
+    if (checkEnabled) ruleNames.push("check");
+    if (fatigueEnabled && !customRuleNames?.length) ruleNames.push("fatigue");
+    if (atomicEnabled && !customRuleNames?.length) ruleNames.push("atomic");
 
-    const interrupt = new CompactRules(rules);
+    const interrupt = new CompactRules(ruleNames);
     const game = interrupt.for.afterGameCreation({
       game: Game.createGame(interrupt, time, gameOptions.numberOfPlayers),
     }).game;
 
-    return [interrupt, rules, variant, game, renderer, gameOptions];
+    return [interrupt, ruleNames, variant, game, renderer, gameOptions];
   }
 
   clone({
@@ -82,7 +81,7 @@ export class GameMaster {
   }): GameMaster {
     return new GameMaster(
       this.interrupt,
-      this.rules,
+      this.ruleNames,
       this.variant,
       this.game.clone(),
       renderer || new Renderer(),

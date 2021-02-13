@@ -1,14 +1,11 @@
 import { Board } from "game/Board";
-import { CompactRules, rules } from "game/rules";
+import { CompactRules } from "game/rules";
 import { Direction } from "game/types";
 import { toLocation } from "utilities";
 import { EventCenter } from "game/EventCenter";
 
 describe("On the standard board", () => {
-  const board = Board.createBoard(
-    new CompactRules([rules.standard]),
-    new EventCenter({})
-  );
+  const board = Board.createBoard(new CompactRules(["standard"]), new EventCenter({}));
 
   describe("on a square in the middle of the board", () => {
     const square = board.squareAt(toLocation({ rank: 4, file: 4 }));
