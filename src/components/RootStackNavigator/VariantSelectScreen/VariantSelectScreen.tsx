@@ -31,7 +31,7 @@ const VariantSelectScreen: FC = () => {
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
 
   //we should think about putting these together - we start to pass a lot around e.g. Topbar
-  const [selectedPlayers, setSelectedPlayers] = useState<number>(2);
+  const [selectedPlayers, setSelectedPlayers] = useState(2);
   const [selectedFormat, setSelectedFormat] = useState<FormatName>("variantComposition");
 
   const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);

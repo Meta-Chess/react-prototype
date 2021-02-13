@@ -16,13 +16,15 @@ const FormatOptions: SFC<Props> = ({ selectedFormat, setSelectedFormat, style })
     return { label: <FormatIcon />, value: format };
   });
 
-  return OptionGroup<FormatName>({
-    options: options,
-    setSelected: setSelectedFormat,
-    selected: selectedFormat,
-    style: style,
-    title: "Formats",
-  });
+  return (
+    <OptionGroup
+      options={options}
+      setSelected={setSelectedFormat}
+      selected={selectedFormat}
+      style={style}
+      title={"Formats"}
+    />
+  );
 };
 
 export { FormatOptions };

@@ -13,5 +13,4 @@ export function chooseRandomVariants(variants: FutureVariantName[]): FutureVaria
     } while (firstIndex === secondIndex);
     return variants.filter((variant, i) => [firstIndex, secondIndex].includes(i));
   }
-  return [];
 }

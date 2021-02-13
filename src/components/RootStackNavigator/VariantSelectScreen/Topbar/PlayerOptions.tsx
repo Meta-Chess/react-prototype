@@ -14,13 +14,15 @@ const PlayerOptions: SFC<Props> = ({ selectedPlayers, setSelectedPlayers, style 
     return { label: <Text cat={"BodyL"}>{n}</Text>, value: n };
   });
 
-  return OptionGroup<number>({
-    options: options,
-    setSelected: setSelectedPlayers,
-    selected: selectedPlayers,
-    style: style,
-    title: "Players",
-  });
+  return (
+    <OptionGroup
+      options={options}
+      setSelected={setSelectedPlayers}
+      selected={selectedPlayers}
+      style={style}
+      title={"Players"}
+    />
+  );
 };
 
 export { PlayerOptions };
