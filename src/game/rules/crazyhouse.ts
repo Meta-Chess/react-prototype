@@ -18,7 +18,7 @@ export const crazyhouse: Rule = {
           location: location,
           square: new Square(
             location,
-            { rank: 100 + player.name, file: 100 + player.name },
+            { rank: 1000 + player.name, file: 1000 + player.name },
             [],
             [invisibilityToken]
           ),

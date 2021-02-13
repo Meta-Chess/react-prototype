@@ -324,7 +324,7 @@ class Board extends TokenOwner {
       location: graveyardLocation,
       square: new Square(
         graveyardLocation,
-        { rank: 99, file: 99 },
+        { rank: 999, file: 999 },
         [],
         [invisibilityToken]
       ),
