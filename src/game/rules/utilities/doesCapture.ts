@@ -1,8 +1,5 @@
-import { Game, Move } from "game";
-import { Piece } from "game/Board";
+import { Move } from "game";
 
-export const doesCapture = (game: Game, piece: Piece) => (move: Move): boolean => {
-  return move.pieceDeltas.some((delta) =>
-    game.board.getPiecesAt(delta.path.getEnd()).some((p) => p.owner !== piece.owner)
-  );
-};
+export function doesCapture(move: Move): boolean {
+  return !!move.capture;
+}
