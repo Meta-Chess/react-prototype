@@ -1,7 +1,6 @@
 import React from "react";
 import { SFC } from "primitives";
-import { TopbarOption } from "ui/Pressable";
-import { OptionGroup } from "./OptionGroup";
+import { OptionGroup } from "ui/Forms";
 import { FormatName, formats } from "game/formats";
 
 interface Props {
@@ -11,22 +10,19 @@ interface Props {
 
 const FormatOptions: SFC<Props> = ({ selectedFormat, setSelectedFormat, style }) => {
   const formatNames = Object.keys(formats) as FormatName[];
-  return (
-    <OptionGroup title={"Formats"} style={style}>
-      {formatNames.map((format) => {
-        const FormatIcon = formats[format].icon;
-        return (
-          <TopbarOption
-            key={format}
-            active={format === selectedFormat}
-            onPress={(): void => setSelectedFormat(format)}
-          >
-            {<FormatIcon />}
-          </TopbarOption>
-        );
-      })}
-    </OptionGroup>
-  );
+
+  const options = formatNames.map((format) => {
+    const FormatIcon = formats[format].icon;
+    return { label: <FormatIcon />, value: format };
+  });
+
+  return OptionGroup<FormatName>({
+    options: options,
+    setSelected: setSelectedFormat,
+    selected: selectedFormat,
+    style: style,
+    title: "Formats",
+  });
 };
 
 export { FormatOptions };

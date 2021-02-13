@@ -1,8 +1,7 @@
 import React from "react";
 import { range } from "utilities";
 import { SFC, Text } from "primitives";
-import { TopbarOption } from "ui/Pressable";
-import { OptionGroup } from "./OptionGroup";
+import { OptionGroup } from "ui/Forms";
 import { allPossiblePlayerNames } from "game/types";
 
 interface Props {
@@ -11,21 +10,17 @@ interface Props {
 }
 
 const PlayerOptions: SFC<Props> = ({ selectedPlayers, setSelectedPlayers, style }) => {
-  return (
-    <OptionGroup title={"Players"} style={style}>
-      {range(2, allPossiblePlayerNames.length - 1).map((n) => {
-        return (
-          <TopbarOption
-            key={n}
-            active={n === selectedPlayers}
-            onPress={(): void => setSelectedPlayers(n)}
-          >
-            {<Text cat={"BodyL"}>{n}</Text>}
-          </TopbarOption>
-        );
-      })}
-    </OptionGroup>
-  );
+  const options = range(2, allPossiblePlayerNames.length - 1).map((n) => {
+    return { label: <Text cat={"BodyL"}>{n}</Text>, value: n };
+  });
+
+  return OptionGroup<number>({
+    options: options,
+    setSelected: setSelectedPlayers,
+    selected: selectedPlayers,
+    style: style,
+    title: "Players",
+  });
 };
 
 export { PlayerOptions };
