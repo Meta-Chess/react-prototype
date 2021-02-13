@@ -59,7 +59,7 @@ export class GameMaster {
     const ruleNames = !customRuleNames?.length
       ? [...variants[variant].ruleNames]
       : customRuleNames;
-    if (checkEnabled) ruleNames.unshift("check"); // Using unshift here is important for 3-check. We should use priorities to sort rules at each interruption point instead.
+    if (checkEnabled) ruleNames.push("check");
     if (fatigueEnabled && !customRuleNames?.length) ruleNames.push("fatigue");
     if (atomicEnabled && !customRuleNames?.length) ruleNames.push("atomic");
 

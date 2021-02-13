@@ -28,7 +28,12 @@ To use of the test writing helper comments:
 ## Design
 
 #### Interruption points and rules
-TODO
+TODO: info about adding a new interruption point
+The constant `ruleOrderPerInterruptionPoint` determines execution order for rules at the mentioned interruption point.
+1. Found in the file `CompactRules.ts`
+2. The order rules are written in is the order they will be executed in.
+3. Rules are referenced by their name, `theRest` referes to all the rules not mentioned in the list.
+4. If an interuption point is not listed below then the rules will have default ordering for that interruption point.
 
 #### Events
 TODO

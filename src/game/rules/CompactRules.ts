@@ -22,6 +22,7 @@ export class CompactRules {
     const interruptionPoints = interruptionNames.map((interruptionPointName) => ({
       name: interruptionPointName,
       functions: ruleNames
+        .filter((ruleName) => !!allRules[ruleName][interruptionPointName])
         .sort(compareRulesPerInterruptionPoint(interruptionPointName))
         .map((ruleName) => allRules[ruleName][interruptionPointName])
         .filter(isPresent),
@@ -123,25 +124,21 @@ function compareRulesPerInterruptionPoint(
 ): (r1: RuleName, r2: RuleName) => number {
   const list = ruleOrderPerInterruptionPoint[name];
   if (list) return (r1, r2) => compareRulesByList(r1, r2, list);
-  else return () => 0;
+  else return (r1, r2) => r1.localeCompare(r2);
 }
 
 function compareRulesByList(t1: string, t2: string, list: string[]): number {
-  if (!list.includes("theRest"))
-    return compareRulesByList(t1, t2, [...["theRest"], ...list]); //this prevents the possiblity of an infinite loop
+  if (!list.includes("theRest")) return compareRulesByList(t1, t2, ["theRest", ...list]); //this prevents the possiblity of an infinite loop
   if (!list.includes(t1)) return compareRulesByList("theRest", t2, list);
   if (!list.includes(t2)) return compareRulesByList(t1, "theRest", list);
 
   return list.indexOf(t1) - list.indexOf(t2);
 }
 
-// TODO: replace string[] with (RuleName || "theRest")[] for greater type securuity.
-// Determines execution order for rules at the mentioned interruption point.
-// The order rules are written in is the order they will be executed in.
-// Rules are referenced by their title, "theRest" referes to all the rules not mentioned in the list.
-// If an interuption point is not listed below then the rules will have default ordering for that interruption point.
 const ruleOrderPerInterruptionPoint: {
   [key in InterruptionName]?: (RuleName | "pull" | "theRest")[];
 } = {
   processMoves: ["pull", "theRest", "promotion"],
+  lossCondition: ["theRest", "check", "threeCheck"],
+  inPostMoveGenerationFilter: ["theRest", "check"],
 };
