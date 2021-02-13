@@ -6,11 +6,10 @@ import styled from "styled-components/native";
 import { HelpMenu } from "components/shared";
 import { PlayerOptions } from "./PlayerOptions";
 import { FormatOptions } from "./FormatOptions";
-import { PlayersType } from "../VariantSelectScreen"; //temp
 import { FormatName } from "game/formats";
 interface Props {
-  selectedPlayers: PlayersType;
-  setSelectedPlayers: (x: PlayersType) => void;
+  selectedPlayers: number;
+  setSelectedPlayers: (x: number) => void;
   selectedFormat: FormatName;
   setSelectedFormat: (x: FormatName) => void;
   selectedVariants: FutureVariantName[];

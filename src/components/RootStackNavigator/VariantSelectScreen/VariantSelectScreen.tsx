@@ -26,17 +26,12 @@ import { AdviceCard } from "components/RootStackNavigator/VariantSelectScreen/Co
 import { Topbar } from "./Topbar";
 import { FormatName } from "game/formats";
 
-//these should be replaced by other branches
-export const Players = [2, 3, 4, 5, 6, 7, 8];
-export type PlayersType = typeof Players[number];
-//
-
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
 
   //we should think about putting these together - we start to pass a lot around e.g. Topbar
-  const [selectedPlayers, setSelectedPlayers] = useState<PlayersType>(2);
+  const [selectedPlayers, setSelectedPlayers] = useState<number>(2);
   const [selectedFormat, setSelectedFormat] = useState<FormatName>("variantComposition");
 
   const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);

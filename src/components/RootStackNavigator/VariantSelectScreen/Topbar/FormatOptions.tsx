@@ -9,8 +9,8 @@ interface Props {
   setSelectedFormat: (x: FormatName) => void;
 }
 
-const formatNames = Object.keys(formats) as FormatName[];
 const FormatOptions: SFC<Props> = ({ selectedFormat, setSelectedFormat, style }) => {
+  const formatNames = Object.keys(formats) as FormatName[];
   return (
     <OptionGroup title={"Formats"} style={style}>
       {formatNames.map((format) => {

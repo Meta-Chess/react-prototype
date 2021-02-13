@@ -5,14 +5,13 @@ import {
   futureVariants,
   FutureVariantName,
 } from "game/variants/variants";
-import { PlayersType } from "components/RootStackNavigator/VariantSelectScreen";
 import { FormatName } from "game/formats";
 import { uniq, random } from "lodash";
 
 export function calculateGameOptions(
   gameOptions: GameOptions,
   selectedVariants: FutureVariantName[],
-  selectedPlayers: PlayersType = 2,
+  selectedPlayers = 2,
   selectedFormat?: FormatName
 ): GameOptions {
   let variantsInPlay: FutureVariantName[] = [];
