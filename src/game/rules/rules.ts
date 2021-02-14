@@ -23,5 +23,6 @@ export { threeCheck } from "./threeCheck";
 export { patheticKing } from "./patheticKing";
 export { emptyCenter } from "./emptyCenter";
 export { pull } from "./pull";
+export { holyKnights } from "./holyKnights";
 
 // Note: Only rules should be exported from this file

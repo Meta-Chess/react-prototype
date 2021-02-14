@@ -1,5 +1,5 @@
 import React from "react";
-import { SFC, Colors } from "primitives";
+import { SFC, Colors, Text } from "primitives";
 import { View, Image } from "react-native";
 import { FutureVariant } from "game";
 import * as VariantImages from "primitives/VariantImage";
@@ -10,6 +10,20 @@ interface VariantTileImageProps {
 }
 
 const VariantTileImage: SFC<VariantTileImageProps> = ({ style, variant }) => {
+  if (variant.imageName === undefined) {
+    return (
+      <Container style={style}>
+        <Text
+          alignment="center"
+          cat="BodyXS"
+          color={Colors.TEXT.LIGHT_SECONDARY.toString()}
+        >
+          {"Image\ncoming soon"}
+        </Text>
+      </Container>
+    );
+  }
+
   const currentImage = VariantImages[variant.imageName];
 
   return (
