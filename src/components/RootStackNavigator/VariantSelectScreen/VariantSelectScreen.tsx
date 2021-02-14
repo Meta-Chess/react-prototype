@@ -21,6 +21,7 @@ import styled from "styled-components/native";
 import { AdviceCard } from "components/RootStackNavigator/VariantSelectScreen/CollapsableCards/AdviceCard";
 import { Topbar } from "./Topbar";
 import { FormatName } from "game/formats";
+import { rollableVariants } from "game/formats/rollableVariants";
 
 const VariantSelectScreen: FC = () => {
   const navigation = useNavigation();
@@ -38,7 +39,7 @@ const VariantSelectScreen: FC = () => {
   >({
     variantComposition: [],
     randomVariants: [],
-    rollingVariants: [],
+    rollingVariants: rollableVariants,
   });
   const selectedVariantsForFormat = selectedVariants[gameOptions.format];
   const setSelectedVariantsForFormat = useCallback(

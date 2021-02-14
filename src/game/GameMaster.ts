@@ -330,6 +330,12 @@ export class GameMaster {
   }
 
   getVariantNames(): FutureVariantName[] {
+    console.log(
+      "baseVariants",
+      this.gameOptions.baseVariants,
+      "formatVariants",
+      this.formatVariants
+    );
     return [...(this.gameOptions.baseVariants || []), ...(this.formatVariants || [])];
   }
 

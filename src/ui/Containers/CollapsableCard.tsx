@@ -60,7 +60,7 @@ const LeftHeaderContainer = styled(View)`
   flex: 1;
   flex-direction: row;
   align-items: center;
-  margin-left: 12;
+  margin-left: 12px;
 `;
 
 const Body = styled(View)`

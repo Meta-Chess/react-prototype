@@ -8,6 +8,7 @@ import { intersection } from "lodash";
 import { isPresent } from "ts-is-present";
 import { FormatName } from "game";
 import { englishList } from "utilities/englishList";
+import { rollableVariants } from "game/formats/rollableVariants";
 
 interface Conflict {
   message: string;
@@ -53,16 +54,7 @@ export const findConflicts = (
   const formatConflicts: Conflict[] = [];
   if (format === "rollingVariants") {
     const selectedVariantsThatShouldNotRoll = selectedVariants.filter(
-      (variantName) =>
-        ![
-          "atomic",
-          "chemicallyExcitedKnight",
-          "crazyhouse",
-          "fatigue",
-          "noFork",
-          "patheticKing",
-          "threeCheck",
-        ].includes(variantName)
+      (variantName) => !rollableVariants.includes(variantName)
     );
     if (selectedVariantsThatShouldNotRoll.length !== 0) {
       formatConflicts.push({
