@@ -17,7 +17,7 @@ export function calculateGameOptions(
         ? selectedVariants
         : gameOptions.format === "randomVariants"
         ? chooseRandomVariants(selectedVariants)
-        : []),
+        : (["toroidal"] as const)),
     ],
     format: gameOptions.format,
     deck:

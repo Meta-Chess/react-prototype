@@ -51,7 +51,7 @@ const VariantSelectScreen: FC = () => {
   const variantConflicts: {
     message: string;
     level: AdviceLevel;
-  }[] = findConflicts("variantComposition", selectedVariantsForFormat);
+  }[] = findConflicts(gameOptions.format, selectedVariantsForFormat);
   const conflictLevel = variantConflicts.some((conflict) => conflict.level === "ERROR")
     ? "ERROR"
     : variantConflicts.some((conflict) => conflict.level === "WARNING")
@@ -82,6 +82,7 @@ const VariantSelectScreen: FC = () => {
           <AdviceCard
             selectedVariants={selectedVariantsForFormat}
             variantConflicts={variantConflicts}
+            gameOptions={gameOptions}
           />
           <GameOptionsCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
           <FiltersCard

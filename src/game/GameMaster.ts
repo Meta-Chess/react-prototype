@@ -214,7 +214,7 @@ export class GameMaster {
   }
 
   startOfTurn(): void {
-    this.checkGameEndConditions();
+    if (this.game.getCurrentPlayer().alive) this.checkGameEndConditions();
     this.interrupt.for.formatControlAtTurnStart({ gameMaster: this });
     this.render();
   }
@@ -330,12 +330,6 @@ export class GameMaster {
   }
 
   getVariantNames(): FutureVariantName[] {
-    console.log(
-      "baseVariants",
-      this.gameOptions.baseVariants,
-      "formatVariants",
-      this.formatVariants
-    );
     return [...(this.gameOptions.baseVariants || []), ...(this.formatVariants || [])];
   }
 
