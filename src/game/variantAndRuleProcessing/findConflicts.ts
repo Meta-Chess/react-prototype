@@ -6,7 +6,7 @@ import {
 } from "game/variants";
 import { intersection } from "lodash";
 import { isPresent } from "ts-is-present";
-import { FormatName } from "game";
+import { FormatName, futureVariants as allVariants } from "game";
 import { englishList } from "utilities/englishList";
 import { rollableVariants } from "game/formats/rollableVariants";
 
@@ -19,37 +19,41 @@ export const findConflicts = (
   format: FormatName,
   selectedVariants: FutureVariantName[]
 ): Conflict[] => {
-  const relevantVariantConflicts = variantConflicts
-    .map((potentialConflict) => {
-      const mainVariants = intersection(
-        selectedVariants,
-        potentialConflict.mainVariantGroup
-      );
+  let relevantVariantConflicts = [] as Conflict[];
+  if (format === "variantComposition") {
+    relevantVariantConflicts = variantConflicts
+      .map((potentialConflict) => {
+        const mainVariants = intersection(
+          selectedVariants,
+          potentialConflict.mainVariantGroup
+        );
 
-      if (mainVariants.length === 0) return undefined;
+        if (mainVariants.length === 0) return undefined;
 
-      const conflictingVariants = intersection(
-        selectedVariants,
-        potentialConflict.conflictingVariants
-      );
+        const conflictingVariants = intersection(
+          selectedVariants,
+          potentialConflict.conflictingVariants
+        );
 
-      if (conflictingVariants.length === 0) return undefined;
+        if (conflictingVariants.length === 0) return undefined;
 
-      if (
-        intersection(selectedVariants, potentialConflict.mitigatingVariants).length !== 0
-      )
-        return undefined;
+        if (
+          intersection(selectedVariants, potentialConflict.mitigatingVariants).length !==
+          0
+        )
+          return undefined;
 
-      return {
-        message: potentialConflict.messageBuilder(
-          mainVariants.map(nameToTitle),
-          conflictingVariants.map(nameToTitle),
-          potentialConflict.mitigatingVariants?.map(nameToTitle)
-        ),
-        level: potentialConflict.level,
-      };
-    })
-    .filter(isPresent);
+        return {
+          message: potentialConflict.messageBuilder(
+            mainVariants.map(nameToTitle),
+            conflictingVariants.map(nameToTitle),
+            potentialConflict.mitigatingVariants?.map(nameToTitle)
+          ),
+          level: potentialConflict.level,
+        };
+      })
+      .filter(isPresent);
+  }
 
   const formatConflicts: Conflict[] = [];
   if (format === "rollingVariants") {
@@ -58,10 +62,15 @@ export const findConflicts = (
     );
     if (selectedVariantsThatShouldNotRoll.length !== 0) {
       formatConflicts.push({
-        message: `${englishList(selectedVariantsThatShouldNotRoll, {
-          singular: "doesn't",
-          plural: "don't",
-        })} work with rolling variants yet`,
+        message: `${englishList(
+          selectedVariantsThatShouldNotRoll.map(
+            (variantName) => allVariants[variantName].title
+          ),
+          {
+            singular: "doesn't",
+            plural: "don't",
+          }
+        )} work with rolling variants yet`,
         level: "ERROR",
       });
     }
