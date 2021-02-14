@@ -67,7 +67,7 @@ const OptionsContainer = styled(View)`
 `;
 
 const CenterHelpMenu = styled(View)`
-  margin-top: -4;
+  margin-top: -4px;
   align-self: flex-start;
 `;
 

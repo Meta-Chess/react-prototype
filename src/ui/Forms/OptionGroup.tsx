@@ -51,14 +51,14 @@ const Container = styled(View)`
 `;
 
 const PressableOption = styled(TouchableOpacity)<{ active: boolean }>`
-  height: 28;
-  width: 28;
+  height: 28px;
+  width: 28px;
   justify-content: center;
   align-items: center;
-  margin-right: 8;
+  margin-right: 8px;
   background-color: ${({ active }): string =>
     active ? Colors.GREY.fade(0.6).toString() : Colors.GREY.fade(0.9).toString()};
-  border-radius: 4;
-  border-width: ${({ active }): number => (active ? 1 : 0)};
+  border-radius: 4px;
+  border-width: ${({ active }): number => (active ? 1 : 0)}px;
   border-color: ${Colors.TEXT.LIGHT_SECONDARY.toString()};
 `;
