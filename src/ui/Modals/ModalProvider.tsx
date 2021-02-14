@@ -74,7 +74,7 @@ const ModalContainer = styled(View)<{ top?: number; left?: number }>`
       background-color: ${Colors.DARKEST.fade(0.4).toString()}
       align-items: center;
       justify-content: center;`
-      : `top: ${top}; left: ${left}`}
+      : `top: ${top}px; left: ${left}px`}
 `;
 
 export function useModals(): typeof defaultModalController {
