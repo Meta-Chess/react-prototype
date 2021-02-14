@@ -14,7 +14,7 @@ export interface MoveData {
 export interface Move {
   pieceId: string;
   location: string;
-  pieceDeltas: PieceDelta[]; //TODO: [PieceDelta, ...PieceDelta[]]?
+  pieceDeltas: PieceDelta[];
   playerName: PlayerName;
   capture?: { at: string; pieceIds: string[] };
   data?: MoveData;

@@ -31,7 +31,7 @@ export const pull: Rule = {
       ) {
         const forwards = move.data.linearMoverDirection;
         const backwards = rotate180([forwards])[0];
-        const startSquare = board.squareAt(move.pieceDeltas[0].path.getStart());
+        const startSquare = board.squareAt(move.pieceDeltas[0]?.path.getStart());
         if (!startSquare) return move;
 
         const tail: Square[] = calculateTail(
