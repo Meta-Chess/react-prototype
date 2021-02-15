@@ -2,6 +2,7 @@ import React from "react";
 import { SFC } from "primitives";
 import { OptionGroup } from "ui/Forms";
 import { FormatName, formats } from "game/formats";
+import { FormatIcon } from "components/shared";
 
 interface Props {
   format: FormatName;
@@ -12,8 +13,7 @@ const FormatOptions: SFC<Props> = ({ format, setFormat, style }) => {
   const formatNames = Object.keys(formats) as FormatName[];
 
   const options = formatNames.map((format) => {
-    const FormatIcon = formats[format].icon;
-    return { label: <FormatIcon />, value: format };
+    return { label: <FormatIcon format={format} />, value: format };
   });
 
   return (
