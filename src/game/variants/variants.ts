@@ -139,7 +139,7 @@ export interface FutureVariant {
   title: string;
   shortDescription: string;
   traits: TraitName[];
-  imageName: keyof typeof VariantImages;
+  imageName?: keyof typeof VariantImages;
   implemented: boolean;
   ruleNames: RuleName[];
   complexity: number;
@@ -163,6 +163,7 @@ export type FutureVariantName =
   | "toroidal"
   | "chemicallyExcitedKnight"
   | "pull"
+  | "holyKnights"
   | "zoneOfControl"
   | "loseOnStalemate"
   | "gambit"
@@ -337,6 +338,16 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     implemented: true,
     ruleNames: ["pull"],
     complexity: 2,
+  },
+  holyKnights: {
+    title: "Holy Knights",
+    shortDescription:
+      "When knights move they turn into bishops and when bishops move they turn into knights",
+    traits: ["Piece"],
+    imageName: undefined,
+    implemented: true,
+    ruleNames: ["holyKnights"],
+    complexity: 1,
   },
   zoneOfControl: {
     title: "Zone of Control",
