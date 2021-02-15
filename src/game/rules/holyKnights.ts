@@ -12,7 +12,6 @@ export const holyKnights: Rule = {
   description:
     "When knights move they turn into bishops and when bishops move they turn into knights",
 
-  // onPieceDisplaced can be moved into a lower level utility rule when we make other rules to handle other kinds of promotion
   onPieceDisplaced: ({ board, pieceDelta }) => {
     const piece = board.getPiece(pieceDelta.pieceId);
     if (piece) {
