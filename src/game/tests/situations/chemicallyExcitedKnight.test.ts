@@ -8,7 +8,7 @@ describe("With chemically excited knights", () => {
   it("explosions kill all pieces (and create some animations)", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({}, ["chemicallyExcitedKnight"])
+        calculateGameOptions({ checkEnabled: false }, ["chemicallyExcitedKnight"])
       )
     );
     const board = gameMaster.game.board;
@@ -75,7 +75,7 @@ describe("With chemically excited knights", () => {
   it("multiple knights can be triggered at the same time (and create overlapping animations)", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({}, ["chemicallyExcitedKnight"])
+        calculateGameOptions({ checkEnabled: false }, ["chemicallyExcitedKnight"])
       )
     );
     const board = gameMaster.game.board;

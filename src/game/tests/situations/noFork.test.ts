@@ -5,7 +5,9 @@ import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGam
 describe("With no fork enabled", () => {
   it("knight cannot fork and pieces cannot allow knight to fork", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(calculateGameOptions({}, ["noFork"]))
+      ...GameMaster.processConstructorInputs(
+        calculateGameOptions({ checkEnabled: false }, ["noFork"])
+      )
     );
     const board = gameMaster.game.board;
 

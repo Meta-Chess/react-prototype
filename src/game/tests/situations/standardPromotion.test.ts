@@ -4,7 +4,9 @@ import { calculateGameOptions, PieceName } from "game";
 describe("In standard chess, when a piece gets to the end of the board", () => {
   it("should be able to promote", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(calculateGameOptions({}, []))
+      ...GameMaster.processConstructorInputs(
+        calculateGameOptions({ checkEnabled: false }, [])
+      )
     );
     const board = gameMaster.game.board;
 
