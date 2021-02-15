@@ -114,7 +114,9 @@ describe("In standard chess", () => {
 
   it("We should be unable to castle through enemy pieces", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(calculateGameOptions({}, []))
+      ...GameMaster.processConstructorInputs(
+        calculateGameOptions({ checkEnabled: false }, [])
+      )
     );
     const board = gameMaster.game.board;
 

@@ -204,7 +204,11 @@ describe("with crazyhouse", () => {
   it("pawns can't be placed in promotion zone, but non-pawn can. both can't be played in the empty center", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({}, ["crazyhouse", "emptyCenter", "cylindrical"])
+        calculateGameOptions({ checkEnabled: false }, [
+          "crazyhouse",
+          "emptyCenter",
+          "cylindrical",
+        ])
       )
     );
     const board = gameMaster.game.board;
@@ -285,7 +289,11 @@ describe("with crazyhouse", () => {
   it("captured backwards toroidal pawns have their gaits changed, double step tokens are cleared on capture, a played piece will start fatigued", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({}, ["crazyhouse", "fatigue", "toroidal"])
+        calculateGameOptions({ checkEnabled: false }, [
+          "crazyhouse",
+          "fatigue",
+          "toroidal",
+        ])
       )
     );
     const board = gameMaster.game.board;
