@@ -1,5 +1,3 @@
-import { Board, Game, PlayerName, Square } from "game";
-
 export interface PlayerRuleData {
   rollingVariantsCounter?: number;
 }
