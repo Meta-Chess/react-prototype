@@ -24,7 +24,7 @@ export const formats: { [key in FormatName]: Format } = {
   rollingVariants: {
     title: "Rolling Variants",
     description:
-      "Every couple turns a new variant is introduced, changing the rules of the game.",
+      "Every 3 turns a new variant is introduced, changing the rules of the game.",
     shortExplanation: "Variants in play will change throughout the game",
     ruleNames: ["rollingVariants"],
   },

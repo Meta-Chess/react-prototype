@@ -74,6 +74,15 @@ export const findConflicts = (
         level: "ERROR",
       });
     }
+
+    // TODO: use rolling variants parameter for number of variants rather than `4`
+    if (selectedVariants.length < 4) {
+      formatConflicts.push({
+        message:
+          "Rolling variants won't do anything unless there are at least 4 variants selected",
+        level: "WARNING",
+      });
+    }
   }
 
   return [...formatConflicts, ...relevantVariantConflicts];
