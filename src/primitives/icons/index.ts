@@ -4,6 +4,7 @@ export * from "./CheckBoxFilled";
 export * from "./CloseIcon";
 export * from "./DownCaretIcon";
 export * from "./FeedbackIcon";
+export * from "./Formats";
 export * from "./HelpIcon";
 export * from "./PlusIcon";
 export * from "./MinusIcon";

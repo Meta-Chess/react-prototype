@@ -1,8 +1,3 @@
-import {
-  VariantCompositionIcon,
-  RandomVariantsIcon,
-  RollingVariantsIcon,
-} from "primitives/icons/Formats";
 import { RuleName } from "game";
 
 interface Format {
@@ -10,7 +5,6 @@ interface Format {
   description: string;
   shortExplanation: string;
   ruleNames?: RuleName[];
-  icon: React.FC;
 }
 
 export type FormatName = "variantComposition" | "randomVariants" | "rollingVariants";
@@ -20,14 +14,12 @@ export const formats: { [key in FormatName]: Format } = {
     title: "Variant Composition",
     description: "A selection of variants are active for the entirety of a game",
     shortExplanation: "Selected variants are fused",
-    icon: VariantCompositionIcon,
   },
   randomVariants: {
     title: "Random Variants",
     description: "A random selection of variants are active for the entire game",
     shortExplanation:
       "A variant composition is chosen at random from the selected variants",
-    icon: RandomVariantsIcon,
   },
   rollingVariants: {
     title: "Rolling Variants",
@@ -35,6 +27,5 @@ export const formats: { [key in FormatName]: Format } = {
       "Every couple turns a new variant is introduced, changing the rules of the game.",
     shortExplanation: "Variants in play will change throughout the game",
     ruleNames: ["rollingVariants"],
-    icon: RollingVariantsIcon,
   },
 };
