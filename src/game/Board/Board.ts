@@ -246,16 +246,16 @@ class Board extends TokenOwner {
     move.pieceDeltas.forEach((pieceDelta) => {
       this.displace(pieceDelta);
     });
-    if (move.capture) {
-      this.capturePieces(move.capture.pieceIds, move.playerName);
+    move.captures?.forEach((capture) => {
+      this.capturePieces(capture.pieceIds, capture.capturer);
       this.events.notify({
         name: "capture",
         data: {
           board: this,
-          square: this.squares[move.capture.at],
+          square: this.squares[capture.at],
         },
       });
-    }
+    });
   }
 
   capturePieces(capturedPieceIds: string[], mover: PlayerName): void {

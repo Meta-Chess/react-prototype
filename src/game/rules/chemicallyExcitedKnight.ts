@@ -26,6 +26,7 @@ export const chemicallyExcitedKnight: Rule = {
           //we might have intended behaviour by chance in this case, because chemKnight and noFork are related mechanics
           //but we should have a solution for if we wanted noForkSearch: true here.
           noForkSearch: false,
+          chainReactionSearch: false,
         }).findPaths();
         if (moves.filter(doesCapture).length > 2) {
           const knightSquarePieces = board.getPiecesAt(knight.location);

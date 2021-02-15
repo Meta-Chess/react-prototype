@@ -11,12 +11,18 @@ export interface MoveData {
   linearMoverDirection?: Direction;
 }
 
+export interface CaptureData {
+  at: string;
+  pieceIds: string[];
+  capturer: PlayerName;
+}
+
 export interface Move {
   pieceId: string;
   location: string;
   pieceDeltas: PieceDelta[];
   playerName: PlayerName;
-  capture?: { at: string; pieceIds: string[] };
+  captures?: CaptureData[];
   data?: MoveData;
 }
 

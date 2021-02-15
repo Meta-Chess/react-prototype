@@ -100,7 +100,12 @@ const identityRule = {
     move: Move;
     currentTurn: number;
   }) => x,
-  processMoves: (x: { board: Board; moves: Move[] }) => x,
+  processMoves: (x: {
+    moves: Move[];
+    game: Game;
+    gameClones: Game[];
+    params: PatherParams;
+  }) => x,
   subscribeToEvents: (x: { events: EventCenter }) => x,
   inFindPathsModifyInputParams: (x: { filterPacifistMoves: boolean }) => x,
 };

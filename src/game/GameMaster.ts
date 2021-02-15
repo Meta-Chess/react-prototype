@@ -9,6 +9,7 @@ import { uniqWith } from "lodash";
 import { randomChoice } from "utilities";
 import { Move, movesAreEqual } from "game/Move";
 import { SquareInfo, SquaresInfo } from "game/SquaresInfo";
+import { doesCapture } from "./rules/utilities";
 
 export class GameMaster {
   public gameClones: Game[];
@@ -121,7 +122,7 @@ export class GameMaster {
     this.allowableMoves.forEach((move) => {
       if (move.playerName !== this.game.players[this.game.currentPlayerIndex].name) {
         this.squaresInfo.add(move.location, SquareInfo.PossibleOtherPlayerMoveEndPoint);
-      } else if (move.capture === undefined) {
+      } else if (!doesCapture(move)) {
         this.squaresInfo.add(move.location, SquareInfo.PossibleMovePassiveEndPoint);
       } else {
         this.squaresInfo.add(move.location, SquareInfo.PossibleMoveAggressiveEndPoint);

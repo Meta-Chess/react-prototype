@@ -66,6 +66,7 @@ export const castling: Rule = {
         const passivePieceMoveSet = new Pather(game, [], passivePiece, interrupt, {
           checkDepth: 0,
           noForkSearch: false,
+          chainReactionSearch: false,
         }).findPaths();
         const passivePath = passivePieceMoveSet.find(
           (move) => move.location === passiveDestination.location

@@ -17,7 +17,8 @@ export const promotion: Rule = {
   description:
     "When pawns reach a promotion square, they can be turned into a queen, knight, rook, or bishop",
 
-  processMoves: ({ moves, board }) => {
+  processMoves: ({ moves, game, gameClones, params }) => {
+    const board = game.board;
     const processedMoves = moves.flatMap((move) => {
       const [promotionDeltas, nonPromotionDeltas] = partitionDeltas(move, board);
       if (promotionDeltas.length !== 0) {
@@ -37,7 +38,7 @@ export const promotion: Rule = {
         return [move];
       }
     });
-    return { moves: processedMoves, board };
+    return { moves: processedMoves, game, gameClones, params };
   },
 
   // onPieceDisplaced can be moved into a lower level utility rule when we make other rules to handle other kinds of promotion
