@@ -15,12 +15,12 @@ interface Props {
 }
 
 export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
+  const [name] = useState(randomChoice(["Emmanuel", "Gus", "Angus", "Seb"]));
+  const [rating] = useState(randomInt(100, 3000));
+
   const { gameMaster } = useContext(GameContext);
   if (gameMaster === undefined) return null;
   const ruleNames = gameMaster.getRuleNames();
-
-  const [name] = useState(randomChoice(["Emmanuel", "Gus", "Angus", "Seb"]));
-  const [rating] = useState(randomInt(100, 3000));
 
   return (
     <Container active={player.name === currentPlayerName}>
