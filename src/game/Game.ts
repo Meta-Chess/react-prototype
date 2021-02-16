@@ -22,7 +22,7 @@ export class Game {
 
   clone(): Game {
     const cloneConstructorInput: Required<ConstructorParameters<typeof Game>> = [
-      this.interrupt, // When we start updating the rules, we'll need to clone the interrupt, perhaps by storing the list of rules and regenerating
+      this.interrupt.clone(),
       this.board.clone(),
       undefined, // Clones don't need a clock at the moment
       this.events.clone(),
@@ -34,7 +34,7 @@ export class Game {
   }
 
   resetTo(savePoint: Game): void {
-    this.interrupt = savePoint.interrupt; // .resetTo(savePoint.interrupt);
+    this.interrupt.resetTo(savePoint.interrupt);
     this.board.resetTo(savePoint.board);
     for (let i = 0; i < savePoint.players.length; i++) {
       this.players[i].resetTo(savePoint.players[i]);

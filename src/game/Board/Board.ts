@@ -59,8 +59,8 @@ class Board extends TokenOwner {
       {}
     );
     const cloneConstructorInput: Required<ConstructorParameters<typeof Board>> = [
-      this.interrupt, // TODO: interrupt and events should be cloned in the game and passed down to the corresponding clone of the board
-      this.events,
+      this.interrupt.clone(),
+      this.events.clone(),
       squaresClone,
       piecesClone,
       clone(this.tokens),
@@ -69,6 +69,8 @@ class Board extends TokenOwner {
   }
 
   resetTo(savePoint: Board): void {
+    this.interrupt.resetTo(savePoint.interrupt);
+    this.events.resetTo(savePoint.events);
     this.tokens = clone(savePoint.tokens);
     Object.keys(this.squares).forEach((key) => {
       if (savePoint.squares[key] === undefined) delete this.squares[key];
