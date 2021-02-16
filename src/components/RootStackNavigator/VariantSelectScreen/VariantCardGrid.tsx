@@ -1,8 +1,12 @@
 import React from "react";
 import { View, ScrollView } from "react-native";
-import { SFC } from "primitives";
+import { SFC, Colors, Text } from "primitives";
 import { VariantTile } from "ui/Pressable/VariantTile";
 import { AdviceLevel, FutureVariantName, futureVariants } from "game";
+import {
+  complexityLevels,
+  partitionDisplayVariantsByComplexity,
+} from "./partitionDisplayVariantsByComplexity";
 import styled from "styled-components/native";
 interface Props {
   displayVariants: FutureVariantName[];
@@ -18,30 +22,54 @@ const VariantCardGrid: SFC<Props> = ({
   setSelectedVariants,
   conflictLevel,
 }) => {
+  const partitionedDisplayVariants = partitionDisplayVariantsByComplexity(
+    displayVariants
+  );
   return (
     <View style={style}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingVertical: 24 }}
       >
-        <CardContainer>
-          {displayVariants.map((variant) => {
-            return (
-              <VariantTile
-                key={variant}
-                variant={futureVariants[variant]}
-                selected={selectedVariants.includes(variant)}
-                conflictLevel={conflictLevel}
-                onPress={(): void =>
-                  selectedVariants.includes(variant)
-                    ? setSelectedVariants(selectedVariants.filter((x) => x !== variant))
-                    : setSelectedVariants([...selectedVariants, variant])
-                }
-                style={{ margin: 4 }}
-              />
-            );
-          })}
-        </CardContainer>
+        {complexityLevels.map((catagory, i) => {
+          return (
+            <View key={catagory}>
+              {partitionedDisplayVariants[catagory].length > 0 && (
+                <>
+                  <Text
+                    cat={"DisplayM"}
+                    alignment={"left"}
+                    color={Colors.TEXT.LIGHT_SECONDARY.fade(0.4).toString()}
+                    style={{ marginLeft: 4, marginTop: i === 0 ? 0 : 20 }}
+                  >
+                    {catagory}
+                  </Text>
+                  <CatagorySeparator />
+                </>
+              )}
+              <CardContainer>
+                {partitionedDisplayVariants[catagory].map((variant) => {
+                  return (
+                    <VariantTile
+                      key={variant}
+                      variant={futureVariants[variant]}
+                      selected={selectedVariants.includes(variant)}
+                      conflictLevel={conflictLevel}
+                      onPress={(): void =>
+                        selectedVariants.includes(variant)
+                          ? setSelectedVariants(
+                              selectedVariants.filter((x) => x !== variant)
+                            )
+                          : setSelectedVariants([...selectedVariants, variant])
+                      }
+                      style={{ margin: 4 }}
+                    />
+                  );
+                })}
+              </CardContainer>
+            </View>
+          );
+        })}
       </ScrollView>
     </View>
   );
@@ -49,6 +77,15 @@ const VariantCardGrid: SFC<Props> = ({
 
 const CardContainer = styled(View)`
   flex-flow: row wrap;
+`;
+
+const CatagorySeparator = styled(View)`
+  flex: 1;
+  height: 2;
+  margin-right: 20;
+  margin-bottom: 16;
+  border-bottom-width: 2;
+  border-bottom-color: ${Colors.DARK.toString()};
 `;
 
 export { VariantCardGrid };
