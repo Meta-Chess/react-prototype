@@ -58,6 +58,14 @@ export class CompactRules {
   getRuleNames(): RuleName[] {
     return this.ruleNames;
   }
+
+  clone(): CompactRules {
+    return new CompactRules([], [], this.getRuleNames());
+  }
+
+  resetTo(savePoint: CompactRules): void {
+    this.constructor([], [], savePoint.getRuleNames());
+  }
 }
 
 const identityRule = {
