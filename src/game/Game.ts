@@ -73,6 +73,9 @@ export class Game {
   setInterrupt(interrupt: CompactRules): void {
     this.interrupt = interrupt;
     this.board.interrupt = interrupt;
+    this.events = new EventCenter({});
+    this.board.events = this.events;
+    this.interrupt.for.subscribeToEvents({ events: this.events });
   }
 
   doMove(move?: Move): void {

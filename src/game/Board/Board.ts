@@ -34,7 +34,7 @@ class Board extends TokenOwner {
 
   constructor(
     public interrupt: CompactRules,
-    private events: EventCenter,
+    public events: EventCenter,
     public squares: LocationMap = {},
     public pieces: PieceIdMap = {},
     public tokens: Token[] = []

@@ -1,13 +1,13 @@
 import { FutureVariantName } from "game";
 
 export const rollableVariants = [
-  // "atomic",
+  "atomic",
   "chemicallyExcitedKnight",
   // "crazyhouse",
   "fatigue",
   "noFork",
   "patheticKing",
-  // "threeCheck",
+  "threeCheck",
   "pull",
   "holyKnights",
 ] as FutureVariantName[];

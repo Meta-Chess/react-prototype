@@ -104,7 +104,7 @@ export class GameMaster {
   }
 
   recalculateRules(): void {
-    this.interrupt = new CompactRules(
+    this.interrupt.constructor(
       [...this.formatVariants, ...(this.gameOptions.baseVariants || [])],
       this.gameOptions.format ? [this.gameOptions.format] : [],
       this.gameOptions.checkEnabled ? ["check"] : []

@@ -1,23 +1,10 @@
 import { Rule } from "./CompactRules";
 import { TokenName } from "game/types";
+import { Game } from "game";
 
 export const threeCheck: Rule = {
   title: "Three Check",
   description: "If you are placed in check 3 times - you lose.",
-
-  afterGameCreation: ({ game }) => {
-    const CheckCounter = {
-      name: TokenName.CheckCounter,
-      expired: (): boolean => {
-        return false;
-      },
-      data: {
-        counters: game.players.map(() => 0),
-      },
-    };
-    game.board.addToken(CheckCounter);
-    return { game };
-  },
 
   lossCondition: ({ playerName, game, gameClones, interrupt, dead }) => {
     if (dead || game.getCurrentPlayerName() !== playerName) {
@@ -46,6 +33,8 @@ export const threeCheck: Rule = {
     events.subscribe({
       name: "check",
       consequence: ({ game, playerName }) => {
+        if (!game.board.hasTokenWithName(TokenName.CheckCounter))
+          addCheckTokenToBoard(game);
         const checkCounters = game.board.firstTokenWithName(TokenName.CheckCounter)?.data
           ?.counters;
         if (!checkCounters) return { events };
@@ -58,3 +47,16 @@ export const threeCheck: Rule = {
     return { events };
   },
 };
+
+function addCheckTokenToBoard(game: Game): void {
+  const CheckCounter = {
+    name: TokenName.CheckCounter,
+    expired: (): boolean => {
+      return false;
+    },
+    data: {
+      counters: game.players.map(() => 0),
+    },
+  };
+  game.board.addToken(CheckCounter);
+}

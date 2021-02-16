@@ -20,7 +20,7 @@ import { uniq } from "lodash";
 
 export class CompactRules {
   public for: CompleteRule;
-  private readonly ruleNames: RuleName[];
+  private ruleNames: RuleName[];
 
   constructor(
     variants: FutureVariantName[],
