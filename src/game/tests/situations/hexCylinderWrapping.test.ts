@@ -3,8 +3,8 @@ import { GameMaster } from "game/GameMaster";
 
 import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
 
-describe("With fatigue enabled", () => {
-  it("pieces shouldn't be able to move two turns in a row", () => {
+describe("With hex and cylindrical enabled", () => {
+  it("pieces should be able to move through the sides of the board", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
         calculateGameOptions({ checkEnabled: true }, ["hex", "cylindrical"])

@@ -23,10 +23,13 @@ export const longBoard: Rule = {
     return { board, numberOfPlayers };
   },
   onBoardCreate: ({ board, numberOfPlayers }) => {
-    const bounds = board.rankAndFileBounds();
-    board.addAdjacenciesByRule(toroidalAdjacencies(bounds));
     board.addPiecesByRule(toroidalPiecesRule(numberOfPlayers));
     return { board, numberOfPlayers };
+  },
+  buildAdjacencies: ({ board }) => {
+    const bounds = board.rankAndFileBounds();
+    board.addAdjacenciesByRule(toroidalAdjacencies(bounds));
+    return { board };
   },
   getGaitGenerator: ({ gaitGenerator, name, owner }) => {
     // Note: this method doesn't attempt to work out whether the piece should be a backwards pawn

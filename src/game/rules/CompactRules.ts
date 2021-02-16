@@ -76,6 +76,7 @@ const identityRule = {
     remainingSteps: Direction[];
     currentSquare: Square;
   }) => x,
+  buildAdjacencies: (x: { board: Board }) => x,
   getGaitGenerator: (x: {
     gaitGenerator?: (_?: GaitParams) => Gait[];
     name: PieceName;
@@ -161,8 +162,10 @@ function compareRulesByList(t1: string, t2: string, list: string[]): number {
 const ruleOrderPerInterruptionPoint: {
   [key in InterruptionName]?: (RuleName | "theRest")[];
 } = {
-  processMoves: ["pull", "theRest", "promotion"],
-  lossCondition: ["theRest", "check", "threeCheck"],
+  buildAdjacencies: ["standard", "hex", "longBoard", "theRest"],
   inPostMoveGenerationFilter: ["theRest", "check"],
+  forSquareGenerationModify: ["theRest", "polar"],
+  lossCondition: ["theRest", "check", "threeCheck"],
   onPieceDisplaced: ["theRest", "promotion"],
+  processMoves: ["pull", "theRest", "promotion"],
 };

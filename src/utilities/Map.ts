@@ -70,4 +70,8 @@ export class Map<K extends string | number | symbol, V> {
       }
     });
   }
+
+  clear(): void {
+    this.dictionary = {};
+  }
 }

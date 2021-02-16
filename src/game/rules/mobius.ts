@@ -12,7 +12,7 @@ export const mobius: Rule = {
     const newPieceIds = board.squareAt(locationUnderSquare)?.pieces;
     return { square, board, pieceIds: [...pieceIds, ...(newPieceIds || [])] };
   },
-  afterBoardCreation: ({ board }) => {
+  buildAdjacencies: ({ board }) => {
     const bounds = board.rankAndFileBounds();
     board.addAdjacenciesByRule(mobiusAdjacenciesRule(bounds));
     return { board };

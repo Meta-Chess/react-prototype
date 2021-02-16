@@ -7,7 +7,7 @@ export const cylindrical: Rule = {
   title: "Cylinder",
   description:
     "The board has been wrapped onto a cylinder, and the edge files have been glued together. This allows pieces to move off the right side of the board onto the left side, and vice versa.",
-  afterBoardCreation: ({ board }) => {
+  buildAdjacencies: ({ board }) => {
     const bounds = board.rankAndFileBounds();
     board.addAdjacenciesByRule(cylindricalAdjacenciesRule(bounds, board));
     return { board };

@@ -56,6 +56,10 @@ export class Square extends TokenOwner {
     this.adjacencies.addAdjacencies(adjacencies);
   }
 
+  clearAdjacencies(): void {
+    this.adjacencies.clear();
+  }
+
   getCoordinates(): Coordinates {
     return this.coordinates;
   }

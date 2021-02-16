@@ -167,6 +167,15 @@ class Board extends TokenOwner {
       .filter(isPresent);
   }
 
+  rebuildAdjacencies(): void {
+    Object.values(this.squares).forEach((square) => square.clearAdjacencies());
+    this.buildAdjacencies();
+  }
+
+  buildAdjacencies(): void {
+    this.interrupt.for.buildAdjacencies({ board: this });
+  }
+
   addAdjacenciesByRule(rule: ((square: Square) => Adjacency[]) | undefined): void {
     if (!rule) return;
     const locations = Object.keys(this.squares);
@@ -319,6 +328,7 @@ class Board extends TokenOwner {
     let board = new Board(interrupt, events);
 
     ({ board } = interrupt.for.forSquareGenerationModify({ board, numberOfPlayers }));
+    board.buildAdjacencies();
     ({ board } = interrupt.for.onBoardCreate({ board, numberOfPlayers }));
     ({ board } = interrupt.for.afterBoardCreation({ board }));
 

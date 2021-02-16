@@ -8,9 +8,12 @@ export const hexCylindrical: Rule = {
   title: "Hex Cylinder",
   description:
     "The board has been wrapped onto a cylinder, and the edge files have been glued together. This allows pieces to move off the right side of the board onto the left side, and vice versa. (If you look closely, you'll notice that there's an invisible row of squares between the left edge and the right edge. This allows the gluing to happen without changing the local geometry.)",
-  afterBoardCreation: ({ board }) => {
-    const bounds = board.rankAndFileBounds();
+  forSquareGenerationModify: ({ board, numberOfPlayers }) => {
     board.addSquares(generateEdgeStitchingSquares());
+    return { board, numberOfPlayers };
+  },
+  buildAdjacencies: ({ board }) => {
+    const bounds = board.rankAndFileBounds();
     board.addAdjacenciesByRule(cylindricalAdjacenciesRule(bounds));
     return { board };
   },
@@ -29,7 +32,7 @@ const cylindricalAdjacenciesRule = ({ minFile, maxFile }: RankAndFileBounds) => 
   square: Square
 ): Adjacency[] => {
   const { rank, file } = square.getCoordinates();
-  return file === minFile
+  return file === minFile + 1 // minFile is the invisible file
     ? [
         {
           direction: Direction.H7,
@@ -49,7 +52,7 @@ const cylindricalAdjacenciesRule = ({ minFile, maxFile }: RankAndFileBounds) => 
           location: toLocation({ rank: rank + 3, file: 0, prefix: "E" }),
         },
       ]
-    : file === minFile + 1
+    : file === minFile + 2
     ? [
         {
           direction: Direction.H9,
@@ -66,7 +69,7 @@ const cylindricalAdjacenciesRule = ({ minFile, maxFile }: RankAndFileBounds) => 
           direction: Direction.H2,
           location: toLocation({ rank: rank + 1, file: 0, prefix: "E" }),
         },
-        { direction: Direction.H3, location: toLocation({ rank, file: minFile }) },
+        { direction: Direction.H3, location: toLocation({ rank, file: minFile + 1 }) },
         {
           direction: Direction.H4,
           location: toLocation({ rank: rank - 1, file: 0, prefix: "E" }),

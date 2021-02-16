@@ -98,8 +98,11 @@ export class GameMaster {
   }
 
   setActiveVariants(variants: FutureVariantName[]): void {
+    // TODO: roll-off interruption point
     this.formatVariants = variants;
     this.recalculateRules();
+    this.game.board.rebuildAdjacencies();
+    // TODO: roll-on interruption point
   }
 
   recalculateRules(): void {

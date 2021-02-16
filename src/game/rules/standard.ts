@@ -15,10 +15,13 @@ export const standard: Rule = {
     return { board, numberOfPlayers };
   },
   onBoardCreate: ({ board, numberOfPlayers }) => {
-    const bounds = board.rankAndFileBounds();
-    board.addAdjacenciesByRule(standardAdjacencies(bounds));
     board.addPiecesByRule(standardPiecesRule);
     return { board, numberOfPlayers };
+  },
+  buildAdjacencies: ({ board }) => {
+    const bounds = board.rankAndFileBounds();
+    board.addAdjacenciesByRule(standardAdjacencies(bounds));
+    return { board };
   },
   getGaitGenerator: ({ gaitGenerator, name, owner }) => {
     return {

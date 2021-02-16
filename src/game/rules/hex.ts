@@ -23,11 +23,14 @@ export const hex: Rule = {
     return { board, numberOfPlayers };
   },
   onBoardCreate: ({ board, numberOfPlayers }) => {
-    const bounds = board.rankAndFileBounds();
-    board.addAdjacenciesByRule(hexAdjacencies(bounds));
     board.addPiecesByRule(hexPieceSetupRule);
     board.addToken(hexShapeToken);
     return { board, numberOfPlayers };
+  },
+  buildAdjacencies: ({ board }) => {
+    const bounds = board.rankAndFileBounds();
+    board.addAdjacenciesByRule(hexAdjacencies(bounds));
+    return { board };
   },
   getGaitGenerator: ({ gaitGenerator, name, owner }) => {
     return {
