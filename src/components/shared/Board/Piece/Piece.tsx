@@ -27,7 +27,12 @@ const Piece: FC<Props> = ({ piece, size, glowColor, animatedData, onPress }) => 
       color={animated ? undefined : Colors.PLAYER[piece.owner].string()}
       size={size}
       rotatePiece={gameMaster?.overTheBoard && piece.owner === PlayerName.Black}
-      opacity={piece.hasTokenWithName(TokenName.Fatigue) ? 0.4 : 1}
+      opacity={
+        piece.hasTokenWithName(TokenName.Fatigue) &&
+        gameMaster?.getRuleNames().includes("fatigue")
+          ? 0.4
+          : 1
+      }
       glowColor={glowColor}
       animatedColor={animated ? animatedData?.animatedColor : undefined}
       animatedOutlineColor={animated ? animatedData?.animatedOutlineColor : undefined}
