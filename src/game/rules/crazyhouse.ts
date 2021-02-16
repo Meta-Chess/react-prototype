@@ -1,32 +1,13 @@
 import { PieceName, Gait, Region } from "../types";
 import { Path } from "game/Pather";
-import { Square } from "../Board";
 import { Rule } from "./CompactRules";
 import { LocationPrefix } from "game/Board/location";
-import { invisibilityToken } from "./constants";
 import { rotate180 } from "./utilities";
 
 export const crazyhouse: Rule = {
   title: "Crazyhouse",
   description: "Replay captured pieces",
-  //Generate a piece bank square for each player.
-  afterGameCreation: ({ game }) => {
-    game.board.addSquares(
-      game.players.map((player) => {
-        const location = LocationPrefix.pieceBank + player.name.toString();
-        return {
-          location: location,
-          square: new Square(
-            location,
-            { rank: 1000 + player.name, file: 1000 + player.name },
-            [],
-            [invisibilityToken]
-          ),
-        };
-      })
-    );
-    return { game };
-  },
+
   //Captured pieces are morphed and added to piece bank.
   onSendPieceToGrave: ({ piece, mover, captured, destination }) => {
     if (!captured || mover === undefined) return { piece, mover, captured, destination };

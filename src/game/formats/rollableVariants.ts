@@ -3,7 +3,7 @@ import { FutureVariantName } from "game";
 export const rollableVariants = [
   "atomic",
   "chemicallyExcitedKnight",
-  // "crazyhouse",
+  "crazyhouse",
   "fatigue",
   "noFork",
   "patheticKing",

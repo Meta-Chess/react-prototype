@@ -5,6 +5,7 @@ import { Player } from "./Player";
 import { Move } from "./Move";
 import { allPossiblePlayerNames, PlayerName } from "./types";
 import { CompactRules } from "./rules";
+import { createPieceBank } from "./rules/utilities";
 
 export class Game {
   constructor(
@@ -66,6 +67,8 @@ export class Game {
       players
     );
     interrupt.for.subscribeToEvents({ events });
+
+    createPieceBank(game);
 
     return game;
   }
