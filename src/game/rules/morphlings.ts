@@ -7,8 +7,8 @@ const PIECE_MUTATOR: { [key in PieceName]?: PieceName } = {
   [PieceName.Bishop]: PieceName.Knight,
 };
 
-export const holyKnights: Rule = {
-  title: "Holy Knights",
+export const morphlings: Rule = {
+  title: "Morphlings",
   description:
     "When knights move they turn into bishops and when bishops move they turn into knights",
 
