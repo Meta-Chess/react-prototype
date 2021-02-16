@@ -215,9 +215,14 @@ export class GameMaster {
   }
 
   startOfTurn(): void {
-    if (this.game.getCurrentPlayer().alive) this.checkGameEndConditions();
     this.interrupt.for.formatControlAtTurnStart({ gameMaster: this });
-    this.render();
+    if (this.game.getCurrentPlayer().alive || this.game.alivePlayers().length === 0) {
+      this.checkGameEndConditions();
+      this.render();
+    } else {
+      this.render();
+      this.doMove();
+    }
   }
 
   unselectAllPieces(): void {
