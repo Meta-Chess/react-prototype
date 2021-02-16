@@ -163,7 +163,7 @@ export type FutureVariantName =
   | "toroidal"
   | "chemicallyExcitedKnight"
   | "pull"
-  | "holyKnights"
+  | "morphlings"
   | "zoneOfControl"
   | "loseOnStalemate"
   | "gambit"
@@ -339,14 +339,14 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     ruleNames: ["pull"],
     complexity: 2,
   },
-  holyKnights: {
-    title: "Holy Knights",
+  morphlings: {
+    title: "Morphlings",
     shortDescription:
       "When knights move they turn into bishops and when bishops move they turn into knights",
     traits: ["Piece"],
-    imageName: undefined,
+    imageName: "morphlingsImage",
     implemented: true,
-    ruleNames: ["holyKnights"],
+    ruleNames: ["morphlings"],
     complexity: 1,
   },
   zoneOfControl: {

@@ -66,3 +66,6 @@ export { centerfoldImage };
 
 import fortificationsImage from "./fortificationsImage.png";
 export { fortificationsImage };
+
+import morphlingsImage from "./morphlingsImage.png";
+export { morphlingsImage };
