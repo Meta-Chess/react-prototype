@@ -220,7 +220,6 @@ export class GameMaster {
       this.checkGameEndConditions();
       this.render();
     } else {
-      this.render();
       this.doMove();
     }
   }

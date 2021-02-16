@@ -19,7 +19,7 @@ export const fatigue: Rule = {
         },
         data: undefined,
       };
-      piece.addToken(fatigueToken);
+      piece.addToken(fatigueToken, true);
     });
     return { game, interrupt, board, move, currentTurn };
   },
