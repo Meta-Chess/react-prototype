@@ -80,11 +80,11 @@ const CardContainer = styled(View)`
 `;
 
 const CatagorySeparator = styled(View)`
-  flex: 1;
-  height: 2;
-  margin-right: 20;
-  margin-bottom: 16;
-  border-bottom-width: 2;
+  flex: 1px;
+  height: 2px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+  border-bottom-width: 2px;
   border-bottom-color: ${Colors.DARK.toString()};
 `;
 

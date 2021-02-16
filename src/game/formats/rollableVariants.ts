@@ -9,5 +9,5 @@ export const rollableVariants = [
   "patheticKing",
   "threeCheck",
   "pull",
-  "holyKnights",
+  "morphlings",
 ] as FutureVariantName[];
