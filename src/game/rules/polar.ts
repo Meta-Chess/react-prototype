@@ -9,8 +9,9 @@ const DIAGONAL_POLAR = false;
 
 export const polar: Rule = {
   title: "Polar",
-  description:
-    "The top and bottom of the board behave like the poles of a sphere. The top edge of the board is wrapped around the edge of an invisible octagonal 'square' that pieces can cross but can't stop on. The bottom edge of the board is similarly wrapped around its own octagonal square.",
+  description: `The top and bottom of the board behave like the poles of a sphere. The top edge of the board is wrapped around the edge of an invisible octagonal 'square' that pieces can cross but can't stop on. The bottom edge of the board is similarly wrapped around its own octagonal square. Diagonal movement through the poles is ${
+    DIAGONAL_POLAR ? "allowed" : "not allowed"
+  }.`,
   afterStepModify: ({ gait, remainingSteps, currentSquare }) => {
     return currentSquare.hasTokenWithName(TokenName.PolarToken)
       ? {
