@@ -15,7 +15,7 @@ export const fatigue: Rule = {
       const fatigueToken = {
         name: TokenName.Fatigue,
         expired: (turn: number): boolean => {
-          return turn >= currentTurn + 2;
+          return turn >= currentTurn + game.players.length;
         },
         data: undefined,
       };

@@ -5,6 +5,8 @@ import { Rule } from "./CompactRules";
 import { invisibilityToken, polarToken } from "./constants";
 import { rotate180 } from "./utilities";
 
+const DIAGONAL_POLAR = false;
+
 export const polar: Rule = {
   title: "Polar",
   description:
@@ -66,83 +68,108 @@ const generatePolarSetup = ({
     adjacenciesRule: (square): Adjacency[] => {
       const { rank, file } = square.getCoordinates();
       const wrap = wrapToCylinder(minRank, maxRank);
-      return rank === minRank - 1
-        ? [
-            {
-              direction: Direction.N,
-              location: toLocation({ rank: minRank, file: wrap(file + 4) }),
-            },
-            {
-              direction: Direction.NE,
-              location: toLocation({ rank: minRank, file: wrap(file + 5) }),
-            },
-            {
-              direction: Direction.NW,
-              location: toLocation({ rank: minRank, file: wrap(file + 3) }),
-            },
-          ]
-        : rank === maxRank + 1
-        ? [
-            {
-              direction: Direction.S,
-              location: toLocation({ rank: maxRank, file: wrap(file + 4) }),
-            },
-            {
-              direction: Direction.SE,
-              location: toLocation({ rank: maxRank, file: wrap(file + 5) }),
-            },
-            {
-              direction: Direction.SW,
-              location: toLocation({ rank: maxRank, file: wrap(file + 3) }),
-            },
-          ]
-        : rank === minRank
-        ? [
-            {
-              direction: Direction.S,
-              location: toLocation({ rank: minRank - 1, file: wrap(file), prefix: "P" }),
-            },
-            {
-              direction: Direction.SE,
-              location: toLocation({
-                rank: minRank - 1,
-                file: wrap(file + 1),
-                prefix: "P",
-              }),
-            },
-            {
-              direction: Direction.SW,
-              location: toLocation({
-                rank: minRank - 1,
-                file: wrap(file - 1),
-                prefix: "P",
-              }),
-            },
-          ]
-        : rank === maxRank
-        ? [
-            {
-              direction: Direction.N,
-              location: toLocation({ rank: maxRank + 1, file: wrap(file), prefix: "P" }),
-            },
-            {
-              direction: Direction.NE,
-              location: toLocation({
-                rank: maxRank + 1,
-                file: wrap(file + 1),
-                prefix: "P",
-              }),
-            },
-            {
-              direction: Direction.NW,
-              location: toLocation({
-                rank: maxRank + 1,
-                file: wrap(file - 1),
-                prefix: "P",
-              }),
-            },
-          ]
+      const verticalAdjacencies: Adjacency[] =
+        rank === minRank - 1
+          ? [
+              {
+                direction: Direction.N,
+                location: toLocation({ rank: minRank, file: wrap(file + 4) }),
+              },
+            ]
+          : rank === maxRank + 1
+          ? [
+              {
+                direction: Direction.S,
+                location: toLocation({ rank: maxRank, file: wrap(file + 4) }),
+              },
+            ]
+          : rank === minRank
+          ? [
+              {
+                direction: Direction.S,
+                location: toLocation({
+                  rank: minRank - 1,
+                  file: wrap(file),
+                  prefix: "P",
+                }),
+              },
+            ]
+          : rank === maxRank
+          ? [
+              {
+                direction: Direction.N,
+                location: toLocation({
+                  rank: maxRank + 1,
+                  file: wrap(file),
+                  prefix: "P",
+                }),
+              },
+            ]
+          : [];
+      const diagonalAdjacencies: Adjacency[] = DIAGONAL_POLAR
+        ? rank === minRank - 1
+          ? [
+              {
+                direction: Direction.NE,
+                location: toLocation({ rank: minRank, file: wrap(file + 5) }),
+              },
+              {
+                direction: Direction.NW,
+                location: toLocation({ rank: minRank, file: wrap(file + 3) }),
+              },
+            ]
+          : rank === maxRank + 1
+          ? [
+              {
+                direction: Direction.SE,
+                location: toLocation({ rank: maxRank, file: wrap(file + 5) }),
+              },
+              {
+                direction: Direction.SW,
+                location: toLocation({ rank: maxRank, file: wrap(file + 3) }),
+              },
+            ]
+          : rank === minRank
+          ? [
+              {
+                direction: Direction.SE,
+                location: toLocation({
+                  rank: minRank - 1,
+                  file: wrap(file + 1),
+                  prefix: "P",
+                }),
+              },
+              {
+                direction: Direction.SW,
+                location: toLocation({
+                  rank: minRank - 1,
+                  file: wrap(file - 1),
+                  prefix: "P",
+                }),
+              },
+            ]
+          : rank === maxRank
+          ? [
+              {
+                direction: Direction.NE,
+                location: toLocation({
+                  rank: maxRank + 1,
+                  file: wrap(file + 1),
+                  prefix: "P",
+                }),
+              },
+              {
+                direction: Direction.NW,
+                location: toLocation({
+                  rank: maxRank + 1,
+                  file: wrap(file - 1),
+                  prefix: "P",
+                }),
+              },
+            ]
+          : []
         : [];
+      return [...verticalAdjacencies, ...diagonalAdjacencies];
     },
   };
 };
