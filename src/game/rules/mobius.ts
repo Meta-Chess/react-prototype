@@ -23,14 +23,17 @@ const mobiusAdjacenciesRule = (bounds: RankAndFileBounds) => (
   square: Square
 ): Adjacency[] => {
   const locationUnderSquare = getLocationUnderSquare(square, bounds);
-  return [{ direction: Direction.Down, location: locationUnderSquare }];
+  return locationUnderSquare
+    ? [{ direction: Direction.Down, location: locationUnderSquare }]
+    : [];
 };
 
 const getLocationUnderSquare = (
   square: Square,
   { minRank, maxRank, minFile, maxFile }: RankAndFileBounds
-): string => {
-  const { rank, file } = square.getCoordinates();
+): string | undefined => {
+  const { rank, file } = square.getCoordinates() || {};
+  if (!rank || !file) return undefined;
   const rankWrapFunction = wrapToCylinder(minRank, maxRank);
   const rankUnderSquare = rankWrapFunction(
     rank + Math.floor((maxRank - minRank + 1) / 2)

@@ -13,7 +13,7 @@ export interface Coordinates {
 export class Square extends TokenOwner {
   constructor(
     public location: string,
-    public coordinates: Coordinates,
+    public coordinates: Coordinates | undefined,
     public whiteListedMarkers: AccessMarker[] = [AccessMarker.Normal],
     public tokens: Token[] = [],
     public adjacencies: Adjacencies = new Adjacencies(),
@@ -36,11 +36,13 @@ export class Square extends TokenOwner {
 
   resetTo(savePoint: Square): void {
     this.location = savePoint.location;
-    this.coordinates.rank = savePoint.coordinates.rank;
-    this.coordinates.file = savePoint.coordinates.file;
+    if (savePoint.coordinates) this.coordinates = { ...savePoint.coordinates };
+    else this.coordinates = undefined;
     resetArrayTo({ from: this.whiteListedMarkers, to: savePoint.whiteListedMarkers });
     resetArrayTo({ from: this.tokens, to: savePoint.tokens });
-    this.adjacencies.resetTo(savePoint.adjacencies);
+    this.adjacencies.resetTo(savePoint.adjacencies, (x, y) =>
+      resetArrayTo({ from: x, to: y })
+    );
     resetArrayTo({ from: this.pieces, to: savePoint.pieces });
   }
 
@@ -60,7 +62,7 @@ export class Square extends TokenOwner {
     this.adjacencies.clear();
   }
 
-  getCoordinates(): Coordinates {
+  getCoordinates(): Coordinates | undefined {
     return this.coordinates;
   }
 

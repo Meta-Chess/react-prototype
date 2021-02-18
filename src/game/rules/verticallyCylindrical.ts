@@ -18,7 +18,8 @@ const cylindricalAdjacenciesRule = (
   { minRank, maxRank }: RankAndFileBounds,
   board: Board
 ) => (square: Square): Adjacency[] => {
-  const { rank, file } = square.getCoordinates();
+  const { rank, file } = square.getCoordinates() || {};
+  if (!rank || !file) return [];
   return rank === minRank
     ? [
         { direction: Direction.S, location: toLocation({ rank: maxRank, file }) },

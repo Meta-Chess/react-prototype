@@ -1,4 +1,4 @@
-import { clone } from "lodash";
+import { clone, isEqual } from "lodash";
 
 export class Map<K extends string | number | symbol, V> {
   public dictionary: { [key in K]?: V };
@@ -53,20 +53,23 @@ export class Map<K extends string | number | symbol, V> {
 
   resetTo(
     { dictionary: target }: Map<K, V>,
-    resetValue = (x: V | undefined, y: V | undefined): void => {
+    resetWith = (x: V, y: V): void => {
       x = y;
     },
-    cloneValue = (x: V | undefined): V | undefined => x
+    cloneWith = (x: V | undefined): V | undefined => x
   ): void {
-    var self = this.dictionary; //eslint-disable-line
-    Object.keys(self).forEach((key) => {
-      if (target[key as K] === undefined) delete self[key as K];
+    (Object.keys(self) as K[]).forEach((key) => {
+      if (target[key] === undefined) this.dictionary[key] = undefined;
     });
-    Object.keys(target).forEach((key) => {
-      if (self[key as K] !== undefined) {
-        resetValue(self[key as K], target[key as K]);
+    (Object.keys(target) as K[]).forEach((key) => {
+      const selfValue = this.dictionary[key] as V | undefined;
+      const targetValue = target[key] as V | undefined;
+      if (["string", "number"].includes(typeof target[key])) {
+        this.dictionary[key] = target[key];
+      } else if (selfValue !== undefined && targetValue !== undefined) {
+        resetWith(selfValue, targetValue);
       } else {
-        self = { ...this, [key as K]: cloneValue(target[key as K]) };
+        this.dictionary[key] = cloneWith(target[key]);
       }
     });
   }

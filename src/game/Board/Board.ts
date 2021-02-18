@@ -227,8 +227,8 @@ class Board extends TokenOwner {
 
   rankAndFileBoundsWithFilter(filter: (s: Square) => boolean): RankAndFileBounds {
     const squares = Object.values(this.squares).filter(filter);
-    const ranks = squares.map((s) => s.coordinates.rank);
-    const files = squares.map((s) => s.coordinates.file);
+    const ranks = squares.map((s) => s.coordinates?.rank).filter(isPresent);
+    const files = squares.map((s) => s.coordinates?.file).filter(isPresent);
     return {
       minRank: ranks.length === 0 ? 0 : Math.min(...ranks),
       maxRank: ranks.length === 0 ? 0 : Math.max(...ranks),
@@ -336,12 +336,7 @@ class Board extends TokenOwner {
     const graveyardLocation = SpecialLocation.graveyard;
     board.addSquare({
       location: graveyardLocation,
-      square: new Square(
-        graveyardLocation,
-        { rank: 999, file: 999 },
-        [],
-        [invisibilityToken]
-      ),
+      square: new Square(graveyardLocation, undefined, [], [invisibilityToken]),
     });
 
     return board;

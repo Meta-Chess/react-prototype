@@ -58,7 +58,8 @@ const generateStandardSquares = (
 const toroidalAdjacencies = (_bounds: RankAndFileBounds) => (
   square: Square
 ): Adjacency[] => {
-  const { rank, file } = square.getCoordinates();
+  const { rank, file } = square.getCoordinates() || {};
+  if (!rank || !file) return [];
   return [
     { direction: Direction.N, location: toLocation({ rank: rank + 1, file }) },
     { direction: Direction.NE, location: toLocation({ rank: rank + 1, file: file + 1 }) },
@@ -72,7 +73,8 @@ const toroidalAdjacencies = (_bounds: RankAndFileBounds) => (
 };
 
 const toroidalPiecesRule = (numberOfPlayers: number) => (square: Square): Piece[] => {
-  const { rank, file } = square.getCoordinates();
+  const { rank, file } = square.getCoordinates() || {};
+  if (!rank || !file) return [];
   const location = toLocation({ rank, file });
   const ranks_per_player = 7 - (numberOfPlayers % 2);
   const owner: PlayerName = allPossiblePlayerNames[Math.floor(rank / ranks_per_player)];

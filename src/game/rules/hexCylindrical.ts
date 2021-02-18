@@ -31,7 +31,8 @@ const generateEdgeStitchingSquares = (): { location: string; square: Square }[] 
 const cylindricalAdjacenciesRule = ({ minFile, maxFile }: RankAndFileBounds) => (
   square: Square
 ): Adjacency[] => {
-  const { rank, file } = square.getCoordinates();
+  const { rank, file } = square.getCoordinates() || {};
+  if (!rank || !file) return [];
   return file === minFile + 1 // minFile is the invisible file
     ? [
         {

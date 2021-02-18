@@ -25,9 +25,10 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
 
   if (!square) return <View style={[style, { width: size, height: size }]} />;
 
-  const backgroundColor = Colors.SQUARE[
-    colorIndex({ ...square.getCoordinates(), shape })
-  ].string();
+  const coordinates = square.getCoordinates();
+  const backgroundColor = coordinates
+    ? Colors.SQUARE[colorIndex({ ...coordinates, shape })].string()
+    : "transparent";
 
   const piecesOrPieceAnimationsOnSquare: (string | Token)[] = getDisplayPiecesAndTokens(
     square

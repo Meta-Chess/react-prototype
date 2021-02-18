@@ -47,7 +47,8 @@ const generateStandardSquares = (): { location: string; square: Square }[] =>
 const standardAdjacencies = (_bounds: RankAndFileBounds) => (
   square: Square
 ): Adjacency[] => {
-  const { rank, file } = square.getCoordinates();
+  const { rank, file } = square.getCoordinates() || {};
+  if (!rank || !file) return [];
   return [
     { direction: Direction.N, location: toLocation({ rank: rank + 1, file }) },
     { direction: Direction.NE, location: toLocation({ rank: rank + 1, file: file + 1 }) },
@@ -61,7 +62,8 @@ const standardAdjacencies = (_bounds: RankAndFileBounds) => (
 };
 
 const standardPiecesRule = (square: Square): Piece[] => {
-  const { rank, file } = square.getCoordinates();
+  const { rank, file } = square.getCoordinates() || {};
+  if (!rank || !file) return [];
   const location = toLocation({ rank, file });
   const owner = rank > 4 ? PlayerName.Black : PlayerName.White;
 

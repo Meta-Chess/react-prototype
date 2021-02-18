@@ -66,7 +66,8 @@ const generateHexSquares = (): { location: string; square: Square }[] =>
     });
 
 const hexAdjacencies = (_bounds: RankAndFileBounds) => (square: Square): Adjacency[] => {
-  const { rank, file } = square.getCoordinates();
+  const { rank, file } = square.getCoordinates() || {};
+  if (!rank || !file) return [];
   return [
     { direction: Direction.H1, location: toLocation({ rank: rank + 3, file: file + 1 }) },
     { direction: Direction.H2, location: toLocation({ rank: rank + 1, file: file + 1 }) },
@@ -90,7 +91,8 @@ const hexAdjacencies = (_bounds: RankAndFileBounds) => (square: Square): Adjacen
 };
 
 const hexPieceSetupRule = (square: Square): Piece[] => {
-  const { rank, file } = square.getCoordinates();
+  const { rank, file } = square.getCoordinates() || {};
+  if (!rank || !file) return [];
   const location = toLocation({ rank, file });
   const owner = rank > 10 ? PlayerName.Black : PlayerName.White;
   const set = PieceSet.HexStandard;

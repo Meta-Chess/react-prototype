@@ -34,7 +34,8 @@ export const polar: Rule = {
 
 function polarAdjacenciesRule({ minRank, maxRank }: RankAndFileBounds) {
   return (square: Square): Adjacency[] => {
-    const { rank, file } = square.getCoordinates();
+    const { rank, file } = square.getCoordinates() || {};
+    if (!rank || !file) return [];
     const wrap = wrapToCylinder(minRank, maxRank);
     return rank === minRank - 1
       ? [
