@@ -152,7 +152,11 @@ export enum Region {
   promotion = "promotion",
 }
 
-export type Regions = { [key in Region]?: string[] };
+export type Regions = {
+  [key in Region]: {
+    [key in PlayerName | "default"]?: string[];
+  };
+};
 
 export type Location = string;
 

@@ -40,7 +40,7 @@ export const crazyhouse: Rule = {
         if (square === undefined) return false;
         if (
           piece.name === PieceName.Pawn &&
-          game.board.getRegion(Region.promotion).includes(square)
+          game.board.getRegion(Region.promotion, piece.owner).includes(square)
         )
           return false;
         if (square.pieces.length > 0) return false;

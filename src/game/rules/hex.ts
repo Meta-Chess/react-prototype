@@ -19,7 +19,8 @@ export const hex: Rule = {
   forSquareGenerationModify: ({ board, numberOfPlayers }) => {
     board.addSquares(generateHexSquares());
     board.defineRegion(Region.center, centerRegion);
-    board.defineRegion(Region.promotion, promotionRegion);
+    board.defineRegion(Region.promotion, promotionRegionWhite, PlayerName.White);
+    board.defineRegion(Region.promotion, promotionRegionBlack, PlayerName.Black);
     return { board, numberOfPlayers };
   },
   onBoardCreate: ({ board, numberOfPlayers }) => {
@@ -122,31 +123,29 @@ const hexPieceSetupRule = (square: Square): Piece[] => {
 };
 
 const centerRegion = [toLocation({ rank: 11, file: 6 })];
-const promotionRegion = [
-  ...[
-    toLocation({ rank: 6, file: 1 }),
-    toLocation({ rank: 5, file: 2 }),
-    toLocation({ rank: 4, file: 3 }),
-    toLocation({ rank: 3, file: 4 }),
-    toLocation({ rank: 2, file: 5 }),
-    toLocation({ rank: 1, file: 6 }),
-    toLocation({ rank: 2, file: 7 }),
-    toLocation({ rank: 3, file: 8 }),
-    toLocation({ rank: 4, file: 9 }),
-    toLocation({ rank: 5, file: 10 }),
-    toLocation({ rank: 6, file: 11 }),
-  ],
-  ...[
-    toLocation({ rank: 16, file: 1 }),
-    toLocation({ rank: 17, file: 2 }),
-    toLocation({ rank: 18, file: 3 }),
-    toLocation({ rank: 19, file: 4 }),
-    toLocation({ rank: 20, file: 5 }),
-    toLocation({ rank: 21, file: 6 }),
-    toLocation({ rank: 20, file: 7 }),
-    toLocation({ rank: 19, file: 8 }),
-    toLocation({ rank: 18, file: 9 }),
-    toLocation({ rank: 17, file: 10 }),
-    toLocation({ rank: 16, file: 11 }),
-  ],
+const promotionRegionBlack = [
+  toLocation({ rank: 6, file: 1 }),
+  toLocation({ rank: 5, file: 2 }),
+  toLocation({ rank: 4, file: 3 }),
+  toLocation({ rank: 3, file: 4 }),
+  toLocation({ rank: 2, file: 5 }),
+  toLocation({ rank: 1, file: 6 }),
+  toLocation({ rank: 2, file: 7 }),
+  toLocation({ rank: 3, file: 8 }),
+  toLocation({ rank: 4, file: 9 }),
+  toLocation({ rank: 5, file: 10 }),
+  toLocation({ rank: 6, file: 11 }),
+];
+const promotionRegionWhite = [
+  toLocation({ rank: 16, file: 1 }),
+  toLocation({ rank: 17, file: 2 }),
+  toLocation({ rank: 18, file: 3 }),
+  toLocation({ rank: 19, file: 4 }),
+  toLocation({ rank: 20, file: 5 }),
+  toLocation({ rank: 21, file: 6 }),
+  toLocation({ rank: 20, file: 7 }),
+  toLocation({ rank: 19, file: 8 }),
+  toLocation({ rank: 18, file: 9 }),
+  toLocation({ rank: 17, file: 10 }),
+  toLocation({ rank: 16, file: 11 }),
 ];

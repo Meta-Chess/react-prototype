@@ -11,7 +11,8 @@ export const standard: Rule = {
   forSquareGenerationModify: ({ board, numberOfPlayers }) => {
     board.addSquares(generateStandardSquares());
     board.defineRegion(Region.center, centerRegion);
-    board.defineRegion(Region.promotion, promotionRegion);
+    board.defineRegion(Region.promotion, promotionRegionWhite, PlayerName.White);
+    board.defineRegion(Region.promotion, promotionRegionBlack, PlayerName.Black);
     return { board, numberOfPlayers };
   },
   onBoardCreate: ({ board, numberOfPlayers }) => {
@@ -95,25 +96,23 @@ const centerRegion = [
   toLocation({ rank: 5, file: 4 }),
   toLocation({ rank: 5, file: 5 }),
 ];
-const promotionRegion = [
-  ...[
-    toLocation({ rank: 8, file: 1 }),
-    toLocation({ rank: 8, file: 2 }),
-    toLocation({ rank: 8, file: 3 }),
-    toLocation({ rank: 8, file: 4 }),
-    toLocation({ rank: 8, file: 5 }),
-    toLocation({ rank: 8, file: 6 }),
-    toLocation({ rank: 8, file: 7 }),
-    toLocation({ rank: 8, file: 8 }),
-  ],
-  ...[
-    toLocation({ rank: 1, file: 1 }),
-    toLocation({ rank: 1, file: 2 }),
-    toLocation({ rank: 1, file: 3 }),
-    toLocation({ rank: 1, file: 4 }),
-    toLocation({ rank: 1, file: 5 }),
-    toLocation({ rank: 1, file: 6 }),
-    toLocation({ rank: 1, file: 7 }),
-    toLocation({ rank: 1, file: 8 }),
-  ],
+const promotionRegionWhite = [
+  toLocation({ rank: 8, file: 1 }),
+  toLocation({ rank: 8, file: 2 }),
+  toLocation({ rank: 8, file: 3 }),
+  toLocation({ rank: 8, file: 4 }),
+  toLocation({ rank: 8, file: 5 }),
+  toLocation({ rank: 8, file: 6 }),
+  toLocation({ rank: 8, file: 7 }),
+  toLocation({ rank: 8, file: 8 }),
+];
+const promotionRegionBlack = [
+  toLocation({ rank: 1, file: 1 }),
+  toLocation({ rank: 1, file: 2 }),
+  toLocation({ rank: 1, file: 3 }),
+  toLocation({ rank: 1, file: 4 }),
+  toLocation({ rank: 1, file: 5 }),
+  toLocation({ rank: 1, file: 6 }),
+  toLocation({ rank: 1, file: 7 }),
+  toLocation({ rank: 1, file: 8 }),
 ];

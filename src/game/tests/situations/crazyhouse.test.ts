@@ -52,7 +52,6 @@ describe("with crazyhouse", () => {
 
     gameMaster.onPress("gpb0", whitePawnId); // Selecting white pawn
     // Expecting all non-occupied squares highlighted (except for the promotion square)
-    expect(gameMaster.allowableMoves.length).toEqual(33);
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ location: toLocation({ rank: 3, file: 1 }) }),
@@ -90,11 +89,11 @@ describe("with crazyhouse", () => {
         expect.objectContaining({ location: toLocation({ rank: 6, file: 8 }) }),
       ])
     );
+    expect(gameMaster.allowableMoves.length).toEqual(33);
 
     gameMaster.onPress(toLocation({ rank: 4, file: 2 })); // Place pawn B4
     gameMaster.onPress("gpb1", blackPawnId); // Selecting black pawn
-    // Again expecting all non-occupied squares highlighted (except for the promotion square)
-    expect(gameMaster.allowableMoves.length).toEqual(32);
+    // Again expecting all non-occupied squares highlighted
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ location: toLocation({ rank: 3, file: 1 }) }),
@@ -129,8 +128,10 @@ describe("with crazyhouse", () => {
         expect.objectContaining({ location: toLocation({ rank: 4, file: 8 }) }),
         expect.objectContaining({ location: toLocation({ rank: 5, file: 8 }) }),
         expect.objectContaining({ location: toLocation({ rank: 6, file: 8 }) }),
+        expect.objectContaining({ location: toLocation({ rank: 8, file: 4 }) }),
       ])
     );
+    expect(gameMaster.allowableMoves.length).toEqual(33);
 
     gameMaster.onPress(toLocation({ rank: 5, file: 7 })); // Place pawn G5
     gameMaster.onPress(toLocation({ rank: 4, file: 2 })); // Selecting white pawn
@@ -242,7 +243,7 @@ describe("with crazyhouse", () => {
     // Expecting no pieces in the graveyard
     expect(board.getPiecesAt("g").length).toEqual(0);
 
-    // Expecting pawn can be placed in any non occupied square except for the center/promotion zone.
+    // Expecting white pawn can be placed in any non occupied square except for the center/promotion zone.
     gameMaster.onPress("gpb0", pawnId);
 
     const centerLocations = [
@@ -251,12 +252,9 @@ describe("with crazyhouse", () => {
       toLocation({ rank: 5, file: 4 }),
       toLocation({ rank: 5, file: 5 }),
     ];
-    const promotionLocations = [
-      toLocation({ rank: 1, file: 6 }),
-      toLocation({ rank: 8, file: 8 }),
-    ];
+    const promotionLocations = [toLocation({ rank: 8, file: 8 })];
 
-    expect(gameMaster.allowableMoves.length).toEqual(28);
+    expect(gameMaster.allowableMoves.length).toEqual(29);
     expect(
       gameMaster.allowableMoves.every(
         (move) => board.squareAt(move.location)?.pieces.length === 0
