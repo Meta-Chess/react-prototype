@@ -9,6 +9,7 @@ import {
   PlayerName,
   Region,
   Regions,
+  WithOptional,
 } from "game/types";
 import { LocationPrefix, SpecialLocation } from "./location";
 import { isPresent } from "utilities";
@@ -242,7 +243,7 @@ class Board extends TokenOwner {
     this.interrupt.for.onPieceDisplaced({ board: this, pieceDelta: delta });
   }
 
-  displacePieces(move: Move): void {
+  displacePieces(move: WithOptional<Move, "pieceId">): void {
     move.pieceDeltas.forEach((pieceDelta) => {
       this.displace(pieceDelta);
     });

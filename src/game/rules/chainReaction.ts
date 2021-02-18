@@ -12,7 +12,6 @@ export const chainReaction: Rule = {
   title: "Chain Reaction",
   description: `When a piece is captured it captures every piece it was threatening. Max chain length ${MAX_CHAIN_LENGTH}.`,
 
-  //Note: a more rigorous implementation would probably interrupt during pathing not after to allow chains of pieces to not self interfere.
   processMoves: ({ moves, game, gameClones, params }) => {
     const processedMoves =
       params.chainReactionSearch !== false
@@ -29,7 +28,7 @@ function addChainOfCapturesToMove(
   gameClones: Game[],
   interrupt: CompactRules
 ): Move {
-  let captures = move.captures;
+  const captures = move.captures;
   if (!captures) return move;
   move.captures = undefined;
 
@@ -47,7 +46,7 @@ function addChainOfCapturesToMove(
 
   for (let i = 0; i < MAX_CHAIN_LENGTH; i++) {
     layerData = findNextLayerOfCaptures(layerData);
-    captures = [...captures, ...layerData.captures];
+    captures.push(...layerData.captures);
   }
 
   move.captures = captures;
@@ -66,16 +65,11 @@ function findNextLayerOfCaptures(input: layerData): layerData {
       noForkSearch: false,
       chainReactionSearch: false,
     });
-    return pather
-      .findPaths()
-      .map((m) => m.captures)
-      .filter(isPresent)
-      .flat();
+    return pather.findPaths().flatMap((m) => m.captures || []);
   });
 
   input.captures.forEach((capture) =>
     input.game.board.displacePieces({
-      pieceId: "-1",
       location: capture.at,
       playerName: capture.capturer,
       pieceDeltas: [],

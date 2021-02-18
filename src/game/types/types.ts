@@ -149,3 +149,5 @@ export enum Region {
 export type Regions = { [key in Region]?: string[] };
 
 export type Location = string;
+
+export type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;

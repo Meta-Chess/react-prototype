@@ -240,16 +240,7 @@ export class Pather {
       optionalCaptureMove?.captures && captureMove?.captures
         ? {
             ...clone(move),
-            captures: [
-              {
-                at: terminalSquare.location,
-                pieceIds: [
-                  ...captureMove.captures[0].pieceIds,
-                  ...optionalCaptureMove.captures[0].pieceIds,
-                ],
-                capturer: move.playerName,
-              },
-            ],
+            captures: [...captureMove.captures, ...optionalCaptureMove.captures],
           }
         : undefined;
 
