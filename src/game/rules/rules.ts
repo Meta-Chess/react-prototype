@@ -1,6 +1,7 @@
 export { interception } from "./interception";
 export { atomic } from "./atomic";
 export { castling } from "./castling";
+export { chainReaction } from "./chainReaction";
 export { check } from "./check";
 export { chemicallyExcitedKnight } from "./chemicallyExcitedKnight";
 export { crazyhouse } from "./crazyhouse";
@@ -10,6 +11,7 @@ export { hex } from "./hex";
 export { hexCylindrical } from "./hexCylindrical";
 export { longBoard } from "./longBoard";
 export { loseWithNoKings } from "./loseWithNoKings";
+export { morphlings } from "./morphlings";
 export { mobius } from "./mobius";
 export { noFork } from "./noFork";
 export { passiveMoveThroughBoard } from "./passiveMoveThroughBoard";
@@ -23,6 +25,5 @@ export { threeCheck } from "./threeCheck";
 export { patheticKing } from "./patheticKing";
 export { emptyCenter } from "./emptyCenter";
 export { pull } from "./pull";
-export { morphlings } from "./morphlings";
 
 // Note: Only rules should be exported from this file

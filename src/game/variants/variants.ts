@@ -162,6 +162,7 @@ export type FutureVariantName =
   | "threeCheck"
   | "toroidal"
   | "chemicallyExcitedKnight"
+  | "chainReaction"
   | "pull"
   | "morphlings"
   | "zoneOfControl"
@@ -284,6 +285,16 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     implemented: true,
     ruleNames: ["chemicallyExcitedKnight"],
     complexity: 1,
+  },
+  chainReaction: {
+    title: "Chain Reaction",
+    shortDescription:
+      "When a piece is captured it captures all the pieces it was threatening.",
+    traits: ["Ability"],
+    imageName: undefined,
+    implemented: true,
+    ruleNames: ["chainReaction"],
+    complexity: 2,
   },
   patheticKing: {
     title: "Pathetic King",

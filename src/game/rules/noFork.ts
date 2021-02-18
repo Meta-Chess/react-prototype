@@ -41,6 +41,7 @@ function isThereAnyKnightFork({
       const moves = new Pather(gameClones[0], [], knight, interrupt, {
         checkDepth: 0,
         noForkSearch: false,
+        chainReactionSearch: false,
       }).findPaths();
       return moves.filter(doesCapture).length > 1;
     });

@@ -23,7 +23,8 @@ export const pull: Rule = {
   },
 
   //Note: a more rigorous implementation would probably interrupt during pathing not after to allow chains of pieces to not self interfere.
-  processMoves: ({ moves, board }) => {
+  processMoves: ({ moves, game, gameClones, params }) => {
+    const board = game.board;
     const processedMoves = moves.flatMap((move) => {
       if (
         move.data?.linearMoverDirection !== undefined &&
@@ -68,7 +69,7 @@ export const pull: Rule = {
       }
       return move;
     });
-    return { moves: processedMoves, board };
+    return { moves: processedMoves, game, gameClones, params };
   },
 };
 

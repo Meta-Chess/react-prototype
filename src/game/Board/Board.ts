@@ -9,6 +9,7 @@ import {
   PlayerName,
   Region,
   Regions,
+  WithOptional,
 } from "game/types";
 import { LocationPrefix, SpecialLocation } from "./location";
 import { isPresent } from "utilities";
@@ -242,20 +243,20 @@ class Board extends TokenOwner {
     this.interrupt.for.onPieceDisplaced({ board: this, pieceDelta: delta });
   }
 
-  displacePieces(move: Move): void {
+  displacePieces(move: WithOptional<Move, "pieceId">): void {
     move.pieceDeltas.forEach((pieceDelta) => {
       this.displace(pieceDelta);
     });
-    if (move.capture) {
-      this.capturePieces(move.capture.pieceIds, move.playerName);
+    move.captures?.forEach((capture) => {
+      this.capturePieces(capture.pieceIds, capture.capturer);
       this.events.notify({
         name: "capture",
         data: {
           board: this,
-          square: this.squares[move.capture.at],
+          square: this.squares[capture.at],
         },
       });
-    }
+    });
   }
 
   capturePieces(capturedPieceIds: string[], mover: PlayerName): void {

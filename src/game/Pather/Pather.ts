@@ -8,6 +8,7 @@ import { Move } from "game/Move";
 export interface PatherParams {
   checkDepth?: number;
   noForkSearch?: boolean;
+  chainReactionSearch?: boolean;
 }
 
 const MAX_STEPS = 64; // To be considered further
@@ -48,7 +49,7 @@ export class Pather {
           pieceDeltas: [{ pieceId: this.piece.id, path }],
           playerName: this.piece.owner,
           data: gait.data,
-          capture: undefined,
+          captures: undefined,
         },
         gait
       )
@@ -67,7 +68,9 @@ export class Pather {
 
     const processedMoves = this.interrupt.for.processMoves({
       moves: allMoves,
-      board: this.game.board,
+      game: this.game,
+      gameClones: this.gameClones,
+      params: this.params,
     }).moves;
 
     return processedMoves.filter((m) => this.postMoveGenerationFilter(m));
@@ -212,35 +215,32 @@ export class Pather {
 
     // what moves are theoretically possible?
     const passiveMove = canMovePassively ? move : undefined;
-    const captureMove = canCaptureNormally
+    const captureMove: Move | undefined = canCaptureNormally
       ? {
           ...clone(move),
-          capture: {
-            at: terminalSquare.location,
-            pieceIds: this.game.board
-              .getEnemyPiecesAt(terminalSquare.location, move.playerName)
-              .map((p) => p.id),
-          },
+          captures: [
+            {
+              at: terminalSquare.location,
+              pieceIds: this.game.board
+                .getEnemyPiecesAt(terminalSquare.location, move.playerName)
+                .map((p) => p.id),
+              capturer: move.playerName,
+            },
+          ],
         }
       : undefined;
-    const optionalCaptureMove =
+    const optionalCaptureMove: Move | undefined =
       mayMakeOptionalCapture && !!optionalCapturePossible
         ? {
             ...clone(move),
-            capture: optionalCapturePossible,
+            captures: [{ ...optionalCapturePossible, capturer: move.playerName }],
           }
         : undefined;
     const optionalCaptureAndCaptureMove =
-      optionalCaptureMove && captureMove
+      optionalCaptureMove?.captures && captureMove?.captures
         ? {
             ...clone(move),
-            capture: {
-              at: terminalSquare.location,
-              pieceIds: [
-                ...captureMove.capture.pieceIds,
-                ...optionalCaptureMove.capture.pieceIds,
-              ],
-            },
+            captures: [...captureMove.captures, ...optionalCaptureMove.captures],
           }
         : undefined;
 
