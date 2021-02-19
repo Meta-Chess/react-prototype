@@ -69,3 +69,6 @@ export { fortificationsImage };
 
 import morphlingsImage from "./morphlingsImage.png";
 export { morphlingsImage };
+
+import chainReactionImage from "./chainReactionImage.png";
+export { chainReactionImage };
