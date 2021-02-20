@@ -10,9 +10,9 @@ export const standard: Rule = {
     "This rule takes care of all the details of your usual bog-standard board and piece set-up.",
   forSquareGenerationModify: ({ board, numberOfPlayers }) => {
     board.addSquares(generateStandardSquares());
-    board.defineRegion(Region.center, centerRegion);
-    board.defineRegion(Region.promotion, promotionRegionWhite, PlayerName.White);
-    board.defineRegion(Region.promotion, promotionRegionBlack, PlayerName.Black);
+    board.defineRegion("center", centerRegion);
+    board.defineRegion("promotion", promotionRegionWhite, PlayerName.White);
+    board.defineRegion("promotion", promotionRegionBlack, PlayerName.Black);
     return { board, numberOfPlayers };
   },
   onBoardCreate: ({ board, numberOfPlayers }) => {

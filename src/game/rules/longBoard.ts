@@ -18,10 +18,10 @@ export const longBoard: Rule = {
     "The setup includes a long board and extra rows of pawns. It's designed to work well with vertical wrapping rules.",
   forSquareGenerationModify: ({ board, numberOfPlayers }) => {
     board.addSquares(generateStandardSquares(numberOfPlayers));
-    board.defineRegion(Region.center, centerRegion(numberOfPlayers));
+    board.defineRegion("center", centerRegion(numberOfPlayers));
     range(0, numberOfPlayers).forEach((n) =>
       board.defineRegion(
-        Region.promotion,
+        "promotion",
         promotionRegion(numberOfPlayers, n),
         allPossiblePlayerNames[n]
       )

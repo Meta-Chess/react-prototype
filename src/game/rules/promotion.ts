@@ -63,7 +63,7 @@ function partitionDeltas(move: Move, board: Board): [PieceDelta[], PieceDelta[]]
       const shouldPromote =
         board.getPiece(delta.pieceId)?.name === PieceName.Pawn &&
         board
-          .getRegion(Region.promotion, board.getPiece(delta.pieceId)?.owner)
+          .getRegion("promotion", board.getPiece(delta.pieceId)?.owner)
           .some((s) => s.location === delta.path.getEnd()) &&
         delta.promoteTo === undefined;
       results[shouldPromote ? 0 : 1].push(delta);

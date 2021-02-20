@@ -10,6 +10,7 @@ import {
   Region,
   Regions,
   WithOptional,
+  defaultRegions,
 } from "game/types";
 import { LocationPrefix, SpecialLocation } from "./location";
 import { isPresent } from "utilities";
@@ -30,7 +31,7 @@ interface PieceIdMap {
 // TODO: This class is too long!
 class Board extends TokenOwner {
   private idGenerator: IdGenerator;
-  private regions: Regions = { promotion: {}, center: {} };
+  private regions: Regions = defaultRegions;
 
   constructor(
     public interrupt: CompactRules,

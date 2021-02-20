@@ -18,9 +18,9 @@ export const hex: Rule = {
     "Every place on the board has a hexagonal geometry rather than a square geometry. Note that diagonal steps are a bit longer than usual. Click on a piece to find out how it moves!",
   forSquareGenerationModify: ({ board, numberOfPlayers }) => {
     board.addSquares(generateHexSquares());
-    board.defineRegion(Region.center, centerRegion);
-    board.defineRegion(Region.promotion, promotionRegionWhite, PlayerName.White);
-    board.defineRegion(Region.promotion, promotionRegionBlack, PlayerName.Black);
+    board.defineRegion("center", centerRegion);
+    board.defineRegion("promotion", promotionRegionWhite, PlayerName.White);
+    board.defineRegion("promotion", promotionRegionBlack, PlayerName.Black);
     return { board, numberOfPlayers };
   },
   onBoardCreate: ({ board, numberOfPlayers }) => {

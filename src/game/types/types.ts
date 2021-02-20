@@ -147,16 +147,19 @@ export interface TraitsInSetInfo {
   count: number;
 }
 
-export enum Region {
-  center = "center",
-  promotion = "promotion",
-}
+const allRegions = ["center", "promotion"] as const;
+export type Region = typeof allRegions[number];
 
 export type Regions = {
   [key in Region]: {
     [key in PlayerName | "default"]?: string[];
   };
 };
+
+export const defaultRegions = allRegions.reduce(
+  (acc, r) => ({ ...acc, [r]: {} }),
+  {}
+) as Regions;
 
 export type Location = string;
 
