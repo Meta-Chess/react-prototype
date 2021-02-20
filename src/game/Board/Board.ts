@@ -3,13 +3,14 @@ import { Square } from "./Square";
 import { Adjacency } from "./Adjacencies";
 import { TokenOwner } from "./TokenOwner";
 import {
+  defaultRegions,
   Direction,
-  RankAndFileBounds,
-  Token,
   PlayerName,
+  RankAndFileBounds,
   Region,
   Regions,
   WithOptional,
+  Token,
 } from "game/types";
 import { LocationPrefix, SpecialLocation } from "./location";
 import { isPresent } from "utilities";
@@ -19,6 +20,7 @@ import { Move, PieceDelta } from "game/Move";
 import { clone } from "lodash";
 import { EventCenter } from "game/EventCenter";
 import { invisibilityToken } from "game/rules/constants";
+
 interface LocationMap {
   [location: string]: Square;
 }
@@ -30,7 +32,7 @@ interface PieceIdMap {
 // TODO: This class is too long!
 class Board extends TokenOwner {
   private idGenerator: IdGenerator;
-  private regions: Regions = {};
+  private regions: Regions = defaultRegions;
 
   constructor(
     public interrupt: CompactRules,
@@ -158,12 +160,16 @@ class Board extends TokenOwner {
     squares?.forEach((s) => this.addSquare(s));
   }
 
-  defineRegion(region: Region, squareLocations: string[]): void {
-    this.regions[region] = squareLocations;
+  defineRegion(
+    region: Region,
+    squareLocations: string[],
+    player: PlayerName | "default" = "default"
+  ): void {
+    this.regions[region][player] = squareLocations;
   }
 
-  getRegion(region: Region): Square[] {
-    return (this.regions[region] || [])
+  getRegion(region: Region, player: PlayerName | "default" = "default"): Square[] {
+    return (this.regions[region][player] || [])
       .map((loc) => this.squareAt(loc))
       .filter(isPresent);
   }

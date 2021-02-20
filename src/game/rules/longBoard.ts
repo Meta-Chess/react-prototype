@@ -6,7 +6,6 @@ import {
   PlayerName,
   allPossiblePlayerNames,
   RankAndFileBounds,
-  Region,
 } from "../types";
 import { Rule } from "./CompactRules";
 import { createPiece, determineGaitGenerator } from "./utilities";
@@ -18,8 +17,14 @@ export const longBoard: Rule = {
     "The setup includes a long board and extra rows of pawns. It's designed to work well with vertical wrapping rules.",
   forSquareGenerationModify: ({ board, numberOfPlayers }) => {
     board.addSquares(generateStandardSquares(numberOfPlayers));
-    board.defineRegion(Region.center, centerRegion(numberOfPlayers));
-    board.defineRegion(Region.promotion, promotionRegion(numberOfPlayers));
+    board.defineRegion("center", centerRegion(numberOfPlayers));
+    range(0, numberOfPlayers).forEach((n) =>
+      board.defineRegion(
+        "promotion",
+        promotionRegion(numberOfPlayers, n),
+        allPossiblePlayerNames[n]
+      )
+    );
     return { board, numberOfPlayers };
   },
   onBoardCreate: ({ board, numberOfPlayers }) => {
@@ -107,17 +112,12 @@ function centerRegion(numberOfPlayers: number): string[] {
     toLocation({ rank: 7 + ranks_per_player * i, file: 5 }),
   ]);
 }
-function promotionRegion(numberOfPlayers: number): string[] {
+function promotionRegion(numberOfPlayers: number, playerIndex: number): string[] {
   const ranks_per_player = 7 - (numberOfPlayers % 2);
 
-  return range(0, numberOfPlayers).flatMap((i) => [
-    toLocation({ rank: 4 + ranks_per_player * i, file: 1 }),
-    toLocation({ rank: 4 + ranks_per_player * i, file: 2 }),
-    toLocation({ rank: 4 + ranks_per_player * i, file: 3 }),
-    toLocation({ rank: 4 + ranks_per_player * i, file: 4 }),
-    toLocation({ rank: 4 + ranks_per_player * i, file: 5 }),
-    toLocation({ rank: 4 + ranks_per_player * i, file: 6 }),
-    toLocation({ rank: 4 + ranks_per_player * i, file: 7 }),
-    toLocation({ rank: 4 + ranks_per_player * i, file: 8 }),
-  ]);
+  return range(0, numberOfPlayers).flatMap((i) =>
+    i === playerIndex
+      ? []
+      : range(1, 8).map((file) => toLocation({ rank: 4 + ranks_per_player * i, file }))
+  );
 }

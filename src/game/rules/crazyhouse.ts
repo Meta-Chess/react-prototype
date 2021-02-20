@@ -1,4 +1,4 @@
-import { PieceName, Gait, Region } from "../types";
+import { PieceName, Gait } from "../types";
 import { Path } from "game/Pather";
 import { Rule } from "./CompactRules";
 import { LocationPrefix } from "game/Board/location";
@@ -40,7 +40,7 @@ export const crazyhouse: Rule = {
         if (square === undefined) return false;
         if (
           piece.name === PieceName.Pawn &&
-          game.board.getRegion(Region.promotion).includes(square)
+          game.board.getRegion("promotion", piece.owner).includes(square)
         )
           return false;
         if (square.pieces.length > 0) return false;

@@ -1,6 +1,6 @@
-import { range2, toLocation } from "utilities";
+import { range, range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
-import { Direction, PieceName, PlayerName, RankAndFileBounds, Region } from "../types";
+import { Direction, PieceName, PlayerName, RankAndFileBounds } from "../types";
 import { Rule } from "./CompactRules";
 import { createPiece, determineGaitGenerator } from "./utilities";
 
@@ -10,8 +10,9 @@ export const standard: Rule = {
     "This rule takes care of all the details of your usual bog-standard board and piece set-up.",
   forSquareGenerationModify: ({ board, numberOfPlayers }) => {
     board.addSquares(generateStandardSquares());
-    board.defineRegion(Region.center, centerRegion);
-    board.defineRegion(Region.promotion, promotionRegion);
+    board.defineRegion("center", centerRegion);
+    board.defineRegion("promotion", promotionRegionWhite, PlayerName.White);
+    board.defineRegion("promotion", promotionRegionBlack, PlayerName.Black);
     return { board, numberOfPlayers };
   },
   onBoardCreate: ({ board, numberOfPlayers }) => {
@@ -95,25 +96,5 @@ const centerRegion = [
   toLocation({ rank: 5, file: 4 }),
   toLocation({ rank: 5, file: 5 }),
 ];
-const promotionRegion = [
-  ...[
-    toLocation({ rank: 8, file: 1 }),
-    toLocation({ rank: 8, file: 2 }),
-    toLocation({ rank: 8, file: 3 }),
-    toLocation({ rank: 8, file: 4 }),
-    toLocation({ rank: 8, file: 5 }),
-    toLocation({ rank: 8, file: 6 }),
-    toLocation({ rank: 8, file: 7 }),
-    toLocation({ rank: 8, file: 8 }),
-  ],
-  ...[
-    toLocation({ rank: 1, file: 1 }),
-    toLocation({ rank: 1, file: 2 }),
-    toLocation({ rank: 1, file: 3 }),
-    toLocation({ rank: 1, file: 4 }),
-    toLocation({ rank: 1, file: 5 }),
-    toLocation({ rank: 1, file: 6 }),
-    toLocation({ rank: 1, file: 7 }),
-    toLocation({ rank: 1, file: 8 }),
-  ],
-];
+const promotionRegionWhite = range(1, 8).map((file) => toLocation({ rank: 8, file }));
+const promotionRegionBlack = range(1, 8).map((file) => toLocation({ rank: 1, file }));

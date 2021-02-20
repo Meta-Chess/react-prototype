@@ -1,4 +1,3 @@
-import { Region } from "../types";
 import { Rule } from "./CompactRules";
 
 export const emptyCenter: Rule = {
@@ -6,7 +5,7 @@ export const emptyCenter: Rule = {
   description: "No pieces allowed in the center!",
   afterBoardCreation: ({ board }) => {
     //note: interruption point may change depending on rolling variants.
-    const centerSquares = board.getRegion(Region.center);
+    const centerSquares = board.getRegion("center");
     centerSquares.map((square) => {
       board.killPiecesAt({ piecesLocation: square.location });
       square.whiteListedMarkers = [];
