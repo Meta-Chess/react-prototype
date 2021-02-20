@@ -19,47 +19,71 @@ const SquareBoard: SFC<BoardProps> = ({
 }) => {
   const [verticalRotation, setVerticalRotation] = useState(0);
   const [horizontalRotation, setHorizontalRotation] = useState(0);
+  const verticalRef = useRef(0);
+  const horizontalRef = useRef(0);
+  const animationIsRunningRef = useRef(false);
+
+  const { gameMaster } = useContext(GameContext);
+  const horizontalRotationAllowed = gameMaster?.getRuleNames().includes("cylindrical");
+  const verticalRotationAllowed = gameMaster
+    ?.getRuleNames()
+    .includes("verticallyCylindrical");
 
   const animationOffset = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
 
-  const onKeyDownEvent = useCallback(
-    (event) => {
-      switch (event.key) {
-        case "w":
-          setVerticalRotation(verticalRotation + 1);
-          animationOffset.setValue({ x: 0, y: -2 * measurements.squareSize });
-          break;
-        case "a":
-          setHorizontalRotation(horizontalRotation - 1);
-          animationOffset.setValue({ x: 2 * measurements.squareSize, y: 0 });
-          break;
-        case "s":
-          setVerticalRotation(verticalRotation - 1);
-          animationOffset.setValue({ x: 0, y: 2 * measurements.squareSize });
-          break;
-        case "d":
-          setHorizontalRotation(horizontalRotation + 1);
-          animationOffset.setValue({ x: -2 * measurements.squareSize, y: 0 });
-          break;
-      }
+  const onKeyDownEvent = useCallback((event) => {
+    let animateToValue = { x: 0, y: 0 };
+    switch (event.key) {
+      case "w":
+        if (verticalRotationAllowed) {
+          verticalRef.current += 1;
+          animateToValue = { x: 0, y: 2 * measurements.squareSize };
+        }
+        break;
+      case "a":
+        if (horizontalRotationAllowed) {
+          horizontalRef.current -= 1;
+          animateToValue = { x: -2 * measurements.squareSize, y: 0 };
+        }
+        break;
+      case "s":
+        if (verticalRotationAllowed) {
+          verticalRef.current -= 1;
+          animateToValue = { x: 0, y: -2 * measurements.squareSize };
+        }
+        break;
+      case "d":
+        if (horizontalRotationAllowed) {
+          horizontalRef.current += 1;
+          animateToValue = { x: 2 * measurements.squareSize, y: 0 };
+        }
+        break;
+    }
+    if (!animationIsRunningRef.current) {
+      animationIsRunningRef.current = true;
       Animated.timing(animationOffset, {
-        toValue: { x: 0, y: 0 },
+        toValue: animateToValue,
         duration: ROTATION_TIME,
         easing: Easing.out(Easing.ease),
         useNativeDriver: Platform.OS === "ios",
-      }).start();
-    },
-    [horizontalRotation, verticalRotation]
-  );
+      }).start(() => {
+        setTimeout(() => {
+          if (animateToValue.y) setVerticalRotation(verticalRef.current);
+          if (animateToValue.x) setHorizontalRotation(horizontalRef.current);
+          animationOffset.setValue({ x: 0, y: 0 });
+          animationIsRunningRef.current = false;
+        }, 5);
+      });
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     document.addEventListener("keydown", onKeyDownEvent, false);
-    return () => {
+    return (): void => {
       document.removeEventListener("keydown", onKeyDownEvent, false);
     };
   }, [onKeyDownEvent]);
 
-  const { gameMaster } = useContext(GameContext);
   const game = gameMaster?.game;
   if (!game) return null;
 
@@ -77,30 +101,36 @@ const SquareBoard: SFC<BoardProps> = ({
       >
         <Animated.View
           style={{
-            flexDirection: flipBoard ? "row-reverse" : "row",
             marginLeft: animationOffset.x,
             marginBottom: animationOffset.y,
           }}
         >
-          {fileCoordinates.map((file) => (
-            <ColumnContainer flipBoard={flipBoard} key={file}>
-              {rankCoordinates.map((rank) => (
-                <Square
-                  size={measurements.squareSize}
-                  shape={SquareShape.Square}
-                  square={game.board.firstSquareSatisfyingRule(
-                    (square) =>
-                      objectMatches({
-                        rank: verticalWrap(rank - verticalRotation),
-                        file: horizontalWrap(file - horizontalRotation),
-                      })(square.coordinates) &&
-                      !square.hasTokenWithName(TokenName.InvisibilityToken)
-                  )}
-                  key={JSON.stringify([rank, file])}
-                />
-              ))}
-            </ColumnContainer>
-          ))}
+          <View
+            key={"board_container"}
+            style={{
+              flexDirection: flipBoard ? "row-reverse" : "row",
+            }}
+          >
+            {fileCoordinates.map((file) => (
+              <ColumnContainer flipBoard={flipBoard} key={file}>
+                {rankCoordinates.map((rank) => (
+                  <Square
+                    size={measurements.squareSize}
+                    shape={SquareShape.Square}
+                    square={game.board.firstSquareSatisfyingRule(
+                      (square) =>
+                        objectMatches({
+                          rank: verticalWrap(rank - verticalRotation),
+                          file: horizontalWrap(file - horizontalRotation),
+                        })(square.coordinates) &&
+                        !square.hasTokenWithName(TokenName.InvisibilityToken)
+                    )}
+                    key={JSON.stringify([rank, file])}
+                  />
+                ))}
+              </ColumnContainer>
+            ))}
+          </View>
         </Animated.View>
       </AbsoluteView>
     </BoardContainer>
