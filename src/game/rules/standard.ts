@@ -1,4 +1,4 @@
-import { range2, toLocation } from "utilities";
+import { range, range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
 import { Direction, PieceName, PlayerName, RankAndFileBounds, Region } from "../types";
 import { Rule } from "./CompactRules";
@@ -96,23 +96,5 @@ const centerRegion = [
   toLocation({ rank: 5, file: 4 }),
   toLocation({ rank: 5, file: 5 }),
 ];
-const promotionRegionWhite = [
-  toLocation({ rank: 8, file: 1 }),
-  toLocation({ rank: 8, file: 2 }),
-  toLocation({ rank: 8, file: 3 }),
-  toLocation({ rank: 8, file: 4 }),
-  toLocation({ rank: 8, file: 5 }),
-  toLocation({ rank: 8, file: 6 }),
-  toLocation({ rank: 8, file: 7 }),
-  toLocation({ rank: 8, file: 8 }),
-];
-const promotionRegionBlack = [
-  toLocation({ rank: 1, file: 1 }),
-  toLocation({ rank: 1, file: 2 }),
-  toLocation({ rank: 1, file: 3 }),
-  toLocation({ rank: 1, file: 4 }),
-  toLocation({ rank: 1, file: 5 }),
-  toLocation({ rank: 1, file: 6 }),
-  toLocation({ rank: 1, file: 7 }),
-  toLocation({ rank: 1, file: 8 }),
-];
+const promotionRegionWhite = range(1, 8).map((file) => toLocation({ rank: 8, file }));
+const promotionRegionBlack = range(1, 8).map((file) => toLocation({ rank: 1, file }));

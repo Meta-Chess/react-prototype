@@ -119,15 +119,6 @@ function promotionRegion(numberOfPlayers: number, playerIndex: number): string[]
   return range(0, numberOfPlayers).flatMap((i) =>
     i === playerIndex
       ? []
-      : [
-          toLocation({ rank: 4 + ranks_per_player * i, file: 1 }),
-          toLocation({ rank: 4 + ranks_per_player * i, file: 2 }),
-          toLocation({ rank: 4 + ranks_per_player * i, file: 3 }),
-          toLocation({ rank: 4 + ranks_per_player * i, file: 4 }),
-          toLocation({ rank: 4 + ranks_per_player * i, file: 5 }),
-          toLocation({ rank: 4 + ranks_per_player * i, file: 6 }),
-          toLocation({ rank: 4 + ranks_per_player * i, file: 7 }),
-          toLocation({ rank: 4 + ranks_per_player * i, file: 8 }),
-        ]
+      : range(1, 8).map((file) => toLocation({ rank: 4 + ranks_per_player * i, file }))
   );
 }
