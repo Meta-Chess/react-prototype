@@ -19,7 +19,6 @@ export function calculateGameOptions(
         ? chooseRandomVariants(selectedVariants)
         : []),
     ],
-    format: gameOptions.format, // TODO: do we need this?
     deck:
       gameOptions.format === "rollingVariants" ? shuffleInPlace(selectedVariants) : [],
     players: allPossiblePlayerNames.slice(0, gameOptions.numberOfPlayers),
