@@ -33,12 +33,12 @@ export const MoveDisambiguationModal: FC = () => {
           const moveDemoGameMaster = gameMaster.clone({
             evaluateEndGameConditions: false,
           });
-          moveDemoGameMaster.doMove(move);
+          moveDemoGameMaster.doMove({ move });
           return (
             <View key={index}>
               <StaticBoard
                 gameMaster={moveDemoGameMaster}
-                onPress={(): void => gameMaster.doMove(move)}
+                onPress={(): void => gameMaster.doMove({ move })}
                 style={{ marginLeft: index > 0 ? 12 : undefined }}
               />
               <Text

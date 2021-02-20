@@ -19,7 +19,7 @@ export class OnlineGameMaster extends GameMaster {
   async doMovesSlowly(moves: Move[]): Promise<void> {
     for (const move of moves) {
       await sleep(50);
-      this.doMove(move);
+      this.doMove({ move, unselect: true, received: true });
       this.render();
     }
   }
@@ -50,7 +50,7 @@ export class OnlineGameMaster extends GameMaster {
     );
 
     gameClient.setOnMove((move: Move) => {
-      onlineGameMaster.doMove(move, false);
+      onlineGameMaster.doMove({ move, unselect: false, received: true });
       onlineGameMaster.calculateAllowableMovesForSelectedPieces();
       if (onlineGameMaster.gameOver) onlineGameMaster.disconnect();
       onlineGameMaster.render();
@@ -59,21 +59,22 @@ export class OnlineGameMaster extends GameMaster {
     return onlineGameMaster;
   }
 
-  filterAllowableMoves(filter: (move: Move) => boolean): Move | undefined {
-    const move = super.filterAllowableMoves(filter);
-    this.sendMove(move);
-    return move;
-  }
-
-  onPress(location: string): Move | undefined {
-    const move = super.onPress(location);
-    this.sendMove(move);
-    return move;
+  doMove({
+    move,
+    unselect,
+    received = false,
+  }: {
+    move?: Move;
+    unselect?: boolean;
+    received?: boolean;
+  }): void {
+    if (move && !received) this.sendMove(move);
+    super.doMove({ move, unselect });
+    if (this.gameOver) this.disconnect();
   }
 
   sendMove(move?: Move): void {
     if (move) this.gameClient.sendMove(move);
-    if (this.gameOver) this.disconnect();
   }
 
   disconnect(): void {

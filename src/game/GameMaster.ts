@@ -163,7 +163,7 @@ export class GameMaster {
     this.allowableMoves = this.allowableMoves.filter(filter);
     if (this.allowableMoves.length === 1) {
       const move = this.allowableMoves[0];
-      this.doMove(move);
+      this.doMove({ move });
       return move;
     }
   }
@@ -179,7 +179,7 @@ export class GameMaster {
       this.selectedPieces[0]?.owner;
 
     if (moves.length === 1 && isSelectedPieceOwnersTurn) {
-      this.doMove(moves[0]);
+      this.doMove({ move: moves[0] });
       if (!this.game.players[this.game.currentPlayerIndex].alive) {
         this.doMove();
       }
@@ -203,7 +203,7 @@ export class GameMaster {
     this.render();
   }
 
-  doMove(move?: Move, unselect = true): void {
+  doMove({ move, unselect = true }: { move?: Move; unselect?: boolean } = {}): void {
     // if (move) console.log(`expect(board.getPiecesAt("${move.location}").length).toEqual(1);`); // TEST WRITING HELPER COMMENT
     if (move) {
       this.game.doMove(move);
