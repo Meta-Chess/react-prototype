@@ -131,15 +131,22 @@ export class GameMaster {
           this.squaresInfo.add(pathSquare, SquareInfo.LastMovePath)
         );
     });
+    const currentPlayerName = this.game.players[this.game.currentPlayerIndex].name;
     this.selectedPieces.forEach((piece) => {
-      if (piece.owner !== this.game.players[this.game.currentPlayerIndex].name) {
+      if (
+        piece.owner !== currentPlayerName ||
+        (this.assignedPlayer !== "all" && this.assignedPlayer !== piece.owner)
+      ) {
         this.squaresInfo.add(piece.location, SquareInfo.SelectedOtherPlayerPiece);
       } else {
         this.squaresInfo.add(piece.location, SquareInfo.SelectedCurrentPlayerPiece);
       }
     });
     this.allowableMoves.forEach((move) => {
-      if (move.playerName !== this.game.players[this.game.currentPlayerIndex].name) {
+      if (
+        move.playerName !== currentPlayerName ||
+        (this.assignedPlayer !== "all" && this.assignedPlayer !== currentPlayerName)
+      ) {
         this.squaresInfo.add(move.location, SquareInfo.PossibleOtherPlayerMoveEndPoint);
       } else if (!doesCapture(move)) {
         this.squaresInfo.add(move.location, SquareInfo.PossibleMovePassiveEndPoint);
@@ -184,15 +191,19 @@ export class GameMaster {
     const isSelectedPieceOwnersTurn =
       this.game.players[this.game.currentPlayerIndex].name ===
       this.selectedPieces[0]?.owner;
+    const canMoveSelectedPiece =
+      isSelectedPieceOwnersTurn &&
+      (this.assignedPlayer === "all" ||
+        this.assignedPlayer === this.selectedPieces[0]?.owner);
 
-    if (moves.length === 1 && isSelectedPieceOwnersTurn) {
+    if (moves.length === 1 && canMoveSelectedPiece) {
       this.doMove({ move: moves[0] });
       if (!this.game.players[this.game.currentPlayerIndex].alive) {
         this.doMove();
       }
       this.render();
       return moves[0];
-    } else if (moves.length > 1 && isSelectedPieceOwnersTurn) {
+    } else if (moves.length > 1 && canMoveSelectedPiece) {
       this.allowableMoves = moves;
       this.locationSelected = true;
     } else if (
