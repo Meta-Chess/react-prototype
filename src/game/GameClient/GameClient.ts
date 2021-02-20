@@ -66,7 +66,10 @@ class GameClient {
           onMove?.(parseMove(data.move));
           break;
         default:
-        // eslint-disable-next-line no-console
+          // eslint-disable-next-line no-console
+          console.log(
+            `Unrecognised event type ${data.type} of payload ${JSON.stringify(data)}`
+          );
       }
     };
     this.socket.addEventListener("message", this.messageListener);
