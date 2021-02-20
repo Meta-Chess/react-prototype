@@ -17,7 +17,7 @@ export const interception: Rule = {
           const interceptionToken = {
             name: TokenName.CaptureToken,
             expired: (turn: number): boolean => {
-              return turn >= currentTurn + 1;
+              return turn >= currentTurn + game.players.length;
             },
             data: {
               pieceId: move.pieceId,

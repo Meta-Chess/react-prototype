@@ -9,7 +9,7 @@ import { clone } from "lodash";
 import { Path } from "game/Pather";
 
 const MAX_CHAIN_LENGTH = 5;
-const FORCE_PULL = true;
+const FORCE_PULL = false;
 
 export const pull: Rule = {
   title: "Pull",

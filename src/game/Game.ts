@@ -91,12 +91,7 @@ export class Game {
       move,
       currentTurn: this.currentTurn,
     });
-    this.board.getPieces().forEach((piece) => {
-      piece.removeExpiredTokens(this.currentTurn);
-    });
-    Object.values(this.board.squares).forEach((square) =>
-      square.removeExpiredTokens(this.currentTurn)
-    );
+    this.removeExpiredTokens();
   }
 
   nextTurn(): void {
@@ -106,6 +101,15 @@ export class Game {
       this.clock?.setActivePlayers([this.players[nextPlayerIndex].name]);
       this.currentTurn++;
     }
+  }
+
+  removeExpiredTokens(): void {
+    this.board.getPieces().forEach((piece) => {
+      piece.removeExpiredTokens(this.currentTurn);
+    });
+    Object.values(this.board.squares).forEach((square) =>
+      square.removeExpiredTokens(this.currentTurn)
+    );
   }
 
   getPreviousAlivePlayer(currentPlayerIndex: number): Player | undefined {
