@@ -2,13 +2,11 @@ import { Direction } from "game/types";
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
 import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
-import { mockRenderer } from "../helpers/mockRenderer";
 
 describe("On the cylindrical board", () => {
   const gameMaster = new GameMaster(
     ...GameMaster.processConstructorInputs(
-      calculateGameOptions({ checkEnabled: true }, ["hex", "cylinder"]),
-      mockRenderer
+      calculateGameOptions({ checkEnabled: true }, ["hex", "cylindrical"])
     )
   );
   const board = gameMaster.game.board;

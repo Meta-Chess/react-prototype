@@ -6,6 +6,7 @@ import { CollapsableCard } from "ui/Containers";
 import { SFC, Text, Colors } from "primitives";
 import { FutureVariantName } from "game";
 import { FormatName, formats } from "game/formats";
+import { FormatIcon } from "components/shared";
 
 interface Props {
   selectedFormat: FormatName;
@@ -21,14 +22,14 @@ const FormatCard: SFC<Props> = ({
   return (
     <CollapsableCard
       title={formats[selectedFormat].title}
-      TitleComponent={formats[selectedFormat].icon}
+      titleComponent={<FormatIcon format={selectedFormat} />}
     >
       <Text
         color={Colors.TEXT.LIGHT_SECONDARY.toString()}
         cat="BodyXS"
         style={{ fontStyle: "italic", marginVertical: 6, marginLeft: 8 }}
       >
-        {formats[selectedFormat].variantScreenHelpText}
+        {formats[selectedFormat].shortExplanation}
       </Text>
       <Container>
         {selectedVariants.map((variant) => {

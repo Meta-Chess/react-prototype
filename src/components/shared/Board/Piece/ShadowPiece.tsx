@@ -26,7 +26,12 @@ const ShadowPiece: FC<Props> = ({ piece, size }) => {
           color={Colors.PLAYER[piece.owner].string()}
           size={size}
           rotatePiece={gameMaster?.overTheBoard && piece.owner === PlayerName.Black}
-          opacity={piece.hasTokenWithName(TokenName.Fatigue) ? 0.03 : 0.075}
+          opacity={
+            piece.hasTokenWithName(TokenName.Fatigue) &&
+            gameMaster?.getRuleNames().includes("fatigue")
+              ? 0.03
+              : 0.075
+          }
         />
       </AbsoluteView>
     </View>

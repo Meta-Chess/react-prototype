@@ -1,7 +1,8 @@
 import { ReactElement } from "react";
 import { Direction } from "./Direction";
-import { Piece, VariantName, RuleName } from "game";
+import { Piece, VariantName, FutureVariantName } from "game";
 import { TraitName } from "game/variants/traitInfo";
+import { FormatName } from "game/formats";
 import { getValues } from "utilities";
 
 export interface GaitData {
@@ -114,18 +115,23 @@ export enum SquareShape {
 }
 
 export interface GameOptions {
-  numberOfPlayers?: number;
+  numberOfPlayers: number;
   variant?: VariantName;
   customTitle?: string;
-  customRuleNames?: RuleName[];
   time?: number | undefined;
   checkEnabled?: boolean;
   flipBoard?: boolean;
   overTheBoard?: boolean;
   roomId?: string;
   online?: boolean;
-  fatigueEnabled?: boolean;
-  atomicEnabled?: boolean;
+  baseVariants: FutureVariantName[];
+  deck?: FutureVariantName[];
+  format: FormatName;
+  formatData?: FormatData;
+}
+
+export interface FormatData {
+  period?: number;
 }
 
 export interface Modal {

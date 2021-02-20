@@ -1,11 +1,12 @@
 import React from "react";
 import { SFC, Text, Colors } from "primitives";
-import { AdviceLevel, futureVariants, FutureVariantName } from "game";
+import { AdviceLevel, futureVariants, FutureVariantName, GameOptions } from "game";
 import { CollapsableCard } from "ui";
 
 interface Props {
   variantConflicts: { message: string; level: AdviceLevel }[];
   selectedVariants: FutureVariantName[];
+  gameOptions: GameOptions;
 }
 
 const TEXT_COLORS = {
@@ -15,7 +16,12 @@ const TEXT_COLORS = {
   ERROR: Colors.ERROR,
 };
 
-export const AdviceCard: SFC<Props> = ({ variantConflicts, selectedVariants, style }) => {
+export const AdviceCard: SFC<Props> = ({
+  variantConflicts,
+  selectedVariants,
+  gameOptions,
+  style,
+}) => {
   const totalComplexity = selectedVariants.reduce(
     (acc, variant) => acc + futureVariants[variant].complexity,
     0
@@ -28,7 +34,7 @@ export const AdviceCard: SFC<Props> = ({ variantConflicts, selectedVariants, sty
       message:
         totalComplexity === 0
           ? "Press on a card to select a variant"
-          : totalComplexity <= 5
+          : totalComplexity <= 5 || gameOptions.format !== "variantComposition"
           ? "This looks like fun!"
           : totalComplexity <= 8
           ? "This looks a bit complicated!"
@@ -40,7 +46,7 @@ export const AdviceCard: SFC<Props> = ({ variantConflicts, selectedVariants, sty
       level:
         totalComplexity === 0
           ? "NEUTRAL"
-          : totalComplexity <= 8
+          : totalComplexity <= 8 || gameOptions.format !== "variantComposition"
           ? "SUCCESS"
           : totalComplexity <= 18
           ? "WARNING"

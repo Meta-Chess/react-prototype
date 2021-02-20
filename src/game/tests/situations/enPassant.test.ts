@@ -1,13 +1,15 @@
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
-import { mockRenderer } from "../helpers/mockRenderer";
+
 import { PlayerName } from "game/types";
 import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
 
 describe("With the standard set of rules", () => {
   it("after a pawn does a double step, it should be vulnerable to interception attacks", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(calculateGameOptions({}, []), mockRenderer)
+      ...GameMaster.processConstructorInputs(
+        calculateGameOptions({ checkEnabled: false }, [])
+      )
     );
     const board = gameMaster.game.board;
 

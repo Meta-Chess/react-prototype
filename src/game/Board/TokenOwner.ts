@@ -3,12 +3,13 @@ import { Token, TokenName } from "game/types";
 export class TokenOwner {
   constructor(public tokens: Token[] = []) {}
 
-  addToken(token: Token): void {
+  addToken(token: Token, replaceMatches = false): void {
+    if (replaceMatches) this.tokens = this.tokens.filter((t) => t.name !== token.name);
     this.tokens.push(token);
   }
 
-  addTokens(tokens: Token[]): void {
-    this.tokens.push(...tokens);
+  addTokens(tokens: Token[], replaceMatches = false): void {
+    tokens.forEach((t) => this.addToken(t, replaceMatches));
   }
 
   private filterTokensByRule(rule: (token: Token) => boolean): void {

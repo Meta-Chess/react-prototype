@@ -1,6 +1,6 @@
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
-import { mockRenderer } from "../helpers/mockRenderer";
+
 import { TokenName } from "game/types";
 import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
 
@@ -8,8 +8,7 @@ describe("With fatigue enabled", () => {
   it("pieces shouldn't be able to move two turns in a row", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true }, ["fatigue"]),
-        mockRenderer
+        calculateGameOptions({ checkEnabled: true }, ["fatigue"])
       )
     );
     const board = gameMaster.game.board;

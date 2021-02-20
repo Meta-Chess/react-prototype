@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { View } from "react-native";
-import { AdviceLevel, FutureVariantName } from "game";
+import { AdviceLevel, FutureVariantName, GameOptions } from "game";
 import { SFC, Colors } from "primitives";
 import styled from "styled-components/native";
 import { HelpMenu } from "components/shared";
@@ -8,34 +8,40 @@ import { PlayerOptions } from "./PlayerOptions";
 import { FormatOptions } from "./FormatOptions";
 import { FormatName } from "game/formats";
 interface Props {
-  selectedPlayers: number;
-  setSelectedPlayers: (x: number) => void;
-  selectedFormat: FormatName;
-  setSelectedFormat: (x: FormatName) => void;
+  gameOptions: GameOptions;
+  setGameOptions: (x: GameOptions) => void;
   selectedVariants: FutureVariantName[];
   displayVariants: FutureVariantName[];
   conflictLevel: AdviceLevel | undefined;
 }
 
 const Topbar: SFC<Props> = ({
-  selectedPlayers,
-  setSelectedPlayers,
-  selectedFormat,
-  setSelectedFormat,
+  gameOptions,
+  setGameOptions,
   selectedVariants,
   displayVariants,
   conflictLevel,
 }) => {
+  const setNumberOfPlayers = useCallback(
+    (numberOfPlayers: number): void =>
+      setGameOptions({ ...gameOptions, numberOfPlayers }),
+    [gameOptions, setGameOptions]
+  );
+  const setFormat = useCallback(
+    (format: FormatName): void => setGameOptions({ ...gameOptions, format }),
+    [gameOptions, setGameOptions]
+  );
+
   return (
     <Container>
       <OptionsContainer>
         <PlayerOptions
-          selectedPlayers={selectedPlayers}
-          setSelectedPlayers={setSelectedPlayers}
+          numberOfPlayers={gameOptions.numberOfPlayers}
+          setNumberOfPlayers={setNumberOfPlayers}
         />
         <FormatOptions
-          selectedFormat={selectedFormat}
-          setSelectedFormat={setSelectedFormat}
+          format={gameOptions.format}
+          setFormat={setFormat}
           style={{ marginLeft: 32 }}
         />
       </OptionsContainer>
@@ -61,7 +67,7 @@ const OptionsContainer = styled(View)`
 `;
 
 const CenterHelpMenu = styled(View)`
-  margin-top: -4;
+  margin-top: -4px;
   align-self: flex-start;
 `;
 

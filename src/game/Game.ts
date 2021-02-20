@@ -5,6 +5,7 @@ import { Player } from "./Player";
 import { Move } from "./Move";
 import { allPossiblePlayerNames, PlayerName } from "./types";
 import { CompactRules } from "./rules";
+import { createPieceBank } from "./rules/utilities";
 
 export class Game {
   constructor(
@@ -22,7 +23,7 @@ export class Game {
 
   clone(): Game {
     const cloneConstructorInput: Required<ConstructorParameters<typeof Game>> = [
-      this.interrupt, // When we start updating the rules, we'll need to clone the interrupt, perhaps by storing the list of rules and regenerating
+      this.interrupt.clone(),
       this.board.clone(),
       undefined, // Clones don't need a clock at the moment
       this.events.clone(),
@@ -34,7 +35,7 @@ export class Game {
   }
 
   resetTo(savePoint: Game): void {
-    this.interrupt = savePoint.interrupt; // .resetTo(savePoint.interrupt);
+    this.interrupt.resetTo(savePoint.interrupt);
     this.board.resetTo(savePoint.board);
     for (let i = 0; i < savePoint.players.length; i++) {
       this.players[i].resetTo(savePoint.players[i]);
@@ -67,7 +68,17 @@ export class Game {
     );
     interrupt.for.subscribeToEvents({ events });
 
+    createPieceBank(game);
+
     return game;
+  }
+
+  setInterrupt(interrupt: CompactRules): void {
+    this.interrupt = interrupt;
+    this.board.interrupt = interrupt;
+    this.events = new EventCenter({});
+    this.board.events = this.events;
+    this.interrupt.for.subscribeToEvents({ events: this.events });
   }
 
   doMove(move?: Move): void {
@@ -89,7 +100,7 @@ export class Game {
   }
 
   nextTurn(): void {
-    const nextPlayerIndex = this.nextAlivePlayerIndex(this.currentPlayerIndex);
+    const nextPlayerIndex = (this.currentPlayerIndex + 1) % this.players.length;
     if (nextPlayerIndex !== undefined) {
       this.currentPlayerIndex = nextPlayerIndex;
       this.clock?.setActivePlayers([this.players[nextPlayerIndex].name]);
@@ -97,14 +108,23 @@ export class Game {
     }
   }
 
-  nextAlivePlayerIndex(currentPlayerIndex: number): number | undefined {
+  getPreviousAlivePlayer(currentPlayerIndex: number): Player | undefined {
     let index: number;
-    for (let i = 1; i <= this.players.length; i++) {
+    for (let i = this.players.length - 1; i >= 0; i--) {
       index = (currentPlayerIndex + i) % this.players.length;
-      if (this.players[index].alive) return index;
+      if (this.players[index].alive) return this.players[index];
     }
     return undefined;
   }
+
+  // nextAlivePlayerIndex(currentPlayerIndex: number): number | undefined {
+  //   let index: number;
+  //   for (let i = 1; i <= this.players.length; i++) {
+  //     index = (currentPlayerIndex + i) % this.players.length;
+  //     if (this.players[index].alive) return index;
+  //   }
+  //   return undefined;
+  // }
 
   alivePlayers(): Player[] {
     return this.players.filter((player) => player.alive);
@@ -112,5 +132,17 @@ export class Game {
 
   getCurrentPlayerName(): PlayerName {
     return this.players[this.currentPlayerIndex].name;
+  }
+
+  getCurrentPlayer(): Player {
+    return this.players[this.currentPlayerIndex];
+  }
+
+  getPlayers(): Player[] {
+    return this.players;
+  }
+
+  getIndexOfPlayer(player: Player | undefined): number | undefined {
+    return player ? this.players.findIndex((p) => p.name === player.name) : undefined;
   }
 }

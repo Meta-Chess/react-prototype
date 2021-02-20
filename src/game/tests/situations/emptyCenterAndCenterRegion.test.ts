@@ -1,14 +1,13 @@
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
-import { mockRenderer } from "../helpers/mockRenderer";
+
 import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
 
 describe("With empty center", () => {
   it("center pawns only have one allowable move on a standard board", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({}, ["emptyCenter"]),
-        mockRenderer
+        calculateGameOptions({ checkEnabled: false }, ["emptyCenter"])
       )
     );
 
@@ -40,8 +39,7 @@ describe("With empty center", () => {
   it("center pawn has no allowable move on a hex board", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({}, ["emptyCenter", "hex"]),
-        mockRenderer
+        calculateGameOptions({ checkEnabled: false }, ["emptyCenter", "hex"])
       )
     );
 
@@ -57,8 +55,7 @@ describe("With empty center", () => {
   it("center pawns only have one allowable move on a toroidal board", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({}, ["emptyCenter", "toroidal"]),
-        mockRenderer
+        calculateGameOptions({ checkEnabled: false }, ["emptyCenter", "toroidal"])
       )
     );
 
@@ -110,8 +107,7 @@ describe("With empty center", () => {
   it("bishops can move through, but not on, the center on a standard board", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
-        calculateGameOptions({}, ["emptyCenter"]),
-        mockRenderer
+        calculateGameOptions({ checkEnabled: false }, ["emptyCenter"])
       )
     );
 

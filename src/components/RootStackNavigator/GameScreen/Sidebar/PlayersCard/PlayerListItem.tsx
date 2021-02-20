@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { AbsoluteView, Row } from "ui";
 import { Colors, PieceImage, SFC, Text } from "primitives";
-import { PieceName, PlayerName } from "game";
+import { GameContext, PieceName, PlayerName } from "game";
 import { Timer } from "components/shared";
 import { View } from "react-native";
-import { Player } from "game/Player";
+import { Player } from "game/Player/Player";
 import styled from "styled-components/native";
 import { randomChoice, randomInt } from "utilities";
+import { RollingVariantsCounter } from "components/RootStackNavigator/GameScreen/Sidebar/PlayersCard/RollingVariantsCounter";
 
 interface Props {
   player: Player;
@@ -16,6 +17,10 @@ interface Props {
 export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
   const [name] = useState(randomChoice(["Emmanuel", "Gus", "Angus", "Seb"]));
   const [rating] = useState(randomInt(100, 3000));
+
+  const { gameMaster } = useContext(GameContext);
+  if (gameMaster === undefined) return null;
+  const ruleNames = gameMaster.getRuleNames();
 
   return (
     <Container active={player.name === currentPlayerName}>
@@ -34,7 +39,12 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
           </Text>
         </View>
       </Row>
-      <Timer playerName={player.name} />
+      <Row style={{ alignItems: "center" }}>
+        {ruleNames.includes("rollingVariants") && (
+          <RollingVariantsCounter count={player.getRuleData("rollingVariantsCounter")} />
+        )}
+        <Timer playerName={player.name} />
+      </Row>
       {!player.alive && (
         <AbsoluteView style={{ backgroundColor: Colors.DARK.fade(0.2).toString() }} />
       )}

@@ -1,8 +1,8 @@
 import React, { FC, useState, useCallback } from "react";
 import { MChessLogo } from "primitives";
 import { Button, Row } from "ui";
-import { GameProvider, GameOptions } from "game";
-import { defaultGameOptions, GameOptionControls } from "./GameOptionControls";
+import { GameProvider, GameOptions, defaultGameOptions } from "game";
+import { GameOptionControls } from "./GameOptionControls";
 import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
 import { Screens, useNavigation } from "navigation";

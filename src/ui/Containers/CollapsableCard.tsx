@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, ReactNode } from "react";
 import { SFC } from "primitives";
 import { TouchableOpacity, View } from "react-native";
 import { Text, Colors } from "primitives";
@@ -7,12 +7,12 @@ import { PlusIcon, MinusIcon } from "primitives/icons";
 
 interface CollapsableCardProps {
   title: string;
-  TitleComponent?: React.FC<{ size?: number }>;
+  titleComponent?: ReactNode;
 }
 
 const CollapsableCard: SFC<CollapsableCardProps> = ({
   title,
-  TitleComponent = undefined,
+  titleComponent,
   children,
   style,
 }) => {
@@ -23,11 +23,7 @@ const CollapsableCard: SFC<CollapsableCardProps> = ({
       <Header onPress={(): void => setOpen(!open)} includeSeperator={!open}>
         <LeftHeaderContainer>
           <Text cat="DisplayXS">{title}</Text>
-          {TitleComponent && (
-            <View style={{ marginLeft: 6 }}>
-              <TitleComponent size={20} />
-            </View>
-          )}
+          {titleComponent && <View style={{ marginLeft: 6 }}>{titleComponent}</View>}
         </LeftHeaderContainer>
         <View style={{ marginRight: 6 }}>
           {open ? (
@@ -60,7 +56,7 @@ const LeftHeaderContainer = styled(View)`
   flex: 1;
   flex-direction: row;
   align-items: center;
-  margin-left: 12;
+  margin-left: 12px;
 `;
 
 const Body = styled(View)`
