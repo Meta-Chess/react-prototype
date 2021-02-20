@@ -116,6 +116,7 @@ export enum SquareShape {
 
 export interface GameOptions {
   numberOfPlayers: number;
+  players?: PlayerName[];
   variant?: VariantName;
   customTitle?: string;
   time?: number | undefined;

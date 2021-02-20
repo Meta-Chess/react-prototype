@@ -1,4 +1,4 @@
-import { GameOptions } from "game/types";
+import { allPossiblePlayerNames, GameOptions } from "game/types";
 import { FutureVariantName } from "game/variants/variants";
 import { shuffleInPlace } from "utilities";
 import { chooseRandomVariants } from "./formatProcessing";
@@ -19,9 +19,10 @@ export function calculateGameOptions(
         ? chooseRandomVariants(selectedVariants)
         : []),
     ],
-    format: gameOptions.format,
+    format: gameOptions.format, // TODO: do we need this?
     deck:
       gameOptions.format === "rollingVariants" ? shuffleInPlace(selectedVariants) : [],
+    players: allPossiblePlayerNames.slice(0, gameOptions.numberOfPlayers),
   };
 }
 
