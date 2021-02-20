@@ -276,10 +276,10 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     shortDescription:
       "When a piece is captured it captures all the pieces it was threatening.",
     traits: ["Ability"],
-    imageName: undefined,
+    imageName: "chainReactionImage",
     implemented: true,
     ruleNames: ["chainReaction"],
-    complexity: 2,
+    complexity: 3,
   },
   patheticKing: {
     title: "Pathetic King",
