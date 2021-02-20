@@ -1,4 +1,4 @@
-import { PieceName, Region } from "../types";
+import { PieceName } from "../types";
 import { Rule } from "./CompactRules";
 import { Board } from "game";
 import { nthCartesianPower } from "utilities/nthCartesianPower";

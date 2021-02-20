@@ -1,4 +1,4 @@
-import { PieceName, Gait, Region } from "../types";
+import { PieceName, Gait } from "../types";
 import { Path } from "game/Pather";
 import { Rule } from "./CompactRules";
 import { LocationPrefix } from "game/Board/location";

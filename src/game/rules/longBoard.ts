@@ -6,7 +6,6 @@ import {
   PlayerName,
   allPossiblePlayerNames,
   RankAndFileBounds,
-  Region,
 } from "../types";
 import { Rule } from "./CompactRules";
 import { createPiece, determineGaitGenerator } from "./utilities";

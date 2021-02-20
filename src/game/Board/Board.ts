@@ -3,14 +3,14 @@ import { Square } from "./Square";
 import { Adjacency } from "./Adjacencies";
 import { TokenOwner } from "./TokenOwner";
 import {
+  defaultRegions,
   Direction,
-  RankAndFileBounds,
-  Token,
   PlayerName,
+  RankAndFileBounds,
   Region,
   Regions,
   WithOptional,
-  defaultRegions,
+  Token,
 } from "game/types";
 import { LocationPrefix, SpecialLocation } from "./location";
 import { isPresent } from "utilities";
@@ -20,6 +20,7 @@ import { Move, PieceDelta } from "game/Move";
 import { clone } from "lodash";
 import { EventCenter } from "game/EventCenter";
 import { invisibilityToken } from "game/rules/constants";
+
 interface LocationMap {
   [location: string]: Square;
 }

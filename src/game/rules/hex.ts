@@ -10,7 +10,6 @@ import {
   TokenName,
 } from "../types";
 import { createPiece, determineGaitGenerator, PieceSet } from "./utilities";
-import { Region } from "../types";
 
 export const hex: Rule = {
   title: "Hexagon",

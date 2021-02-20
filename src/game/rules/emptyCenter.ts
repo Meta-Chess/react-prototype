@@ -1,4 +1,3 @@
-import { Region } from "../types";
 import { Rule } from "./CompactRules";
 
 export const emptyCenter: Rule = {
