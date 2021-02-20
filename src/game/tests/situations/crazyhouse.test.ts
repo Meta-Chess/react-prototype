@@ -6,9 +6,9 @@ import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGam
 describe("with crazyhouse", () => {
   it("a captured piece can be played to free squares on the board, pawn gaits become friendly", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true }, ["crazyhouse"])
-      )
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: true }, ["crazyhouse"]),
+      })
     );
     const board = gameMaster.game.board;
 
@@ -153,13 +153,13 @@ describe("with crazyhouse", () => {
 
   it("atomic only stores captured piece in piece bank and the rest in graveyard + checkmate with crazyhouse pawn", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true }, [
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: true }, [
           "crazyhouse",
           "atomic",
           "cylindrical",
-        ])
-      )
+        ]),
+      })
     );
     const board = gameMaster.game.board;
 
@@ -204,13 +204,13 @@ describe("with crazyhouse", () => {
 
   it("pawns can't be placed in promotion zone, but non-pawn can. both can't be played in the empty center", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: false }, [
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: false }, [
           "crazyhouse",
           "emptyCenter",
           "cylindrical",
-        ])
-      )
+        ]),
+      })
     );
     const board = gameMaster.game.board;
 
@@ -286,13 +286,13 @@ describe("with crazyhouse", () => {
 
   it("captured backwards toroidal pawns have their gaits changed, double step tokens are cleared on capture, a played piece will start fatigued", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: false }, [
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: false }, [
           "crazyhouse",
           "fatigue",
           "toroidal",
-        ])
-      )
+        ]),
+      })
     );
     const board = gameMaster.game.board;
 

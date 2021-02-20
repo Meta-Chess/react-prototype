@@ -5,9 +5,9 @@ import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGam
 
 describe("On the cylindrical board", () => {
   const gameMaster = new GameMaster(
-    ...GameMaster.processConstructorInputs(
-      calculateGameOptions({ checkEnabled: true }, ["hex", "cylindrical"])
-    )
+    ...GameMaster.processConstructorInputs({
+      gameOptions: calculateGameOptions({ checkEnabled: true }, ["hex", "cylindrical"]),
+    })
   );
   const board = gameMaster.game.board;
 

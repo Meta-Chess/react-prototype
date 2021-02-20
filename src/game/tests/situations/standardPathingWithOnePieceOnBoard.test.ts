@@ -4,7 +4,7 @@ import { toLocation } from "utilities";
 import { GameMaster } from "../../GameMaster";
 
 describe("In standard chess", () => {
-  const gameMaster = new GameMaster(...GameMaster.processConstructorInputs({}));
+  const gameMaster = new GameMaster(...GameMaster.processConstructorInputs());
   const board = gameMaster.game.board;
   beforeEach(() => {
     board

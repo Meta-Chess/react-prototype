@@ -4,7 +4,7 @@ import { GameMaster } from "game/GameMaster";
 
 describe("In standard chess", () => {
   it("A white pawn should have allowable moves one or two squares forwards from its starting position", () => {
-    const gameMaster = new GameMaster(...GameMaster.processConstructorInputs({}));
+    const gameMaster = new GameMaster(...GameMaster.processConstructorInputs());
 
     // Select white pawn at E2
     gameMaster.onPress(toLocation({ rank: 2, file: 5 }));
@@ -19,7 +19,7 @@ describe("In standard chess", () => {
   });
 
   it("A black pawn should have allowable moves one or two squares forwards from its starting position", () => {
-    const gameMaster = new GameMaster(...GameMaster.processConstructorInputs({}));
+    const gameMaster = new GameMaster(...GameMaster.processConstructorInputs());
 
     // Select black pawn at E7
     gameMaster.onPress(toLocation({ rank: 7, file: 5 }));
@@ -34,7 +34,7 @@ describe("In standard chess", () => {
   });
 
   it("A pawn should be able to move two squares forwards from its starting position", () => {
-    const gameMaster = new GameMaster(...GameMaster.processConstructorInputs({}));
+    const gameMaster = new GameMaster(...GameMaster.processConstructorInputs());
     const board = gameMaster.game.board;
 
     // White pawn to E4
@@ -52,7 +52,7 @@ describe("In standard chess", () => {
   });
 
   it("A pawn should be able to move one square forwards from its starting position", () => {
-    const gameMaster = new GameMaster(...GameMaster.processConstructorInputs({}));
+    const gameMaster = new GameMaster(...GameMaster.processConstructorInputs());
     const board = gameMaster.game.board;
 
     // White pawn to E4
@@ -70,7 +70,7 @@ describe("In standard chess", () => {
   });
 
   it("After moving one square, a pawn should only have one allowable move", () => {
-    const gameMaster = new GameMaster(...GameMaster.processConstructorInputs({}));
+    const gameMaster = new GameMaster(...GameMaster.processConstructorInputs());
 
     // White pawn to E3
     gameMaster.onPress(toLocation({ rank: 2, file: 5 }));
@@ -92,7 +92,7 @@ describe("In standard chess", () => {
   });
 
   it("After moving two squares, a pawn should only have one allowable move", () => {
-    const gameMaster = new GameMaster(...GameMaster.processConstructorInputs({}));
+    const gameMaster = new GameMaster(...GameMaster.processConstructorInputs());
 
     // White pawn to E3
     gameMaster.onPress(toLocation({ rank: 2, file: 5 }));
@@ -118,7 +118,7 @@ describe("In standard chess", () => {
   });
 
   it("Pawns can take diagonally but not forwards", () => {
-    const gameMaster = new GameMaster(...GameMaster.processConstructorInputs({}));
+    const gameMaster = new GameMaster(...GameMaster.processConstructorInputs());
     const board = gameMaster.game.board;
 
     // White pawn to E4

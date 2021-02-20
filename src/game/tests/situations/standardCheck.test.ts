@@ -8,7 +8,11 @@ describe("In standard chess", () => {
   it("Players should not be able to move into check on mostly empty board", () => {
     // Setup standard empty board
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ checkEnabled: true })
+      ...GameMaster.processConstructorInputs({
+        gameOptions: {
+          checkEnabled: true,
+        },
+      })
     );
     const board = gameMaster.game.board;
     board
@@ -40,7 +44,7 @@ describe("In standard chess", () => {
 
   it("Players should not be able to move into check in standard chess situation", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ checkEnabled: true })
+      ...GameMaster.processConstructorInputs({ gameOptions: { checkEnabled: true } })
     );
     const board = gameMaster.game.board;
 
@@ -66,7 +70,7 @@ describe("In standard chess", () => {
 
   it("Players in check (not mate) can and must move out of check", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ checkEnabled: true })
+      ...GameMaster.processConstructorInputs({ gameOptions: { checkEnabled: true } })
     );
     const board = gameMaster.game.board;
 

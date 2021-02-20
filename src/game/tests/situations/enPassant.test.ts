@@ -7,9 +7,9 @@ import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGam
 describe("With the standard set of rules", () => {
   it("after a pawn does a double step, it should be vulnerable to interception attacks", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: false }, [])
-      )
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: false }, []),
+      })
     );
     const board = gameMaster.game.board;
 

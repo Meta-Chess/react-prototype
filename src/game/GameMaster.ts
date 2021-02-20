@@ -1,6 +1,6 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, PlayerName } from "./types";
+import { GameOptions, PlayerAssignment, PlayerName } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { CompactRules, RuleName } from "./rules";
@@ -33,6 +33,7 @@ export class GameMaster {
     public game: Game,
     public interrupt: CompactRules, // This should probably be private
     public gameOptions: GameOptions,
+    public assignedPlayer: PlayerAssignment = "all",
     private renderer?: Renderer,
     private evaluateEndGameConditions = true
   ) {
@@ -46,17 +47,22 @@ export class GameMaster {
     this.startOfTurn();
   }
 
-  static processConstructorInputs(
-    gameOptions?: Partial<GameOptions>,
-    renderer?: Renderer
-  ): ConstructorParameters<typeof GameMaster> {
+  static processConstructorInputs({
+    gameOptions = {},
+    assignedPlayer = "all",
+    renderer,
+  }: {
+    gameOptions?: Partial<GameOptions>;
+    assignedPlayer?: PlayerAssignment;
+    renderer?: Renderer;
+  } = {}): ConstructorParameters<typeof GameMaster> {
     const {
       time,
       checkEnabled,
       format = "variantComposition",
       baseVariants = [],
       numberOfPlayers = 2,
-    } = gameOptions || {};
+    } = gameOptions;
 
     const completeGameOptions: GameOptions = {
       ...gameOptions,
@@ -74,7 +80,7 @@ export class GameMaster {
       game: Game.createGame(interrupt, time, numberOfPlayers),
     }).game;
 
-    return [game, interrupt, completeGameOptions, renderer];
+    return [game, interrupt, completeGameOptions, assignedPlayer, renderer];
   }
 
   clone({
@@ -88,6 +94,7 @@ export class GameMaster {
       this.game.clone(),
       this.interrupt,
       this.gameOptions,
+      this.assignedPlayer,
       renderer || new Renderer(),
       evaluateEndGameConditions
     );

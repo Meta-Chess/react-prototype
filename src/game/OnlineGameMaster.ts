@@ -1,6 +1,6 @@
 import { GameMaster } from "./GameMaster";
 import { Renderer } from "./Renderer";
-import { GameOptions } from "game/types";
+import { GameOptions, PlayerAssignment } from "game/types";
 import { GameClient } from "game/GameClient";
 import { sleep } from "utilities/sleep";
 import { Move } from "game/Move";
@@ -9,10 +9,13 @@ export class OnlineGameMaster extends GameMaster {
   constructor(
     renderer: Renderer,
     gameOptions: GameOptions,
+    assignedPlayer: PlayerAssignment,
     public roomId: string,
     private gameClient: GameClient
   ) {
-    super(...GameMaster.processConstructorInputs(gameOptions, renderer));
+    super(
+      ...GameMaster.processConstructorInputs({ gameOptions, assignedPlayer, renderer })
+    );
     this.doMovesSlowly(gameClient.moves);
   }
 
@@ -41,10 +44,14 @@ export class OnlineGameMaster extends GameMaster {
     if (!gameClient.gameOptions) {
       throw new Error("Game options should be set already");
     }
+    if (!gameClient.assignedPlayer) {
+      throw new Error("Assigned player should be set already");
+    }
 
     const onlineGameMaster = new OnlineGameMaster(
       renderer,
       gameClient.gameOptions,
+      gameClient.assignedPlayer,
       roomId,
       gameClient
     );

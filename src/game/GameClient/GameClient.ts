@@ -1,4 +1,4 @@
-import { GameOptions, PlayerName } from "game/types";
+import { GameOptions, PlayerAssignment } from "game/types";
 import { Path } from "game/Pather";
 import { sleep } from "utilities/sleep";
 import { Move, PieceDelta } from "game/Move";
@@ -9,7 +9,7 @@ class GameClient {
   private onMove: ((move: Move) => void) | undefined;
   private messageListener: ((event: MessageEvent) => void) | undefined;
   public moves: Move[] = [];
-  public assignedPlayer?: PlayerName = undefined;
+  public assignedPlayer?: PlayerAssignment = undefined;
 
   constructor(url: string, private roomId?: string, public gameOptions?: GameOptions) {
     const socket = new WebSocket(url);
@@ -44,7 +44,7 @@ class GameClient {
     const setGameOptions = (gameOptions: GameOptions): void => {
       this.gameOptions = gameOptions;
     };
-    const setAssignedPlayer = (assignedPlayer: PlayerName): void => {
+    const setAssignedPlayer = (assignedPlayer: PlayerAssignment): void => {
       this.assignedPlayer = assignedPlayer;
     };
 

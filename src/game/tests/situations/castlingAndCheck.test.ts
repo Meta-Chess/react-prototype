@@ -6,9 +6,9 @@ import { Board } from "../../Board";
 describe("With the standard set of rules", () => {
   it("should be impossible to castle through check", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true }, [])
-      )
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: true }, []),
+      })
     );
     const board = gameMaster.game.board;
     killMostPawnsKnightsBishopsAndWhiteQueen(board);
@@ -28,9 +28,9 @@ describe("With the standard set of rules", () => {
 
   it("should be impossible to castle out of check", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true }, [])
-      )
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: true }, []),
+      })
     );
     const board = gameMaster.game.board;
     killMostPawnsKnightsBishopsAndWhiteQueen(board);
