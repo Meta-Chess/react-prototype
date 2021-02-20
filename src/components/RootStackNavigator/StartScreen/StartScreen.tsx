@@ -1,7 +1,12 @@
 import React, { FC, useState, useCallback } from "react";
 import { MChessLogo } from "primitives";
 import { Button, Row } from "ui";
-import { GameProvider, GameOptions, defaultGameOptions } from "game";
+import {
+  GameProvider,
+  GameOptions,
+  defaultGameOptions,
+  calculateGameOptions,
+} from "game";
 import { GameOptionControls } from "./GameOptionControls";
 import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
@@ -47,7 +52,7 @@ const StartScreen: FC = () => {
               />
               <Row style={{ marginTop: 24, width: 300 }}>
                 <Button
-                  onPress={(): void => startGame(gameOptions)}
+                  onPress={(): void => startGame(calculateGameOptions(gameOptions, []))}
                   text={"Play"}
                   style={{ flex: 1 }}
                 />

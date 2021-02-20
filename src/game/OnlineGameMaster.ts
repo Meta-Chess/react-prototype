@@ -44,9 +44,6 @@ export class OnlineGameMaster extends GameMaster {
     if (!gameClient.gameOptions) {
       throw new Error("Game options should be set already");
     }
-    if (!gameClient.assignedPlayer) {
-      throw new Error("Assigned player should be set already");
-    }
 
     const onlineGameMaster = new OnlineGameMaster(
       renderer,

@@ -9,7 +9,7 @@ class GameClient {
   private onMove: ((move: Move) => void) | undefined;
   private messageListener: ((event: MessageEvent) => void) | undefined;
   public moves: Move[] = [];
-  public assignedPlayer?: PlayerAssignment = undefined;
+  public assignedPlayer: PlayerAssignment = "spectator";
 
   constructor(url: string, private roomId?: string, public gameOptions?: GameOptions) {
     const socket = new WebSocket(url);
