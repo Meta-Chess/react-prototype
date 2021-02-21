@@ -36,13 +36,14 @@ export const pawnDoubleStep: Rule = {
 };
 
 function doubleStep(originalPiece: Piece): (originalGait: Gait) => Gait {
+  const originalOwner = originalPiece.owner;
   return (originalGait: Gait): Gait => ({
     ...originalGait,
     pattern: [...originalGait.pattern, ...originalGait.pattern],
     data: {
       interceptable: true,
       interceptionCondition: (piece: Piece): boolean => {
-        return piece.name === PieceName.Pawn && piece.owner !== originalPiece.owner;
+        return piece.name === PieceName.Pawn && piece.owner !== originalOwner;
       },
     },
   });
