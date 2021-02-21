@@ -86,7 +86,10 @@ export const castling: Rule = {
         playerName: activePiece.owner,
         data: {
           interceptable: true,
-          interceptionCondition: (): boolean => true,
+          interceptionCondition: (piece: Piece): boolean => {
+            const originalOwner = activePiece.owner;
+            return piece.owner !== originalOwner;
+          },
           interceptableAtStart: true,
         },
       })
