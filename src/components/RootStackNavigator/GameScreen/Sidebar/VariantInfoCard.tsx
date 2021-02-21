@@ -2,8 +2,9 @@ import React, { useContext } from "react";
 import { Colors, SFC, Text } from "primitives";
 import { Card } from "ui/Containers/Card";
 import { GameContext, futureVariants as allVariants, formats } from "game";
-import { LabelWithDetails } from "ui";
+import { LabelWithDetails, Row } from "ui";
 import { View } from "react-native";
+import { WASD } from "./ActiveKeycaps";
 
 const VariantInfoCard: SFC = ({ style }) => {
   const { gameMaster } = useContext(GameContext);
@@ -18,8 +19,13 @@ const VariantInfoCard: SFC = ({ style }) => {
 
   return (
     <Card style={style}>
-      <Text cat="DisplayM">{title}</Text>
-      <View style={{ flexWrap: "wrap", flexDirection: "row", marginTop: 8 }}>
+      <Row style={{ justifyContent: "space-between" }}>
+        <Text cat="DisplayM" style={{ marginBottom: 8 }}>
+          {title}
+        </Text>
+        <WASD style={{ marginLeft: 8, marginTop: 4 }} />
+      </Row>
+      <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
         <LabelWithDetails
           label={format.title}
           details={format.description}

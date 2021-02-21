@@ -24,7 +24,6 @@ const SquareBoard: SFC<BoardProps> = ({
     horizontalRotationAllowed,
   } = useCylinderRotation(measurements);
   const game = gameMaster?.game;
-  if (!game) return null;
 
   const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
   const numberOfFiles = useMemo(() => maxFile - minFile + 1, [minFile, maxFile]);
@@ -37,6 +36,8 @@ const SquareBoard: SFC<BoardProps> = ({
     () => range(minRank, verticalRotationAllowed ? 2 * numberOfRanks : numberOfRanks),
     [minRank, numberOfRanks, verticalRotationAllowed]
   );
+
+  if (!game) return null;
 
   const horizontalWrap = wrapToCylinder(minFile, maxFile);
   const verticalWrap = wrapToCylinder(minRank, maxRank);

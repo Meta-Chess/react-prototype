@@ -55,7 +55,7 @@ export const useCylinderRotation = (
     return (): void => {
       document.removeEventListener("keydown", onKeyDownEvent, false);
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const squareSize = measurements.squareSize;
   const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
