@@ -7,6 +7,8 @@ module.exports = function (api) {
         "module-resolver",
         {
           alias: {
+            "auth/*": "./src/auth/*",
+            auth: "./src/auth",
             "components/*": "./src/components/*",
             components: "./src/components",
             "game/*": "./src/game/*",

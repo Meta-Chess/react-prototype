@@ -4,6 +4,7 @@ import { GameOptions } from "game/types";
 import { GameClient } from "game/GameClient";
 import { sleep } from "utilities/sleep";
 import { Move } from "game/Move";
+import { User } from "auth";
 
 export class OnlineGameMaster extends GameMaster {
   constructor(
@@ -26,12 +27,14 @@ export class OnlineGameMaster extends GameMaster {
 
   static async connectNewGame(
     renderer: Renderer,
+    user: User,
     gameOptions?: GameOptions,
     roomId?: string | undefined
   ): Promise<OnlineGameMaster> {
     const gameClient = new GameClient(
       process.env.REACT_APP_SERVER ||
         "wss://fik1wh1ttf.execute-api.ap-southeast-2.amazonaws.com/dev",
+      user,
       roomId,
       gameOptions
     );

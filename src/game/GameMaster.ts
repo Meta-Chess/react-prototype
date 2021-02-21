@@ -153,6 +153,7 @@ export class GameMaster {
         })
         .forEach((player) => {
           player.alive = false;
+          player.gameResult = "loss";
           player.endGameMessage = "ran out of time";
           if (player.name === this.game.getCurrentPlayerName()) this.doMove();
         });
@@ -293,13 +294,17 @@ export class GameMaster {
         }).dead;
       }
       player.alive = dead === false;
-      if (dead) player.endGameMessage = dead;
+      if (dead) {
+        player.gameResult = "loss";
+        player.endGameMessage = dead;
+      }
     });
   }
 
   checkWinConditions(): void {
     const remainingPlayers = this.game.alivePlayers();
     if (remainingPlayers.length === 1) {
+      remainingPlayers[0].gameResult = "win";
       this.result = PlayerName[remainingPlayers[0].name] + " won!";
       this.endGame();
     }
@@ -319,6 +324,9 @@ export class GameMaster {
       }).draw;
 
       if (draw !== false) {
+        this.game.alivePlayers().forEach((p): void => {
+          p.gameResult = "draw";
+        });
         this.result = `Draw by ${draw}!`;
         this.endGame();
       }
@@ -328,6 +336,7 @@ export class GameMaster {
   endGame(): void {
     this.game.clock?.stop();
     this.gameOver = true;
+    // TODO: on game end, call method (that will need to be passed) to update user win/loss/draw counts
   }
 
   getRuleNames(): RuleName[] {

@@ -7,19 +7,24 @@ import styled from "styled-components/native";
 import { Colors } from "primitives";
 import { ModalProvider } from "ui";
 import { linking } from "navigation";
+import { UserProvider } from "auth";
 
 export default function App() {
   return (
     <NavigationContainer linking={linking}>
-      <ModalProvider>
-        <KeyboardAvoidingContainer behavior={Platform.OS == "ios" ? "padding" : "height"}>
-          <SafeAreaProvider>
-            <SafeAreaContainer>
-              <RootStackNavigator />
-            </SafeAreaContainer>
-          </SafeAreaProvider>
-        </KeyboardAvoidingContainer>
-      </ModalProvider>
+      <UserProvider>
+        <ModalProvider>
+          <KeyboardAvoidingContainer
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+          >
+            <SafeAreaProvider>
+              <SafeAreaContainer>
+                <RootStackNavigator />
+              </SafeAreaContainer>
+            </SafeAreaProvider>
+          </KeyboardAvoidingContainer>
+        </ModalProvider>
+      </UserProvider>
     </NavigationContainer>
   );
 }

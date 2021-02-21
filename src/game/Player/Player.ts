@@ -1,4 +1,4 @@
-import { PlayerName } from "game/types";
+import { GameResult, PlayerName } from "game/types";
 import { cloneDeep } from "lodash";
 import { PlayerRuleData, PlayerRuleSetterInput } from "./PlayerRuleData";
 
@@ -9,6 +9,7 @@ export class Player {
     public name: PlayerName,
     public alive: boolean = true,
     public endGameMessage: string = "",
+    public gameResult: GameResult = "ongoing",
     public hasLegalMoves: { value: boolean; turn: number } = {
       value: false,
       turn: -1,
@@ -20,6 +21,7 @@ export class Player {
       this.name,
       this.alive,
       this.endGameMessage,
+      this.gameResult,
       cloneDeep(this.hasLegalMoves),
     ];
     return new Player(...cloneConstructorInput);

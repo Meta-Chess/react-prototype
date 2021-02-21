@@ -2,6 +2,7 @@ import { GameOptions } from "game/types";
 import { Path } from "game/Pather";
 import { sleep } from "utilities/sleep";
 import { Move, PieceDelta } from "game/Move";
+import { User } from "auth";
 
 class GameClient {
   private socket: WebSocket;
@@ -10,13 +11,18 @@ class GameClient {
   private messageListener: ((event: MessageEvent) => void) | undefined;
   public moves: Move[] = [];
 
-  constructor(url: string, private roomId?: string, public gameOptions?: GameOptions) {
+  constructor(
+    url: string,
+    user: User,
+    private roomId?: string,
+    public gameOptions?: GameOptions
+  ) {
     const socket = new WebSocket(url);
     this.socket = socket;
     this.roomJoined = false;
 
     this.socket.addEventListener("open", function (_event) {
-      socket.send(JSON.stringify({ action: "joinRoom", roomId, gameOptions }));
+      socket.send(JSON.stringify({ action: "joinRoom", roomId, gameOptions, user }));
     });
 
     this.messageListener = undefined;

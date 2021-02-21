@@ -11,6 +11,8 @@
     "target": "es5",
     "baseUrl": ".",
     "paths": {
+      "auth/*": ["./src/auth/*"],
+      "auth": ["./src/auth"],
       "components/*": ["./src/components/*"],
       "components": ["./src/components"],
       "game/*": ["./src/game/*"],

@@ -164,3 +164,5 @@ export const defaultRegions = allRegions.reduce(
 export type Location = string;
 
 export type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+export type GameResult = "win" | "draw" | "loss" | "ongoing";
