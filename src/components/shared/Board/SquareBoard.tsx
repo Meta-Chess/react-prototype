@@ -1,4 +1,11 @@
-import React, { useContext, useState, useCallback, useEffect, useRef } from "react";
+import React, {
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+  useMemo,
+} from "react";
 import { View, Animated, Platform, Easing } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
@@ -10,71 +17,55 @@ import { Styles } from "primitives/Styles";
 import { BoardMeasurements } from "components/shared";
 import { AbsoluteView } from "ui";
 
-const ROTATION_TIME = 50;
+const ROTATION_TIME = 100;
 
 const SquareBoard: SFC<BoardProps> = ({
   backboard = true,
   measurements,
   flipBoard = false,
 }) => {
-  const [verticalRotation, setVerticalRotation] = useState(0);
-  const [horizontalRotation, setHorizontalRotation] = useState(0);
-  const verticalRef = useRef(0);
-  const horizontalRef = useRef(0);
-  const animationIsRunningRef = useRef(false);
-
   const { gameMaster } = useContext(GameContext);
   const horizontalRotationAllowed = gameMaster?.getRuleNames().includes("cylindrical");
   const verticalRotationAllowed = gameMaster
     ?.getRuleNames()
     .includes("verticallyCylindrical");
 
+  // TODO: handle screen resizing better
   const animationOffset = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+  const animationTargetX = useRef(0);
+  const animationTargetY = useRef(0);
 
   const onKeyDownEvent = useCallback((event) => {
-    let animateToValue = { x: 0, y: 0 };
     switch (event.key) {
       case "w":
-        if (verticalRotationAllowed) {
-          verticalRef.current += 1;
-          animateToValue = { x: 0, y: 2 * measurements.squareSize };
-        }
+        if (verticalRotationAllowed)
+          animationTargetY.current = animationTargetY.current - 1;
+
         break;
       case "a":
-        if (horizontalRotationAllowed) {
-          horizontalRef.current -= 1;
-          animateToValue = { x: -2 * measurements.squareSize, y: 0 };
-        }
+        if (horizontalRotationAllowed)
+          animationTargetX.current = animationTargetX.current + 1;
         break;
       case "s":
-        if (verticalRotationAllowed) {
-          verticalRef.current -= 1;
-          animateToValue = { x: 0, y: -2 * measurements.squareSize };
-        }
+        if (verticalRotationAllowed)
+          animationTargetY.current = animationTargetY.current + 1;
         break;
       case "d":
-        if (horizontalRotationAllowed) {
-          horizontalRef.current += 1;
-          animateToValue = { x: 2 * measurements.squareSize, y: 0 };
-        }
+        if (horizontalRotationAllowed)
+          animationTargetX.current = animationTargetX.current - 1;
         break;
     }
-    if (!animationIsRunningRef.current) {
-      animationIsRunningRef.current = true;
-      Animated.timing(animationOffset, {
-        toValue: animateToValue,
-        duration: ROTATION_TIME,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: Platform.OS === "ios",
-      }).start(() => {
-        setTimeout(() => {
-          if (animateToValue.y) setVerticalRotation(verticalRef.current);
-          if (animateToValue.x) setHorizontalRotation(horizontalRef.current);
-          animationOffset.setValue({ x: 0, y: 0 });
-          animationIsRunningRef.current = false;
-        }, 5);
-      });
-    }
+    console.log(
+      animationTargetX.current,
+      animationTargetY.current,
+      measurements.squareSize
+    );
+    Animated.timing(animationOffset, {
+      toValue: { x: animationTargetX.current, y: animationTargetY.current },
+      duration: ROTATION_TIME,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: Platform.OS === "ios",
+    }).start();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -88,8 +79,35 @@ const SquareBoard: SFC<BoardProps> = ({
   if (!game) return null;
 
   const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
-  const fileCoordinates = range(minFile - 1, maxFile - minFile + 3);
-  const rankCoordinates = range(minRank - 1, maxRank - minFile + 3);
+  const numberOfFiles = useMemo(() => maxFile - minFile + 1, [minFile, maxFile]);
+  const numberOfRanks = useMemo(() => maxRank - minRank + 1, [minRank, maxRank]);
+  const fileCoordinates = useMemo(() => range(minFile, 2 * numberOfFiles), [
+    minFile,
+    numberOfFiles,
+  ]);
+  const rankCoordinates = useMemo(() => range(minRank, 2 * numberOfRanks), [
+    minRank,
+    numberOfRanks,
+  ]);
+  const squareSize = measurements.squareSize;
+  const doubleSquareSize = useMemo(() => 2 * squareSize, [squareSize]);
+  const squaresWidth = useMemo(() => squareSize * numberOfFiles, [
+    squareSize,
+    numberOfFiles,
+  ]);
+  const squaresHeight = useMemo(() => squareSize * numberOfRanks, [
+    squareSize,
+    numberOfRanks,
+  ]);
+
+  const wrappedAnimationOffsetX = Animated.subtract(
+    squaresWidth,
+    Animated.multiply(Animated.modulo(animationOffset.x, numberOfFiles), doubleSquareSize)
+  );
+  const wrappedAnimationOffsetY = Animated.subtract(
+    squaresHeight,
+    Animated.multiply(Animated.modulo(animationOffset.y, numberOfRanks), doubleSquareSize)
+  );
 
   const horizontalWrap = wrapToCylinder(minFile, maxFile);
   const verticalWrap = wrapToCylinder(minRank, maxRank);
@@ -101,8 +119,8 @@ const SquareBoard: SFC<BoardProps> = ({
       >
         <Animated.View
           style={{
-            marginLeft: animationOffset.x,
-            marginBottom: animationOffset.y,
+            marginLeft: wrappedAnimationOffsetX,
+            marginBottom: wrappedAnimationOffsetY,
           }}
         >
           <View
@@ -120,8 +138,8 @@ const SquareBoard: SFC<BoardProps> = ({
                     square={game.board.firstSquareSatisfyingRule(
                       (square) =>
                         objectMatches({
-                          rank: verticalWrap(rank - verticalRotation),
-                          file: horizontalWrap(file - horizontalRotation),
+                          rank: verticalWrap(rank),
+                          file: horizontalWrap(file),
                         })(square.coordinates) &&
                         !square.hasTokenWithName(TokenName.InvisibilityToken)
                     )}
