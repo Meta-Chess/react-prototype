@@ -202,6 +202,24 @@ describe("with crazyhouse", () => {
     ).toEqual("checkmated");
   });
 
+  it("pawns can not capture a piece from the piece bank in passing.", () => {
+    const gameMaster = new GameMaster(
+      ...GameMaster.processConstructorInputs(
+        calculateGameOptions({ checkEnabled: false }, ["crazyhouse"])
+      )
+    );
+
+    gameMaster.onPress(toLocation({ rank: 1, file: 7 }));
+    gameMaster.onPress(toLocation({ rank: 3, file: 6 })); // nf3
+    gameMaster.onPress(toLocation({ rank: 7, file: 5 }));
+    gameMaster.onPress(toLocation({ rank: 5, file: 5 })); // e5
+    gameMaster.onPress(toLocation({ rank: 3, file: 6 }));
+    gameMaster.onPress(toLocation({ rank: 5, file: 5 })); // nxe5
+    gameMaster.onPress(toLocation({ rank: 7, file: 4 }));
+
+    expect(gameMaster.allowableMoves.length).toEqual(2); // pawn has no capture move;
+  });
+
   it("pawns can't be placed in promotion zone, but non-pawn can. both can't be played in the empty center", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs(
