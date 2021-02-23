@@ -19,7 +19,7 @@ const HexBackboard: SFC<HexBackboardProps> = ({
   children,
   containerStyle,
 }) => {
-  const extra = shadow ? 4 : 0;
+  const extra = shadow ? 20 : 16;
   const centerWidth = measurements.width + extra;
   const endHalfWidth = (measurements.width + extra) / 2;
   const centerHeight = (measurements.height + extra) / 2;
