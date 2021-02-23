@@ -94,10 +94,10 @@ const variantOptions = variantNames.map((k) => ({
 const timeOptions = [
   { label: "No timers", value: undefined },
   { label: "1 minute", value: 60000 },
-  // { label: "5 minutes", value: 300000 },
+  { label: "5 minutes", value: 300000 },
   { label: "10 minutes", value: 600000 },
   // { label: "20 minutes", value: 1200000 },
-  { label: "1 hour", value: 3600000 },
+  // { label: "1 hour", value: 3600000 },
   // { label: "3 hours", value: 7200000 },
 ];
 
