@@ -31,7 +31,7 @@ const VariantCardGrid: SFC<Props> = ({
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingVertical: 24 }}
       >
-        {complexityLevels.map((catagory, i) => {
+        {complexityLevels.map((catagory) => {
           return (
             <View key={catagory}>
               {partitionedDisplayVariants[catagory].length > 0 && (
@@ -40,33 +40,33 @@ const VariantCardGrid: SFC<Props> = ({
                     cat={"DisplayM"}
                     alignment={"left"}
                     color={Colors.TEXT.LIGHT_SECONDARY.fade(0.4).toString()}
-                    style={{ marginLeft: 4, marginTop: i === 0 ? 0 : 20 }}
+                    style={{ marginLeft: 4 }}
                   >
                     {catagory}
                   </Text>
                   <CatagorySeparator />
+                  <CardContainer>
+                    {partitionedDisplayVariants[catagory].map((variant) => {
+                      return (
+                        <VariantTile
+                          key={variant}
+                          variant={futureVariants[variant]}
+                          selected={selectedVariants.includes(variant)}
+                          conflictLevel={conflictLevel}
+                          onPress={(): void =>
+                            selectedVariants.includes(variant)
+                              ? setSelectedVariants(
+                                  selectedVariants.filter((x) => x !== variant)
+                                )
+                              : setSelectedVariants([...selectedVariants, variant])
+                          }
+                          style={{ margin: 4 }}
+                        />
+                      );
+                    })}
+                  </CardContainer>
                 </>
               )}
-              <CardContainer>
-                {partitionedDisplayVariants[catagory].map((variant) => {
-                  return (
-                    <VariantTile
-                      key={variant}
-                      variant={futureVariants[variant]}
-                      selected={selectedVariants.includes(variant)}
-                      conflictLevel={conflictLevel}
-                      onPress={(): void =>
-                        selectedVariants.includes(variant)
-                          ? setSelectedVariants(
-                              selectedVariants.filter((x) => x !== variant)
-                            )
-                          : setSelectedVariants([...selectedVariants, variant])
-                      }
-                      style={{ margin: 4 }}
-                    />
-                  );
-                })}
-              </CardContainer>
             </View>
           );
         })}
@@ -77,6 +77,7 @@ const VariantCardGrid: SFC<Props> = ({
 
 const CardContainer = styled(View)`
   flex-flow: row wrap;
+  margin: 0px 0px 20px 0px;
 `;
 
 const CatagorySeparator = styled(View)`
