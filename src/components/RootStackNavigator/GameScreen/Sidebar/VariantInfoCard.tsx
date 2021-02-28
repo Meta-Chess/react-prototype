@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
-import { Colors, SFC, Text } from "primitives";
+import { Colors, SFC } from "primitives";
 import { Card } from "ui/Containers/Card";
 import { GameContext, futureVariants as allVariants, formats } from "game";
 import { LabelWithDetails, Row } from "ui";
 import { View } from "react-native";
+import { Text } from "primitives";
 import { WASD } from "./ActiveKeycaps";
 
 const VariantInfoCard: SFC = ({ style }) => {
@@ -20,12 +21,10 @@ const VariantInfoCard: SFC = ({ style }) => {
   return (
     <Card style={style}>
       <Row style={{ justifyContent: "space-between" }}>
-        <Text cat="DisplayM" style={{ marginBottom: 8 }}>
-          {title}
-        </Text>
+        <Text cat="DisplayM">{title}</Text>
         <WASD style={{ marginLeft: 8, marginTop: 4 }} />
       </Row>
-      <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
+      <View style={{ flexWrap: "wrap", flexDirection: "row", marginTop: 8 }}>
         <LabelWithDetails
           label={format.title}
           details={format.description}

@@ -1,5 +1,5 @@
 import React from "react";
-import { SFC, Text } from "primitives";
+import { SFC, Text, Colors } from "primitives";
 import { Card } from "ui/Containers/Card";
 import { Piece, tokenDetails, pieceDetails } from "game";
 import { LabelWithDetails } from "ui";
@@ -15,10 +15,17 @@ const SelectedPieceInfoCard: SFC<Props> = ({ pieces, style }) => {
   return (
     <>
       {pieces.map((piece, index) => (
-        <Card key={index} style={style}>
-          <Text cat="DisplayM">{pieceDetails[piece.name].name} Selected</Text>
+        <Card
+          key={index}
+          title={pieceDetails[piece.name].name + " Selected"}
+          style={style}
+        >
           {piece.tokens.length > 0 && (
-            <Text cat="BodyL" style={{ marginTop: 12 }}>
+            <Text
+              cat="BodyM"
+              color={Colors.TEXT.LIGHT.toString()}
+              style={{ marginTop: 12 }}
+            >
               Tokens
             </Text>
           )}

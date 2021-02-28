@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useWindowDimensions, ScrollView, View, TouchableOpacity } from "react-native";
-import { Button, Card, useModals } from "ui";
+import { Button, Card, useModals, HorizontalSeparator } from "ui";
 import { useGoBackOrToStartScreen } from "navigation";
 import { Colors, SFC } from "primitives";
 import { GameContext, OnlineGameMaster } from "game";
@@ -11,6 +11,7 @@ import { SelectedPieceInfoCard } from "./SelectedPieceInfoCard";
 import { VariantCards } from "./VariantCards";
 import styled from "styled-components/native";
 import { PlayersCard } from "./PlayersCard";
+import { Styles } from "primitives/Styles";
 
 const Sidebar: SFC = ({ style }) => {
   const modals = useModals();
@@ -34,7 +35,7 @@ const Sidebar: SFC = ({ style }) => {
   return (
     <Container style={style}>
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 12 }}
         onScroll={(): void => modals.hideAll()}
         scrollEventThrottle={100}
         showsVerticalScrollIndicator={false}
@@ -45,21 +46,18 @@ const Sidebar: SFC = ({ style }) => {
           activeOpacity={1}
         >
           <View>
-            <RoomIdCard roomId={roomId} style={{ marginBottom: 8 }} />
-            <VariantInfoCard style={{ marginBottom: 8 }} />
-            <PlayersCard style={{ marginBottom: 8 }} />
-            <VariantCards style={{ marginBottom: 8 }} />
-            <SelectedPieceInfoCard
-              pieces={pieces}
-              key={key + 0.5}
-              style={{ marginBottom: 8 }}
-            />
+            <RoomIdCard roomId={roomId} />
+            <VariantInfoCard />
+            <PlayersCard />
+            <VariantCards />
+            <SelectedPieceInfoCard pieces={pieces} key={key + 0.5} />
             <Card>
               <PieceCredit />
             </Card>
           </View>
         </TouchableOpacity>
       </ScrollView>
+      <HorizontalSeparator color={Colors.DARKISH.fade(0.55).toString()} />
       <ButtonContainer>
         <Button text="Finish Game" onPress={goBackOrToStartScreen} />
       </ButtonContainer>
@@ -69,11 +67,15 @@ const Sidebar: SFC = ({ style }) => {
 
 const Container = styled(View)`
   justify-content: space-between;
+  background-color: ${Colors.DARKER.toString()};
+  border-width: 1px;
+  border-color: ${Colors.DARKISH.toString()};
+  margin: 4px 0px 4px 4px;
+  ${Styles.BOX_SHADOW}
 `;
 
 const ButtonContainer = styled(View)`
-  background-color: ${Colors.DARKEST.string()};
-  padding-vertical: 8px;
+  margin: 24px;
 `;
 
 export { Sidebar };

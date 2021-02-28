@@ -56,7 +56,10 @@ export const GameScreenContent: FC = () => {
   return (
     <StyledContainer style={{ flexDirection: portrait ? "column" : "row", padding }}>
       <View
-        style={[portrait ? { width: "100%" } : { flex: 2 }, { alignItems: "center" }]}
+        style={[
+          portrait ? { width: "100%" } : { flex: 1 },
+          { justifyContent: "center", alignItems: "center", flexDirection: "row" },
+        ]}
       >
         <View>
           <Board
@@ -81,10 +84,10 @@ export const GameScreenContent: FC = () => {
             <MoveDisambiguationModal />
           </AbsoluteView>
         ) : null}
+        <SidebarContainer portrait={portrait} boardMeasurements={boardMeasurements}>
+          <Sidebar style={{ flex: 1 }} />
+        </SidebarContainer>
       </View>
-      <SidebarContainer portrait={portrait} boardMeasurements={boardMeasurements}>
-        <Sidebar style={{ flex: 1 }} />
-      </SidebarContainer>
       <HelpMenu context={{ gameMaster }} />
     </StyledContainer>
   );
