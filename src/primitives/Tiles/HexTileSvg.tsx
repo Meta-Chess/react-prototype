@@ -15,10 +15,16 @@ const TilePath: FC = () => {
   );
 };
 
+export const hexSvgScaleFactor = 1.41;
+
 export const HexTileSvg: FC<Props> = ({ size, color, animatedColor }) => {
-  const tileScaleSize = animatedColor ? 1.43 * size : 1.41 * size;
+  //the below animated size exception is to ensure there aren't gaps for adjacent transparent animations
+  //remove if grid is not flush or on canvas board refactor
+  const tileSize = animatedColor
+    ? (hexSvgScaleFactor + 0.02) * size
+    : hexSvgScaleFactor * size;
   return (
-    <Svg width={tileScaleSize} height={tileScaleSize} viewBox="0 0 200 200">
+    <Svg width={tileSize} height={tileSize} viewBox="0 0 200 200">
       {animatedColor ? (
         <AnimatedGroup fill={animatedColor}>
           <TilePath />

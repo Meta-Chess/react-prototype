@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
+import { hexSvgScaleFactor } from "primitives/Tiles";
 
 export const AdjustHexSvg: FC<{ size: number }> = ({ size, children }) => {
   return (
@@ -12,6 +13,6 @@ export const AdjustHexSvg: FC<{ size: number }> = ({ size, children }) => {
 
 const Container = styled(View)<{ size: number }>`
   position: absolute;
-  margin-left: ${({ size }): number => ((1 - size) * 0.41) / 2};
-  margin-top: ${({ size }): number => ((1 - size) * 0.41) / 2};
+  margin-left: ${({ size }): number => ((1 - size) * (hexSvgScaleFactor - 1)) / 2};
+  margin-top: ${({ size }): number => ((1 - size) * (hexSvgScaleFactor - 1)) / 2};
 `;
