@@ -20,11 +20,17 @@ export class OnlineGameMaster extends GameMaster {
   }
 
   async doMovesSlowly(moves: Move[]): Promise<void> {
+    const shouldEvaluateEndGameConditions = this.evaluateEndGameConditions;
+    this.evaluateEndGameConditions = false;
     for (const move of moves) {
+      this.render();
       await sleep(50);
       this.doMove({ move, unselect: true, received: true });
-      this.render();
+      this.timersAsOf = move.timestamp;
     }
+    this.timersAsOf = undefined;
+    this.evaluateEndGameConditions = shouldEvaluateEndGameConditions;
+    this.render();
   }
 
   static async connectNewGame(

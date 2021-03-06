@@ -14,6 +14,7 @@ export class Clock {
 
   setActivePlayers(players: PlayerName[], asOf: TimestampMillis): void {
     this.timers.keys().forEach((player) => {
+      // `==` because player names from ".keys" are strings, but from players are numbers
       if (players.some((p) => p == player)) {
         this.timers.get(player)?.start(asOf);
       } else {

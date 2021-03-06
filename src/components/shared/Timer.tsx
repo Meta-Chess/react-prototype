@@ -16,11 +16,10 @@ const Timer: SFC<Props> = ({ style, playerName, hidden, alignment = "center" }) 
 
   const timer = gameMaster?.game.clock?.getPlayerTimer(playerName);
 
-  const formattedTime = timer?.getFormattedTime();
+  const formattedTime = timer?.getFormattedTime(gameMaster?.timersAsOf);
   const displayTime = formattedTime?.time;
   const validFor = formattedTime?.validFor;
-  const timeRemaining = timer?.getTimeRemaining();
-
+  const timeRemaining = timer?.getTimeRemaining(gameMaster?.timersAsOf);
   useEffect(() => {
     if (timeRemaining && timeRemaining <= 0) {
       timer?.stop(Date.now());
@@ -44,7 +43,7 @@ const Timer: SFC<Props> = ({ style, playerName, hidden, alignment = "center" }) 
   return hidden === true ? (
     <View style={style} />
   ) : (
-    <Container style={style} timeRemaining={timer.getTimeRemaining()}>
+    <Container style={style} timeRemaining={timeRemaining}>
       <Text
         cat="BodyM"
         color={Colors.TEXT.LIGHT.toString()}
@@ -57,12 +56,14 @@ const Timer: SFC<Props> = ({ style, playerName, hidden, alignment = "center" }) 
   );
 };
 
-const Container = styled(View)<{ timeRemaining: number }>`
+const Container = styled(View)<{ timeRemaining?: number }>`
   padding: 8px 12px;
   border-radius: 4px;
   overflow: hidden;
   background-color: ${({ timeRemaining }): string =>
-    timeRemaining <= 0 ? Colors.HIGHLIGHT.ERROR.fade(0.6).toString() : "transparent"};
+    timeRemaining && timeRemaining <= 0
+      ? Colors.HIGHLIGHT.ERROR.fade(0.6).toString()
+      : "transparent"};
 `;
 
 export { Timer };

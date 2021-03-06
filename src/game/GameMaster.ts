@@ -24,6 +24,7 @@ export class GameMaster {
   public allowableMoves: Move[] = [];
   public locationSelected = false;
   public squaresInfo = new SquaresInfo();
+  public timersAsOf?: number = undefined;
 
   // TODO: Consider restructure to encapsulate visualisation details in a nice abstraction
   public flipBoard: boolean;
@@ -35,7 +36,7 @@ export class GameMaster {
     public gameOptions: GameOptions,
     public assignedPlayer: PlayerAssignment = "all",
     private renderer?: Renderer,
-    private evaluateEndGameConditions = true
+    protected evaluateEndGameConditions = true
   ) {
     this.gameClones = [game.clone(), game.clone(), game.clone(), game.clone()];
 
@@ -231,7 +232,6 @@ export class GameMaster {
     const everyoneHasMoved =
       uniq(this.moveHistory.map((m) => m?.playerName)).length ===
       this.game.players.length;
-    console.log(everyoneHasMoved);
     this.game.nextTurn({
       asOf: move?.timestamp || Date.now(),
       startClocks: everyoneHasMoved,

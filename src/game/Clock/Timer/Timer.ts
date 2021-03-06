@@ -1,4 +1,3 @@
-import moment, { Moment } from "moment";
 import { formatMillis } from "utilities";
 import { TimestampMillis } from "game";
 
@@ -79,8 +78,8 @@ export class Timer {
       : this.getAllowance();
   }
 
-  getFormattedTime(): { time: string; validFor: number } {
-    const timeRemaining = this.getTimeRemaining();
+  getFormattedTime(asOf?: TimestampMillis): { time: string; validFor: number } {
+    const timeRemaining = this.getTimeRemaining(asOf);
 
     if (timeRemaining <= 0)
       return { ...formatMillis(0), validFor: Number.POSITIVE_INFINITY };
