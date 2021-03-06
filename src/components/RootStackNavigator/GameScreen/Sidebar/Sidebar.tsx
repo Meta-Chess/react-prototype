@@ -70,12 +70,11 @@ const Container = styled(View)`
   background-color: ${Colors.DARKER.toString()};
   border-width: 1px;
   border-color: ${Colors.DARKISH.toString()};
-  margin: 4px 0px 4px 4px;
   ${Styles.BOX_SHADOW}
 `;
 
 const ButtonContainer = styled(View)`
-  margin: 24px;
+  margin: 12px;
 `;
 
 export { Sidebar };

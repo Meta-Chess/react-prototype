@@ -1,5 +1,5 @@
 import React from "react";
-import { SFC, Text, Colors } from "primitives";
+import { SFC, Text } from "primitives";
 import { Card } from "ui/Containers/Card";
 import { Piece, tokenDetails, pieceDetails } from "game";
 import { LabelWithDetails } from "ui";
@@ -21,11 +21,7 @@ const SelectedPieceInfoCard: SFC<Props> = ({ pieces, style }) => {
           style={style}
         >
           {piece.tokens.length > 0 && (
-            <Text
-              cat="BodyM"
-              color={Colors.TEXT.LIGHT.toString()}
-              style={{ marginTop: 12 }}
-            >
+            <Text cat="BodyM" style={{ marginTop: 12 }}>
               Tokens
             </Text>
           )}

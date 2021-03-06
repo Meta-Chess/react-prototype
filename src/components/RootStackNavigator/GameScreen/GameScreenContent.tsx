@@ -55,12 +55,7 @@ export const GameScreenContent: FC = () => {
 
   return (
     <StyledContainer style={{ flexDirection: portrait ? "column" : "row", padding }}>
-      <View
-        style={[
-          portrait ? { width: "100%" } : { flex: 1 },
-          { justifyContent: "center", alignItems: "center", flexDirection: "row" },
-        ]}
-      >
+      <Container portrait={portrait}>
         <View>
           <Board
             measurements={boardMeasurements}
@@ -85,9 +80,14 @@ export const GameScreenContent: FC = () => {
           </AbsoluteView>
         ) : null}
         <SidebarContainer portrait={portrait} boardMeasurements={boardMeasurements}>
-          <Sidebar style={{ flex: 1 }} />
+          <Sidebar
+            style={[
+              portrait ? { marginHorizontal: 4 } : { marginVertical: 4 },
+              { flex: 1 },
+            ]}
+          />
         </SidebarContainer>
-      </View>
+      </Container>
       <HelpMenu context={{ gameMaster }} />
     </StyledContainer>
   );
@@ -102,6 +102,14 @@ interface SidebarContainerProps {
   portrait: boolean;
   boardMeasurements: BoardMeasurements;
 }
+
+const Container = styled(View)<{ portrait: boolean }>`
+  ${({ portrait }): string => (portrait ? "width: 100%; height: 100%;" : "flex: 1;")}
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  ${({ portrait }): string => "flex-direction: " + (portrait ? "column" : "row") + ";"}
+`;
 
 const SidebarContainer = styled(View)<SidebarContainerProps>`
   flex: 1;
