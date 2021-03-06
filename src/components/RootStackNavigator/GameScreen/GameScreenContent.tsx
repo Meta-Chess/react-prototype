@@ -62,23 +62,23 @@ export const GameScreenContent: FC = () => {
             backboard={backboard}
             flipBoard={flipBoard}
           />
+          {gameMaster?.gameOver && !winModalHidden ? (
+            <AbsoluteView>
+              <WinModal onClose={hideWinModal} />
+            </AbsoluteView>
+          ) : promotionDisambiguationOpportunities?.length > 0 ? (
+            <AbsoluteView>
+              <PromotionDisambiguationModal
+                promotion={promotionDisambiguationOpportunities[0]}
+                pieceSize={boardMeasurements.squareSize}
+              />
+            </AbsoluteView>
+          ) : moveDisambiguationRequired ? (
+            <AbsoluteView style={{ justifyContent: "center", flexDirection: "row" }}>
+              <MoveDisambiguationModal />
+            </AbsoluteView>
+          ) : null}
         </View>
-        {gameMaster?.gameOver && !winModalHidden ? (
-          <AbsoluteView>
-            <WinModal onClose={hideWinModal} />
-          </AbsoluteView>
-        ) : promotionDisambiguationOpportunities?.length > 0 ? (
-          <AbsoluteView>
-            <PromotionDisambiguationModal
-              promotion={promotionDisambiguationOpportunities[0]}
-              pieceSize={boardMeasurements.squareSize}
-            />
-          </AbsoluteView>
-        ) : moveDisambiguationRequired ? (
-          <AbsoluteView style={{ justifyContent: "center", flexDirection: "row" }}>
-            <MoveDisambiguationModal />
-          </AbsoluteView>
-        ) : null}
         <SidebarContainer portrait={portrait} boardMeasurements={boardMeasurements}>
           <Sidebar
             style={[
