@@ -18,8 +18,7 @@ const PieceBankCard: SFC<Props> = ({ gameMaster, style }) => {
   const players = gameMaster.game.players;
   const pieceSize = 40;
   return (
-    <Card style={style}>
-      <Text cat="DisplayM">Piece Bank</Text>
+    <Card title={"Piece Bank"} style={style}>
       <PlayerBankContainer>
         {players.map((player) => {
           const pieces = orderedPieceBankPieces(gameMaster, player.name);

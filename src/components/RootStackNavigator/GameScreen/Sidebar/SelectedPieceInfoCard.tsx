@@ -15,10 +15,13 @@ const SelectedPieceInfoCard: SFC<Props> = ({ pieces, style }) => {
   return (
     <>
       {pieces.map((piece, index) => (
-        <Card key={index} style={style}>
-          <Text cat="DisplayM">{pieceDetails[piece.name].name} Selected</Text>
+        <Card
+          key={index}
+          title={pieceDetails[piece.name].name + " Selected"}
+          style={style}
+        >
           {piece.tokens.length > 0 && (
-            <Text cat="BodyL" style={{ marginTop: 12 }}>
+            <Text cat="BodyM" style={{ marginTop: 12 }}>
               Tokens
             </Text>
           )}
