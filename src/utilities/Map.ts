@@ -1,41 +1,46 @@
-import { clone } from "lodash";
+type dictionary<K extends string | number | symbol, V> = { [key in K]?: V };
 
 export class Map<K extends string | number | symbol, V> {
-  public dictionary: { [key in K]?: V };
+  private dictionary: dictionary<K, V>;
+  private cloneValue: (value?: V) => V | undefined;
+  private resetValue?: (valueToReset: V, targetValue: V) => void;
 
-  constructor(dictionary?: { [key in K]?: V }) {
-    this.dictionary = dictionary || {};
+  constructor({
+    dictionary = {},
+    cloneValue = (v?: V): V | undefined => v,
+    resetValue = undefined,
+  }: {
+    dictionary?: dictionary<K, V>;
+    cloneValue?: (value?: V) => V | undefined;
+    resetValue?: (valueToReset: V, targetValue: V) => void;
+  }) {
+    this.dictionary = dictionary;
+    this.cloneValue = cloneValue;
+    this.resetValue = resetValue;
   }
 
-  static fromKeyArrayWithValueGenerator<K extends string | number | symbol, V>({
+  static dictionaryFromKeyArrayAndValueGenerator<K extends string | number | symbol, V>({
     keys,
     valueGenerator,
   }: {
     keys: Array<K>;
     valueGenerator: (k: K) => V;
-  }): Map<K, V> {
-    return new Map<K, V>().pushAll(
-      keys.map((key) => ({ key, value: valueGenerator(key) }))
-    );
+  }): dictionary<K, V> {
+    const dictionary: dictionary<K, V> = {};
+    keys.forEach((key) => (dictionary[key] = valueGenerator(key)));
+    return dictionary;
   }
 
-  push({ key, value }: { key: K; value: V }): Map<K, V> {
-    return new Map<K, V>({ ...this.dictionary, [key]: value });
-  }
-
-  pushAll(pairs: Array<{ key: K; value: V }>): Map<K, V> {
-    const asDictionary = pairs.reduce(
-      (acc, pair) => ({
-        ...acc,
-        [pair.key]: pair.value,
-      }),
-      {}
-    );
-    return new Map<K, V>({ ...this.dictionary, ...asDictionary });
+  push(...kvPairs: [{ key: K; value?: V }]): void {
+    kvPairs.forEach(({ key, value }) => (this.dictionary[key] = value));
   }
 
   get(key: K): V | undefined {
     return this.dictionary[key];
+  }
+
+  remove(key: K): void {
+    delete this.dictionary[key];
   }
 
   keys(): K[] {
@@ -46,28 +51,30 @@ export class Map<K extends string | number | symbol, V> {
     return Object.values(this.dictionary) as V[];
   }
 
-  //TODO: generalise this method to handle dictionaries of types with clone methods.
   clone(): Map<K, V> {
-    return new Map(clone(this.dictionary));
+    return new Map<K, V>({
+      dictionary: Map.dictionaryFromKeyArrayAndValueGenerator({
+        keys: this.keys(),
+        valueGenerator: (k: K) => this.cloneValue(this.get(k)) as V,
+      }),
+      cloneValue: this.cloneValue,
+      resetValue: this.resetValue,
+    });
   }
 
-  resetTo(
-    { dictionary: target }: Map<K, V>,
-    resetValue = (x: V | undefined, y: V | undefined): void => {
-      x = y;
-    },
-    cloneValue = (x: V | undefined): V | undefined => x
-  ): void {
-    var self = this.dictionary; //eslint-disable-line
-    Object.keys(self).forEach((key) => {
-      if (target[key as K] === undefined) delete self[key as K];
-    });
-    Object.keys(target).forEach((key) => {
-      if (self[key as K] !== undefined) {
-        resetValue(self[key as K], target[key as K]);
-      } else {
-        self = { ...this, [key as K]: cloneValue(target[key as K]) };
-      }
-    });
+  resetTo(savePoint: Map<K, V>): void {
+    this.keys().forEach((key) => this.resetKey(key, savePoint));
+  }
+
+  private resetKey(key: K, savePoint: Map<K, V>): void {
+    const valueToReset = this.get(key);
+    const targetValue = savePoint.get(key);
+    if (!targetValue) {
+      this.remove(key);
+    } else if (valueToReset && this.resetValue) {
+      this.resetValue(valueToReset, targetValue);
+    } else {
+      this.push({ key, value: this.cloneValue(targetValue) });
+    }
   }
 }

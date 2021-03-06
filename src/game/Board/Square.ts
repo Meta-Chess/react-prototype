@@ -36,11 +36,11 @@ export class Square extends TokenOwner {
 
   resetTo(savePoint: Square): void {
     this.location = savePoint.location;
-    this.coordinates.rank = savePoint.coordinates.rank;
-    this.coordinates.file = savePoint.coordinates.file;
-    resetArrayTo({ from: this.whiteListedMarkers, to: savePoint.whiteListedMarkers });
+    //this.coordinates.rank = savePoint.coordinates.rank;
+    //this.coordinates.file = savePoint.coordinates.file;
+    //resetArrayTo({ from: this.whiteListedMarkers, to: savePoint.whiteListedMarkers });
     resetArrayTo({ from: this.tokens, to: savePoint.tokens });
-    this.adjacencies.resetTo(savePoint.adjacencies);
+    //this.adjacencies.resetTo(savePoint.adjacencies);
     resetArrayTo({ from: this.pieces, to: savePoint.pieces });
   }
 

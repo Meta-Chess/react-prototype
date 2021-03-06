@@ -13,17 +13,13 @@ import {
   Token,
 } from "game/types";
 import { LocationPrefix, SpecialLocation } from "./location";
-import { isPresent } from "utilities";
+import { isPresent, Map } from "utilities";
 import { CompactRules } from "game/rules/CompactRules";
 import { IdGenerator } from "utilities/IdGenerator";
 import { Move, PieceDelta } from "game/Move";
-import { clone } from "lodash";
+import { clone, cloneDeep } from "lodash";
 import { EventCenter } from "game/EventCenter";
 import { invisibilityToken } from "game/rules/constants";
-
-interface LocationMap {
-  [location: string]: Square;
-}
 
 interface PieceIdMap {
   [id: string]: Piece;
@@ -37,7 +33,12 @@ class Board extends TokenOwner {
   constructor(
     public interrupt: CompactRules,
     public events: EventCenter,
-    public squares: LocationMap = {},
+    public squares: Map<string, Square> = new Map<string, Square>({
+      cloneValue: (s): Square | undefined => s?.clone(),
+      resetValue: (squareToReset, targetSquare): void => {
+        squareToReset.resetTo(targetSquare);
+      },
+    }),
     public pieces: PieceIdMap = {},
     public tokens: Token[] = []
   ) {
@@ -46,13 +47,7 @@ class Board extends TokenOwner {
   }
 
   clone(): Board {
-    const squaresClone = Object.keys(this.squares).reduce(
-      (acc, key) => ({
-        ...acc,
-        [key]: this.squares[key].clone(),
-      }),
-      {}
-    );
+    const squaresClone = this.squares.clone();
     const piecesClone = Object.keys(this.pieces).reduce(
       (acc, id) => ({
         ...acc,
@@ -74,16 +69,7 @@ class Board extends TokenOwner {
     this.interrupt.resetTo(savePoint.interrupt);
     this.events.resetTo(savePoint.events);
     this.tokens = clone(savePoint.tokens);
-    Object.keys(this.squares).forEach((key) => {
-      if (savePoint.squares[key] === undefined) delete this.squares[key];
-    });
-    Object.keys(savePoint.squares).forEach((key) => {
-      if (this.squares[key] !== undefined) {
-        this.squares[key].resetTo(savePoint.squares[key]);
-      } else {
-        this.squares = { ...this.squares, [key]: savePoint.squares[key].clone() };
-      }
-    });
+    this.squares.resetTo(savePoint.squares);
 
     Object.keys(this.pieces).forEach((id) => {
       if (savePoint.pieces[id] === undefined) delete this.pieces[id];
@@ -145,15 +131,16 @@ class Board extends TokenOwner {
   }
 
   getSquares(includeGraveyards = false): Square[] {
+    const squares = this.squares.values();
     return includeGraveyards
-      ? Object.values(this.squares)
-      : Object.values(this.squares).filter(
+      ? squares
+      : squares.filter(
           (square) => square.location.charAt(0) !== LocationPrefix.graveyard
         );
   }
 
   addSquare({ location, square }: { location: string; square: Square }): void {
-    this.squares = { ...this.squares, [location]: square };
+    this.squares.push({ key: location, value: square });
   }
 
   addSquares(squares: { location: string; square: Square }[] | undefined): void {
@@ -176,8 +163,8 @@ class Board extends TokenOwner {
 
   addAdjacenciesByRule(rule: ((square: Square) => Adjacency[]) | undefined): void {
     if (!rule) return;
-    const locations = Object.keys(this.squares);
-    const squares = Object.values(this.squares);
+    const squares = this.getSquares();
+    const locations = squares.map((s) => s.location);
     squares.forEach((square) => {
       const desiredAdjacencies = rule(square);
       const newAdjacencies = desiredAdjacencies.filter((adjacency) =>
@@ -206,7 +193,7 @@ class Board extends TokenOwner {
   }
 
   addPiecesByRule(rule: (square: Square) => Piece[]): void {
-    const squares = Object.values(this.squares);
+    const squares = this.getSquares();
     squares.forEach((square) => {
       rule(square).forEach((piece) => {
         this.addPiece({ piece, square });
@@ -224,7 +211,7 @@ class Board extends TokenOwner {
   }
 
   rankAndFileBoundsWithFilter(filter: (s: Square) => boolean): RankAndFileBounds {
-    const squares = Object.values(this.squares).filter(filter);
+    const squares = this.squares.values().filter(filter);
     const ranks = squares.map((s) => s.coordinates.rank);
     const files = squares.map((s) => s.coordinates.file);
     return {
@@ -236,7 +223,7 @@ class Board extends TokenOwner {
   }
 
   firstSquareSatisfyingRule(condition: (s: Square) => boolean): Square | undefined {
-    return Object.values(this.squares).find(condition);
+    return this.getSquares().find(condition);
   }
 
   displace(delta: PieceDelta): void {
@@ -257,13 +244,15 @@ class Board extends TokenOwner {
     });
     move.captures?.forEach((capture) => {
       this.capturePieces(capture.pieceIds, capture.capturer);
-      this.events.notify({
-        name: "capture",
-        data: {
-          board: this,
-          square: this.squares[capture.at],
-        },
-      });
+      const square = this.squareAt(capture.at);
+      if (square)
+        this.events.notify({
+          name: "capture",
+          data: {
+            board: this,
+            square: square,
+          },
+        });
     });
   }
 
@@ -303,7 +292,7 @@ class Board extends TokenOwner {
   }
 
   squareAt(location?: string): Square | undefined {
-    return location ? this.squares[location] : undefined;
+    return location ? this.squares.get(location) : undefined;
   }
 
   go({ from, path }: { from: string; path: Direction[] }): Square[] {

@@ -35,7 +35,8 @@ export class Game {
   }
 
   resetTo(savePoint: Game): void {
-    this.interrupt.resetTo(savePoint.interrupt);
+    //this.interrupt.resetTo(savePoint.interrupt);
+    //TODO: reset event centre?
     this.board.resetTo(savePoint.board);
     for (let i = 0; i < savePoint.players.length; i++) {
       this.players[i].resetTo(savePoint.players[i]);
@@ -107,9 +108,9 @@ export class Game {
     this.board.getPieces().forEach((piece) => {
       piece.removeExpiredTokens(this.currentTurn);
     });
-    Object.values(this.board.squares).forEach((square) =>
-      square.removeExpiredTokens(this.currentTurn)
-    );
+    this.board
+      .getSquares()
+      .forEach((square) => square.removeExpiredTokens(this.currentTurn));
   }
 
   getPreviousAlivePlayer(currentPlayerIndex: number): Player | undefined {
