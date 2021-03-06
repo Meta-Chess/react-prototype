@@ -3,7 +3,7 @@ import { Clock } from "./Clock";
 import { EventCenter } from "./EventCenter";
 import { Player } from "./Player";
 import { Move } from "./Move";
-import { allPossiblePlayerNames, PlayerName } from "./types";
+import { allPossiblePlayerNames, PlayerName, TimestampMillis } from "./types";
 import { CompactRules } from "./rules";
 import { createPieceBank } from "./rules/utilities";
 
@@ -52,7 +52,6 @@ export class Game {
     const clock = time
       ? new Clock(allPossiblePlayerNames.slice(0, numberOfPlayers), time)
       : undefined;
-    clock?.setActivePlayers([PlayerName.White]);
 
     const events = new EventCenter({});
     const players = allPossiblePlayerNames
@@ -94,11 +93,14 @@ export class Game {
     this.removeExpiredTokens();
   }
 
-  nextTurn(): void {
+  nextTurn(clockInfo?: { asOf: TimestampMillis; startClocks: boolean }): void {
     const nextPlayerIndex = (this.currentPlayerIndex + 1) % this.players.length;
     if (nextPlayerIndex !== undefined) {
       this.currentPlayerIndex = nextPlayerIndex;
-      this.clock?.setActivePlayers([this.players[nextPlayerIndex].name]);
+      if (clockInfo && clockInfo.startClocks) {
+        const asOf = clockInfo.asOf;
+        this.clock?.setActivePlayers([this.players[nextPlayerIndex].name], asOf);
+      }
       this.currentTurn++;
     }
   }

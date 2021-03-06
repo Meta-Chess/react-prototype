@@ -23,8 +23,8 @@ const Timer: SFC<Props> = ({ style, playerName, hidden, alignment = "center" }) 
 
   useEffect(() => {
     if (timeRemaining && timeRemaining <= 0) {
-      timer?.stop();
-      gameMaster?.handleTimerFinish();
+      timer?.stop(Date.now());
+      gameMaster?.handlePossibleTimerFinish();
     }
   }, [timer, gameMaster, timeRemaining]);
 

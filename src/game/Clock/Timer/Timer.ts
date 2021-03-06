@@ -1,38 +1,37 @@
 import moment, { Moment } from "moment";
 import { formatMillis } from "utilities";
+import { TimestampMillis } from "game";
 
 export class Timer {
   private timer: number[];
-  private startTime: Moment;
-  private stopTime: Moment;
+  private startTime?: TimestampMillis = undefined;
+  private stopTime?: TimestampMillis = undefined;
   private running = false;
   private frozen = false;
 
   constructor(allowance: number) {
     this.timer = [allowance];
-    this.startTime = moment();
-    this.stopTime = moment();
   }
 
-  stop(): void {
-    if (this.running) {
-      this.stopTime = moment();
-      const interval = this.stopTime.diff(this.startTime);
+  stop(asOf: TimestampMillis): void {
+    if (this.running && this.startTime) {
+      this.stopTime = asOf;
+      const interval = this.stopTime - this.startTime;
       const allowance = this.timer[this.timer.length - 1];
       this.timer.push(allowance - interval);
       this.running = false;
     }
   }
 
-  start(): void {
+  start(asOf: TimestampMillis): void {
     if (!this.running && !this.frozen) {
-      this.startTime = moment();
+      this.startTime = asOf;
       this.running = true;
     }
   }
 
-  freeze(): void {
-    this.stop();
+  freeze(asOf: TimestampMillis): void {
+    this.stop(asOf);
     this.frozen = true;
   }
 
@@ -45,21 +44,38 @@ export class Timer {
     return this.timer[this.timer.length - 1];
   }
 
-  getStartTime(): Moment {
+  getStopTime(): TimestampMillis | undefined {
+    return this.stopTime;
+  }
+
+  getStartTime(): TimestampMillis | undefined {
     return this.startTime;
   }
 
-  getStopTime(): Moment {
-    return this.stopTime;
+  updateStopTime(updateTo: TimestampMillis): void {
+    if (this.stopTime) {
+      const adjustment = updateTo - this.stopTime;
+      this.stopTime = updateTo;
+      this.timer[this.timer.length - 1] -= adjustment;
+    }
+  }
+
+  updateStartTime(updateTo: TimestampMillis): void {
+    if (this.startTime) {
+      const adjustment = updateTo - this.startTime;
+      this.startTime = updateTo;
+      if (!this.isRunning()) this.timer[this.timer.length - 1] += adjustment;
+    }
   }
 
   setAllowance(adjustedTime: number): void {
     this.timer[this.timer.length - 1] = adjustedTime;
   }
 
-  getTimeRemaining(): number {
-    return this.running
-      ? this.getAllowance() - moment().diff(this.getStartTime())
+  getTimeRemaining(asOf?: TimestampMillis): number {
+    asOf = asOf || Date.now();
+    return this.running && this.startTime
+      ? this.getAllowance() - (asOf - this.startTime)
       : this.getAllowance();
   }
 

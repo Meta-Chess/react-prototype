@@ -53,11 +53,26 @@ export class OnlineGameMaster extends GameMaster {
       gameClient
     );
 
-    gameClient.setOnMove((move: Move) => {
-      onlineGameMaster.doMove({ move, unselect: false, received: true });
-      onlineGameMaster.calculateAllowableMovesForSelectedPieces();
-      if (onlineGameMaster.gameOver) onlineGameMaster.disconnect();
-      onlineGameMaster.render();
+    gameClient.setListeners({
+      onMove: (move: Move) => {
+        onlineGameMaster.doMove({ move, unselect: false, received: true });
+        onlineGameMaster.calculateAllowableMovesForSelectedPieces();
+        if (onlineGameMaster.gameOver) onlineGameMaster.disconnect();
+        onlineGameMaster.render();
+      },
+      onMoveAcknowledged: (move: Move) => {
+        if (move.timestamp) {
+          onlineGameMaster.game.clock?.updateStopTime(move.timestamp, move.playerName);
+          if (move.nextPlayerName) {
+            onlineGameMaster.game.clock?.updateStartTime(
+              move.timestamp,
+              move.nextPlayerName
+            );
+          }
+          onlineGameMaster.handlePossibleTimerFinish();
+          onlineGameMaster.render();
+        }
+      },
     });
 
     return onlineGameMaster;
@@ -71,9 +86,10 @@ export class OnlineGameMaster extends GameMaster {
     move?: Move;
     unselect?: boolean;
     received?: boolean;
-  }): void {
-    if (move && !received) this.sendMove(move);
+  } = {}): void {
     super.doMove({ move, unselect });
+    if (move && !received)
+      this.sendMove({ ...move, nextPlayerName: this.game.getCurrentPlayerName() });
     if (this.gameOver) this.disconnect();
   }
 

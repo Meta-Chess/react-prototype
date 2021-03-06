@@ -5,7 +5,7 @@ import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { CompactRules, RuleName } from "./rules";
 import { FutureVariantName } from "./variants";
-import { uniqWith } from "lodash";
+import { uniqWith, uniq } from "lodash";
 import { Move, movesAreEqual } from "game/Move";
 import { SquareInfo, SquaresInfo } from "game/SquaresInfo";
 import { FormatName } from "game/formats";
@@ -156,7 +156,7 @@ export class GameMaster {
     });
   }
 
-  handleTimerFinish(): void {
+  handlePossibleTimerFinish(): void {
     const clock = this.game.clock;
     if (clock) {
       this.game
@@ -228,7 +228,14 @@ export class GameMaster {
       if (unselect) this.unselectAllPieces();
     }
     this.moveHistory.push(move);
-    this.game.nextTurn();
+    const everyoneHasMoved =
+      uniq(this.moveHistory.map((m) => m?.playerName)).length ===
+      this.game.players.length;
+    console.log(everyoneHasMoved);
+    this.game.nextTurn({
+      asOf: move?.timestamp || Date.now(),
+      startClocks: everyoneHasMoved,
+    });
     this.startOfTurn();
   }
 
@@ -344,7 +351,7 @@ export class GameMaster {
   }
 
   endGame(): void {
-    this.game.clock?.stop();
+    this.game.clock?.stop(Date.now());
     this.gameOver = true;
   }
 
