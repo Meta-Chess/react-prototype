@@ -204,9 +204,9 @@ describe("with crazyhouse", () => {
 
   it("pawns can not capture a piece from the piece bank in passing.", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: false }, ["crazyhouse"])
-      )
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: false }, ["crazyhouse"]),
+      })
     );
 
     gameMaster.onPress(toLocation({ rank: 1, file: 7 }));
