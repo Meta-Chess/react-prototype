@@ -21,6 +21,8 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
   const { gameMaster } = useContext(GameContext);
   if (gameMaster === undefined) return null;
   const ruleNames = gameMaster.getRuleNames();
+  const assignedPlayer = gameMaster.assignedPlayer;
+  const isYou = assignedPlayer === player.name;
 
   return (
     <Container active={player.name === currentPlayerName}>
@@ -33,7 +35,18 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
           style={{ marginBottom: 4 }}
         />
         <View style={{ marginLeft: 8 }}>
-          <Text cat={"BodyM"}>{name}</Text>
+          <Row style={{ alignItems: "baseline" }}>
+            <Text cat={"BodyM"}>{name}</Text>
+            {isYou && (
+              <Text
+                cat={"BodyS"}
+                color={Colors.TEXT.LIGHT_SECONDARY.toString()}
+                style={{ marginLeft: 8 }}
+              >
+                {"(You)"}
+              </Text>
+            )}
+          </Row>
           <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT_SECONDARY.toString()}>
             {rating}
           </Text>
@@ -58,5 +71,5 @@ const Container = styled(Row)<{ active: boolean }>`
   padding-vertical: 8px;
   padding-horizontal: 16px;
   ${({ active }): string =>
-    active ? `background-color: ${Colors.WHITE.fade(0.95).toString()};` : ""}
+    active ? `background-color: ${Colors.WHITE.fade(0.92).toString()};` : ""}
 `;

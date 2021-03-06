@@ -6,9 +6,9 @@ import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGam
 describe("With empty center", () => {
   it("center pawns only have one allowable move on a standard board", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: false }, ["emptyCenter"])
-      )
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: false }, ["emptyCenter"]),
+      })
     );
 
     // White center pawns
@@ -38,9 +38,12 @@ describe("With empty center", () => {
 
   it("center pawn has no allowable move on a hex board", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: false }, ["emptyCenter", "hex"])
-      )
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: false }, [
+          "emptyCenter",
+          "hex",
+        ]),
+      })
     );
 
     // White center pawn
@@ -54,9 +57,12 @@ describe("With empty center", () => {
 
   it("center pawns only have one allowable move on a toroidal board", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: false }, ["emptyCenter", "toroidal"])
-      )
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: false }, [
+          "emptyCenter",
+          "toroidal",
+        ]),
+      })
     );
 
     // White center pawns
@@ -106,9 +112,9 @@ describe("With empty center", () => {
 
   it("bishops can move through, but not on, the center on a standard board", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: false }, ["emptyCenter"])
-      )
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: false }, ["emptyCenter"]),
+      })
     );
 
     const board = gameMaster.game.board;

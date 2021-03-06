@@ -1,13 +1,15 @@
-import React, { useContext } from "react";
-import { View } from "react-native";
+import React, { useContext, useMemo } from "react";
+import { View, Animated } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
-import { objectMatches, range } from "utilities";
+import { objectMatches, range, wrapToCylinder } from "utilities";
 import { GameContext, SquareShape, TokenName } from "game";
 import { Square } from "./Square";
 import { BoardProps } from "components/shared/Board/Board";
 import { Styles } from "primitives/Styles";
 import { BoardMeasurements } from "components/shared";
+import { AbsoluteView } from "ui";
+import { useCylinderRotation } from "components/shared/Board/useCylinderRotation";
 
 const SquareBoard: SFC<BoardProps> = ({
   backboard = true,
@@ -15,38 +17,64 @@ const SquareBoard: SFC<BoardProps> = ({
   flipBoard = false,
 }) => {
   const { gameMaster } = useContext(GameContext);
+  const {
+    rotationMarginLeft,
+    rotationMarginBottom,
+    verticalRotationAllowed,
+    horizontalRotationAllowed,
+  } = useCylinderRotation(measurements);
   const game = gameMaster?.game;
-  if (!game) return null;
 
   const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
-  const fileCoordinates = range(minFile, maxFile - minFile + 1);
-  const rankCoordinates = range(minRank, maxRank - minFile + 1);
+  const numberOfFiles = useMemo(() => maxFile - minFile + 1, [minFile, maxFile]);
+  const numberOfRanks = useMemo(() => maxRank - minRank + 1, [minRank, maxRank]);
+  const fileCoordinates = useMemo(
+    () => range(minFile, horizontalRotationAllowed ? 2 * numberOfFiles : numberOfFiles),
+    [minFile, numberOfFiles, horizontalRotationAllowed]
+  );
+  const rankCoordinates = useMemo(
+    () => range(minRank, verticalRotationAllowed ? 2 * numberOfRanks : numberOfRanks),
+    [minRank, numberOfRanks, verticalRotationAllowed]
+  );
+
+  if (!game) return null;
+
+  const horizontalWrap = wrapToCylinder(minFile, maxFile);
+  const verticalWrap = wrapToCylinder(minRank, maxRank);
 
   return (
-    <BoardContainer
-      measurements={measurements}
-      backboard={backboard}
-      style={{ flexDirection: flipBoard ? "row-reverse" : "row" }}
-    >
-      {fileCoordinates.map((file) => (
-        <ColumnContainer flipBoard={flipBoard} key={file}>
-          {rankCoordinates.map((rank) => (
-            <Square
-              size={measurements.squareSize}
-              shape={SquareShape.Square}
-              square={game.board.firstSquareSatisfyingRule(
-                (square) =>
-                  objectMatches({
-                    rank,
-                    file,
-                  })(square.coordinates) &&
-                  !square.hasTokenWithName(TokenName.InvisibilityToken)
-              )}
-              key={JSON.stringify([rank, file])}
-            />
+    <BoardContainer measurements={measurements} backboard={backboard}>
+      <AbsoluteView
+        style={{ overflow: "hidden", margin: measurements.boardPaddingHorizontal }}
+      >
+        <Animated.View
+          style={{
+            marginLeft: rotationMarginLeft,
+            marginBottom: rotationMarginBottom,
+            flexDirection: flipBoard ? "row-reverse" : "row",
+          }}
+        >
+          {fileCoordinates.map((file) => (
+            <ColumnContainer flipBoard={flipBoard} key={file}>
+              {rankCoordinates.map((rank) => (
+                <Square
+                  size={measurements.squareSize}
+                  shape={SquareShape.Square}
+                  square={game.board.firstSquareSatisfyingRule(
+                    (square) =>
+                      objectMatches({
+                        rank: verticalWrap(rank),
+                        file: horizontalWrap(file),
+                      })(square.coordinates) &&
+                      !square.hasTokenWithName(TokenName.InvisibilityToken)
+                  )}
+                  key={JSON.stringify([rank, file])}
+                />
+              ))}
+            </ColumnContainer>
           ))}
-        </ColumnContainer>
-      ))}
+        </Animated.View>
+      </AbsoluteView>
     </BoardContainer>
   );
 };

@@ -1,6 +1,6 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, PlayerName } from "./types";
+import { GameOptions, PlayerAssignment, PlayerName } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { CompactRules, RuleName } from "./rules";
@@ -33,6 +33,7 @@ export class GameMaster {
     public game: Game,
     public interrupt: CompactRules, // This should probably be private
     public gameOptions: GameOptions,
+    public assignedPlayer: PlayerAssignment = "all",
     private renderer?: Renderer,
     private evaluateEndGameConditions = true
   ) {
@@ -46,17 +47,22 @@ export class GameMaster {
     this.startOfTurn();
   }
 
-  static processConstructorInputs(
-    gameOptions?: Partial<GameOptions>,
-    renderer?: Renderer
-  ): ConstructorParameters<typeof GameMaster> {
+  static processConstructorInputs({
+    gameOptions = {},
+    assignedPlayer = "all",
+    renderer,
+  }: {
+    gameOptions?: Partial<GameOptions>;
+    assignedPlayer?: PlayerAssignment;
+    renderer?: Renderer;
+  } = {}): ConstructorParameters<typeof GameMaster> {
     const {
       time,
       checkEnabled,
       format = "variantComposition",
       baseVariants = [],
       numberOfPlayers = 2,
-    } = gameOptions || {};
+    } = gameOptions;
 
     const completeGameOptions: GameOptions = {
       ...gameOptions,
@@ -74,7 +80,7 @@ export class GameMaster {
       game: Game.createGame(interrupt, time, numberOfPlayers),
     }).game;
 
-    return [game, interrupt, completeGameOptions, renderer];
+    return [game, interrupt, completeGameOptions, assignedPlayer, renderer];
   }
 
   clone({
@@ -88,6 +94,7 @@ export class GameMaster {
       this.game.clone(),
       this.interrupt,
       this.gameOptions,
+      this.assignedPlayer,
       renderer || new Renderer(),
       evaluateEndGameConditions
     );
@@ -124,15 +131,22 @@ export class GameMaster {
           this.squaresInfo.add(pathSquare, SquareInfo.LastMovePath)
         );
     });
+    const currentPlayerName = this.game.players[this.game.currentPlayerIndex].name;
     this.selectedPieces.forEach((piece) => {
-      if (piece.owner !== this.game.players[this.game.currentPlayerIndex].name) {
+      if (
+        piece.owner !== currentPlayerName ||
+        (this.assignedPlayer !== "all" && this.assignedPlayer !== piece.owner)
+      ) {
         this.squaresInfo.add(piece.location, SquareInfo.SelectedOtherPlayerPiece);
       } else {
         this.squaresInfo.add(piece.location, SquareInfo.SelectedCurrentPlayerPiece);
       }
     });
     this.allowableMoves.forEach((move) => {
-      if (move.playerName !== this.game.players[this.game.currentPlayerIndex].name) {
+      if (
+        move.playerName !== currentPlayerName ||
+        (this.assignedPlayer !== "all" && this.assignedPlayer !== currentPlayerName)
+      ) {
         this.squaresInfo.add(move.location, SquareInfo.PossibleOtherPlayerMoveEndPoint);
       } else if (!doesCapture(move)) {
         this.squaresInfo.add(move.location, SquareInfo.PossibleMovePassiveEndPoint);
@@ -177,15 +191,19 @@ export class GameMaster {
     const isSelectedPieceOwnersTurn =
       this.game.players[this.game.currentPlayerIndex].name ===
       this.selectedPieces[0]?.owner;
+    const canMoveSelectedPiece =
+      isSelectedPieceOwnersTurn &&
+      (this.assignedPlayer === "all" ||
+        this.assignedPlayer === this.selectedPieces[0]?.owner);
 
-    if (moves.length === 1 && isSelectedPieceOwnersTurn) {
+    if (moves.length === 1 && canMoveSelectedPiece) {
       this.doMove({ move: moves[0] });
       if (!this.game.players[this.game.currentPlayerIndex].alive) {
         this.doMove();
       }
       this.render();
       return moves[0];
-    } else if (moves.length > 1 && isSelectedPieceOwnersTurn) {
+    } else if (moves.length > 1 && canMoveSelectedPiece) {
       this.allowableMoves = moves;
       this.locationSelected = true;
     } else if (

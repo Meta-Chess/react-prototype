@@ -9,9 +9,9 @@ const mockCheckConsequence = jest.fn();
 describe("With three check enabled", () => {
   it("checking three times should end the game", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true }, ["threeCheck"])
-      )
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: true }, ["threeCheck"]),
+      })
     );
     const board = gameMaster.game.board;
 

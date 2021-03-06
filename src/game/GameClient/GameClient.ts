@@ -1,4 +1,4 @@
-import { GameOptions } from "game/types";
+import { GameOptions, PlayerAssignment } from "game/types";
 import { Path } from "game/Pather";
 import { sleep } from "utilities/sleep";
 import { Move, PieceDelta } from "game/Move";
@@ -9,6 +9,7 @@ class GameClient {
   private onMove: ((move: Move) => void) | undefined;
   private messageListener: ((event: MessageEvent) => void) | undefined;
   public moves: Move[] = [];
+  public assignedPlayer: PlayerAssignment = "spectator";
 
   constructor(url: string, private roomId?: string, public gameOptions?: GameOptions) {
     const socket = new WebSocket(url);
@@ -43,6 +44,9 @@ class GameClient {
     const setGameOptions = (gameOptions: GameOptions): void => {
       this.gameOptions = gameOptions;
     };
+    const setAssignedPlayer = (assignedPlayer: PlayerAssignment): void => {
+      this.assignedPlayer = assignedPlayer;
+    };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const setMoves = (moves: any[]): void => {
@@ -58,6 +62,7 @@ class GameClient {
           setRoomId(data.roomId);
           setGameOptions(data.gameOptions);
           setMoves(data.moves);
+          setAssignedPlayer(data.assignedPlayer);
           setRoomJoined(true);
           break;
         case "move":

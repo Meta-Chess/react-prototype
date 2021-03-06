@@ -36,6 +36,8 @@ export enum PlayerName {
 
 export const allPossiblePlayerNames = getValues<PlayerName>(PlayerName);
 
+export type PlayerAssignment = PlayerName | "spectator" | "all";
+
 export enum PieceName {
   Pawn,
   Rook,
@@ -116,6 +118,7 @@ export enum SquareShape {
 
 export interface GameOptions {
   numberOfPlayers: number;
+  players?: PlayerName[];
   variant?: VariantName;
   customTitle?: string;
   time?: number | undefined;

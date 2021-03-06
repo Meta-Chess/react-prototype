@@ -9,9 +9,12 @@ const mockCaptureConsequence = jest.fn();
 describe("With atomic enabled", () => {
   it("pieces should blow up on capture", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: false }, ["atomic", "cylindrical"])
-      )
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: false }, [
+          "atomic",
+          "cylindrical",
+        ]),
+      })
     );
     const board = gameMaster.game.board;
 

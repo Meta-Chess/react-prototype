@@ -7,9 +7,9 @@ import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGam
 describe("With fatigue enabled", () => {
   it("pieces shouldn't be able to move two turns in a row", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true }, ["fatigue"])
-      )
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: true }, ["fatigue"]),
+      })
     );
     const board = gameMaster.game.board;
 

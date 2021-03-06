@@ -3,7 +3,7 @@ import { Platform, useWindowDimensions, View } from "react-native";
 import { Board, BoardMeasurements, calculateBoardMeasurements } from "components/shared";
 import { Sidebar } from "./Sidebar";
 import { SquareShape, TokenName, GameContext } from "game";
-import { useFlipDelay } from "./useFlipDelay";
+import { useFlipBoard } from "./useFlipBoard";
 import { AbsoluteView, Spinner } from "ui";
 import styled from "styled-components/native";
 import { HelpMenu, ScreenContainer } from "components/shared";
@@ -29,7 +29,7 @@ export const GameScreenContent: FC = () => {
         : [],
     [moveDisambiguationRequired, allowableMoves]
   );
-  const { flipBoard } = useFlipDelay(gameMaster?.game?.currentPlayerIndex);
+  const { flipBoard } = useFlipBoard();
   if (!gameMaster)
     return (
       <StyledContainer>

@@ -7,9 +7,9 @@ import { PlayerName } from "game/types";
 describe("With pathetic king", () => {
   it("fools mate with queen alone", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs(
-        calculateGameOptions({ checkEnabled: true }, ["patheticKing"])
-      )
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: true }, ["patheticKing"]),
+      })
     );
     const board = gameMaster.game.board;
 
