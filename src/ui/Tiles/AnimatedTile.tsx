@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import { AnimatedTileProps } from "./TileProps";
 import { SquareShape } from "game";
-import { SquareTileAnimated } from "./SquareTileAnimated";
-import { HexTileAnimated } from "./HexTileAnimated";
+import { SquareTileAnimated } from "./Square";
+import { HexTileAnimated } from "./Hex";
 
 const TILES: { [shape in SquareShape]: FC<AnimatedTileProps> } = {
   [SquareShape.Square]: SquareTileAnimated,

@@ -5,6 +5,7 @@ import { Colors } from "../Colors";
 import { Bishop, King, Knight, Pawn, Queen, Rook } from "./sprites";
 import { SFC } from "primitives/SFC";
 import { Animated } from "react-native";
+import { AnimatedGroup } from "primitives";
 
 interface Props {
   type: PieceName;
@@ -17,8 +18,6 @@ interface Props {
   animatedColor?: Animated.AnimatedInterpolation | undefined;
   animatedOutlineColor?: Animated.AnimatedInterpolation | undefined;
 }
-
-const AnimatedGroup = Animated.createAnimatedComponent(G);
 
 const PieceImage: SFC<Props> = ({
   type,

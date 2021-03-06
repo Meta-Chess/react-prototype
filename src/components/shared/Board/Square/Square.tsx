@@ -11,6 +11,7 @@ import { Highlight } from "./Highlight";
 import { useModals, Tile } from "ui";
 import { Token } from "game/types";
 import { getDisplayPiecesAndTokens } from "./getDisplayPiecesAndTokens";
+import { hexSvgScaleFactor } from "primitives/Tiles";
 
 interface Props {
   square: Square | undefined;
@@ -41,7 +42,8 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
 
   const pieceGridDimension =
     Math.ceil(Math.sqrt(piecesOrPieceAnimationsOnSquare.length)) || 1;
-  const pieceScaleFactor = shape === SquareShape.Hex ? 0.9 : 1;
+  const hexGridScaleFactor = 1 + (hexSvgScaleFactor - 1) / 3; //further scaling for hex svg overflowing hex tile
+  const pieceScaleFactor = shape === SquareShape.Hex ? 0.9 * hexGridScaleFactor : 1;
   const pieceSize = (pieceScaleFactor * size) / pieceGridDimension;
   // TODO: For chess plus add and use shadowPieceSize
 
