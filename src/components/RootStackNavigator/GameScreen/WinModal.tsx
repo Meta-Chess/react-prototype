@@ -12,7 +12,7 @@ export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
   const navigation = useNavigation();
 
   return (
-    <Container style={{ backgroundColor: Colors.DARK.toString() }}>
+    <Container>
       <TitleRow>
         {gameMaster?.game.players
           .filter((player) => player.alive)
@@ -29,7 +29,7 @@ export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
         </Text>
       </TitleRow>
       <ScrollView
-        style={{ flex: 1, maxHeight: 140, backgroundColor: Colors.DARKER.toString() }}
+        style={{ flex: 1, maxHeight: 140 }}
         contentContainerStyle={{
           paddingTop: 8,
           paddingHorizontal: 16,
@@ -72,6 +72,7 @@ export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
 };
 
 const Container = styled(View)`
+  background-color: ${Colors.DARK.toString()};
   width: 350px;
   flex-direction: column;
   ${Styles.BOX_SHADOW}
