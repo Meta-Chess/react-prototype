@@ -1,17 +1,18 @@
 import React, { useContext } from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Colors, PieceImage, SFC, Text } from "primitives";
 import { GameContext, PieceName, PlayerName } from "game";
 import styled from "styled-components/native";
-import { ButtonTertiaryLight, Card, Row } from "ui";
+import { ButtonTertiaryLight, Row } from "ui";
 import { Screens, useNavigation } from "navigation";
+import { Styles } from "primitives/Styles";
 
 export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
   const { gameMaster } = useContext(GameContext);
   const navigation = useNavigation();
 
   return (
-    <Container>
+    <Container style={{ backgroundColor: Colors.DARK.toString() }}>
       <TitleRow>
         {gameMaster?.game.players
           .filter((player) => player.alive)
@@ -28,7 +29,7 @@ export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
         </Text>
       </TitleRow>
       <ScrollView
-        style={{ flex: 1, maxHeight: 140 }}
+        style={{ flex: 1, maxHeight: 140, backgroundColor: Colors.DARKER.toString() }}
         contentContainerStyle={{
           paddingTop: 8,
           paddingHorizontal: 16,
@@ -70,15 +71,17 @@ export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
   );
 };
 
-const Container = styled(Card)`
+const Container = styled(View)`
   width: 350px;
-  padding: 0px;
+  flex-direction: column;
+  ${Styles.BOX_SHADOW}
 `;
 
 const TitleRow = styled(Row)`
   background-color: ${Colors.DARKISH.toString()};
   justify-content: center;
   align-items: center;
+  padding-vertical: 4px;
 `;
 
 const ButtonRow = styled(Row)`
