@@ -12,19 +12,35 @@ interface animatedData {
 interface Props {
   piece?: PieceClass;
   size: number;
+  color?: string;
+  outlineColor?: string;
   glowColor?: string;
   animatedData?: animatedData;
   onPress?: () => void;
 }
 
-const Piece: FC<Props> = ({ piece, size, glowColor, animatedData, onPress }) => {
+const Piece: FC<Props> = ({
+  piece,
+  size,
+  color,
+  outlineColor,
+  glowColor,
+  animatedData,
+  onPress,
+}) => {
   const { gameMaster } = useContext(GameContext);
   if (piece === undefined) return null;
   const animated = animatedData !== undefined;
+  const chosenColor = color
+    ? color
+    : animated
+    ? undefined
+    : Colors.PLAYER[piece.owner].string();
   const PieceImageComponent = (
     <PieceImage
       type={piece.name}
-      color={animated ? undefined : Colors.PLAYER[piece.owner].string()}
+      color={chosenColor}
+      outlineColor={outlineColor}
       size={size}
       rotatePiece={gameMaster?.overTheBoard && piece.owner === PlayerName.Black}
       opacity={

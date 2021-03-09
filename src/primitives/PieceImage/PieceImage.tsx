@@ -10,6 +10,7 @@ import { AnimatedGroup } from "primitives";
 interface Props {
   type: PieceName;
   color?: string | undefined;
+  outlineColor?: string | undefined;
   size: number;
   opacity?: number;
   rotatePiece?: boolean;
@@ -22,6 +23,7 @@ interface Props {
 const PieceImage: SFC<Props> = ({
   type,
   color,
+  outlineColor,
   size,
   opacity,
   rotatePiece,
@@ -32,7 +34,7 @@ const PieceImage: SFC<Props> = ({
 }) => {
   if (size < 0) return null;
   const primary = color;
-  const secondary = Colors.DARKEST.string();
+  const secondary = outlineColor ? outlineColor : Colors.DARKEST.string();
   const primaryAnimated = animatedColor;
   const secondaryAnimated = animatedOutlineColor;
   const alphaModifier = opacity === undefined ? 1 : opacity;
