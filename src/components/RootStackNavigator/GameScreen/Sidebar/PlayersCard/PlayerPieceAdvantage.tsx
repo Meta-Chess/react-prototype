@@ -58,7 +58,7 @@ const PlayerPieceAdvantage: SFC<Props> = ({ player, style }) => {
                 <View key={piece.id} style={{ width: PIECE_OVERLAP_SPACING }}>
                   <Piece
                     piece={piece}
-                    color={Colors.DARKER.toString()}
+                    color={Colors.PLAYER[piece.owner].string()}
                     outlineColor={"transparent"}
                     size={PIECE_SIZE}
                   />
