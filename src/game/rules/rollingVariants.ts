@@ -5,7 +5,7 @@ import { range } from "lodash";
 import { VariantLabelInfo } from "game/types";
 
 const MAX_ROLLING_VARIANTS = 2; // TODO: Make this a rule parameter - note this is used in `findConflicts`
-const NUMBER_OF_TURNS = 4;
+export const NUMBER_OF_TURNS = 4; // exporting for tag description
 const VARIANTS_ROLLING_IN = 1;
 const VARIANTS_ROLLING_OUT = 1;
 const STARTING_ROLLING_VARIANTS = 0;
