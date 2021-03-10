@@ -18,6 +18,7 @@ export const BaseButton: SFC<Props> = ({
   backgroundColor = Colors.MCHESS_ORANGE,
   textColor = Colors.TEXT.DARK,
   borderColor = Colors.MCHESS_ORANGE,
+  children,
   ...rest
 }) => {
   const [ref, hovered] = useHover();
@@ -31,9 +32,13 @@ export const BaseButton: SFC<Props> = ({
       accessibilityRole={"button"}
       {...rest}
     >
-      <Text cat="DisplayXS" color={textColor.fade(fade).toString()}>
-        {text}
-      </Text>
+      {children ? (
+        children
+      ) : (
+        <Text cat="DisplayXS" color={textColor.fade(fade).toString()}>
+          {text}
+        </Text>
+      )}
     </TouchableContainer>
   );
 };

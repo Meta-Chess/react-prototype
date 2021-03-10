@@ -12,6 +12,12 @@ import { VariantCards } from "./VariantCards";
 import styled from "styled-components/native";
 import { PlayersCard } from "./PlayersCard";
 import { Styles } from "primitives/Styles";
+import {
+  BackHistoryButton,
+  ConcedeButton,
+  DrawButton,
+  ForwardHistoryButton,
+} from "./ControlButtons";
 
 const Sidebar: SFC = ({ style }) => {
   const modals = useModals();
@@ -31,6 +37,7 @@ const Sidebar: SFC = ({ style }) => {
   }
 
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
+  const isGameOver = gameMaster?.gameOver;
 
   return (
     <Container style={style}>
@@ -58,9 +65,32 @@ const Sidebar: SFC = ({ style }) => {
         </TouchableOpacity>
       </ScrollView>
       <HorizontalSeparator color={Colors.DARKISH.fade(0.55).toString()} />
-      <ButtonContainer>
-        <Button text="Finish Game" onPress={goBackOrToStartScreen} />
-      </ButtonContainer>
+      <FixedContainer>
+        <HalfContainer>
+          <BackHistoryButton onPress={goBackOrToStartScreen} style={{ flex: 1 }} />
+          <ForwardHistoryButton
+            onPress={goBackOrToStartScreen}
+            style={{ flex: 1, marginLeft: 12 }}
+          />
+        </HalfContainer>
+        <HalfContainer style={{ marginLeft: 12 }}>
+          {isGameOver ? (
+            <Button
+              text="Finish Game"
+              style={{ flex: 1 }}
+              onPress={goBackOrToStartScreen}
+            />
+          ) : (
+            <>
+              <DrawButton onPress={goBackOrToStartScreen} style={{ flex: 1 }} />
+              <ConcedeButton
+                onPress={goBackOrToStartScreen}
+                style={{ flex: 1, marginLeft: 12 }}
+              />
+            </>
+          )}
+        </HalfContainer>
+      </FixedContainer>
     </Container>
   );
 };
@@ -73,8 +103,14 @@ const Container = styled(View)`
   ${Styles.BOX_SHADOW}
 `;
 
-const ButtonContainer = styled(View)`
+const FixedContainer = styled(View)`
   margin: 12px;
+  flex-direction: row;
+`;
+
+const HalfContainer = styled(View)`
+  flex: 1;
+  flex-direction: row;
 `;
 
 export { Sidebar };

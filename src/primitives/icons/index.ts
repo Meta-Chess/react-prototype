@@ -8,3 +8,7 @@ export * from "./Formats";
 export * from "./HelpIcon";
 export * from "./PlusIcon";
 export * from "./MinusIcon";
+export * from "./ArrowBack";
+export * from "./ArrowForward";
+export * from "./VoteDraw";
+export * from "./VoteConcede";
