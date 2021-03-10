@@ -6,6 +6,13 @@ import { LabelWithDetails, Row } from "ui";
 import { View } from "react-native";
 import { Text } from "primitives";
 import { WASD } from "./ActiveKeycaps";
+import { VariantLabelInfo } from "game/types";
+import Color from "color";
+
+const VARIANT_LABEL_COLORS: { [key in VariantLabelInfo]: Color } = {
+  [VariantLabelInfo.VariantLeaving]: Colors.HIGHLIGHT.ERROR,
+  [VariantLabelInfo.NewVariant]: Colors.HIGHLIGHT.SUCCESS,
+};
 
 const VariantInfoCard: SFC = ({ style }) => {
   const { gameMaster } = useContext(GameContext);
@@ -31,11 +38,12 @@ const VariantInfoCard: SFC = ({ style }) => {
           key={format.title}
           color={Colors.MCHESS_ORANGE}
         />
-        {variants.map((variant) => (
+        {variants.map((variant, index) => (
           <LabelWithDetails
             label={variant.title}
             details={variant.shortDescription}
             key={variant.title}
+            color={VARIANT_LABEL_COLORS[gameMaster.formatVariantLabelColors[index]]}
           />
         ))}
         {noCheck && (

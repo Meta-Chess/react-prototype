@@ -1,6 +1,6 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, PlayerAssignment, PlayerName } from "./types";
+import { GameOptions, PlayerAssignment, PlayerName, VariantLabelInfo } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { CompactRules, RuleName } from "./rules";
@@ -17,6 +17,9 @@ export class GameMaster {
   public gameOver = false;
   public moveHistory: (Move | undefined)[] = [];
   public formatVariants: FutureVariantName[] = [];
+  public formatVariantLabelColors: {
+    [formatVariantsIndex: number]: VariantLabelInfo;
+  } = {};
   public deck: FutureVariantName[] | undefined;
 
   // TODO: Consider restructure to extract player interaction logic?

@@ -1,6 +1,8 @@
 import { Rule } from "./CompactRules";
 import { GameMaster } from "game";
 import { Player } from "game/Player/Player";
+import { range } from "lodash";
+import { VariantLabelInfo } from "game/types";
 
 const MAX_ROLLING_VARIANTS = 2; // TODO: Make this a rule parameter - note this is used in `findConflicts`
 const NUMBER_OF_TURNS = 4;
@@ -9,7 +11,6 @@ const VARIANTS_ROLLING_OUT = 1;
 const STARTING_ROLLING_VARIANTS = 0;
 
 // TODO: fatigue rolling remove tokens(?), rebuild event center when rolling
-
 export const rollingVariants: Rule = {
   title: "Rolling Variants",
   description:
@@ -19,6 +20,8 @@ export const rollingVariants: Rule = {
     const playerWithRollCounter = findRollCounter(gameMaster);
     const playerIndex = gameMaster.game.getIndexOfPlayer(playerWithRollCounter);
     const counterValue = playerWithRollCounter?.getRuleData("rollingVariantsCounter");
+    const atVariantLimit = gameMaster.formatVariants.length >= MAX_ROLLING_VARIANTS;
+    changeVariantLabelColors(gameMaster);
 
     if (
       playerWithRollCounter === undefined ||
@@ -31,8 +34,15 @@ export const rollingVariants: Rule = {
         rollingOffNumber: 0,
       });
       moveCounterToPreviousOrLastPlayer(gameMaster, NUMBER_OF_TURNS);
+    } else if (counterValue === 1 && gameMaster.game.currentPlayerIndex !== playerIndex) {
+      if (atVariantLimit) {
+        changeVariantLabelColors(
+          gameMaster,
+          VariantLabelInfo.VariantLeaving,
+          VARIANTS_ROLLING_OUT
+        );
+      }
     } else if (counterValue === 1 && gameMaster.game.currentPlayerIndex === playerIndex) {
-      const atVariantLimit = gameMaster.formatVariants.length >= MAX_ROLLING_VARIANTS;
       rollVariants({
         gameMaster,
         rollingInNumber: VARIANTS_ROLLING_IN,
@@ -73,6 +83,7 @@ function rollVariants({
       ...newVariants,
     ]);
     gameMaster.deck = [...gameMaster.deck?.slice(rollingInNumber), ...variantsRollingOff];
+    changeVariantLabelColors(gameMaster, VariantLabelInfo.NewVariant, rollingInNumber);
   }
 }
 
@@ -90,4 +101,30 @@ function moveCounterToPreviousOrLastPlayer(
     key: "rollingVariantsCounter",
     value: counterValue,
   });
+}
+
+function changeVariantLabelColors(
+  gameMaster: GameMaster,
+  changeType?: VariantLabelInfo,
+  numberOfVariants = 1
+): void {
+  if (changeType === undefined) {
+    gameMaster.formatVariantLabelColors = {};
+  } else {
+    const rollingOut = changeType === VariantLabelInfo.VariantLeaving;
+    const variantIndicies = rollingOut
+      ? range(0, numberOfVariants)
+      : range(
+          gameMaster.formatVariants.length - 1,
+          gameMaster.formatVariants.length - 1 - numberOfVariants,
+          -1
+        );
+
+    gameMaster.formatVariantLabelColors = Object.assign(
+      gameMaster.formatVariantLabelColors,
+      ...variantIndicies.map((n) => ({
+        [n]: changeType,
+      }))
+    );
+  }
 }
