@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Svg, Path, Polygon } from "react-native-svg";
+import { Svg, Path } from "react-native-svg";
 import { Colors } from "primitives/Colors";
 
 interface Props {
