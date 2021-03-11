@@ -11,7 +11,6 @@ import { SelectedPieceInfoCard } from "./SelectedPieceInfoCard";
 import { VariantCards } from "./VariantCards";
 import styled from "styled-components/native";
 import { PlayersCard } from "./PlayersCard";
-import { Styles } from "primitives/Styles";
 
 const Sidebar: SFC = ({ style }) => {
   const modals = useModals();
@@ -68,9 +67,6 @@ const Sidebar: SFC = ({ style }) => {
 const Container = styled(View)`
   justify-content: space-between;
   background-color: ${Colors.DARKER.toString()};
-  border-width: 1px;
-  border-color: ${Colors.DARKISH.toString()};
-  ${Styles.BOX_SHADOW}
 `;
 
 const ButtonContainer = styled(View)`

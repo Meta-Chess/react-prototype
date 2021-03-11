@@ -10,6 +10,7 @@ import { Styles } from "primitives/Styles";
 import { BoardMeasurements } from "components/shared";
 import { AbsoluteView } from "ui";
 import { useCylinderRotation } from "components/shared/Board/useCylinderRotation";
+import { SquareBackboard } from "./SquareBackboard";
 
 const SquareBoard: SFC<BoardProps> = ({
   backboard = true,
@@ -43,7 +44,8 @@ const SquareBoard: SFC<BoardProps> = ({
   const verticalWrap = wrapToCylinder(minRank, maxRank);
 
   return (
-    <BoardContainer measurements={measurements} backboard={backboard}>
+    <BoardContainer measurements={measurements}>
+      {backboard && <SquareBackboard />}
       <AbsoluteView
         style={{ overflow: "hidden", margin: measurements.boardPaddingHorizontal }}
       >
@@ -80,13 +82,9 @@ const SquareBoard: SFC<BoardProps> = ({
 };
 
 const BoardContainer = styled(View)<{
-  backboard: boolean;
   measurements: BoardMeasurements;
 }>`
   position: relative;
-  ${({ backboard }): string => (backboard ? Styles.BOX_SHADOW_STRONG : "")}
-  ${({ backboard }): string =>
-    backboard ? `background-color: ${Colors.DARK.toString()}` : ""}
   height: ${({ measurements }): number => measurements.height}px;
   width: ${({ measurements }): number => measurements.width}px;
   padding-horizontal: ${({ measurements }): number =>

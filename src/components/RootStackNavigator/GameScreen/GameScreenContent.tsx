@@ -11,6 +11,7 @@ import { WinModal } from "./WinModal";
 import { MoveDisambiguationModal } from "./MoveDisambiguationModal";
 import { getPromotionDisambiguationOpportunities } from "./getPromotionDisambiguationOpportunities";
 import { PromotionDisambiguationModal } from "./PromotionDisambiguationModal";
+import { SquareBackboard } from "components/shared/Board/SquareBackboard";
 
 export const GameScreenContent: FC = () => {
   const { height, width } = useWindowDimensions();
@@ -80,12 +81,8 @@ export const GameScreenContent: FC = () => {
           ) : null}
         </View>
         <SidebarContainer portrait={portrait} boardMeasurements={boardMeasurements}>
-          <Sidebar
-            style={[
-              portrait ? { marginHorizontal: 4 } : { marginVertical: 4 },
-              { flex: 1 },
-            ]}
-          />
+          <SquareBackboard />
+          <Sidebar style={{ flex: 1 }} />
         </SidebarContainer>
       </Container>
       <HelpMenu context={{ gameMaster }} />
@@ -120,6 +117,6 @@ const SidebarContainer = styled(View)<SidebarContainerProps>`
     portrait ? `width: ${boardMeasurements.width}px;` : ""}
   min-width: 280px;
   max-width: 450px;
-  padding: ${Platform.OS === "web" ? 0 : 8}px;
+  padding: ${Platform.OS === "web" ? 8 : 8}px;
   margin-left: ${({ portrait }): number => (portrait ? 0 : 16)}px;
 `;
