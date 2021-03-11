@@ -34,7 +34,11 @@ export const rollingVariants: Rule = {
         rollingOffNumber: 0,
       });
       moveCounterToPreviousOrLastPlayer(gameMaster, NUMBER_OF_TURNS);
-    } else if (counterValue === 1 && gameMaster.game.currentPlayerIndex !== playerIndex) {
+    } else if (
+      counterValue === 1 &&
+      gameMaster.game.currentPlayerIndex ===
+        gameMaster.game.getPreviousAlivePlayer(playerIndex)?.name
+    ) {
       if (atVariantLimit) {
         changeVariantLabelColors(
           gameMaster,
