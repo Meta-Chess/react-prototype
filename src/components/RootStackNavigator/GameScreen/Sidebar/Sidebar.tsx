@@ -67,9 +67,16 @@ const Sidebar: SFC = ({ style }) => {
       <HorizontalSeparator color={Colors.DARKISH.fade(0.55).toString()} />
       <FixedContainer>
         <HalfContainer>
-          <BackHistoryButton onPress={goBackOrToStartScreen} style={{ flex: 1 }} />
+          <BackHistoryButton
+            onPress={(): void => {
+              return;
+            }}
+            style={{ flex: 1 }}
+          />
           <ForwardHistoryButton
-            onPress={goBackOrToStartScreen}
+            onPress={(): void => {
+              return;
+            }}
             style={{ flex: 1, marginLeft: 12 }}
           />
         </HalfContainer>
@@ -82,7 +89,12 @@ const Sidebar: SFC = ({ style }) => {
             />
           ) : (
             <>
-              <DrawButton onPress={goBackOrToStartScreen} style={{ flex: 1 }} />
+              <DrawButton
+                onPress={(): void => {
+                  return;
+                }}
+                style={{ flex: 1 }}
+              />
               <ConcedeButton
                 onPress={goBackOrToStartScreen}
                 style={{ flex: 1, marginLeft: 12 }}
