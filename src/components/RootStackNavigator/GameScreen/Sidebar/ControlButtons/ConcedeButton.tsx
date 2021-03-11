@@ -10,7 +10,7 @@ interface Props {
 export const ConcedeButton: SFC<Props> = ({ onPress, style }) => {
   return (
     <Button text="" style={style} onPress={onPress}>
-      <VoteConcede color={Colors.BLACK.toString()} />
+      <VoteConcede color={Colors.DARKER.toString()} />
     </Button>
   );
 };

@@ -10,7 +10,7 @@ interface Props {
 export const DrawButton: SFC<Props> = ({ onPress, style }) => {
   return (
     <Button text="" style={style} onPress={onPress}>
-      <VoteDraw color={Colors.BLACK.toString()} />
+      <VoteDraw color={Colors.DARKER.toString()} />
     </Button>
   );
 };
