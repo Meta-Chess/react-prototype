@@ -20,11 +20,17 @@ export class OnlineGameMaster extends GameMaster {
   }
 
   async doMovesSlowly(moves: Move[]): Promise<void> {
+    const shouldEvaluateEndGameConditions = this.evaluateEndGameConditions;
+    this.evaluateEndGameConditions = false;
     for (const move of moves) {
+      this.render();
       await sleep(50);
       this.doMove({ move, unselect: true, received: true });
-      this.render();
+      this.timersAsOf = move.timestamp;
     }
+    this.timersAsOf = undefined;
+    this.evaluateEndGameConditions = shouldEvaluateEndGameConditions;
+    this.render();
   }
 
   static async connectNewGame(
@@ -53,11 +59,26 @@ export class OnlineGameMaster extends GameMaster {
       gameClient
     );
 
-    gameClient.setOnMove((move: Move) => {
-      onlineGameMaster.doMove({ move, unselect: false, received: true });
-      onlineGameMaster.calculateAllowableMovesForSelectedPieces();
-      if (onlineGameMaster.gameOver) onlineGameMaster.disconnect();
-      onlineGameMaster.render();
+    gameClient.setListeners({
+      onMove: (move: Move) => {
+        onlineGameMaster.doMove({ move, unselect: false, received: true });
+        onlineGameMaster.calculateAllowableMovesForSelectedPieces();
+        if (onlineGameMaster.gameOver) onlineGameMaster.disconnect();
+        onlineGameMaster.render();
+      },
+      onMoveAcknowledged: (move: Move) => {
+        if (move.timestamp) {
+          onlineGameMaster.game.clock?.updateStopTime(move.timestamp, move.playerName);
+          if (move.nextPlayerName) {
+            onlineGameMaster.game.clock?.updateStartTime(
+              move.timestamp,
+              move.nextPlayerName
+            );
+          }
+          onlineGameMaster.handlePossibleTimerFinish();
+          onlineGameMaster.render();
+        }
+      },
     });
 
     return onlineGameMaster;
@@ -71,9 +92,10 @@ export class OnlineGameMaster extends GameMaster {
     move?: Move;
     unselect?: boolean;
     received?: boolean;
-  }): void {
-    if (move && !received) this.sendMove(move);
+  } = {}): void {
     super.doMove({ move, unselect });
+    if (move && !received)
+      this.sendMove({ ...move, nextPlayerName: this.game.getCurrentPlayerName() });
     if (this.gameOver) this.disconnect();
   }
 

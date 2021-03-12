@@ -5,7 +5,7 @@ import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { CompactRules, RuleName } from "./rules";
 import { FutureVariantName } from "./variants";
-import { uniqWith } from "lodash";
+import { uniqWith, uniq } from "lodash";
 import { Move, movesAreEqual } from "game/Move";
 import { SquareInfo, SquaresInfo } from "game/SquaresInfo";
 import { FormatName } from "game/formats";
@@ -24,6 +24,7 @@ export class GameMaster {
   public allowableMoves: Move[] = [];
   public locationSelected = false;
   public squaresInfo = new SquaresInfo();
+  public timersAsOf?: number = undefined;
 
   // TODO: Consider restructure to encapsulate visualisation details in a nice abstraction
   public flipBoard: boolean;
@@ -35,7 +36,7 @@ export class GameMaster {
     public gameOptions: GameOptions,
     public assignedPlayer: PlayerAssignment = "all",
     private renderer?: Renderer,
-    private evaluateEndGameConditions = true
+    protected evaluateEndGameConditions = true
   ) {
     this.gameClones = [game.clone(), game.clone(), game.clone(), game.clone()];
 
@@ -156,7 +157,7 @@ export class GameMaster {
     });
   }
 
-  handleTimerFinish(): void {
+  handlePossibleTimerFinish(): void {
     const clock = this.game.clock;
     if (clock) {
       this.game
@@ -228,7 +229,13 @@ export class GameMaster {
       if (unselect) this.unselectAllPieces();
     }
     this.moveHistory.push(move);
-    this.game.nextTurn();
+    const everyoneHasMoved =
+      uniq(this.moveHistory.map((m) => m?.playerName)).length ===
+      this.game.players.length;
+    this.game.nextTurn({
+      asOf: move?.timestamp || Date.now(),
+      startClocks: everyoneHasMoved,
+    });
     this.startOfTurn();
   }
 
@@ -344,7 +351,7 @@ export class GameMaster {
   }
 
   endGame(): void {
-    this.game.clock?.stop();
+    this.game.clock?.stop(Date.now());
     this.gameOver = true;
   }
 

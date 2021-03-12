@@ -1,4 +1,4 @@
-import { PlayerName } from "game/types";
+import { PlayerName, TimestampMillis } from "game/types";
 import { Timer } from "./Timer";
 import { Map } from "utilities";
 
@@ -12,12 +12,13 @@ export class Clock {
     });
   }
 
-  setActivePlayers(players: PlayerName[]): void {
+  setActivePlayers(players: PlayerName[], asOf: TimestampMillis): void {
     this.timers.keys().forEach((player) => {
+      // `==` because player names from ".keys" are strings, but from players are numbers
       if (players.some((p) => p == player)) {
-        this.timers.get(player)?.start();
+        this.timers.get(player)?.start(asOf);
       } else {
-        this.timers.get(player)?.stop();
+        this.timers.get(player)?.stop(asOf);
       }
     });
   }
@@ -30,7 +31,15 @@ export class Clock {
     return this.timers.keys().filter((p) => !this.timers.get(p)?.isRunning());
   }
 
-  stop(): void {
-    this.timers.values().forEach((t) => t.freeze());
+  stop(asOf: TimestampMillis): void {
+    this.timers.values().forEach((t) => t.freeze(asOf));
+  }
+
+  updateStopTime(updateTo: TimestampMillis, player: PlayerName): void {
+    this.timers.get(player)?.updateStopTime(updateTo);
+  }
+
+  updateStartTime(updateTo: TimestampMillis, player: PlayerName): void {
+    this.timers.get(player)?.updateStartTime(updateTo);
   }
 }

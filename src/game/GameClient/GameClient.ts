@@ -3,10 +3,15 @@ import { Path } from "game/Pather";
 import { sleep } from "utilities/sleep";
 import { Move, PieceDelta } from "game/Move";
 
+interface Listeners {
+  onMove: (move: Move) => void;
+  onMoveAcknowledged: (move: Move) => void;
+}
+
 class GameClient {
   private socket: WebSocket;
   private roomJoined: boolean;
-  private onMove: ((move: Move) => void) | undefined;
+  private listeners: Partial<Listeners> = {};
   private messageListener: ((event: MessageEvent) => void) | undefined;
   public moves: Move[] = [];
   public assignedPlayer: PlayerAssignment = "spectator";
@@ -53,7 +58,8 @@ class GameClient {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.moves = moves.map((move: any) => parseMove(move));
     };
-    const onMove = this.onMove;
+    const onMove = this.listeners.onMove;
+    const onMoveAcknowledged = this.listeners.onMoveAcknowledged;
 
     this.messageListener = (event: MessageEvent): void => {
       const data = JSON.parse(event.data);
@@ -66,9 +72,12 @@ class GameClient {
           setRoomJoined(true);
           break;
         case "move":
-          // eslint-disable-next-line no-console
-          if (!onMove) console.log("Received a move event without having onMove setup");
+          if (!onMove) console.log("Received a move event without having onMove setup"); // eslint-disable-line no-console
           onMove?.(parseMove(data.move));
+          break;
+        case "moveAcknowledgement":
+          if (!onMoveAcknowledged) console.log("onMoveAcknowledged not found"); // eslint-disable-line no-console
+          onMoveAcknowledged?.(parseMove(data.move));
           break;
         default:
           // eslint-disable-next-line no-console
@@ -80,8 +89,8 @@ class GameClient {
     this.socket.addEventListener("message", this.messageListener);
   }
 
-  setOnMove(onMove: (move: Move) => void): void {
-    this.onMove = onMove;
+  setListeners(listeners: Listeners): void {
+    this.listeners = listeners;
     this.resetMessageEventListener();
   }
 
