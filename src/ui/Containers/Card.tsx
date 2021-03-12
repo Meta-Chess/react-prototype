@@ -19,6 +19,6 @@ const Container = styled(View)`
   background-color: ${Colors.DARK.toString()};
   padding: 16px 16px 18px 16px;
   overflow: hidden;
-  border-bottom-width: 2;
+  border-bottom-width: 2px;
   border-bottom-color: ${Colors.DARKER.toString()};
 `;

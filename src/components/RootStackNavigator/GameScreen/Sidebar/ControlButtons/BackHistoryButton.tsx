@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ButtonSecondary } from "ui";
 import { SFC } from "primitives";
 import { ArrowBack } from "primitives/icons";
+import { GameContext } from "game";
 
-interface Props {
-  onPress: () => void;
-}
-
-export const BackHistoryButton: SFC<Props> = ({ onPress, style }) => {
-  return <ButtonSecondary label={<ArrowBack />} style={style} onPress={onPress} />;
+export const BackHistoryButton: SFC = ({ style }) => {
+  const { gameMaster } = useContext(GameContext);
+  return (
+    <ButtonSecondary
+      label={<ArrowBack />}
+      style={style}
+      onPress={(): void =>
+        gameMaster?.setPositionInHistory(gameMaster.positionInHistory - 1)
+      }
+    />
+  );
 };
