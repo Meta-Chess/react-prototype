@@ -7,7 +7,7 @@ interface Props {
   size?: number;
 }
 
-export const VoteDraw: FC<Props> = ({
+export const DrawIcon: FC<Props> = ({
   color = Colors.MCHESS_ORANGE.toString(),
   size = 24,
 }) => {

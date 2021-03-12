@@ -70,7 +70,7 @@ export const FeedbackModal: FC<Props> = ({ category, context, onClose }) => {
           {error ? "Failed to send. Try again?" : " "}
         </Text>
         <ButtonSecondary
-          text={"Submit"}
+          label={"Submit"}
           onPress={(): void => submit(message)}
           style={{ width: 140, marginTop: 16 }}
         />

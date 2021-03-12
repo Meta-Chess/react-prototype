@@ -7,7 +7,7 @@ interface Props {
   size?: number;
 }
 
-export const VoteConcede: FC<Props> = ({
+export const ConcedeIcon: FC<Props> = ({
   color = Colors.MCHESS_ORANGE.toString(),
   size = 24,
 }) => {

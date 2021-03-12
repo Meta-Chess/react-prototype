@@ -83,7 +83,7 @@ const Sidebar: SFC = ({ style }) => {
         <HalfContainer style={{ marginLeft: 12 }}>
           {isGameOver ? (
             <Button
-              text="Finish Game"
+              label="Finish Game"
               style={{ flex: 1 }}
               onPress={goBackOrToStartScreen}
             />

@@ -8,9 +8,5 @@ interface Props {
 }
 
 export const BackHistoryButton: SFC<Props> = ({ onPress, style }) => {
-  return (
-    <ButtonSecondary text="" style={style} onPress={onPress}>
-      <ArrowBack />
-    </ButtonSecondary>
-  );
+  return <ButtonSecondary label={<ArrowBack />} style={style} onPress={onPress} />;
 };

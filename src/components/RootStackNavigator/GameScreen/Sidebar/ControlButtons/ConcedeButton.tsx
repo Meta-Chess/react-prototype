@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "ui";
 import { SFC, Colors } from "primitives";
-import { VoteConcede } from "primitives/icons";
+import { ConcedeIcon } from "primitives/icons";
 
 interface Props {
   onPress: () => void;
@@ -9,8 +9,10 @@ interface Props {
 
 export const ConcedeButton: SFC<Props> = ({ onPress, style }) => {
   return (
-    <Button text="" style={style} onPress={onPress}>
-      <VoteConcede color={Colors.DARKER.toString()} />
-    </Button>
+    <Button
+      label={<ConcedeIcon color={Colors.DARKER.toString()} />}
+      style={style}
+      onPress={onPress}
+    />
   );
 };

@@ -1,11 +1,11 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors, useHover } from "primitives";
 import Color from "color";
 
 interface Props {
-  text: string;
+  label: ReactNode;
   onPress: () => void;
   backgroundColor?: Color;
   textColor?: Color;
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const BaseButton: SFC<Props> = ({
-  text,
+  label,
   backgroundColor = Colors.MCHESS_ORANGE,
   textColor = Colors.TEXT.DARK,
   borderColor = Colors.MCHESS_ORANGE,
@@ -36,7 +36,7 @@ export const BaseButton: SFC<Props> = ({
         children
       ) : (
         <Text cat="DisplayXS" color={textColor.fade(fade).toString()}>
-          {text}
+          {label}
         </Text>
       )}
     </TouchableContainer>

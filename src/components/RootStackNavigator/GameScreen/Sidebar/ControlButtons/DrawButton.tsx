@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "ui";
 import { SFC, Colors } from "primitives";
-import { VoteDraw } from "primitives/icons";
+import { DrawIcon } from "primitives/icons";
 
 interface Props {
   onPress: () => void;
@@ -9,8 +9,10 @@ interface Props {
 
 export const DrawButton: SFC<Props> = ({ onPress, style }) => {
   return (
-    <Button text="" style={style} onPress={onPress}>
-      <VoteDraw color={Colors.DARKER.toString()} />
-    </Button>
+    <Button
+      label={<DrawIcon color={Colors.DARKER.toString()} />}
+      style={style}
+      onPress={onPress}
+    />
   );
 };

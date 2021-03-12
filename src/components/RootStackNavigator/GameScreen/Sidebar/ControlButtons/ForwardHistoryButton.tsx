@@ -8,9 +8,5 @@ interface Props {
 }
 
 export const ForwardHistoryButton: SFC<Props> = ({ onPress, style }) => {
-  return (
-    <ButtonSecondary text="" style={style} onPress={onPress}>
-      <ArrowForward />
-    </ButtonSecondary>
-  );
+  return <ButtonSecondary label={<ArrowForward />} style={style} onPress={onPress} />;
 };

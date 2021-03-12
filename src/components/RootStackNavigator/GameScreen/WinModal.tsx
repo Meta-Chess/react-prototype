@@ -58,12 +58,12 @@ export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
             gameMaster?.endGame();
             navigation.navigate(Screens.StartScreen);
           }}
-          text={"Done"}
+          label={"Done"}
           style={{ flex: 1 }}
         />
         <ButtonTertiaryLight
           onPress={onClose}
-          text={"View Board"}
+          label={"View Board"}
           style={{ flex: 1, marginLeft: 8 }}
         />
       </ButtonRow>

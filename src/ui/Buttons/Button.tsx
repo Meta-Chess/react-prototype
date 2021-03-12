@@ -1,13 +1,8 @@
 import React from "react";
 import { SFC } from "primitives";
 import { BaseButton } from "ui/Buttons/BaseButton";
+import { ButtonProps } from "./ButtonProps";
 
-interface Props {
-  text: string;
-  onPress: () => void;
-  accessibilityLabel?: string;
-}
-
-export const Button: SFC<Props> = (props) => {
+export const Button: SFC<ButtonProps> = (props) => {
   return <BaseButton {...props} />;
 };
