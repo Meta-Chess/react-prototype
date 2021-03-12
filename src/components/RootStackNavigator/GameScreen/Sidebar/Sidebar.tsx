@@ -82,18 +82,8 @@ const Sidebar: SFC = ({ style }) => {
       </ScrollView>
       <Footer>
         <HalfContainer>
-          <BackHistoryButton
-            onPress={(): void => {
-              return;
-            }}
-            style={{ flex: 1 }}
-          />
-          <ForwardHistoryButton
-            onPress={(): void => {
-              return;
-            }}
-            style={{ flex: 1, marginLeft: 12 }}
-          />
+          <BackHistoryButton style={{ flex: 1 }} />
+          <ForwardHistoryButton style={{ flex: 1, marginLeft: 12 }} />
         </HalfContainer>
         <HalfContainer style={{ marginLeft: 12 }}>
           {isGameOver || isDead ? (

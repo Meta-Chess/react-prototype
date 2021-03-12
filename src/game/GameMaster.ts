@@ -17,6 +17,7 @@ export class GameMaster {
   public result: string | undefined;
   public gameOver = false;
   public moveHistory: (Move | undefined)[] = [];
+  public positionInHistory = 0;
   public formatVariants: FutureVariantName[] = [];
   public formatVariantLabelColors: {
     [formatVariantsIndex: number]: VariantLabelInfo;
@@ -126,7 +127,7 @@ export class GameMaster {
 
   recalculateSquaresInfo(): void {
     this.squaresInfo.clear();
-    this.moveHistory[this.moveHistory.length - 1]?.pieceDeltas.forEach((delta) => {
+    this.moveHistory[this.positionInHistory - 1]?.pieceDeltas.forEach((delta) => {
       this.squaresInfo.add(delta.path.getStart(), SquareInfo.LastMoveStartPoint);
       this.squaresInfo.add(delta.path.getEnd(), SquareInfo.LastMoveEndPoint);
       const path = delta.path.getPath();
@@ -187,6 +188,29 @@ export class GameMaster {
     }
   }
 
+  setPositionInHistory(newPosition: number): void {
+    if (newPosition > this.moveHistory.length) newPosition = this.moveHistory.length;
+    else if (newPosition < 0) newPosition = 0;
+
+    if (newPosition < this.positionInHistory) {
+      // TODO: make this more readable
+      const moveHistory = this.moveHistory;
+      this.constructor(
+        ...GameMaster.processConstructorInputs({
+          gameOptions: this.gameOptions,
+          assignedPlayer: this.assignedPlayer,
+          renderer: this.renderer,
+        })
+      );
+      this.moveHistory = moveHistory;
+    }
+    while (newPosition > this.positionInHistory) {
+      const nextMove = this.moveHistory[this.positionInHistory];
+      this.doMove({ move: nextMove, fromHistory: true });
+    }
+    this.render();
+  }
+
   onPress(location: string, pieceId?: string): Move | undefined {
     // console.log(`${this.selectedPieces.length ? "" : "\n\n// Move ... ???\n"}gameMaster.onPress("${location}");`); // TEST WRITING HELPER COMMENT
     const moves = uniqWith(
@@ -198,6 +222,7 @@ export class GameMaster {
       this.selectedPieces[0]?.owner;
     const canMoveSelectedPiece =
       isSelectedPieceOwnersTurn &&
+      this.positionInHistory === this.moveHistory.length &&
       (this.assignedPlayer === "all" ||
         this.assignedPlayer === this.selectedPieces[0]?.owner);
 
@@ -226,13 +251,18 @@ export class GameMaster {
     this.render();
   }
 
-  doMove({ move, unselect = true }: { move?: Move; unselect?: boolean } = {}): void {
+  doMove({
+    move,
+    unselect = true,
+    fromHistory = false,
+  }: { move?: Move; unselect?: boolean; fromHistory?: boolean } = {}): void {
     // if (move) console.log(`expect(board.getPiecesAt("${move.location}").length).toEqual(1);`); // TEST WRITING HELPER COMMENT
     if (move) {
       this.game.doMove(move);
       if (unselect) this.unselectAllPieces();
     }
-    this.moveHistory.push(move);
+    if (!fromHistory) this.moveHistory.push(move);
+    this.positionInHistory += 1;
     const everyoneHasMoved =
       uniq(this.moveHistory.map((m) => m?.playerName)).length ===
       this.game.players.length;
@@ -263,7 +293,7 @@ export class GameMaster {
     this.interrupt.for.formatControlAtTurnStart({ gameMaster: this });
     if (this.game.getCurrentPlayer().alive || this.game.alivePlayers().length === 0) {
       this.checkGameEndConditions();
-      this.render();
+      this.render(); // TODO: avoid excess renders when pressing back button
     } else {
       this.doMove();
     }

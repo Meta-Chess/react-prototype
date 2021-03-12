@@ -114,13 +114,16 @@ export class OnlineGameMaster extends GameMaster {
   doMove({
     move,
     unselect,
+    fromHistory,
     received = false,
   }: {
     move?: Move;
     unselect?: boolean;
     received?: boolean;
+    fromHistory?: boolean;
   } = {}): void {
-    super.doMove({ move, unselect });
+    if (received) this.setPositionInHistory(this.moveHistory.length);
+    super.doMove({ move, unselect, fromHistory });
     if (move && !received)
       this.sendMove({ ...move, nextPlayerName: this.game.getCurrentPlayerName() });
     if (this.gameOver) this.disconnect();
