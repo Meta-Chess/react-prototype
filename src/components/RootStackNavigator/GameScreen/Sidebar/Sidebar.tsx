@@ -67,8 +67,18 @@ const Sidebar: SFC = ({ style }) => {
       <HorizontalSeparator color={Colors.DARKISH.fade(0.55).toString()} />
       <FixedContainer>
         <HalfContainer>
-          <BackHistoryButton style={{ flex: 1 }} />
-          <ForwardHistoryButton style={{ flex: 1, marginLeft: 12 }} />
+          <BackHistoryButton
+            onPress={(): void => {
+              return;
+            }}
+            style={{ flex: 1 }}
+          />
+          <ForwardHistoryButton
+            onPress={(): void => {
+              return;
+            }}
+            style={{ flex: 1, marginLeft: 12 }}
+          />
         </HalfContainer>
         <HalfContainer style={{ marginLeft: 12 }}>
           {isGameOver ? (
