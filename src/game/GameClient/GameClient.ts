@@ -1,11 +1,12 @@
 import { GameOptions, PlayerAssignment } from "game/types";
 import { Path } from "game/Pather";
 import { sleep } from "utilities/sleep";
-import { Move, PieceDelta } from "game/Move";
+import { PlayerAction } from "game/PlayerAction";
+import { PieceDelta } from "game/Move";
 
 interface Listeners {
-  onMove: (move: Move) => void;
-  onMoveAcknowledged: (move: Move) => void;
+  onPlayerAction: (playerAction: PlayerAction) => void;
+  onPlayerActionAcknowledged: (playerAction: PlayerAction) => void;
 }
 
 class GameClient {
@@ -13,7 +14,7 @@ class GameClient {
   private roomJoined: boolean;
   private listeners: Partial<Listeners> = {};
   private messageListener: ((event: MessageEvent) => void) | undefined;
-  public moves: Move[] = [];
+  public playerActions: PlayerAction[] = [];
   public assignedPlayer: PlayerAssignment = "spectator";
 
   constructor(url: string, private roomId?: string, public gameOptions?: GameOptions) {
@@ -22,7 +23,7 @@ class GameClient {
     this.roomJoined = false;
 
     this.socket.addEventListener("open", function (_event) {
-      socket.send(JSON.stringify({ action: "joinRoom", roomId, gameOptions }));
+      socket.send(JSON.stringify({ Action: "joinRoom", roomId, gameOptions }));
     });
 
     this.messageListener = undefined;
@@ -54,12 +55,14 @@ class GameClient {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const setMoves = (moves: any[]): void => {
+    const setPlayerActions = (playerActions: any[]): void => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.moves = moves.map((move: any) => parseMove(move));
+      this.playerActions = playerActions.map((playerAction: any) =>
+        parsePlayerAction(playerAction)
+      );
     };
-    const onMove = this.listeners.onMove;
-    const onMoveAcknowledged = this.listeners.onMoveAcknowledged;
+    const onPlayerAction = this.listeners.onPlayerAction;
+    const onPlayerActionAcknowledged = this.listeners.onPlayerActionAcknowledged;
 
     this.messageListener = (event: MessageEvent): void => {
       const data = JSON.parse(event.data);
@@ -67,17 +70,22 @@ class GameClient {
         case "roomJoined":
           setRoomId(data.roomId);
           setGameOptions(data.gameOptions);
-          setMoves(data.moves);
+          setPlayerActions(data.playerActions);
           setAssignedPlayer(data.assignedPlayer);
           setRoomJoined(true);
           break;
-        case "move":
-          if (!onMove) console.log("Received a move event without having onMove setup"); // eslint-disable-line no-console
-          onMove?.(parseMove(data.move));
+        case "playerAction":
+          if (!onPlayerAction)
+            // eslint-disable-next-line no-console
+            console.log(
+              "Received a playerAction event without having onPlayerAction setup"
+            );
+          onPlayerAction?.(parsePlayerAction(data.playerAction));
           break;
-        case "moveAcknowledgement":
-          if (!onMoveAcknowledged) console.log("onMoveAcknowledged not found"); // eslint-disable-line no-console
-          onMoveAcknowledged?.(parseMove(data.move));
+        case "playerActionAcknowledgement":
+          if (!onPlayerActionAcknowledged)
+            console.log("onPlayerActionAcknowledged not found"); // eslint-disable-line no-console
+          onPlayerActionAcknowledged?.(parsePlayerAction(data.playerAction));
           break;
         default:
           // eslint-disable-next-line no-console
@@ -94,8 +102,10 @@ class GameClient {
     this.resetMessageEventListener();
   }
 
-  sendMove(move: Move): void {
-    this.socket.send(JSON.stringify({ action: "move", roomId: this.roomId, move }));
+  sendPlayerAction(playerAction: PlayerAction): void {
+    this.socket.send(
+      JSON.stringify({ Action: "playerAction", roomId: this.roomId, playerAction })
+    );
   }
 
   close(): void {
@@ -105,13 +115,16 @@ class GameClient {
 
 // TODO: think about creating type JSO<T> to describe something that's been stringified and parsed?
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function parseMove(move: any): Move {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const pieceDeltas: PieceDelta[] = move.pieceDeltas.map((delta: any) => ({
-    ...delta,
-    path: new Path(delta.path.start, delta.path.path),
-  }));
-  return { ...move, pieceDeltas };
+function parsePlayerAction(playerAction: any): PlayerAction {
+  if (playerAction.type === "move") {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const pieceDeltas: PieceDelta[] = playerAction.data.pieceDeltas.map((delta: any) => ({
+      ...delta,
+      path: new Path(delta.path.start, delta.path.path),
+    }));
+    return { ...playerAction, data: { ...playerAction.data, pieceDeltas } };
+  }
+  return playerAction;
 }
 
 export { GameClient };

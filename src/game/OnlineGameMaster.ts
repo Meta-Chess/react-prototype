@@ -4,6 +4,7 @@ import { GameOptions, PlayerAssignment } from "game/types";
 import { GameClient } from "game/GameClient";
 import { sleep } from "utilities/sleep";
 import { Move } from "game/Move";
+import { PlayerAction, Resign } from "./PlayerAction";
 
 export class OnlineGameMaster extends GameMaster {
   constructor(
@@ -16,21 +17,34 @@ export class OnlineGameMaster extends GameMaster {
     super(
       ...GameMaster.processConstructorInputs({ gameOptions, assignedPlayer, renderer })
     );
-    this.doMovesSlowly(gameClient.moves);
+    this.doActionsSlowly(gameClient.playerActions);
   }
 
-  async doMovesSlowly(moves: Move[]): Promise<void> {
+  async doActionsSlowly(actions: PlayerAction[]): Promise<void> {
     const shouldEvaluateEndGameConditions = this.evaluateEndGameConditions;
     this.evaluateEndGameConditions = false;
-    for (const move of moves) {
+    for (const action of actions) {
       this.render();
       await sleep(50);
-      this.doMove({ move, unselect: true, received: true });
-      this.timersAsOf = move.timestamp;
+      if (action.type === "move")
+        this.doMove({ move: action.data, unselect: true, received: true });
+      else if (action.type === "resign") this.doResign(action.data);
+      this.timersAsOf = action.timestamp;
     }
     this.timersAsOf = undefined;
     this.evaluateEndGameConditions = shouldEvaluateEndGameConditions;
     this.render();
+  }
+
+  doResign(resign: Resign): void {
+    this.game
+      .getPlayers()
+      .filter((p) => p.name === resign.playerName)
+      .forEach((p) => {
+        p.alive = false;
+        p.endGameMessage = "resigned";
+        if (this.game.getCurrentPlayerName() === p.name) this.doMove();
+      });
   }
 
   static async connectNewGame(
@@ -66,19 +80,30 @@ export class OnlineGameMaster extends GameMaster {
     );
 
     gameClient.setListeners({
-      onMove: (move: Move) => {
-        onlineGameMaster.doMove({ move, unselect: false, received: true });
+      onPlayerAction: (playerAction: PlayerAction) => {
+        if (playerAction.type === "move") {
+          onlineGameMaster.doMove({
+            move: playerAction.data,
+            unselect: false,
+            received: true,
+          });
+        } else if (playerAction.type === "resign") {
+          onlineGameMaster.doResign(playerAction.data);
+        }
         onlineGameMaster.calculateAllowableMovesForSelectedPieces();
         if (onlineGameMaster.gameOver) onlineGameMaster.disconnect();
         onlineGameMaster.render();
       },
-      onMoveAcknowledged: (move: Move) => {
-        if (move.timestamp) {
-          onlineGameMaster.game.clock?.updateStopTime(move.timestamp, move.playerName);
-          if (move.nextPlayerName) {
+      onPlayerActionAcknowledged: (playerAction: PlayerAction) => {
+        if (playerAction.timestamp && playerAction.type === "move") {
+          onlineGameMaster.game.clock?.updateStopTime(
+            playerAction.timestamp,
+            playerAction.data.playerName
+          );
+          if (playerAction.data.nextPlayerName) {
             onlineGameMaster.game.clock?.updateStartTime(
-              move.timestamp,
-              move.nextPlayerName
+              playerAction.timestamp,
+              playerAction.data.nextPlayerName
             );
           }
           onlineGameMaster.handlePossibleTimerFinish();
@@ -106,7 +131,19 @@ export class OnlineGameMaster extends GameMaster {
   }
 
   sendMove(move?: Move): void {
-    if (move) this.gameClient.sendMove(move);
+    if (move)
+      this.gameClient.sendPlayerAction({
+        type: "move",
+        data: move,
+      });
+  }
+
+  sendResign(resign?: Resign): void {
+    if (resign)
+      this.gameClient.sendPlayerAction({
+        type: "resign",
+        data: resign,
+      });
   }
 
   disconnect(): void {
