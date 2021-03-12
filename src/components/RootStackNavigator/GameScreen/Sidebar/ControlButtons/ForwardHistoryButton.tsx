@@ -7,6 +7,7 @@ import { GameContext } from "game";
 
 export const ForwardHistoryButton: SFC = ({ style }) => {
   const { gameMaster } = useContext(GameContext);
+  // const disabled =
   return (
     <ButtonSecondary
       label={<ArrowForwardIcon />}

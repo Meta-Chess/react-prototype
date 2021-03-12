@@ -13,6 +13,7 @@ import { doesCapture } from "./rules/utilities";
 import { Draw, Resign } from "./PlayerAction";
 
 export class GameMaster {
+  // WARNING: Default values exist both here and in `GameMaster.resetToStartOfGame`
   public gameClones: Game[];
   public result: string | undefined;
   public drawOffers: { [playerName in PlayerName]?: boolean } = {};
@@ -41,7 +42,7 @@ export class GameMaster {
     public interrupt: CompactRules, // This should probably be private
     public gameOptions: GameOptions,
     public assignedPlayer: PlayerAssignment = "all",
-    private renderer?: Renderer,
+    protected renderer?: Renderer,
     protected evaluateEndGameConditions = true
   ) {
     this.gameClones = [game.clone(), game.clone(), game.clone(), game.clone()];
@@ -56,6 +57,26 @@ export class GameMaster {
     this.deck = gameOptions?.deck;
 
     this.startOfTurn();
+  }
+
+  // TODO: put defaults in just one place
+  resetToStartOfGame(): void {
+    this.gameOver = false;
+    this.positionInHistory = 0;
+    this.formatVariants = [];
+    this.formatVariantLabelColors = {};
+    this.selectedPieces = [];
+    this.allowableMoves = [];
+    this.locationSelected = false;
+    this.squaresInfo = new SquaresInfo();
+    this.timersAsOf = undefined;
+    const [game, interrupt] = GameMaster.processConstructorInputs({
+      gameOptions: this.gameOptions,
+      assignedPlayer: this.assignedPlayer,
+      renderer: this.renderer,
+    });
+    this.game = game;
+    this.interrupt = interrupt;
   }
 
   static processConstructorInputs({
@@ -196,23 +217,20 @@ export class GameMaster {
   setPositionInHistory(newPosition: number): void {
     if (newPosition > this.moveHistory.length) newPosition = this.moveHistory.length;
     else if (newPosition < 0) newPosition = 0;
+    // console.log(this.moveHistory, this.positionInHistory);
 
     if (newPosition < this.positionInHistory) {
       // TODO: make this more readable
       const moveHistory = this.moveHistory;
-      this.constructor(
-        ...GameMaster.processConstructorInputs({
-          gameOptions: this.gameOptions,
-          assignedPlayer: this.assignedPlayer,
-          renderer: this.renderer,
-        })
-      );
+      this.resetToStartOfGame();
       this.moveHistory = moveHistory;
     }
+    // console.log(this.moveHistory, this.positionInHistory);
     while (newPosition > this.positionInHistory) {
       const nextMove = this.moveHistory[this.positionInHistory];
       this.doMove({ move: nextMove, fromHistory: true });
     }
+    // console.log(this.moveHistory, this.positionInHistory);
     this.render();
   }
 
