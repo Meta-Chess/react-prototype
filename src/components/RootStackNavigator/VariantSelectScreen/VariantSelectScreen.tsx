@@ -93,12 +93,12 @@ const VariantSelectScreen: FC = () => {
         <HorizontalSeparator color={Colors.DARKISH.fade(0.55).toString()} />
         <NavigationContainer>
           <ButtonSecondary
-            text="Back"
+            label="Back"
             onPress={goBackOrToStartScreen}
             style={{ flex: 1 }}
           />
           <Button
-            text="Start Game"
+            label="Start Game"
             onPress={(): void => {
               // console.log(`const gameMaster = new GameMaster(...GameMaster.processConstructorInputs({ gameOptions: calculateGameOptions(${JSON.stringify((Object.keys(gameOptions) as (keyof typeof gameOptions)[]).reduce((acc, k) => gameOptions[k] !== "chess" ? { ...acc, [k]: gameOptions[k] } : { ...acc }, {}))}, ${JSON.stringify(selectedVariants)}) } ));\n const board = gameMaster.game.board;\n\n`); // TEST WRITING HELPER COMMENT
               navigation.navigate(Screens.GameScreen, {

@@ -9,5 +9,5 @@ export const SetupGameButton: SFC = ({ style }) => {
     navigation.navigate(Screens.VariantSelectScreen);
   };
 
-  return <ButtonSecondary onPress={onPress} text={"Advanced"} style={style} />;
+  return <ButtonSecondary onPress={onPress} label={"Advanced"} style={style} />;
 };

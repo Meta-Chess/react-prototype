@@ -1,14 +1,9 @@
 import React from "react";
 import { Colors, SFC } from "primitives";
 import { BaseButton } from "./BaseButton";
+import { ButtonProps } from "./ButtonProps";
 
-interface Props {
-  text: string;
-  onPress: () => void;
-  accessibilityLabel?: string;
-}
-
-export const ButtonSecondary: SFC<Props> = (props) => {
+export const ButtonSecondary: SFC<ButtonProps> = (props) => {
   return (
     <BaseButton
       {...props}

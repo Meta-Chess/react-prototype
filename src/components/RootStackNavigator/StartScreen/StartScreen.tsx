@@ -53,7 +53,7 @@ const StartScreen: FC = () => {
               <Row style={{ marginTop: 24, width: 300 }}>
                 <Button
                   onPress={(): void => startGame(calculateGameOptions(gameOptions, []))}
-                  text={"Play"}
+                  label={"Play"}
                   style={{ flex: 1 }}
                 />
                 <SetupGameButton style={{ flex: 1, marginLeft: 8 }} />

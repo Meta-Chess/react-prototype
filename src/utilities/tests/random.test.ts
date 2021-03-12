@@ -7,7 +7,7 @@ describe("randomChoice", () => {
     for (let i = 0; i < 100; i++) {
       count += randomChoice(array);
     }
-    expect(count).toBeLessThan(60);
+    expect(count).toBeLessThan(65);
     expect(count).toBeGreaterThan(30);
   });
 });
