@@ -10,7 +10,7 @@
     "type-check": "tsc --noEmit",
     "lint": "eslint --max-warnings 0 src",
     "format": "prettier ./src --write",
-    "format:check": "prettier ./src",
+    "format:check": "prettier --check ./src",
     "all-check": "concurrently yarn:lint yarn:test yarn:type-check"
   },
   "dependencies": {
