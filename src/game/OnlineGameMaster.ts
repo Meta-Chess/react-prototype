@@ -12,12 +12,13 @@ export class OnlineGameMaster extends GameMaster {
     gameOptions: GameOptions,
     assignedPlayer: PlayerAssignment,
     public roomId: string,
-    private gameClient: GameClient
+    private gameClient: GameClient,
+    replay = true
   ) {
     super(
       ...GameMaster.processConstructorInputs({ gameOptions, assignedPlayer, renderer })
     );
-    this.doActionsSlowly(gameClient.playerActions);
+    if (replay) this.doActionsSlowly(gameClient.playerActions);
   }
 
   async doActionsSlowly(actions: PlayerAction[]): Promise<void> {
@@ -124,7 +125,7 @@ export class OnlineGameMaster extends GameMaster {
   } = {}): void {
     if (received) this.setPositionInHistory(this.moveHistory.length);
     super.doMove({ move, unselect, fromHistory });
-    if (move && !received)
+    if (move && !received && !fromHistory)
       this.sendMove({ ...move, nextPlayerName: this.game.getCurrentPlayerName() });
     if (this.gameOver) this.disconnect();
   }
