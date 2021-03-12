@@ -7,7 +7,6 @@ import { TriangleUp } from "./TriangleUp";
 import { Styles } from "primitives/Styles";
 import { useModals } from "ui/Modals";
 import Color from "color";
-
 interface Props {
   label: string;
   details?: string;
