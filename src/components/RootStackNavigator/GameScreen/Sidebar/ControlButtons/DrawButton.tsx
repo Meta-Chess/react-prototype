@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Button } from "ui";
-import { SFC, Colors } from "primitives";
+import { SFC } from "primitives";
 import { DrawIcon } from "primitives/icons";
 import { GameContext } from "components/shared";
 
@@ -15,7 +15,7 @@ export const DrawButton: SFC<Props> = ({ onPress, style }) => {
     .find((p) => p.name === gameMaster.assignedPlayer)?.wantsToDraw;
   return (
     <Button
-      label={<DrawIcon color={Colors.DARKER.toString()} />}
+      label={DrawIcon}
       style={style}
       onPress={onPress}
       depressed={depressed}

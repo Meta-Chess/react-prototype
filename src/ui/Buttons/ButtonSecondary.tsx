@@ -8,7 +8,7 @@ export const ButtonSecondary: SFC<ButtonProps> = ({ depressed, ...rest }) => {
     <BaseButton
       {...rest}
       backgroundColor={Colors.TRANSPARENT}
-      textColor={Colors.MCHESS_ORANGE.fade(depressed ? 0.3 : 0)}
+      labelColor={(rest.disabled ? Colors.GREY : Colors.MCHESS_ORANGE).fade(depressed ? 0.3 : 0)}
     />
   );
 };

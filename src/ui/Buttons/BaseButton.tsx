@@ -1,29 +1,32 @@
-import React, { ReactNode } from "react";
+import React, { FC } from "react";
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
-import { SFC, Text, Colors, useHover } from "primitives";
+import { SFC, Colors, useHover } from "primitives";
 import Color from "color";
+import { ButtonContent } from "ui/Buttons/ButtonContent";
 
 interface Props {
-  label: ReactNode;
+  label: string | FC<{ color?: string }>;
   onPress: () => void;
   backgroundColor?: Color;
-  textColor?: Color;
+  labelColor?: Color;
   borderColor?: Color;
   borderWidth?: number;
+  disabled?: boolean;
   accessibilityLabel?: string; // TODO: make this compulsory
 }
 
 export const BaseButton: SFC<Props> = ({
   label,
-  backgroundColor = Colors.MCHESS_ORANGE,
-  textColor = Colors.TEXT.DARK,
-  borderColor = Colors.MCHESS_ORANGE,
+  disabled,
+  backgroundColor = disabled ? Colors.GREY : Colors.MCHESS_ORANGE,
+  labelColor = Colors.TEXT.DARK,
+  borderColor = disabled ? Colors.GREY : Colors.MCHESS_ORANGE,
   borderWidth = 1,
   ...rest
 }) => {
   const [ref, hovered] = useHover();
-  const fade = hovered ? (backgroundColor.alpha() > 0.5 ? 0.15 : 0.3) : 0;
+  const fade = !disabled && hovered ? (backgroundColor.alpha() > 0.5 ? 0.15 : 0.3) : 0;
   return (
     <TouchableContainer
       ref={ref}
@@ -31,16 +34,11 @@ export const BaseButton: SFC<Props> = ({
       borderColor={borderColor.fade(fade)}
       borderWidth={borderWidth}
       activeOpacity={0.5}
+      disabled={disabled}
       accessibilityRole={"button"}
       {...rest}
     >
-      {typeof label === "string" ? (
-        <Text cat="DisplayXS" color={textColor.fade(fade).toString()} selectable={false}>
-          {label}
-        </Text>
-      ) : (
-        label
-      )}
+      <ButtonContent Label={label} color={labelColor.fade(fade)} />
     </TouchableContainer>
   );
 };
