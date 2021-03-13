@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "ui";
-import { SFC, Colors } from "primitives";
+import { SFC } from "primitives";
 import { DrawIcon } from "primitives/icons";
 
 interface Props {
@@ -8,11 +8,5 @@ interface Props {
 }
 
 export const DrawButton: SFC<Props> = ({ onPress, style }) => {
-  return (
-    <Button
-      label={<DrawIcon color={Colors.DARKER.toString()} />}
-      style={style}
-      onPress={onPress}
-    />
-  );
+  return <Button label={DrawIcon} style={style} onPress={onPress} />;
 };

@@ -9,7 +9,7 @@ export const ButtonTertiaryLight: SFC<ButtonProps> = (props) => {
       {...props}
       backgroundColor={Colors.TRANSPARENT}
       borderColor={Colors.TRANSPARENT}
-      textColor={Colors.MCHESS_BLUE}
+      labelColor={props.disabled ? Colors.GREY : Colors.MCHESS_BLUE}
     />
   );
 };

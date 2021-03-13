@@ -1,7 +1,8 @@
-import { ReactNode } from "react";
+import { FC } from "react";
 
 export interface ButtonProps {
-  label: ReactNode;
+  label: string | FC<{ color?: string }>;
   onPress: () => void;
+  disabled?: boolean;
   accessibilityLabel?: string;
 }

@@ -8,8 +8,8 @@ export const ButtonSecondaryLight: SFC<ButtonProps> = (props) => {
     <BaseButton
       {...props}
       backgroundColor={Colors.TRANSPARENT}
-      borderColor={Colors.MCHESS_BLUE}
-      textColor={Colors.MCHESS_BLUE}
+      borderColor={props.disabled ? Colors.GREY : Colors.MCHESS_BLUE}
+      labelColor={props.disabled ? Colors.GREY : Colors.MCHESS_BLUE}
     />
   );
 };
