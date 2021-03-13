@@ -8,3 +8,4 @@ export * from "./Row";
 export * from "./Separators";
 export * from "./Spinner";
 export * from "./Tiles";
+export * from "./TextIcon";

@@ -1,6 +1,6 @@
 import React from "react";
 import { SFC } from "primitives";
-import { SelectInput, LabeledCheckBox, DebouncedTextInput, Row, Button } from "ui";
+import { SelectInput, LabeledCheckBox, DebouncedTextInput } from "ui";
 import { VariantName, variants, GameOptions, FutureVariantName, FormatName } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
@@ -40,21 +40,47 @@ const GameOptionControls: SFC<Props> = ({
 
   return (
     <ControlsContainer style={style}>
-      <Row>
-        <SelectInput
-          options={[{ label: "Rolling Variants", value: "temp" }]}
-          onChange={setVariant}
-          style={{ flex: 1 }}
-          zIndex={4000}
-        />
-        <Button
-          onPress={(): void => {
-            return;
-          }}
-          text={"Play Now!"}
-          style={{ flex: 1, marginLeft: 8 }}
-        />
-      </Row>
+      <DebouncedTextInput
+        placeholder={"Please enter an invite key"}
+        afterChangeText={setRoomId}
+        style={{ marginBottom: 4, marginTop: 20 }}
+        onSubmitEditing={(roomId): void => onSubmit(setRoomId(roomId))}
+      />
+      <LabeledCheckBox
+        value={!!gameOptions.online}
+        setValue={setOnline}
+        label={"Online"}
+        style={{ marginTop: 16 }}
+      />
+      <LabeledCheckBox
+        value={!!gameOptions.overTheBoard}
+        setValue={setOverTheBoard}
+        label={"Over the board"}
+        style={{ marginTop: 16 }}
+      />
+      <LabeledCheckBox
+        value={!!gameOptions.flipBoard}
+        setValue={setFlipBoard}
+        label={"Flip board"}
+        style={{ marginTop: 16 }}
+      />
+      <LabeledCheckBox
+        value={!!gameOptions.checkEnabled}
+        setValue={setCheckEnabled}
+        label={"Check enabled"}
+        style={{ marginTop: 16 }}
+      />
+      <SelectInput
+        options={timeOptions}
+        onChange={setTime}
+        style={{ marginTop: 20 }}
+        zIndex={5000}
+      />
+      <SelectInput //note: windows scrollbar is gross
+        options={variantOptions}
+        onChange={setVariant}
+        zIndex={4000}
+      />
     </ControlsContainer>
   );
 };
@@ -83,7 +109,7 @@ const defaultGameOptions = {
 
 const ControlsContainer = styled(View)`
   flex-direction: column-reverse;
-  width: 400px;
+  width: 300px;
 `;
 
 export { GameOptionControls, defaultGameOptions };

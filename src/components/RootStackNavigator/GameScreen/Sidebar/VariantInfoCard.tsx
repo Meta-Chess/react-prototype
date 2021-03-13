@@ -6,6 +6,8 @@ import { LabelWithDetails, Row } from "ui";
 import { View } from "react-native";
 import { Text } from "primitives";
 import { WASD } from "./ActiveKeycaps";
+import { NoCheckLabel } from "components/shared/Labels";
+import styled from "styled-components/native";
 import { VariantLabelInfo } from "game/types";
 import Color from "color";
 
@@ -32,30 +34,28 @@ const VariantInfoCard: SFC = ({ style }) => {
         <WASD style={{ marginLeft: 8, marginTop: 4 }} />
       </Row>
       <View style={{ flexWrap: "wrap", flexDirection: "row", marginTop: 8 }}>
-        <LabelWithDetails
+        <StyledLabel
           label={format.title}
           details={format.description}
           key={format.title}
           color={Colors.MCHESS_ORANGE}
         />
         {variants.map((variant, index) => (
-          <LabelWithDetails
+          <StyledLabel
             label={variant.title}
             details={variant.shortDescription}
             key={variant.title}
             color={VARIANT_LABEL_COLORS[gameMaster.formatVariantLabelColors[index]]}
           />
         ))}
-        {noCheck && (
-          <LabelWithDetails
-            label={"No Check"}
-            details={"Check and Checkmate do not apply to this game!"}
-            key={"noCheck"}
-            color={Colors.GREY}
-          />
-        )}
+        {noCheck && <NoCheckLabel style={{ marginRight: 4, marginTop: 4 }} />}
       </View>
     </Card>
   );
 };
 export { VariantInfoCard };
+
+const StyledLabel = styled(LabelWithDetails)`
+  margin-right: 4px;
+  margin-top: 4px;
+`;

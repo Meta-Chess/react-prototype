@@ -1,6 +1,6 @@
 import React, { FC, useState, useCallback } from "react";
 import { MChessLogo } from "primitives";
-import { Button, Row } from "ui";
+import { Button, Row, LabeledCheckBox, DebouncedTextInput } from "ui";
 import {
   GameProvider,
   GameOptions,
@@ -14,6 +14,7 @@ import { Screens, useNavigation } from "navigation";
 import { SetupGameButton } from "./SetupGameButton";
 import { ScreenContainer } from "components/shared";
 import { HelpMenu } from "components/shared";
+import { Lobby } from "./Lobby";
 
 const StartScreen: FC = () => {
   const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
@@ -27,7 +28,6 @@ const StartScreen: FC = () => {
       }),
     [navigation]
   );
-
   return (
     <GameProvider
       gameOptions={{ ...gameOptions, time: undefined, online: false, flipBoard: false }}
@@ -50,7 +50,8 @@ const StartScreen: FC = () => {
                 }}
                 onSubmit={startGame}
               />
-              <Row style={{ marginTop: 24, width: 300 }}>
+              <Lobby style={{ marginTop: 12 }} />
+              <Row style={{ marginTop: 12, width: 400 }}>
                 <Button
                   onPress={(): void => startGame(calculateGameOptions(gameOptions, []))}
                   label={"Play"}

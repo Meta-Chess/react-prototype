@@ -20,7 +20,7 @@ export const StartScreenLayoutContainer: FC<Props> = ({ a, b }) => {
   ) : (
     <Row style={{ flex: 1, alignItems: "stretch", padding: 16, minWidth: 600 }}>
       <Container style={{ flex: 2 }}>{a}</Container>
-      <Container style={{ flex: 1, minWidth: 300, marginLeft: 32 }}>
+      <Container style={{ flex: 1, minWidth: 400, marginLeft: 32 }}>
         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
           {b}
         </ScrollView>

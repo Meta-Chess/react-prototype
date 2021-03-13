@@ -10,5 +10,8 @@ export * from "./DrawIcon";
 export * from "./FeedbackIcon";
 export * from "./Formats";
 export * from "./HelpIcon";
+export * from "./NoTimerIcon";
 export * from "./MinusIcon";
+export * from "./PlayerIcon";
 export * from "./PlusIcon";
+export * from "./TimerIcon";

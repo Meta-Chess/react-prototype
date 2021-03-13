@@ -138,10 +138,8 @@ export const LabelWithDetails: SFC<Props> = ({
 const LabelContainer = styled(TouchableOpacity)<{ color: Color }>`
   border-radius: 4px;
   padding-horizontal: 8px;
-  margin-right: 4px;
-  margin-top: 4px;
-  align-self: flex-start;
   align-items: center;
+  align-self: center;
   z-index: 9;
   background-color: ${({ color }): string => color.fade(0.6).toString()};
 `;
