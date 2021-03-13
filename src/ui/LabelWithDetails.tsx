@@ -1,7 +1,7 @@
 import { View, useWindowDimensions, ScrollView } from "react-native";
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Colors, SFC, Text, useHover } from "primitives";
+import { Colors, SFC, Text, TextCat, useHover } from "primitives";
 import styled from "styled-components/native";
 import { TriangleUp } from "./TriangleUp";
 import { Styles } from "primitives/Styles";
@@ -12,6 +12,7 @@ interface Props {
   label: string;
   details?: string;
   color?: Color;
+  textCat?: TextCat;
 }
 
 const MODAL_WIDTH = 240;
@@ -21,6 +22,7 @@ export const LabelWithDetails: SFC<Props> = ({
   label,
   details,
   color = Colors.MCHESS_BLUE,
+  textCat = "BodyS",
   style,
 }) => {
   const [hoverRef, hovered] = useHover();
@@ -129,7 +131,7 @@ export const LabelWithDetails: SFC<Props> = ({
     <>
       <LabelContainer color={color} style={style} ref={hoverRef}>
         <View ref={anchorRef}>
-          <Text cat={"BodyS"}>{label}</Text>
+          <Text cat={textCat}>{label}</Text>
         </View>
       </LabelContainer>
     </>

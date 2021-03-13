@@ -4,32 +4,32 @@ import { AbsoluteView, LabelWithDetails, TextIcon, Row } from "ui";
 import { PlayerIcon, TimerIcon, NoTimerIcon } from "primitives/icons";
 import { SFC, Colors, Text, useHover } from "primitives";
 import { futureVariants as allVariants, formats } from "game";
-import { FutureVariantName } from "game/variants";
-import { FormatName } from "game/formats";
 import { FormatIcon } from "components/shared";
-import { NoCheckLabel } from "components/shared/Labels";
+import { NoCheckLabel, ChessLabel } from "components/shared/Labels";
 import styled from "styled-components/native";
-
-export interface LobbyRowInfo {
-  format: FormatName;
-  variants: FutureVariantName[];
-  check: boolean;
-  time?: number;
-  players: number;
-}
+import { LobbyGame } from "../useLobbyQuery";
 
 interface Props {
-  lobbyRowInfo: LobbyRowInfo;
+  lobbyGame: LobbyGame;
 }
 
-export const LobbyRow: SFC<Props> = ({ lobbyRowInfo }) => {
+export const LobbyRow: SFC<Props> = ({ lobbyGame }) => {
   const [hoverRef, hovered] = useHover();
-  const format = formats[lobbyRowInfo.format];
-  const variants = lobbyRowInfo.variants.map((variantName) => allVariants[variantName]);
+  const check = lobbyGame.gameOptions.checkEnabled;
+  const formatName = lobbyGame.gameOptions.format;
+  const format = formats[formatName];
+  const deck = lobbyGame.gameOptions.deck;
+  const variants =
+    deck === undefined
+      ? lobbyGame.gameOptions.baseVariants.map((variantName) => allVariants[variantName])
+      : deck.map((variantName) => allVariants[variantName]);
+  const time = lobbyGame.gameOptions.time;
+  const players = lobbyGame.gameOptions.players?.length;
+  if (players === undefined || variants === undefined) return null;
   return (
     <Container ref={hoverRef}>
       <FormatIconContainer>
-        <FormatIcon format={lobbyRowInfo.format} size={20} />
+        <FormatIcon format={formatName} size={20} />
       </FormatIconContainer>
       <FlexContainer>
         <TopRow>
@@ -44,9 +44,9 @@ export const LobbyRow: SFC<Props> = ({ lobbyRowInfo }) => {
           </FlexContainer>
           <EndContainer>
             <InfoContainer style={{ marginRight: 6 }}>
-              {lobbyRowInfo.time ? (
+              {time ? (
                 <>
-                  <Text cat={"BodyM"}>{lobbyRowInfo.time}</Text>
+                  <Text cat={"BodyM"}>{time / 60000}</Text>
                   <TextIcon Icon={TimerIcon} />
                 </>
               ) : (
@@ -54,7 +54,7 @@ export const LobbyRow: SFC<Props> = ({ lobbyRowInfo }) => {
               )}
             </InfoContainer>
             <InfoContainer style={{ marginRight: 2 }}>
-              <Text cat={"BodyM"}>{lobbyRowInfo.players}</Text>
+              <Text cat={"BodyM"}>{players}</Text>
               <TextIcon Icon={PlayerIcon} />
             </InfoContainer>
           </EndContainer>
@@ -64,7 +64,7 @@ export const LobbyRow: SFC<Props> = ({ lobbyRowInfo }) => {
           showsHorizontalScrollIndicator={false}
           style={{ paddingBottom: 8 }}
         >
-          {!lobbyRowInfo.check && <NoCheckLabel style={{ marginRight: 4 }} />}
+          {!check && <NoCheckLabel style={{ marginRight: 4 }} />}
           {variants.map((variant) => (
             <LabelWithDetails
               label={variant.title}
@@ -73,6 +73,7 @@ export const LobbyRow: SFC<Props> = ({ lobbyRowInfo }) => {
               style={{ marginRight: 4 }}
             />
           ))}
+          {check && variants.length === 0 && <ChessLabel />}
         </ScrollLabelRow>
       </FlexContainer>
       {hovered && <LobbyRowCover pointerEvents={"none"} />}

@@ -43,7 +43,7 @@ const StartScreen: FC = () => {
           b={
             <>
               <SpotlightGame style={{ marginTop: 12 }} />
-              <Lobby style={{ marginTop: 12 }} />
+              <Lobby lobbyGames={lobbyGames} style={{ marginTop: 12 }} />
               <Row style={{ marginTop: 12, width: 400 }}>
                 <Button
                   onPress={(): void => startGame(calculateGameOptions(gameOptions, []))}

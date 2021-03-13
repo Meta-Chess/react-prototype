@@ -3,36 +3,16 @@ import { View, ScrollView } from "react-native";
 import { AbsoluteView } from "ui";
 import { SFC, Colors } from "primitives";
 import { range } from "lodash";
-import { LobbyRow, LobbyRowInfo } from "./LobbyRow";
+import { LobbyRow } from "./LobbyRow";
 import styled from "styled-components/native";
+import { LobbyGame } from "../useLobbyQuery";
 
-const Row1: LobbyRowInfo = {
-  format: "rollingVariants",
-  variants: ["atomic", "crazyhouse", "chemicallyExcitedKnight", "pull"],
-  check: true,
-  time: 5,
-  players: 2,
-};
+interface Props {
+  lobbyGames?: LobbyGame[];
+}
 
-const Row2: LobbyRowInfo = {
-  format: "variantComposition",
-  variants: ["toroidal", "fatigue", "morphlings"],
-  check: false,
-  time: 10,
-  players: 3,
-};
-
-const Row3: LobbyRowInfo = {
-  format: "variantComposition",
-  variants: ["hex"],
-  check: true,
-  time: undefined,
-  players: 2,
-};
-
-const lobbyRowsInfo = [Row1, Row2, Row3];
-
-export const Lobby: SFC = ({ style }) => {
+export const Lobby: SFC<Props> = ({ lobbyGames, style }) => {
+  if (lobbyGames === undefined) return null; //make it a spinner
   return (
     <Container style={style}>
       <ScrollLobbyRows
@@ -40,11 +20,11 @@ export const Lobby: SFC = ({ style }) => {
         scrollEventThrottle={100}
         showsVerticalScrollIndicator={false}
       >
-        {range(0, lobbyRowsInfo.length).map(
+        {range(0, Math.min(20, lobbyGames.length)).map(
           (i) =>
-            lobbyRowsInfo.length > i && (
+            lobbyGames.length > i && (
               <>
-                <LobbyRow lobbyRowInfo={lobbyRowsInfo[i]} />
+                <LobbyRow lobbyGame={lobbyGames[i]} />
                 <RowSeparator />
               </>
             )

@@ -6,7 +6,7 @@ import { LabelWithDetails, Row } from "ui";
 import { View } from "react-native";
 import { Text } from "primitives";
 import { WASD } from "./ActiveKeycaps";
-import { NoCheckLabel } from "components/shared/Labels";
+import { NoCheckLabel, ChessLabel } from "components/shared/Labels";
 import styled from "styled-components/native";
 import { VariantLabelInfo } from "game/types";
 import Color from "color";
@@ -40,6 +40,10 @@ const VariantInfoCard: SFC = ({ style }) => {
           key={format.title}
           color={Colors.MCHESS_ORANGE}
         />
+        {!noCheck && variants.length === 0 && (
+          <ChessLabel style={{ marginRight: 4, marginTop: 4 }} />
+        )}
+        {noCheck && <NoCheckLabel style={{ marginRight: 4, marginTop: 4 }} />}
         {variants.map((variant, index) => (
           <StyledLabel
             label={variant.title}
@@ -48,7 +52,6 @@ const VariantInfoCard: SFC = ({ style }) => {
             color={VARIANT_LABEL_COLORS[gameMaster.formatVariantLabelColors[index]]}
           />
         ))}
-        {noCheck && <NoCheckLabel style={{ marginRight: 4, marginTop: 4 }} />}
       </View>
     </Card>
   );

@@ -1,15 +1,18 @@
 import React from "react";
 import { View } from "react-native";
 import { SFC, Colors, Text } from "primitives";
+import { Row } from "ui";
 import styled from "styled-components/native";
 
 export const SpotlightGame: SFC = ({ style }) => {
   return (
     <Container style={style}>
-      <Text cat={"DisplayS"} style={{ paddingLeft: 8, paddingTop: 4 }}>
-        {"Spotlight Game"}
-      </Text>
-      <View></View>
+      <Row>
+        <Text cat={"DisplayS"} style={{ paddingLeft: 8, paddingTop: 4 }}>
+          {"Spotlight Game: Rolling Variants"}
+        </Text>
+        <View></View>
+      </Row>
     </Container>
   );
 };
