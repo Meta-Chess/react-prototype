@@ -7,13 +7,21 @@ interface Props {
   value: boolean;
   setValue: (v: boolean) => void;
   label: string;
+  disabled?: boolean;
 }
 
-export const LabeledCheckBox: SFC<Props> = ({ value, setValue, label, style }) => {
+export const LabeledCheckBox: SFC<Props> = ({
+  value,
+  setValue,
+  label,
+  disabled,
+  style,
+}) => {
   return (
     <TouchableContainer
       style={style}
       onPress={(): void => setValue(!value)}
+      disabled={disabled}
       accessibilityRole={"checkbox"}
       activeOpacity={0.8}
     >

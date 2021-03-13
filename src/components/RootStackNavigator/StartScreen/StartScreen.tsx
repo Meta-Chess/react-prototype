@@ -10,10 +10,14 @@ import { SpotlightGame } from "./SpotlightGame";
 import { Screens, useNavigation } from "navigation";
 import {Button, Row} from "ui";
 import {SetupGameButton} from "components/RootStackNavigator/StartScreen/SetupGameButton";
+import { useLobbyQuery } from "./useLobbyQuery";
 
 const StartScreen: FC = () => {
   const [gameOptions] = useState<GameOptions>(defaultGameOptions);
   const navigation = useNavigation();
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: lobbyGames, loading, error } = useLobbyQuery({ pollInterval: 2000 });
 
   const startGame = useCallback(
     (gameOptions): void =>

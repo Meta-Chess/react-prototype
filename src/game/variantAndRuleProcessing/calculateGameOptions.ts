@@ -30,4 +30,5 @@ export const defaultGameOptions = {
   numberOfPlayers: 2,
   format: "variantComposition",
   baseVariants: [] as FutureVariantName[],
+  time: 300000,
 } as const;

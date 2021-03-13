@@ -6,6 +6,7 @@ import { Colors, Text } from "primitives";
 interface Option<T> {
   label: ReactElement;
   value: T;
+  flex?: number;
 }
 
 interface Props<T> {
@@ -25,7 +26,7 @@ export function OptionGroup<T>({
 }: Props<T>): ReactElement {
   return (
     <Container style={style}>
-      {title !== undefined && (
+      {title && (
         <Text cat={"DisplayXS"} style={{ marginRight: 12 }}>
           {title}
         </Text>
@@ -33,6 +34,7 @@ export function OptionGroup<T>({
       {options.map((option, i) => {
         return (
           <PressableOption
+            style={{ flex: option.flex }}
             key={i}
             active={option.value === selected}
             onPress={(): void => setSelected(option.value)}
@@ -48,6 +50,7 @@ export function OptionGroup<T>({
 const Container = styled(View)`
   flex-direction: row;
   align-items: center;
+  padding-horizontal: -4px;
 `;
 
 const PressableOption = styled(TouchableOpacity)<{ active: boolean }>`
@@ -55,10 +58,12 @@ const PressableOption = styled(TouchableOpacity)<{ active: boolean }>`
   width: 28px;
   justify-content: center;
   align-items: center;
-  margin-right: 8px;
+  margin-horizontal: 4px;
   background-color: ${({ active }): string =>
-    active ? Colors.GREY.fade(0.6).toString() : Colors.GREY.fade(0.9).toString()};
+    active
+      ? Colors.MCHESS_ORANGE.fade(0.85).toString()
+      : Colors.GREY.fade(0.9).toString()};
   border-radius: 4px;
   border-width: ${({ active }): number => (active ? 1 : 0)}px;
-  border-color: ${Colors.TEXT.LIGHT_SECONDARY.toString()};
+  border-color: ${Colors.MCHESS_ORANGE.fade(0).toString()};
 `;
