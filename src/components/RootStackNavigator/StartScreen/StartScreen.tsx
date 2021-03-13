@@ -1,23 +1,18 @@
 import React, { FC, useState, useCallback } from "react";
 import { MChessLogo } from "primitives";
-import { Button, Row, LabeledCheckBox, DebouncedTextInput } from "ui";
-import {
-  GameProvider,
-  GameOptions,
-  defaultGameOptions,
-  calculateGameOptions,
-} from "game";
-import { GameOptionControls } from "./GameOptionControls";
+import { GameProvider, GameOptions, defaultGameOptions, calculateGameOptions } from "game";
 import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
-import { Screens, useNavigation } from "navigation";
-import { SetupGameButton } from "./SetupGameButton";
 import { ScreenContainer } from "components/shared";
 import { HelpMenu } from "components/shared";
 import { Lobby } from "./Lobby";
+import { SpotlightGame } from "./SpotlightGame";
+import { Screens, useNavigation } from "navigation";
+import {Button, Row} from "ui";
+import {SetupGameButton} from "components/RootStackNavigator/StartScreen/SetupGameButton";
 
 const StartScreen: FC = () => {
-  const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
+  const [gameOptions] = useState<GameOptions>(defaultGameOptions);
   const navigation = useNavigation();
 
   const startGame = useCallback(
@@ -28,6 +23,7 @@ const StartScreen: FC = () => {
       }),
     [navigation]
   );
+
   return (
     <GameProvider
       gameOptions={{ ...gameOptions, time: undefined, online: false, flipBoard: false }}
@@ -42,14 +38,7 @@ const StartScreen: FC = () => {
           }
           b={
             <>
-              <GameOptionControls
-                gameOptions={gameOptions}
-                setGameOptions={(options: GameOptions): GameOptions => {
-                  setGameOptions(options);
-                  return options;
-                }}
-                onSubmit={startGame}
-              />
+              <SpotlightGame style={{ marginTop: 12 }} />
               <Lobby style={{ marginTop: 12 }} />
               <Row style={{ marginTop: 12, width: 400 }}>
                 <Button

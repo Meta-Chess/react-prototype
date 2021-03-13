@@ -13,7 +13,10 @@ export const StartScreenLayoutContainer: FC<Props> = ({ a, b }) => {
   const portrait = height > width;
 
   return portrait ? (
-    <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 16 }}>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1, padding: 16 }}
+      showsVerticalScrollIndicator={false}
+    >
       <Container style={{ height: Math.min(width, 600) }}>{a}</Container>
       <Container style={{ flexGrow: 1, marginVertical: 24 }}>{b}</Container>
     </ScrollView>
@@ -21,7 +24,10 @@ export const StartScreenLayoutContainer: FC<Props> = ({ a, b }) => {
     <Row style={{ flex: 1, alignItems: "stretch", padding: 16, minWidth: 600 }}>
       <Container style={{ flex: 2 }}>{a}</Container>
       <Container style={{ flex: 1, minWidth: 400, marginLeft: 32 }}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+          showsVerticalScrollIndicator={false}
+        >
           {b}
         </ScrollView>
       </Container>

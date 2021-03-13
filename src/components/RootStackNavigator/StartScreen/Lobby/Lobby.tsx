@@ -1,15 +1,8 @@
 import React from "react";
-import { View, ScrollView, TouchableOpacity } from "react-native";
-import { Screens, useNavigation } from "navigation";
-import { AbsoluteView, LabelWithDetails, TextIcon, Row } from "ui";
-import { PlayerIcon, TimerIcon, NoTimerIcon } from "primitives/icons";
-import { SFC, Colors, Text, useHover } from "primitives";
+import { View, ScrollView } from "react-native";
+import { AbsoluteView } from "ui";
+import { SFC, Colors } from "primitives";
 import { range } from "lodash";
-import { futureVariants as allVariants, formats } from "game";
-import { FutureVariantName } from "game/variants";
-import { FormatName } from "game/formats";
-import { FormatIcon } from "components/shared";
-import { NoCheckLabel } from "components/shared/Labels";
 import { LobbyRow, LobbyRowInfo } from "./LobbyRow";
 import styled from "styled-components/native";
 
@@ -63,7 +56,7 @@ export const Lobby: SFC = ({ style }) => {
 };
 
 const Container = styled(View)`
-  height: 60%;
+  height: 40%;
   width: 400px;
   background-color: ${Colors.DARKER.toString()};
 `;
