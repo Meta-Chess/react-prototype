@@ -4,8 +4,8 @@ import { GameContext, PlayerName } from "game";
 export const useFlipBoard = (delay = 400): { flipBoard: boolean } => {
   const { gameMaster } = useContext(GameContext);
   const wePlayFromBlacksSide =
-    gameMaster?.game.players.length === 2 &&
-    gameMaster.assignedPlayer === PlayerName.Black; // This will need to be more complicated for multiplayer spherical
+    !gameMaster?.getRuleNames().includes("longBoard") &&
+    gameMaster?.assignedPlayer === PlayerName.Black; // This will need to be more complicated for multiplayer spherical
   const [flipBoard, setFlipBoard] = useState(false);
   const flipBoardEnabled = !!gameMaster?.flipBoard;
 

@@ -8,10 +8,9 @@ export enum PieceDecorationName {
 
 export function getPieceDecorationNames(
   piece: Piece,
-  ruleNames?: RuleName[],
-  flipBoard?: boolean
+  ruleNames?: RuleName[]
 ): PieceDecorationName[] {
-  if (ruleNames === undefined || flipBoard === undefined) return [];
+  if (ruleNames === undefined) return [];
 
   const pieceDecorations: PieceDecorationName[] = [];
   if (piece.name === PieceName.Pawn && ruleNames.includes("longBoard")) {
@@ -19,10 +18,10 @@ export function getPieceDecorationNames(
     const northGait = gaits.some((gait) => gait.pattern[0] === Direction.N);
     const southGait = gaits.some((gait) => gait.pattern[0] === Direction.S);
 
-    if ((northGait && !flipBoard) || (southGait && flipBoard)) {
+    if (northGait) {
       pieceDecorations.push(PieceDecorationName.UpDirectionArrow);
     }
-    if ((southGait && !flipBoard) || (northGait && flipBoard)) {
+    if (southGait) {
       pieceDecorations.push(PieceDecorationName.DownDirectionArrow);
     }
   }
