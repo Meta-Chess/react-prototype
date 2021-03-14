@@ -9,7 +9,7 @@ export const BackHistoryButton: SFC = ({ style }) => {
   const disabled = !gameMaster?.positionInHistory;
   return (
     <ButtonSecondary
-      label={<ArrowBackIcon />}
+      label={ArrowBackIcon}
       style={style}
       disabled={disabled}
       onPress={(): void =>
