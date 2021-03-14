@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Linking, Text } from "react-native";
+import { Linking, Text, ScrollView } from "react-native";
 import { HelpMenu, ScreenContainer } from "components/shared";
 import { H1, H2, P, Colors, ArrowBackWithStemIcon } from "primitives";
 import { View } from "react-native";
@@ -11,15 +11,16 @@ import { useGoBackOrToStartScreen } from "navigation";
 export const AboutScreen: FC = () => {
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
   return (
-    <ScreenContainer style={{ alignItems: "center", paddingVertical: 24 }}>
-      <HelpMenu style={{ margin: 8 }} />
-      <View style={{ position: "absolute", top: 16, left: 16 }}>
-        <IconButton Icon={ArrowBackWithStemIcon} onPress={goBackOrToStartScreen} />
-      </View>
-      <View style={{ maxWidth: 800 }}>
+    <ScreenContainer style={{ alignItems: "center", paddingVertical: 0 }}>
+      <ScrollView
+        style={{ marginTop: 48 }}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ maxWidth: 800, paddingBottom: 40 }}
+      >
         <Row style={{ alignItems: "center" }}>
-          {/*<Image style={{ width: 50, height: 50 }} source={MChessLogoPNG} />; TODO: no-url rook*/}
-          <H1 onPress={goBackOrToStartScreen}>About mchess</H1>
+          <H1 onPress={goBackOrToStartScreen} style={{ marginTop: 0 }}>
+            About mchess
+          </H1>
         </Row>
 
         <P>
@@ -86,6 +87,10 @@ export const AboutScreen: FC = () => {
           Our chess pieces were created by {creatorCreditLink} under creative commons
           license. They can be found {pieceCreditLink}.
         </P>
+      </ScrollView>
+      <HelpMenu style={{ margin: 8 }} />
+      <View style={{ position: "absolute", top: 16, left: 16 }}>
+        <IconButton Icon={ArrowBackWithStemIcon} onPress={goBackOrToStartScreen} />
       </View>
     </ScreenContainer>
   );
