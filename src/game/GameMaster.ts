@@ -167,7 +167,8 @@ export class GameMaster {
     this.selectedPieces.forEach((piece) => {
       if (
         piece.owner !== currentPlayerName ||
-        (this.assignedPlayer !== "all" && this.assignedPlayer !== piece.owner)
+        (this.assignedPlayer !== "all" && this.assignedPlayer !== piece.owner) ||
+        this.positionInHistory !== this.moveHistory.length
       ) {
         this.squaresInfo.add(piece.location, SquareInfo.SelectedOtherPlayerPiece);
       } else {
@@ -177,7 +178,8 @@ export class GameMaster {
     this.allowableMoves.forEach((move) => {
       if (
         move.playerName !== currentPlayerName ||
-        (this.assignedPlayer !== "all" && this.assignedPlayer !== currentPlayerName)
+        (this.assignedPlayer !== "all" && this.assignedPlayer !== currentPlayerName) ||
+        this.positionInHistory !== this.moveHistory.length
       ) {
         this.squaresInfo.add(move.location, SquareInfo.PossibleOtherPlayerMoveEndPoint);
       } else if (!doesCapture(move)) {
@@ -284,8 +286,8 @@ export class GameMaster {
       this.game.doMove(move);
       if (unselect) this.unselectAllPieces();
     }
-    if (!fromHistory) this.moveHistory.push(move);
-    this.positionInHistory += 1;
+    if (!fromHistory && move) this.moveHistory.push(move);
+    if (move) this.positionInHistory += 1;
     const everyoneHasMoved =
       uniq(this.moveHistory.map((m) => m?.playerName)).length ===
       this.game.players.length;
