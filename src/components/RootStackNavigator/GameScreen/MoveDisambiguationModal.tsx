@@ -7,7 +7,11 @@ import { IconButton } from "ui/Buttons/IconButton";
 import styled from "styled-components/native";
 import { Styles } from "primitives/Styles";
 
-export const MoveDisambiguationModal: FC = () => {
+interface Props {
+  flipBoard: boolean;
+}
+
+export const MoveDisambiguationModal: FC<Props> = ({ flipBoard }) => {
   const { gameMaster } = useContext(GameContext);
   if (!gameMaster) return null;
   const moves = gameMaster?.allowableMoves;
@@ -38,6 +42,7 @@ export const MoveDisambiguationModal: FC = () => {
             <View key={index}>
               <StaticBoard
                 gameMaster={moveDemoGameMaster}
+                flipBoard={flipBoard}
                 onPress={(): void => gameMaster.doMove({ move })}
                 style={{ marginLeft: index > 0 ? 12 : undefined }}
               />

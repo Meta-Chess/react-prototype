@@ -75,7 +75,7 @@ export const GameScreenContent: FC = () => {
             </AbsoluteView>
           ) : moveDisambiguationRequired ? (
             <AbsoluteView style={{ justifyContent: "center", flexDirection: "row" }}>
-              <MoveDisambiguationModal />
+              <MoveDisambiguationModal flipBoard={flipBoard} />
             </AbsoluteView>
           ) : null}
         </View>

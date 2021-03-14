@@ -6,7 +6,8 @@ import { Bishop, King, Knight, Pawn, Queen, Rook } from "./sprites";
 import { SFC } from "primitives/SFC";
 import { Animated } from "react-native";
 import { AnimatedGroup } from "primitives";
-
+import { PieceDecorationName } from "components/shared/Board/Piece/getPieceDecorationNames";
+import { PieceDecorations } from "./PieceDecorations";
 interface Props {
   type: PieceName;
   color?: string | undefined;
@@ -17,6 +18,7 @@ interface Props {
   animated?: boolean;
   animatedColor?: Animated.AnimatedInterpolation | undefined;
   animatedOutlineColor?: Animated.AnimatedInterpolation | undefined;
+  pieceDecorationNames?: PieceDecorationName[];
 }
 
 const PieceImage: SFC<Props> = ({
@@ -29,6 +31,7 @@ const PieceImage: SFC<Props> = ({
   style,
   animatedColor,
   animatedOutlineColor,
+  pieceDecorationNames,
 }) => {
   if (size < 0) return null;
   const primary = color;
@@ -36,20 +39,24 @@ const PieceImage: SFC<Props> = ({
   const primaryAnimated = animatedColor;
   const secondaryAnimated = animatedOutlineColor;
   const alphaModifier = opacity === undefined ? 1 : opacity;
-  const paths =
-    type === PieceName.Pawn ? (
-      <Pawn />
-    ) : type === PieceName.Bishop ? (
-      <Bishop />
-    ) : type === PieceName.Knight ? (
-      <Knight />
-    ) : type === PieceName.Rook ? (
-      <Rook />
-    ) : type === PieceName.Queen ? (
-      <Queen />
-    ) : (
-      <King />
-    );
+  const paths = (
+    <>
+      {type === PieceName.Pawn ? (
+        <Pawn />
+      ) : type === PieceName.Bishop ? (
+        <Bishop />
+      ) : type === PieceName.Knight ? (
+        <Knight />
+      ) : type === PieceName.Rook ? (
+        <Rook />
+      ) : type === PieceName.Queen ? (
+        <Queen />
+      ) : (
+        <King />
+      )}
+      {<PieceDecorations pieceDecorationNames={pieceDecorationNames} />}
+    </>
+  );
 
   const glowAlphas = [0.03, 0.1, 0.1, 0.2, 0.3, 0.4, 1];
 

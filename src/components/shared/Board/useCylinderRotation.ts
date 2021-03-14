@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useRef, useCallback } from "react";
-import { GameContext } from "game";
+import { GameContext, PlayerName } from "game";
 import { BoardMeasurements } from "components/shared";
 import { Animated, Platform, Easing } from "react-native";
 
@@ -19,9 +19,29 @@ export const useCylinderRotation = (
     ?.getRuleNames()
     .includes("verticallyCylindrical");
 
-  const animationOffset = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+  const assignedPlayer = gameMaster?.assignedPlayer;
+  const players = gameMaster?.game.players;
+
+  const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
+  const numberOfFiles = useMemo(() => maxFile - minFile + 1, [minFile, maxFile]);
+  const numberOfRanks = useMemo(() => maxRank - minRank + 1, [minRank, maxRank]);
+
+  const defaultYOffset = useMemo(() => {
+    const assignedPlayerName =
+      assignedPlayer === "all" || assignedPlayer === "spectator"
+        ? PlayerName.White
+        : assignedPlayer || PlayerName.White;
+    const playerNames = players?.map((p) => p.name) || [PlayerName.White];
+    const playerIndex = playerNames.indexOf(assignedPlayerName);
+    return verticalRotationAllowed
+      ? (numberOfRanks * playerIndex) / playerNames?.length
+      : 0;
+  }, [assignedPlayer, players, verticalRotationAllowed, numberOfRanks]);
+
+  const animationOffset = useRef(new Animated.ValueXY({ x: 0, y: defaultYOffset }))
+    .current;
   const animationTargetX = useRef(0);
-  const animationTargetY = useRef(0);
+  const animationTargetY = useRef(defaultYOffset);
 
   const onKeyDownEvent = useCallback((event) => {
     switch (event.key) {
@@ -58,9 +78,6 @@ export const useCylinderRotation = (
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const squareSize = measurements.squareSize;
-  const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
-  const numberOfFiles = useMemo(() => maxFile - minFile + 1, [minFile, maxFile]);
-  const numberOfRanks = useMemo(() => maxRank - minRank + 1, [minRank, maxRank]);
 
   const wrappedAnimationOffsetX = Animated.subtract(
     squareSize * numberOfFiles,

@@ -3,6 +3,7 @@ import { GameContext, Piece as PieceClass, TokenName, PlayerName } from "game";
 import { PieceImage, Colors } from "primitives";
 import { Animated, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
+import { getPieceDecorationNames } from "./getPieceDecorationNames";
 
 interface animatedData {
   animatedColor: Animated.AnimatedInterpolation;
@@ -20,6 +21,9 @@ interface Props {
 const Piece: FC<Props> = ({ piece, size, glowColor, animatedData, onPress }) => {
   const { gameMaster } = useContext(GameContext);
   if (piece === undefined) return null;
+
+  const pieceDecorationNames = getPieceDecorationNames(piece, gameMaster?.getRuleNames());
+
   const animated = animatedData !== undefined;
   const PieceImageComponent = (
     <PieceImage
@@ -36,6 +40,7 @@ const Piece: FC<Props> = ({ piece, size, glowColor, animatedData, onPress }) => 
       glowColor={glowColor}
       animatedColor={animated ? animatedData?.animatedColor : undefined}
       animatedOutlineColor={animated ? animatedData?.animatedOutlineColor : undefined}
+      pieceDecorationNames={pieceDecorationNames}
     />
   );
   return onPress ? (

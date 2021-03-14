@@ -7,6 +7,7 @@ import { View } from "react-native";
 
 interface Props {
   gameMaster: GameMaster;
+  flipBoard?: boolean;
   onPress?: () => void;
   maxWidth?: number;
   maxHeight?: number;
@@ -14,6 +15,7 @@ interface Props {
 
 export const StaticBoard: SFC<Props> = ({
   gameMaster,
+  flipBoard,
   onPress,
   maxWidth = 200,
   maxHeight = 200,
@@ -32,7 +34,7 @@ export const StaticBoard: SFC<Props> = ({
   return (
     <View style={[style, { overflow: "hidden" }]}>
       <SimpleGameProvider gameMaster={gameMaster}>
-        <Board measurements={boardMeasurements} backboard={false} />
+        <Board measurements={boardMeasurements} flipBoard={flipBoard} backboard={false} />
       </SimpleGameProvider>
       <AbsoluteTouchableOpacity
         onPress={onPress}
