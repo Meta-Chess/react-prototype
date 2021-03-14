@@ -21,7 +21,6 @@ export const Lobby: SFC = ({ style }) => {
           justifyContent: "center",
         }}
         showsVerticalScrollIndicator={false}
-        scrollEventThrottle={100}
       >
         <LobbyGameList lobbyQueryResult={lobbyQueryResult} />
       </ScrollLobbyRows>
