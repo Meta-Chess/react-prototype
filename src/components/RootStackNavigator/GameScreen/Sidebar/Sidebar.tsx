@@ -3,7 +3,7 @@ import { ScrollView, TouchableOpacity, useWindowDimensions, View } from "react-n
 import { Button, Footer, useModals } from "ui";
 import { useGoBackOrToStartScreen } from "navigation";
 import { Colors, SFC } from "primitives";
-import { GameContext, OnlineGameMaster } from "game";
+import { GameContext, OnlineGameMaster, PlayerName } from "game";
 import { RoomIdCard } from "./RoomIdCard";
 import { VariantInfoCard } from "./VariantInfoCard";
 import { SelectedPieceInfoCard } from "./SelectedPieceInfoCard";
@@ -36,6 +36,17 @@ const Sidebar: SFC = ({ style }) => {
   }
 
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
+  const doResign = (): void => {
+    const assignedPlayer = gameMaster?.assignedPlayer;
+    if (assignedPlayer && assignedPlayer !== "spectator") {
+      gameMaster?.doResign({
+        playerName:
+          assignedPlayer === "all"
+            ? gameMaster.game.getCurrentPlayerName()
+            : assignedPlayer,
+      });
+    }
+  };
   const isGameOver = gameMaster?.gameOver;
   const isDead =
     gameMaster?.assignedPlayer === "all" ||
@@ -98,10 +109,7 @@ const Sidebar: SFC = ({ style }) => {
                 }}
                 style={{ flex: 1 }}
               />
-              <ConcedeButton
-                onPress={goBackOrToStartScreen}
-                style={{ flex: 1, marginLeft: 12 }}
-              />
+              <ConcedeButton onPress={doResign} style={{ flex: 1, marginLeft: 12 }} />
             </>
           )}
         </HalfContainer>
