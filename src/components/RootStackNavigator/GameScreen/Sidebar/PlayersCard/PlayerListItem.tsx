@@ -8,6 +8,7 @@ import { Player } from "game/Player/Player";
 import styled from "styled-components/native";
 import { randomChoice, randomInt } from "utilities";
 import { RollingVariantsCounter } from "components/RootStackNavigator/GameScreen/Sidebar/PlayersCard/RollingVariantsCounter";
+import { PlayerPieceAdvantage } from "./PlayerPieceAdvantage";
 
 interface Props {
   player: Player;
@@ -23,52 +24,59 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
   const ruleNames = gameMaster.getRuleNames();
   const assignedPlayer = gameMaster.assignedPlayer;
   const isYou = assignedPlayer === player.name;
+  const rowActive = player.name === currentPlayerName;
 
   return (
-    <Container active={player.name === currentPlayerName}>
-      <Row style={{ alignItems: "center" }}>
-        <PieceImage
-          type={PieceName.King}
-          color={Colors.PLAYER[player.name].toString()}
-          size={40}
-          key={player.name}
-          style={{ marginBottom: 4 }}
-        />
-        <View style={{ marginLeft: 8 }}>
-          <Row style={{ alignItems: "baseline" }}>
-            <Text cat={"BodyM"}>{name}</Text>
-            {isYou && (
-              <Text
-                cat={"BodyS"}
-                color={Colors.TEXT.LIGHT_SECONDARY.toString()}
-                style={{ marginLeft: 8 }}
-              >
-                {"(You)"}
-              </Text>
-            )}
-          </Row>
-          <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT_SECONDARY.toString()}>
-            {rating}
-          </Text>
-        </View>
-      </Row>
-      <Row style={{ alignItems: "center" }}>
-        {ruleNames.includes("rollingVariants") && (
-          <RollingVariantsCounter count={player.getRuleData("rollingVariantsCounter")} />
-        )}
-        <Timer playerName={player.name} />
-      </Row>
+    <View>
+      <Container style={{ paddingTop: 8 }} active={rowActive}>
+        <Row style={{ alignItems: "center" }}>
+          <PieceImage
+            type={PieceName.King}
+            color={Colors.PLAYER[player.name].toString()}
+            size={40}
+            key={player.name}
+            style={{ marginBottom: 4 }}
+          />
+          <View style={{ marginLeft: 8 }}>
+            <Row style={{ alignItems: "baseline" }}>
+              <Text cat={"BodyM"}>{name}</Text>
+              {isYou && (
+                <Text
+                  cat={"BodyS"}
+                  color={Colors.TEXT.LIGHT_SECONDARY.toString()}
+                  style={{ marginLeft: 8 }}
+                >
+                  {"(You)"}
+                </Text>
+              )}
+            </Row>
+            <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT_SECONDARY.toString()}>
+              {rating}
+            </Text>
+          </View>
+        </Row>
+        <Row style={{ alignItems: "center" }}>
+          {ruleNames.includes("rollingVariants") && (
+            <RollingVariantsCounter
+              count={player.getRuleData("rollingVariantsCounter")}
+            />
+          )}
+          <Timer playerName={player.name} />
+        </Row>
+      </Container>
+      <Container style={{ paddingBottom: 8 }} active={rowActive}>
+        <PlayerPieceAdvantage player={player} />
+      </Container>
       {!player.alive && (
         <AbsoluteView style={{ backgroundColor: Colors.DARK.fade(0.2).toString() }} />
       )}
-    </Container>
+    </View>
   );
 };
 
 const Container = styled(Row)<{ active: boolean }>`
   justify-content: space-between;
   align-items: center;
-  padding-vertical: 8px;
   padding-horizontal: 16px;
   ${({ active }): string =>
     active ? `background-color: ${Colors.WHITE.fade(0.92).toString()};` : ""}
