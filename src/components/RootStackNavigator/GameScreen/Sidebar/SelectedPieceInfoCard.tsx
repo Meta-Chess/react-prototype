@@ -1,6 +1,6 @@
 import React from "react";
 import { SFC, Text } from "primitives";
-import { Card } from "ui/Containers/Card";
+import { Block } from "ui/Containers/Block";
 import { Piece, tokenDetails, pieceDetails } from "game";
 import { LabelWithDetails } from "ui";
 import { View } from "react-native";
@@ -15,7 +15,7 @@ const SelectedPieceInfoCard: SFC<Props> = ({ pieces, style }) => {
   return (
     <>
       {pieces.map((piece, index) => (
-        <Card
+        <Block
           key={index}
           title={pieceDetails[piece.name].name + " Selected"}
           style={style}
@@ -34,7 +34,7 @@ const SelectedPieceInfoCard: SFC<Props> = ({ pieces, style }) => {
               />
             ))}
           </View>
-        </Card>
+        </Block>
       ))}
     </>
   );

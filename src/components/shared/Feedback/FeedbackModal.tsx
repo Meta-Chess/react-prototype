@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from "react";
-import { AbsoluteView, ButtonSecondary, Card, Row, Spinner, TextInput } from "ui";
+import { AbsoluteView, ButtonSecondary, Block, Row, Spinner, TextInput } from "ui";
 import { Text, Colors, CloseIcon } from "primitives";
 import { IconButton } from "ui/Buttons/IconButton";
 import styled from "styled-components/native";
@@ -53,7 +53,7 @@ export const FeedbackModal: FC<Props> = ({ category, context, onClose }) => {
   const placeholder = PLACEHOLDERS[category];
 
   return (
-    <Card style={{ width: 440, height: 300 }}>
+    <Block style={{ width: 440, height: 300 }}>
       <Row style={{ justifyContent: "space-between" }}>
         <Text cat={"DisplayS"}>{headerText}</Text>
         <IconButton Icon={CloseIcon} onPress={onClose} />
@@ -80,7 +80,7 @@ export const FeedbackModal: FC<Props> = ({ category, context, onClose }) => {
           <Spinner />
         </AbsoluteView>
       )}
-    </Card>
+    </Block>
   );
 };
 

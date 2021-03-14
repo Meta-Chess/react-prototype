@@ -1,6 +1,6 @@
 import React from "react";
 import { SFC } from "primitives";
-import { Card } from "ui";
+import { Block } from "ui";
 
 interface Props {
   roomId?: string;
@@ -8,7 +8,7 @@ interface Props {
 
 const RoomIdCard: SFC<Props> = ({ roomId, style }) => {
   if (!roomId) return null;
-  return <Card title={`Invite key: ${roomId}`} style={style} />;
+  return <Block title={`Invite key: ${roomId}`} style={style} />;
 };
 
 export { RoomIdCard };

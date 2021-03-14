@@ -15,7 +15,12 @@ export const linking: LinkingOptions = {
         },
       },
       [Screens.StartScreen]: "",
-      [Screens.VariantSelectScreen]: { path: "setup" },
+      [Screens.VariantSelectScreen]: {
+        path: "setup/:playWithFriends?",
+        stringify: {
+          playWithFriends: (_gameOptions: GameOptions): string => "", // Hide play with friends
+        },
+      },
     },
   },
 };

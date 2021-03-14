@@ -121,6 +121,9 @@ export const LabelWithDetails: SFC<Props> = ({
   useEffect((): void => {
     if (hovered && !modals.showing(modalId)) {
       measure(showModal);
+      setTimeout(() => {
+        hideModal();
+      }, 10000);
     } else if (modals.showing(modalId)) {
       hideModal();
     }

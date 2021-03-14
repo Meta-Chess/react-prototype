@@ -9,7 +9,7 @@ interface Props {
 
 export const TextIcon: SFC<Props> = ({ Icon, style }) => {
   return (
-    <View style={[style, { marginBottom: -3 }]}>
+    <View style={[style, { marginBottom: -1 }]}>
       <Icon size={14} />
     </View>
   );

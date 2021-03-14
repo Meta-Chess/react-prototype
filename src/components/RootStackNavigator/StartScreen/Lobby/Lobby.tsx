@@ -1,55 +1,55 @@
 import React from "react";
-import { View, ScrollView } from "react-native";
-import { AbsoluteView } from "ui";
-import { SFC, Colors } from "primitives";
-import { range } from "lodash";
-import { LobbyRow } from "./LobbyRow";
+import { ScrollView } from "react-native";
+import { SFC } from "primitives";
 import styled from "styled-components/native";
-import { LobbyGame } from "../useLobbyQuery";
+import { LobbyGameList } from "./LobbyGameList";
+import { Button, ButtonSecondary, Card, Footer } from "ui";
+import { Screens, useNavigation } from "navigation";
+import { useLobbyQuery } from "./useLobbyQuery";
+import { randomChoice } from "utilities";
 
-interface Props {
-  lobbyGames?: LobbyGame[];
-}
+export const Lobby: SFC = ({ style }) => {
+  const lobbyQueryResult = useLobbyQuery({ pollInterval: 5000 });
+  const navigation = useNavigation();
 
-export const Lobby: SFC<Props> = ({ lobbyGames, style }) => {
-  if (lobbyGames === undefined) return null; //make it a spinner
   return (
-    <Container style={style}>
+    <Container style={style} title={"Public Games"} subtitle={"Click to play"}>
       <ScrollLobbyRows
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
         scrollEventThrottle={100}
         showsVerticalScrollIndicator={false}
       >
-        {range(0, Math.min(20, lobbyGames.length)).map(
-          (i) =>
-            lobbyGames.length > i && (
-              <>
-                <LobbyRow lobbyGame={lobbyGames[i]} />
-                <RowSeparator />
-              </>
-            )
-        )}
+        <LobbyGameList lobbyQueryResult={lobbyQueryResult} />
       </ScrollLobbyRows>
-      <LobbyOutline pointerEvents={"none"} />
+      <Footer>
+        <ButtonSecondary
+          label={"Join Random"}
+          onPress={(): void =>
+            navigation.navigate(Screens.GameScreen, {
+              roomId: randomChoice(lobbyQueryResult.data || []).roomId,
+            })
+          }
+          // disabled={!lobbyQueryResult.data}
+          style={{ flex: 1 }}
+        />
+        <Button
+          label={"Create Game"}
+          onPress={(): void =>
+            navigation.navigate(Screens.VariantSelectScreen, { playWithFriends: false })
+          }
+          style={{ flex: 1, marginLeft: 8 }}
+        />
+      </Footer>
     </Container>
   );
 };
 
-const Container = styled(View)`
-  height: 40%;
-  width: 400px;
-  background-color: ${Colors.DARKER.toString()};
-`;
-
-const LobbyOutline = styled(AbsoluteView)`
-  border-color: ${Colors.DARKISH.toString()};
-  border-width: 1px;
-  border-radius: 4px;
-`;
-
-const RowSeparator = styled(View)`
-  border-bottom-color: ${Colors.DARKEST.toString()};
-  border-bottom-width: 1;
+const Container = styled(Card)`
+  height: 500px;
 `;
 
 const ScrollLobbyRows = ScrollView;

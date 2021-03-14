@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
 import { GameOptions } from "game";
 
+// This is duplicated in GameContext
 //TODO: default url context?
 const DEV_LOBBY_URL =
   process.env.DEV_LOBBY_URL ||
@@ -12,15 +13,17 @@ export interface LobbyGame {
   gameOptions: GameOptions;
 }
 
+export interface LobbyQueryResult {
+  data: LobbyGame[] | undefined;
+  error: boolean;
+  loading: boolean;
+}
+
 export function useLobbyQuery({
   pollInterval,
 }: {
   pollInterval?: number;
-}): {
-  data: LobbyGame[] | undefined;
-  error: boolean;
-  loading: boolean;
-} {
+}): LobbyQueryResult {
   const [data, setData] = useState<LobbyGame[]>();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);

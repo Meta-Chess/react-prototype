@@ -36,8 +36,9 @@ export class OnlineGameMaster extends GameMaster {
   static async connectNewGame(
     renderer: Renderer,
     gameOptions?: GameOptions,
-    roomId?: string | undefined
-  ): Promise<OnlineGameMaster> {
+    roomId?: string | undefined,
+    onSpectating?: () => void
+  ): Promise<OnlineGameMaster | undefined> {
     const gameClient = new GameClient(
       process.env.REACT_APP_SERVER ||
         "wss://fik1wh1ttf.execute-api.ap-southeast-2.amazonaws.com/dev",
@@ -49,6 +50,11 @@ export class OnlineGameMaster extends GameMaster {
 
     if (!gameClient.gameOptions) {
       throw new Error("Game options should be set already");
+    }
+
+    if (gameClient.assignedPlayer === "spectator") {
+      onSpectating?.();
+      return undefined;
     }
 
     const onlineGameMaster = new OnlineGameMaster(

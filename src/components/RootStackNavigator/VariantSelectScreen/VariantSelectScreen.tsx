@@ -9,11 +9,11 @@ import {
   defaultGameOptions,
 } from "game";
 import { TraitName } from "game/variants/traitInfo";
-import { useNavigation, Screens, useGoBackOrToStartScreen } from "navigation";
+import { useNavigation, Screens, useGoBackOrToStartScreen, useRoute } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
 import { FormatCard, FiltersCard, GameOptionsCard, AdviceCard } from "./CollapsableCards";
-import { Button, ButtonSecondary, HorizontalSeparator } from "ui";
+import { Button, ButtonSecondary, Footer } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors } from "primitives";
 import { Styles } from "primitives/Styles";
@@ -23,10 +23,15 @@ import { FormatName } from "game/formats";
 import { rollableVariants } from "game/formats/rollableVariants";
 
 const VariantSelectScreen: FC = () => {
+  const playWithFriends = useRoute<Screens.VariantSelectScreen>().params?.playWithFriends;
+
   const navigation = useNavigation();
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
 
-  const [gameOptions, setGameOptions] = useState<GameOptions>(defaultGameOptions);
+  const [gameOptions, setGameOptions] = useState<GameOptions>({
+    ...defaultGameOptions,
+    publicGame: !playWithFriends,
+  });
 
   const [activeFilters, setActiveFilters] = useState<TraitName[]>([]);
   const displayVariants: FutureVariantName[] = getFilteredVariantsInDisplayOrder(
@@ -89,8 +94,7 @@ const VariantSelectScreen: FC = () => {
             setActiveFilters={setActiveFilters}
           />
         </ScrollView>
-        <HorizontalSeparator color={Colors.DARKISH.fade(0.55).toString()} />
-        <NavigationContainer>
+        <Footer>
           <ButtonSecondary
             label="Back"
             onPress={goBackOrToStartScreen}
@@ -107,7 +111,7 @@ const VariantSelectScreen: FC = () => {
             }}
             style={{ flex: 1, marginLeft: 8 }}
           />
-        </NavigationContainer>
+        </Footer>
       </Sidebar>
       <LeftContainer style={{ flex: 1, flexDirection: "column-reverse" }}>
         <VariantCardGrid
@@ -137,16 +141,9 @@ const Sidebar = styled(View)`
   flex-direction: column;
   width: 400px;
   background-color: ${Colors.DARKER.toString()};
-  padding: 0px 0px 24px;
   border-left-width: 1px;
   border-left-color: ${Colors.DARKISH.toString()};
   ${Styles.BOX_SHADOW}
-`;
-
-const NavigationContainer = styled(View)`
-  flex-direction: row;
-  margin-top: 24px;
-  margin-horizontal: 24px;
 `;
 
 export { VariantSelectScreen };

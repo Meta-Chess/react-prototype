@@ -1,27 +1,39 @@
 import React from "react";
-import { View } from "react-native";
-import { SFC, Colors, Text } from "primitives";
-import { Row } from "ui";
-import styled from "styled-components/native";
+import { SFC } from "primitives";
+import { Button, Card, Footer } from "ui";
+import { calculateGameOptions } from "game";
+import { rollableVariants } from "game/formats/rollableVariants";
+import { Screens, useNavigation } from "navigation";
+
+const SPOTLIGHT_GAME_OPTIONS = calculateGameOptions(
+  {
+    checkEnabled: true,
+    numberOfPlayers: 2,
+    format: "rollingVariants",
+    time: 300000,
+    online: true,
+    publicGame: true,
+    spotlight: true,
+  },
+  rollableVariants
+);
 
 export const SpotlightGame: SFC = ({ style }) => {
+  const navigation = useNavigation();
+
   return (
-    <Container style={style}>
-      <Row>
-        <Text cat={"DisplayS"} style={{ paddingLeft: 8, paddingTop: 4 }}>
-          {"Spotlight Game: Rolling Variants"}
-        </Text>
-        <View></View>
-      </Row>
-    </Container>
+    <Card style={style} title={"Spotlight: Rolling Variants"}>
+      <Footer>
+        <Button
+          label={"Play Now!"}
+          style={{ flex: 1 }}
+          onPress={(): void => {
+            navigation.navigate(Screens.GameScreen, {
+              gameOptions: SPOTLIGHT_GAME_OPTIONS,
+            });
+          }}
+        />
+      </Footer>
+    </Card>
   );
 };
-
-const Container = styled(View)`
-  height: 100px;
-  width: 400px;
-  background-color: ${Colors.DARKER.toString()};
-  border-color: ${Colors.DARKISH.toString()};
-  border-width: 1px;
-  border-radius: 4px;
-`;

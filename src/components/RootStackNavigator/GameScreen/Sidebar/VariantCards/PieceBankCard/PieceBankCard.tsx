@@ -1,6 +1,6 @@
 import React from "react";
 import { SFC, Text, Colors } from "primitives";
-import { Card } from "ui/Containers/Card";
+import { Block } from "ui/Containers/Block";
 import { GameMaster } from "game";
 import { Piece } from "game/Board";
 import { LocationPrefix } from "game/Board/location";
@@ -18,7 +18,7 @@ const PieceBankCard: SFC<Props> = ({ gameMaster, style }) => {
   const players = gameMaster.game.players;
   const pieceSize = 40;
   return (
-    <Card title={"Piece Bank"} style={style}>
+    <Block title={"Piece Bank"} style={style}>
       <PlayerBankContainer>
         {players.map((player) => {
           const pieces = orderedPieceBankPieces(gameMaster, player.name);
@@ -52,7 +52,7 @@ const PieceBankCard: SFC<Props> = ({ gameMaster, style }) => {
           );
         })}
       </PlayerBankContainer>
-    </Card>
+    </Block>
   );
 };
 

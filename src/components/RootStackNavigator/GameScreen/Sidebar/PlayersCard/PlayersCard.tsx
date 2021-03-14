@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { SFC, Text } from "primitives";
-import { Card } from "ui/Containers/Card";
+import { Block } from "ui/Containers/Block";
 import { GameContext } from "game";
 import styled from "styled-components/native";
 import { PlayerListItem } from "components/RootStackNavigator/GameScreen/Sidebar/PlayersCard/PlayerListItem";
@@ -28,7 +28,7 @@ const PlayersCard: SFC = ({ style }) => {
   );
 };
 
-const StyledCard = styled(Card)`
+const StyledCard = styled(Block)`
   padding-bottom: 8px;
   padding-left: 0;
   padding-right: 0;

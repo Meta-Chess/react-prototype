@@ -130,6 +130,7 @@ export interface GameOptions {
   roomId?: string;
   online?: boolean;
   publicGame?: boolean; // The back end cares about this variable and its name!
+  spotlight?: boolean;
   baseVariants: FutureVariantName[];
   deck?: FutureVariantName[];
   format: FormatName;

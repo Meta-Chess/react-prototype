@@ -1,33 +1,45 @@
 import React from "react";
-import { View, ScrollView, TouchableOpacity } from "react-native";
-import { AbsoluteView, LabelWithDetails, TextIcon, Row } from "ui";
-import { PlayerIcon, TimerIcon, NoTimerIcon } from "primitives/icons";
-import { SFC, Colors, Text, useHover } from "primitives";
-import { futureVariants as allVariants, formats } from "game";
+import { ScrollView, TouchableOpacity, View } from "react-native";
+import { AbsoluteView, LabelWithDetails, Row, TextIcon } from "ui";
+import { NoTimerIcon, PlayerIcon, TimerIcon } from "primitives/icons";
+import { Colors, SFC, Text, useHover } from "primitives";
+import { formats, futureVariants as allVariants } from "game";
 import { FormatIcon } from "components/shared";
-import { NoCheckLabel, ChessLabel } from "components/shared/Labels";
+import { ChessLabel, NoCheckLabel } from "components/shared/Labels";
 import styled from "styled-components/native";
-import { LobbyGame } from "../useLobbyQuery";
+import { LobbyGame } from "./useLobbyQuery";
+import { Screens, useNavigation } from "navigation";
 
 interface Props {
   lobbyGame: LobbyGame;
 }
 
 export const LobbyRow: SFC<Props> = ({ lobbyGame }) => {
+  const navigation = useNavigation();
   const [hoverRef, hovered] = useHover();
   const check = lobbyGame.gameOptions.checkEnabled;
   const formatName = lobbyGame.gameOptions.format;
   const format = formats[formatName];
   const deck = lobbyGame.gameOptions.deck;
-  const variants =
-    deck === undefined
-      ? lobbyGame.gameOptions.baseVariants.map((variantName) => allVariants[variantName])
-      : deck.map((variantName) => allVariants[variantName]);
+  const baseVariants = lobbyGame.gameOptions.baseVariants;
+  const variants = (baseVariants.length ? baseVariants : deck || []).map(
+    (variantName) => allVariants[variantName]
+  );
   const time = lobbyGame.gameOptions.time;
   const players = lobbyGame.gameOptions.players?.length;
+
   if (players === undefined || variants === undefined) return null;
+
   return (
-    <Container ref={hoverRef}>
+    <Container
+      ref={hoverRef}
+      onPress={(): void => {
+        navigation.navigate(Screens.GameScreen, {
+          gameOptions: lobbyGame.gameOptions,
+          roomId: lobbyGame.roomId,
+        });
+      }}
+    >
       <FormatIconContainer>
         <FormatIcon format={formatName} size={20} />
       </FormatIconContainer>
@@ -103,7 +115,7 @@ const TopRow = styled(Row)`
 const EndContainer = styled(Row)`
   align-self: flex-end;
   align-items: center;
-  margin-right: 2;
+  margin-right: 2px;
 `;
 
 const InfoContainer = styled(Row)`

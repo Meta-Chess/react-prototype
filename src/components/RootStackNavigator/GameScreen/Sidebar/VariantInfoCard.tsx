@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Colors, SFC } from "primitives";
-import { Card } from "ui/Containers/Card";
+import { Block } from "ui/Containers/Block";
 import { GameContext, futureVariants as allVariants, formats } from "game";
 import { LabelWithDetails, Row } from "ui";
 import { View } from "react-native";
@@ -28,7 +28,7 @@ const VariantInfoCard: SFC = ({ style }) => {
   const noCheck = !gameMaster.getRuleNames().includes("check");
 
   return (
-    <Card style={style}>
+    <Block style={style}>
       <Row style={{ justifyContent: "space-between" }}>
         <Text cat="DisplayM">{title}</Text>
         <WASD style={{ marginLeft: 8, marginTop: 4 }} />
@@ -53,7 +53,7 @@ const VariantInfoCard: SFC = ({ style }) => {
           />
         ))}
       </View>
-    </Card>
+    </Block>
   );
 };
 export { VariantInfoCard };

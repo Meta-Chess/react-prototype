@@ -8,4 +8,7 @@ export interface NavigatorParamList extends ParamListBase {
     roomId?: string;
   };
   [Screens.StartScreen]: undefined;
+  [Screens.VariantSelectScreen]: {
+    playWithFriends?: boolean;
+  };
 }
