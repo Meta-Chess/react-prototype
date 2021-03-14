@@ -38,6 +38,13 @@ const Sidebar: SFC = ({ style }) => {
 
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
   const isGameOver = gameMaster?.gameOver;
+  const isDead =
+    gameMaster?.assignedPlayer !== "all" &&
+    (gameMaster?.assignedPlayer === "spectator" ||
+      !gameMaster?.game
+        .alivePlayers()
+        .map((p) => p.name)
+        .includes(gameMaster?.assignedPlayer));
 
   return (
     <Container style={style}>
@@ -81,7 +88,7 @@ const Sidebar: SFC = ({ style }) => {
           />
         </HalfContainer>
         <HalfContainer style={{ marginLeft: 12 }}>
-          {isGameOver ? (
+          {isGameOver || isDead ? (
             <Button
               label="Finish Game"
               style={{ flex: 1 }}
