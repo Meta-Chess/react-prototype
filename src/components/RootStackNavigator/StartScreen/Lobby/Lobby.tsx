@@ -20,8 +20,8 @@ export const Lobby: SFC = ({ style }) => {
           alignItems: "center",
           justifyContent: "center",
         }}
-        scrollEventThrottle={100}
         showsVerticalScrollIndicator={false}
+        scrollEventThrottle={100}
       >
         <LobbyGameList lobbyQueryResult={lobbyQueryResult} />
       </ScrollLobbyRows>
@@ -49,7 +49,7 @@ export const Lobby: SFC = ({ style }) => {
 };
 
 const Container = styled(Card)`
-  height: 500px;
+  height: 400px;
 `;
 
 const ScrollLobbyRows = ScrollView;

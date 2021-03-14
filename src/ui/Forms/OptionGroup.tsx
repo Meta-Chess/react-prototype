@@ -37,6 +37,7 @@ export function OptionGroup<T>({
             style={{ flex: option.flex }}
             key={i}
             active={option.value === selected}
+            flex={option.flex !== undefined}
             onPress={(): void => setSelected(option.value)}
           >
             {option.label}
@@ -53,12 +54,12 @@ const Container = styled(View)`
   padding-horizontal: -4px;
 `;
 
-const PressableOption = styled(TouchableOpacity)<{ active: boolean }>`
+const PressableOption = styled(TouchableOpacity)<{ active: boolean; flex: boolean }>`
   height: 28px;
   width: 28px;
   justify-content: center;
   align-items: center;
-  margin-horizontal: 4px;
+  margin-horizontal: ${({ active, flex }): number => (active && flex ? 3 : 4)}px;
   background-color: ${({ active }): string =>
     active
       ? Colors.MCHESS_ORANGE.fade(0.85).toString()

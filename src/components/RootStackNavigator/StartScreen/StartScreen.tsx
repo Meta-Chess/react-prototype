@@ -22,6 +22,7 @@ const StartScreen: FC = () => {
           flexGrow: 1,
           backgroundColor: Colors.DARKEST.toString(),
         }}
+        showsVerticalScrollIndicator={false}
       >
         <ErrorBoundary>
           <StartScreenLayoutContainer
