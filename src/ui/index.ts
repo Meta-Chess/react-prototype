@@ -1,5 +1,6 @@
 export * from "./Buttons";
 export * from "./Containers";
+export * from "./Footer";
 export * from "./Forms";
 export * from "./LabelWithDetails";
 export * from "./ListItem";
@@ -8,3 +9,4 @@ export * from "./Row";
 export * from "./Separators";
 export * from "./Spinner";
 export * from "./Tiles";
+export * from "./TextIcon";

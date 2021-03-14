@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import { useWindowDimensions, ScrollView, View, TouchableOpacity } from "react-native";
-import { Button, Card, useModals, HorizontalSeparator } from "ui";
+import { ScrollView, TouchableOpacity, useWindowDimensions, View } from "react-native";
+import { Block, Button, Footer, useModals } from "ui";
 import { useGoBackOrToStartScreen } from "navigation";
 import { Colors, SFC } from "primitives";
 import { GameContext, OnlineGameMaster } from "game";
@@ -58,14 +58,13 @@ const Sidebar: SFC = ({ style }) => {
             <PlayersCard />
             <VariantCards />
             <SelectedPieceInfoCard pieces={pieces} key={key + 0.5} />
-            <Card>
+            <Block>
               <PieceCredit />
-            </Card>
+            </Block>
           </View>
         </TouchableOpacity>
       </ScrollView>
-      <HorizontalSeparator color={Colors.DARKISH.fade(0.55).toString()} />
-      <FixedContainer>
+      <Footer>
         <HalfContainer>
           <BackHistoryButton
             onPress={(): void => {
@@ -102,7 +101,7 @@ const Sidebar: SFC = ({ style }) => {
             </>
           )}
         </HalfContainer>
-      </FixedContainer>
+      </Footer>
     </Container>
   );
 };
@@ -113,11 +112,6 @@ const Container = styled(View)`
   border-width: 1px;
   border-color: ${Colors.DARKISH.toString()};
   ${Styles.BOX_SHADOW}
-`;
-
-const FixedContainer = styled(View)`
-  margin: 12px;
-  flex-direction: row;
 `;
 
 const HalfContainer = styled(View)`

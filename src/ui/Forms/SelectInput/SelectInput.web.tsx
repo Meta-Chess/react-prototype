@@ -24,6 +24,7 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
           }
         }}
         options={options}
+        isDisabled={options.length === 1}
         components={{ DropdownIndicator }}
         formatOptionLabel={OptionLabel}
         defaultValue={options[0]}
@@ -69,6 +70,10 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
           indicatorSeparator: (baseStyle): CSSProperties => ({
             ...baseStyle,
             display: "none",
+          }),
+          dropdownIndicator: (baseStyle): CSSProperties => ({
+            ...baseStyle,
+            visibility: options.length === 1 ? "hidden" : "visible",
           }),
         }}
       />

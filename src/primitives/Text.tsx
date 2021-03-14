@@ -17,9 +17,10 @@ export const sizes = {
   DisplayL: { size: 32, lineHeight: 40 },
 };
 
+export type TextCat = keyof typeof sizes;
 interface Props {
   alignment?: "left" | "center" | "right";
-  cat?: keyof typeof sizes;
+  cat?: TextCat;
   children: React.ReactNode;
   color?: string;
   fontFamily?: string;

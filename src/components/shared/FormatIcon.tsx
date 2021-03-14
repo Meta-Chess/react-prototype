@@ -7,7 +7,7 @@ import {
   RollingVariantsIcon,
 } from "primitives";
 
-export const FORMAT_ICONS: { [key in FormatName]: FC } = {
+export const FORMAT_ICONS: { [key in FormatName]: FC<{ size?: number }> } = {
   variantComposition: VariantCompositionIcon,
   randomVariants: RandomVariantsIcon,
   rollingVariants: RollingVariantsIcon,
@@ -15,9 +15,10 @@ export const FORMAT_ICONS: { [key in FormatName]: FC } = {
 
 interface Props {
   format: FormatName;
+  size?: number;
 }
 
-export const FormatIcon: SFC<Props> = ({ format }) => {
+export const FormatIcon: SFC<Props> = ({ format, size }) => {
   const Icon = FORMAT_ICONS[format];
-  return <Icon />;
+  return <Icon size={size} />;
 };

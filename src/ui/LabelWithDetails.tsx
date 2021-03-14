@@ -1,16 +1,18 @@
-import { TouchableOpacity, useWindowDimensions, ScrollView } from "react-native";
+import { View, useWindowDimensions, ScrollView } from "react-native";
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Colors, SFC, Text } from "primitives";
+import { Colors, SFC, Text, TextCat, useHover } from "primitives";
 import styled from "styled-components/native";
 import { TriangleUp } from "./TriangleUp";
 import { Styles } from "primitives/Styles";
 import { useModals } from "ui/Modals";
 import Color from "color";
+
 interface Props {
   label: string;
   details?: string;
   color?: Color;
+  textCat?: TextCat;
 }
 
 const MODAL_WIDTH = 240;
@@ -20,9 +22,11 @@ export const LabelWithDetails: SFC<Props> = ({
   label,
   details,
   color = Colors.MCHESS_BLUE,
+  textCat = "BodyS",
   style,
 }) => {
-  const anchorRef = useRef<TouchableOpacity>(null);
+  const [hoverRef, hovered] = useHover();
+  const anchorRef = useRef<View>(null);
   const [modalId] = useState(Math.random());
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const [screenSize, setScreenSize] = useState({ screenWidth, screenHeight });
@@ -114,34 +118,34 @@ export const LabelWithDetails: SFC<Props> = ({
     hideModal,
   ]);
 
+  useEffect((): void => {
+    if (hovered && !modals.showing(modalId)) {
+      measure(showModal);
+      setTimeout(() => {
+        hideModal();
+      }, 10000);
+    } else if (modals.showing(modalId)) {
+      hideModal();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hovered]);
+
   return (
     <>
-      <LabelContainer
-        style={style}
-        disabled={!details}
-        onPressIn={async (): Promise<void> => {
-          if (modals.showing(modalId)) {
-            hideModal();
-          } else {
-            measure(showModal);
-          }
-        }}
-        ref={anchorRef}
-        color={color}
-      >
-        <Text cat={"BodyS"}>{label}</Text>
+      <LabelContainer color={color} style={style} ref={hoverRef}>
+        <View ref={anchorRef}>
+          <Text cat={textCat}>{label}</Text>
+        </View>
       </LabelContainer>
     </>
   );
 };
 
-const LabelContainer = styled(TouchableOpacity)<{ color: Color }>`
+const LabelContainer = styled(View)<{ color: Color }>`
   border-radius: 4px;
   padding-horizontal: 8px;
-  margin-right: 4px;
-  margin-top: 4px;
-  align-self: flex-start;
   align-items: center;
+  align-self: center;
   z-index: 9;
   background-color: ${({ color }): string => color.fade(0.6).toString()};
 `;

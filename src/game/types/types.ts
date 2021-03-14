@@ -120,7 +120,7 @@ export enum SquareShape {
 
 export interface GameOptions {
   numberOfPlayers: number;
-  players?: PlayerName[];
+  players?: PlayerName[]; // The back end cares about this variable and its name!
   variant?: VariantName;
   customTitle?: string;
   time?: number | undefined;
@@ -129,6 +129,8 @@ export interface GameOptions {
   overTheBoard?: boolean;
   roomId?: string;
   online?: boolean;
+  publicGame?: boolean; // The back end cares about this variable and its name!
+  spotlight?: boolean;
   baseVariants: FutureVariantName[];
   deck?: FutureVariantName[];
   format: FormatName;

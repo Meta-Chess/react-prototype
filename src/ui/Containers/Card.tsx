@@ -4,21 +4,35 @@ import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
 interface Props {
   title?: string;
+  subtitle?: string;
 }
 
-export const Card: SFC<Props> = ({ title, children, style }) => {
+export const Card: SFC<Props> = ({ title, subtitle, children, style }) => {
   return (
     <Container style={style}>
-      {title && <Text cat="DisplayM">{title}</Text>}
+      {title && (
+        <View style={{ paddingTop: 8, paddingHorizontal: 12, paddingBottom: 12 }}>
+          <Text cat={"DisplayS"}>{title}</Text>
+          {subtitle && (
+            <Text
+              cat={"BodyXS"}
+              color={Colors.TEXT.LIGHT_SECONDARY.toString()}
+              style={{ marginTop: 2 }}
+            >
+              {subtitle}
+            </Text>
+          )}
+        </View>
+      )}
       {children}
     </Container>
   );
 };
 
 const Container = styled(View)`
-  background-color: ${Colors.DARK.toString()};
-  padding: 16px 16px 18px 16px;
-  overflow: hidden;
-  border-bottom-width: 2;
-  border-bottom-color: ${Colors.DARKER.toString()};
+  width: 400px;
+  background-color: ${Colors.DARKER.toString()};
+  border-color: ${Colors.DARKISH.toString()};
+  border-width: 1px;
+  border-radius: 4px;
 `;
