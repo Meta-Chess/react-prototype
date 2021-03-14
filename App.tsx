@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { RootStackNavigator } from "components";
 import { KeyboardAvoidingView, Platform, SafeAreaView } from "react-native";
@@ -8,7 +8,7 @@ import { Colors } from "primitives";
 import { ModalProvider } from "ui";
 import { linking } from "navigation";
 
-export default function App() {
+export default function App(): ReactElement {
   return (
     <NavigationContainer linking={linking}>
       <ModalProvider>

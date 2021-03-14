@@ -3,6 +3,7 @@ import { Screens } from "./Screens";
 import { GameOptions } from "game";
 
 export interface NavigatorParamList extends ParamListBase {
+  [Screens.AboutScreen]: undefined;
   [Screens.GameScreen]: {
     gameOptions?: GameOptions;
     roomId?: string;

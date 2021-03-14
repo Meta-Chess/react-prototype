@@ -11,7 +11,14 @@ interface Props {
 
 const PlayerOptions: SFC<Props> = ({ numberOfPlayers, setNumberOfPlayers, style }) => {
   const options = range(2, Math.min(3, allPossiblePlayerNames.length - 1)).map((n) => {
-    return { label: <Text cat={"BodyL"}>{n}</Text>, value: n };
+    return {
+      label: (
+        <Text cat={"BodyL"} selectable={false}>
+          {n}
+        </Text>
+      ),
+      value: n,
+    };
   });
 
   return (

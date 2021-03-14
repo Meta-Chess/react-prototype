@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
-import { Text, Colors, SFC, CheckBoxFilled, CheckBoxEmpty } from "primitives";
+import { Text, Colors, SFC, CheckBoxFilledIcon, CheckBoxEmptyIcon } from "primitives";
 
 interface Props {
   value: boolean;
@@ -25,13 +25,13 @@ export const LabeledCheckBox: SFC<Props> = ({
       accessibilityRole={"checkbox"}
       activeOpacity={0.8}
     >
-      <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()}>
+      <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()} selectable={false}>
         {label}
       </Text>
       {value ? (
-        <CheckBoxFilled color={Colors.MCHESS_ORANGE.toString()} />
+        <CheckBoxFilledIcon color={Colors.MCHESS_ORANGE.toString()} />
       ) : (
-        <CheckBoxEmpty color={Colors.GREY.fade(0.4).toString()} />
+        <CheckBoxEmptyIcon color={Colors.GREY.fade(0.4).toString()} />
       )}
     </TouchableContainer>
   );

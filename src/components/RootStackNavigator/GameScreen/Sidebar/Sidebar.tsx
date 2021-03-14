@@ -1,12 +1,11 @@
 import React, { useContext, useState } from "react";
 import { ScrollView, TouchableOpacity, useWindowDimensions, View } from "react-native";
-import { Block, Button, Footer, useModals } from "ui";
+import { Button, Footer, useModals } from "ui";
 import { useGoBackOrToStartScreen } from "navigation";
 import { Colors, SFC } from "primitives";
 import { GameContext, OnlineGameMaster } from "game";
 import { RoomIdCard } from "./RoomIdCard";
 import { VariantInfoCard } from "./VariantInfoCard";
-import { PieceCredit } from "./PieceCredit";
 import { SelectedPieceInfoCard } from "./SelectedPieceInfoCard";
 import { VariantCards } from "./VariantCards";
 import styled from "styled-components/native";
@@ -59,9 +58,6 @@ const Sidebar: SFC = ({ style }) => {
             <PlayersCard />
             <VariantCards />
             <SelectedPieceInfoCard pieces={pieces} key={key + 0.5} />
-            <Block>
-              <PieceCredit />
-            </Block>
           </View>
         </TouchableOpacity>
       </ScrollView>

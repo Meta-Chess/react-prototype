@@ -1,13 +1,27 @@
-import React, { FC, useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
-import { Colors, HelpIcon, Styles, BugIcon, FeedbackIcon, useHover } from "primitives";
+import {
+  SFC,
+  Colors,
+  HelpIcon,
+  Styles,
+  BugIcon,
+  FeedbackIcon,
+  useHover,
+  InfoIcon,
+} from "primitives";
 import { HorizontalSeparator } from "ui";
 import { debounce } from "lodash";
 import { useRoute } from "navigation";
-import { FeedbackListItem } from "./FeedbackListItem";
+import { HelpMenuListItem } from "./HelpMenuListItem";
 
 const MENU_OPTIONS = [
+  {
+    label: "About",
+    IconComponent: InfoIcon,
+    category: "INFO",
+  },
   {
     label: "Bug report",
     IconComponent: BugIcon,
@@ -24,7 +38,7 @@ interface Props {
   context?: Record<string, unknown>;
 }
 
-export const HelpMenu: FC<Props> = ({ context }) => {
+export const HelpMenu: SFC<Props> = ({ context, style }) => {
   const [iconRef, iconHovered] = useHover();
   const [menuRef, menuHovered] = useHover();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -44,13 +58,13 @@ export const HelpMenu: FC<Props> = ({ context }) => {
   const contextWithRoute = { route: useRoute(), ...context };
 
   return (
-    <IconPositioningContainer ref={iconRef}>
+    <IconPositioningContainer ref={iconRef} style={style}>
       <HelpIcon />
       {menuOpen && (
         <MenuContainer ref={menuRef}>
           {MENU_OPTIONS.map((option) => (
-            <View key={option.category}>
-              <FeedbackListItem {...option} context={contextWithRoute} />
+            <View key={option.label}>
+              <HelpMenuListItem {...option} context={contextWithRoute} />
               <HorizontalSeparator />
             </View>
           ))}

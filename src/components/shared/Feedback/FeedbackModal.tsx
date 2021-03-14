@@ -10,16 +10,18 @@ interface Props {
   onClose: () => void;
 }
 
-export type Category = "BUG" | "SUGGESTION";
+export type Category = "BUG" | "SUGGESTION" | "INFO";
 
 const HEADERS: { [cat in Category]: string } = {
   BUG: "What went wrong?",
   SUGGESTION: "What could we do better?",
+  INFO: "What could we do better?",
 };
 
 const PLACEHOLDERS: { [cat in Category]: string } = {
   BUG: "Please enter lots of details!",
   SUGGESTION: "Please give details!",
+  INFO: "Please enter lots of details!",
 };
 
 export const FeedbackModal: FC<Props> = ({ category, context, onClose }) => {

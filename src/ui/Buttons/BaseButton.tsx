@@ -32,7 +32,7 @@ export const BaseButton: SFC<Props> = ({
       {...rest}
     >
       {typeof label === "string" ? (
-        <Text cat="DisplayXS" color={textColor.fade(fade).toString()}>
+        <Text cat="DisplayXS" color={textColor.fade(fade).toString()} selectable={false}>
           {label}
         </Text>
       ) : (

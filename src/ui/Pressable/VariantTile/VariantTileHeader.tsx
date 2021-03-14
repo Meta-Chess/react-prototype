@@ -32,7 +32,7 @@ export const VariantTileHeader: SFC<Props> = ({ variant, selected, conflictLevel
         </TitleText>
       </View>
       <ComplexityDot>
-        <Text cat="BodyXS" weight="heavy" alignment="center">
+        <Text cat="BodyXS" weight="heavy" alignment="center" selectable={false}>
           {variant.complexity}
         </Text>
       </ComplexityDot>

@@ -7,7 +7,7 @@ interface Props {
   size?: number;
 }
 
-export const ArrowForward: FC<Props> = ({
+export const ArrowForwardIcon: FC<Props> = ({
   color = Colors.MCHESS_ORANGE.toString(),
   size = 24,
 }) => {
