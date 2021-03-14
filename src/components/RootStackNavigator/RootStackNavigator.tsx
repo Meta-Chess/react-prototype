@@ -17,17 +17,17 @@ export const RootStackNavigator: FC = () => {
       <Stack.Screen
         name={Screens.GameScreen}
         component={GameScreen}
-        options={{ title: "mchess" }}
+        options={{ title: "mchess • Variant Chess Online!" }}
       />
       <Stack.Screen
         name={Screens.StartScreen}
         component={StartScreen}
-        options={{ title: "mchess" }}
+        options={{ title: "mchess • Variant Chess Online!" }}
       />
       <Stack.Screen
         name={Screens.VariantSelectScreen}
         component={VariantSelectScreen}
-        options={{ title: "mchess" }}
+        options={{ title: "mchess • Variant Chess Online!" }}
       />
       <Stack.Screen
         name={Screens.AboutScreen}
