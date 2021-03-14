@@ -51,6 +51,7 @@ const Sidebar: SFC = ({ style }) => {
           style={{ flex: 1, paddingBottom: 24 }}
           onPress={(): void => modals.hideAll()}
           activeOpacity={1}
+          accessible={false}
         >
           <View>
             <RoomIdCard roomId={roomId} />
