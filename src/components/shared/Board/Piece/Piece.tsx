@@ -22,11 +22,7 @@ const Piece: FC<Props> = ({ piece, size, glowColor, animatedData, onPress }) => 
   const { gameMaster } = useContext(GameContext);
   if (piece === undefined) return null;
 
-  const pieceDecorationNames = getPieceDecorationNames(
-    piece,
-    gameMaster?.getRuleNames(),
-    gameMaster?.flipBoard
-  );
+  const pieceDecorationNames = getPieceDecorationNames(piece, gameMaster?.getRuleNames());
 
   const animated = animatedData !== undefined;
   const PieceImageComponent = (
