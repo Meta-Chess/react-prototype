@@ -28,6 +28,11 @@ export const RootStackNavigator: FC = () => {
         component={VariantSelectScreen}
         options={{ title: "mchess" }}
       />
+      <Stack.Screen
+        name={Screens.AboutScreen}
+        component={VariantSelectScreen} //TODO: about screen
+        options={{ title: "mchess" }}
+      />
     </Stack.Navigator>
   );
 };
