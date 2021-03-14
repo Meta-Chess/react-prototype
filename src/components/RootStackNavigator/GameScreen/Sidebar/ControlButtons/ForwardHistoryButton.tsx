@@ -10,7 +10,7 @@ export const ForwardHistoryButton: SFC = ({ style }) => {
   const disabled = gameMaster?.positionInHistory === gameMaster?.moveHistory.length;
   return (
     <ButtonSecondary
-      label={<ArrowForwardIcon />}
+      label={ArrowForwardIcon}
       style={style}
       disabled={disabled}
       onPress={(): void =>
