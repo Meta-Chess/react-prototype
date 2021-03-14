@@ -14,7 +14,7 @@ const TraitLabel: SFC<TraitLabelProps> = ({ trait, style }) => {
   const color = opacify(traitInfo[trait].color.toString(), 0.5);
   return (
     <Container style={style} color={color}>
-      <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()}>
+      <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()} selectable={false}>
         {trait}
       </Text>
     </Container>

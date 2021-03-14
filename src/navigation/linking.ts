@@ -6,6 +6,7 @@ export const linking: LinkingOptions = {
   prefixes: [],
   config: {
     screens: {
+      [Screens.AboutScreen]: { path: "about" },
       [Screens.GameScreen]: {
         // `/:` precedes a route param name. `?` marks the preceding name as optional
         path: "game/:roomId?/:gameOptions?",

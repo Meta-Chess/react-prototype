@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import { StyleProp, Text as NativeText, TextStyle, View } from "react-native";
 import { randomInt } from "utilities";
-import { Skeleton } from "./Skeleton";
-import { Colors } from "./Colors";
+import { Skeleton } from "../Skeleton";
+import { Colors } from "../Colors";
 import { RobotoMono_400Regular, useFonts } from "@expo-google-fonts/roboto-mono";
 
 export const sizes = {
@@ -49,7 +49,7 @@ const Text: FC<Props> = (props) => {
     monospaceNumbers = false,
     numberOfLines,
     onPress,
-    selectable = false,
+    selectable = true,
     style = {},
   } = props;
 

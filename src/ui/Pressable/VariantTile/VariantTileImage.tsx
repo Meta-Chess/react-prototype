@@ -17,6 +17,7 @@ const VariantTileImage: SFC<VariantTileImageProps> = ({ style, variant }) => {
           alignment="center"
           cat="BodyXS"
           color={Colors.TEXT.LIGHT_SECONDARY.toString()}
+          selectable={false}
         >
           {"Image\ncoming soon"}
         </Text>

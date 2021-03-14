@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { AboutScreen } from "./AboutScreen";
 import { GameScreen } from "./GameScreen";
 import { StartScreen } from "./StartScreen";
 import { VariantSelectScreen } from "./VariantSelectScreen";
@@ -30,7 +31,7 @@ export const RootStackNavigator: FC = () => {
       />
       <Stack.Screen
         name={Screens.AboutScreen}
-        component={VariantSelectScreen} //TODO: about screen
+        component={AboutScreen}
         options={{ title: "mchess" }}
       />
     </Stack.Navigator>

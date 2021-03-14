@@ -134,7 +134,9 @@ export const LabelWithDetails: SFC<Props> = ({
     <>
       <LabelContainer color={color} style={style} ref={hoverRef}>
         <View ref={anchorRef}>
-          <Text cat={textCat}>{label}</Text>
+          <Text cat={textCat} selectable={false}>
+            {label}
+          </Text>
         </View>
       </LabelContainer>
     </>

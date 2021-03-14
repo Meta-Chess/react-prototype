@@ -5,7 +5,7 @@ import { SFC, Colors, useHover } from "primitives";
 import Color from "color";
 
 interface Props {
-  Icon: FC<{ color: string }>;
+  Icon: FC<{ color?: string }>;
   color?: Color;
   onPress: () => void;
 }

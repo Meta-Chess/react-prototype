@@ -34,7 +34,7 @@ const TraitFilter: SFC<TraitFilterProps> = ({
       color={color}
       onPress={onPress}
     >
-      <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()}>
+      <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()} selectable={false}>
         {trait}
       </Text>
       <CountContainer
@@ -42,7 +42,7 @@ const TraitFilter: SFC<TraitFilterProps> = ({
         counterPadding={counterPadding}
         verticalPadding={verticalPadding}
       >
-        <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()}>
+        <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()} selectable={false}>
           {numberOfVariantsWithTrait.toString()}
         </Text>
       </CountContainer>

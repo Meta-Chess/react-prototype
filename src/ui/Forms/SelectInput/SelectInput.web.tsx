@@ -83,7 +83,12 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
 
 const OptionLabel: React.FC<Option> = ({ label }) => {
   return (
-    <Text alignment="center" cat="BodyXS" color={Colors.TEXT.LIGHT.toString()}>
+    <Text
+      alignment="center"
+      cat="BodyXS"
+      color={Colors.TEXT.LIGHT.toString()}
+      selectable={false}
+    >
       {label}
     </Text>
   );
