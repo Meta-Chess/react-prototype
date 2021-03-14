@@ -38,7 +38,7 @@ const TilePressableContainer: SFC<TilePressableContainerProps> = ({
 }) => {
   const Container = CONTAINERS[shape];
   return (
-    <Container size={size} onPress={onPress} activeOpacity={1}>
+    <Container size={size} onPress={onPress} activeOpacity={1} accessible={false}>
       {children}
     </Container>
   );

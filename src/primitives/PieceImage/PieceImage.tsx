@@ -61,6 +61,7 @@ const PieceImage: SFC<Props> = ({
       rotation={rotatePiece ? 180 : 0}
       viewBox="0 0 45 45"
       style={style}
+      pointerEvents={"none"}
     >
       {glowColor &&
         glowAlphas.map((alpha, i) => (
