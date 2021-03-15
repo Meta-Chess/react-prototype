@@ -37,10 +37,10 @@ export class OnlineGameMaster extends GameMaster {
   }
 
   doResign(resign: Resign, received = false): void {
-    super.doResign(resign);
     if (!received) {
       this.sendResign(resign);
     }
+    super.doResign(resign);
   }
 
   static async connectNewGame(

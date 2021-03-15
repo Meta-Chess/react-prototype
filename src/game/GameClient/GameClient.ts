@@ -23,7 +23,7 @@ class GameClient {
     this.roomJoined = false;
 
     this.socket.addEventListener("open", function (_event) {
-      socket.send(JSON.stringify({ Action: "joinRoom", roomId, gameOptions }));
+      socket.send(JSON.stringify({ action: "joinRoom", roomId, gameOptions }));
     });
 
     this.messageListener = undefined;
@@ -104,7 +104,7 @@ class GameClient {
 
   sendPlayerAction(playerAction: PlayerAction): void {
     this.socket.send(
-      JSON.stringify({ Action: "playerAction", roomId: this.roomId, playerAction })
+      JSON.stringify({ action: "playerAction", roomId: this.roomId, playerAction })
     );
   }
 

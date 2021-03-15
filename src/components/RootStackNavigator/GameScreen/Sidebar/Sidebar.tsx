@@ -38,7 +38,7 @@ const Sidebar: SFC = ({ style }) => {
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
   const doResign = (): void => {
     const assignedPlayer = gameMaster?.assignedPlayer;
-    if (assignedPlayer && assignedPlayer !== "spectator") {
+    if (assignedPlayer !== undefined && assignedPlayer !== "spectator") {
       gameMaster?.doResign({
         playerName:
           assignedPlayer === "all"
