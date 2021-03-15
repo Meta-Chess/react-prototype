@@ -17,7 +17,9 @@ const RoomIdCard: SFC<Props> = ({ roomId, style }) => {
         <IconButton
           Icon={LinkIcon}
           color={Colors.WHITE.fade(0.4)}
-          onPress={(): void => copy(`mchess.io/game/${roomId}`)}
+          onPress={(): void => {
+            copy(`mchess.io/game/${roomId}`);
+          }}
         />
       }
       style={style}
