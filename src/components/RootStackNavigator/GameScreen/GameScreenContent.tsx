@@ -1,8 +1,13 @@
 import React, { FC, useContext, useCallback, useState, useMemo } from "react";
 import { Platform, useWindowDimensions, View } from "react-native";
-import { Board, BoardMeasurements, calculateBoardMeasurements } from "components/shared";
+import {
+  Board,
+  BoardMeasurements,
+  calculateBoardMeasurements,
+  GameContext,
+} from "components/shared";
 import { Sidebar } from "./Sidebar";
-import { SquareShape, TokenName, GameContext } from "game";
+import { SquareShape, TokenName } from "game";
 import { useFlipBoard } from "./useFlipBoard";
 import { AbsoluteView, Spinner } from "ui";
 import styled from "styled-components/native";

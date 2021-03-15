@@ -3,13 +3,14 @@ import { View, Animated } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { objectMatches, range, wrapToCylinder } from "utilities";
-import { GameContext, SquareShape, TokenName } from "game";
+import { SquareShape, TokenName } from "game";
 import { Square } from "./Square";
 import { BoardProps } from "components/shared/Board/Board";
 import { Styles } from "primitives/Styles";
-import { BoardMeasurements } from "components/shared";
+import { GameContext } from "components/shared/GameContext";
 import { AbsoluteView } from "ui";
-import { useCylinderRotation } from "components/shared/Board/useCylinderRotation";
+import { BoardMeasurements } from "./calculateBoardMeasurements";
+import { useCylinderRotation } from "./useCylinderRotation";
 
 const SquareBoard: SFC<BoardProps> = ({
   backboard = true,

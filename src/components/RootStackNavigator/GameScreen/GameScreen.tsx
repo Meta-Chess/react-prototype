@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import { GameProvider } from "game";
 import { Screens, useRoute } from "navigation";
 import { GameScreenContent } from "./GameScreenContent";
+import { GameProvider } from "components/shared";
 
 interface Props {
   portrait: boolean;

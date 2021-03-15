@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { SFC, Text } from "primitives";
 import { Block } from "ui/Containers/Block";
-import { GameContext } from "game";
 import styled from "styled-components/native";
 import { PlayerListItem } from "components/RootStackNavigator/GameScreen/Sidebar/PlayersCard/PlayerListItem";
+import { GameContext } from "components/shared";
 
 const PlayersCard: SFC = ({ style }) => {
   const { gameMaster } = useContext(GameContext);

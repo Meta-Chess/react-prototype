@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { SFC, Colors } from "primitives";
 import { View } from "react-native";
-import { GameContext, PieceName } from "game";
+import { PieceName } from "game";
 import { Player } from "game/Player/Player";
 import styled from "styled-components/native";
 import { pieceDisplayOrder } from "game/displayInfo";
-import { Piece } from "components/shared";
+import { GameContext, Piece } from "components/shared";
 
 interface Props {
   player: Player;

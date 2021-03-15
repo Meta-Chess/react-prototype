@@ -6,7 +6,7 @@ import React, {
   useState,
   useCallback,
 } from "react";
-import { Renderer } from "./Renderer";
+import { Renderer } from "game/Renderer";
 import { GameOptions } from "game/types";
 import { GameMaster } from "game/GameMaster";
 import { OnlineGameMaster } from "game/OnlineGameMaster";

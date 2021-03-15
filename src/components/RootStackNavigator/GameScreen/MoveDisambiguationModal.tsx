@@ -1,11 +1,11 @@
 import React, { useContext, FC } from "react";
-import { GameContext } from "game";
 import { View, ScrollView, Platform } from "react-native";
 import { CloseIcon, Colors, Text } from "primitives";
 import { StaticBoard } from "components/shared/StaticBoard";
 import { IconButton } from "ui/Buttons/IconButton";
 import styled from "styled-components/native";
 import { Styles } from "primitives/Styles";
+import { GameContext } from "components/shared";
 
 interface Props {
   flipBoard: boolean;

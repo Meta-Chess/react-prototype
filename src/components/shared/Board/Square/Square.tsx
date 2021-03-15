@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { Piece, ShadowPiece, PieceAnimation } from "../Piece";
 import { GridArrangement } from "./GridArrangement";
-import { GameContext, Square, SquareShape } from "game";
+import { Square, SquareShape } from "game";
 import { TilePressableContainer } from "./TilePressableContainer";
 import { AnimationOverlays } from "./AnimationOverlays";
 import { Highlight } from "./Highlight";
@@ -12,6 +12,7 @@ import { useModals, Tile } from "ui";
 import { Token } from "game/types";
 import { getDisplayPiecesAndTokens } from "./getDisplayPiecesAndTokens";
 import { hexSvgScaleFactor } from "primitives/Tiles";
+import { GameContext } from "components/shared";
 
 interface Props {
   square: Square | undefined;

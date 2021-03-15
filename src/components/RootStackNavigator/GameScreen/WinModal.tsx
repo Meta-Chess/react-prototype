@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { ScrollView, View } from "react-native";
 import { Colors, PieceImage, SFC, Text } from "primitives";
-import { GameContext, PieceName, PlayerName } from "game";
+import { PieceName, PlayerName } from "game";
 import styled from "styled-components/native";
 import { ButtonTertiaryLight, Row } from "ui";
 import { Screens, useNavigation } from "navigation";
 import { Styles } from "primitives/Styles";
+import { GameContext } from "components/shared";
 
 export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
   const { gameMaster } = useContext(GameContext);

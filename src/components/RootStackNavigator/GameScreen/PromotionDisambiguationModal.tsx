@@ -1,5 +1,5 @@
 import React, { useContext, FC } from "react";
-import { allPossiblePlayerNames, GameContext, Piece as PieceClass } from "game";
+import { allPossiblePlayerNames, Piece as PieceClass } from "game";
 import { View, ScrollView, Platform } from "react-native";
 import { CloseIcon, Colors, Text } from "primitives";
 import { IconButton } from "ui/Buttons/IconButton";
@@ -7,7 +7,7 @@ import styled from "styled-components/native";
 import { Styles } from "primitives/Styles";
 import { isEqual, uniqWith } from "lodash";
 import { isPresent } from "ts-is-present";
-import { Piece } from "components/shared";
+import { GameContext, Piece } from "components/shared";
 
 interface Props {
   promotion: {

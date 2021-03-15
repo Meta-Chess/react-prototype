@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { View } from "react-native";
 import { Row } from "ui";
-import { GameContext } from "game";
 import { KeyCap } from "./KeyCap";
 import { SFC } from "primitives";
+import { GameContext } from "components/shared";
 
 export const WASD: SFC = ({ style }) => {
   const { gameMaster } = useContext(GameContext);
