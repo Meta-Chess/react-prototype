@@ -26,7 +26,7 @@ const ChemicallyExcited: FC<AnimationComponentProps> = ({
         useNativeDriver: Platform.OS === "ios",
       }),
     ]).start();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   if (pieceVisualData === undefined) return null;
 

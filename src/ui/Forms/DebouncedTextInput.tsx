@@ -19,8 +19,6 @@ export const DebouncedTextInput: SFC<Props> = ({
 }) => {
   const [text, setText] = useState("");
 
-  // We need to suppress exhaustive-deps because it struggles with debounce.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedAfterChange = useCallback(
     debounce((text: string): void => afterChangeText(text), delay),
     []

@@ -80,7 +80,7 @@ export const GameProvider: FC<Props> = ({
           : undefined,
       });
     }
-  }, [gameOptions, roomId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [gameOptions, roomId]);
 
   useEffect((): (() => void) => {
     return (): void => {
