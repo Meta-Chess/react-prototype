@@ -1,6 +1,11 @@
 import React, { useCallback } from "react";
 import { View } from "react-native";
-import { AdviceLevel, FutureVariantName, GameOptions } from "game";
+import {
+  AdviceLevel,
+  FutureVariantName,
+  GameOptions,
+  futureVariants as allVariants,
+} from "game";
 import { SFC, Colors } from "primitives";
 import styled from "styled-components/native";
 import { HelpMenu } from "components/shared";
@@ -32,12 +37,18 @@ const Topbar: SFC<Props> = ({
     [gameOptions, setGameOptions]
   );
 
+  const longBoardOn = selectedVariants.some((variantName) =>
+    allVariants[variantName].ruleNames.includes("longBoard")
+  );
+  if (!longBoardOn) gameOptions.numberOfPlayers = 2;
+
   return (
     <Container>
       <OptionsContainer>
         <PlayerOptions
           numberOfPlayers={gameOptions.numberOfPlayers}
           setNumberOfPlayers={setNumberOfPlayers}
+          disabledPlayers={longBoardOn ? [] : [3, 4]}
         />
         <FormatOptions
           format={gameOptions.format}
