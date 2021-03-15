@@ -3,7 +3,7 @@ import { ScrollView, TouchableOpacity, useWindowDimensions, View } from "react-n
 import { Button, Footer, useModals } from "ui";
 import { useGoBackOrToStartScreen } from "navigation";
 import { Colors, SFC } from "primitives";
-import { GameContext, OnlineGameMaster, PlayerName } from "game";
+import { GameContext, OnlineGameMaster } from "game";
 import { RoomIdCard } from "./RoomIdCard";
 import { VariantInfoCard } from "./VariantInfoCard";
 import { SelectedPieceInfoCard } from "./SelectedPieceInfoCard";
