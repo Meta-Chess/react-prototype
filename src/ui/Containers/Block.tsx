@@ -2,14 +2,26 @@ import React from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
+import { Row } from "..";
+
+class ReactElement {}
+
 interface Props {
   title?: string;
+  withTitle?: ReactElement;
 }
 
-export const Block: SFC<Props> = ({ title, children, style }) => {
+export const Block: SFC<Props> = ({ title, withTitle, children, style }) => {
   return (
     <Container style={style}>
-      {title && <Text cat="DisplayM">{title}</Text>}
+      {title && (
+        <Row>
+          <Text cat="DisplayM" style={{ marginRight: 8 }}>
+            {title}
+          </Text>
+          {withTitle}
+        </Row>
+      )}
       {children}
     </Container>
   );

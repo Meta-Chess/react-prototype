@@ -4,12 +4,12 @@ import { GameOptions } from "game";
 
 export interface NavigatorParamList extends ParamListBase {
   [Screens.AboutScreen]: undefined;
-  [Screens.GameScreen]: {
+  [Screens.GameScreen]?: {
     gameOptions?: GameOptions;
     roomId?: string;
   };
   [Screens.StartScreen]: undefined;
-  [Screens.VariantSelectScreen]: {
+  [Screens.VariantSelectScreen]?: {
     playWithFriends?: boolean;
   };
 }

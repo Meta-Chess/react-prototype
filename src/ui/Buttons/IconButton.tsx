@@ -16,12 +16,15 @@ export const IconButton: SFC<Props> = ({
   ...rest
 }) => {
   const [ref, hovered] = useHover();
-  const fade = hovered ? 0.3 : 0;
+  const fade = hovered ? 0.1 : 0;
   return (
     <TouchableContainer
       ref={ref}
       activeOpacity={0.5}
       accessibilityRole={"button"}
+      style={{
+        backgroundColor: hovered ? Colors.GREY.fade(0.9).toString() : "transparent",
+      }}
       {...rest}
     >
       <Icon color={color.fade(fade).toString()} />
@@ -30,6 +33,9 @@ export const IconButton: SFC<Props> = ({
 };
 
 const TouchableContainer = styled(TouchableOpacity)`
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
 `;

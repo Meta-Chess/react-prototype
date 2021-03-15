@@ -72,7 +72,7 @@ export const PromotionDisambiguationModal: FC<Props> = ({ promotion, pieceSize }
         })}
       </ScrollView>
       <IconButton
-        style={{ position: "absolute", top: 12, right: 12 }}
+        style={{ position: "absolute", top: 8, right: 8 }}
         Icon={CloseIcon}
         onPress={(): void => {
           gameMaster.unselectAllPieces();

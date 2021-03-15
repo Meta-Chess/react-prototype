@@ -12,6 +12,7 @@ export * from "./FeedbackIcon";
 export * from "./Formats";
 export * from "./HelpIcon";
 export * from "./InfoIcon";
+export * from "./LinkIcon";
 export * from "./MinusIcon";
 export * from "./NoTimerIcon";
 export * from "./PlayerIcon";

@@ -1,9 +1,17 @@
-import React, { createContext, FC, useEffect, useMemo, useState } from "react";
+import React, {
+  createContext,
+  FC,
+  useEffect,
+  useMemo,
+  useState,
+  useCallback,
+} from "react";
 import { Renderer } from "./Renderer";
 import { GameOptions } from "game/types";
 import { GameMaster } from "game/GameMaster";
 import { OnlineGameMaster } from "game/OnlineGameMaster";
 import axios from "axios";
+import { Screens, useNavigation, useRoute } from "navigation";
 
 export const GameContext = createContext<{ gameMaster?: GameMaster }>({});
 
@@ -26,18 +34,33 @@ interface Props {
   roomId?: string;
 }
 
+// TODO: Clean up
 export const GameProvider: FC<Props> = ({
   children,
   gameOptions,
   roomId: receivedRoomId,
 }) => {
+  const navigation = useNavigation();
+  const { params } = useRoute<Screens.GameScreen>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_updateCounter, setUpdateCounter] = useState(0);
   const [gameMaster, setGameMaster] = useState<GameMaster | undefined>();
-  const [roomId, setRoomId] = useState(receivedRoomId);
+  const [roomId, simpleSetRoomId] = useState(receivedRoomId);
   const renderer = useMemo(() => new Renderer(setUpdateCounter), []);
 
+  const setRoomId = useCallback((roomId?: string): void => {
+    navigation.setParams({ ...params, roomId }); // For url with roomId
+    simpleSetRoomId(roomId);
+  }, []);
+
+  const hasGameMaster = gameMaster !== undefined;
   useEffect((): void => {
+    if (hasGameMaster && gameMaster instanceof OnlineGameMaster)
+      setRoomId(gameMaster?.roomId);
+  }, [hasGameMaster]);
+
+  useEffect((): void => {
+    if (hasGameMaster) return;
     if (gameOptions?.spotlight && !roomId) {
       findSpotlightGameRoom().then((foundRoomId) => {
         if (foundRoomId) {
