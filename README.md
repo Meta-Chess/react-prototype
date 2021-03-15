@@ -1,4 +1,4 @@
-#mchess
+# mchess
 
 An expo web and mobile app for playing chess variants, their combinations, and formats of variants.
 
@@ -8,7 +8,7 @@ TODO: Add more detailed installation instructions
 2. `yarn install`
 
 ## Start
-`yarn web` or `yarn ios`
+`yarn web` or `yarn ios` you may need to run `yarn add expo-cli` as well.
 
 ## Testing
 `yarn test` or `yarn test <test_name_fragment>`
