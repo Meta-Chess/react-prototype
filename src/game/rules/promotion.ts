@@ -4,6 +4,7 @@ import { Board } from "game";
 import { nthCartesianPower } from "utilities/nthCartesianPower";
 import { Gait } from "game/types/types";
 import { Move, PieceDelta } from "game/Move";
+import { cloneDeep } from "lodash";
 
 const PROMOTION_PIECES = [
   PieceName.Queen,
@@ -23,16 +24,18 @@ export const promotion: Rule = {
       const [promotionDeltas, nonPromotionDeltas] = partitionDeltas(move, board);
       if (promotionDeltas.length !== 0) {
         return nthCartesianPower(PROMOTION_PIECES, promotionDeltas.length).map(
-          (promotions) => ({
-            ...move,
-            pieceDeltas: [
-              ...promotionDeltas.map((delta, index) => ({
-                ...delta,
-                promoteTo: promotions[index],
-              })),
-              ...nonPromotionDeltas,
-            ],
-          })
+          (promotions) => {
+            return {
+              ...cloneDeep(move),
+              pieceDeltas: [
+                ...promotionDeltas.map((delta, index) => ({
+                  ...cloneDeep(delta),
+                  promoteTo: promotions[index],
+                })),
+                ...cloneDeep(nonPromotionDeltas),
+              ],
+            };
+          }
         );
       } else {
         return [move];

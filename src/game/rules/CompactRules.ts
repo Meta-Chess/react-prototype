@@ -166,7 +166,7 @@ function compareRulesByList(t1: string, t2: string, list: string[]): number {
 const ruleOrderPerInterruptionPoint: {
   [key in InterruptionName]?: (RuleName | "theRest")[];
 } = {
-  processMoves: ["pull", "theRest", "promotion"],
+  processMoves: ["pull", "theRest", "promotion", "chainReaction"],
   lossCondition: ["theRest", "check", "threeCheck"],
   inPostMoveGenerationFilter: ["theRest", "check"],
   onPieceDisplaced: ["theRest", "promotion"],

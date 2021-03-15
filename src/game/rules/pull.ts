@@ -5,7 +5,7 @@ import { Gait, PlayerName } from "game/types/types";
 import { Move, PieceDelta } from "game/Move";
 import { Square } from "game/Board";
 import { rotate180 } from "./utilities";
-import { clone } from "lodash";
+import { cloneDeep } from "lodash";
 import { Path } from "game/Pather";
 
 const MAX_CHAIN_LENGTH = 5;
@@ -60,8 +60,8 @@ export const pull: Rule = {
             })
           );
 
-          const newMove = clone(move);
-          newMove.pieceDeltas = [...clone(moves[i - 1].pieceDeltas), ...newDeltas];
+          const newMove = cloneDeep(move);
+          newMove.pieceDeltas = [...cloneDeep(moves[i - 1].pieceDeltas), ...newDeltas];
 
           moves.push(newMove);
         }
