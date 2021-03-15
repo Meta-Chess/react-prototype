@@ -36,6 +36,17 @@ const Sidebar: SFC = ({ style }) => {
   }
 
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
+  const doResign = (): void => {
+    const assignedPlayer = gameMaster?.assignedPlayer;
+    if (assignedPlayer !== undefined && assignedPlayer !== "spectator") {
+      gameMaster?.doResign({
+        playerName:
+          assignedPlayer === "all"
+            ? gameMaster.game.getCurrentPlayerName()
+            : assignedPlayer,
+      });
+    }
+  };
   const isGameOver = gameMaster?.gameOver;
   const isDead =
     gameMaster?.assignedPlayer === "all" ||
@@ -98,10 +109,7 @@ const Sidebar: SFC = ({ style }) => {
                 }}
                 style={{ flex: 1 }}
               />
-              <ConcedeButton
-                onPress={goBackOrToStartScreen}
-                style={{ flex: 1, marginLeft: 12 }}
-              />
+              <ConcedeButton onPress={doResign} style={{ flex: 1, marginLeft: 12 }} />
             </>
           )}
         </HalfContainer>

@@ -10,6 +10,7 @@ import { Move, movesAreEqual } from "game/Move";
 import { SquareInfo, SquaresInfo } from "game/SquaresInfo";
 import { FormatName } from "game/formats";
 import { doesCapture } from "./rules/utilities";
+import { Resign } from "./PlayerAction";
 
 export class GameMaster {
   public gameClones: Game[];
@@ -240,6 +241,17 @@ export class GameMaster {
       startClocks: everyoneHasMoved,
     });
     this.startOfTurn();
+  }
+
+  doResign(resign: Resign): void {
+    this.game
+      .getPlayers()
+      .filter((p) => p.name === resign.playerName)
+      .forEach((p) => {
+        p.alive = false;
+        p.endGameMessage = "resigned";
+        if (this.game.getCurrentPlayerName() === p.name) this.doMove();
+      });
   }
 
   startOfTurn(): void {

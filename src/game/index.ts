@@ -8,6 +8,7 @@ export * from "./GameMaster";
 export * from "./Move";
 export * from "./OnlineGameMaster";
 export * from "./Pather";
+export * from "./PlayerAction";
 export * from "./rules";
 export * from "./SquaresInfo";
 export * from "./types";
