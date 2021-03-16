@@ -254,7 +254,7 @@ export class GameMaster {
         this.doMove();
         return;
       }
-      if (this.game.alivePlayers().length <= 2) this.checkGameEndConditions();
+      if (this.game.alivePlayers().length < 2) this.checkGameEndConditions();
       this.render();
     }
   }
