@@ -244,14 +244,19 @@ export class GameMaster {
   }
 
   doResign(resign: Resign): void {
-    this.game
+    const player = this.game
       .getPlayers()
-      .filter((p) => p.name === resign.playerName)
-      .forEach((p) => {
-        p.alive = false;
-        p.endGameMessage = "resigned";
-        if (this.game.getCurrentPlayerName() === p.name) this.doMove();
-      });
+      .find((p): boolean => p.name === resign.playerName);
+    if (player) {
+      player.alive = false;
+      player.endGameMessage = "resigned";
+      if (this.game.getCurrentPlayerName() === player.name) {
+        this.doMove();
+        return;
+      }
+      if (this.game.alivePlayers().length < 2) this.checkGameEndConditions();
+      this.render();
+    }
   }
 
   startOfTurn(): void {
