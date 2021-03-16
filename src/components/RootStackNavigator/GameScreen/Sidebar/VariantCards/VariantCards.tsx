@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { SFC } from "primitives";
-import { GameContext } from "game";
 import { PieceBankCard } from "./PieceBankCard";
+import { GameContext } from "components/shared";
 
 const VariantCards: SFC = ({ style }) => {
   const { gameMaster } = useContext(GameContext);

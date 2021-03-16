@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { AbsoluteView, Row } from "ui";
 import { Colors, PieceImage, SFC, Text } from "primitives";
-import { GameContext, PieceName, PlayerName } from "game";
-import { Timer } from "components/shared";
+import { PieceName, PlayerName } from "game";
+import { GameContext, Timer } from "components/shared";
 import { View } from "react-native";
 import { Player } from "game/Player/Player";
 import styled from "styled-components/native";

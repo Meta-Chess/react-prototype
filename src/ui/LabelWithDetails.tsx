@@ -127,7 +127,6 @@ export const LabelWithDetails: SFC<Props> = ({
     } else if (modals.showing(modalId)) {
       hideModal();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hovered]);
 
   return (

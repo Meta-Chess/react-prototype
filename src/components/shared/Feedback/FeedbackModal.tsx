@@ -3,6 +3,7 @@ import { AbsoluteView, ButtonSecondary, Block, Row, Spinner, TextInput } from "u
 import { Text, Colors, CloseIcon } from "primitives";
 import { IconButton } from "ui/Buttons/IconButton";
 import styled from "styled-components/native";
+import { View } from "react-native";
 
 interface Props {
   category: Category;
@@ -56,10 +57,7 @@ export const FeedbackModal: FC<Props> = ({ category, context, onClose }) => {
 
   return (
     <Block style={{ width: 440, height: 300 }}>
-      <Row style={{ justifyContent: "space-between" }}>
-        <Text cat={"DisplayS"}>{headerText}</Text>
-        <IconButton Icon={CloseIcon} onPress={onClose} />
-      </Row>
+      <Text cat={"DisplayS"}>{headerText}</Text>
       <TextInput
         value={message}
         placeholder={placeholder}
@@ -82,6 +80,9 @@ export const FeedbackModal: FC<Props> = ({ category, context, onClose }) => {
           <Spinner />
         </AbsoluteView>
       )}
+      <View style={{ position: "absolute", top: 8, right: 8 }}>
+        <IconButton Icon={CloseIcon} onPress={onClose} />
+      </View>
     </Block>
   );
 };

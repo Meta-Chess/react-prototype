@@ -1,8 +1,9 @@
 import React, { useContext, FC } from "react";
-import { GameContext, TokenName, SquareShape } from "game";
+import { TokenName, SquareShape } from "game";
 import { HexBoard } from "./HexBoard";
 import { SquareBoard } from "./SquareBoard";
 import { BoardMeasurements } from "./calculateBoardMeasurements";
+import { GameContext } from "components/shared";
 
 export interface BoardProps {
   backboard?: boolean;

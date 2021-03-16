@@ -36,7 +36,7 @@ const Spinner: SFC<Props> = ({ style }) => {
         setIsRunning(false);
       });
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const rotate = value.interpolate({
     inputRange: [0, 0.1],

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Colors, SFC } from "primitives";
 import { Block } from "ui/Containers/Block";
-import { GameContext, futureVariants as allVariants, formats } from "game";
+import { futureVariants as allVariants, formats } from "game";
 import { LabelWithDetails, Row } from "ui";
 import { View } from "react-native";
 import { Text } from "primitives";
@@ -10,6 +10,7 @@ import { NoCheckLabel, ChessLabel } from "components/shared/Labels";
 import styled from "styled-components/native";
 import { VariantLabelInfo } from "game/types";
 import Color from "color";
+import { GameContext } from "components/shared";
 
 const VARIANT_LABEL_COLORS: { [key in VariantLabelInfo]: Color } = {
   [VariantLabelInfo.VariantLeaving]: Colors.HIGHLIGHT.ERROR,

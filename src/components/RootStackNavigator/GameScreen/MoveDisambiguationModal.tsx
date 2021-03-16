@@ -1,11 +1,11 @@
 import React, { useContext, FC } from "react";
-import { GameContext } from "game";
 import { View, ScrollView, Platform } from "react-native";
 import { CloseIcon, Colors, Text } from "primitives";
 import { StaticBoard } from "components/shared/StaticBoard";
 import { IconButton } from "ui/Buttons/IconButton";
 import styled from "styled-components/native";
 import { Styles } from "primitives/Styles";
+import { GameContext } from "components/shared";
 
 interface Props {
   flipBoard: boolean;
@@ -57,7 +57,7 @@ export const MoveDisambiguationModal: FC<Props> = ({ flipBoard }) => {
         })}
       </ScrollView>
       <IconButton
-        style={{ position: "absolute", top: 12, right: 12 }}
+        style={{ position: "absolute", top: 8, right: 8 }}
         Icon={CloseIcon}
         onPress={(): void => {
           gameMaster.unselectAllPieces();

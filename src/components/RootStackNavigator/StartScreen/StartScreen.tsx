@@ -1,9 +1,9 @@
 import React, { FC, useState } from "react";
 import { Colors, MChessLogo } from "primitives";
-import { GameProvider, GameOptions, defaultGameOptions } from "game";
+import { GameOptions, defaultGameOptions } from "game";
 import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
-import { HelpMenu } from "components/shared";
+import { GameProvider, HelpMenu } from "components/shared";
 import { Lobby } from "./Lobby";
 import { SpotlightGame } from "./SpotlightGame";
 import { PlayWithFriends } from "./PlayWithFriends";

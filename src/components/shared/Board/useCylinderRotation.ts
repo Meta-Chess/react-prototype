@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useRef, useCallback } from "react";
-import { GameContext, PlayerName } from "game";
-import { BoardMeasurements } from "components/shared";
+import { PlayerName } from "game";
+import { BoardMeasurements, GameContext } from "components/shared";
 import { Animated, Platform, Easing } from "react-native";
 
 const ROTATION_TIME = 100;
@@ -68,14 +68,14 @@ export const useCylinderRotation = (
       easing: Easing.out(Easing.ease),
       useNativeDriver: Platform.OS === "ios",
     }).start();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     document.addEventListener("keydown", onKeyDownEvent, false);
     return (): void => {
       document.removeEventListener("keydown", onKeyDownEvent, false);
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const squareSize = measurements.squareSize;
 

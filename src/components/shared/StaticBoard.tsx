@@ -2,8 +2,9 @@ import React from "react";
 import { Board, calculateBoardMeasurements } from "components/shared/Board";
 import { Colors, SFC, useHover } from "primitives";
 import { AbsoluteTouchableOpacity } from "ui";
-import { GameMaster, SimpleGameProvider, TokenName } from "game";
+import { GameMaster, TokenName } from "game";
 import { View } from "react-native";
+import { SimpleGameProvider } from "./GameContext";
 
 interface Props {
   gameMaster: GameMaster;

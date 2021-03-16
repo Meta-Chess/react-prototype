@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { GameContext, PlayerName } from "game";
+import { PlayerName } from "game";
+import { GameContext } from "components/shared";
 
 export const useFlipBoard = (delay = 400): { flipBoard: boolean } => {
   const { gameMaster } = useContext(GameContext);

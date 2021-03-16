@@ -43,8 +43,6 @@ export const HelpMenu: SFC<Props> = ({ context, style }) => {
   const [menuRef, menuHovered] = useHover();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // We need to suppress exhaustive-deps because it struggles with debounce.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const setMenuOpenDebounced = useCallback(
     debounce((open: boolean): void => setMenuOpen(open), 50),
     []

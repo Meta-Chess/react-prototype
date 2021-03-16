@@ -3,10 +3,11 @@ import { View } from "react-native";
 import styled from "styled-components/native";
 import { Colors } from "primitives";
 import { objectMatches, range } from "utilities";
-import { GameContext, TokenName, SquareShape } from "game";
+import { TokenName, SquareShape } from "game";
 import { Square } from "./Square";
 import { BoardProps } from "components/shared/Board/Board";
 import { HexBackboard } from "./HexBackboard";
+import { GameContext } from "components/shared";
 
 const HexBoard: FC<BoardProps> = ({
   backboard = true,

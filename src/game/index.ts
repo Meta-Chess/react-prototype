@@ -3,7 +3,6 @@ export * from "./displayInfo";
 export * from "./EventCenter";
 export * from "./formats";
 export * from "./Game";
-export * from "./GameContext";
 export * from "./GameMaster";
 export * from "./Move";
 export * from "./OnlineGameMaster";

@@ -30,7 +30,7 @@ const Explosion: FC<AnimationComponentProps> = ({
         useNativeDriver: Platform.OS === "ios",
       }),
     ]).start();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const animatedColor = colorValue.interpolate({
     inputRange: [0, 1],

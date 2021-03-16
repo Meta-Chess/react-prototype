@@ -1,9 +1,10 @@
 import React, { FC, useContext } from "react";
-import { GameContext, Piece as PieceClass, TokenName, PlayerName } from "game";
+import { Piece as PieceClass, TokenName, PlayerName } from "game";
 import { PieceImage, Colors } from "primitives";
 import { Animated, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import { getPieceDecorationNames } from "./getPieceDecorationNames";
+import { GameContext } from "components/shared";
 
 interface animatedData {
   animatedColor: Animated.AnimatedInterpolation;
