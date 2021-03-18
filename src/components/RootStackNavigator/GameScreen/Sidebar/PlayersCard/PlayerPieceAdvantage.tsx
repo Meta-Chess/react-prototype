@@ -49,6 +49,7 @@ const PlayerPieceAdvantage: SFC<Props> = ({ player, style }) => {
           pieceGroup.length > 0 &&
           pieceGroup[0].name !== PieceName.King && (
             <View
+              key={pieceGroup[0].name}
               style={{
                 flexDirection: "row",
                 width: PIECE_SIZE + (pieceGroup.length - 1) * PIECE_OVERLAP_SPACING,
