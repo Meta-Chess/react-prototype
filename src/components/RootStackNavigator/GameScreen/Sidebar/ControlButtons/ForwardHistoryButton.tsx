@@ -6,7 +6,7 @@ import { GameContext } from "components/shared";
 
 export const ForwardHistoryButton: SFC = ({ style }) => {
   const { gameMaster } = useContext(GameContext);
-  const disabled = gameMaster?.positionInHistory === gameMaster?.moveHistory.length;
+  const disabled = gameMaster?.stateIsCurrent();
   return (
     <ButtonSecondary
       label={ArrowForwardIcon}

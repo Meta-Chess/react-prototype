@@ -1,27 +1,26 @@
 import { Move } from "./Move";
 import { PlayerName, TimestampMillis } from "./types";
 
-export type PlayerAction = PlayerActionMove | PlayerActionResign | PlayerActionDraw;
+export type PlayerAction = (PlayerActionMove | PlayerActionResign | PlayerActionDraw) & {
+  timestamp?: TimestampMillis;
+};
 
 export interface PlayerActionMove {
   type: "move";
-  data: Move;
-  timestamp?: TimestampMillis;
+  data: Move | undefined;
 }
 
 export interface PlayerActionResign {
   type: "resign";
-  data: Resign;
-  timestamp?: TimestampMillis;
+  data: Resignation;
 }
 
 export interface PlayerActionDraw {
   type: "draw";
   data: Draw;
-  timestamp?: TimestampMillis;
 }
 
-export interface Resign {
+export interface Resignation {
   playerName: PlayerName;
 }
 

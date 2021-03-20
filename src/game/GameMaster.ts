@@ -10,7 +10,8 @@ import { Move, movesAreEqual } from "game/Move";
 import { SquareInfo, SquaresInfo } from "game/SquaresInfo";
 import { FormatName } from "game/formats";
 import { doesCapture } from "./rules/utilities";
-import { Draw, Resign } from "./PlayerAction";
+import { PlayerAction, Resignation, Draw } from "./PlayerAction";
+import { isPresent, sleep } from "utilities";
 
 export class GameMaster {
   // WARNING: Default values exist both here and in `GameMaster.resetToStartOfGame`
@@ -18,7 +19,7 @@ export class GameMaster {
   public result: string | undefined;
   public drawOffers: { [playerName in PlayerName]?: boolean } = {};
   public gameOver = false;
-  public moveHistory: (Move | undefined)[] = [];
+  public playerActionHistory: PlayerAction[] = [];
   public positionInHistory = 0;
   public formatVariants: FutureVariantName[] = [];
   public formatVariantLabelColors: {
@@ -156,23 +157,26 @@ export class GameMaster {
     this.squaresInfo.clear();
     const lastInterestingMoveIndex = this.lastInterestingMoveIndex({ strict: true });
     if (lastInterestingMoveIndex !== undefined) {
-      this.moveHistory[lastInterestingMoveIndex]?.pieceDeltas.forEach((delta) => {
-        this.squaresInfo.add(delta.path.getStart(), SquareInfo.LastMoveStartPoint);
-        this.squaresInfo.add(delta.path.getEnd(), SquareInfo.LastMoveEndPoint);
-        const path = delta.path.getPath();
-        path
-          .slice(1, path.length - 1)
-          .forEach((pathSquare) =>
-            this.squaresInfo.add(pathSquare, SquareInfo.LastMovePath)
-          );
-      });
+      const lastInterestingMove = this.playerActionHistory[lastInterestingMoveIndex];
+      if (lastInterestingMove && lastInterestingMove.type === "move") {
+        lastInterestingMove.data?.pieceDeltas.forEach((delta) => {
+          this.squaresInfo.add(delta.path.getStart(), SquareInfo.LastMoveStartPoint);
+          this.squaresInfo.add(delta.path.getEnd(), SquareInfo.LastMoveEndPoint);
+          const path = delta.path.getPath();
+          path
+            .slice(1, path.length - 1)
+            .forEach((pathSquare) =>
+              this.squaresInfo.add(pathSquare, SquareInfo.LastMovePath)
+            );
+        });
+      }
     }
     const currentPlayerName = this.game.players[this.game.currentPlayerIndex].name;
     this.selectedPieces.forEach((piece) => {
       if (
         piece.owner !== currentPlayerName ||
         (this.assignedPlayer !== "all" && this.assignedPlayer !== piece.owner) ||
-        this.positionInHistory !== this.moveHistory.length
+        this.positionInHistory !== this.playerActionHistory.length
       ) {
         this.squaresInfo.add(piece.location, SquareInfo.SelectedOtherPlayerPiece);
       } else {
@@ -183,7 +187,7 @@ export class GameMaster {
       if (
         move.playerName !== currentPlayerName ||
         (this.assignedPlayer !== "all" && this.assignedPlayer !== currentPlayerName) ||
-        this.positionInHistory !== this.moveHistory.length
+        this.positionInHistory !== this.playerActionHistory.length
       ) {
         this.squaresInfo.add(move.location, SquareInfo.PossibleOtherPlayerMoveEndPoint);
       } else if (!doesCapture(move)) {
@@ -220,6 +224,19 @@ export class GameMaster {
     }
   }
 
+  async doActionsSlowly(actions: PlayerAction[]): Promise<void> {
+    for (const action of actions) {
+      this.render();
+      await sleep(50);
+      this.goForwardsInHistory();
+    }
+    this.render();
+  }
+
+  stateIsCurrent(): boolean {
+    return this.positionInHistory === this.playerActionHistory.length;
+  }
+
   goForwardsInHistory(): void {
     const nextInterestingIndex = this.nextInterestingMoveIndex();
     console.log(nextInterestingIndex);
@@ -234,11 +251,11 @@ export class GameMaster {
   }
 
   nextInterestingMoveIndex(): number {
-    if (this.positionInHistory === this.moveHistory.length) return this.positionInHistory;
+    if (this.stateIsCurrent()) return this.positionInHistory;
     let indexToReturn = this.positionInHistory + 1;
     while (
-      !this.isInteresting(this.moveHistory[indexToReturn]) &&
-      indexToReturn < this.moveHistory.length
+      !this.isInteresting(this.playerActionHistory[indexToReturn]) &&
+      indexToReturn < this.playerActionHistory.length
     ) {
       indexToReturn++;
     }
@@ -250,29 +267,42 @@ export class GameMaster {
     | undefined {
     if (this.positionInHistory === 0) return strict ? undefined : this.positionInHistory;
     let indexToReturn = this.positionInHistory - 1;
-    while (!this.isInteresting(this.moveHistory[indexToReturn]) && indexToReturn > 0) {
+    while (
+      !this.isInteresting(this.playerActionHistory[indexToReturn]) &&
+      indexToReturn > 0
+    ) {
       indexToReturn--;
     }
     return indexToReturn;
   }
 
-  isInteresting(move?: Move) {
-    return move !== undefined;
+  isInteresting(playerAction?: PlayerAction) {
+    return playerAction && playerAction.type === "move" && playerAction.data;
   }
 
   setPositionInHistory(newPosition: number): void {
-    if (newPosition > this.moveHistory.length) newPosition = this.moveHistory.length;
+    if (newPosition > this.playerActionHistory.length)
+      newPosition = this.playerActionHistory.length;
     else if (newPosition < 0) newPosition = 0;
 
     if (newPosition < this.positionInHistory) {
-      const moveHistory = this.moveHistory;
+      const moveHistory = this.playerActionHistory;
       this.resetToStartOfGame();
-      this.moveHistory = moveHistory;
+      this.playerActionHistory = moveHistory;
     }
     while (newPosition > this.positionInHistory) {
-      const nextMove = this.moveHistory[this.positionInHistory];
-      this.doMove({ move: nextMove });
+      const nextPlayerAction = this.playerActionHistory[this.positionInHistory];
+      if (nextPlayerAction) this.doPlayerAction({ playerAction: nextPlayerAction });
     }
+
+    if (this.stateIsCurrent()) {
+      this.timersAsOf = undefined;
+    } else {
+      const timersAsOfMoveIndex =
+        this.positionInHistory === 0 ? 0 : this.positionInHistory - 1;
+      this.timersAsOf = this.playerActionHistory[timersAsOfMoveIndex]?.timestamp;
+    }
+
     this.render();
   }
 
@@ -287,7 +317,7 @@ export class GameMaster {
       this.selectedPieces[0]?.owner;
     const canMoveSelectedPiece =
       isSelectedPieceOwnersTurn &&
-      this.positionInHistory === this.moveHistory.length &&
+      this.stateIsCurrent() &&
       (this.assignedPlayer === "all" ||
         this.assignedPlayer === this.selectedPieces[0]?.owner);
 
@@ -313,28 +343,50 @@ export class GameMaster {
     this.render();
   }
 
+  doPlayerAction({
+    playerAction,
+    unselect = true,
+  }: {
+    playerAction?: PlayerAction;
+    unselect?: boolean;
+  }): void {
+    if (playerAction?.type === "move") {
+      this.doMove({ move: playerAction.data, unselect });
+    } else if (playerAction?.type === "resign") {
+      this.doResign({ resignation: playerAction.data });
+    }
+    this.calculateAllowableMovesForSelectedPieces();
+    this.render();
+  }
+
   doMove({ move, unselect = true }: { move?: Move; unselect?: boolean } = {}): void {
     // if (move) console.log(`expect(board.getPiecesAt("${move.location}").length).toEqual(1);`); // TEST WRITING HELPER COMMENT
     if (move) {
       this.game.doMove(move);
       if (unselect) this.unselectAllPieces();
     }
-    if (this.positionInHistory === this.moveHistory.length) this.moveHistory.push(move);
+    if (this.stateIsCurrent())
+      this.playerActionHistory.push({ type: "move", data: move });
     this.positionInHistory += 1;
-    const everyoneHasMoved =
-      uniq(this.moveHistory.map((m) => m?.playerName)).length ===
-      this.game.players.length;
+    const everyoneHasDoneSomething =
+      this.playersThatHaveActed().length === this.game.players.length;
     this.game.nextTurn({
       asOf: move?.timestamp || Date.now(),
-      startClocks: everyoneHasMoved,
+      startClocks: everyoneHasDoneSomething,
     });
     this.startOfTurn();
   }
 
-  doResign(resign: Resign): void {
+  playersThatHaveActed(): PlayerName[] {
+    return uniq(
+      this.playerActionHistory.map((m) => m.data?.playerName).filter(isPresent)
+    );
+  }
+
+  doResign({ resignation }: { resignation: Resignation }): void {
     const player = this.game
       .getPlayers()
-      .find((p): boolean => p.name === resign.playerName);
+      .find((p): boolean => p.name === resignation.playerName);
     if (player) {
       player.alive = false;
       player.endGameMessage = "resigned";
@@ -367,7 +419,7 @@ export class GameMaster {
     if (this.game.getCurrentPlayer().alive || this.game.alivePlayers().length === 0) {
       this.checkGameEndConditions();
       this.render(); // TODO: avoid excess renders when pressing back button
-    } else if (this.positionInHistory === this.moveHistory.length) {
+    } else if (this.stateIsCurrent()) {
       this.doMove();
     }
   }
@@ -416,7 +468,7 @@ export class GameMaster {
       !this.gameOver &&
       !this.game.players[this.game.currentPlayerIndex].alive &&
       this.game.alivePlayers().length > 0 &&
-      this.positionInHistory === this.moveHistory.length
+      this.stateIsCurrent()
     ) {
       this.doMove();
       return;
