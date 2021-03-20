@@ -8,7 +8,7 @@ export const Button: SFC<ButtonProps> = ({ depressed, ...rest }) => {
     <BaseButton
       {...rest}
       backgroundColor={Colors.MCHESS_ORANGE.fade(depressed ? 0.3 : 0)}
-      borderWidth={4}
+      borderWidth={depressed ? 4 : 0}
     />
   );
 };
