@@ -4,7 +4,7 @@ import { GameOptions, PlayerAssignment } from "game/types";
 import { GameClient } from "game/GameClient";
 import { sleep } from "utilities/sleep";
 import { Move } from "game/Move";
-import { PlayerAction, Resign } from "./PlayerAction";
+import { PlayerAction, Resignation } from "./PlayerAction";
 
 export class OnlineGameMaster extends GameMaster {
   constructor(
@@ -19,29 +19,6 @@ export class OnlineGameMaster extends GameMaster {
       ...GameMaster.processConstructorInputs({ gameOptions, assignedPlayer, renderer })
     );
     if (replay) this.doActionsSlowly(gameClient.playerActions);
-  }
-
-  async doActionsSlowly(actions: PlayerAction[]): Promise<void> {
-    const shouldEvaluateEndGameConditions = this.evaluateEndGameConditions;
-    this.evaluateEndGameConditions = false;
-    for (const action of actions) {
-      this.render();
-      await sleep(50);
-      if (action.type === "move")
-        this.doMove({ move: action.data, unselect: true, received: true });
-      else if (action.type === "resign") this.doResign(action.data, true);
-      this.timersAsOf = action.timestamp;
-    }
-    this.timersAsOf = undefined;
-    this.evaluateEndGameConditions = shouldEvaluateEndGameConditions;
-    this.render();
-  }
-
-  doResign(resign: Resign, received = false): void {
-    if (!received) {
-      this.sendResign(resign);
-    }
-    super.doResign(resign);
   }
 
   static async connectNewGame(
@@ -78,21 +55,14 @@ export class OnlineGameMaster extends GameMaster {
 
     gameClient.setListeners({
       onPlayerAction: (playerAction: PlayerAction) => {
-        if (playerAction.type === "move") {
-          onlineGameMaster.doMove({
-            move: playerAction.data,
-            unselect: false,
-            received: true,
-          });
-        } else if (playerAction.type === "resign") {
-          onlineGameMaster.doResign(playerAction.data, true);
-        }
-        onlineGameMaster.calculateAllowableMovesForSelectedPieces();
-        if (onlineGameMaster.gameOver) onlineGameMaster.disconnect();
-        onlineGameMaster.render();
+        onlineGameMaster.doPlayerAction({
+          playerAction,
+          received: true,
+          unselect: false,
+        });
       },
       onPlayerActionAcknowledged: (playerAction: PlayerAction) => {
-        if (playerAction.timestamp && playerAction.type === "move") {
+        if (playerAction.timestamp && playerAction.type === "move" && playerAction.data) {
           onlineGameMaster.game.clock?.updateStopTime(
             playerAction.timestamp,
             playerAction.data.playerName
@@ -112,20 +82,50 @@ export class OnlineGameMaster extends GameMaster {
     return onlineGameMaster;
   }
 
+  doPlayerAction({
+    playerAction,
+    unselect = true,
+    received = false,
+  }: {
+    playerAction: PlayerAction;
+    unselect?: boolean;
+    received?: boolean;
+  }): void {
+    if (playerAction.type === "move") {
+      this.doMove({ move: playerAction.data, unselect, received });
+    } else if (playerAction.type === "resign") {
+      this.doResign({ resignation: playerAction.data, received });
+    }
+    this.calculateAllowableMovesForSelectedPieces();
+    if (this.gameOver) this.disconnect();
+    this.render();
+  }
+
+  doResign({
+    resignation,
+    received = false,
+  }: {
+    resignation: Resignation;
+    received?: boolean;
+  }): void {
+    if (!received) {
+      this.sendResign(resignation);
+    }
+    super.doResign({ resignation });
+  }
+
   doMove({
     move,
     unselect,
-    fromHistory,
     received = false,
   }: {
     move?: Move;
     unselect?: boolean;
     received?: boolean;
-    fromHistory?: boolean;
   } = {}): void {
-    if (received) this.setPositionInHistory(this.moveHistory.length);
-    super.doMove({ move, unselect, fromHistory });
-    if (move && !received && !fromHistory)
+    if (received) this.setPositionInHistory(this.playerActionHistory.length);
+    super.doMove({ move, unselect });
+    if (move && !received && this.stateIsCurrent())
       this.sendMove({ ...move, nextPlayerName: this.game.getCurrentPlayerName() });
     if (this.gameOver) this.disconnect();
   }
@@ -138,7 +138,7 @@ export class OnlineGameMaster extends GameMaster {
       });
   }
 
-  sendResign(resign?: Resign): void {
+  sendResign(resign?: Resignation): void {
     if (resign)
       this.gameClient.sendPlayerAction({
         type: "resign",
