@@ -4,4 +4,5 @@ export interface ButtonProps {
   label: ReactNode;
   onPress: () => void;
   accessibilityLabel?: string;
+  depressed?: boolean;
 }

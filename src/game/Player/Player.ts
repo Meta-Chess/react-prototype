@@ -8,6 +8,7 @@ export class Player {
   constructor(
     public name: PlayerName,
     public alive: boolean = true,
+    public wantsToDraw: boolean = false,
     public endGameMessage: string = "",
     public hasLegalMoves: { value: boolean; turn: number } = {
       value: false,
@@ -19,6 +20,7 @@ export class Player {
     const cloneConstructorInput: Required<ConstructorParameters<typeof Player>> = [
       this.name,
       this.alive,
+      this.wantsToDraw,
       this.endGameMessage,
       cloneDeep(this.hasLegalMoves),
     ];
@@ -28,6 +30,7 @@ export class Player {
   resetTo(savePoint: Player): void {
     this.name = savePoint.name;
     this.alive = savePoint.alive;
+    this.wantsToDraw = savePoint.wantsToDraw;
     this.endGameMessage = savePoint.endGameMessage;
     this.hasLegalMoves = {
       value: savePoint.hasLegalMoves.value,

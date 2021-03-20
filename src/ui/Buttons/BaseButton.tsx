@@ -10,6 +10,7 @@ interface Props {
   backgroundColor?: Color;
   textColor?: Color;
   borderColor?: Color;
+  borderWidth?: number;
   accessibilityLabel?: string; // TODO: make this compulsory
 }
 
@@ -18,6 +19,7 @@ export const BaseButton: SFC<Props> = ({
   backgroundColor = Colors.MCHESS_ORANGE,
   textColor = Colors.TEXT.DARK,
   borderColor = Colors.MCHESS_ORANGE,
+  borderWidth = 1,
   ...rest
 }) => {
   const [ref, hovered] = useHover();
@@ -27,6 +29,7 @@ export const BaseButton: SFC<Props> = ({
       ref={ref}
       backgroundColor={backgroundColor.fade(fade)}
       borderColor={borderColor.fade(fade)}
+      borderWidth={borderWidth}
       activeOpacity={0.5}
       accessibilityRole={"button"}
       {...rest}
@@ -45,11 +48,13 @@ export const BaseButton: SFC<Props> = ({
 const TouchableContainer = styled(TouchableOpacity)<{
   backgroundColor: Color;
   borderColor: Color;
+  borderWidth: number;
 }>`
   padding-horizontal: 16px;
   height: 36px;
   background-color: ${({ backgroundColor }): string => backgroundColor.toString()};
-  border: 1px solid ${({ borderColor }): string => borderColor.toString()};
+  border: ${({ borderWidth }): number => borderWidth}px solid
+    ${({ borderColor }): string => borderColor.toString()};
   border-radius: 4px;
   justify-content: center;
   align-items: center;
