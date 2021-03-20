@@ -1,7 +1,6 @@
 import React from "react";
 import { SFC, Text, Colors } from "primitives";
 import { Block } from "ui/Containers/Block";
-import { GameMaster } from "game";
 import { Piece } from "game/Board";
 import { LocationPrefix } from "game/Board/location";
 import { View } from "react-native";
@@ -9,6 +8,7 @@ import { PlayerName } from "game/types";
 import { PieceBank } from "./PieceBank";
 import styled from "styled-components/native";
 import { pieceDisplayOrder } from "game/displayInfo";
+import { GameMaster } from "game";
 
 interface Props {
   gameMaster: GameMaster;
