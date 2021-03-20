@@ -8,6 +8,7 @@ export const ButtonLight: SFC<ButtonProps> = ({ depressed, ...rest }) => {
     <BaseButton
       backgroundColor={Colors.MCHESS_BLUE.fade(depressed ? 0.3 : 0)}
       borderColor={Colors.MCHESS_BLUE}
+      borderWidth={depressed ? 4 : 0}
       {...rest}
     />
   );
