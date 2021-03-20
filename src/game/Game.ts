@@ -93,11 +93,11 @@ export class Game {
     this.removeExpiredTokens();
   }
 
-  nextTurn(clockInfo?: { asOf: TimestampMillis; startClocks: boolean }): void {
+  nextTurn(clockInfo?: { asOf: TimestampMillis; doClocks: boolean }): void {
     const nextPlayerIndex = (this.currentPlayerIndex + 1) % this.players.length;
     if (nextPlayerIndex !== undefined) {
       this.currentPlayerIndex = nextPlayerIndex;
-      if (clockInfo && clockInfo.startClocks) {
+      if (clockInfo && clockInfo.doClocks) {
         const asOf = clockInfo.asOf;
         this.clock?.setActivePlayers([this.players[nextPlayerIndex].name], asOf);
       }

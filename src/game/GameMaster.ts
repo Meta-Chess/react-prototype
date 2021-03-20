@@ -18,7 +18,6 @@ export class GameMaster {
   public gameClones: Game[];
   public result: string | undefined;
   public gameOver = false;
-  public playerActionHistory: PlayerAction[] = [];
   public positionInHistory = 0;
   public formatVariants: FutureVariantName[] = [];
   public formatVariantLabelColors: {
@@ -43,6 +42,7 @@ export class GameMaster {
     public gameOptions: GameOptions,
     public assignedPlayer: PlayerAssignment = "all",
     protected renderer?: Renderer,
+    public playerActionHistory: PlayerAction[] = [],
     protected evaluateEndGameConditions = true
   ) {
     this.gameClones = [game.clone(), game.clone(), game.clone(), game.clone()];
@@ -79,10 +79,12 @@ export class GameMaster {
     gameOptions = {},
     assignedPlayer = "all",
     renderer,
+    playerActionHistory = [],
   }: {
     gameOptions?: Partial<GameOptions>;
     assignedPlayer?: PlayerAssignment;
     renderer?: Renderer;
+    playerActionHistory?: PlayerAction[];
   } = {}): ConstructorParameters<typeof GameMaster> {
     const {
       time,
@@ -108,7 +110,14 @@ export class GameMaster {
       game: Game.createGame(interrupt, time, numberOfPlayers),
     }).game;
 
-    return [game, interrupt, completeGameOptions, assignedPlayer, renderer];
+    return [
+      game,
+      interrupt,
+      completeGameOptions,
+      assignedPlayer,
+      renderer,
+      playerActionHistory,
+    ];
   }
 
   clone({
@@ -124,6 +133,7 @@ export class GameMaster {
       this.gameOptions,
       this.assignedPlayer,
       renderer || new Renderer(),
+      this.playerActionHistory,
       evaluateEndGameConditions
     );
   }
@@ -220,7 +230,7 @@ export class GameMaster {
   }
 
   async doActionsSlowly(actions: PlayerAction[]): Promise<void> {
-    for (const action of actions) {
+    while (!this.stateIsCurrent()) {
       this.render();
       await sleep(50);
       this.goForwardsInHistory();
@@ -234,7 +244,6 @@ export class GameMaster {
 
   goForwardsInHistory(): void {
     const nextInterestingIndex = this.nextInterestingMoveIndex();
-    console.log(nextInterestingIndex);
     if (nextInterestingIndex !== undefined)
       this.setPositionInHistory(nextInterestingIndex);
   }
@@ -271,8 +280,8 @@ export class GameMaster {
     return indexToReturn;
   }
 
-  isInteresting(playerAction?: PlayerAction) {
-    return playerAction && playerAction.type === "move" && playerAction.data;
+  isInteresting(playerAction?: PlayerAction): boolean {
+    return !!playerAction && playerAction.type === "move" && !!playerAction.data;
   }
 
   setPositionInHistory(newPosition: number): void {
@@ -342,7 +351,7 @@ export class GameMaster {
     playerAction,
     unselect = true,
   }: {
-    playerAction?: PlayerAction;
+    playerAction: PlayerAction;
     unselect?: boolean;
   }): void {
     if (playerAction?.type === "move") {
@@ -360,22 +369,19 @@ export class GameMaster {
       this.game.doMove(move);
       if (unselect) this.unselectAllPieces();
     }
-    if (this.stateIsCurrent())
-      this.playerActionHistory.push({ type: "move", data: move });
-    this.positionInHistory += 1;
-    const everyoneHasDoneSomething =
-      this.playersThatHaveActed().length === this.game.players.length;
+    const everyoneWillHaveDoneSomething =
+      uniq(
+        this.playerActionHistory
+          .map((m) => m.data?.playerName)
+          .concat([move?.playerName])
+          .filter(isPresent)
+      ).length === this.game.players.length;
     this.game.nextTurn({
       asOf: move?.timestamp || Date.now(),
-      startClocks: everyoneHasDoneSomething,
+      doClocks: everyoneWillHaveDoneSomething && this.stateIsCurrent(),
     });
+    this.recordPlayerAction({ type: "move", data: move });
     this.startOfTurn();
-  }
-
-  playersThatHaveActed(): PlayerName[] {
-    return uniq(
-      this.playerActionHistory.map((m) => m.data?.playerName).filter(isPresent)
-    );
   }
 
   doResign({ resignation }: { resignation: Resignation }): void {
@@ -389,9 +395,16 @@ export class GameMaster {
         this.doMove();
         return;
       }
+      this.recordPlayerAction({ type: "resign", data: resignation });
       if (this.game.alivePlayers().length < 2) this.checkGameEndConditions();
       this.render();
     }
+  }
+
+  recordPlayerAction(playerAction: PlayerAction): void {
+    if (this.stateIsCurrent())
+      this.playerActionHistory.push({ timestamp: Date.now(), ...playerAction });
+    this.positionInHistory += 1;
   }
 
   startOfTurn(): void {

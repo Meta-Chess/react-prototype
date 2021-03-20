@@ -41,10 +41,12 @@ const Sidebar: SFC = ({ style }) => {
     const assignedPlayer = gameMaster?.assignedPlayer;
     if (assignedPlayer !== undefined && assignedPlayer !== "spectator") {
       gameMaster?.doResign({
-        playerName:
-          assignedPlayer === "all"
-            ? gameMaster.game.getCurrentPlayerName()
-            : assignedPlayer,
+        resignation: {
+          playerName:
+            assignedPlayer === "all"
+              ? gameMaster.game.getCurrentPlayerName()
+              : assignedPlayer,
+        },
       });
     }
   };
