@@ -151,18 +151,22 @@ export class GameMaster {
     this.game.setInterrupt(this.interrupt);
   }
 
+  // TODO: Break into multiple functions
   recalculateSquaresInfo(): void {
     this.squaresInfo.clear();
-    this.moveHistory[this.positionInHistory - 1]?.pieceDeltas.forEach((delta) => {
-      this.squaresInfo.add(delta.path.getStart(), SquareInfo.LastMoveStartPoint);
-      this.squaresInfo.add(delta.path.getEnd(), SquareInfo.LastMoveEndPoint);
-      const path = delta.path.getPath();
-      path
-        .slice(1, path.length - 1)
-        .forEach((pathSquare) =>
-          this.squaresInfo.add(pathSquare, SquareInfo.LastMovePath)
-        );
-    });
+    const lastInterestingMoveIndex = this.lastInterestingMoveIndex({ strict: true });
+    if (lastInterestingMoveIndex !== undefined) {
+      this.moveHistory[lastInterestingMoveIndex]?.pieceDeltas.forEach((delta) => {
+        this.squaresInfo.add(delta.path.getStart(), SquareInfo.LastMoveStartPoint);
+        this.squaresInfo.add(delta.path.getEnd(), SquareInfo.LastMoveEndPoint);
+        const path = delta.path.getPath();
+        path
+          .slice(1, path.length - 1)
+          .forEach((pathSquare) =>
+            this.squaresInfo.add(pathSquare, SquareInfo.LastMovePath)
+          );
+      });
+    }
     const currentPlayerName = this.game.players[this.game.currentPlayerIndex].name;
     this.selectedPieces.forEach((piece) => {
       if (
@@ -216,23 +220,59 @@ export class GameMaster {
     }
   }
 
+  goForwardsInHistory(): void {
+    const nextInterestingIndex = this.nextInterestingMoveIndex();
+    console.log(nextInterestingIndex);
+    if (nextInterestingIndex !== undefined)
+      this.setPositionInHistory(nextInterestingIndex);
+  }
+
+  goBackwardsInHistory(): void {
+    const lastInterestingIndex = this.lastInterestingMoveIndex();
+    if (lastInterestingIndex !== undefined)
+      this.setPositionInHistory(lastInterestingIndex);
+  }
+
+  nextInterestingMoveIndex(): number {
+    if (this.positionInHistory === this.moveHistory.length) return this.positionInHistory;
+    let indexToReturn = this.positionInHistory + 1;
+    while (
+      !this.isInteresting(this.moveHistory[indexToReturn]) &&
+      indexToReturn < this.moveHistory.length
+    ) {
+      indexToReturn++;
+    }
+    return indexToReturn;
+  }
+
+  lastInterestingMoveIndex({ strict = false }: { strict?: boolean } = {}):
+    | number
+    | undefined {
+    if (this.positionInHistory === 0) return strict ? undefined : this.positionInHistory;
+    let indexToReturn = this.positionInHistory - 1;
+    while (!this.isInteresting(this.moveHistory[indexToReturn]) && indexToReturn > 0) {
+      indexToReturn--;
+    }
+    return indexToReturn;
+  }
+
+  isInteresting(move?: Move) {
+    return move !== undefined;
+  }
+
   setPositionInHistory(newPosition: number): void {
     if (newPosition > this.moveHistory.length) newPosition = this.moveHistory.length;
     else if (newPosition < 0) newPosition = 0;
-    // console.log(this.moveHistory, this.positionInHistory);
 
     if (newPosition < this.positionInHistory) {
-      // TODO: make this more readable
       const moveHistory = this.moveHistory;
       this.resetToStartOfGame();
       this.moveHistory = moveHistory;
     }
-    // console.log(this.moveHistory, this.positionInHistory);
     while (newPosition > this.positionInHistory) {
       const nextMove = this.moveHistory[this.positionInHistory];
-      this.doMove({ move: nextMove, fromHistory: true });
+      this.doMove({ move: nextMove });
     }
-    // console.log(this.moveHistory, this.positionInHistory);
     this.render();
   }
 
@@ -253,9 +293,6 @@ export class GameMaster {
 
     if (moves.length === 1 && canMoveSelectedPiece) {
       this.doMove({ move: moves[0] });
-      if (!this.game.players[this.game.currentPlayerIndex].alive) {
-        this.doMove();
-      }
       this.render();
       return moves[0];
     } else if (moves.length > 1 && canMoveSelectedPiece) {
@@ -276,18 +313,14 @@ export class GameMaster {
     this.render();
   }
 
-  doMove({
-    move,
-    unselect = true,
-    fromHistory = false,
-  }: { move?: Move; unselect?: boolean; fromHistory?: boolean } = {}): void {
+  doMove({ move, unselect = true }: { move?: Move; unselect?: boolean } = {}): void {
     // if (move) console.log(`expect(board.getPiecesAt("${move.location}").length).toEqual(1);`); // TEST WRITING HELPER COMMENT
     if (move) {
       this.game.doMove(move);
       if (unselect) this.unselectAllPieces();
     }
-    if (!fromHistory && move) this.moveHistory.push(move);
-    if (move) this.positionInHistory += 1;
+    if (this.positionInHistory === this.moveHistory.length) this.moveHistory.push(move);
+    this.positionInHistory += 1;
     const everyoneHasMoved =
       uniq(this.moveHistory.map((m) => m?.playerName)).length ===
       this.game.players.length;
@@ -334,7 +367,7 @@ export class GameMaster {
     if (this.game.getCurrentPlayer().alive || this.game.alivePlayers().length === 0) {
       this.checkGameEndConditions();
       this.render(); // TODO: avoid excess renders when pressing back button
-    } else {
+    } else if (this.positionInHistory === this.moveHistory.length) {
       this.doMove();
     }
   }
@@ -382,7 +415,8 @@ export class GameMaster {
     if (
       !this.gameOver &&
       !this.game.players[this.game.currentPlayerIndex].alive &&
-      this.game.alivePlayers().length > 1
+      this.game.alivePlayers().length > 0 &&
+      this.positionInHistory === this.moveHistory.length
     ) {
       this.doMove();
       return;
