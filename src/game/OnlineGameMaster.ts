@@ -2,7 +2,6 @@ import { GameMaster } from "./GameMaster";
 import { Renderer } from "./Renderer";
 import { GameOptions, PlayerAssignment } from "game/types";
 import { GameClient } from "game/GameClient";
-import { sleep } from "utilities/sleep";
 import { Move } from "game/Move";
 import { PlayerAction, Resignation, Draw } from "./PlayerAction";
 
@@ -13,10 +12,16 @@ export class OnlineGameMaster extends GameMaster {
     assignedPlayer: PlayerAssignment,
     public roomId: string,
     private gameClient: GameClient,
+    playerActionHistory: PlayerAction[] = [],
     replay = true
   ) {
     super(
-      ...GameMaster.processConstructorInputs({ gameOptions, assignedPlayer, renderer })
+      ...GameMaster.processConstructorInputs({
+        gameOptions,
+        assignedPlayer,
+        renderer,
+        playerActionHistory,
+      })
     );
     if (replay) this.doActionsSlowly(gameClient.playerActions);
   }
@@ -42,7 +47,6 @@ export class OnlineGameMaster extends GameMaster {
 
     if (gameClient.assignedPlayer === "spectator") {
       onSpectating?.();
-      return undefined;
     }
 
     const onlineGameMaster = new OnlineGameMaster(
@@ -50,7 +54,8 @@ export class OnlineGameMaster extends GameMaster {
       gameClient.gameOptions,
       gameClient.assignedPlayer,
       roomId,
-      gameClient
+      gameClient,
+      gameClient.playerActions
     );
 
     gameClient.setListeners({
@@ -133,8 +138,9 @@ export class OnlineGameMaster extends GameMaster {
     received?: boolean;
   } = {}): void {
     if (received) this.setPositionInHistory(this.playerActionHistory.length);
+    const moveIsNew = this.stateIsCurrent();
     super.doMove({ move, unselect });
-    if (move && !received && this.stateIsCurrent())
+    if (move && !received && moveIsNew)
       this.sendMove({ ...move, nextPlayerName: this.game.getCurrentPlayerName() });
     if (this.gameOver) this.disconnect();
   }
