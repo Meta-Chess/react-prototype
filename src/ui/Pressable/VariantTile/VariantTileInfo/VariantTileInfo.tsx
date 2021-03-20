@@ -2,9 +2,9 @@ import React from "react";
 import { SFC, Text, Colors } from "primitives";
 import { View } from "react-native";
 import { FutureVariant } from "game";
-import { TraitLabel } from "./TraitLabel";
 import styled from "styled-components/native";
-import { TraitName } from "game/variants/traitInfo";
+import { TraitName, traitInfo } from "game/variants/traitInfo";
+import { LabelWithDetails } from "ui";
 
 interface VariantTileInfoProps {
   variant: FutureVariant;
@@ -20,7 +20,14 @@ const VariantTileInfo: SFC<VariantTileInfoProps> = ({ style, variant }) => {
       </View>
       <View style={{ flexDirection: "row", marginBottom: 2 }}>
         {variant.traits.map((trait: TraitName, index: number) => (
-          <TraitLabel key={index} trait={trait} style={{ marginRight: 8 }} />
+          <LabelWithDetails
+            key={index}
+            label={trait}
+            details={traitInfo[trait].description}
+            color={traitInfo[trait].color}
+            style={{ marginRight: 8 }}
+            textCat={"BodyXS"}
+          />
         ))}
       </View>
     </Container>

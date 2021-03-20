@@ -32,6 +32,7 @@ const TraitFilter: SFC<TraitFilterProps> = ({
       verticalPadding={verticalPadding}
       style={style}
       color={color}
+      selected={selected}
       onPress={onPress}
     >
       <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()} selectable={false}>
@@ -41,6 +42,7 @@ const TraitFilter: SFC<TraitFilterProps> = ({
         labelPadding={labelPadding}
         counterPadding={counterPadding}
         verticalPadding={verticalPadding}
+        selected={selected}
       >
         <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()} selectable={false}>
           {numberOfVariantsWithTrait.toString()}
@@ -55,12 +57,17 @@ const TouchableLabel = styled(TouchableOpacity)<{
   labelPadding: number;
   counterPadding: number;
   verticalPadding: number;
+  selected: boolean;
 }>`
   flex-direction: row;
   border-radius: 4px;
-  padding-left: ${({ labelPadding }): number => labelPadding}px;
-  padding-vertical: ${({ verticalPadding }): number => verticalPadding}px;
+  padding-left: ${({ labelPadding, selected }): number =>
+    selected ? labelPadding : labelPadding + 1}px;
+  padding-vertical: ${({ verticalPadding, selected }): number =>
+    selected ? verticalPadding - 1 : verticalPadding}px;
   background-color: ${({ color }): string => color.string()};
+  border-width: ${({ selected }): number => (selected ? 1 : 0)}px;
+  border-color: ${Colors.GREY.toString()};
   overflow: hidden;
 `;
 
@@ -68,12 +75,14 @@ const CountContainer = styled(View)<{
   labelPadding: number;
   counterPadding: number;
   verticalPadding: number;
+  selected: boolean;
 }>`
   justify-content: center;
   margin-vertical: -${({ verticalPadding }): number => verticalPadding}px;
   margin-left: ${({ labelPadding }): number => labelPadding}px;
   padding-left: ${({ counterPadding }): number => counterPadding}px;
-  padding-right: ${({ counterPadding }): number => counterPadding}px;
+  padding-right: ${({ counterPadding, selected }): number =>
+    selected ? counterPadding : counterPadding + 1}px;
   background-color: ${Colors.BLACK.fade(0.75).toString()};
 `;
 

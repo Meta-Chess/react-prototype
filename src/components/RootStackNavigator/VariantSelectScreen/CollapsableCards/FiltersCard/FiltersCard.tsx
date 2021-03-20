@@ -1,12 +1,12 @@
 import React from "react";
 import { View } from "react-native";
-import { SFC } from "primitives";
+import { SFC, Text, Colors } from "primitives";
 import { TraitFilter } from "./TraitFilter";
 import styled from "styled-components/native";
 import { getTraitInfoForSet } from "./getTraitInfoForSet";
 import { CollapsableCard } from "ui/Containers";
 import { TraitsInSetInfo } from "game";
-import { TraitName } from "game/variants/traitInfo";
+import { TraitName, traitInfo } from "game/variants/traitInfo";
 
 interface Props {
   activeFilters: TraitName[];
@@ -33,6 +33,15 @@ const FiltersCard: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => 
           />
         ))}
       </Container>
+      {activeFilters.length > 0 && (
+        <Text
+          color={Colors.TEXT.LIGHT_SECONDARY.toString()}
+          cat="BodyXS"
+          style={{ fontStyle: "italic", marginVertical: 6, marginLeft: 8 }}
+        >
+          {traitInfo[activeFilters[0]].description}
+        </Text>
+      )}
     </CollapsableCard>
   );
 };
