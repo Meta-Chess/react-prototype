@@ -23,7 +23,7 @@ export class OnlineGameMaster extends GameMaster {
         playerActionHistory,
       })
     );
-    if (replay) this.doActionsSlowly(gameClient.playerActions);
+    if (replay) this.setPositionInHistoryToLatest();
   }
 
   static async connectNewGame(

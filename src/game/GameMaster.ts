@@ -1,6 +1,12 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, PlayerAssignment, PlayerName, VariantLabelInfo } from "./types";
+import {
+  GameOptions,
+  PlayerAssignment,
+  PlayerName,
+  TimestampMillis,
+  VariantLabelInfo,
+} from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { CompactRules, RuleName } from "./rules";
@@ -229,7 +235,7 @@ export class GameMaster {
     }
   }
 
-  async doActionsSlowly(actions: PlayerAction[]): Promise<void> {
+  async setPositionInHistoryToLatest(): Promise<void> {
     while (!this.stateIsCurrent()) {
       this.render();
       await sleep(50);
@@ -355,7 +361,11 @@ export class GameMaster {
     unselect?: boolean;
   }): void {
     if (playerAction?.type === "move") {
-      this.doMove({ move: playerAction.data, unselect });
+      this.doMove({
+        move: playerAction.data,
+        timestamp: playerAction.timestamp,
+        unselect,
+      });
     } else if (playerAction?.type === "resign") {
       this.doResign({ resignation: playerAction.data });
     }
@@ -363,7 +373,11 @@ export class GameMaster {
     this.render();
   }
 
-  doMove({ move, unselect = true }: { move?: Move; unselect?: boolean } = {}): void {
+  doMove({
+    move,
+    timestamp,
+    unselect = true,
+  }: { move?: Move; timestamp?: TimestampMillis; unselect?: boolean } = {}): void {
     // if (move) console.log(`expect(board.getPiecesAt("${move.location}").length).toEqual(1);`); // TEST WRITING HELPER COMMENT
     if (move) {
       this.game.doMove(move);
@@ -377,8 +391,8 @@ export class GameMaster {
           .filter(isPresent)
       ).length === this.game.players.length;
     this.game.nextTurn({
-      asOf: move?.timestamp || Date.now(),
-      doClocks: everyoneWillHaveDoneSomething && this.stateIsCurrent(),
+      asOf: timestamp || Date.now(),
+      doClocks: everyoneWillHaveDoneSomething,
     });
     this.recordPlayerAction({ type: "move", data: move });
     this.startOfTurn();
