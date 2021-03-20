@@ -31,11 +31,6 @@ export const VariantTileHeader: SFC<Props> = ({ variant, selected, conflictLevel
           {variant.title}
         </TitleText>
       </View>
-      <ComplexityDot>
-        <Text cat="BodyXS" weight="heavy" alignment="center" selectable={false}>
-          {variant.complexity}
-        </Text>
-      </ComplexityDot>
     </Container>
   );
 };
@@ -51,15 +46,4 @@ const Container = styled(View)<{ color: Color }>`
 const TitleText = styled(Text)`
   padding-horizontal: 8px;
   text-align: center;
-`;
-
-const ComplexityDot = styled(View)`
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  right: 8px;
-  align-self: center;
-  justify-content: center;
-  border-radius: 50px;
-  background-color: ${Colors.BLACK.fade(0.7).toString()};
 `;
