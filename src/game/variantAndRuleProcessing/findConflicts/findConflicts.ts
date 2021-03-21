@@ -7,30 +7,9 @@ import { Conflict } from "./Conflict";
 import { checkConflicts } from "./checkConflicts";
 import { specialConflicts } from "./specialConflicts";
 import { boardConflicts } from "./boardConflicts";
+import { rollableVariants } from "game/formats/rollableVariants";
+import { nameToTitle } from "./nameToTitle";
 
-export const variantConflicts: {
-  mainVariantGroup: FutureVariantName[];
-  conflictingVariants: FutureVariantName[];
-  mitigatingVariants?: FutureVariantName[];
-  messageBuilder: (
-    mainVariantTitles: string[],
-    conflictingVariantTitles: string[],
-    mitigatingVariantTitles?: string[]
-  ) => string;
-  level: "ERROR" | "WARNING";
-}[] = [
-  {
-    mainVariantGroup: ["atomic"],
-    conflictingVariants: ["mobius", "kleinBottle"],
-    messageBuilder: (variant1Titles: string[], variant2Titles: string[]): string =>
-      `Combining ${englishList(variant1Titles, {
-        connector: "or",
-      })} with ${englishList(variant2Titles, {
-        connector: "or",
-      })} leads to some strongly forcing paths that can make the game less fun`,
-    level: "WARNING",
-  },
-];
 export const findConflicts = (
   format: FormatName,
   selectedVariants: FutureVariantName[],
@@ -51,79 +30,63 @@ export const findConflicts = (
     }))
   );
 
-  return [
-    ...checkConflicts(format, selectedVariantCatagories, selectedRules),
-    ...specialConflicts(format, selectedVariantCatagories),
-    ...boardConflicts(format, selectedVariantCatagories),
-  ];
-};
+  const checkConflictsList = checkConflicts(
+    format,
+    selectedVariantCatagories,
+    selectedRules
+  );
+  const specialConflictsList = specialConflicts(format, selectedVariantCatagories);
+  const boardConflictsList = boardConflicts(format, selectedVariantCatagories);
+  const numberOfConflicts =
+    checkConflictsList.length + specialConflictsList.length + boardConflictsList.length;
+  const defaultMessage: Conflict = {
+    message: "This looks like fun!",
+    level: "SUCCESS",
+  };
 
-/*
-  if (format === "variantComposition") {
-    relevantVariantConflicts = variantConflicts
-      .map((potentialConflict) => {
-        const mainVariants = intersection(
-          selectedVariants,
-          potentialConflict.mainVariantGroup
-        );
-
-        if (mainVariants.length === 0) return undefined;
-
-        const conflictingVariants = intersection(
-          selectedVariants,
-          potentialConflict.conflictingVariants
-        );
-
-        if (conflictingVariants.length === 0) return undefined;
-
-        if (
-          intersection(selectedVariants, potentialConflict.mitigatingVariants).length !==
-          0
-        )
-          return undefined;
-
-        return {
-          message: potentialConflict.messageBuilder(
-            mainVariants.map(nameToTitle),
-            conflictingVariants.map(nameToTitle),
-            potentialConflict.mitigatingVariants?.map(nameToTitle)
-          ),
-          level: potentialConflict.level,
-        };
-      })
-      .filter(isPresent);
-  }
-
-  const formatConflicts: Conflict[] = [];
-  if (format === "rollingVariants") {
-    const selectedVariantsThatShouldNotRoll = selectedVariants.filter(
-      (variantName) => !rollableVariants.includes(variantName)
+  if (format === "randomVariants") {
+    const randomMessage: Conflict = {
+      message: "There are clashes which may effect your game:",
+      level: "NEUTRAL",
+    };
+    return numberOfConflicts === 0
+      ? [defaultMessage]
+      : [
+          randomMessage,
+          ...checkConflictsList,
+          ...specialConflictsList,
+          ...boardConflictsList,
+        ];
+  } else if (format === "rollingVariants") {
+    const nonRollingVariants = selectedVariants.filter(
+      (variant) => !rollableVariants.includes(variant)
     );
-    if (selectedVariantsThatShouldNotRoll.length !== 0) {
-      formatConflicts.push({
-        message: `${englishList(
-          selectedVariantsThatShouldNotRoll.map(
-            (variantName) => allVariants[variantName].title
-          ),
-          {
-            singular: "doesn't",
-            plural: "don't",
-          }
-        )} work with rolling variants yet`,
+    if (nonRollingVariants.length > 0) {
+      const rollingConflict: Conflict = {
+        message: `${englishList(nonRollingVariants.map(nameToTitle), {
+          singular: "is",
+          plural: "are",
+        })} not compatible with rolling variants yet.`,
         level: "ERROR",
-      });
-    }
-
-    // TODO: use rolling variants parameter for number of variants rather than `4`
-    if (selectedVariants.length < 4) {
-      formatConflicts.push({
-        message:
-          "Rolling variants won't do anything unless there are at least 4 variants selected",
-        level: "WARNING",
-      });
+        type: "rollingVariants",
+      };
+      return [rollingConflict];
+    } else {
+      const rollingMessage: Conflict = {
+        message: "There are clashes which may effect your game:",
+        level: "NEUTRAL",
+      };
+      return numberOfConflicts === 0
+        ? [defaultMessage]
+        : [
+            rollingMessage,
+            ...checkConflictsList,
+            ...specialConflictsList,
+            ...boardConflictsList,
+          ];
     }
   }
 
-  return [...formatConflicts, ...relevantVariantConflicts];
+  if (numberOfConflicts === 0) return [defaultMessage];
+  return [...checkConflictsList, ...specialConflictsList, ...boardConflictsList];
 };
-*/

@@ -394,7 +394,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   },
 };
 
-export type AdviceLevel = "SUCCESS" | "ERROR" | "WARNING";
+export type AdviceLevel = "SUCCESS" | "ERROR" | "WARNING" | "NEUTRAL";
 
 interface VariantConflict {
   variant1: FutureVariantName;

@@ -7,7 +7,7 @@ import {
   FutureVariantName,
   GameOptions,
   defaultGameOptions,
-  rules,
+  futureVariants,
 } from "game";
 import { TraitName } from "game/variants/traitInfo";
 import { useNavigation, Screens, useGoBackOrToStartScreen, useRoute } from "navigation";
@@ -22,6 +22,8 @@ import styled from "styled-components/native";
 import { Topbar } from "./Topbar";
 import { FormatName } from "game/formats";
 import { rollableVariants } from "game/formats/rollableVariants";
+import { randomVariants } from "game/formats/randomVariants";
+import { getConflictLevel } from "./getConflictLevel";
 
 const VariantSelectScreen: FC = () => {
   const playWithFriends = useRoute<Screens.VariantSelectScreen>().params?.playWithFriends;
@@ -43,7 +45,7 @@ const VariantSelectScreen: FC = () => {
     { [key in FormatName]: FutureVariantName[] }
   >({
     variantComposition: [],
-    randomVariants: [],
+    randomVariants: randomVariants,
     rollingVariants: rollableVariants,
   });
   const selectedVariantsForFormat = selectedVariants[gameOptions.format];
@@ -61,11 +63,7 @@ const VariantSelectScreen: FC = () => {
     selectedVariantsForFormat,
     gameOptions.checkEnabled
   );
-  const conflictLevel = variantConflicts.some((conflict) => conflict.level === "ERROR")
-    ? "ERROR"
-    : variantConflicts.some((conflict) => conflict.level === "WARNING")
-    ? "WARNING"
-    : undefined;
+  const conflictLevel = getConflictLevel(gameOptions.format, variantConflicts);
 
   return (
     <ScreenContainer
