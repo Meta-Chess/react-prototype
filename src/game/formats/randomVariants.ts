@@ -15,4 +15,6 @@ export const randomVariants = [
   "cylindrical",
   "polar",
   "spherical",
+  "hex",
+  "toroidal",
 ] as FutureVariantName[];
