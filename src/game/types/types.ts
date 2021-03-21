@@ -23,6 +23,7 @@ export interface Gait {
 }
 
 export type TimestampMillis = number;
+export type IntervalMillis = number;
 
 // The order of colors in this enum corresponds to the order of colors in Colors.PLAYER
 export enum PlayerName {
