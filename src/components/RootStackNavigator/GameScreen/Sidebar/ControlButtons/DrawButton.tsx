@@ -14,11 +14,6 @@ export const DrawButton: SFC<Props> = ({ onPress, style }) => {
     .getPlayers()
     .find((p) => p.name === gameMaster.assignedPlayer)?.wantsToDraw;
   return (
-    <Button
-      label={DrawIcon}
-      style={style}
-      onPress={onPress}
-      depressed={depressed}
-    />
+    <Button label={DrawIcon} style={style} onPress={onPress} depressed={depressed} />
   );
 };
