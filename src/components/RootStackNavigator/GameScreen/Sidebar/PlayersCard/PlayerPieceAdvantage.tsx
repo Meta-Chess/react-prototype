@@ -58,6 +58,7 @@ const PlayerPieceAdvantage: SFC<Props> = ({ player, style }) => {
               {pieceGroup.map((piece) => (
                 <View key={piece.id} style={{ width: PIECE_OVERLAP_SPACING }}>
                   <Piece
+                    ignoreTokens={true}
                     piece={piece}
                     color={Colors.PLAYER[piece.owner].string()}
                     outlineColor={"transparent"}
