@@ -143,7 +143,7 @@ export const LabelWithDetails: SFC<Props> = ({
   );
 };
 
-const LabelContainer = styled(View)<{ color: Color; textCat?: TextCat }>`
+const LabelContainer = styled(View)<{ color: Color }>`
   border-radius: 4px;
   padding-horizontal: 8px;
   align-items: center;
