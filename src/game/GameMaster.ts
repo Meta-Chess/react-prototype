@@ -18,7 +18,6 @@ import { FormatName } from "game/formats";
 import { doesCapture } from "./rules/utilities";
 import { PlayerAction, Resignation, Draw } from "./PlayerAction";
 import { isPresent, sleep } from "utilities";
-import { OnlineGameMaster } from "game/OnlineGameMaster";
 
 export class GameMaster {
   // WARNING: Default values exist both here and in `GameMaster.resetToStartOfGame`
@@ -375,7 +374,10 @@ export class GameMaster {
         unselect,
       });
     } else if (playerAction?.type === "resign") {
-      this.doResign({ resignation: playerAction.data });
+      this.doResign({
+        resignation: playerAction.data,
+        timestamp: playerAction.timestamp,
+      });
     }
     this.calculateAllowableMovesForSelectedPieces();
     this.render();
@@ -392,7 +394,7 @@ export class GameMaster {
       if (unselect) this.unselectAllPieces();
     }
     this.game.nextTurn();
-    this.recordPlayerAction({ type: "move", data: move });
+    this.recordPlayerAction({ type: "move", data: move, timestamp });
     this.maybeUpdateClocks(timestamp);
     this.startOfTurn();
   }
@@ -409,7 +411,13 @@ export class GameMaster {
     if (everyoneWillHaveDoneSomething) this.game.updateClocks(asOf);
   }
 
-  doResign({ resignation }: { resignation: Resignation }): void {
+  doResign({
+    resignation,
+    timestamp,
+  }: {
+    resignation: Resignation;
+    timestamp?: TimestampMillis;
+  }): void {
     const player = this.game
       .getPlayers()
       .find((p): boolean => p.name === resignation.playerName);
@@ -420,7 +428,7 @@ export class GameMaster {
         this.doMove();
         return;
       }
-      this.recordPlayerAction({ type: "resign", data: resignation });
+      this.recordPlayerAction({ type: "resign", data: resignation, timestamp });
       if (this.game.alivePlayers().length < 2) this.checkGameEndConditions();
       this.render();
     }
