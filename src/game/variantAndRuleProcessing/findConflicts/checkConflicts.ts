@@ -1,11 +1,9 @@
-import { FormatName } from "game";
 import { englishList } from "utilities/englishList";
 import { VariantCatagories } from "./variantCatagories";
 import { Conflict } from "./Conflict";
 import { nameToTitle } from "./nameToTitle";
 
 export function checkConflicts(
-  format: FormatName,
   selectedVariants: VariantCatagories,
   selectedRules: string[]
 ): Conflict[] {

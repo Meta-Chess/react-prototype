@@ -30,13 +30,9 @@ export const findConflicts = (
     }))
   );
 
-  const checkConflictsList = checkConflicts(
-    format,
-    selectedVariantCatagories,
-    selectedRules
-  );
-  const specialConflictsList = specialConflicts(format, selectedVariantCatagories);
-  const boardConflictsList = boardConflicts(format, selectedVariantCatagories);
+  const checkConflictsList = checkConflicts(selectedVariantCatagories, selectedRules);
+  const specialConflictsList = specialConflicts(selectedVariantCatagories);
+  const boardConflictsList = boardConflicts(selectedVariantCatagories);
   const numberOfConflicts =
     checkConflictsList.length + specialConflictsList.length + boardConflictsList.length;
   const defaultMessage: Conflict = {

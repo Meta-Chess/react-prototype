@@ -1,13 +1,9 @@
-import { FormatName } from "game";
 import { englishList } from "utilities/englishList";
 import { VariantCatagories } from "./variantCatagories";
 import { Conflict } from "./Conflict";
 import { nameToTitle } from "./nameToTitle";
 
-export function specialConflicts(
-  format: FormatName,
-  selectedVariants: VariantCatagories
-): Conflict[] {
+export function specialConflicts(selectedVariants: VariantCatagories): Conflict[] {
   const conflicts: Conflict[] = [];
 
   // no fork

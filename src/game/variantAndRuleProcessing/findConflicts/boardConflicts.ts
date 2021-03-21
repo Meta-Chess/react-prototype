@@ -1,13 +1,9 @@
-import { FormatName } from "game";
 import { englishList } from "utilities/englishList";
 import { VariantCatagories } from "./variantCatagories";
 import { Conflict } from "./Conflict";
 import { nameToTitle } from "./nameToTitle";
 
-export function boardConflicts(
-  format: FormatName,
-  selectedVariants: VariantCatagories
-): Conflict[] {
+export function boardConflicts(selectedVariants: VariantCatagories): Conflict[] {
   const conflicts: Conflict[] = [];
 
   // polar incompatibility
