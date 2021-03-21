@@ -77,13 +77,15 @@ export class GameMaster {
     this.locationSelected = false;
     this.squaresInfo = new SquaresInfo();
     this.timersAsOf = undefined;
-    const [game, interrupt] = GameMaster.processConstructorInputs({
+    const [game, interrupt, { deck }] = GameMaster.processConstructorInputs({
       gameOptions: this.gameOptions,
       assignedPlayer: this.assignedPlayer,
       renderer: this.renderer,
     });
+    this.deck = deck;
     this.game = game;
     this.interrupt = interrupt;
+    this.startOfTurn();
   }
 
   static processConstructorInputs({
