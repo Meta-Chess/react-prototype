@@ -71,6 +71,7 @@ export class OnlineGameMaster extends GameMaster {
       onPlayerActionAcknowledged: (playerAction: PlayerAction) => {
         if (playerAction.timestamp && playerAction.type === "move" && playerAction.data) {
           onlineGameMaster.maybeUpdateClocks(playerAction.timestamp);
+          onlineGameMaster.updateTimeOfMostRecentMove(playerAction.timestamp);
           onlineGameMaster.handlePossibleTimerFinish();
           onlineGameMaster.render();
         }
@@ -97,7 +98,11 @@ export class OnlineGameMaster extends GameMaster {
         received,
       });
     } else if (playerAction.type === "resign") {
-      this.doResign({ resignation: playerAction.data, received });
+      this.doResign({
+        resignation: playerAction.data,
+        timestamp: playerAction.timestamp,
+        received,
+      });
     }
     this.calculateAllowableMovesForSelectedPieces();
     if (this.gameOver) this.disconnect();
@@ -106,15 +111,17 @@ export class OnlineGameMaster extends GameMaster {
 
   doResign({
     resignation,
+    timestamp,
     received = false,
   }: {
     resignation: Resignation;
+    timestamp?: TimestampMillis;
     received?: boolean;
   }): void {
     if (!received) {
       this.sendResign(resignation);
     }
-    super.doResign({ resignation });
+    super.doResign({ resignation, timestamp });
   }
 
   doMove({
@@ -136,15 +143,6 @@ export class OnlineGameMaster extends GameMaster {
     if (this.gameOver) this.disconnect();
   }
 
-  maybeUpdateClocks(asOf?: TimestampMillis): void {
-    if (!asOf) {
-      this.clockUpdatePendingSince = Date.now();
-      return;
-    }
-    this.clockUpdatePendingSince = undefined;
-    super.maybeUpdateClocks(asOf);
-  }
-
   sendMove(move?: Move): void {
     if (move)
       this.gameClient.sendPlayerAction({
@@ -159,6 +157,29 @@ export class OnlineGameMaster extends GameMaster {
         type: "resign",
         data: resign,
       });
+  }
+
+  maybeUpdateClocks(asOf?: TimestampMillis): void {
+    if (!asOf) {
+      this.clockUpdatePendingSince = Date.now();
+      return;
+    }
+    this.clockUpdatePendingSince = undefined;
+    super.maybeUpdateClocks(asOf);
+  }
+
+  updateTimeOfMostRecentMove(newTime?: TimestampMillis): void {
+    if (!newTime) return;
+    let searchIndex = this.playerActionHistory.length - 1;
+    while (this.playerActionHistory[searchIndex]?.type !== "move") {
+      searchIndex--;
+      if (searchIndex < 0) return;
+    }
+    const indexOfLastMove = searchIndex;
+    this.playerActionHistory[indexOfLastMove] = {
+      ...this.playerActionHistory[indexOfLastMove],
+      timestamp: newTime,
+    };
   }
 
   disconnect(): void {
