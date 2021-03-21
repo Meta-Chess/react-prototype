@@ -7,7 +7,6 @@ import {
   FutureVariantName,
   GameOptions,
   defaultGameOptions,
-  futureVariants,
 } from "game";
 import { TraitName } from "game/variants/traitInfo";
 import { useNavigation, Screens, useGoBackOrToStartScreen, useRoute } from "navigation";

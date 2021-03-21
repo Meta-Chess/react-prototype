@@ -1,7 +1,6 @@
 import { RuleName } from "../rules";
 import * as VariantImages from "primitives/VariantImage";
 import { TraitName } from "game/variants/traitInfo";
-import { englishList } from "utilities/englishList";
 
 export const integrateWithOtherRules: {
   [key in RuleName]?: (rules: RuleName[]) => RuleName[];
