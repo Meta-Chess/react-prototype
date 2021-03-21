@@ -1,4 +1,5 @@
 import { FutureVariantName } from "game/variants/variants";
+//import { boardConflicts } from "../findConflicts/boardConflicts";
 import { random } from "lodash";
 
 export function chooseRandomVariants(variants: FutureVariantName[]): FutureVariantName[] {

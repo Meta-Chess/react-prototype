@@ -47,12 +47,7 @@ export const findConflicts = (
     };
     return numberOfConflicts === 0
       ? [defaultMessage]
-      : [
-          randomMessage,
-          ...checkConflictsList,
-          ...specialConflictsList,
-          ...boardConflictsList,
-        ];
+      : [randomMessage, ...checkConflictsList, ...specialConflictsList];
   } else if (format === "rollingVariants") {
     const nonRollingVariants = selectedVariants.filter(
       (variant) => !rollableVariants.includes(variant)
