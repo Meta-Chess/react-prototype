@@ -19,6 +19,7 @@ interface Props {
   glowColor?: string;
   animatedData?: animatedData;
   onPress?: () => void;
+  ignoreTokens?: boolean;
 }
 
 const Piece: FC<Props> = ({
@@ -29,6 +30,7 @@ const Piece: FC<Props> = ({
   glowColor,
   animatedData,
   onPress,
+  ignoreTokens,
 }) => {
   const { gameMaster } = useContext(GameContext);
   if (piece === undefined) return null;
@@ -50,6 +52,7 @@ const Piece: FC<Props> = ({
       rotatePiece={gameMaster?.overTheBoard && piece.owner === PlayerName.Black}
       opacity={
         piece.hasTokenWithName(TokenName.Fatigue) &&
+        !ignoreTokens &&
         gameMaster?.getRuleNames().includes("fatigue")
           ? 0.4
           : 1
