@@ -1,25 +1,64 @@
-import {
-  AdviceLevel,
-  FutureVariantName,
-  futureVariants,
-  variantConflicts,
-} from "game/variants";
-import { intersection } from "lodash";
-import { isPresent } from "ts-is-present";
-import { FormatName, futureVariants as allVariants } from "game";
+import { FutureVariantName } from "game/variants";
+import { FormatName } from "game";
 import { englishList } from "utilities/englishList";
-import { rollableVariants } from "game/formats/rollableVariants";
+import { CompactRules } from "game/rules";
+import { VARIANT_CATAGORIES } from "./variantCatagories";
+import { Conflict } from "./Conflict";
+import { checkConflicts } from "./checkConflicts";
+import { specialConflicts } from "./specialConflicts";
+import { boardConflicts } from "./boardConflicts";
 
-interface Conflict {
-  message: string;
-  level: AdviceLevel;
-}
-
+export const variantConflicts: {
+  mainVariantGroup: FutureVariantName[];
+  conflictingVariants: FutureVariantName[];
+  mitigatingVariants?: FutureVariantName[];
+  messageBuilder: (
+    mainVariantTitles: string[],
+    conflictingVariantTitles: string[],
+    mitigatingVariantTitles?: string[]
+  ) => string;
+  level: "ERROR" | "WARNING";
+}[] = [
+  {
+    mainVariantGroup: ["atomic"],
+    conflictingVariants: ["mobius", "kleinBottle"],
+    messageBuilder: (variant1Titles: string[], variant2Titles: string[]): string =>
+      `Combining ${englishList(variant1Titles, {
+        connector: "or",
+      })} with ${englishList(variant2Titles, {
+        connector: "or",
+      })} leads to some strongly forcing paths that can make the game less fun`,
+    level: "WARNING",
+  },
+];
 export const findConflicts = (
   format: FormatName,
-  selectedVariants: FutureVariantName[]
+  selectedVariants: FutureVariantName[],
+  checkEnabled?: boolean
 ): Conflict[] => {
-  let relevantVariantConflicts = [] as Conflict[];
+  const selectedRules = new CompactRules(
+    selectedVariants,
+    [format],
+    checkEnabled ? ["check"] : []
+  ).getRuleNames();
+
+  const selectedVariantCatagories = Object.assign(
+    {},
+    ...Object.keys(VARIANT_CATAGORIES).map((group) => ({
+      [group]: selectedVariants.filter((variant) =>
+        VARIANT_CATAGORIES[group].includes(variant)
+      ),
+    }))
+  );
+
+  return [
+    ...checkConflicts(format, selectedVariantCatagories, selectedRules),
+    ...specialConflicts(format, selectedVariantCatagories),
+    ...boardConflicts(format, selectedVariantCatagories),
+  ];
+};
+
+/*
   if (format === "variantComposition") {
     relevantVariantConflicts = variantConflicts
       .map((potentialConflict) => {
@@ -87,7 +126,4 @@ export const findConflicts = (
 
   return [...formatConflicts, ...relevantVariantConflicts];
 };
-
-function nameToTitle(name: FutureVariantName): string {
-  return futureVariants[name].title;
-}
+*/

@@ -7,6 +7,7 @@ import {
   FutureVariantName,
   GameOptions,
   defaultGameOptions,
+  rules,
 } from "game";
 import { TraitName } from "game/variants/traitInfo";
 import { useNavigation, Screens, useGoBackOrToStartScreen, useRoute } from "navigation";
@@ -55,7 +56,11 @@ const VariantSelectScreen: FC = () => {
   const variantConflicts: {
     message: string;
     level: AdviceLevel;
-  }[] = findConflicts(gameOptions.format, selectedVariantsForFormat);
+  }[] = findConflicts(
+    gameOptions.format,
+    selectedVariantsForFormat,
+    gameOptions.checkEnabled
+  );
   const conflictLevel = variantConflicts.some((conflict) => conflict.level === "ERROR")
     ? "ERROR"
     : variantConflicts.some((conflict) => conflict.level === "WARNING")
