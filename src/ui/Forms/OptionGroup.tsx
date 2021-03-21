@@ -40,11 +40,11 @@ export function OptionGroup<T>({
             style={{ flex: option.flex }}
             active={option.value === selected}
             flex={option.flex !== undefined}
-            disabled={option.disabled === true}
+            disabled={option.disabled}
             onPress={(): void => setSelected(option.value)}
           >
             {option.label}
-            {option.disabled === true && <PressableOptionCover />}
+            {option.disabled && <PressableOptionCover />}
           </PressableOption>
         );
       })}
