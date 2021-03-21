@@ -18,4 +18,5 @@ export * from "./NoTimerIcon";
 export * from "./PlayerIcon";
 export * from "./PlusIcon";
 export * from "./PlusIcon";
+export * from "./socialMedia";
 export * from "./TimerIcon";

@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Colors, MChessLogo } from "primitives";
+import { Colors, DiscordIcon, MChessLogo } from "primitives";
 import { GameOptions, defaultGameOptions } from "game";
 import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
@@ -7,8 +7,11 @@ import { GameProvider, HelpMenu } from "components/shared";
 import { Lobby } from "./Lobby";
 import { SpotlightGame } from "./SpotlightGame";
 import { PlayWithFriends } from "./PlayWithFriends";
-import { ScrollView } from "react-native";
+import { ScrollView, Linking, Platform } from "react-native";
 import { ErrorBoundary } from "components/shared/ErrorBoundary";
+import { IconButton } from "ui/Buttons/IconButton";
+
+const DISCORD_URL = "https://discord.gg/wxBjaKfhDu";
 
 const StartScreen: FC = () => {
   const [gameOptions] = useState<GameOptions>(defaultGameOptions);
@@ -41,6 +44,14 @@ const StartScreen: FC = () => {
             }
           />
           <HelpMenu context={{ gameOptions }} />
+          <IconButton
+            style={{ position: "absolute", top: 44, right: 9 }}
+            Icon={DiscordIcon}
+            onPress={(): void => {
+              if (Platform.OS == "web") window.open(DISCORD_URL, "_blank");
+              else Linking.openURL(DISCORD_URL);
+            }}
+          />
         </ErrorBoundary>
       </ScrollView>
     </GameProvider>
