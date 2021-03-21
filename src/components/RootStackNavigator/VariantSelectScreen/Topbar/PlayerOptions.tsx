@@ -2,15 +2,20 @@ import React from "react";
 import { range } from "utilities";
 import { SFC, Text } from "primitives";
 import { OptionGroup } from "ui/Forms";
-import { allPossiblePlayerNames } from "game/types";
 
 interface Props {
   numberOfPlayers: number;
   setNumberOfPlayers: (x: number) => void;
+  disabledPlayers: number[];
 }
 
-const PlayerOptions: SFC<Props> = ({ numberOfPlayers, setNumberOfPlayers, style }) => {
-  const options = range(2, Math.min(3, allPossiblePlayerNames.length - 1)).map((n) => {
+const PlayerOptions: SFC<Props> = ({
+  numberOfPlayers,
+  setNumberOfPlayers,
+  disabledPlayers,
+  style,
+}) => {
+  const options = range(2, 3).map((n) => {
     return {
       label: (
         <Text cat={"BodyL"} selectable={false}>
@@ -18,6 +23,7 @@ const PlayerOptions: SFC<Props> = ({ numberOfPlayers, setNumberOfPlayers, style 
         </Text>
       ),
       value: n,
+      disabled: disabledPlayers.includes(n),
     };
   });
 

@@ -1,12 +1,14 @@
 import React, { ReactElement } from "react";
-import { ViewStyle, StyleProp, View, TouchableOpacity } from "react-native";
+import { ViewStyle, StyleProp, TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
 import { Colors, Text } from "primitives";
+import { AbsoluteView } from "ui";
 
 interface Option<T> {
   label: ReactElement;
   value: T;
   flex?: number;
+  disabled?: boolean;
 }
 
 interface Props<T> {
@@ -34,13 +36,15 @@ export function OptionGroup<T>({
       {options.map((option, i) => {
         return (
           <PressableOption
-            style={{ flex: option.flex }}
             key={i}
+            style={{ flex: option.flex }}
             active={option.value === selected}
             flex={option.flex !== undefined}
+            disabled={option.disabled}
             onPress={(): void => setSelected(option.value)}
           >
             {option.label}
+            {option.disabled && <PressableOptionCover />}
           </PressableOption>
         );
       })}
@@ -54,7 +58,10 @@ const Container = styled(View)`
   padding-horizontal: -4px;
 `;
 
-const PressableOption = styled(TouchableOpacity)<{ active: boolean; flex: boolean }>`
+const PressableOption = styled(TouchableOpacity)<{
+  active: boolean;
+  flex: boolean;
+}>`
   height: 28px;
   width: 28px;
   justify-content: center;
@@ -67,4 +74,9 @@ const PressableOption = styled(TouchableOpacity)<{ active: boolean; flex: boolea
   border-radius: 4px;
   border-width: ${({ active }): number => (active ? 1 : 0)}px;
   border-color: ${Colors.MCHESS_ORANGE.fade(0).toString()};
+`;
+
+const PressableOptionCover = styled(AbsoluteView)`
+  background-color: ${Colors.BLACK.fade(0.5).toString()};
+  border-radius: 4px;
 `;
