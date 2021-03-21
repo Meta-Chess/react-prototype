@@ -223,7 +223,7 @@ export class GameMaster {
         .alivePlayers()
         .filter((player) => {
           const timer = clock.getPlayerTimer(player.name);
-          return timer && timer.getAllowance() <= 0;
+          return timer && timer.getTimeRemaining() <= 0;
         })
         .forEach((player) => {
           player.alive = false;
@@ -374,7 +374,10 @@ export class GameMaster {
         unselect,
       });
     } else if (playerAction?.type === "resign") {
-      this.doResign({ resignation: playerAction.data });
+      this.doResign({
+        resignation: playerAction.data,
+        timestamp: playerAction.timestamp,
+      });
     }
     this.calculateAllowableMovesForSelectedPieces();
     this.render();
@@ -390,22 +393,31 @@ export class GameMaster {
       this.game.doMove(move);
       if (unselect) this.unselectAllPieces();
     }
-    const everyoneWillHaveDoneSomething =
-      uniq(
-        this.playerActionHistory
-          .map((m) => m.data?.playerName)
-          .concat([move?.playerName])
-          .filter(isPresent)
-      ).length === this.game.players.length;
-    this.game.nextTurn({
-      asOf: timestamp || Date.now(),
-      doClocks: everyoneWillHaveDoneSomething,
-    });
-    this.recordPlayerAction({ type: "move", data: move });
+    this.game.nextTurn();
+    this.recordPlayerAction({ type: "move", data: move, timestamp });
+    this.maybeUpdateClocks(timestamp);
     this.startOfTurn();
   }
 
-  doResign({ resignation }: { resignation: Resignation }): void {
+  maybeUpdateClocks(asOf?: TimestampMillis): void {
+    asOf = asOf || Date.now();
+    const everyoneWillHaveDoneSomething =
+      uniq(
+        this.playerActionHistory
+          .slice(0, this.positionInHistory)
+          .map((m) => m.data?.playerName)
+          .filter(isPresent)
+      ).length === this.game.players.length;
+    if (everyoneWillHaveDoneSomething) this.game.updateClocks(asOf);
+  }
+
+  doResign({
+    resignation,
+    timestamp,
+  }: {
+    resignation: Resignation;
+    timestamp?: TimestampMillis;
+  }): void {
     const player = this.game
       .getPlayers()
       .find((p): boolean => p.name === resignation.playerName);
@@ -416,7 +428,7 @@ export class GameMaster {
         this.doMove();
         return;
       }
-      this.recordPlayerAction({ type: "resign", data: resignation });
+      this.recordPlayerAction({ type: "resign", data: resignation, timestamp });
       if (this.game.alivePlayers().length < 2) this.checkGameEndConditions();
       this.render();
     }

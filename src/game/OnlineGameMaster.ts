@@ -1,11 +1,13 @@
 import { GameMaster } from "./GameMaster";
 import { Renderer } from "./Renderer";
-import { GameOptions, PlayerAssignment } from "game/types";
+import { GameOptions, PlayerAssignment, TimestampMillis } from "game/types";
 import { GameClient } from "game/GameClient";
 import { Move } from "game/Move";
 import { PlayerAction, Resignation, Draw } from "./PlayerAction";
 
 export class OnlineGameMaster extends GameMaster {
+  public clockUpdatePendingSince?: TimestampMillis;
+
   constructor(
     renderer: Renderer,
     gameOptions: GameOptions,
@@ -68,16 +70,8 @@ export class OnlineGameMaster extends GameMaster {
       },
       onPlayerActionAcknowledged: (playerAction: PlayerAction) => {
         if (playerAction.timestamp && playerAction.type === "move" && playerAction.data) {
-          onlineGameMaster.game.clock?.updateStopTime(
-            playerAction.timestamp,
-            playerAction.data.playerName
-          );
-          if (playerAction.data.nextPlayerName) {
-            onlineGameMaster.game.clock?.updateStartTime(
-              playerAction.timestamp,
-              playerAction.data.nextPlayerName
-            );
-          }
+          onlineGameMaster.maybeUpdateClocks(playerAction.timestamp);
+          onlineGameMaster.updateTimeOfMostRecentMove(playerAction.timestamp);
           onlineGameMaster.handlePossibleTimerFinish();
           onlineGameMaster.render();
         }
@@ -97,9 +91,18 @@ export class OnlineGameMaster extends GameMaster {
     received?: boolean;
   }): void {
     if (playerAction.type === "move") {
-      this.doMove({ move: playerAction.data, unselect, received });
+      this.doMove({
+        move: playerAction.data,
+        timestamp: playerAction.timestamp,
+        unselect,
+        received,
+      });
     } else if (playerAction.type === "resign") {
-      this.doResign({ resignation: playerAction.data, received });
+      this.doResign({
+        resignation: playerAction.data,
+        timestamp: playerAction.timestamp,
+        received,
+      });
     } else if (playerAction.type === "draw") {
       this.toggleOfferDraw(playerAction.data, true);
     }
@@ -117,29 +120,33 @@ export class OnlineGameMaster extends GameMaster {
 
   doResign({
     resignation,
+    timestamp,
     received = false,
   }: {
     resignation: Resignation;
+    timestamp?: TimestampMillis;
     received?: boolean;
   }): void {
     if (!received) {
       this.sendResign(resignation);
     }
-    super.doResign({ resignation });
+    super.doResign({ resignation, timestamp });
   }
 
   doMove({
     move,
+    timestamp,
     unselect,
     received = false,
   }: {
     move?: Move;
+    timestamp?: TimestampMillis;
     unselect?: boolean;
     received?: boolean;
   } = {}): void {
     if (received) this.setPositionInHistory(this.playerActionHistory.length);
     const moveIsNew = this.stateIsCurrent();
-    super.doMove({ move, unselect });
+    super.doMove({ move, timestamp, unselect });
     if (move && !received && moveIsNew)
       this.sendMove({ ...move, nextPlayerName: this.game.getCurrentPlayerName() });
     if (this.gameOver) this.disconnect();
@@ -153,20 +160,41 @@ export class OnlineGameMaster extends GameMaster {
       });
   }
 
-  sendResign(resign?: Resignation): void {
-    if (resign)
-      this.gameClient.sendPlayerAction({
-        type: "resign",
-        data: resign,
-      });
+  sendResign(resign: Resignation): void {
+    this.gameClient.sendPlayerAction({
+      type: "resign",
+      data: resign,
+    });
   }
 
   sendDraw(draw: Draw): void {
-    this,
-      this.gameClient.sendPlayerAction({
-        type: "draw",
-        data: draw,
-      });
+    this.gameClient.sendPlayerAction({
+      type: "draw",
+      data: draw,
+    });
+  }
+
+  maybeUpdateClocks(asOf?: TimestampMillis): void {
+    if (!asOf) {
+      this.clockUpdatePendingSince = Date.now();
+      return;
+    }
+    this.clockUpdatePendingSince = undefined;
+    super.maybeUpdateClocks(asOf);
+  }
+
+  updateTimeOfMostRecentMove(newTime?: TimestampMillis): void {
+    if (!newTime) return;
+    let searchIndex = this.playerActionHistory.length - 1;
+    while (this.playerActionHistory[searchIndex]?.type !== "move") {
+      searchIndex--;
+      if (searchIndex < 0) return;
+    }
+    const indexOfLastMove = searchIndex;
+    this.playerActionHistory[indexOfLastMove] = {
+      ...this.playerActionHistory[indexOfLastMove],
+      timestamp: newTime,
+    };
   }
 
   disconnect(): void {

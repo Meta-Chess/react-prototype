@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
-import { PlayerName } from "game";
+import { OnlineGameMaster, PlayerName } from "game";
 import { GameContext } from "./GameContext";
 
 interface Props {
@@ -17,14 +17,26 @@ const Timer: SFC<Props> = ({ style, playerName, hidden, alignment = "center" }) 
 
   const timer = gameMaster?.game.clock?.getPlayerTimer(playerName);
 
-  const formattedTime = timer?.getFormattedTime(gameMaster?.timersAsOf);
+  const asOf =
+    gameMaster?.timersAsOf ||
+    (gameMaster instanceof OnlineGameMaster
+      ? gameMaster.clockUpdatePendingSince
+      : undefined);
+  const formattedTime = timer?.getFormattedTime(asOf);
   const displayTime = formattedTime?.time;
   const validFor = formattedTime?.validFor;
-  const timeRemaining = timer?.getTimeRemaining(gameMaster?.timersAsOf);
+  const timeRemaining = timer?.getTimeRemaining();
   useEffect(() => {
-    if (timeRemaining && timeRemaining <= 0) {
-      timer?.stop(Date.now());
-      gameMaster?.handlePossibleTimerFinish();
+    if (timeRemaining !== undefined && timeRemaining <= 0) {
+      if (gameMaster instanceof OnlineGameMaster)
+        setTimeout(() => {
+          timer?.stop(Date.now());
+          gameMaster?.handlePossibleTimerFinish();
+        }, 500);
+      else {
+        timer?.stop(Date.now());
+        gameMaster?.handlePossibleTimerFinish();
+      }
     }
   }, [timer, gameMaster, timeRemaining]);
 
@@ -32,7 +44,7 @@ const Timer: SFC<Props> = ({ style, playerName, hidden, alignment = "center" }) 
     () => {
       setDummy(!dummy);
     },
-    validFor && validFor !== Number.POSITIVE_INFINITY ? validFor : 1000
+    validFor ? validFor : 100
   );
 
   useEffect(() => {

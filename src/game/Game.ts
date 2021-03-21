@@ -105,6 +105,10 @@ export class Game {
     }
   }
 
+  updateClocks(asOf: TimestampMillis): void {
+    this.clock?.setActivePlayers([this.getCurrentPlayerName()], asOf);
+  }
+
   removeExpiredTokens(): void {
     this.board.getPieces().forEach((piece) => {
       piece.removeExpiredTokens(this.currentTurn);
