@@ -161,17 +161,17 @@ export class OnlineGameMaster extends GameMaster {
   }
 
   sendResign(resign: Resignation): void {
-      this.gameClient.sendPlayerAction({
-        type: "resign",
-        data: resign,
-      });
+    this.gameClient.sendPlayerAction({
+      type: "resign",
+      data: resign,
+    });
   }
 
   sendDraw(draw: Draw): void {
-      this.gameClient.sendPlayerAction({
-        type: "draw",
-        data: draw,
-      });
+    this.gameClient.sendPlayerAction({
+      type: "draw",
+      data: draw,
+    });
   }
 
   maybeUpdateClocks(asOf?: TimestampMillis): void {
