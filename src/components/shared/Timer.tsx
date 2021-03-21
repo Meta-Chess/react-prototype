@@ -25,13 +25,18 @@ const Timer: SFC<Props> = ({ style, playerName, hidden, alignment = "center" }) 
   const formattedTime = timer?.getFormattedTime(asOf);
   const displayTime = formattedTime?.time;
   const validFor = formattedTime?.validFor;
-  const timeRemaining = timer?.getTimeRemaining(asOf);
+  const timeRemaining = timer?.getTimeRemaining();
   useEffect(() => {
-    if (timeRemaining && timeRemaining <= 0) {
-      timer?.stop(Date.now());
+    if (timeRemaining !== undefined && timeRemaining <= 0) {
       if (gameMaster instanceof OnlineGameMaster)
-        setTimeout(() => gameMaster?.handlePossibleTimerFinish(), 500);
-      else gameMaster?.handlePossibleTimerFinish();
+        setTimeout(() => {
+          timer?.stop(Date.now());
+          gameMaster?.handlePossibleTimerFinish();
+        }, 500);
+      else {
+        timer?.stop(Date.now());
+        gameMaster?.handlePossibleTimerFinish();
+      }
     }
   }, [timer, gameMaster, timeRemaining]);
 
@@ -39,7 +44,7 @@ const Timer: SFC<Props> = ({ style, playerName, hidden, alignment = "center" }) 
     () => {
       setDummy(!dummy);
     },
-    validFor ? validFor : 1000
+    validFor ? validFor : 100
   );
 
   useEffect(() => {
