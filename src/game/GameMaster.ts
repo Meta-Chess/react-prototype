@@ -18,6 +18,7 @@ import { FormatName } from "game/formats";
 import { doesCapture } from "./rules/utilities";
 import { PlayerAction, Resignation } from "./PlayerAction";
 import { isPresent, sleep } from "utilities";
+import { OnlineGameMaster } from "game/OnlineGameMaster";
 
 export class GameMaster {
   // WARNING: Default values exist both here and in `GameMaster.resetToStartOfGame`
@@ -216,7 +217,7 @@ export class GameMaster {
         .alivePlayers()
         .filter((player) => {
           const timer = clock.getPlayerTimer(player.name);
-          return timer && timer.getAllowance() <= 0;
+          return timer && timer.getTimeRemaining() <= 0;
         })
         .forEach((player) => {
           player.alive = false;
@@ -383,19 +384,22 @@ export class GameMaster {
       this.game.doMove(move);
       if (unselect) this.unselectAllPieces();
     }
+    this.game.nextTurn();
+    this.recordPlayerAction({ type: "move", data: move });
+    this.maybeUpdateClocks(timestamp);
+    this.startOfTurn();
+  }
+
+  maybeUpdateClocks(asOf?: TimestampMillis): void {
+    asOf = asOf || Date.now();
     const everyoneWillHaveDoneSomething =
       uniq(
         this.playerActionHistory
+          .slice(0, this.positionInHistory)
           .map((m) => m.data?.playerName)
-          .concat([move?.playerName])
           .filter(isPresent)
       ).length === this.game.players.length;
-    this.game.nextTurn({
-      asOf: timestamp || Date.now(),
-      doClocks: everyoneWillHaveDoneSomething,
-    });
-    this.recordPlayerAction({ type: "move", data: move });
-    this.startOfTurn();
+    if (everyoneWillHaveDoneSomething) this.game.updateClocks(asOf);
   }
 
   doResign({ resignation }: { resignation: Resignation }): void {

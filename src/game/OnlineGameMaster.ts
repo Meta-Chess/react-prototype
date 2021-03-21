@@ -1,11 +1,13 @@
 import { GameMaster } from "./GameMaster";
 import { Renderer } from "./Renderer";
-import { GameOptions, PlayerAssignment } from "game/types";
+import { GameOptions, PlayerAssignment, TimestampMillis } from "game/types";
 import { GameClient } from "game/GameClient";
 import { Move } from "game/Move";
 import { PlayerAction, Resignation } from "./PlayerAction";
 
 export class OnlineGameMaster extends GameMaster {
+  public clockUpdatePendingSince?: TimestampMillis;
+
   constructor(
     renderer: Renderer,
     gameOptions: GameOptions,
@@ -68,16 +70,7 @@ export class OnlineGameMaster extends GameMaster {
       },
       onPlayerActionAcknowledged: (playerAction: PlayerAction) => {
         if (playerAction.timestamp && playerAction.type === "move" && playerAction.data) {
-          onlineGameMaster.game.clock?.updateStopTime(
-            playerAction.timestamp,
-            playerAction.data.playerName
-          );
-          if (playerAction.data.nextPlayerName) {
-            onlineGameMaster.game.clock?.updateStartTime(
-              playerAction.timestamp,
-              playerAction.data.nextPlayerName
-            );
-          }
+          onlineGameMaster.maybeUpdateClocks(playerAction.timestamp);
           onlineGameMaster.handlePossibleTimerFinish();
           onlineGameMaster.render();
         }
@@ -97,7 +90,12 @@ export class OnlineGameMaster extends GameMaster {
     received?: boolean;
   }): void {
     if (playerAction.type === "move") {
-      this.doMove({ move: playerAction.data, unselect, received });
+      this.doMove({
+        move: playerAction.data,
+        timestamp: playerAction.timestamp,
+        unselect,
+        received,
+      });
     } else if (playerAction.type === "resign") {
       this.doResign({ resignation: playerAction.data, received });
     }
@@ -121,19 +119,30 @@ export class OnlineGameMaster extends GameMaster {
 
   doMove({
     move,
+    timestamp,
     unselect,
     received = false,
   }: {
     move?: Move;
+    timestamp?: TimestampMillis;
     unselect?: boolean;
     received?: boolean;
   } = {}): void {
     if (received) this.setPositionInHistory(this.playerActionHistory.length);
     const moveIsNew = this.stateIsCurrent();
-    super.doMove({ move, unselect });
+    super.doMove({ move, timestamp, unselect });
     if (move && !received && moveIsNew)
       this.sendMove({ ...move, nextPlayerName: this.game.getCurrentPlayerName() });
     if (this.gameOver) this.disconnect();
+  }
+
+  maybeUpdateClocks(asOf?: TimestampMillis): void {
+    if (!asOf) {
+      this.clockUpdatePendingSince = Date.now();
+      return;
+    }
+    this.clockUpdatePendingSince = undefined;
+    super.maybeUpdateClocks(asOf);
   }
 
   sendMove(move?: Move): void {

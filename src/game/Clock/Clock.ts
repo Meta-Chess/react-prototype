@@ -27,19 +27,7 @@ export class Clock {
     return this.timers.get(player);
   }
 
-  getInactivePlayers(): PlayerName[] {
-    return this.timers.keys().filter((p) => !this.timers.get(p)?.isRunning());
-  }
-
   stop(asOf: TimestampMillis): void {
     this.timers.values().forEach((t) => t.freeze(asOf));
-  }
-
-  updateStopTime(updateTo: TimestampMillis, player: PlayerName): void {
-    this.timers.get(player)?.updateStopTime(updateTo);
-  }
-
-  updateStartTime(updateTo: TimestampMillis, player: PlayerName): void {
-    this.timers.get(player)?.updateStartTime(updateTo);
   }
 }
