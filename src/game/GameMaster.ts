@@ -10,11 +10,12 @@ import { Move, movesAreEqual } from "game/Move";
 import { SquareInfo, SquaresInfo } from "game/SquaresInfo";
 import { FormatName } from "game/formats";
 import { doesCapture } from "./rules/utilities";
-import { Resign } from "./PlayerAction";
+import { Draw, Resign } from "./PlayerAction";
 
 export class GameMaster {
   public gameClones: Game[];
   public result: string | undefined;
+  public drawOffers: { [playerName in PlayerName]?: boolean } = {};
   public gameOver = false;
   public moveHistory: (Move | undefined)[] = [];
   public formatVariants: FutureVariantName[] = [];
@@ -44,7 +45,11 @@ export class GameMaster {
   ) {
     this.gameClones = [game.clone(), game.clone(), game.clone(), game.clone()];
 
-    // TODO: These can be taken from gameOptions? maybe?
+    this.drawOffers = game.players.reduce(
+      (acc: { [n in PlayerName]?: boolean }, p) => ({ ...acc, [p.name]: false }),
+      {}
+    );
+
     this.flipBoard = !!gameOptions?.flipBoard;
     this.overTheBoard = !!gameOptions?.overTheBoard;
     this.deck = gameOptions?.deck;
@@ -257,6 +262,21 @@ export class GameMaster {
       if (this.game.alivePlayers().length < 2) this.checkGameEndConditions();
       this.render();
     }
+  }
+
+  toggleOfferDraw({ playerName }: Draw): void {
+    const player = this.game.getPlayers().find((p) => p.name === playerName);
+    if (!player) return;
+    player.wantsToDraw = !player.wantsToDraw;
+    if (this.game.alivePlayers().every((p) => p.wantsToDraw)) {
+      this.game.alivePlayers().forEach((p): void => {
+        p.alive = false;
+        p.endGameMessage = "agreed to draw";
+      });
+      this.gameOver = true;
+      this.result = "Draw by agreement!";
+    }
+    this.render();
   }
 
   startOfTurn(): void {

@@ -48,6 +48,17 @@ const Sidebar: SFC = ({ style }) => {
       });
     }
   };
+  const toggleOfferDraw = (): void => {
+    const assignedPlayer = gameMaster?.assignedPlayer;
+    if (assignedPlayer !== undefined && assignedPlayer !== "spectator") {
+      gameMaster?.toggleOfferDraw({
+        playerName:
+          assignedPlayer === "all"
+            ? gameMaster.game.getCurrentPlayerName()
+            : assignedPlayer,
+      });
+    }
+  };
   const isGameOver = gameMaster?.gameOver;
   const isDead =
     gameMaster?.assignedPlayer === "all" ||
@@ -104,12 +115,7 @@ const Sidebar: SFC = ({ style }) => {
             />
           ) : (
             <>
-              <DrawButton
-                onPress={(): void => {
-                  return;
-                }}
-                style={{ flex: 1 }}
-              />
+              <DrawButton onPress={toggleOfferDraw} style={{ flex: 1 }} />
               <ConcedeButton onPress={doResign} style={{ flex: 1, marginLeft: 12 }} />
             </>
           )}

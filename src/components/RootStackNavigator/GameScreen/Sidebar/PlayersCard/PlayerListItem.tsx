@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { AbsoluteView, Row } from "ui";
-import { Colors, PieceImage, SFC, Text } from "primitives";
+import { Colors, DrawIcon, PieceImage, SFC, Text } from "primitives";
 import { PieceName, PlayerName } from "game";
 import { GameContext, Timer } from "components/shared";
 import { View } from "react-native";
@@ -16,8 +16,24 @@ interface Props {
 }
 
 export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
-  const [name] = useState(randomChoice(["Emmanuel", "Gus", "Angus", "Seb"]));
-  const [rating] = useState(randomInt(100, 3000));
+  const [name] = useState(
+    randomChoice([
+      "Emmanuel",
+      "Gus",
+      "Angus",
+      "Seb",
+      "StockFish",
+      "Random Move Ai",
+      "King",
+      "Knight",
+      "Pawn",
+      "Bishop",
+      "Rook",
+    ])
+  );
+  const [rating] = useState(
+    name === "Emmanuel" ? 200 : name === "Gus" ? 2000 : randomInt(100, 3000)
+  );
 
   const { gameMaster } = useContext(GameContext);
   if (gameMaster === undefined) return null;
@@ -25,6 +41,7 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
   const assignedPlayer = gameMaster.assignedPlayer;
   const isYou = assignedPlayer === player.name;
   const rowActive = player.name === currentPlayerName;
+  const offeringDraw = player.wantsToDraw;
 
   return (
     <View>
@@ -50,9 +67,16 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
                 </Text>
               )}
             </Row>
-            <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT_SECONDARY.toString()}>
-              {rating}
-            </Text>
+            <Row>
+              <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT_SECONDARY.toString()}>
+                {rating}
+              </Text>
+              {offeringDraw && (
+                <View style={{ marginLeft: 8 }}>
+                  <DrawIcon color={Colors.SUCCESS.toString()} size={14} />
+                </View>
+              )}
+            </Row>
           </View>
         </Row>
         <Row style={{ alignItems: "center" }}>

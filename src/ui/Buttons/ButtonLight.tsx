@@ -3,12 +3,13 @@ import { Colors, SFC } from "primitives";
 import { BaseButton } from "./BaseButton";
 import { ButtonProps } from "./ButtonProps";
 
-export const ButtonLight: SFC<ButtonProps> = (props) => {
+export const ButtonLight: SFC<ButtonProps> = ({ depressed, ...rest }) => {
   return (
     <BaseButton
-      backgroundColor={Colors.MCHESS_BLUE}
+      backgroundColor={Colors.MCHESS_BLUE.fade(depressed ? 0.3 : 0)}
       borderColor={Colors.MCHESS_BLUE}
-      {...props}
+      borderWidth={depressed ? 4 : 0}
+      {...rest}
     />
   );
 };
