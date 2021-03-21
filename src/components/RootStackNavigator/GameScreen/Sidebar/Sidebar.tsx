@@ -41,10 +41,12 @@ const Sidebar: SFC = ({ style }) => {
     const assignedPlayer = gameMaster?.assignedPlayer;
     if (assignedPlayer !== undefined && assignedPlayer !== "spectator") {
       gameMaster?.doResign({
-        playerName:
-          assignedPlayer === "all"
-            ? gameMaster.game.getCurrentPlayerName()
-            : assignedPlayer,
+        resignation: {
+          playerName:
+            assignedPlayer === "all"
+              ? gameMaster.game.getCurrentPlayerName()
+              : assignedPlayer,
+        },
       });
     }
   };
@@ -92,21 +94,13 @@ const Sidebar: SFC = ({ style }) => {
         </TouchableOpacity>
       </ScrollView>
       <Footer>
+        {!gameMaster?.getRuleNames().includes("longBoard") && (
+          <HalfContainer style={{ marginRight: 12 }}>
+            <BackHistoryButton style={{ flex: 1 }} />
+            <ForwardHistoryButton style={{ flex: 1, marginLeft: 12 }} />
+          </HalfContainer>
+        )}
         <HalfContainer>
-          <BackHistoryButton
-            onPress={(): void => {
-              return;
-            }}
-            style={{ flex: 1 }}
-          />
-          <ForwardHistoryButton
-            onPress={(): void => {
-              return;
-            }}
-            style={{ flex: 1, marginLeft: 12 }}
-          />
-        </HalfContainer>
-        <HalfContainer style={{ marginLeft: 12 }}>
           {isGameOver || isDead ? (
             <Button
               label="Leave Game"

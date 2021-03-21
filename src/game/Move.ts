@@ -26,6 +26,7 @@ export interface Move {
   captures?: CaptureData[];
   data?: MoveData;
   timestamp?: TimestampMillis;
+  interesting?: boolean;
 }
 
 export interface PieceDelta {

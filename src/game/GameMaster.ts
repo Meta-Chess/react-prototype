@@ -1,6 +1,12 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import { GameOptions, PlayerAssignment, PlayerName, VariantLabelInfo } from "./types";
+import {
+  GameOptions,
+  PlayerAssignment,
+  PlayerName,
+  TimestampMillis,
+  VariantLabelInfo,
+} from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { CompactRules, RuleName } from "./rules";
@@ -10,14 +16,16 @@ import { Move, movesAreEqual } from "game/Move";
 import { SquareInfo, SquaresInfo } from "game/SquaresInfo";
 import { FormatName } from "game/formats";
 import { doesCapture } from "./rules/utilities";
-import { Draw, Resign } from "./PlayerAction";
+import { PlayerAction, Resignation, Draw } from "./PlayerAction";
+import { isPresent, sleep } from "utilities";
 
 export class GameMaster {
+  // WARNING: Default values exist both here and in `GameMaster.resetToStartOfGame`
   public gameClones: Game[];
   public result: string | undefined;
   public drawOffers: { [playerName in PlayerName]?: boolean } = {};
   public gameOver = false;
-  public moveHistory: (Move | undefined)[] = [];
+  public positionInHistory = 0;
   public formatVariants: FutureVariantName[] = [];
   public formatVariantLabelColors: {
     [formatVariantsIndex: number]: VariantLabelInfo;
@@ -40,7 +48,8 @@ export class GameMaster {
     public interrupt: CompactRules, // This should probably be private
     public gameOptions: GameOptions,
     public assignedPlayer: PlayerAssignment = "all",
-    private renderer?: Renderer,
+    protected renderer?: Renderer,
+    public playerActionHistory: PlayerAction[] = [],
     protected evaluateEndGameConditions = true
   ) {
     this.gameClones = [game.clone(), game.clone(), game.clone(), game.clone()];
@@ -57,14 +66,38 @@ export class GameMaster {
     this.startOfTurn();
   }
 
+  // TODO: put defaults in just one place
+  resetToStartOfGame(): void {
+    this.gameOver = false;
+    this.positionInHistory = 0;
+    this.formatVariants = [];
+    this.formatVariantLabelColors = {};
+    this.selectedPieces = [];
+    this.allowableMoves = [];
+    this.locationSelected = false;
+    this.squaresInfo = new SquaresInfo();
+    this.timersAsOf = undefined;
+    const [game, interrupt, { deck }] = GameMaster.processConstructorInputs({
+      gameOptions: this.gameOptions,
+      assignedPlayer: this.assignedPlayer,
+      renderer: this.renderer,
+    });
+    this.deck = deck;
+    this.game = game;
+    this.interrupt = interrupt;
+    this.startOfTurn();
+  }
+
   static processConstructorInputs({
     gameOptions = {},
     assignedPlayer = "all",
     renderer,
+    playerActionHistory = [],
   }: {
     gameOptions?: Partial<GameOptions>;
     assignedPlayer?: PlayerAssignment;
     renderer?: Renderer;
+    playerActionHistory?: PlayerAction[];
   } = {}): ConstructorParameters<typeof GameMaster> {
     const {
       time,
@@ -90,7 +123,14 @@ export class GameMaster {
       game: Game.createGame(interrupt, time, numberOfPlayers),
     }).game;
 
-    return [game, interrupt, completeGameOptions, assignedPlayer, renderer];
+    return [
+      game,
+      interrupt,
+      completeGameOptions,
+      assignedPlayer,
+      renderer,
+      playerActionHistory,
+    ];
   }
 
   clone({
@@ -106,6 +146,7 @@ export class GameMaster {
       this.gameOptions,
       this.assignedPlayer,
       renderer || new Renderer(),
+      this.playerActionHistory,
       evaluateEndGameConditions
     );
   }
@@ -129,23 +170,31 @@ export class GameMaster {
     this.game.setInterrupt(this.interrupt);
   }
 
+  // TODO: Break into multiple functions
   recalculateSquaresInfo(): void {
     this.squaresInfo.clear();
-    this.moveHistory[this.moveHistory.length - 1]?.pieceDeltas.forEach((delta) => {
-      this.squaresInfo.add(delta.path.getStart(), SquareInfo.LastMoveStartPoint);
-      this.squaresInfo.add(delta.path.getEnd(), SquareInfo.LastMoveEndPoint);
-      const path = delta.path.getPath();
-      path
-        .slice(1, path.length - 1)
-        .forEach((pathSquare) =>
-          this.squaresInfo.add(pathSquare, SquareInfo.LastMovePath)
-        );
-    });
+    const lastInterestingMoveIndex = this.lastInterestingMoveIndex({ strict: true });
+    if (lastInterestingMoveIndex !== undefined) {
+      const lastInterestingMove = this.playerActionHistory[lastInterestingMoveIndex];
+      if (lastInterestingMove && lastInterestingMove.type === "move") {
+        lastInterestingMove.data?.pieceDeltas.forEach((delta) => {
+          this.squaresInfo.add(delta.path.getStart(), SquareInfo.LastMoveStartPoint);
+          this.squaresInfo.add(delta.path.getEnd(), SquareInfo.LastMoveEndPoint);
+          const path = delta.path.getPath();
+          path
+            .slice(1, path.length - 1)
+            .forEach((pathSquare) =>
+              this.squaresInfo.add(pathSquare, SquareInfo.LastMovePath)
+            );
+        });
+      }
+    }
     const currentPlayerName = this.game.players[this.game.currentPlayerIndex].name;
     this.selectedPieces.forEach((piece) => {
       if (
         piece.owner !== currentPlayerName ||
-        (this.assignedPlayer !== "all" && this.assignedPlayer !== piece.owner)
+        (this.assignedPlayer !== "all" && this.assignedPlayer !== piece.owner) ||
+        this.positionInHistory !== this.playerActionHistory.length
       ) {
         this.squaresInfo.add(piece.location, SquareInfo.SelectedOtherPlayerPiece);
       } else {
@@ -155,7 +204,8 @@ export class GameMaster {
     this.allowableMoves.forEach((move) => {
       if (
         move.playerName !== currentPlayerName ||
-        (this.assignedPlayer !== "all" && this.assignedPlayer !== currentPlayerName)
+        (this.assignedPlayer !== "all" && this.assignedPlayer !== currentPlayerName) ||
+        this.positionInHistory !== this.playerActionHistory.length
       ) {
         this.squaresInfo.add(move.location, SquareInfo.PossibleOtherPlayerMoveEndPoint);
       } else if (!doesCapture(move)) {
@@ -192,6 +242,87 @@ export class GameMaster {
     }
   }
 
+  async setPositionInHistoryToLatest(): Promise<void> {
+    while (!this.stateIsCurrent()) {
+      this.render();
+      await sleep(50);
+      this.goForwardsInHistory();
+    }
+    this.render();
+  }
+
+  stateIsCurrent(): boolean {
+    return this.positionInHistory === this.playerActionHistory.length;
+  }
+
+  goForwardsInHistory(): void {
+    const nextInterestingIndex = this.nextInterestingMoveIndex();
+    if (nextInterestingIndex !== undefined)
+      this.setPositionInHistory(nextInterestingIndex);
+  }
+
+  goBackwardsInHistory(): void {
+    const lastInterestingIndex = this.lastInterestingMoveIndex();
+    if (lastInterestingIndex !== undefined)
+      this.setPositionInHistory(lastInterestingIndex);
+  }
+
+  nextInterestingMoveIndex(): number {
+    if (this.stateIsCurrent()) return this.positionInHistory;
+    let indexToReturn = this.positionInHistory + 1;
+    while (
+      !this.isInteresting(this.playerActionHistory[indexToReturn]) &&
+      indexToReturn < this.playerActionHistory.length
+    ) {
+      indexToReturn++;
+    }
+    return indexToReturn;
+  }
+
+  lastInterestingMoveIndex({ strict = false }: { strict?: boolean } = {}):
+    | number
+    | undefined {
+    if (this.positionInHistory === 0) return strict ? undefined : this.positionInHistory;
+    let indexToReturn = this.positionInHistory - 1;
+    while (
+      !this.isInteresting(this.playerActionHistory[indexToReturn]) &&
+      indexToReturn > 0
+    ) {
+      indexToReturn--;
+    }
+    return indexToReturn;
+  }
+
+  isInteresting(playerAction?: PlayerAction): boolean {
+    return !!playerAction && playerAction.type === "move" && !!playerAction.data;
+  }
+
+  setPositionInHistory(newPosition: number): void {
+    if (newPosition > this.playerActionHistory.length)
+      newPosition = this.playerActionHistory.length;
+    else if (newPosition < 0) newPosition = 0;
+
+    if (newPosition < this.positionInHistory) {
+      const moveHistory = this.playerActionHistory;
+      this.resetToStartOfGame();
+      this.playerActionHistory = moveHistory;
+    }
+    while (newPosition > this.positionInHistory) {
+      const nextPlayerAction = this.playerActionHistory[this.positionInHistory];
+      if (nextPlayerAction) this.doPlayerAction({ playerAction: nextPlayerAction });
+    }
+
+    if (this.stateIsCurrent()) {
+      this.timersAsOf = undefined;
+    } else {
+      const timersAsOfMoveIndex =
+        this.positionInHistory === 0 ? 0 : this.positionInHistory - 1;
+      this.timersAsOf = this.playerActionHistory[timersAsOfMoveIndex]?.timestamp;
+    }
+
+    this.render();
+  }
+
   onPress(location: string, pieceId?: string): Move | undefined {
     // console.log(`${this.selectedPieces.length ? "" : "\n\n// Move ... ???\n"}gameMaster.onPress("${location}");`); // TEST WRITING HELPER COMMENT
     const moves = uniqWith(
@@ -203,14 +334,12 @@ export class GameMaster {
       this.selectedPieces[0]?.owner;
     const canMoveSelectedPiece =
       isSelectedPieceOwnersTurn &&
+      this.stateIsCurrent() &&
       (this.assignedPlayer === "all" ||
         this.assignedPlayer === this.selectedPieces[0]?.owner);
 
     if (moves.length === 1 && canMoveSelectedPiece) {
       this.doMove({ move: moves[0] });
-      if (!this.game.players[this.game.currentPlayerIndex].alive) {
-        this.doMove();
-      }
       this.render();
       return moves[0];
     } else if (moves.length > 1 && canMoveSelectedPiece) {
@@ -231,27 +360,55 @@ export class GameMaster {
     this.render();
   }
 
-  doMove({ move, unselect = true }: { move?: Move; unselect?: boolean } = {}): void {
+  doPlayerAction({
+    playerAction,
+    unselect = true,
+  }: {
+    playerAction: PlayerAction;
+    unselect?: boolean;
+  }): void {
+    if (playerAction?.type === "move") {
+      this.doMove({
+        move: playerAction.data,
+        timestamp: playerAction.timestamp,
+        unselect,
+      });
+    } else if (playerAction?.type === "resign") {
+      this.doResign({ resignation: playerAction.data });
+    }
+    this.calculateAllowableMovesForSelectedPieces();
+    this.render();
+  }
+
+  doMove({
+    move,
+    timestamp,
+    unselect = true,
+  }: { move?: Move; timestamp?: TimestampMillis; unselect?: boolean } = {}): void {
     // if (move) console.log(`expect(board.getPiecesAt("${move.location}").length).toEqual(1);`); // TEST WRITING HELPER COMMENT
     if (move) {
       this.game.doMove(move);
       if (unselect) this.unselectAllPieces();
     }
-    this.moveHistory.push(move);
-    const everyoneHasMoved =
-      uniq(this.moveHistory.map((m) => m?.playerName)).length ===
-      this.game.players.length;
+    const everyoneWillHaveDoneSomething =
+      uniq(
+        this.playerActionHistory
+          .map((m) => m.data?.playerName)
+          .concat([move?.playerName])
+          .filter(isPresent)
+      ).length === this.game.players.length;
     this.game.nextTurn({
-      asOf: move?.timestamp || Date.now(),
-      startClocks: everyoneHasMoved,
+      asOf: timestamp || Date.now(),
+      doClocks: everyoneWillHaveDoneSomething,
     });
+    this.recordPlayerAction({ type: "move", data: move });
     this.startOfTurn();
   }
 
-  doResign(resign: Resign): void {
+  doResign({ resignation }: { resignation: Resignation }): void {
     const player = this.game
       .getPlayers()
-      .find((p): boolean => p.name === resign.playerName);
+      .find((p): boolean => p.name === resignation.playerName);
     if (player) {
       player.alive = false;
       player.endGameMessage = "resigned";
@@ -259,6 +416,7 @@ export class GameMaster {
         this.doMove();
         return;
       }
+      this.recordPlayerAction({ type: "resign", data: resignation });
       if (this.game.alivePlayers().length < 2) this.checkGameEndConditions();
       this.render();
     }
@@ -279,12 +437,18 @@ export class GameMaster {
     this.render();
   }
 
+  recordPlayerAction(playerAction: PlayerAction): void {
+    if (this.stateIsCurrent())
+      this.playerActionHistory.push({ timestamp: Date.now(), ...playerAction });
+    this.positionInHistory += 1;
+  }
+
   startOfTurn(): void {
     this.interrupt.for.formatControlAtTurnStart({ gameMaster: this });
     if (this.game.getCurrentPlayer().alive || this.game.alivePlayers().length === 0) {
       this.checkGameEndConditions();
-      this.render();
-    } else {
+      this.render(); // TODO: avoid excess renders when pressing back button
+    } else if (this.stateIsCurrent()) {
       this.doMove();
     }
   }
@@ -332,7 +496,8 @@ export class GameMaster {
     if (
       !this.gameOver &&
       !this.game.players[this.game.currentPlayerIndex].alive &&
-      this.game.alivePlayers().length > 1
+      this.game.alivePlayers().length > 0 &&
+      this.stateIsCurrent()
     ) {
       this.doMove();
       return;

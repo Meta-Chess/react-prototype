@@ -9,7 +9,9 @@ export const ButtonTertiaryLight: SFC<ButtonProps> = ({ depressed, ...rest }) =>
       {...rest}
       backgroundColor={Colors.TRANSPARENT}
       borderColor={Colors.TRANSPARENT}
-      textColor={Colors.MCHESS_BLUE.fade(depressed ? 0.3 : 0)}
+      labelColor={(rest.disabled ? Colors.GREY : Colors.MCHESS_BLUE).fade(
+        depressed ? 0.3 : 0
+      )}
     />
   );
 };
