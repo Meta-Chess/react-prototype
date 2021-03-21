@@ -94,11 +94,13 @@ const Sidebar: SFC = ({ style }) => {
         </TouchableOpacity>
       </ScrollView>
       <Footer>
+        {!gameMaster?.getRuleNames().includes("longBoard") && (
+          <HalfContainer style={{ marginRight: 12 }}>
+            <BackHistoryButton style={{ flex: 1 }} />
+            <ForwardHistoryButton style={{ flex: 1, marginLeft: 12 }} />
+          </HalfContainer>
+        )}
         <HalfContainer>
-          <BackHistoryButton style={{ flex: 1 }} />
-          <ForwardHistoryButton style={{ flex: 1, marginLeft: 12 }} />
-        </HalfContainer>
-        <HalfContainer style={{ marginLeft: 12 }}>
           {isGameOver || isDead ? (
             <Button
               label="Leave Game"
