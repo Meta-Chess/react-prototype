@@ -142,7 +142,7 @@ export class GameMaster {
   }): GameMaster {
     return new GameMaster(
       this.game.clone(),
-      this.interrupt,
+      this.interrupt.clone(),
       this.gameOptions,
       this.assignedPlayer,
       renderer || new Renderer(),
@@ -340,7 +340,6 @@ export class GameMaster {
 
     if (moves.length === 1 && canMoveSelectedPiece) {
       this.doMove({ move: moves[0] });
-      this.render();
       return moves[0];
     } else if (moves.length > 1 && canMoveSelectedPiece) {
       this.allowableMoves = moves;
@@ -462,6 +461,8 @@ export class GameMaster {
       this.render(); // TODO: avoid excess renders when pressing back button
     } else if (this.stateIsCurrent()) {
       this.doMove();
+    } else {
+      this.render();
     }
   }
 
