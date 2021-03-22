@@ -1,9 +1,11 @@
-import { GameMaster } from "./GameMaster";
-import { Renderer } from "./Renderer";
+import { GameMaster } from "../GameMaster";
+import { Renderer } from "../Renderer";
 import { GameOptions, PlayerAssignment, TimestampMillis } from "game/types";
-import { GameClient } from "game/GameClient";
+import { GameClient } from "./GameClient";
 import { Move } from "game/Move";
-import { PlayerAction, Resignation, Draw } from "./PlayerAction";
+import { PlayerAction, Resignation, Draw } from "../PlayerAction";
+import { Connection } from "game/OnlineGameMaster/Connection";
+import { uniq } from "lodash";
 
 export class OnlineGameMaster extends GameMaster {
   public clockUpdatePendingSince?: TimestampMillis;
@@ -59,6 +61,9 @@ export class OnlineGameMaster extends GameMaster {
       gameClient,
       gameClient.playerActions
     );
+    onlineGameMaster.game.players.forEach((player) => {
+      player.setConnected(gameClient.connectedPlayers.includes(player.name));
+    });
 
     gameClient.setListeners({
       onPlayerAction: (playerAction: PlayerAction) => {
@@ -75,6 +80,13 @@ export class OnlineGameMaster extends GameMaster {
           onlineGameMaster.handlePossibleTimerFinish();
           onlineGameMaster.render();
         }
+      },
+      onRoomConnectionsUpdated: (connections: Connection[]) => {
+        const connectedPlayers = uniq(connections.map((c) => c.assignedPlayer));
+        onlineGameMaster.game.players.forEach((player) => {
+          player.setConnected(connectedPlayers.includes(player.name));
+        });
+        onlineGameMaster.render();
       },
     });
 
