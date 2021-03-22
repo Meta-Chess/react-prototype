@@ -1,12 +1,14 @@
-import { GameOptions, PlayerAssignment } from "game/types";
+import { GameOptions, PlayerAssignment, PlayerName } from "game/types";
 import { Path } from "game/Pather";
 import { sleep } from "utilities/sleep";
 import { PlayerAction } from "game/PlayerAction";
 import { PieceDelta } from "game/Move";
+import { Connection } from "game/OnlineGameMaster/Connection";
 
 interface Listeners {
   onPlayerAction: (playerAction: PlayerAction) => void;
   onPlayerActionAcknowledged: (playerAction: PlayerAction) => void;
+  onRoomConnectionsUpdated: (connections: Connection[]) => void;
 }
 
 class GameClient {
@@ -16,6 +18,7 @@ class GameClient {
   private messageListener: ((event: MessageEvent) => void) | undefined;
   public playerActions: PlayerAction[] = [];
   public assignedPlayer: PlayerAssignment = "spectator";
+  public connectedPlayers: PlayerName[] = [];
 
   constructor(url: string, private roomId?: string, public gameOptions?: GameOptions) {
     const socket = new WebSocket(url);
@@ -53,6 +56,9 @@ class GameClient {
     const setAssignedPlayer = (assignedPlayer: PlayerAssignment): void => {
       this.assignedPlayer = assignedPlayer;
     };
+    const setConnectedPlayers = (connectedPlayers: PlayerName[]): void => {
+      this.connectedPlayers = connectedPlayers;
+    };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const setPlayerActions = (playerActions: any[]): void => {
@@ -63,6 +69,7 @@ class GameClient {
     };
     const onPlayerAction = this.listeners.onPlayerAction;
     const onPlayerActionAcknowledged = this.listeners.onPlayerActionAcknowledged;
+    const onRoomConnectionsUpdated = this.listeners.onRoomConnectionsUpdated;
 
     this.messageListener = (event: MessageEvent): void => {
       const data = JSON.parse(event.data);
@@ -72,6 +79,7 @@ class GameClient {
           setGameOptions(data.gameOptions);
           setPlayerActions(data.playerActions);
           setAssignedPlayer(data.assignedPlayer);
+          setConnectedPlayers(data.connectedPlayers);
           setRoomJoined(true);
           break;
         case "playerAction":
@@ -86,6 +94,11 @@ class GameClient {
           if (!onPlayerActionAcknowledged)
             console.log("onPlayerActionAcknowledged not found"); // eslint-disable-line no-console
           onPlayerActionAcknowledged?.(parsePlayerAction(data.playerAction));
+          break;
+        case "roomConnectionsUpdated":
+          if (!onRoomConnectionsUpdated)
+            console.log("onRoomConnectionsUpdated not found"); // eslint-disable-line no-console
+          onRoomConnectionsUpdated?.(data.connections);
           break;
         default:
           // eslint-disable-next-line no-console

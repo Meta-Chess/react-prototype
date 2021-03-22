@@ -4,6 +4,7 @@ import { PlayerRuleData, PlayerRuleSetterInput } from "./PlayerRuleData";
 
 export class Player {
   private ruleData: PlayerRuleData = {};
+  public connected = false;
 
   constructor(
     public name: PlayerName,
@@ -44,5 +45,9 @@ export class Player {
 
   setRuleData({ key, value }: PlayerRuleSetterInput): void {
     this.ruleData[key] = value;
+  }
+
+  setConnected(connected: boolean): void {
+    this.connected = connected;
   }
 }

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { AbsoluteView, Row } from "ui";
 import { Colors, DrawIcon, PieceImage, SFC, Text } from "primitives";
-import { PieceName, PlayerName } from "game";
+import { OnlineGameMaster, PieceName, PlayerName } from "game";
 import { GameContext, Timer } from "components/shared";
 import { View } from "react-native";
 import { Player } from "game/Player/Player";
@@ -9,6 +9,7 @@ import styled from "styled-components/native";
 import { randomChoice, randomInt } from "utilities";
 import { RollingVariantsCounter } from "components/RootStackNavigator/GameScreen/Sidebar/PlayersCard/RollingVariantsCounter";
 import { PlayerPieceAdvantage } from "./PlayerPieceAdvantage";
+import Color from "color";
 
 interface Props {
   player: Player;
@@ -68,6 +69,12 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
               )}
             </Row>
             <Row>
+              {gameMaster instanceof OnlineGameMaster && (
+                <Dot
+                  color={player.connected ? Colors.SUCCESS : Colors.WARNING}
+                  style={{ marginRight: 8 }}
+                />
+              )}
               <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT_SECONDARY.toString()}>
                 {rating}
               </Text>
@@ -104,4 +111,11 @@ const Container = styled(Row)<{ active: boolean }>`
   padding-horizontal: 16px;
   ${({ active }): string =>
     active ? `background-color: ${Colors.WHITE.fade(0.92).toString()};` : ""}
+`;
+
+const Dot = styled(View)<{ color: Color }>`
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: ${({ color }): string => color.toString()};
 `;
