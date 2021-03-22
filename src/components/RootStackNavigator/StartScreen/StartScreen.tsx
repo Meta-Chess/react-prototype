@@ -43,7 +43,6 @@ const StartScreen: FC = () => {
               </>
             }
           />
-          <HelpMenu context={{ gameOptions }} />
           <IconButton
             style={{ position: "absolute", top: 44, right: 9 }}
             Icon={DiscordIcon}
@@ -52,6 +51,7 @@ const StartScreen: FC = () => {
               else Linking.openURL(DISCORD_URL);
             }}
           />
+          <HelpMenu context={{ gameOptions }} />
         </ErrorBoundary>
       </ScrollView>
     </GameProvider>
