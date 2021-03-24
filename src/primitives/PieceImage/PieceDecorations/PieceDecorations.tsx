@@ -9,11 +9,17 @@ interface Props {
 function CHOOSE_DECORATION(name: PieceDecorationName): ReactElement | void {
   if (name === PieceDecorationName.UpDirectionArrow) {
     return (
-      <Path d="M 22.5,17.5 22.5,24.5 22.5,24.5 M 22.5,17.5 20,20 M 22.5,17.5 25,20" />
+      <Path
+        key={name}
+        d="M 22.5,17.5 22.5,24.5 22.5,24.5 M 22.5,17.5 20,20 M 22.5,17.5 25,20"
+      />
     );
   } else if (name === PieceDecorationName.DownDirectionArrow) {
     return (
-      <Path d="M 22.5,17.5 22.5,24.5 22.5,24.5 M 22.5,24.5 20,22 M 22.5,24.5 25,22" />
+      <Path
+        key={name}
+        d="M 22.5,17.5 22.5,24.5 22.5,24.5 M 22.5,24.5 20,22 M 22.5,24.5 25,22"
+      />
     );
   }
   return;
