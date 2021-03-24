@@ -1,24 +1,10 @@
-import { englishList } from "utilities/englishList";
-import { VariantCatagories } from "./variantCatagories";
 import { Conflict } from "./Conflict";
-import { nameToTitle } from "./nameToTitle";
 
-export function generalConflicts(selectedVariants: VariantCatagories): Conflict[] {
-  const conflicts: Conflict[] = [];
-
-  // volatile + degrees of freedom
-  if (
-    selectedVariants.volatile.length > 0 &&
-    selectedVariants.degreesOfFreedom.length > 0
-  )
-    conflicts.push({
-      message: `Combining ${englishList(selectedVariants.volatile.map(nameToTitle), {
-        connector: "or",
-      })} with ${englishList(selectedVariants.degreesOfFreedom.map(nameToTitle), {
-        connector: "or",
-      })} can lead very easily to unexpected stalemates.`,
-      level: "WARNING",
-    });
-
-  return conflicts;
-}
+export const defaultMessage: Conflict = {
+  message: "This looks like fun!",
+  level: "SUCCESS",
+};
+export const potentialClashMessage: Conflict = {
+  message: "There are clashes which may effect your game:",
+  level: "NEUTRAL",
+};
