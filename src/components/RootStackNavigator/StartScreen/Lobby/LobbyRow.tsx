@@ -22,7 +22,7 @@ export const LobbyRow: SFC<Props> = ({ lobbyGame }) => {
   const format = formats[formatName];
   const deck = lobbyGame.gameOptions.deck;
   const baseVariants = lobbyGame.gameOptions.baseVariants;
-  const variants = (baseVariants.length ? baseVariants : deck || []).map(
+  const variants = (formatName === "variantComposition" ? baseVariants : deck || []).map(
     (variantName) => allVariants[variantName]
   );
   const time = lobbyGame.gameOptions.time;
