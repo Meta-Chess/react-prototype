@@ -330,7 +330,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     shortDescription: "Pull friendly pieces along a path.",
     traits: ["Ability"],
     imageName: "pullImage",
-    implemented: true,
+    implemented: false,
     ruleNames: ["pull"],
     complexity: 2,
   },
