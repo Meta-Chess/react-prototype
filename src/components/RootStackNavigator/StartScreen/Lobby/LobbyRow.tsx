@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { AbsoluteView, LabelWithDetails, Row, TextIcon } from "ui";
 import { NoTimerIcon, PlayerIcon, TimerIcon } from "primitives/icons";
 import { Colors, SFC, Text, useHover } from "primitives";
-import { formats, futureVariants as allVariants } from "game";
+import { formats, FutureVariant, futureVariants as allVariants } from "game";
 import { FormatIcon } from "components/shared";
 import { ChessLabel, NoCheckLabel } from "components/shared/Labels";
 import styled from "styled-components/native";
 import { LobbyGame } from "./useLobbyQuery";
 import { Screens, useNavigation } from "navigation";
+import { shuffleInPlace } from "utilities/random";
 
 interface Props {
   lobbyGame: LobbyGame;
@@ -22,9 +23,13 @@ export const LobbyRow: SFC<Props> = ({ lobbyGame }) => {
   const format = formats[formatName];
   const deck = lobbyGame.gameOptions.deck;
   const baseVariants = lobbyGame.gameOptions.baseVariants;
-  const variants = (baseVariants.length ? baseVariants : deck || []).map(
-    (variantName) => allVariants[variantName]
-  );
+  const variants: FutureVariant[] = useMemo((): FutureVariant[] => {
+    const v = (formatName === "variantComposition" ? baseVariants : deck || []).map(
+      (variantName) => allVariants[variantName]
+    );
+    if (formatName === "rollingVariants") shuffleInPlace(v);
+    return v;
+  }, []);
   const time = lobbyGame.gameOptions.time;
   const players = lobbyGame.gameOptions.players?.length;
 

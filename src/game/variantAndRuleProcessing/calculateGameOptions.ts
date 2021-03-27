@@ -20,7 +20,11 @@ export function calculateGameOptions(
         : []),
     ],
     deck:
-      gameOptions.format === "rollingVariants" ? shuffleInPlace(selectedVariants) : [],
+      gameOptions.format === "rollingVariants"
+        ? shuffleInPlace(selectedVariants)
+        : gameOptions.format === "randomVariants"
+        ? selectedVariants
+        : [],
     players: allPossiblePlayerNames.slice(0, gameOptions.numberOfPlayers),
   };
 }
