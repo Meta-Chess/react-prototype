@@ -116,7 +116,7 @@ export class OnlineGameMaster extends GameMaster {
         received,
       });
     } else if (playerAction.type === "draw") {
-      this.toggleOfferDraw(playerAction.data, true);
+      this.toggleOfferDraw(playerAction.data, received);
     }
     this.calculateAllowableMovesForSelectedPieces();
     if (this.gameOver) this.disconnect();
@@ -158,10 +158,9 @@ export class OnlineGameMaster extends GameMaster {
   } = {}): void {
     if (received) this.setPositionInHistory(this.playerActionHistory.length);
     const moveIsNew = this.stateIsCurrent();
-    super.doMove({ move, timestamp, unselect });
     if (move && !received && moveIsNew)
       this.sendMove({ ...move, nextPlayerName: this.game.getCurrentPlayerName() });
-    if (this.gameOver) this.disconnect();
+    super.doMove({ move, timestamp, unselect });
   }
 
   sendMove(move?: Move): void {
