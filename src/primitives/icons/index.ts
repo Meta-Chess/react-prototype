@@ -20,3 +20,4 @@ export * from "./PlusIcon";
 export * from "./PlusIcon";
 export * from "./socialMedia";
 export * from "./TimerIcon";
+export * from "./SkipBackIcon";

@@ -61,9 +61,7 @@ export class OnlineGameMaster extends GameMaster {
       gameClient,
       gameClient.playerActions
     );
-    onlineGameMaster.game.players.forEach((player) => {
-      player.setConnected(gameClient.connectedPlayers.includes(player.name));
-    });
+    onlineGameMaster.setConnectedPlayersFromGameClient();
 
     gameClient.setListeners({
       onPlayerAction: (playerAction: PlayerAction) => {
@@ -91,6 +89,17 @@ export class OnlineGameMaster extends GameMaster {
     });
 
     return onlineGameMaster;
+  }
+
+  resetToStartOfGame(): void {
+    super.resetToStartOfGame();
+    this.setConnectedPlayersFromGameClient();
+  }
+
+  setConnectedPlayersFromGameClient(): void {
+    this.game.players.forEach((player) => {
+      player.setConnected(this.gameClient.connectedPlayers.includes(player.name));
+    });
   }
 
   doPlayerAction({
