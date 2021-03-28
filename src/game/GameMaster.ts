@@ -11,7 +11,7 @@ import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { CompactRules, RuleName } from "./rules";
 import { FutureVariantName } from "./variants";
-import { uniqWith, uniq } from "lodash";
+import { uniqWith, uniq, cloneDeep } from "lodash";
 import { Move, movesAreEqual } from "game/Move";
 import { SquareInfo, SquaresInfo } from "game/SquaresInfo";
 import { FormatName } from "game/formats";
@@ -63,6 +63,7 @@ export class GameMaster {
     this.overTheBoard = !!gameOptions?.overTheBoard;
     this.deck = gameOptions?.deck;
 
+    this.setPositionInHistory(this.playerActionHistory.length);
     this.startOfTurn();
   }
 
@@ -146,7 +147,7 @@ export class GameMaster {
       this.gameOptions,
       this.assignedPlayer,
       renderer || new Renderer(),
-      this.playerActionHistory,
+      cloneDeep(this.playerActionHistory),
       evaluateEndGameConditions
     );
   }
