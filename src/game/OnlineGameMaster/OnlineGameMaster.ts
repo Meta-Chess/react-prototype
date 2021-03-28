@@ -96,9 +96,9 @@ export class OnlineGameMaster extends GameMaster {
     this.setConnectedPlayersFromGameClient();
   }
 
-  setConnectedPlayersFromGameClient(gameClient: GameClient = this.gameClient): void {
+  setConnectedPlayersFromGameClient(): void {
     this.game.players.forEach((player) => {
-      player.setConnected(gameClient.connectedPlayers.includes(player.name));
+      player.setConnected(this.gameClient.connectedPlayers.includes(player.name));
     });
   }
 

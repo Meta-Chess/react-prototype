@@ -27,7 +27,7 @@ export const BackHistoryButton: SFC = ({ style }) => {
       label={SkipBackIcon}
       style={style}
       disabled={disabled}
-      onPress={(): void => backCommand()}
+      onPress={backCommand}
     />
   );
 };
