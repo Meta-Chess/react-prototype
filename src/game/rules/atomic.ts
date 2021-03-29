@@ -11,6 +11,9 @@ export const atomic: Rule = {
     events.subscribe({
       name: "capture",
       consequence: ({ board, square }) => {
+        const animationQueuePosition = board.animationDelayQueue.addToQueue(
+          ANIMATION_DURATION
+        ); // todo?: if multiple captures were to happen in the same move, they would be processed as different animations
         const atomicImpactSquares = allAdjacencies(board, square);
         const captureSquare = square.location;
         board.killPiecesAt({ piecesLocation: captureSquare });
@@ -23,6 +26,7 @@ export const atomic: Rule = {
             duration: ANIMATION_DURATION,
             delay: 0,
             animationType: AnimationType.explosion,
+            animationQueuePosition,
           });
         });
         addAnimationTokenToSquare({
@@ -31,6 +35,7 @@ export const atomic: Rule = {
           duration: ANIMATION_DURATION,
           delay: 0,
           animationType: AnimationType.explosion,
+          animationQueuePosition,
         });
         return { board, square };
       },
@@ -39,4 +44,4 @@ export const atomic: Rule = {
   },
 };
 
-const ANIMATION_DURATION = 1000;
+const ANIMATION_DURATION = 400;

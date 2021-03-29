@@ -20,6 +20,7 @@ import { Move, PieceDelta } from "game/Move";
 import { clone } from "lodash";
 import { EventCenter } from "game/EventCenter";
 import { invisibilityToken } from "game/rules/constants";
+import { AnimationDelayQueue } from "./AnimationDelayQueue";
 
 interface LocationMap {
   [location: string]: Square;
@@ -39,7 +40,8 @@ class Board extends TokenOwner {
     public events: EventCenter,
     public squares: LocationMap = {},
     public pieces: PieceIdMap = {},
-    public tokens: Token[] = []
+    public tokens: Token[] = [],
+    public animationDelayQueue: AnimationDelayQueue = new AnimationDelayQueue()
   ) {
     super(tokens);
     this.idGenerator = new IdGenerator();
@@ -66,6 +68,7 @@ class Board extends TokenOwner {
       squaresClone,
       piecesClone,
       clone(this.tokens),
+      this.animationDelayQueue.clone(),
     ];
     return new Board(...cloneConstructorInput);
   }
@@ -94,6 +97,7 @@ class Board extends TokenOwner {
       } else {
         this.pieces = { ...this.pieces, [id]: savePoint.pieces[id].clone() };
       }
+      this.animationDelayQueue = savePoint.animationDelayQueue.clone();
     });
   }
 

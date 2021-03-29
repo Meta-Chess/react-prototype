@@ -91,6 +91,7 @@ export class Game {
       currentTurn: this.currentTurn,
     });
     this.removeExpiredTokens();
+    this.board.animationDelayQueue.clear();
   }
 
   nextTurn(clockInfo?: { asOf: TimestampMillis; doClocks: boolean }): void {

@@ -8,6 +8,7 @@ export function addAnimationTokenToSquare({
   delay,
   animationType = undefined,
   pieceVisualData = undefined,
+  animationQueuePosition,
 }: {
   board: Board;
   squareLocation: string;
@@ -15,16 +16,18 @@ export function addAnimationTokenToSquare({
   delay: number;
   animationType?: AnimationType;
   pieceVisualData?: PieceVisualData;
+  animationQueuePosition: number;
 }): void {
   const creationTimeInMilliseconds = Date.now();
+  const queueDelay = board.animationDelayQueue.getDelayAtPosition(animationQueuePosition);
   board.squareAt(squareLocation)?.addToken({
     name: TokenName.AnimationToken,
     expired: () => Date.now() > creationTimeInMilliseconds + duration,
     data: {
       type: animationType,
       createdAt: creationTimeInMilliseconds,
-      duration: duration,
-      delay: delay,
+      duration: queueDelay + duration,
+      delay: queueDelay + delay,
       id: Math.random(), // TODO: We should change this sometime because collisions would be bad
       pieceVisualData: pieceVisualData,
     },

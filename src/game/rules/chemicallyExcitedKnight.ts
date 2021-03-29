@@ -12,6 +12,9 @@ export const chemicallyExcitedKnight: Rule = {
   inFindPathsModifyInputParams: () => ({ filterPacifistMoves: false }),
 
   postMove: ({ game, interrupt, board, move, currentTurn }) => {
+    const animationQueuePosition = board.animationDelayQueue.addToQueue(
+      PRE_EXPLODE_ANIMATION_DURATION + EXPLODE_ANIMATION_DURATION
+    );
     const triggeredKnights: { knightId: string; positionOnSquare: number }[] = [];
     const deadPieces: { deadPieceId: string; positionOnSquare: number }[] = [];
     const visualsToAddToSquare: Location[] = [];
@@ -81,6 +84,7 @@ export const chemicallyExcitedKnight: Rule = {
         delay: 0,
         animationType: undefined,
         pieceVisualData: knightVisuals,
+        animationQueuePosition,
       });
     });
 
@@ -102,6 +106,7 @@ export const chemicallyExcitedKnight: Rule = {
         delay: 0,
         animationType: undefined,
         pieceVisualData: pieceVisuals,
+        animationQueuePosition,
       });
     });
 
@@ -112,6 +117,7 @@ export const chemicallyExcitedKnight: Rule = {
         duration: EXPLODE_ANIMATION_DURATION,
         delay: PRE_EXPLODE_ANIMATION_DURATION,
         animationType: AnimationType.explosion,
+        animationQueuePosition,
       });
     });
 
@@ -119,5 +125,5 @@ export const chemicallyExcitedKnight: Rule = {
   },
 };
 
-const PRE_EXPLODE_ANIMATION_DURATION = 500;
-const EXPLODE_ANIMATION_DURATION = 1000;
+const PRE_EXPLODE_ANIMATION_DURATION = 400;
+const EXPLODE_ANIMATION_DURATION = 400;
