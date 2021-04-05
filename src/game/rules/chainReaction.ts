@@ -5,13 +5,14 @@ import { Pather } from "game/Pather";
 import { Game } from "game/Game";
 import { isPresent } from "utilities";
 import { CompactRules } from ".";
+import { AnimationType } from "../types";
+import { addAnimationTokenToSquare } from "./utilities";
 
 const MAX_CHAIN_LENGTH = 5;
 
 export const chainReaction: Rule = {
   title: "Chain Reaction",
   description: `When a piece is captured it captures every piece it was threatening. Max chain length ${MAX_CHAIN_LENGTH}.`,
-
   processMoves: ({ moves, game, gameClones, params }) => {
     const processedMoves =
       params.chainReactionSearch !== false
@@ -19,6 +20,24 @@ export const chainReaction: Rule = {
         : moves;
 
     return { moves: processedMoves, game, gameClones, params };
+  },
+  subscribeToEvents: ({ events }) => {
+    events.subscribe({
+      name: "capture",
+      consequence: ({ board, square }) => {
+        const animationQueuePosition = board.animationDelayQueue.addToQueue(500);
+        addAnimationTokenToSquare({
+          board: board,
+          squareLocation: square.location,
+          duration: 500,
+          delay: 0,
+          animationType: AnimationType.explosion,
+          animationQueuePosition,
+        });
+        return { board, square };
+      },
+    });
+    return { events };
   },
 };
 
