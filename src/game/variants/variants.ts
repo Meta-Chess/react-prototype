@@ -152,6 +152,7 @@ export type FutureVariantName =
   | "zoneOfControl"
   | "loseOnStalemate"
   | "gambit"
+  | "extinction"
   | "centerfold"
   | "fortifications"
   | "royallyScrewed";
@@ -334,6 +335,15 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     implemented: true,
     ruleNames: ["longBoard", "cylindrical", "verticallyCylindrical"],
     complexity: 4,
+  },
+  extinction: {
+    title: "Extinction",
+    shortDescription: "If a piece type goes extinct for a player, they lose the game.",
+    traits: ["Ending"],
+    imageName: "extinctionImage",
+    implemented: true,
+    ruleNames: ["extinction"],
+    complexity: 2,
   },
   pull: {
     title: "Pull",

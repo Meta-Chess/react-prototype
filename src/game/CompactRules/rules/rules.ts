@@ -7,6 +7,7 @@ export { chemicallyExcitedKnight } from "./chemicallyExcitedKnight";
 export { crazyhouse } from "./crazyhouse";
 export { cylindrical } from "./cylindrical";
 export { emptyCenter } from "./emptyCenter";
+export { extinction } from "./extinction";
 export { fatigue } from "./fatigue";
 export { hex } from "./hex";
 export { hexCylindrical } from "./hexCylindrical";
