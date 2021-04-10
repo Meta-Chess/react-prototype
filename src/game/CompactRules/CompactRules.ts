@@ -14,6 +14,7 @@ import { variantsToRules } from "game/variantAndRuleProcessing/variantsToRules";
 import { RuleParamValue, RuleSetting } from "./RuleSettingTypes";
 import { uniq } from "lodash";
 import { keys } from "utilities";
+import { Player } from "game/Player";
 
 // Note: These linting exceptions should only ever be used with great caution
 // Take care to check extra carefully for errors in this file because we have less type safety
@@ -207,10 +208,9 @@ export interface InPostMoveGenerationFilter {
   patherParams: PatherParams;
   filtered: boolean;
 }
-
 export interface LethalCondition {
-  board: Board;
-  player: PlayerName;
+  game: Game;
+  player: Player;
   dead: string | false;
 }
 
