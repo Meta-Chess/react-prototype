@@ -17,7 +17,6 @@ import { uniq } from "lodash";
 // Take care to check extra carefully for errors in this file because we have less type safety
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-
 export class CompactRules {
   public for: CompleteRule;
   private ruleNames: RuleName[];
@@ -39,9 +38,9 @@ export class CompactRules {
     const interruptionPoints = interruptionNames.map((interruptionPointName) => ({
       name: interruptionPointName,
       functions: this.ruleNames
-        .filter((ruleName) => !!allRules[ruleName][interruptionPointName])
+        .filter((ruleName) => !!allRules[ruleName]()[interruptionPointName])
         .sort(compareRulesPerInterruptionPoint(interruptionPointName))
-        .map((ruleName) => allRules[ruleName][interruptionPointName])
+        .map((ruleName) => allRules[ruleName]()[interruptionPointName])
         .filter(isPresent),
     }));
 
@@ -69,83 +68,39 @@ export class CompactRules {
 }
 
 const identityRule = {
-  afterBoardCreation: (x: { board: Board }) => x,
-  afterGameCreation: (x: { game: Game }) => x,
-  afterStepModify: (x: {
-    gait: Gait;
-    remainingSteps: Direction[];
-    currentSquare: Square;
-  }) => x,
-  getGaitGenerator: (x: {
-    gaitGenerator?: (_?: GaitParams) => Gait[];
-    name: PieceName;
-    owner?: PlayerName;
-  }) => x,
-  forSquareGenerationModify: (x: { board: Board; numberOfPlayers: number }) => x,
-  generateSpecialPacifistMoves: (x: {
-    game: Game;
-    piece: Piece;
-    interrupt: CompactRules;
-    moves: Move[];
-  }) => x,
-  lossCondition: (x: {
-    playerName: PlayerName;
-    game: Game;
-    gameClones: Game[];
-    interrupt: CompactRules;
-    dead: string | false;
-  }) => x,
-  drawCondition: (x: {
-    game: Game;
-    gameClones: Game[];
-    interrupt: CompactRules;
-    draw: string | false;
-  }) => x,
-  formatControlAtTurnStart: (x: { gameMaster: GameMaster }) => x,
-  inPostMoveGenerationFilter: (x: {
-    move: Move;
-    game: Game;
-    gameClones: Game[];
-    interrupt: CompactRules;
-    patherParams: PatherParams;
-    filtered: boolean;
-  }) => x,
-  lethalCondition: (x: { board: Board; player: PlayerName; dead: string | false }) => x,
-  onBoardCreate: (x: { board: Board; numberOfPlayers: number }) => x,
-  onSendPieceToGrave: (x: {
-    piece: Piece;
-    mover: PlayerName | undefined;
-    captured: boolean;
-    destination: string;
-  }) => x,
-  onGaitsGeneratedModify: (x: { gaits: Gait[]; piece: Piece }) => x,
-  onPieceDisplaced: (x: { board: Board; pieceDelta: PieceDelta }) => x,
-  onPieceGeneratedModify: (x: { piece: Piece }) => x,
-  piecesUnderSquare: (x: { square: Square; board: Board; pieceIds: string[] }) => x,
-  postCapture: (x: { board: Board; square: Square }) => x,
-  postMove: (x: {
-    game: Game;
-    interrupt: CompactRules;
-    board: Board;
-    move: Move;
-    currentTurn: number;
-  }) => x,
-  processMoves: (x: {
-    moves: Move[];
-    game: Game;
-    gameClones: Game[];
-    params: PatherParams;
-  }) => x,
-  subscribeToEvents: (x: { events: EventCenter }) => x,
-  inFindPathsModifyInputParams: (x: { filterPacifistMoves: boolean }) => x,
+  afterBoardCreation: (x: AfterBoardCreation) => x,
+  afterGameCreation: (x: AfterGameCreation) => x,
+  afterStepModify: (x: AfterStepModify) => x,
+  getGaitGenerator: (x: GetGaitGenerator) => x,
+  forSquareGenerationModify: (x: ForSquareGenerationModify) => x,
+  generateSpecialPacifistMoves: (x: GenerateSpecialPacifistMoves) => x,
+  lossCondition: (x: LossCondition) => x,
+  drawCondition: (x: DrawCondition) => x,
+  formatControlAtTurnStart: (x: FormatControlAtTurnStart) => x,
+  inPostMoveGenerationFilter: (x: InPostMoveGenerationFilter) => x,
+  lethalCondition: (x: LethalCondition) => x,
+  onBoardCreate: (x: OnBoardCreate) => x,
+  onSendPieceToGrave: (x: OnSendPieceToGrave) => x,
+  onGaitsGeneratedModify: (x: OnGaitsGeneratedModify) => x,
+  onPieceDisplaced: (x: OnPieceDisplaced) => x,
+  onPieceGeneratedModify: (x: OnPieceGeneratedModify) => x,
+  piecesUnderSquare: (x: PiecesUnderSquare) => x,
+  postCapture: (x: PostCapture) => x,
+  postMove: (x: PostMove) => x,
+  processMoves: (x: ProcessMoves) => x,
+  subscribeToEvents: (x: SubscribeToEvents) => x,
+  inFindPathsModifyInputParams: (x: InFindPathsModifyInputParams) => x,
 };
 
 export type CompleteRule = typeof identityRule;
 type InterruptionName = keyof CompleteRule;
+
 export type Rule = Partial<CompleteRule> & {
   title: string;
   description: string;
 };
+type RuleParams = { [name: string]: number };
+export type ParameterRule = (ruleParams?: RuleParams) => Rule;
 
 function compareRulesPerInterruptionPoint(
   name: InterruptionName
@@ -171,3 +126,135 @@ const ruleOrderPerInterruptionPoint: {
   inPostMoveGenerationFilter: ["theRest", "check"],
   onPieceDisplaced: ["theRest", "promotion"],
 };
+
+export interface AfterBoardCreation {
+  board: Board;
+}
+
+export interface AfterGameCreation {
+  game: Game;
+}
+
+export interface AfterStepModify {
+  gait: Gait;
+  remainingSteps: Direction[];
+  currentSquare: Square;
+}
+
+export interface AfterStepModify {
+  gait: Gait;
+  remainingSteps: Direction[];
+  currentSquare: Square;
+}
+
+export interface GetGaitGenerator {
+  gaitGenerator?: (_?: GaitParams) => Gait[];
+  name: PieceName;
+  owner?: PlayerName;
+}
+
+export interface ForSquareGenerationModify {
+  board: Board;
+  numberOfPlayers: number;
+}
+
+export interface GenerateSpecialPacifistMoves {
+  game: Game;
+  piece: Piece;
+  interrupt: CompactRules;
+  moves: Move[];
+}
+
+export interface LossCondition {
+  playerName: PlayerName;
+  game: Game;
+  gameClones: Game[];
+  interrupt: CompactRules;
+  dead: string | false;
+}
+
+export interface DrawCondition {
+  game: Game;
+  gameClones: Game[];
+  interrupt: CompactRules;
+  draw: string | false;
+}
+
+export interface FormatControlAtTurnStart {
+  gameMaster: GameMaster;
+}
+
+export interface InPostMoveGenerationFilter {
+  move: Move;
+  game: Game;
+  gameClones: Game[];
+  interrupt: CompactRules;
+  patherParams: PatherParams;
+  filtered: boolean;
+}
+
+export interface LethalCondition {
+  board: Board;
+  player: PlayerName;
+  dead: string | false;
+}
+
+export interface OnBoardCreate {
+  board: Board;
+  numberOfPlayers: number;
+}
+
+export interface OnSendPieceToGrave {
+  piece: Piece;
+  mover: PlayerName | undefined;
+  captured: boolean;
+  destination: string;
+}
+
+export interface OnGaitsGeneratedModify {
+  gaits: Gait[];
+  piece: Piece;
+}
+
+export interface OnPieceDisplaced {
+  board: Board;
+  pieceDelta: PieceDelta;
+}
+
+export interface OnPieceGeneratedModify {
+  piece: Piece;
+}
+
+export interface PiecesUnderSquare {
+  square: Square;
+  board: Board;
+  pieceIds: string[];
+}
+
+export interface PostCapture {
+  board: Board;
+  square: Square;
+}
+
+export interface PostMove {
+  game: Game;
+  interrupt: CompactRules;
+  board: Board;
+  move: Move;
+  currentTurn: number;
+}
+
+export interface ProcessMoves {
+  moves: Move[];
+  game: Game;
+  gameClones: Game[];
+  params: PatherParams;
+}
+
+export interface SubscribeToEvents {
+  events: EventCenter;
+}
+
+export interface InFindPathsModifyInputParams {
+  filterPacifistMoves: boolean;
+}

@@ -1,17 +1,19 @@
 import { Adjacency, Board, Square } from "../Board";
-import { Rule } from "./CompactRules";
+import { Rule, ParameterRule, AfterBoardCreation } from "./CompactRules";
 import { Direction, RankAndFileBounds } from "../types";
 import { toLocation } from "utilities";
 
-export const cylindrical: Rule = {
-  title: "Cylinder",
-  description:
-    "The board has been wrapped onto a cylinder, and the edge files have been glued together. This allows pieces to move off the right side of the board onto the left side, and vice versa.",
-  afterBoardCreation: ({ board }) => {
-    const bounds = board.rankAndFileBounds();
-    board.addAdjacenciesByRule(cylindricalAdjacenciesRule(bounds, board));
-    return { board };
-  },
+export const cylindrical: ParameterRule = (): Rule => {
+  return {
+    title: "Cylinder",
+    description:
+      "The board has been wrapped onto a cylinder, and the edge files have been glued together. This allows pieces to move off the right side of the board onto the left side, and vice versa.",
+    afterBoardCreation: ({ board }): AfterBoardCreation => {
+      const bounds = board.rankAndFileBounds();
+      board.addAdjacenciesByRule(cylindricalAdjacenciesRule(bounds, board));
+      return { board };
+    },
+  };
 };
 
 const cylindricalAdjacenciesRule = (

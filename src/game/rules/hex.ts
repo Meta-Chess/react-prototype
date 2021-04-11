@@ -1,5 +1,11 @@
 import { range, toLocation } from "utilities";
-import { Rule } from "./CompactRules";
+import {
+  Rule,
+  ParameterRule,
+  ForSquareGenerationModify,
+  OnBoardCreate,
+  GetGaitGenerator,
+} from "./CompactRules";
 import { Adjacency, Piece, Square } from "../Board";
 import {
   Direction,
@@ -11,36 +17,41 @@ import {
 } from "../types";
 import { createPiece, determineGaitGenerator, PieceSet } from "./utilities";
 
-export const hex: Rule = {
-  title: "Hexagon",
-  description:
-    "Every place on the board has a hexagonal geometry rather than a square geometry. Note that diagonal steps are a bit longer than usual. Click on a piece to find out how it moves!",
-  forSquareGenerationModify: ({ board, numberOfPlayers }) => {
-    board.addSquares(generateHexSquares());
-    board.defineRegion("center", centerRegion);
-    board.defineRegion("promotion", promotionRegionWhite, PlayerName.White);
-    board.defineRegion("promotion", promotionRegionBlack, PlayerName.Black);
-    return { board, numberOfPlayers };
-  },
-  onBoardCreate: ({ board, numberOfPlayers }) => {
-    const bounds = board.rankAndFileBounds();
-    board.addAdjacenciesByRule(hexAdjacencies(bounds));
-    board.addPiecesByRule(hexPieceSetupRule);
-    board.addToken(hexShapeToken);
-    return { board, numberOfPlayers };
-  },
-  getGaitGenerator: ({ gaitGenerator, name, owner }) => {
-    return {
-      gaitGenerator: determineGaitGenerator({
-        gaitGenerators: gaitGenerator ? [gaitGenerator] : [],
+export const hex: ParameterRule = (): Rule => {
+  return {
+    title: "Hexagon",
+    description:
+      "Every place on the board has a hexagonal geometry rather than a square geometry. Note that diagonal steps are a bit longer than usual. Click on a piece to find out how it moves!",
+    forSquareGenerationModify: ({
+      board,
+      numberOfPlayers,
+    }): ForSquareGenerationModify => {
+      board.addSquares(generateHexSquares());
+      board.defineRegion("center", centerRegion);
+      board.defineRegion("promotion", promotionRegionWhite, PlayerName.White);
+      board.defineRegion("promotion", promotionRegionBlack, PlayerName.Black);
+      return { board, numberOfPlayers };
+    },
+    onBoardCreate: ({ board, numberOfPlayers }): OnBoardCreate => {
+      const bounds = board.rankAndFileBounds();
+      board.addAdjacenciesByRule(hexAdjacencies(bounds));
+      board.addPiecesByRule(hexPieceSetupRule);
+      board.addToken(hexShapeToken);
+      return { board, numberOfPlayers };
+    },
+    getGaitGenerator: ({ gaitGenerator, name, owner }): GetGaitGenerator => {
+      return {
+        gaitGenerator: determineGaitGenerator({
+          gaitGenerators: gaitGenerator ? [gaitGenerator] : [],
+          name,
+          set: PieceSet.HexStandard,
+          owner: owner || PlayerName.White,
+        }),
         name,
-        set: PieceSet.HexStandard,
-        owner: owner || PlayerName.White,
-      }),
-      name,
-      owner,
-    };
-  },
+        owner,
+      };
+    },
+  };
 };
 
 const hexShapeToken = {

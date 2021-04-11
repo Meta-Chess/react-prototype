@@ -1,4 +1,4 @@
-import { Rule } from "./CompactRules";
+import { Rule, ParameterRule, ProcessMoves } from "./CompactRules";
 import { CaptureData, Move } from "game/Move";
 import { uniq } from "lodash";
 import { Pather } from "game/Pather";
@@ -8,25 +8,36 @@ import { CompactRules } from ".";
 
 const MAX_CHAIN_LENGTH = 5;
 
-export const chainReaction: Rule = {
-  title: "Chain Reaction",
-  description: `When a piece is captured it captures every piece it was threatening. Max chain length ${MAX_CHAIN_LENGTH}.`,
-
-  processMoves: ({ moves, game, gameClones, params }) => {
-    const processedMoves =
-      params.chainReactionSearch !== false
-        ? moves.map((m) => addChainOfCapturesToMove(m, game, gameClones, game.interrupt))
-        : moves;
-
-    return { moves: processedMoves, game, gameClones, params };
-  },
+export const chainReaction: ParameterRule = (
+  ruleParams = { maxChainLength: MAX_CHAIN_LENGTH }
+): Rule => {
+  return {
+    title: "Chain Reaction",
+    description: `When a piece is captured it captures every piece it was threatening. Max chain length ${ruleParams.maxChainLength}.`,
+    processMoves: ({ moves, game, gameClones, params }): ProcessMoves => {
+      const processedMoves =
+        params.chainReactionSearch !== false
+          ? moves.map((m) =>
+              addChainOfCapturesToMove(
+                m,
+                game,
+                gameClones,
+                game.interrupt,
+                ruleParams.maxChainLength
+              )
+            )
+          : moves;
+      return { moves: processedMoves, game, gameClones, params };
+    },
+  };
 };
 
 function addChainOfCapturesToMove(
   move: Move,
   game: Game,
   gameClones: Game[],
-  interrupt: CompactRules
+  interrupt: CompactRules,
+  maxChainLength: number
 ): Move {
   const captures = move.captures;
   if (!captures) return move;
@@ -44,7 +55,7 @@ function addChainOfCapturesToMove(
     interrupt,
   };
 
-  for (let i = 0; i < MAX_CHAIN_LENGTH; i++) {
+  for (let i = 0; i < maxChainLength; i++) {
     layerData = findNextLayerOfCaptures(layerData);
     captures.push(...layerData.captures);
   }

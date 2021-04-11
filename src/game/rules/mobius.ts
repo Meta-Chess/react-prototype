@@ -1,22 +1,29 @@
 import { Adjacency, Square } from "../Board";
 import { Direction, RankAndFileBounds } from "../types";
 import { wrapToCylinder } from "utilities";
-import { Rule } from "./CompactRules";
+import {
+  Rule,
+  ParameterRule,
+  PiecesUnderSquare,
+  AfterBoardCreation,
+} from "./CompactRules";
 
-export const mobius: Rule = {
-  title: "Möbius",
-  description: "You can see the pieces on the other side of the Möbius Strip",
-  piecesUnderSquare: ({ square, board, pieceIds }) => {
-    const bounds = board.rankAndFileBounds();
-    const locationUnderSquare = getLocationUnderSquare(square, bounds);
-    const newPieceIds = board.squareAt(locationUnderSquare)?.pieces;
-    return { square, board, pieceIds: [...pieceIds, ...(newPieceIds || [])] };
-  },
-  afterBoardCreation: ({ board }) => {
-    const bounds = board.rankAndFileBounds();
-    board.addAdjacenciesByRule(mobiusAdjacenciesRule(bounds));
-    return { board };
-  },
+export const mobius: ParameterRule = (): Rule => {
+  return {
+    title: "Möbius",
+    description: "You can see the pieces on the other side of the Möbius Strip",
+    piecesUnderSquare: ({ square, board, pieceIds }): PiecesUnderSquare => {
+      const bounds = board.rankAndFileBounds();
+      const locationUnderSquare = getLocationUnderSquare(square, bounds);
+      const newPieceIds = board.squareAt(locationUnderSquare)?.pieces;
+      return { square, board, pieceIds: [...pieceIds, ...(newPieceIds || [])] };
+    },
+    afterBoardCreation: ({ board }): AfterBoardCreation => {
+      const bounds = board.rankAndFileBounds();
+      board.addAdjacenciesByRule(mobiusAdjacenciesRule(bounds));
+      return { board };
+    },
+  };
 };
 
 const mobiusAdjacenciesRule = (bounds: RankAndFileBounds) => (

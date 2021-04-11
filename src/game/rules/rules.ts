@@ -2,6 +2,7 @@ export { atomic } from "./atomic";
 export { castling } from "./castling";
 export { chainReaction } from "./chainReaction";
 export { check } from "./check";
+export { standard } from "./standard";
 export { chemicallyExcitedKnight } from "./chemicallyExcitedKnight";
 export { crazyhouse } from "./crazyhouse";
 export { cylindrical } from "./cylindrical";
@@ -23,7 +24,6 @@ export { promotion } from "./promotion";
 export { pull } from "./pull";
 export { rollingVariants } from "./rollingVariants";
 export { stalemate } from "./stalemate";
-export { standard } from "./standard";
 export { threeCheck } from "./threeCheck";
 export { verticallyCylindrical } from "./verticallyCylindrical";
 

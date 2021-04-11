@@ -1,5 +1,10 @@
 import { Direction } from "../types";
-import { Rule } from "./CompactRules";
+import {
+  Rule,
+  ParameterRule,
+  OnGaitsGeneratedModify,
+  ProcessMoves,
+} from "./CompactRules";
 import { Board } from "game";
 import { Gait, PlayerName } from "game/types/types";
 import { Move, PieceDelta } from "game/Move";
@@ -11,66 +16,68 @@ import { Path } from "game/Pather";
 const MAX_CHAIN_LENGTH = 5;
 const FORCE_PULL = false;
 
-export const pull: Rule = {
-  title: "Pull",
-  description: `When moving linearly a piece ${
-    FORCE_PULL ? "must" : "may"
-  } pull allied pieces along with it. Max chain length: ${MAX_CHAIN_LENGTH} pieces. Pull moves are calculated based on the way the lead piece would move if Pull was not enabled.`,
+export const pull: ParameterRule = (): Rule => {
+  return {
+    title: "Pull",
+    description: `When moving linearly a piece ${
+      FORCE_PULL ? "must" : "may"
+    } pull allied pieces along with it. Max chain length: ${MAX_CHAIN_LENGTH} pieces. Pull moves are calculated based on the way the lead piece would move if Pull was not enabled.`,
 
-  onGaitsGeneratedModify: ({ gaits, piece }) => {
-    gaits.filter(isLinear).forEach(addLinearMoverToGaitData);
-    return { gaits, piece };
-  },
+    onGaitsGeneratedModify: ({ gaits, piece }): OnGaitsGeneratedModify => {
+      gaits.filter(isLinear).forEach(addLinearMoverToGaitData);
+      return { gaits, piece };
+    },
 
-  //Note: a more rigorous implementation would probably interrupt during pathing not after to allow chains of pieces to not self interfere.
-  processMoves: ({ moves, game, gameClones, params }) => {
-    const board = game.board;
-    const processedMoves = moves.flatMap((move) => {
-      if (
-        move.data?.linearMoverDirection !== undefined &&
-        allPiecesOnStartSquareLeave(move, board)
-      ) {
-        const forwards = move.data.linearMoverDirection;
-        const backwards = rotate180([forwards])[0];
-        const startSquare = board.squareAt(move.pieceDeltas[0]?.path.getStart());
-        if (!startSquare) return move;
+    //Note: a more rigorous implementation would probably interrupt during pathing not after to allow chains of pieces to not self interfere.
+    processMoves: ({ moves, game, gameClones, params }): ProcessMoves => {
+      const board = game.board;
+      const processedMoves = moves.flatMap((move) => {
+        if (
+          move.data?.linearMoverDirection !== undefined &&
+          allPiecesOnStartSquareLeave(move, board)
+        ) {
+          const forwards = move.data.linearMoverDirection;
+          const backwards = rotate180([forwards])[0];
+          const startSquare = board.squareAt(move.pieceDeltas[0]?.path.getStart());
+          if (!startSquare) return move;
 
-        const tail: Square[] = calculateTail(
-          startSquare,
-          board,
-          backwards,
-          forwards,
-          move
-        );
-
-        const extendedPath = [
-          ...[...tail].reverse().map((s) => s.location),
-          ...move.pieceDeltas[0].path.getPath().slice(1),
-        ];
-
-        const moves = [move];
-        for (let i = 1; i < tail.length; i++) {
-          const newDeltas = tail[i].pieces.map(
-            (pieceId): PieceDelta => ({
-              pieceId: pieceId,
-              path: new Path(
-                tail[i].location,
-                extendedPath.slice(tail.length - i, extendedPath.length - i)
-              ),
-            })
+          const tail: Square[] = calculateTail(
+            startSquare,
+            board,
+            backwards,
+            forwards,
+            move
           );
 
-          const newMove = cloneDeep(move);
-          newMove.pieceDeltas = [...cloneDeep(moves[i - 1].pieceDeltas), ...newDeltas];
+          const extendedPath = [
+            ...[...tail].reverse().map((s) => s.location),
+            ...move.pieceDeltas[0].path.getPath().slice(1),
+          ];
 
-          moves.push(newMove);
+          const moves = [move];
+          for (let i = 1; i < tail.length; i++) {
+            const newDeltas = tail[i].pieces.map(
+              (pieceId): PieceDelta => ({
+                pieceId: pieceId,
+                path: new Path(
+                  tail[i].location,
+                  extendedPath.slice(tail.length - i, extendedPath.length - i)
+                ),
+              })
+            );
+
+            const newMove = cloneDeep(move);
+            newMove.pieceDeltas = [...cloneDeep(moves[i - 1].pieceDeltas), ...newDeltas];
+
+            moves.push(newMove);
+          }
+          return FORCE_PULL ? moves[moves.length - 1] : moves;
         }
-        return FORCE_PULL ? moves[moves.length - 1] : moves;
-      }
-      return move;
-    });
-    return { moves: processedMoves, game, gameClones, params };
-  },
+        return move;
+      });
+      return { moves: processedMoves, game, gameClones, params };
+    },
+  };
 };
 
 function isLinear(gait: Gait): boolean {

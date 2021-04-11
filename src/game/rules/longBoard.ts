@@ -7,44 +7,55 @@ import {
   allPossiblePlayerNames,
   RankAndFileBounds,
 } from "../types";
-import { Rule } from "./CompactRules";
+import {
+  Rule,
+  ParameterRule,
+  ForSquareGenerationModify,
+  OnBoardCreate,
+  GetGaitGenerator,
+} from "./CompactRules";
 import { createPiece, determineGaitGenerator } from "./utilities";
 import { standardGaits } from "./constants";
 
-export const longBoard: Rule = {
-  title: "Long board",
-  description:
-    "The setup includes a long board and extra rows of pawns. It's designed to work well with vertical wrapping rules.",
-  forSquareGenerationModify: ({ board, numberOfPlayers }) => {
-    board.addSquares(generateStandardSquares(numberOfPlayers));
-    board.defineRegion("center", centerRegion(numberOfPlayers));
-    range(0, numberOfPlayers).forEach((n) =>
-      board.defineRegion(
-        "promotion",
-        promotionRegion(numberOfPlayers, n),
-        allPossiblePlayerNames[n]
-      )
-    );
-    return { board, numberOfPlayers };
-  },
-  onBoardCreate: ({ board, numberOfPlayers }) => {
-    const bounds = board.rankAndFileBounds();
-    board.addAdjacenciesByRule(toroidalAdjacencies(bounds));
-    board.addPiecesByRule(toroidalPiecesRule(numberOfPlayers));
-    return { board, numberOfPlayers };
-  },
-  getGaitGenerator: ({ gaitGenerator, name, owner }) => {
-    // Note: this method doesn't attempt to work out whether the piece should be a backwards pawn
-    return {
-      gaitGenerator: determineGaitGenerator({
-        gaitGenerators: gaitGenerator ? [gaitGenerator] : [],
+export const longBoard: ParameterRule = (): Rule => {
+  return {
+    title: "Long board",
+    description:
+      "The setup includes a long board and extra rows of pawns. It's designed to work well with vertical wrapping rules.",
+    forSquareGenerationModify: ({
+      board,
+      numberOfPlayers,
+    }): ForSquareGenerationModify => {
+      board.addSquares(generateStandardSquares(numberOfPlayers));
+      board.defineRegion("center", centerRegion(numberOfPlayers));
+      range(0, numberOfPlayers).forEach((n) =>
+        board.defineRegion(
+          "promotion",
+          promotionRegion(numberOfPlayers, n),
+          allPossiblePlayerNames[n]
+        )
+      );
+      return { board, numberOfPlayers };
+    },
+    onBoardCreate: ({ board, numberOfPlayers }): OnBoardCreate => {
+      const bounds = board.rankAndFileBounds();
+      board.addAdjacenciesByRule(toroidalAdjacencies(bounds));
+      board.addPiecesByRule(toroidalPiecesRule(numberOfPlayers));
+      return { board, numberOfPlayers };
+    },
+    getGaitGenerator: ({ gaitGenerator, name, owner }): GetGaitGenerator => {
+      // Note: this method doesn't attempt to work out whether the piece should be a backwards pawn
+      return {
+        gaitGenerator: determineGaitGenerator({
+          gaitGenerators: gaitGenerator ? [gaitGenerator] : [],
+          name,
+          owner: owner || PlayerName.White,
+        }),
         name,
-        owner: owner || PlayerName.White,
-      }),
-      name,
-      owner,
-    };
-  },
+        owner,
+      };
+    },
+  };
 };
 
 const generateStandardSquares = (

@@ -1,37 +1,48 @@
 import { range, range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "../Board";
 import { Direction, PieceName, PlayerName, RankAndFileBounds } from "../types";
-import { Rule } from "./CompactRules";
 import { createPiece, determineGaitGenerator } from "./utilities";
+import {
+  Rule,
+  ParameterRule,
+  ForSquareGenerationModify,
+  OnBoardCreate,
+  GetGaitGenerator,
+} from "./CompactRules";
 
-export const standard: Rule = {
-  title: "Standard",
-  description:
-    "This rule takes care of all the details of your usual bog-standard board and piece set-up.",
-  forSquareGenerationModify: ({ board, numberOfPlayers }) => {
-    board.addSquares(generateStandardSquares());
-    board.defineRegion("center", centerRegion);
-    board.defineRegion("promotion", promotionRegionWhite, PlayerName.White);
-    board.defineRegion("promotion", promotionRegionBlack, PlayerName.Black);
-    return { board, numberOfPlayers };
-  },
-  onBoardCreate: ({ board, numberOfPlayers }) => {
-    const bounds = board.rankAndFileBounds();
-    board.addAdjacenciesByRule(standardAdjacencies(bounds));
-    board.addPiecesByRule(standardPiecesRule);
-    return { board, numberOfPlayers };
-  },
-  getGaitGenerator: ({ gaitGenerator, name, owner }) => {
-    return {
-      gaitGenerator: determineGaitGenerator({
-        gaitGenerators: gaitGenerator ? [gaitGenerator] : [],
+export const standard: ParameterRule = (): Rule => {
+  return {
+    title: "Standard",
+    description:
+      "This rule takes care of all the details of your usual bog-standard board and piece set-up.",
+    forSquareGenerationModify: ({
+      board,
+      numberOfPlayers,
+    }): ForSquareGenerationModify => {
+      board.addSquares(generateStandardSquares());
+      board.defineRegion("center", centerRegion);
+      board.defineRegion("promotion", promotionRegionWhite, PlayerName.White);
+      board.defineRegion("promotion", promotionRegionBlack, PlayerName.Black);
+      return { board, numberOfPlayers };
+    },
+    onBoardCreate: ({ board, numberOfPlayers }): OnBoardCreate => {
+      const bounds = board.rankAndFileBounds();
+      board.addAdjacenciesByRule(standardAdjacencies(bounds));
+      board.addPiecesByRule(standardPiecesRule);
+      return { board, numberOfPlayers };
+    },
+    getGaitGenerator: ({ gaitGenerator, name, owner }): GetGaitGenerator => {
+      return {
+        gaitGenerator: determineGaitGenerator({
+          gaitGenerators: gaitGenerator ? [gaitGenerator] : [],
+          name,
+          owner: owner || PlayerName.White,
+        }),
         name,
-        owner: owner || PlayerName.White,
-      }),
-      name,
-      owner,
-    };
-  },
+        owner,
+      };
+    },
+  };
 };
 
 const generateStandardSquares = (): { location: string; square: Square }[] =>

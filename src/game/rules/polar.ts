@@ -1,32 +1,34 @@
 import { Adjacency, Square } from "../Board";
 import { Direction, RankAndFileBounds, TokenName } from "../types";
 import { range, toLocation, wrapToCylinder } from "utilities";
-import { Rule } from "./CompactRules";
+import { Rule, ParameterRule, AfterStepModify, AfterBoardCreation } from "./CompactRules";
 import { invisibilityToken, polarToken } from "./constants";
 import { rotate180 } from "./utilities";
 
 const DIAGONAL_POLAR = false;
 
-export const polar: Rule = {
-  title: "Polar",
-  description: `The top and bottom of the board behave like the poles of a sphere. The top edge of the board is wrapped around the edge of an invisible octagonal 'square' that pieces can cross but can't stop on. The bottom edge of the board is similarly wrapped around its own octagonal square. Diagonal movement through the poles is ${
-    DIAGONAL_POLAR ? "allowed" : "not allowed"
-  }.`,
-  afterStepModify: ({ gait, remainingSteps, currentSquare }) => {
-    return currentSquare.hasTokenWithName(TokenName.PolarToken)
-      ? {
-          gait: { ...gait, pattern: rotate180(gait.pattern) },
-          remainingSteps: rotate180(remainingSteps),
-          currentSquare,
-        }
-      : { gait, remainingSteps, currentSquare };
-  },
-  afterBoardCreation: ({ board }) => {
-    const polarSetup = generatePolarSetup(board.rankAndFileBounds());
-    board.addSquares(polarSetup.squares);
-    board.addAdjacenciesByRule(polarSetup.adjacenciesRule);
-    return { board };
-  },
+export const polar: ParameterRule = (): Rule => {
+  return {
+    title: "Polar",
+    description: `The top and bottom of the board behave like the poles of a sphere. The top edge of the board is wrapped around the edge of an invisible octagonal 'square' that pieces can cross but can't stop on. The bottom edge of the board is similarly wrapped around its own octagonal square. Diagonal movement through the poles is ${
+      DIAGONAL_POLAR ? "allowed" : "not allowed"
+    }.`,
+    afterStepModify: ({ gait, remainingSteps, currentSquare }): AfterStepModify => {
+      return currentSquare.hasTokenWithName(TokenName.PolarToken)
+        ? {
+            gait: { ...gait, pattern: rotate180(gait.pattern) },
+            remainingSteps: rotate180(remainingSteps),
+            currentSquare,
+          }
+        : { gait, remainingSteps, currentSquare };
+    },
+    afterBoardCreation: ({ board }): AfterBoardCreation => {
+      const polarSetup = generatePolarSetup(board.rankAndFileBounds());
+      board.addSquares(polarSetup.squares);
+      board.addAdjacenciesByRule(polarSetup.adjacenciesRule);
+      return { board };
+    },
+  };
 };
 
 const generatePolarSetup = ({

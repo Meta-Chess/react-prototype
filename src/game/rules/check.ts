@@ -1,31 +1,39 @@
-import { CompactRules, Rule } from "./CompactRules";
+import {
+  CompactRules,
+  Rule,
+  InPostMoveGenerationFilter,
+  LossCondition,
+} from "./CompactRules";
 import { Pather } from "../Pather";
 import { cloneDeep } from "lodash";
 import { Game, Move } from "game";
 import { hasLegalMoves } from "./utilities";
+import { ParameterRule } from "./CompactRules";
 
-export const check: Rule = {
-  title: "Check",
-  description:
-    "You can't do any moves that would allow an opponent to take your king on their next turn. Something something win condition? Something something multiple opponents?",
-  inPostMoveGenerationFilter: (input) => {
-    if (input.filtered) return input;
-    return { ...input, filtered: !checkAllowsMove(input) };
-  },
-  lossCondition: ({ playerName, game, gameClones, interrupt, dead }) => {
-    if (dead || game.getCurrentPlayerName() !== playerName)
-      return { playerName, game, gameClones, interrupt, dead };
+export const check: ParameterRule = (): Rule => {
+  return {
+    title: "Check",
+    description:
+      "You can't do any moves that would allow an opponent to take your king on their next turn. Something something win condition? Something something multiple opponents?",
+    inPostMoveGenerationFilter: (input): InPostMoveGenerationFilter => {
+      if (input.filtered) return input;
+      return { ...input, filtered: !checkAllowsMove(input) };
+    },
+    lossCondition: ({ playerName, game, gameClones, interrupt, dead }): LossCondition => {
+      if (dead || game.getCurrentPlayerName() !== playerName)
+        return { playerName, game, gameClones, interrupt, dead };
 
-    if (!inCheck(game, gameClones, interrupt))
-      return { playerName, game, gameClones, interrupt, dead: false };
+      if (!inCheck(game, gameClones, interrupt))
+        return { playerName, game, gameClones, interrupt, dead: false };
 
-    game.events.notify({ name: "check", data: { playerName, game } });
+      game.events.notify({ name: "check", data: { playerName, game } });
 
-    if (hasLegalMoves(playerName, game, gameClones, interrupt))
-      return { playerName, game, gameClones, interrupt, dead: false };
+      if (hasLegalMoves(playerName, game, gameClones, interrupt))
+        return { playerName, game, gameClones, interrupt, dead: false };
 
-    return { playerName, game, gameClones, interrupt, dead: "checkmated" };
-  },
+      return { playerName, game, gameClones, interrupt, dead: "checkmated" };
+    },
+  };
 };
 
 function inCheck(game: Game, gameClones: Game[], interrupt: CompactRules): boolean {
