@@ -8,12 +8,15 @@ import { VariantTileInfo } from "./VariantTileInfo";
 import { VariantTileImage } from "./VariantTileImage";
 import { Styles } from "primitives/Styles";
 import { AbsoluteView } from "ui";
-
+import * as allRuleSettings from "game/rules/ruleSettings";
+import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
 interface Props {
   variant: FutureVariant;
   selected: boolean;
   conflictLevel: AdviceLevel | undefined;
   onPress: () => void;
+  setVariantModalInfo: (x: VariantModalInfo) => void;
+  modified: boolean;
 }
 
 export const VariantTile: SFC<Props> = ({
@@ -22,8 +25,22 @@ export const VariantTile: SFC<Props> = ({
   selected,
   conflictLevel,
   onPress,
+  setVariantModalInfo,
+  modified,
 }) => {
   const implemented = variant.implemented;
+  const ruleSettings = Object.assign(
+    {},
+    ...variant.ruleNames
+      .filter(
+        (ruleName) =>
+          allRuleSettings[(ruleName + "Settings") as keyof typeof allRuleSettings]
+      )
+      .map((ruleName) => ({
+        [ruleName]:
+          allRuleSettings[(ruleName + "Settings") as keyof typeof allRuleSettings],
+      }))
+  );
   return (
     <TouchableContainer
       style={style}
@@ -35,11 +52,14 @@ export const VariantTile: SFC<Props> = ({
         variant={variant}
         selected={selected}
         conflictLevel={conflictLevel}
+        ruleSettings={ruleSettings}
+        setVariantModalInfo={setVariantModalInfo}
       />
       <VariantTileBody>
         <VariantTileInfo variant={variant} style={{ flex: 1 }} />
         <VariantTileImage
           variant={variant}
+          modified={modified}
           style={{ width: 120, height: 120, margin: 8 }}
         />
       </VariantTileBody>

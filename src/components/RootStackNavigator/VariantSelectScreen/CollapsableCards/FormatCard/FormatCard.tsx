@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import styled from "styled-components/native";
 import { futureVariants } from "game";
 import { CollapsableCard } from "ui/Containers";
@@ -7,17 +7,21 @@ import { SFC, Text, Colors } from "primitives";
 import { FutureVariantName } from "game";
 import { FormatName, formats } from "game/formats";
 import { FormatIcon } from "components/shared";
+import { RuleNamesWithParams } from "game/rules";
+import { VariantLabel } from "components/shared/Labels";
 
 interface Props {
   selectedFormat: FormatName;
   selectedVariants: FutureVariantName[];
   setSelectedVariants: (x: FutureVariantName[]) => void;
+  ruleNamesWithParams?: RuleNamesWithParams;
 }
 
 const FormatCard: SFC<Props> = ({
   selectedFormat,
   selectedVariants,
   setSelectedVariants,
+  ruleNamesWithParams = {},
 }) => {
   return (
     <CollapsableCard
@@ -34,8 +38,12 @@ const FormatCard: SFC<Props> = ({
       <Container>
         {selectedVariants.map((variant) => {
           return (
-            <TouchableOpacity
-              key={variant}
+            <VariantLabel
+              key={futureVariants[variant].title}
+              variant={futureVariants[variant]}
+              ruleNamesWithParams={ruleNamesWithParams}
+              textCat={"BodyXS"}
+              noHover={true}
               onPress={(): void =>
                 selectedVariants.includes(variant)
                   ? setSelectedVariants(selectedVariants.filter((x) => x !== variant))
@@ -48,9 +56,7 @@ const FormatCard: SFC<Props> = ({
                 borderRadius: 4,
                 margin: 4,
               }}
-            >
-              <Text cat="BodyXS">{futureVariants[variant].title}</Text>
-            </TouchableOpacity>
+            />
           );
         })}
       </Container>

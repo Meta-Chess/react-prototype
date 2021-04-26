@@ -11,6 +11,7 @@ import { FutureVariantName } from "game/variants";
 import { FormatName, formats as allFormats } from "game/formats";
 import { RuleName, rules as allRules } from "game/rules";
 import { variantsToRules } from "game/variantAndRuleProcessing/variantsToRules";
+import { RuleParamValue, RuleSetting } from "./RuleSettingTypes";
 import { uniq } from "lodash";
 
 // Note: These linting exceptions should only ever be used with great caution
@@ -20,11 +21,13 @@ import { uniq } from "lodash";
 export class CompactRules {
   public for: CompleteRule;
   private ruleNames: RuleName[];
+  private ruleParams: RuleNamesWithParams;
 
   constructor(
     variants: FutureVariantName[],
     formats: FormatName[] = [],
-    otherRules: RuleName[] = []
+    otherRules: RuleName[] = [],
+    ruleParams: RuleNamesWithParams = {}
   ) {
     // TODO: Combine rules from formats more neatly?
     this.ruleNames = uniq([
@@ -32,15 +35,22 @@ export class CompactRules {
       ...formats.flatMap((f) => allFormats[f].ruleNames || []),
       ...otherRules,
     ]);
+    this.ruleParams = ruleParams;
 
     const interruptionNames = Object.keys(identityRule) as InterruptionName[];
 
     const interruptionPoints = interruptionNames.map((interruptionPointName) => ({
       name: interruptionPointName,
       functions: this.ruleNames
-        .filter((ruleName) => !!allRules[ruleName]()[interruptionPointName])
+        .filter(
+          (ruleName) =>
+            !!allRules[ruleName]((ruleParams || {})[ruleName])[interruptionPointName]
+        )
         .sort(compareRulesPerInterruptionPoint(interruptionPointName))
-        .map((ruleName) => allRules[ruleName]()[interruptionPointName])
+        .map(
+          (ruleName) =>
+            allRules[ruleName]((ruleParams || {})[ruleName])[interruptionPointName]
+        )
         .filter(isPresent),
     }));
 
@@ -57,13 +67,16 @@ export class CompactRules {
   getRuleNames(): RuleName[] {
     return this.ruleNames;
   }
+  getRuleParams(): RuleNamesWithParams {
+    return this.ruleParams;
+  }
 
   clone(): CompactRules {
-    return new CompactRules([], [], this.getRuleNames());
+    return new CompactRules([], [], this.getRuleNames(), this.getRuleParams());
   }
 
   resetTo(savePoint: CompactRules): void {
-    this.constructor([], [], savePoint.getRuleNames());
+    this.constructor([], [], savePoint.getRuleNames(), this.getRuleParams());
   }
 }
 
@@ -99,8 +112,9 @@ export type Rule = Partial<CompleteRule> & {
   title: string;
   description: string;
 };
-type RuleParams = { [name: string]: number };
-export type ParameterRule = (ruleParams?: RuleParams) => Rule;
+export type ParameterRule = (ruleParams?: RuleParamValue) => Rule;
+export type RuleNamesWithParams = { [k in RuleName]?: RuleParamValue };
+export type RuleNamesWithParamSettings = { [k in RuleName]?: RuleSetting };
 
 function compareRulesPerInterruptionPoint(
   name: InterruptionName

@@ -1,11 +1,15 @@
 import { Rule, ParameterRule, LossCondition, SubscribeToEvents } from "./CompactRules";
 import { TokenName } from "game/types";
 import { Game } from "game";
+import { getDefaultParams } from "./utilities";
+import { RULE_SETTINGS } from "./threeCheckSettings";
 
-export const threeCheck: ParameterRule = (): Rule => {
+export const threeCheck: ParameterRule = (
+  ruleParams = getDefaultParams(RULE_SETTINGS)
+): Rule => {
   return {
     title: "Three Check",
-    description: "If you are placed in check 3 times - you lose.",
+    description: `If you are placed in check  times ${ruleParams["Number of Checks"]} you lose.`,
 
     lossCondition: ({ playerName, game, gameClones, interrupt, dead }): LossCondition => {
       if (dead || game.getCurrentPlayerName() !== playerName) {
@@ -18,13 +22,13 @@ export const threeCheck: ParameterRule = (): Rule => {
         return { playerName, game, gameClones, interrupt, dead };
       const playerIndex = game.players.findIndex((player) => player.name === playerName);
 
-      if (checkCounters[playerIndex] >= 3)
+      if (checkCounters[playerIndex] >= ruleParams["Number of Checks"])
         return {
           playerName,
           game,
           gameClones,
           interrupt,
-          dead: "has been checked 3 times",
+          dead: `has been checked ${ruleParams["Number of Checks"]} times`,
         };
 
       return { playerName, game, gameClones, interrupt, dead: false };

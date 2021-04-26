@@ -118,7 +118,8 @@ export class GameMaster {
     const interrupt = new CompactRules(
       baseVariants,
       [format],
-      checkEnabled ? ["check"] : []
+      checkEnabled ? ["check"] : [],
+      gameOptions.ruleNamesWithParams
     );
     const game = interrupt.for.afterGameCreation({
       game: Game.createGame(interrupt, time, numberOfPlayers),

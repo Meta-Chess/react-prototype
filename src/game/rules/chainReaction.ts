@@ -4,16 +4,16 @@ import { uniq } from "lodash";
 import { Pather } from "game/Pather";
 import { Game } from "game/Game";
 import { isPresent } from "utilities";
+import { getDefaultParams } from "./utilities";
 import { CompactRules } from ".";
-
-const MAX_CHAIN_LENGTH = 5;
+import { RULE_SETTINGS } from "./chainReactionSettings";
 
 export const chainReaction: ParameterRule = (
-  ruleParams = { maxChainLength: MAX_CHAIN_LENGTH }
+  ruleParams = getDefaultParams(RULE_SETTINGS)
 ): Rule => {
   return {
     title: "Chain Reaction",
-    description: `When a piece is captured it captures every piece it was threatening. Max chain length ${ruleParams.maxChainLength}.`,
+    description: `When a piece is captured it captures every piece it was threatening. Max chain length ${ruleParams["Max Chain Length"]}.`,
     processMoves: ({ moves, game, gameClones, params }): ProcessMoves => {
       const processedMoves =
         params.chainReactionSearch !== false
@@ -23,7 +23,7 @@ export const chainReaction: ParameterRule = (
                 game,
                 gameClones,
                 game.interrupt,
-                ruleParams.maxChainLength
+                ruleParams["Max Chain Length"]
               )
             )
           : moves;

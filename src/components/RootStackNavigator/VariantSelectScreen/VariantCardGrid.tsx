@@ -8,11 +8,16 @@ import {
   partitionDisplayVariantsByComplexity,
 } from "./partitionDisplayVariantsByComplexity";
 import styled from "styled-components/native";
+import { VariantModalInfo } from "./Modals";
+import { RuleNamesWithParams } from "game/rules";
+import { doesGameOptionsModifyVariant } from "game/variantAndRuleProcessing";
 interface Props {
   displayVariants: FutureVariantName[];
   selectedVariants: FutureVariantName[];
   setSelectedVariants: (x: FutureVariantName[]) => void;
   conflictLevel: AdviceLevel | undefined;
+  setVariantModalInfo: (x: VariantModalInfo) => void;
+  ruleNamesWithParams?: RuleNamesWithParams;
 }
 
 const VariantCardGrid: SFC<Props> = ({
@@ -21,6 +26,8 @@ const VariantCardGrid: SFC<Props> = ({
   selectedVariants,
   setSelectedVariants,
   conflictLevel,
+  setVariantModalInfo,
+  ruleNamesWithParams = {},
 }) => {
   const partitionedDisplayVariants = partitionDisplayVariantsByComplexity(
     displayVariants
@@ -60,6 +67,11 @@ const VariantCardGrid: SFC<Props> = ({
                                 )
                               : setSelectedVariants([...selectedVariants, variant])
                           }
+                          setVariantModalInfo={setVariantModalInfo}
+                          modified={doesGameOptionsModifyVariant(
+                            futureVariants[variant],
+                            ruleNamesWithParams
+                          )}
                           style={{ margin: 4 }}
                         />
                       );

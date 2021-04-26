@@ -13,7 +13,7 @@ import { useNavigation, Screens, useGoBackOrToStartScreen, useRoute } from "navi
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
 import { FormatCard, FiltersCard, GameOptionsCard, AdviceCard } from "./CollapsableCards";
-import { Button, ButtonSecondary, Footer } from "ui";
+import { Button, ButtonSecondary, Footer, AbsoluteView } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors } from "primitives";
 import { Styles } from "primitives/Styles";
@@ -23,6 +23,7 @@ import { FormatName } from "game/formats";
 import { rollableVariants } from "game/formats/rollableVariants";
 import { randomVariants } from "game/formats/randomVariants";
 import { getConflictLevel } from "./getConflictLevel";
+import { VariantModal, VariantModalInfo } from "./Modals/VariantModal";
 
 const VariantSelectScreen: FC = () => {
   const playWithFriends = useRoute<Screens.VariantSelectScreen>().params?.playWithFriends;
@@ -64,6 +65,10 @@ const VariantSelectScreen: FC = () => {
   );
   const conflictLevel = getConflictLevel(gameOptions.format, variantConflicts);
 
+  const [variantModalInfo, setVariantModalInfo] = useState<VariantModalInfo>({
+    activated: false,
+  });
+
   return (
     <ScreenContainer
       style={{
@@ -84,6 +89,7 @@ const VariantSelectScreen: FC = () => {
             selectedFormat={gameOptions.format}
             selectedVariants={selectedVariantsForFormat}
             setSelectedVariants={setSelectedVariantsForFormat}
+            ruleNamesWithParams={gameOptions.ruleNamesWithParams}
           />
           <AdviceCard
             selectedVariants={selectedVariantsForFormat}
@@ -122,6 +128,8 @@ const VariantSelectScreen: FC = () => {
           selectedVariants={selectedVariantsForFormat}
           setSelectedVariants={setSelectedVariantsForFormat}
           conflictLevel={conflictLevel}
+          setVariantModalInfo={setVariantModalInfo}
+          ruleNamesWithParams={gameOptions.ruleNamesWithParams}
         />
         <Topbar
           displayVariants={displayVariants}
@@ -130,6 +138,16 @@ const VariantSelectScreen: FC = () => {
           gameOptions={gameOptions}
           setGameOptions={setGameOptions}
         />
+        {variantModalInfo.activated && (
+          <AbsoluteView style={{ backgroundColor: Colors.BLACK.fade(0.4).toString() }}>
+            <VariantModal
+              variantModalInfo={variantModalInfo}
+              setVariantModalInfo={setVariantModalInfo}
+              gameOptions={gameOptions}
+              setGameOptions={setGameOptions}
+            />
+          </AbsoluteView>
+        )}
       </LeftContainer>
     </ScreenContainer>
   );

@@ -28,7 +28,7 @@ export const findConflicts = (
   selectedVariants: FutureVariantName[],
   checkEnabled?: boolean
 ): Conflict[] => {
-  const selectedRules = new CompactRules(
+  const selectedRules = new CompactRules( //note we aren't caring about rule params here
     selectedVariants,
     [format],
     checkEnabled ? ["check"] : []

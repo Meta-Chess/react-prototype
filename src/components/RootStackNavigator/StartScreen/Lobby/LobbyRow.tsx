@@ -5,7 +5,7 @@ import { NoTimerIcon, PlayerIcon, TimerIcon } from "primitives/icons";
 import { Colors, SFC, Text, useHover } from "primitives";
 import { formats, FutureVariant, futureVariants as allVariants } from "game";
 import { FormatIcon } from "components/shared";
-import { ChessLabel, NoCheckLabel } from "components/shared/Labels";
+import { ChessLabel, NoCheckLabel, VariantLabel } from "components/shared/Labels";
 import styled from "styled-components/native";
 import { LobbyGame } from "./useLobbyQuery";
 import { Screens, useNavigation } from "navigation";
@@ -83,10 +83,10 @@ export const LobbyRow: SFC<Props> = ({ lobbyGame }) => {
         >
           {!check && <NoCheckLabel style={{ marginRight: 4 }} />}
           {variants.map((variant) => (
-            <LabelWithDetails
-              label={variant.title}
-              details={variant.shortDescription}
+            <VariantLabel
               key={variant.title}
+              variant={variant}
+              ruleNamesWithParams={lobbyGame.gameOptions.ruleNamesWithParams || {}}
               style={{ marginRight: 4 }}
             />
           ))}
