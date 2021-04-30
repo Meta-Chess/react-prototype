@@ -12,15 +12,17 @@ import { Square } from "game/Board";
 import { rotate180 } from "./utilities";
 import { cloneDeep } from "lodash";
 import { Path } from "game/Pather";
+import { getDefaultParams } from "./utilities";
 
 const MAX_CHAIN_LENGTH = 5;
-const FORCE_PULL = false;
 
-export const pull: ParameterRule = (): Rule => {
+export const pull: ParameterRule = (
+  ruleParams = getDefaultParams("pullSettings")
+): Rule => {
   return {
     title: "Pull",
     description: `When moving linearly a piece ${
-      FORCE_PULL ? "must" : "may"
+      ruleParams["Forced Pull"] ? "must" : "may"
     } pull allied pieces along with it. Max chain length: ${MAX_CHAIN_LENGTH} pieces. Pull moves are calculated based on the way the lead piece would move if Pull was not enabled.`,
 
     onGaitsGeneratedModify: ({ gaits, piece }): OnGaitsGeneratedModify => {
@@ -71,7 +73,7 @@ export const pull: ParameterRule = (): Rule => {
 
             moves.push(newMove);
           }
-          return FORCE_PULL ? moves[moves.length - 1] : moves;
+          return ruleParams["Forced Pull"] ? moves[moves.length - 1] : moves;
         }
         return move;
       });

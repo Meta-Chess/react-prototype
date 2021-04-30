@@ -6,8 +6,7 @@ import { GameOptions } from "game";
 import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
 import { RuleName } from "game";
-import { RuleSetting } from "game/rules/RuleSettingTypes";
-import { RuleNamesWithParamSettings } from "game/rules";
+import { RuleNamesWithParamSettings, RuleSetting, ParamName } from "game/rules";
 import { ParamOptions } from "./ParamOptions";
 import { gameOptionsChangeRuleParam } from "game/variantAndRuleProcessing";
 
@@ -48,8 +47,8 @@ export const VariantModal: SFC<Props> = ({
                 <ParamOptions
                   key={ruleName + paramName + renderKeys}
                   ruleName={ruleName as RuleName}
-                  paramName={paramName}
-                  paramSettings={ruleSetting[paramName]}
+                  paramName={paramName as ParamName}
+                  paramSettings={ruleSetting[paramName as ParamName]}
                   gameOptions={gameOptions}
                   setGameOptions={setGameOptions}
                 />
@@ -69,13 +68,14 @@ export const VariantModal: SFC<Props> = ({
                     ruleSettings[ruleName as RuleName];
                   if (ruleSetting === undefined) return;
                   return Object.keys(ruleSetting).forEach((paramName) => {
-                    gameOptionsChangeRuleParam(
-                      ruleName as RuleName,
-                      paramName,
-                      ruleSetting[paramName],
-                      ruleSetting[paramName].defaultValue,
-                      gameOptions
-                    );
+                    gameOptionsChangeRuleParam({
+                      ruleName: ruleName as RuleName,
+                      paramName: paramName as ParamName,
+                      gameOptions: gameOptions,
+                      paramSettings: ruleSetting[paramName as ParamName],
+                      paramNewValue: (ruleSetting[paramName as ParamName] || {})
+                        .defaultValue,
+                    });
                   });
                 });
             }

@@ -113,6 +113,7 @@ export type Rule = Partial<CompleteRule> & {
   description: string;
 };
 export type ParameterRule = (ruleParams?: RuleParamValue) => Rule;
+
 export type RuleNamesWithParams = { [k in RuleName]?: RuleParamValue };
 export type RuleNamesWithParamSettings = { [k in RuleName]?: RuleSetting };
 

@@ -1,11 +1,13 @@
 import React from "react";
 import { SFC } from "primitives";
-import { ParamSettingType } from "game/rules/RuleSettingTypes";
+import { ParamSettingType, ParamName } from "game/rules";
 import { ParamIntegerOptions } from "./ParamIntegerOptions";
+import { ParamBooleanOptions } from "./ParamBooleanOptions";
 import { ParamProps } from "./ParamProps";
 
-const PARAM_OPTIONS: { [type in ParamSettingType]: SFC<ParamProps> } = {
+const PARAM_OPTIONS: { [type in ParamSettingType]: SFC<ParamProps> | undefined } = {
   [ParamSettingType.Integer]: ParamIntegerOptions,
+  [ParamSettingType.Boolean]: ParamBooleanOptions,
 };
 
 export const ParamOptions: SFC<ParamProps> = ({
@@ -16,13 +18,21 @@ export const ParamOptions: SFC<ParamProps> = ({
   setGameOptions,
   style,
 }) => {
+  if (paramSettings === undefined) return <></>;
   const ParamOption = PARAM_OPTIONS[paramSettings.paramType];
+  if (ParamOption === undefined) return <></>;
+
+  // unpack default
+  const paramDefaultValue =
+    ((gameOptions.ruleNamesWithParams || {})[ruleName] || {})[paramName as ParamName] ||
+    paramSettings.defaultValue;
 
   return (
     <ParamOption
       ruleName={ruleName}
       paramName={paramName}
       paramSettings={paramSettings}
+      paramDefault={paramDefaultValue}
       gameOptions={gameOptions}
       setGameOptions={setGameOptions}
       style={style}

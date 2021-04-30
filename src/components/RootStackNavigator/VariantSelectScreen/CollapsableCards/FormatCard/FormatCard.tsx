@@ -43,7 +43,6 @@ const FormatCard: SFC<Props> = ({
               variant={futureVariants[variant]}
               ruleNamesWithParams={ruleNamesWithParams}
               textCat={"BodyXS"}
-              noHover={true}
               onPress={(): void =>
                 selectedVariants.includes(variant)
                   ? setSelectedVariants(selectedVariants.filter((x) => x !== variant))

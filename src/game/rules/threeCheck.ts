@@ -2,10 +2,9 @@ import { Rule, ParameterRule, LossCondition, SubscribeToEvents } from "./Compact
 import { TokenName } from "game/types";
 import { Game } from "game";
 import { getDefaultParams } from "./utilities";
-import { RULE_SETTINGS } from "./threeCheckSettings";
 
 export const threeCheck: ParameterRule = (
-  ruleParams = getDefaultParams(RULE_SETTINGS)
+  ruleParams = getDefaultParams("threeCheckSettings")
 ): Rule => {
   return {
     title: "Three Check",
@@ -22,7 +21,7 @@ export const threeCheck: ParameterRule = (
         return { playerName, game, gameClones, interrupt, dead };
       const playerIndex = game.players.findIndex((player) => player.name === playerName);
 
-      if (checkCounters[playerIndex] >= ruleParams["Number of Checks"])
+      if (checkCounters[playerIndex] >= (ruleParams["Number of Checks"] || 1))
         return {
           playerName,
           game,

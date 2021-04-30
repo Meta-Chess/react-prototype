@@ -4,24 +4,20 @@ import { SFC, Colors, Text } from "primitives";
 import { TextInput } from "ui";
 import { gameOptionsChangeRuleParam } from "game/variantAndRuleProcessing";
 import { ParamProps } from "./ParamProps";
+import { ParamSettingInteger } from "game/rules/RuleSettingTypes";
 
 export const ParamIntegerOptions: SFC<ParamProps> = ({
   ruleName,
   paramName,
   paramSettings,
+  paramDefault,
   gameOptions,
   setGameOptions,
   style,
 }) => {
-  const storedParamsForRule = gameOptions.ruleNamesWithParams
-    ? gameOptions.ruleNamesWithParams[ruleName]
-    : undefined;
-  const paramDefaultValue = storedParamsForRule
-    ? storedParamsForRule[paramName as keyof typeof storedParamsForRule]
-    : paramSettings.defaultValue;
-  const [text, setText] = useState(
-    (paramDefaultValue || paramSettings.defaultValue).toString()
-  );
+  const paramDefaultInteger = paramDefault as number;
+  const paramSettingInteger = paramSettings as ParamSettingInteger;
+  const [text, setText] = useState(paramDefaultInteger.toString());
 
   return (
     <View
@@ -41,15 +37,15 @@ export const ParamIntegerOptions: SFC<ParamProps> = ({
         value={text}
         onChangeText={(value): void => {
           const intValue = parseInt(value);
-          if (paramSettings.possibleValues.includes(intValue)) {
+          if (paramSettingInteger.allowValue(intValue)) {
             setGameOptions(
-              gameOptionsChangeRuleParam(
-                ruleName,
-                paramName,
-                paramSettings,
-                parseInt(value),
-                gameOptions
-              )
+              gameOptionsChangeRuleParam({
+                ruleName: ruleName,
+                paramName: paramName,
+                gameOptions: gameOptions,
+                paramSettings: paramSettingInteger,
+                paramNewValue: intValue,
+              })
             );
           }
           setText(value);

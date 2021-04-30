@@ -6,10 +6,9 @@ import { Game } from "game/Game";
 import { isPresent } from "utilities";
 import { getDefaultParams } from "./utilities";
 import { CompactRules } from ".";
-import { RULE_SETTINGS } from "./chainReactionSettings";
 
 export const chainReaction: ParameterRule = (
-  ruleParams = getDefaultParams(RULE_SETTINGS)
+  ruleParams = getDefaultParams("chainReactionSettings")
 ): Rule => {
   return {
     title: "Chain Reaction",
@@ -23,7 +22,7 @@ export const chainReaction: ParameterRule = (
                 game,
                 gameClones,
                 game.interrupt,
-                ruleParams["Max Chain Length"]
+                ruleParams["Max Chain Length"] || 1
               )
             )
           : moves;

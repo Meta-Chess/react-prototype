@@ -1,14 +1,16 @@
 import { FutureVariant } from "game/variants";
-import { RuleNamesWithParams } from "game/rules";
+import { RuleNamesWithParams, ParamName, ParamValue } from "game/rules";
 
 export const getGameOptionParamsForVariant = (
   variant: FutureVariant,
   ruleNamesWithParams: RuleNamesWithParams
-): { [paramName: string]: number }[] => {
+): { [paramName in ParamName]?: ParamValue }[] => {
   return variant.ruleNames
     .flatMap((ruleName) =>
       Object.keys((ruleNamesWithParams || {})[ruleName] || {}).map((paramName) => ({
-        [paramName]: ((ruleNamesWithParams || {})[ruleName] || {})[paramName],
+        [paramName]: ((ruleNamesWithParams || {})[ruleName] || {})[
+          paramName as ParamName
+        ],
       }))
     )
     .filter((param) => param !== undefined);
