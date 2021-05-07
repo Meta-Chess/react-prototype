@@ -3,11 +3,13 @@ import { SFC } from "primitives";
 import { ParamSettingType, ParamName } from "game/rules";
 import { ParamIntegerOptions } from "./ParamIntegerOptions";
 import { ParamBooleanOptions } from "./ParamBooleanOptions";
+import { ParamPieceCyclesOptions } from "./ParamPieceCyclesOptions";
 import { ParamProps } from "./ParamProps";
 
 const PARAM_OPTIONS: { [type in ParamSettingType]: SFC<ParamProps> | undefined } = {
   [ParamSettingType.Integer]: ParamIntegerOptions,
   [ParamSettingType.Boolean]: ParamBooleanOptions,
+  [ParamSettingType.PieceCycles]: ParamPieceCyclesOptions,
 };
 
 export const ParamOptions: SFC<ParamProps> = ({
