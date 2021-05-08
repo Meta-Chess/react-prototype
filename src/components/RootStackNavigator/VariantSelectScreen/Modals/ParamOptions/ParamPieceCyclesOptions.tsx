@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { SFC, Colors, Text } from "primitives";
 import { LabeledCheckBox } from "ui";
 import { gameOptionsChangeRuleParam } from "game/variantAndRuleProcessing";
@@ -22,6 +22,13 @@ export const ParamPieceCyclesOptions: SFC<ParamProps> = ({
   const paramDefaultPieceCycles = paramDefault as PieceName[][];
 
   //const [checkbox, setCheckbox] = useState(paramDefaultPieceCycles);
+
+  type OptionsData = {
+    selectedPieces: PieceName[];
+    distinctCycles: number;
+    pieceCycles: PieceName[][];
+  };
+  //const optionsData =
 
   return (
     <View
@@ -49,13 +56,24 @@ export const ParamPieceCyclesOptions: SFC<ParamProps> = ({
           .filter((name) => name !== undefined)
           .map((name) => {
             return (
-              <PieceImage
+              <TouchableOpacity
                 key={name}
-                type={name}
-                color={Colors.MCHESS_BLUE.mix(Colors.GREY, 0.6).toString()} //color={Colors.MCHESS_BLUE.mix(Colors.GREY, 0.9).toString()}
-                outlineColor={Colors.MCHESS_BLUE.toString()} //color={Colors.MCHESS_BLUE.mix(Colors.GREY, 0.9).toString()}
-                size={40}
-              />
+                onPress={(): void => {
+                  return;
+                }}
+              >
+                {
+                  <PieceImage
+                    key={name}
+                    type={name}
+                    color={optionsData.selectedPieces(
+                      Colors.MCHESS_BLUE.mix(Colors.GREY, 0.6).toString()
+                    )} //color={Colors.MCHESS_BLUE.mix(Colors.GREY, 0.9).toString()}
+                    outlineColor={Colors.MCHESS_BLUE.toString()} //color={Colors.MCHESS_BLUE.mix(Colors.GREY, 0.9).toString()}
+                    size={40}
+                  />
+                }
+              </TouchableOpacity>
             );
           })}
       </View>
