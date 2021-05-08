@@ -1,6 +1,6 @@
 import { GameOptions } from "game";
 import { RuleName } from "game";
-import { ParamSetting, ParamName, ParamValue } from "game/rules/RuleSettingTypes";
+import { ParamSetting, ParamName, ParamValue } from "game/CompactRules/RuleSettingTypes";
 
 export interface ParamProps {
   ruleName: RuleName;

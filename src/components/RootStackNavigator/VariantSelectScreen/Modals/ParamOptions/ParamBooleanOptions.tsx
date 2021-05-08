@@ -4,7 +4,7 @@ import { SFC, Colors, Text } from "primitives";
 import { LabeledCheckBox } from "ui";
 import { gameOptionsChangeRuleParam } from "game/variantAndRuleProcessing";
 import { ParamProps } from "./ParamProps";
-import { ParamSettingBoolean } from "game/rules";
+import { ParamSettingBoolean } from "game/CompactRules";
 
 export const ParamBooleanOptions: SFC<ParamProps> = ({
   ruleName,

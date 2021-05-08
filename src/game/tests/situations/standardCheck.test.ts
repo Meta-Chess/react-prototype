@@ -1,7 +1,7 @@
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
 
-import { createPiece } from "game/rules/utilities";
+import { createPiece } from "game/CompactRules/utilities";
 import { PieceName, PlayerName } from "game/types";
 
 describe("In standard chess", () => {

@@ -9,7 +9,7 @@ import {
 } from "./partitionDisplayVariantsByComplexity";
 import styled from "styled-components/native";
 import { VariantModalInfo } from "./Modals";
-import { RuleNamesWithParams } from "game/rules";
+import { RuleNamesWithParams } from "game/CompactRules";
 import { doesGameOptionsModifyVariant } from "game/variantAndRuleProcessing";
 interface Props {
   displayVariants: FutureVariantName[];

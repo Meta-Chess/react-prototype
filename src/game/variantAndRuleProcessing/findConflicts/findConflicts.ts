@@ -1,6 +1,6 @@
 import { FutureVariantName } from "game/variants";
 import { FormatName } from "game";
-import { CompactRules } from "game/rules";
+import { CompactRules } from "game/CompactRules";
 import { VariantCatagories, VARIANT_CATAGORIES } from "./variantCatagories";
 import { Conflict } from "./Conflict";
 import { checkConflicts } from "./checkConflicts";

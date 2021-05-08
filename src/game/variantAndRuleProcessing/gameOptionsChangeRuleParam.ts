@@ -1,5 +1,5 @@
-import { RuleName, GameOptions } from "game";
-import { ParamSetting, ParamValue, ParamName } from "game/rules";
+import { GameOptions } from "game";
+import { ParamSetting, ParamValue, ParamName, RuleName } from "game/CompactRules";
 
 export const gameOptionsChangeRuleParam = ({
   ruleName,

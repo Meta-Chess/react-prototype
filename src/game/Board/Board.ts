@@ -14,12 +14,12 @@ import {
 } from "game/types";
 import { LocationPrefix, SpecialLocation } from "./location";
 import { isPresent } from "utilities";
-import { CompactRules } from "game/rules/CompactRules";
+import { CompactRules } from "game/CompactRules/CompactRules";
 import { IdGenerator } from "utilities/IdGenerator";
 import { Move, PieceDelta } from "game/Move";
 import { clone } from "lodash";
 import { EventCenter } from "game/EventCenter";
-import { invisibilityToken } from "game/rules/constants";
+import { invisibilityToken } from "game/CompactRules/constants";
 
 interface LocationMap {
   [location: string]: Square;

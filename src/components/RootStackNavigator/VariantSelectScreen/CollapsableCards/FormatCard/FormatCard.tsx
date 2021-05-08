@@ -7,7 +7,7 @@ import { SFC, Text, Colors } from "primitives";
 import { FutureVariantName } from "game";
 import { FormatName, formats } from "game/formats";
 import { FormatIcon } from "components/shared";
-import { RuleNamesWithParams } from "game/rules";
+import { RuleNamesWithParams } from "game/CompactRules";
 import { VariantLabel } from "components/shared/Labels";
 
 interface Props {

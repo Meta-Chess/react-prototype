@@ -6,7 +6,7 @@ import { GameOptions } from "game";
 import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
 import { RuleName } from "game";
-import { RuleNamesWithParamSettings, RuleSetting, ParamName } from "game/rules";
+import { RuleNamesWithParamSettings, RuleSetting, ParamName } from "game/CompactRules";
 import { ParamOptions } from "./ParamOptions";
 import { gameOptionsChangeRuleParam } from "game/variantAndRuleProcessing";
 

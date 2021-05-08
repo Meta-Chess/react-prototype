@@ -1,6 +1,6 @@
 import React from "react";
 import { SFC } from "primitives";
-import { ParamSettingType, ParamName } from "game/rules";
+import { ParamSettingType, ParamName } from "game/CompactRules";
 import { ParamIntegerOptions } from "./ParamIntegerOptions";
 import { ParamBooleanOptions } from "./ParamBooleanOptions";
 import { ParamProps } from "./ParamProps";

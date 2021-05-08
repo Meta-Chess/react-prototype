@@ -4,7 +4,7 @@ import { SFC, Colors, Text } from "primitives";
 import { TextInput } from "ui";
 import { gameOptionsChangeRuleParam } from "game/variantAndRuleProcessing";
 import { ParamProps } from "./ParamProps";
-import { ParamSettingInteger } from "game/rules/RuleSettingTypes";
+import { ParamSettingInteger } from "game/CompactRules/RuleSettingTypes";
 
 export const ParamIntegerOptions: SFC<ParamProps> = ({
   ruleName,

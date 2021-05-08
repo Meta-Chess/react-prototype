@@ -4,8 +4,8 @@ import { EventCenter } from "./EventCenter";
 import { Player } from "./Player";
 import { Move } from "./Move";
 import { allPossiblePlayerNames, PlayerName, TimestampMillis } from "./types";
-import { CompactRules } from "./rules";
-import { createPieceBank } from "./rules/utilities";
+import { CompactRules } from "./CompactRules";
+import { createPieceBank } from "./CompactRules/utilities";
 
 export class Game {
   constructor(

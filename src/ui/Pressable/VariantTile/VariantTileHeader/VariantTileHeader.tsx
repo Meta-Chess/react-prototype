@@ -8,7 +8,7 @@ import { GearButton } from "./GearButton";
 import { StarIcon } from "primitives/icons";
 import { TextIcon } from "ui";
 import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
-import { RuleNamesWithParamSettings } from "game/rules";
+import { RuleNamesWithParamSettings } from "game/CompactRules";
 
 interface Props {
   variant: FutureVariant;

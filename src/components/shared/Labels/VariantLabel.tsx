@@ -2,7 +2,7 @@ import React from "react";
 import { SFC, TextCat } from "primitives";
 import { LabelWithDetails } from "ui";
 import { FutureVariant } from "game/variants";
-import { RuleNamesWithParams } from "game/rules";
+import { RuleNamesWithParams } from "game/CompactRules";
 import {
   doesGameOptionsModifyVariant,
   getGameOptionParamsForVariant,

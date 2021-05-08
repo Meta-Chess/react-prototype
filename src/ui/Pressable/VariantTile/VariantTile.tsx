@@ -8,7 +8,7 @@ import { VariantTileInfo } from "./VariantTileInfo";
 import { VariantTileImage } from "./VariantTileImage";
 import { Styles } from "primitives/Styles";
 import { AbsoluteView } from "ui";
-import { allRuleSettings } from "game/rules";
+import { allRuleSettings } from "game/CompactRules";
 import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
 interface Props {
   variant: FutureVariant;

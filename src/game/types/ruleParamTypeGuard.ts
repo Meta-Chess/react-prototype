@@ -3,7 +3,7 @@ import {
   ParamSetting,
   ParamSettingInteger,
   ParamSettingBoolean,
-} from "game/rules";
+} from "game/CompactRules";
 
 export const ruleParamTypeGuard = {
   [ParamSettingType.Integer]: (paramSetting: ParamSetting): ParamSettingInteger => {

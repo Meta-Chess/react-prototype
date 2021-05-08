@@ -3,7 +3,7 @@ import { TouchableOpacity } from "react-native";
 import { SFC, Colors, useHover } from "primitives";
 import { SparkleGearIcon } from "primitives/icons";
 import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
-import { RuleNamesWithParamSettings } from "game/rules";
+import { RuleNamesWithParamSettings } from "game/CompactRules";
 
 interface Props {
   variantTitle: string;

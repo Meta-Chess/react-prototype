@@ -1,5 +1,5 @@
 import { FutureVariant } from "game/variants";
-import { RuleNamesWithParams, ParamName, ParamValue } from "game/rules";
+import { RuleNamesWithParams, ParamName, ParamValue } from "game/CompactRules";
 
 export const getGameOptionParamsForVariant = (
   variant: FutureVariant,
