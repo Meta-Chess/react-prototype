@@ -59,7 +59,10 @@ export const GameScreenContent: FC = () => {
   });
 
   return (
-    <StyledContainer style={{ flexDirection: portrait ? "column" : "row", padding }}>
+    <StyledContainer
+      portraitFriendly={true}
+      style={{ flexDirection: portrait ? "column" : "row", padding }}
+    >
       <Container portrait={portrait}>
         <View>
           <Board
