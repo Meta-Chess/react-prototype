@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { SFC, Colors, Text } from "primitives";
 import { TextInput } from "ui";
-import { gameOptionsChangeRuleParam } from "game/variantAndRuleProcessing";
+import { optionsChangeRuleParam } from "game/variantAndRuleProcessing";
 import { ParamProps } from "./ParamProps";
 import { ParamSettingInteger } from "game/CompactRules/RuleSettingTypes";
 
@@ -11,8 +11,8 @@ export const ParamIntegerOptions: SFC<ParamProps> = ({
   paramName,
   paramSettings,
   paramDefault,
-  gameOptions,
-  setGameOptions,
+  tempParamOptions,
+  setTempParamOptions,
   style,
 }) => {
   const paramDefaultInteger = paramDefault as number;
@@ -38,11 +38,11 @@ export const ParamIntegerOptions: SFC<ParamProps> = ({
         onChangeText={(value): void => {
           const intValue = parseInt(value);
           if (paramSettingInteger.allowValue(intValue)) {
-            setGameOptions(
-              gameOptionsChangeRuleParam({
+            setTempParamOptions(
+              optionsChangeRuleParam({
                 ruleName: ruleName,
                 paramName: paramName,
-                gameOptions: gameOptions,
+                tempParamOptions: tempParamOptions,
                 paramSettings: paramSettingInteger,
                 paramNewValue: intValue,
               })

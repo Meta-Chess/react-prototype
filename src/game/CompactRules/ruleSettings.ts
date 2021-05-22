@@ -36,6 +36,7 @@ export const allRuleSettings: {
       paramType: ParamSettingType.PieceCycles,
       defaultValue: [[PieceName.Knight, PieceName.Bishop]],
       allowValue: (value: PieceName[][]): boolean => {
+        value;
         return true;
       },
     },

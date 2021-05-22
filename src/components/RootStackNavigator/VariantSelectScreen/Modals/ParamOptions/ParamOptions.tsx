@@ -1,6 +1,6 @@
 import React from "react";
 import { SFC } from "primitives";
-import { ParamSettingType, ParamName } from "game/CompactRules";
+import { ParamSettingType } from "game/CompactRules";
 import { ParamIntegerOptions } from "./ParamIntegerOptions";
 import { ParamBooleanOptions } from "./ParamBooleanOptions";
 import { ParamPieceCyclesOptions } from "./ParamPieceCyclesOptions";
@@ -16,27 +16,23 @@ export const ParamOptions: SFC<ParamProps> = ({
   ruleName,
   paramName,
   paramSettings,
-  gameOptions,
-  setGameOptions,
+  paramDefault,
+  tempParamOptions,
+  setTempParamOptions,
   style,
 }) => {
   if (paramSettings === undefined) return <></>;
   const ParamOption = PARAM_OPTIONS[paramSettings.paramType];
   if (ParamOption === undefined) return <></>;
 
-  // unpack default
-  const paramDefaultValue =
-    ((gameOptions.ruleNamesWithParams || {})[ruleName] || {})[paramName as ParamName] ||
-    paramSettings.defaultValue;
-
   return (
     <ParamOption
       ruleName={ruleName}
       paramName={paramName}
       paramSettings={paramSettings}
-      paramDefault={paramDefaultValue}
-      gameOptions={gameOptions}
-      setGameOptions={setGameOptions}
+      paramDefault={paramDefault}
+      tempParamOptions={tempParamOptions}
+      setTempParamOptions={setTempParamOptions}
       style={style}
     />
   );

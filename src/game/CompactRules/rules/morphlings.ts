@@ -8,7 +8,9 @@ const createPieceMutator = (pieceCycles: PieceName[][]): PieceMutator => {
   return Object.assign(
     {},
     ...pieceCycles.flatMap((pieceCycle: PieceName[]) =>
-      pieceCycle.map((p, i, c) => ({ [p]: c[(i + 1) % pieceCycle.length] }))
+      pieceCycle.map((pieceName, index, cycle) => ({
+        [pieceName]: cycle[(index + 1) % pieceCycle.length],
+      }))
     )
   );
 };

@@ -6,9 +6,14 @@ import { GameOptions } from "game";
 import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
 import { RuleName } from "game";
-import { RuleNamesWithParamSettings, RuleSetting, ParamName } from "game/CompactRules";
+import {
+  RuleNamesWithParamSettings,
+  RuleSetting,
+  ParamName,
+  RuleNamesWithParams,
+} from "game/CompactRules";
 import { ParamOptions } from "./ParamOptions";
-import { gameOptionsChangeRuleParam } from "game/variantAndRuleProcessing";
+import { optionsChangeRuleParam } from "game/variantAndRuleProcessing";
 
 export interface VariantModalInfo {
   activated: boolean;
@@ -31,6 +36,10 @@ export const VariantModal: SFC<Props> = ({
   style,
 }) => {
   const ruleSettings = variantModalInfo.ruleSettings;
+  const [tempParamOptions, setTempParamOptions] = useState<RuleNamesWithParams>(
+    gameOptions.ruleNamesWithParams || {}
+  );
+
   // changes keys for parameter options, so that reset refreshes all the components
   const [renderKeys, reRenderKeys] = useState(false);
   return (
@@ -43,14 +52,20 @@ export const VariantModal: SFC<Props> = ({
               ruleSettings[ruleName as RuleName];
             if (ruleSetting === undefined) return;
             return Object.keys(ruleSetting).map((paramName) => {
+              // if value not in game options, go with settings default
+              const paramDefaultValue =
+                ((gameOptions.ruleNamesWithParams || {})[ruleName as RuleName] || {})[
+                  paramName as ParamName
+                ] || (ruleSetting[paramName as ParamName] || {}).defaultValue;
               return (
                 <ParamOptions
                   key={ruleName + paramName + renderKeys}
                   ruleName={ruleName as RuleName}
                   paramName={paramName as ParamName}
                   paramSettings={ruleSetting[paramName as ParamName]}
-                  gameOptions={gameOptions}
-                  setGameOptions={setGameOptions}
+                  paramDefault={paramDefaultValue}
+                  tempParamOptions={tempParamOptions}
+                  setTempParamOptions={setTempParamOptions}
                 />
               );
             });
@@ -68,13 +83,16 @@ export const VariantModal: SFC<Props> = ({
                     ruleSettings[ruleName as RuleName];
                   if (ruleSetting === undefined) return;
                   return Object.keys(ruleSetting).forEach((paramName) => {
-                    gameOptionsChangeRuleParam({
-                      ruleName: ruleName as RuleName,
-                      paramName: paramName as ParamName,
-                      gameOptions: gameOptions,
-                      paramSettings: ruleSetting[paramName as ParamName],
-                      paramNewValue: (ruleSetting[paramName as ParamName] || {})
-                        .defaultValue,
+                    setGameOptions({
+                      ...gameOptions,
+                      ruleNamesWithParams: optionsChangeRuleParam({
+                        ruleName: ruleName as RuleName,
+                        paramName: paramName as ParamName,
+                        tempParamOptions: gameOptions.ruleNamesWithParams || {},
+                        paramSettings: ruleSetting[paramName as ParamName],
+                        paramNewValue: (ruleSetting[paramName as ParamName] || {})
+                          .defaultValue,
+                      }),
                     });
                   });
                 });
@@ -86,6 +104,8 @@ export const VariantModal: SFC<Props> = ({
           label={"Done"}
           style={{ flex: 1, marginLeft: 8 }}
           onPress={(): void => {
+            // need to make sure that things are removed
+            setGameOptions({ ...gameOptions, ruleNamesWithParams: tempParamOptions });
             setVariantModalInfo({ activated: false });
           }}
         />

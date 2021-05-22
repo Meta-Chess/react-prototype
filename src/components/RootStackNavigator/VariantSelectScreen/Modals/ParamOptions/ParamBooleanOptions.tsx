@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { SFC, Colors, Text } from "primitives";
 import { LabeledCheckBox } from "ui";
-import { gameOptionsChangeRuleParam } from "game/variantAndRuleProcessing";
+import { optionsChangeRuleParam } from "game/variantAndRuleProcessing";
 import { ParamProps } from "./ParamProps";
 import { ParamSettingBoolean } from "game/CompactRules";
 
@@ -11,8 +11,8 @@ export const ParamBooleanOptions: SFC<ParamProps> = ({
   paramName,
   paramSettings,
   paramDefault,
-  gameOptions,
-  setGameOptions,
+  tempParamOptions,
+  setTempParamOptions,
   style,
 }) => {
   const paramSettingBoolean = paramSettings as ParamSettingBoolean;
@@ -38,11 +38,11 @@ export const ParamBooleanOptions: SFC<ParamProps> = ({
         value={checkbox}
         setValue={(value: boolean): void => {
           setCheckbox(value);
-          setGameOptions(
-            gameOptionsChangeRuleParam({
+          setTempParamOptions(
+            optionsChangeRuleParam({
               ruleName: ruleName,
               paramName: paramName,
-              gameOptions: gameOptions,
+              tempParamOptions: tempParamOptions,
               paramSettings: paramSettingBoolean,
               paramNewValue: value,
             })
