@@ -40,5 +40,6 @@ export type ParamSetting =
   | ParamSettingBoolean
   | ParamSettingPieceCycles;
 export type RuleSetting = { [paramName in ParamName]?: ParamSetting };
+export type RuleParamValues = { [paramName in ParamName]?: ParamValue };
 
 export type ParamValue = ParamSetting["defaultValue"];

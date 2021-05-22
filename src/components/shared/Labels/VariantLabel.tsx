@@ -3,11 +3,8 @@ import { SFC, TextCat } from "primitives";
 import { LabelWithDetails } from "ui";
 import { FutureVariant } from "game/variants";
 import { RuleNamesWithParams } from "game/CompactRules";
-import {
-  doGameOptionsModifyVariant,
-  getGameOptionParamsForVariant,
-} from "game/variantAndRuleProcessing";
 import Color from "color";
+import { getVariantLabelFromParams } from "./getVariantLabelFromParams";
 
 interface Props {
   variant: FutureVariant;
@@ -29,12 +26,13 @@ export const VariantLabel: SFC<Props> = ({
 }) => {
   let showModifiedGear = false;
   let details = variant.shortDescription;
-  if (doGameOptionsModifyVariant(variant, ruleNamesWithParams)) {
+  const moreDetails = getVariantLabelFromParams(variant, ruleNamesWithParams);
+
+  if (moreDetails !== "") {
     showModifiedGear = true;
-    getGameOptionParamsForVariant(variant, ruleNamesWithParams).forEach((param) => {
-      details = details + "\n- " + Object.keys(param)[0] + ": " + Object.values(param)[0];
-    });
+    details += moreDetails;
   }
+
   return (
     <LabelWithDetails
       label={variant.title}
