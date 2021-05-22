@@ -4,7 +4,7 @@ import { ParamSettingType } from "game/CompactRules";
 import { ParamIntegerOptions } from "./ParamIntegerOptions";
 import { ParamBooleanOptions } from "./ParamBooleanOptions";
 import { ParamPieceCyclesOptions } from "./ParamPieceCyclesOptions";
-import { ParamProps } from "./ParamProps";
+import { ParamProps } from "./shared/ParamProps";
 
 const PARAM_OPTIONS: { [type in ParamSettingType]: SFC<ParamProps> | undefined } = {
   [ParamSettingType.Integer]: ParamIntegerOptions,
@@ -33,7 +33,14 @@ export const ParamOptions: SFC<ParamProps> = ({
       paramDefault={paramDefault}
       tempParamOptions={tempParamOptions}
       setTempParamOptions={setTempParamOptions}
-      style={style}
+      style={[
+        style,
+        {
+          padding: 12,
+          flexDirection: "row",
+          alignItems: "center",
+        },
+      ]}
     />
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import { SFC, Colors } from "primitives";
 import { ButtonLight, ButtonSecondaryLight, Card, Footer } from "ui";

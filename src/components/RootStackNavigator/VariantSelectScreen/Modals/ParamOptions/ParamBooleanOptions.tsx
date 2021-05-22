@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { SFC, Colors, Text } from "primitives";
+import { SFC } from "primitives";
 import { LabeledCheckBox } from "ui";
 import { optionsChangeRuleParam } from "game/variantAndRuleProcessing";
-import { ParamProps } from "./ParamProps";
+import { ParamProps, ParamTitle } from "./shared";
 import { ParamSettingBoolean } from "game/CompactRules";
 
 export const ParamBooleanOptions: SFC<ParamProps> = ({
@@ -21,19 +21,8 @@ export const ParamBooleanOptions: SFC<ParamProps> = ({
   const [checkbox, setCheckbox] = useState(paramDefaultBoolean);
 
   return (
-    <View
-      style={[
-        style,
-        {
-          padding: 12,
-          flexDirection: "row",
-          alignItems: "center",
-        },
-      ]}
-    >
-      <Text cat={"BodyM"} color={Colors.TEXT.LIGHT_SECONDARY.toString()}>
-        {paramName}
-      </Text>
+    <View style={style}>
+      <ParamTitle paramName={paramName} />
       <LabeledCheckBox
         value={checkbox}
         setValue={(value: boolean): void => {

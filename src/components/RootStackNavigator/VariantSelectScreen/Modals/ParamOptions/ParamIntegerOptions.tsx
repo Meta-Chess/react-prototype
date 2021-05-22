@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { SFC, Colors, Text } from "primitives";
+import { SFC } from "primitives";
 import { TextInput } from "ui";
 import { optionsChangeRuleParam } from "game/variantAndRuleProcessing";
-import { ParamProps } from "./ParamProps";
+import { ParamProps, ParamTitle } from "./shared";
 import { ParamSettingInteger } from "game/CompactRules/RuleSettingTypes";
 
 export const ParamIntegerOptions: SFC<ParamProps> = ({
@@ -20,19 +20,8 @@ export const ParamIntegerOptions: SFC<ParamProps> = ({
   const [text, setText] = useState(paramDefaultInteger.toString());
 
   return (
-    <View
-      style={[
-        style,
-        {
-          padding: 12,
-          flexDirection: "row",
-          alignItems: "center",
-        },
-      ]}
-    >
-      <Text cat={"BodyM"} color={Colors.TEXT.LIGHT_SECONDARY.toString()}>
-        {paramName}
-      </Text>
+    <View style={style}>
+      <ParamTitle paramName={paramName} />
       <TextInput
         value={text}
         onChangeText={(value): void => {
