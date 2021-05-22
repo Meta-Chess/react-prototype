@@ -4,7 +4,7 @@ import { SFC, Colors, Text } from "primitives";
 import { ButtonSecondaryLight, ButtonTertiaryLight } from "ui";
 import { optionsChangeRuleParam } from "game/variantAndRuleProcessing";
 import { ParamProps } from "./ParamProps";
-import { ParamSettingPieceCycles } from "game/rules";
+import { ParamSettingPieceCycles } from "game/CompactRules";
 import { PieceName } from "game/types";
 import { PieceImage } from "primitives";
 import { pieceDisplayOrder } from "game/displayInfo";

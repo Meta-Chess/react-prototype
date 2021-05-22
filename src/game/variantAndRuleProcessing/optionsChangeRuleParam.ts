@@ -1,5 +1,11 @@
 import { RuleName } from "game";
-import { ParamSetting, ParamValue, ParamName, RuleNamesWithParams } from "game/rules";
+import {
+  ParamSetting,
+  ParamValue,
+  ParamName,
+  RuleNamesWithParams,
+} from "game/CompactRules";
+import { cloneDeep } from "lodash";
 
 export const optionsChangeRuleParam = ({
   ruleName,
@@ -14,54 +20,49 @@ export const optionsChangeRuleParam = ({
   paramSettings?: ParamSetting;
   paramNewValue?: ParamValue;
 }): RuleNamesWithParams => {
-  if (tempParamOptions === undefined) return tempParamOptions;
-
-  // if we have a non default value, we will build the dictionary if it does not exist
-  // if we have a default value and the param value exists, we want to delete any excess keys
-  // otherwise we just assign the value
-
-  // TODO: stringify is bad because keys can get jumbled...
   const newValueIsDefault = checkValueEqual(paramNewValue, paramSettings?.defaultValue);
+  const newOptions = omitParamValue({ ruleName, paramName, tempParamOptions });
 
-  if (!newValueIsDefault && tempParamOptions === undefined) {
-    tempParamOptions = {
-      [ruleName]: { [paramName]: paramNewValue },
-    };
-  } else if (!newValueIsDefault && (tempParamOptions || {})[ruleName] === undefined) {
-    (tempParamOptions || {})[ruleName] = { [paramName]: paramNewValue };
-  } else if (
-    !newValueIsDefault &&
-    ((tempParamOptions || {})[ruleName] || {})[paramName] === undefined
-  ) {
-    return spreadParamIntoOptions(ruleName, paramName, tempParamOptions, paramNewValue);
-    //((tempParamOptions || {}})[ruleName] || {})[paramName] = paramNewValue; // why on earth does this not work.
-  } else if (
-    newValueIsDefault &&
-    ((tempParamOptions || {})[ruleName] || {})[paramName] !== undefined
-  ) {
-    // if there are is only 1 param remove the entire rule
-    const removeRule = Object.keys((tempParamOptions || {})[ruleName] || {}).length === 1;
-    if (removeRule) {
-      delete (tempParamOptions || {})[ruleName];
-    } else {
-      delete ((tempParamOptions || {})[ruleName] || {})[paramName];
-    }
-  } else {
-    return spreadParamIntoOptions(ruleName, paramName, tempParamOptions, paramNewValue);
-  }
-  return tempParamOptions;
+  return newValueIsDefault
+    ? newOptions
+    : injectParamValue({
+        ruleName,
+        paramName,
+        tempParamOptions: newOptions,
+        paramNewValue,
+      });
 };
 
-const spreadParamIntoOptions = (
-  ruleName: RuleName,
-  paramName: ParamName,
-  tempParamOptions: RuleNamesWithParams,
-  paramNewValue?: ParamValue
-): RuleNamesWithParams => {
+const omitParamValue = ({
+  ruleName,
+  paramName,
+  tempParamOptions,
+}: {
+  ruleName: RuleName;
+  paramName: ParamName;
+  tempParamOptions: RuleNamesWithParams;
+}): RuleNamesWithParams => {
+  const newOptions = cloneDeep(tempParamOptions);
+  delete newOptions[ruleName]?.[paramName];
+  if (!newOptions[ruleName] || newOptions[ruleName] === {}) delete newOptions[ruleName];
+  return newOptions;
+};
+
+const injectParamValue = ({
+  ruleName,
+  paramName,
+  tempParamOptions,
+  paramNewValue,
+}: {
+  ruleName: RuleName;
+  paramName: ParamName;
+  tempParamOptions: RuleNamesWithParams;
+  paramNewValue?: ParamValue;
+}): RuleNamesWithParams => {
   return {
     ...tempParamOptions,
     [ruleName]: {
-      ...(tempParamOptions || {})[ruleName],
+      ...tempParamOptions[ruleName],
       [paramName]: paramNewValue,
     },
   };

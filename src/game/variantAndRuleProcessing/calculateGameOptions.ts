@@ -37,4 +37,5 @@ export const defaultGameOptions = {
   format: "variantComposition",
   baseVariants: [] as FutureVariantName[],
   time: 300000,
+  ruleNamesWithParams: {},
 } as const;

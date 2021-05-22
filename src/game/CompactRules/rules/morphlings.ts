@@ -1,7 +1,7 @@
 import { PieceName } from "game/types";
 import { Rule, ParameterRule, OnPieceDisplaced } from "../CompactRules";
 import { Gait } from "game/types/types";
-import { getDefaultParams } from "./utilities";
+import { getDefaultParams } from "../utilities";
 
 type PieceMutator = { [key in PieceName]?: PieceName };
 const createPieceMutator = (pieceCycles: PieceName[][]): PieceMutator => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { SFC, Colors } from "primitives";
 import { ButtonLight, ButtonSecondaryLight, Card, Footer } from "ui";
@@ -104,7 +104,6 @@ export const VariantModal: SFC<Props> = ({
           label={"Done"}
           style={{ flex: 1, marginLeft: 8 }}
           onPress={(): void => {
-            // need to make sure that things are removed
             setGameOptions({ ...gameOptions, ruleNamesWithParams: tempParamOptions });
             setVariantModalInfo({ activated: false });
           }}

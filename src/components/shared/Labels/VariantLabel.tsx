@@ -4,7 +4,7 @@ import { LabelWithDetails } from "ui";
 import { FutureVariant } from "game/variants";
 import { RuleNamesWithParams } from "game/CompactRules";
 import {
-  doesGameOptionsModifyVariant,
+  doGameOptionsModifyVariant,
   getGameOptionParamsForVariant,
 } from "game/variantAndRuleProcessing";
 import Color from "color";
@@ -29,7 +29,7 @@ export const VariantLabel: SFC<Props> = ({
 }) => {
   let showModifiedGear = false;
   let details = variant.shortDescription;
-  if (doesGameOptionsModifyVariant(variant, ruleNamesWithParams)) {
+  if (doGameOptionsModifyVariant(variant, ruleNamesWithParams)) {
     showModifiedGear = true;
     getGameOptionParamsForVariant(variant, ruleNamesWithParams).forEach((param) => {
       details = details + "\n- " + Object.keys(param)[0] + ": " + Object.values(param)[0];

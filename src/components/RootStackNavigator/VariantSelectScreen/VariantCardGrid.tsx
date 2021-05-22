@@ -10,7 +10,7 @@ import {
 import styled from "styled-components/native";
 import { VariantModalInfo } from "./Modals";
 import { RuleNamesWithParams } from "game/CompactRules";
-import { doesGameOptionsModifyVariant } from "game/variantAndRuleProcessing";
+import { doGameOptionsModifyVariant } from "game/variantAndRuleProcessing";
 interface Props {
   displayVariants: FutureVariantName[];
   selectedVariants: FutureVariantName[];
@@ -68,7 +68,7 @@ const VariantCardGrid: SFC<Props> = ({
                               : setSelectedVariants([...selectedVariants, variant])
                           }
                           setVariantModalInfo={setVariantModalInfo}
-                          modified={doesGameOptionsModifyVariant(
+                          modified={doGameOptionsModifyVariant(
                             futureVariants[variant],
                             ruleNamesWithParams
                           )}
