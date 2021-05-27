@@ -41,4 +41,14 @@ export const allRuleSettings: {
       },
     },
   },
+  royallyScrewedSettings: {
+    "Piece Cycles": {
+      paramType: ParamSettingType.PieceCycles,
+      defaultValue: [[PieceName.Queen, PieceName.King]],
+      allowValue: (value: PieceName[][]): boolean => {
+        value;
+        return true;
+      },
+    },
+  },
 };

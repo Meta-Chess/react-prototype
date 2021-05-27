@@ -6,3 +6,5 @@ export * from "./doesCapture";
 export * from "./rotate180";
 export * from "./createPieceBank";
 export * from "./getDefaultParams";
+export * from "./createPieceMutator";
+export * from "./mutatePiece";

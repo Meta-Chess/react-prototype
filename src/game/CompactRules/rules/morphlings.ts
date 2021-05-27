@@ -1,19 +1,5 @@
-import { PieceName } from "game/types";
 import { Rule, ParameterRule, OnPieceDisplaced } from "../CompactRules";
-import { Gait } from "game/types/types";
-import { getDefaultParams } from "../utilities";
-
-type PieceMutator = { [key in PieceName]?: PieceName };
-const createPieceMutator = (pieceCycles: PieceName[][]): PieceMutator => {
-  return Object.assign(
-    {},
-    ...pieceCycles.flatMap((pieceCycle: PieceName[]) =>
-      pieceCycle.map((pieceName, index, cycle) => ({
-        [pieceName]: cycle[(index + 1) % pieceCycle.length],
-      }))
-    )
-  );
-};
+import { getDefaultParams, createPieceMutator, mutatePiece } from "../utilities";
 
 export const morphlings: ParameterRule = (
   ruleParams = getDefaultParams("morphlingsSettings")
@@ -29,14 +15,7 @@ export const morphlings: ParameterRule = (
         const newPieceName = createPieceMutator(ruleParams["Piece Cycles"] || [])[
           piece.name
         ];
-        if (newPieceName !== undefined) {
-          piece.name = newPieceName;
-          piece.generateGaits =
-            board.interrupt.for.getGaitGenerator({
-              name: newPieceName,
-              owner: piece.owner,
-            }).gaitGenerator || ((): Gait[] => []);
-        }
+        mutatePiece(piece, newPieceName, board);
       }
       return { board, pieceDelta };
     },

@@ -72,3 +72,6 @@ export { morphlingsImage };
 
 import chainReactionImage from "./chainReactionImage.png";
 export { chainReactionImage };
+
+import royallyScrewedImage from "./royallyScrewedImage.png";
+export { royallyScrewedImage };
