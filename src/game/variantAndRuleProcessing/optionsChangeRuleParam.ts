@@ -44,7 +44,9 @@ const omitParamValue = ({
 }): RuleNamesWithParams => {
   const newOptions = cloneDeep(tempParamOptions);
   delete newOptions[ruleName]?.[paramName];
-  if (!newOptions[ruleName] || newOptions[ruleName] === {}) delete newOptions[ruleName];
+  if (!newOptions[ruleName] || Object.keys(newOptions[ruleName] || {}).length === 0) {
+    delete newOptions[ruleName];
+  }
   return newOptions;
 };
 
