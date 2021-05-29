@@ -8,7 +8,7 @@ import { getVariantLabelFromParams } from "./getVariantLabelFromParams";
 
 interface Props {
   variant: FutureVariant;
-  ruleNamesWithParams: RuleNamesWithParams;
+  ruleNamesWithParams?: RuleNamesWithParams;
   color?: Color | undefined;
   textCat?: TextCat | undefined;
   noHover?: boolean;
@@ -17,7 +17,7 @@ interface Props {
 
 export const VariantLabel: SFC<Props> = ({
   variant,
-  ruleNamesWithParams,
+  ruleNamesWithParams = undefined,
   color = undefined,
   textCat = undefined,
   noHover = false,

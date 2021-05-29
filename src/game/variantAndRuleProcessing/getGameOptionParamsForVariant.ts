@@ -4,7 +4,7 @@ import { RuleName } from "game";
 
 export const getGameOptionParamsForVariant = (
   variant: FutureVariant,
-  ruleNamesWithParams: RuleNamesWithParams
+  ruleNamesWithParams?: RuleNamesWithParams
 ): [RuleName, RuleParamValues][] => {
   return variant.ruleNames.map((ruleName) => [
     ruleName,

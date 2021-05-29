@@ -14,7 +14,7 @@ import { pieceCyclesLabel } from "./pieceCyclesLabel";
 
 export function getVariantLabelFromParams(
   variant: FutureVariant,
-  ruleNamesWithParams: RuleNamesWithParams
+  ruleNamesWithParams?: RuleNamesWithParams
 ): string {
   let details = "";
   if (doGameOptionsModifyVariant(variant, ruleNamesWithParams)) {

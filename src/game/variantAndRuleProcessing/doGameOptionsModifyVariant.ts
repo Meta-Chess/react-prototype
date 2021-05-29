@@ -3,9 +3,9 @@ import { RuleNamesWithParams } from "game/CompactRules";
 
 export const doGameOptionsModifyVariant = (
   variant: FutureVariant,
-  ruleNamesWithParams: RuleNamesWithParams
+  ruleNamesWithParams?: RuleNamesWithParams
 ): boolean => {
-  return (
+  return !!(
     ruleNamesWithParams &&
     variant.ruleNames.some(
       (ruleName) => Object.keys(ruleNamesWithParams[ruleName] || {}).length > 0

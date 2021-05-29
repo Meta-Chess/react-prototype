@@ -86,7 +86,7 @@ export const LobbyRow: SFC<Props> = ({ lobbyGame }) => {
             <VariantLabel
               key={variant.title}
               variant={variant}
-              ruleNamesWithParams={lobbyGame.gameOptions.ruleNamesWithParams || {}}
+              ruleNamesWithParams={lobbyGame.gameOptions.ruleNamesWithParams}
               style={{ marginRight: 4 }}
             />
           ))}
