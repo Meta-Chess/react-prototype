@@ -16,6 +16,8 @@ export const pawnDoubleStep: ParameterRule = (): Rule => {
     description:
       "For their first move, pawns can do two steps in their direction of travel!",
     postMove: ({ game, interrupt, board, move, currentTurn }): PostMove => {
+      if (!move) return { game, interrupt, board, move, currentTurn };
+
       const piecesMoved = move.pieceDeltas
         .map((delta) => board.pieces[delta.pieceId])
         .filter(isPresent);

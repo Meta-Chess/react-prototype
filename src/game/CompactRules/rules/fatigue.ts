@@ -15,6 +15,8 @@ export const fatigue: ParameterRule = (): Rule => {
     description:
       "Moving is hard work! If you moved one of your pieces last turn, it's too tired to move this turn (unless you can capture the king!)",
     postMove: ({ game, interrupt, board, move, currentTurn }): PostMove => {
+      if (!move) return { game, interrupt, board, move, currentTurn };
+
       const piecesMoved = move.pieceDeltas
         .map((delta) => board.pieces[delta.pieceId])
         .filter(isPresent);

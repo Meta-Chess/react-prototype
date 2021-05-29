@@ -11,8 +11,9 @@ export const royallyScrewed: ParameterRule = (
 
     postMove: ({ game, interrupt, board, move, currentTurn }): PostMove => {
       const piecesToChange = board.getPiecesByRule((piece: Piece) => {
+        const playerName = move?.playerName || game.getCurrentPlayerName();
         return (
-          piece.owner === move.playerName &&
+          piece.owner === playerName &&
           (ruleParams["Piece Cycles"] || []).flat().includes(piece.name)
         );
       });

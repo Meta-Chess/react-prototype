@@ -7,6 +7,8 @@ export const interception: ParameterRule = (): Rule => {
     description:
       "Enables interceptable moves where pieces can be captured by moving to a square that they moved through",
     postMove: ({ game, interrupt, board, move, currentTurn }): PostMove => {
+      if (!move) return { game, interrupt, board, move, currentTurn };
+
       if (move.data?.interceptable) {
         const start = move.data?.interceptableAtStart ? 0 : 1;
 

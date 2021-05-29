@@ -20,6 +20,8 @@ export const chemicallyExcitedKnight: ParameterRule = (): Rule => {
     }),
 
     postMove: ({ game, interrupt, board, move, currentTurn }): PostMove => {
+      if (!move) return { game, interrupt, board, move, currentTurn };
+
       const triggeredKnights: { knightId: string; positionOnSquare: number }[] = [];
       const deadPieces: { deadPieceId: string; positionOnSquare: number }[] = [];
       const visualsToAddToSquare: Location[] = [];
