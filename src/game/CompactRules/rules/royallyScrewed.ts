@@ -10,17 +10,16 @@ export const royallyScrewed: ParameterRule = (
     description: "After every move, friendly kings and queens swap places.",
 
     postMove: ({ game, interrupt, board, move, currentTurn }): PostMove => {
+      const pieceCycleParam = ruleParams["Piece Cycles"];
+      if (!pieceCycleParam) return { game, interrupt, board, move, currentTurn };
+
       const piecesToChange = board.getPiecesByRule((piece: Piece) => {
         const playerName = move?.playerName || game.getCurrentPlayerName();
-        return (
-          piece.owner === playerName &&
-          (ruleParams["Piece Cycles"] || []).flat().includes(piece.name)
-        );
+        return piece.owner === playerName && pieceCycleParam.flat().includes(piece.name);
       });
+
       piecesToChange.forEach((piece) => {
-        const newPieceName = createPieceMutator(ruleParams["Piece Cycles"] || [])[
-          piece.name
-        ];
+        const newPieceName = createPieceMutator(pieceCycleParam)[piece.name];
         mutatePiece(piece, newPieceName, board);
       });
       return { game, interrupt, board, move, currentTurn };
