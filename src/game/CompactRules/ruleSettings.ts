@@ -36,9 +36,23 @@ export const allRuleSettings: {
       paramType: ParamSettingType.PieceCycles,
       defaultValue: [[PieceName.Knight, PieceName.Bishop]],
       allowValue: (value: PieceName[][]): boolean => {
+        // TODO: proper restriction - i.e. no single or empty piece cycle
         value;
         return true;
       },
+      excludedPieces: [PieceName.Pawn],
+    },
+  },
+  royallyScrewedSettings: {
+    "Piece Cycles": {
+      paramType: ParamSettingType.PieceCycles,
+      defaultValue: [[PieceName.Queen, PieceName.King]],
+      allowValue: (value: PieceName[][]): boolean => {
+        // TODO: proper restriction - i.e. no single or empty piece cycle
+        value;
+        return true;
+      },
+      excludedPieces: [PieceName.Pawn],
     },
   },
 };

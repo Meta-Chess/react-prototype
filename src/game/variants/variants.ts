@@ -153,7 +153,8 @@ export type FutureVariantName =
   | "loseOnStalemate"
   | "gambit"
   | "centerfold"
-  | "fortifications";
+  | "fortifications"
+  | "royallyScrewed";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   atomic: {
@@ -165,6 +166,15 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     implemented: true,
     ruleNames: ["atomic"],
     complexity: 1,
+  },
+  royallyScrewed: {
+    title: "Royally Screwed",
+    shortDescription: "After every move, friendly kings and queens swap places.",
+    traits: ["Piece"],
+    imageName: "royallyScrewedImage",
+    implemented: true,
+    ruleNames: ["royallyScrewed"],
+    complexity: 2,
   },
   crazyhouse: {
     title: "Crazyhouse",

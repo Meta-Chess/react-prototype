@@ -31,7 +31,7 @@ const ChemicallyExcited: FC<AnimationComponentProps> = ({
   if (pieceVisualData === undefined) return null;
 
   const startingBodyColor = Colors.PLAYER[pieceVisualData.piece.owner].string();
-  const startingOutlineColor = Colors.DARKEST.string(); //todo: piece color scheme should be somewhere (either constant or as some visual type property in piece class)
+  const startingOutlineColor = Colors.DARKEST.string(); // TODO: piece color scheme should be somewhere (either constant or as some visual type property in piece class)
   const endingBodyColor = pieceVisualData.bodyColorChange || startingBodyColor;
   const endingOutlineColor = pieceVisualData.outlineColorChange || startingOutlineColor;
 

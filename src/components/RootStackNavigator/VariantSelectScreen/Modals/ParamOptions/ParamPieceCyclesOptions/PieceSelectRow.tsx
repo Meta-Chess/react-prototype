@@ -8,18 +8,24 @@ import { PieceButton } from "./PieceButton";
 interface Props {
   optionPieceCycles: PieceName[][];
   setOptionPieceCycles: (optionPieceCycles: PieceName[][]) => void;
+  excludePieces: PieceName[];
 }
 
 export const PieceSelectRow: SFC<Props> = ({
   optionPieceCycles,
   setOptionPieceCycles,
+  excludePieces,
   style,
 }) => {
+  const piecesToDisplay = pieceDisplayOrder.filter(
+    (pieceName) => !excludePieces.includes(pieceName)
+  );
+
   return (
     <View
       style={[style, { flex: 1, flexDirection: "row", justifyContent: "space-evenly" }]}
     >
-      {Object.values([...pieceDisplayOrder].reverse())
+      {Object.values([...piecesToDisplay].reverse())
         .filter((name) => name !== undefined)
         .map((name) => {
           const pieceUsed = optionPieceCycles

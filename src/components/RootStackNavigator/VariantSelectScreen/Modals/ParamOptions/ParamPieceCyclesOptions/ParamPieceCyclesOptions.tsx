@@ -19,6 +19,7 @@ export const ParamPieceCyclesOptions: SFC<ParamProps> = ({
 }) => {
   const paramSettingPieceCycles = paramSettings as ParamSettingPieceCycles;
   const paramDefaultPieceCycles = paramDefault as PieceName[][];
+  const excludePieces = paramSettingPieceCycles.excludedPieces;
 
   const [optionPieceCycles, setOptionPieceCycles] = useState<PieceName[][]>(
     paramDefaultPieceCycles
@@ -43,6 +44,7 @@ export const ParamPieceCyclesOptions: SFC<ParamProps> = ({
         <PieceSelectRow
           optionPieceCycles={optionPieceCycles}
           setOptionPieceCycles={setOptionPieceCycles}
+          excludePieces={excludePieces}
           style={{
             marginLeft: 8,
           }}

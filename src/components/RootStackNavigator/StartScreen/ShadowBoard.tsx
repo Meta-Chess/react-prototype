@@ -23,7 +23,7 @@ const ShadowBoard: FC = () => {
 
   const boardMeasurements = calculateBoardMeasurements({
     board: gameMaster.game.board,
-    boardAreaWidth: Math.min(dimensions.width - 5, 800), //todo: fix needing -5 so hex doesnt overflow the coverview
+    boardAreaWidth: Math.min(dimensions.width - 5, 800), // TODO: fix needing -5 so hex doesnt overflow the coverview
     boardAreaHeight: Math.min(dimensions.height - 5, 800),
     shape,
     backboard: false,

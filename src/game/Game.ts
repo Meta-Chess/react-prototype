@@ -81,8 +81,7 @@ export class Game {
   }
 
   doMove(move?: Move): void {
-    if (!move) return;
-    this.board.displacePieces(move);
+    if (move) this.board.displacePieces(move);
     this.interrupt.for.postMove({
       game: this,
       interrupt: this.interrupt,

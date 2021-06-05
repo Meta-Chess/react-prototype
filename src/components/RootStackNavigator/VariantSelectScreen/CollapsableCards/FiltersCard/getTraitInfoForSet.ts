@@ -2,7 +2,7 @@ import { futureVariants, FutureVariantName, TraitsInSetInfo } from "game";
 import { TraitName, allTraitNames } from "game/variants/traitInfo";
 import { keys } from "utilities/keys";
 
-//TODO: soon sets will be groups of variants, and be passed into this function
+// TODO: soon sets will be groups of variants, and be passed into this function
 export function getTraitInfoForSet(): TraitsInSetInfo[] {
   const counter: {
     [key in TraitName]: number;

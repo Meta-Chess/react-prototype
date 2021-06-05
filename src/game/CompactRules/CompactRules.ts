@@ -255,7 +255,7 @@ export interface PostMove {
   game: Game;
   interrupt: CompactRules;
   board: Board;
-  move: Move;
+  move?: Move;
   currentTurn: number;
 }
 

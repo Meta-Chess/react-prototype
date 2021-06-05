@@ -7,7 +7,7 @@ export function pieceCyclesLabel(params: RuleParamValues, paramName: ParamName):
   const pieceCycles = params[paramName] as PieceName[][];
 
   pieceCycles?.forEach((pieceCycle) => {
-    let cycleString = pieceDetails[pieceCycle[0]].name;
+    let cycleString = pieceDetails[pieceCycle[0]]?.name; // TODO: this shows as undefined, want a function to clean up empty piece cycles.
     pieceCycle
       .slice(1)
       .forEach((piece) => (cycleString += ", " + pieceDetails[piece].name));

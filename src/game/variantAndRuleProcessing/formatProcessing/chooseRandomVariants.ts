@@ -15,8 +15,8 @@ export function chooseRandomVariants(variants: FutureVariantName[]): FutureVaria
   return selection;
 }
 
-//TODO: the conflicts that are filtered should be listed nicely somewhere
-//TODO: e.g. currently Hex + Pull + Cylinder warning shows when max selection is only 2
+// TODO: the conflicts that are filtered should be listed nicely somewhere
+// TODO: e.g. currently Hex + Pull + Cylinder warning shows when max selection is only 2
 function reject(variants: FutureVariantName[]): boolean {
   return boardConflicts(processSelectedVariantCatagories(variants)).length > 0;
 }

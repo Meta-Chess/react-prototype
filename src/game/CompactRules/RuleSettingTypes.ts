@@ -22,6 +22,7 @@ export type ParamSettingPieceCycles = {
   defaultValue: PieceName[][];
   allowValue: (value: PieceName[][]) => boolean;
   //describeValue: (value: PieceName[][]) => string;
+  excludedPieces: PieceName[];
 };
 
 export interface AllRuleParamValue {
