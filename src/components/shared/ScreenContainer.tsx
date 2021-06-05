@@ -38,9 +38,9 @@ export const ScreenContainer: SFC<{ portraitFriendly?: boolean }> = ({
   }, [width, height, portraitFriendly]);
 
   return (
-    <ErrorBoundary>
-      <Container {...{ ...screenSizeVariables, height, style }}>{children}</Container>
-    </ErrorBoundary>
+    <Container {...{ ...screenSizeVariables, height, style }}>
+      <ErrorBoundary>{children}</ErrorBoundary>
+    </Container>
   );
 };
 
@@ -54,7 +54,7 @@ const Container: SFC<Props> = ({
 }) => {
   return (
     <ScrollView
-      horizontal={true}
+      horizontal
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
     >
@@ -66,7 +66,7 @@ const Container: SFC<Props> = ({
             paddingVertical,
             backgroundColor: Colors.DARKEST.toString(),
             flex: 1,
-            height,
+            height: height - 1, // TODO: why is this necessary to stop scroll bar from appearing on certain resolutions?
           },
           style,
         ]}
