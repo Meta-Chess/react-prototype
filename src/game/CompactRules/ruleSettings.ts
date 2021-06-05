@@ -1,6 +1,5 @@
 import { ParamName, ParamSetting, ParamSettingType } from "./RuleSettingTypes";
 import { PieceName } from "game/types";
-import { Piece } from "game/Board";
 
 //NOTE: It's important we have the form ruleName + "Settings" as the keys of this dictionary
 export const allRuleSettings: {
