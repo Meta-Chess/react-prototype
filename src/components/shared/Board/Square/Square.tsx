@@ -35,7 +35,7 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
     square
   );
   const { pieceIds: piecesUnderSquare } = gameMaster.interrupt.for.piecesUnderSquare({
-    //todo: handle piece animation with chess+ and shadows
+    // TODO: handle piece animation with chess+ and shadows
     square,
     board: gameMaster.game.board,
     pieceIds: [],

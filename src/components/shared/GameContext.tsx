@@ -111,7 +111,7 @@ async function setGameMasterToNewGame({
   setGameMaster(newGameMaster);
 }
 
-//TODO: default url context?
+// TODO: default url context?
 const DEV_LOBBY_URL =
   process.env.DEV_LOBBY_URL ||
   "https://6hgisa1jjk.execute-api.ap-southeast-2.amazonaws.com/dev/lobby";

@@ -17,7 +17,7 @@ export const formats: { [key in FormatName]: Format } = {
   },
   randomVariants: {
     title: "Random Variants",
-    description: "2 random variants have been selected for the entire game", // todo: replace random choices with a constant when it exists
+    description: "2 random variants have been selected for the entire game", // TODO: replace random choices with a constant when it exists
     shortExplanation:
       "A variant composition is chosen at random from the selected variants",
   },

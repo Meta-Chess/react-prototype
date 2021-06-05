@@ -20,7 +20,7 @@ interface Props {
 }
 
 const BACKGROUND_COLOR: { [key in AdviceLevel]: Color } = {
-  NEUTRAL: Colors.SUCCESS.fade(0.25), // todo: maybe handle types here better
+  NEUTRAL: Colors.SUCCESS.fade(0.25), // TODO: maybe handle types here better
   SUCCESS: Colors.SUCCESS.fade(0.25),
   ERROR: Colors.ERROR.fade(0.25),
   WARNING: Colors.WARNING.fade(0.25),

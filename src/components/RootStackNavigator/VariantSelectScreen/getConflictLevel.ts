@@ -1,7 +1,7 @@
 import { Conflict } from "game/variantAndRuleProcessing/findConflicts/Conflict";
 import { FormatName } from "game/formats";
 
-//todo: this should be moved and integrated into findConflicts
+// TODO: this should be moved and integrated into findConflicts
 export function getConflictLevel(
   format: FormatName,
   variantConflicts: Conflict[]

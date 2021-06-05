@@ -21,7 +21,7 @@ export const crazyhouse: ParameterRule = (): Rule => {
       destination = LocationPrefix.pieceBank + mover.toString();
 
       if (piece.owner !== mover && piece.name === PieceName.Pawn) {
-        //TODO: refactor piece types to be a tag system, this will handle toroidal pawns.
+        // TODO: refactor piece types to be a tag system, this will handle toroidal pawns.
         //this needs to be generalized for multiple players/piece types
         const gaits = piece.generateGaits();
         const rotatedGaits = (): Gait[] =>
@@ -36,7 +36,7 @@ export const crazyhouse: ParameterRule = (): Rule => {
       return { piece, mover, captured, destination };
     },
     //Pieces in friendly piece bank can move to any non-occupied square, pawns cannot move to promotion zone.
-    //TODO: generalize promotion zones
+    // TODO: generalize promotion zones
     generateSpecialPacifistMoves: ({
       game,
       piece,

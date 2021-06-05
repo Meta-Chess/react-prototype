@@ -548,7 +548,7 @@ export class GameMaster {
       this.result = PlayerName[remainingPlayers[0].name] + " won!";
       this.endGame();
     }
-    //TODO: once there are other win conditions check those with an interruption point
+    // TODO: once there are other win conditions check those with an interruption point
   }
 
   checkDrawConditions(): void {

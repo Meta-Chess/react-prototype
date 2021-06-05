@@ -2,6 +2,7 @@ import { Piece } from "game";
 import { Rule, ParameterRule, PostMove } from "../CompactRules";
 import { getDefaultParams, createPieceMutator, mutatePiece } from "../utilities";
 
+// TODO: this should be in the same place as promotion
 export const royallyScrewed: ParameterRule = (
   ruleParams = getDefaultParams("royallyScrewedSettings")
 ): Rule => {

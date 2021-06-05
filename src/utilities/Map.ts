@@ -46,7 +46,7 @@ export class Map<K extends string | number | symbol, V> {
     return Object.values(this.dictionary) as V[];
   }
 
-  //TODO: generalise this method to handle dictionaries of types with clone methods.
+  // TODO: generalise this method to handle dictionaries of types with clone methods.
   clone(): Map<K, V> {
     return new Map(clone(this.dictionary));
   }

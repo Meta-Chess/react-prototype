@@ -32,7 +32,7 @@ export const chemicallyExcitedKnight: ParameterRule = (): Rule => {
         .forEach((knight) => {
           const moves = new Pather(game, [], knight, interrupt, {
             checkDepth: 0,
-            //todo: refactor - we need gameClones here or a better patherParams structure.
+            // TODO: refactor - we need gameClones here or a better patherParams structure.
             //we might have intended behaviour by chance in this case, because chemKnight and noFork are related mechanics
             //but we should have a solution for if we wanted noForkSearch: true here.
             noForkSearch: false,

@@ -1,6 +1,7 @@
 import { Rule, ParameterRule, OnPieceDisplaced } from "../CompactRules";
 import { getDefaultParams, createPieceMutator, mutatePiece } from "../utilities";
 
+// TODO: this should be in the same place as promotion
 export const morphlings: ParameterRule = (
   ruleParams = getDefaultParams("morphlingsSettings")
 ): Rule => {

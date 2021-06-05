@@ -17,7 +17,7 @@ const Highlight: FC<Props> = ({ gameMaster, square, size, shape }) => {
   return (
     <>
       {gameMaster.squaresInfo
-        .get(square.location) //TODO: sort highlights?
+        .get(square.location) // TODO: sort highlights?
         .map((info, index) =>
           ![
             SquareInfo.PossibleMovePassiveEndPoint,
