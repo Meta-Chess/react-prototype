@@ -13,6 +13,7 @@ import { RuleName, rules as allRules } from "game/CompactRules";
 import { variantsToRules } from "game/variantAndRuleProcessing/variantsToRules";
 import { RuleParamValue, RuleSetting } from "./RuleSettingTypes";
 import { uniq } from "lodash";
+import { keys } from "utilities";
 
 // Note: These linting exceptions should only ever be used with great caution
 // Take care to check extra carefully for errors in this file because we have less type safety
@@ -37,19 +38,18 @@ export class CompactRules {
     ]);
     this.ruleParams = ruleParams;
 
-    const interruptionNames = Object.keys(identityRule) as InterruptionName[];
+    const interruptionNames = keys(identityRule);
 
     const interruptionPoints = interruptionNames.map((interruptionPointName) => ({
       name: interruptionPointName,
       functions: this.ruleNames
         .filter(
           (ruleName) =>
-            !!allRules[ruleName]((ruleParams || {})[ruleName])[interruptionPointName]
+            !!allRules[ruleName](ruleParams?.[ruleName])[interruptionPointName]
         )
         .sort(compareRulesPerInterruptionPoint(interruptionPointName))
         .map(
-          (ruleName) =>
-            allRules[ruleName]((ruleParams || {})[ruleName])[interruptionPointName]
+          (ruleName) => allRules[ruleName](ruleParams?.[ruleName])[interruptionPointName]
         )
         .filter(isPresent),
     }));

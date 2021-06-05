@@ -1,11 +1,12 @@
-import { RuleParamValue, ParamName } from "../RuleSettingTypes";
+import { RuleParamValue } from "../RuleSettingTypes";
 import { allRuleSettings } from "../ruleSettings";
+import { keys } from "utilities";
+
 export const getDefaultParams = (ruleSettingsName: string): RuleParamValue => {
   return Object.assign(
     {},
-    ...Object.keys(allRuleSettings[ruleSettingsName]).map((name) => ({
-      [name as ParamName]: (allRuleSettings[ruleSettingsName][name as ParamName] || {})
-        .defaultValue,
+    ...keys(allRuleSettings[ruleSettingsName]).map((name) => ({
+      [name]: allRuleSettings[ruleSettingsName][name]?.defaultValue,
     }))
   );
 };

@@ -11,6 +11,7 @@ import {
   getGameOptionParamsForVariant,
 } from "game/variantAndRuleProcessing";
 import { pieceCyclesLabel } from "./pieceCyclesLabel";
+import { keys } from "utilities";
 
 export function getVariantLabelFromParams(
   variant: FutureVariant,
@@ -21,7 +22,7 @@ export function getVariantLabelFromParams(
     getGameOptionParamsForVariant(variant, ruleNamesWithParams).forEach((tuple) => {
       const ruleName = tuple[0];
       const params = tuple[1];
-      Object.keys(params).forEach((paramName) => {
+      keys(params).forEach((paramName) => {
         const paramType =
           allRuleSettings[ruleName.toString() + "Settings"][
             paramName as keyof AllRuleParamValue
@@ -30,7 +31,7 @@ export function getVariantLabelFromParams(
         if (paramType === ParamSettingType.PieceCycles) {
           details += pieceCyclesLabel(params, paramName as ParamName);
         } else {
-          details += details + "\n- " + paramName + ": " + params[paramName as ParamName];
+          details += details + "\n- " + paramName + ": " + params[paramName];
         }
       });
     });

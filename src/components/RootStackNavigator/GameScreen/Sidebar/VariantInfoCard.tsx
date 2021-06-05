@@ -49,7 +49,7 @@ const VariantInfoCard: SFC = ({ style }) => {
           <VariantLabel
             key={variant.title}
             variant={variant}
-            ruleNamesWithParams={gameMaster.gameOptions.ruleNamesWithParams || {}}
+            ruleNamesWithParams={gameMaster.gameOptions.ruleNamesWithParams}
             color={VARIANT_LABEL_COLORS[gameMaster.formatVariantLabelColors[index]]}
             style={{ marginRight: 4, marginTop: 4 }}
           />

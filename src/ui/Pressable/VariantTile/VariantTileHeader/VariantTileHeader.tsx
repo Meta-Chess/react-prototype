@@ -9,6 +9,7 @@ import { StarIcon } from "primitives/icons";
 import { TextIcon } from "ui";
 import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
 import { RuleNamesWithParamSettings } from "game/CompactRules";
+import { keys } from "utilities";
 
 interface Props {
   variant: FutureVariant;
@@ -36,7 +37,7 @@ export const VariantTileHeader: SFC<Props> = ({
     ? Colors.DARKISH
     : BACKGROUND_COLOR[conflictLevel || "SUCCESS"].mix(Colors.DARKISH, 0.4);
 
-  const showGear = selected && Object.keys(ruleSettings).length > 0;
+  const showGear = selected && keys(ruleSettings).length > 0;
   return (
     <Container color={color}>
       <View style={{ width: 40, paddingLeft: "8px" }}>

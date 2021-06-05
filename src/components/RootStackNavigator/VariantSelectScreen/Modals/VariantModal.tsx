@@ -5,15 +5,14 @@ import { ButtonLight, ButtonSecondaryLight, Card, Footer } from "ui";
 import { GameOptions } from "game";
 import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
-import { RuleName } from "game";
 import {
   RuleNamesWithParamSettings,
   RuleSetting,
-  ParamName,
   RuleNamesWithParams,
 } from "game/CompactRules";
 import { ParamOptions } from "./ParamOptions";
 import { optionsChangeRuleParam } from "game/variantAndRuleProcessing";
+import { keys } from "utilities";
 
 export interface VariantModalInfo {
   activated: boolean;
@@ -47,22 +46,20 @@ export const VariantModal: SFC<Props> = ({
       <Footer style={{ padding: 0 }} />
       <View style={{ flex: 1 }}>
         {ruleSettings &&
-          Object.keys(ruleSettings).flatMap((ruleName) => {
-            const ruleSetting: RuleSetting | undefined =
-              ruleSettings[ruleName as RuleName];
+          keys(ruleSettings).flatMap((ruleName) => {
+            const ruleSetting: RuleSetting | undefined = ruleSettings[ruleName];
             if (ruleSetting === undefined) return;
-            return Object.keys(ruleSetting).map((paramName) => {
+            return keys(ruleSetting).map((paramName) => {
               // if value not in game options, go with settings default
               const paramDefaultValue =
-                ((gameOptions.ruleNamesWithParams || {})[ruleName as RuleName] || {})[
-                  paramName as ParamName
-                ] || (ruleSetting[paramName as ParamName] || {}).defaultValue;
+                gameOptions.ruleNamesWithParams?.[ruleName]?.[paramName] ||
+                ruleSetting[paramName]?.defaultValue;
               return (
                 <ParamOptions
                   key={ruleName + paramName + renderKeys}
-                  ruleName={ruleName as RuleName}
-                  paramName={paramName as ParamName}
-                  paramSettings={ruleSetting[paramName as ParamName]}
+                  ruleName={ruleName}
+                  paramName={paramName}
+                  paramSettings={ruleSetting[paramName]}
                   paramDefault={paramDefaultValue}
                   tempParamOptions={tempParamOptions}
                   setTempParamOptions={setTempParamOptions}
@@ -78,20 +75,18 @@ export const VariantModal: SFC<Props> = ({
           onPress={(): void => {
             {
               ruleSettings &&
-                Object.keys(ruleSettings).forEach((ruleName) => {
-                  const ruleSetting: RuleSetting | undefined =
-                    ruleSettings[ruleName as RuleName];
+                keys(ruleSettings).forEach((ruleName) => {
+                  const ruleSetting: RuleSetting | undefined = ruleSettings[ruleName];
                   if (ruleSetting === undefined) return;
-                  return Object.keys(ruleSetting).forEach((paramName) => {
+                  return keys(ruleSetting).forEach((paramName) => {
                     setGameOptions({
                       ...gameOptions,
                       ruleNamesWithParams: optionsChangeRuleParam({
-                        ruleName: ruleName as RuleName,
-                        paramName: paramName as ParamName,
-                        tempParamOptions: gameOptions.ruleNamesWithParams || {},
-                        paramSettings: ruleSetting[paramName as ParamName],
-                        paramNewValue: (ruleSetting[paramName as ParamName] || {})
-                          .defaultValue,
+                        ruleName: ruleName,
+                        paramName: paramName,
+                        tempParamOptions: gameOptions.ruleNamesWithParams,
+                        paramSettings: ruleSetting[paramName],
+                        paramNewValue: ruleSetting[paramName]?.defaultValue,
                       }),
                     });
                   });

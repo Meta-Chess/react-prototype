@@ -18,20 +18,23 @@ const FiltersCard: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => 
   return (
     <CollapsableCard title={"Filters"} style={style}>
       <Container>
-        {Object.values(traitsInSet).map((info) => (
-          <TraitFilter
-            key={info.name}
-            trait={info.name}
-            numberOfVariantsWithTrait={info.count}
-            selected={activeFilters.includes(info.name)}
-            onPress={(): void =>
-              activeFilters.includes(info.name)
-                ? setActiveFilters([])
-                : setActiveFilters([info.name])
-            }
-            style={{ flexDirection: "row", margin: 4 }}
-          />
-        ))}
+        {Object.values(traitsInSet).map(
+          (info) =>
+            info.count > 0 && (
+              <TraitFilter
+                key={info.name}
+                trait={info.name}
+                numberOfVariantsWithTrait={info.count}
+                selected={activeFilters.includes(info.name)}
+                onPress={(): void =>
+                  activeFilters.includes(info.name)
+                    ? setActiveFilters([])
+                    : setActiveFilters([info.name])
+                }
+                style={{ flexDirection: "row", margin: 4 }}
+              />
+            )
+        )}
       </Container>
       {activeFilters.length > 0 && (
         <Text

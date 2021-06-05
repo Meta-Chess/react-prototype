@@ -16,7 +16,7 @@ export const optionsChangeRuleParam = ({
 }: {
   ruleName: RuleName;
   paramName: ParamName;
-  tempParamOptions: RuleNamesWithParams;
+  tempParamOptions?: RuleNamesWithParams;
   paramSettings?: ParamSetting;
   paramNewValue?: ParamValue;
 }): RuleNamesWithParams => {
@@ -36,11 +36,11 @@ export const optionsChangeRuleParam = ({
 const omitParamValue = ({
   ruleName,
   paramName,
-  tempParamOptions,
+  tempParamOptions = {},
 }: {
   ruleName: RuleName;
   paramName: ParamName;
-  tempParamOptions: RuleNamesWithParams;
+  tempParamOptions?: RuleNamesWithParams;
 }): RuleNamesWithParams => {
   const newOptions = cloneDeep(tempParamOptions);
   delete newOptions[ruleName]?.[paramName];

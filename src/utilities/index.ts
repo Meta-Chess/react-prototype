@@ -17,3 +17,4 @@ export * from "./sleep";
 export * from "./titleUppercase";
 export * from "./toLocation";
 export * from "./wrapToCylinder";
+export * from "./keys";
