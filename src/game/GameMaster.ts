@@ -9,13 +9,13 @@ import {
 } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
-import { CompactRules, RuleName } from "./rules";
+import { CompactRules, RuleName } from "./CompactRules";
 import { FutureVariantName } from "./variants";
 import { uniqWith, uniq, cloneDeep } from "lodash";
 import { Move, movesAreEqual } from "game/Move";
 import { SquareInfo, SquaresInfo } from "game/SquaresInfo";
 import { FormatName } from "game/formats";
-import { doesCapture } from "./rules/utilities";
+import { doesCapture } from "./CompactRules/utilities";
 import { PlayerAction, Resignation, Draw } from "./PlayerAction";
 import { isPresent, sleep } from "utilities";
 
@@ -118,7 +118,8 @@ export class GameMaster {
     const interrupt = new CompactRules(
       baseVariants,
       [format],
-      checkEnabled ? ["check"] : []
+      checkEnabled ? ["check"] : [],
+      gameOptions.ruleNamesWithParams
     );
     const game = interrupt.for.afterGameCreation({
       game: Game.createGame(interrupt, time, numberOfPlayers),

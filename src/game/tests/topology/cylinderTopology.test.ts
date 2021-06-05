@@ -1,5 +1,5 @@
 import { Board } from "game/Board";
-import { CompactRules } from "game/rules";
+import { CompactRules } from "game/CompactRules";
 import { Direction } from "game/types";
 import { toLocation } from "utilities";
 import { EventCenter } from "game/EventCenter";

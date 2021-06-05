@@ -1,18 +1,23 @@
-import { View, useWindowDimensions, ScrollView } from "react-native";
+import { View, TouchableOpacity, useWindowDimensions, ScrollView } from "react-native";
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Colors, SFC, Text, TextCat, useHover } from "primitives";
 import styled from "styled-components/native";
 import { TriangleUp } from "./TriangleUp";
 import { Styles } from "primitives/Styles";
+import { TextIcon } from "ui";
 import { useModals } from "ui/Modals";
 import Color from "color";
+import { GearIcon } from "primitives/icons";
 
 interface Props {
   label: string;
   details?: string;
   color?: Color;
   textCat?: TextCat;
+  noHover?: boolean;
+  showModifiedGear?: boolean;
+  onPress?: (() => void) | undefined;
 }
 
 const MODAL_WIDTH = 240;
@@ -23,6 +28,9 @@ export const LabelWithDetails: SFC<Props> = ({
   details,
   color = Colors.MCHESS_BLUE,
   textCat = "BodyS",
+  noHover = false,
+  onPress = undefined,
+  showModifiedGear = false,
   style,
 }) => {
   const [hoverRef, hovered] = useHover();
@@ -131,18 +139,29 @@ export const LabelWithDetails: SFC<Props> = ({
 
   return (
     <>
-      <LabelContainer color={color} style={style} ref={hoverRef}>
-        <View ref={anchorRef}>
+      <LabelContainer
+        color={color}
+        style={style}
+        disabled={onPress === undefined}
+        onPress={onPress}
+        ref={noHover ? undefined : hoverRef}
+      >
+        <View style={{ flexDirection: "row" }} ref={noHover ? undefined : anchorRef}>
           <Text cat={textCat} selectable={false}>
             {label}
           </Text>
+          {showModifiedGear && (
+            <View style={{ marginLeft: 4, justifyContent: "center" }}>
+              <TextIcon Icon={GearIcon} />
+            </View>
+          )}
         </View>
       </LabelContainer>
     </>
   );
 };
 
-const LabelContainer = styled(View)<{ color: Color }>`
+const LabelContainer = styled(TouchableOpacity)<{ color: Color }>`
   border-radius: 4px;
   padding-horizontal: 8px;
   align-items: center;

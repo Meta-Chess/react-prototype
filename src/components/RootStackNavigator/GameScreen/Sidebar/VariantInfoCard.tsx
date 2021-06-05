@@ -6,8 +6,7 @@ import { LabelWithDetails, Row } from "ui";
 import { View } from "react-native";
 import { Text } from "primitives";
 import { WASD } from "./ActiveKeycaps";
-import { NoCheckLabel, ChessLabel } from "components/shared/Labels";
-import styled from "styled-components/native";
+import { VariantLabel, NoCheckLabel, ChessLabel } from "components/shared/Labels";
 import { VariantLabelInfo } from "game/types";
 import Color from "color";
 import { GameContext } from "components/shared";
@@ -35,22 +34,24 @@ const VariantInfoCard: SFC = ({ style }) => {
         <WASD style={{ marginLeft: 8, marginTop: 4 }} />
       </Row>
       <View style={{ flexWrap: "wrap", flexDirection: "row", marginTop: 8 }}>
-        <StyledLabel
+        <LabelWithDetails
           label={format.title}
           details={format.description}
           key={format.title}
           color={Colors.MCHESS_ORANGE}
+          style={{ marginRight: 4, marginTop: 4 }}
         />
         {!noCheck && variants.length === 0 && (
           <ChessLabel style={{ marginRight: 4, marginTop: 4 }} />
         )}
         {noCheck && <NoCheckLabel style={{ marginRight: 4, marginTop: 4 }} />}
         {variants.map((variant, index) => (
-          <StyledLabel
-            label={variant.title}
-            details={variant.shortDescription}
+          <VariantLabel
             key={variant.title}
+            variant={variant}
+            ruleNamesWithParams={gameMaster.gameOptions.ruleNamesWithParams}
             color={VARIANT_LABEL_COLORS[gameMaster.formatVariantLabelColors[index]]}
+            style={{ marginRight: 4, marginTop: 4 }}
           />
         ))}
       </View>
@@ -58,8 +59,3 @@ const VariantInfoCard: SFC = ({ style }) => {
   );
 };
 export { VariantInfoCard };
-
-const StyledLabel = styled(LabelWithDetails)`
-  margin-right: 4px;
-  margin-top: 4px;
-`;

@@ -1,18 +1,19 @@
 import React from "react";
 import { SFC, Colors, Text } from "primitives";
-import { View, Image } from "react-native";
+import { Image } from "react-native";
 import { FutureVariant } from "game";
 import * as VariantImages from "primitives/VariantImage";
-import styled from "styled-components/native";
+import { VariantTileImageFrame } from "./VariantTileImageFrame";
 
 interface VariantTileImageProps {
   variant: FutureVariant;
+  modified: boolean;
 }
 
-const VariantTileImage: SFC<VariantTileImageProps> = ({ style, variant }) => {
+const VariantTileImage: SFC<VariantTileImageProps> = ({ style, variant, modified }) => {
   if (variant.imageName === undefined) {
     return (
-      <Container style={style}>
+      <VariantTileImageFrame style={style} modified={modified}>
         <Text
           alignment="center"
           cat="BodyXS"
@@ -21,24 +22,17 @@ const VariantTileImage: SFC<VariantTileImageProps> = ({ style, variant }) => {
         >
           {"Image\ncoming soon"}
         </Text>
-      </Container>
+      </VariantTileImageFrame>
     );
   }
 
   const currentImage = VariantImages[variant.imageName];
 
   return (
-    <Container style={style}>
+    <VariantTileImageFrame style={style} modified={modified}>
       <Image source={currentImage} style={{ width: "80%", height: "80%" }} />
-    </Container>
+    </VariantTileImageFrame>
   );
 };
-
-const Container = styled(View)`
-  align-items: center;
-  justify-content: center;
-  background-color: ${Colors.DARKER.toString()};
-  border-radius: 4px;
-`;
 
 export { VariantTileImage };

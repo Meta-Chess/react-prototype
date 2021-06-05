@@ -4,6 +4,7 @@ import { Piece, VariantName, FutureVariantName } from "game";
 import { TraitName } from "game/variants/traitInfo";
 import { FormatName } from "game/formats";
 import { getValues } from "utilities";
+import { RuleNamesWithParams } from "game/CompactRules";
 
 export interface GaitData {
   interceptable?: boolean;
@@ -136,6 +137,7 @@ export interface GameOptions {
   deck?: FutureVariantName[];
   format: FormatName;
   formatData?: FormatData;
+  ruleNamesWithParams?: RuleNamesWithParams;
 }
 
 export interface FormatData {

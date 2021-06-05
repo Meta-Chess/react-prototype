@@ -1,10 +1,11 @@
 import { FutureVariantName, futureVariants } from "game";
 import { TraitName } from "game/variants/traitInfo";
+import { keys } from "utilities";
 
 export function getFilteredVariantsInDisplayOrder(
   activeFilters: TraitName[]
 ): FutureVariantName[] {
-  const variantNames = Object.keys(futureVariants) as FutureVariantName[];
+  const variantNames = keys(futureVariants);
   return variantNames
     .filter(
       (variant) =>

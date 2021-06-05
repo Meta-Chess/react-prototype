@@ -1,4 +1,5 @@
 import { Colors } from "primitives";
+import { keys } from "utilities/keys";
 
 export type TraitName = keyof typeof traitInfo;
 
@@ -32,3 +33,5 @@ export const traitInfo = {
     description: "A different board will be in play from the start of the game",
   },
 };
+
+export const allTraitNames = keys<TraitName>(traitInfo);

@@ -24,7 +24,9 @@
       "ui/*": ["./src/ui/*"],
       "ui": ["./src/ui"],
       "utilities/*": ["./src/utilities/*"],
-      "utilities": ["./src/utilities"]
+      "utilities": ["./src/utilities"],
+      "CompactRules": ["./src/game/CompactRules/*"],
+      "CompactRules/*": ["./src/game/CompactRules"]
     }
   }
 }

@@ -1,4 +1,4 @@
-import { RuleName } from "../rules";
+import { RuleName } from "../CompactRules";
 import * as VariantImages from "primitives/VariantImage";
 import { TraitName } from "game/variants/traitInfo";
 

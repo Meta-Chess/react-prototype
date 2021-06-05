@@ -3,8 +3,7 @@ import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors, useHover } from "primitives";
 import Color from "color";
-import { ButtonContent } from "ui/Buttons/ButtonContent";
-
+import { ButtonContent, ButtonSize } from "ui/Buttons/ButtonContent";
 interface Props {
   label: string | FC<{ color?: string }>;
   onPress: () => void;
@@ -14,6 +13,7 @@ interface Props {
   borderWidth?: number;
   disabled?: boolean;
   accessibilityLabel?: string; // TODO: make this compulsory
+  size?: ButtonSize;
 }
 
 export const BaseButton: SFC<Props> = ({
@@ -23,6 +23,7 @@ export const BaseButton: SFC<Props> = ({
   labelColor = Colors.TEXT.DARK,
   borderColor = disabled ? Colors.GREY : Colors.MCHESS_ORANGE,
   borderWidth = 1,
+  size = "Standard",
   ...rest
 }) => {
   const [ref, hovered] = useHover();
@@ -36,9 +37,10 @@ export const BaseButton: SFC<Props> = ({
       activeOpacity={0.5}
       disabled={disabled}
       accessibilityRole={"button"}
+      size={size}
       {...rest}
     >
-      <ButtonContent Label={label} color={labelColor.fade(fade)} />
+      <ButtonContent Label={label} color={labelColor.fade(fade)} size={size} />
     </TouchableContainer>
   );
 };
@@ -47,9 +49,10 @@ const TouchableContainer = styled(TouchableOpacity)<{
   backgroundColor: Color;
   borderColor: Color;
   borderWidth: number;
+  size: ButtonSize;
 }>`
   padding-horizontal: ${({ borderWidth }): number => 16 - borderWidth}px;
-  height: 36px;
+  height: ${({ size }): number => (size === "Standard" ? 36 : 28)}px;
   background-color: ${({ backgroundColor }): string => backgroundColor.toString()};
   border: ${({ borderWidth }): number => borderWidth}px solid
     ${({ borderColor }): string => borderColor.toString()};

@@ -1,3 +1,4 @@
+import { RuleName } from "game/CompactRules";
 import {
   futureVariants,
   integrateWithOtherRules,
@@ -5,7 +6,6 @@ import {
   FutureVariantName,
 } from "game/variants";
 import { uniq } from "lodash";
-import { RuleName } from "game";
 
 export function variantsToRules(variantNames: FutureVariantName[]): RuleName[] {
   return uniq(

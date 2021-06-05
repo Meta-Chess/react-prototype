@@ -1,5 +1,4 @@
-import { RuleName } from "game";
-import { NUMBER_OF_TURNS } from "game/rules/rollingVariants";
+import { RuleName, NUMBER_OF_TURNS } from "../CompactRules";
 
 interface Format {
   title: string;
