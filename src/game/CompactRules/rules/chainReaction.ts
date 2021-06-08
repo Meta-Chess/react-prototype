@@ -1,4 +1,4 @@
-import { CompactRules, Rule, ParameterRule, ProcessMoves } from "../CompactRules";
+import { CompactRules, ParameterRule, ProcessMoves } from "../CompactRules";
 import { CaptureData, Move } from "game/Move";
 import { uniq } from "lodash";
 import { Pather } from "game/Pather";
@@ -8,27 +8,25 @@ import { getDefaultParams } from "../utilities";
 
 export const chainReaction: ParameterRule = (
   ruleParams = getDefaultParams("chainReactionSettings")
-): Rule => {
-  return {
-    title: "Chain Reaction",
-    description: `When a piece is captured it captures every piece it was threatening. Max chain length ${ruleParams["Max Chain Length"]}.`,
-    processMoves: ({ moves, game, gameClones, params }): ProcessMoves => {
-      const processedMoves =
-        params.chainReactionSearch !== false
-          ? moves.map((m) =>
-              addChainOfCapturesToMove(
-                m,
-                game,
-                gameClones,
-                game.interrupt,
-                ruleParams["Max Chain Length"] || 1
-              )
+) => ({
+  title: "Chain Reaction",
+  description: `When a piece is captured it captures every piece it was threatening. Max chain length ${ruleParams["Max Chain Length"]}.`,
+  processMoves: ({ moves, game, gameClones, params }): ProcessMoves => {
+    const processedMoves =
+      params.chainReactionSearch !== false
+        ? moves.map((m) =>
+            addChainOfCapturesToMove(
+              m,
+              game,
+              gameClones,
+              game.interrupt,
+              ruleParams["Max Chain Length"] || 1
             )
-          : moves;
-      return { moves: processedMoves, game, gameClones, params };
-    },
-  };
-};
+          )
+        : moves;
+    return { moves: processedMoves, game, gameClones, params };
+  },
+});
 
 function addChainOfCapturesToMove(
   move: Move,
