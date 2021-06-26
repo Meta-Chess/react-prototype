@@ -40,15 +40,6 @@ export const VariantTileHeader: SFC<Props> = ({
   const showGear = selected && keys(ruleSettings).length > 0;
   return (
     <Container color={color}>
-      <View style={{ width: 40, paddingLeft: "8px" }}>
-        {showGear && (
-          <GearButton
-            variantTitle={variant.title}
-            setVariantModalInfo={setVariantModalInfo}
-            ruleSettings={ruleSettings}
-          />
-        )}
-      </View>
       <View style={{ flex: 1 }}>
         <TitleText
           cat="DisplayXS"
@@ -59,35 +50,15 @@ export const VariantTileHeader: SFC<Props> = ({
           {variant.title}
         </TitleText>
       </View>
-      <View
-        style={{
-          width: 40,
-          flexDirection: "row-reverse",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <TextIcon Icon={StarIcon} />
-        <Text
-          cat="BodyS"
-          weight="heavy"
-          alignment="center"
-          color={Colors.TEXT.LIGHT_SECONDARY.toString()}
-          selectable={false}
-        >
-          {variant.complexity}
-        </Text>
-      </View>
     </Container>
   );
 };
 
 const Container = styled(View)<{ color: Color }>`
-  height: 30px;
   flex-grow: 1;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ color }): string => color.toString()};
+  width: 100%;
 `;
 
 const TitleText = styled(Text)`

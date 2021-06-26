@@ -5,11 +5,18 @@ import { SFC, Text, Colors } from "primitives";
 interface Props {
   title?: string;
   subtitle?: string;
+  outline?: boolean;
 }
 
-export const Card: SFC<Props> = ({ title, subtitle, children, style }) => {
+export const Card: SFC<Props> = ({
+  title,
+  subtitle,
+  outline = true,
+  children,
+  style,
+}) => {
   return (
-    <Container style={style}>
+    <Container style={style} outline={outline}>
       {title && (
         <View style={{ paddingTop: 8, paddingHorizontal: 12, paddingBottom: 12 }}>
           <Text cat={"DisplayS"}>{title}</Text>
@@ -29,10 +36,10 @@ export const Card: SFC<Props> = ({ title, subtitle, children, style }) => {
   );
 };
 
-const Container = styled(View)`
+const Container = styled(View)<{ outline: boolean }>`
   width: 400px;
   background-color: ${Colors.DARKER.toString()};
   border-color: ${Colors.DARKISH.toString()};
-  border-width: 1px;
+  border-width: ${({ outline }): number => (outline ? 1 : 0)}px;
   border-radius: 4px;
 `;

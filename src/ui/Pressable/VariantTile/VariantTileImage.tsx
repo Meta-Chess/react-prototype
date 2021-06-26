@@ -30,7 +30,7 @@ const VariantTileImage: SFC<VariantTileImageProps> = ({ style, variant, modified
 
   return (
     <VariantTileImageFrame style={style} modified={modified}>
-      <Image source={currentImage} style={{ width: "80%", height: "80%" }} />
+      <Image source={currentImage} style={{ width: "90%", height: "90%" }} />
     </VariantTileImageFrame>
   );
 };

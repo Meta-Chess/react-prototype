@@ -1,7 +1,7 @@
 import React from "react";
 import { View, ScrollView } from "react-native";
 import { SFC, Colors, Text } from "primitives";
-import { VariantTile } from "ui/Pressable/VariantTile";
+import { VariantTile, VariantTileTest } from "ui/Pressable/VariantTile";
 import { AdviceLevel, FutureVariantName, futureVariants } from "game";
 import {
   complexityLevels,
@@ -11,7 +11,9 @@ import styled from "styled-components/native";
 import { VariantModalInfo } from "./Modals";
 import { RuleNamesWithParams } from "game/CompactRules";
 import { doGameOptionsModifyVariant } from "game/variantAndRuleProcessing";
+import { VariantScreenDimensions } from "./VariantScreenDimensions";
 interface Props {
+  measurements: VariantScreenDimensions;
   displayVariants: FutureVariantName[];
   selectedVariants: FutureVariantName[];
   setSelectedVariants: (x: FutureVariantName[]) => void;
@@ -22,6 +24,7 @@ interface Props {
 
 const VariantCardGrid: SFC<Props> = ({
   style,
+  measurements,
   displayVariants,
   selectedVariants,
   setSelectedVariants,
@@ -29,59 +32,49 @@ const VariantCardGrid: SFC<Props> = ({
   setVariantModalInfo,
   ruleNamesWithParams = {},
 }) => {
-  const partitionedDisplayVariants = partitionDisplayVariantsByComplexity(
-    displayVariants
-  );
   return (
-    <View style={style}>
+    <View style={[style]}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingVertical: 24 }}
+        style={{
+          padding: measurements.cardGridSpacing,
+        }}
+        contentContainerStyle={{
+          paddingVertical: 0,
+        }}
       >
-        {complexityLevels.map((catagory) => {
-          return (
-            <View key={catagory}>
-              {partitionedDisplayVariants[catagory].length > 0 && (
-                <>
-                  <Text
-                    cat={"DisplayM"}
-                    alignment={"left"}
-                    color={Colors.TEXT.LIGHT_SECONDARY.fade(0.4).toString()}
-                    style={{ marginLeft: 4 }}
-                  >
-                    {catagory}
-                  </Text>
-                  <CatagorySeparator />
-                  <CardContainer>
-                    {partitionedDisplayVariants[catagory].map((variant) => {
-                      return (
-                        <VariantTile
-                          key={variant}
-                          variant={futureVariants[variant]}
-                          selected={selectedVariants.includes(variant)}
-                          conflictLevel={conflictLevel}
-                          onPress={(): void =>
-                            selectedVariants.includes(variant)
-                              ? setSelectedVariants(
-                                  selectedVariants.filter((x) => x !== variant)
-                                )
-                              : setSelectedVariants([...selectedVariants, variant])
-                          }
-                          setVariantModalInfo={setVariantModalInfo}
-                          modified={doGameOptionsModifyVariant(
-                            futureVariants[variant],
-                            ruleNamesWithParams
-                          )}
-                          style={{ margin: 4 }}
-                        />
-                      );
-                    })}
-                  </CardContainer>
-                </>
-              )}
-            </View>
-          );
-        })}
+        <View
+          style={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+          }}
+        >
+          {displayVariants.map((variant) => {
+            return (
+              <VariantTileTest
+                key={variant}
+                variant={futureVariants[variant]}
+                selected={selectedVariants.includes(variant)}
+                conflictLevel={conflictLevel}
+                onPress={(): void =>
+                  selectedVariants.includes(variant)
+                    ? setSelectedVariants(selectedVariants.filter((x) => x !== variant))
+                    : setSelectedVariants([...selectedVariants, variant])
+                }
+                setVariantModalInfo={setVariantModalInfo}
+                modified={doGameOptionsModifyVariant(
+                  futureVariants[variant],
+                  ruleNamesWithParams
+                )}
+                style={{
+                  margin: measurements.cardGridSpacing,
+                  width: measurements.cardSize,
+                  height: measurements.cardSize,
+                }}
+              />
+            );
+          })}
+        </View>
       </ScrollView>
     </View>
   );

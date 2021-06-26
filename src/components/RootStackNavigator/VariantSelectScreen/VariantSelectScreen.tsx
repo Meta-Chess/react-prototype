@@ -1,5 +1,5 @@
 import React, { FC, useState, useCallback } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, useWindowDimensions } from "react-native";
 import {
   calculateGameOptions,
   AdviceLevel,
@@ -13,7 +13,7 @@ import { useNavigation, Screens, useGoBackOrToStartScreen, useRoute } from "navi
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
 import { FormatCard, FiltersCard, GameOptionsCard, AdviceCard } from "./CollapsableCards";
-import { Button, ButtonSecondary, Footer, AbsoluteView } from "ui";
+import { Button, ButtonSecondary, Footer, AbsoluteView, Card } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors } from "primitives";
 import { Styles } from "primitives/Styles";
@@ -24,6 +24,9 @@ import { rollableVariants } from "game/formats/rollableVariants";
 import { randomVariants } from "game/formats/randomVariants";
 import { getConflictLevel } from "./getConflictLevel";
 import { VariantModal, VariantModalInfo } from "./Modals/VariantModal";
+import { VariantScreenDimensions } from "./VariantScreenDimensions";
+
+import { VariantTileTest } from "ui/Pressable";
 
 const VariantSelectScreen: FC = () => {
   const playWithFriends = useRoute<Screens.VariantSelectScreen>().params?.playWithFriends;
@@ -69,6 +72,25 @@ const VariantSelectScreen: FC = () => {
     activated: false,
   });
 
+  const { height, width } = useWindowDimensions();
+  function getVariantScreenDimensions(
+    height: number,
+    width: number
+  ): VariantScreenDimensions {
+    const sidebarWidth = 400;
+
+    const cardsPerRow = 4;
+    const cardGridSpacing = 8;
+    const cardGridWidth = width - sidebarWidth;
+
+    return {
+      cardSize: (cardGridWidth - 2 * cardGridSpacing * (cardsPerRow + 1)) / cardsPerRow,
+      cardGridSpacing: cardGridSpacing,
+      sidebarWidth: sidebarWidth,
+    };
+  }
+  const screenMeasurements = getVariantScreenDimensions(height, width);
+
   return (
     <ScreenContainer
       style={{
@@ -77,7 +99,7 @@ const VariantSelectScreen: FC = () => {
         flexDirection: "row-reverse",
       }}
     >
-      <Sidebar>
+      <Sidebar width={screenMeasurements.sidebarWidth}>
         <ScrollView
           style={{
             flex: 1,
@@ -123,20 +145,17 @@ const VariantSelectScreen: FC = () => {
       </Sidebar>
       <LeftContainer style={{ flex: 1, flexDirection: "column-reverse" }}>
         <VariantCardGrid
-          style={{ flex: 1, paddingLeft: 24, paddingRight: 4 }}
+          style={{
+            width: "100%",
+            flex: 1,
+          }}
+          measurements={screenMeasurements}
           displayVariants={displayVariants}
           selectedVariants={selectedVariantsForFormat}
           setSelectedVariants={setSelectedVariantsForFormat}
           conflictLevel={conflictLevel}
           setVariantModalInfo={setVariantModalInfo}
           ruleNamesWithParams={gameOptions.ruleNamesWithParams}
-        />
-        <Topbar
-          displayVariants={displayVariants}
-          selectedVariants={selectedVariantsForFormat}
-          conflictLevel={conflictLevel}
-          gameOptions={gameOptions}
-          setGameOptions={setGameOptions}
         />
         {variantModalInfo.activated && (
           <AbsoluteView style={{ backgroundColor: Colors.BLACK.fade(0.4).toString() }}>
@@ -157,9 +176,9 @@ const LeftContainer = styled(View)`
   flex: 1;
 `;
 
-const Sidebar = styled(View)`
+const Sidebar = styled(View)<{ width: number }>`
   flex-direction: column;
-  width: 400px;
+  width: ${({ width }): number => width}px;
   background-color: ${Colors.DARKER.toString()};
   border-left-width: 1px;
   border-left-color: ${Colors.DARKISH.toString()};
