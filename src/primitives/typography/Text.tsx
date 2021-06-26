@@ -3,7 +3,8 @@ import { StyleProp, Text as NativeText, TextStyle, View } from "react-native";
 import { randomInt } from "utilities";
 import { Skeleton } from "../Skeleton";
 import { Colors } from "../Colors";
-import { RobotoMono_400Regular, useFonts } from "@expo-google-fonts/roboto-mono";
+import { RobotoMono_400Regular } from "@expo-google-fonts/roboto-mono";
+import { Rubik_300Light, useFonts } from "@expo-google-fonts/rubik";
 
 export const sizes = {
   BodyXXS: { size: 10, lineHeight: 12 },
@@ -36,6 +37,10 @@ interface Props {
 }
 
 const Text: FC<Props> = (props) => {
+  const [fontsLoaded] = useFonts({ Rubik_300Light });
+  if (!fontsLoaded) {
+    return <LoadingText height={0} />;
+  }
   const {
     alignment = "left",
     cat = "BodyM",
@@ -43,7 +48,7 @@ const Text: FC<Props> = (props) => {
     lineHeight = sizes[cat].lineHeight || size,
     children,
     color = Colors.TEXT.LIGHT.toString(),
-    fontFamily = "System",
+    fontFamily = "Rubik_300Light",
     weight = "normal",
     loading = false,
     monospaceNumbers = false,
@@ -56,7 +61,6 @@ const Text: FC<Props> = (props) => {
   if (loading) return <LoadingText height={lineHeight}>{children}</LoadingText>;
   if (monospaceNumbers && typeof children === "string" && children.length > 1)
     return <MonospaceNumbers {...props}>{children}</MonospaceNumbers>;
-
   return (
     <NativeText
       style={[
