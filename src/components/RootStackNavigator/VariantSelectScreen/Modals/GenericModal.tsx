@@ -18,7 +18,7 @@ export const GenericModal: SFC<ModalProps> = ({
   setGameOptions,
   style,
 }) => {
-  if (modalInfo.type === undefined) return <></>;
+  if (modalInfo?.type === undefined) return <></>;
   const ChosenModal = MODAL_OPTIONS[modalInfo.type];
 
   return (

@@ -23,7 +23,7 @@ interface Props {
   ruleNamesWithParams?: RuleNamesWithParams;
 }
 
-const FormatCard: SFC<Props> = ({
+const BoardCard: SFC<Props> = ({
   selectedFormat,
   selectedVariants,
   setSelectedVariants,
@@ -32,17 +32,17 @@ const FormatCard: SFC<Props> = ({
 }) => {
   return (
     <CollapsableCard
-      title={formats[selectedFormat].title}
+      title={formats[selectedFormat].title + "TEST"}
       titleComponent={<FormatIcon format={selectedFormat} />}
       endComponent={
         <ModalGearButton
           modalInfo={{
-            type: ModalType.formatModal,
+            type: ModalType.boardModal,
           }}
           setModalInfo={setModalInfo}
         />
       }
-      defaultState={true}
+      defaultState={false}
       collapsable={false}
     >
       <Text
@@ -84,4 +84,4 @@ const Container = styled(View)`
   flex-flow: row wrap;
 `;
 
-export { FormatCard };
+export { BoardCard };

@@ -16,6 +16,7 @@ interface Props {
   color?: Color;
   textCat?: TextCat;
   noHover?: boolean;
+  selected?: boolean;
   showModifiedGear?: boolean;
   onPress?: (() => void) | undefined;
 }
@@ -29,6 +30,7 @@ export const LabelWithDetails: SFC<Props> = ({
   color = Colors.MCHESS_BLUE,
   textCat = "BodyS",
   noHover = false,
+  selected = true,
   onPress = undefined,
   showModifiedGear = false,
   style,
@@ -141,6 +143,7 @@ export const LabelWithDetails: SFC<Props> = ({
     <>
       <LabelContainer
         color={color}
+        selected={selected}
         style={style}
         disabled={onPress === undefined}
         onPress={onPress}
@@ -161,13 +164,14 @@ export const LabelWithDetails: SFC<Props> = ({
   );
 };
 
-const LabelContainer = styled(TouchableOpacity)<{ color: Color }>`
+const LabelContainer = styled(TouchableOpacity)<{ color: Color; selected: boolean }>`
   border-radius: 4px;
   padding-horizontal: 8px;
   align-items: center;
   align-self: center;
   z-index: 9;
-  background-color: ${({ color }): string => color.fade(0.6).toString()};
+  background-color: ${({ color, selected }): string =>
+    selected ? color.fade(0.6).toString() : color.fade(0.8).toString()};
 `;
 
 const ModalContainer = styled(ScrollView)`

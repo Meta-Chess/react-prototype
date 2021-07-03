@@ -1,66 +1,66 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { View } from "react-native";
 import { SFC, Colors } from "primitives";
-import { ButtonLight, ButtonSecondaryLight, Card, Footer } from "ui";
-import { GameOptions } from "game";
-import { Styles } from "primitives/Styles";
-import styled from "styled-components/native";
-import { ShadowBoard } from "components/RootStackNavigator/StartScreen";
-import { GameProvider } from "components/shared";
-import { calculateGameOptions } from "game";
-import { ModalProps } from "../shared";
-
-interface Props {
-  gameOptions: GameOptions;
-  setGameOptions: (gameOptions: GameOptions) => void;
-}
+import { defaultGameOptions } from "game";
+import { ItemContainer } from "components/RootStackNavigator/VariantSelectScreen/Modals/shared";
+import { ModalProps, ModalTemplate } from "../shared";
+import { LabelWithDetails } from "ui/LabelWithDetails";
+import { FormatName, formats } from "game/formats";
+import { FormatIcon } from "components/shared";
+import { keys } from "utilities";
 
 export const FormatModal: SFC<ModalProps> = ({
-  modalInfo,
   setModalInfo,
   gameOptions,
   setGameOptions,
   style,
 }) => {
+  const formatNames = keys(formats);
+  const setFormat = useCallback(
+    (format: FormatName): void => setGameOptions({ ...gameOptions, format }),
+    [gameOptions, setGameOptions]
+  );
+
   return (
-    <ModalCard style={style} title={"BOARD TEST"}>
-      <Footer style={{ padding: 0 }} />
+    <ModalTemplate
+      title={"Format - " + formats[gameOptions.format].title}
+      titleComponent={<FormatIcon format={gameOptions.format} />}
+      reset={(): void => {
+        setGameOptions({ ...gameOptions, format: defaultGameOptions.format });
+      }}
+      done={(): void => {
+        setModalInfo({ type: undefined });
+      }}
+      priority={"primary"}
+      style={[style, { height: "100%" }]}
+    >
       <View style={{ flex: 1 }}>
-        <GameProvider
-          gameOptions={{
-            ...calculateGameOptions(gameOptions, ["hex"]),
-            time: undefined,
-            online: false,
-            flipBoard: false,
-            checkEnabled: false,
-          }}
-          key={gameOptions.format === "variantComposition" ? 1 : 0}
+        <ItemContainer
+          bottomFooter={true}
+          style={{ flexDirection: "row", flexWrap: "wrap" }}
         >
-          <ShadowBoard showShadow={false} />
-        </GameProvider>
+          {formatNames.map((formatName) => {
+            return (
+              <LabelWithDetails
+                label={formats[formatName].title}
+                details={formats[formatName].description}
+                key={formats[formatName].title}
+                color={Colors.MCHESS_ORANGE}
+                textCat={"BodyXS"}
+                selected={formats[formatName].title === formats[gameOptions.format].title}
+                onPress={(): void => setFormat(formatName)}
+                noHover={true}
+                style={{
+                  paddingHorizontal: 4,
+                  paddingVertical: 2,
+                  borderRadius: 4,
+                  margin: 4,
+                }}
+              />
+            );
+          })}
+        </ItemContainer>
       </View>
-      <Footer style={{ padding: 8 }}>
-        <ButtonSecondaryLight
-          label={"Reset"}
-          style={{ flex: 1 }}
-          onPress={(): void => {
-            return;
-          }}
-        />
-        <ButtonLight
-          label={"Done"}
-          style={{ flex: 1, marginLeft: 8 }}
-          onPress={(): void => {
-            return;
-          }}
-        />
-      </Footer>
-    </ModalCard>
+    </ModalTemplate>
   );
 };
-
-const ModalCard = styled(Card)`
-  ${Styles.BOX_SHADOW_STRONG}
-  background-color: ${Colors.DARKER.toString()};
-  height: 400px;
-`;

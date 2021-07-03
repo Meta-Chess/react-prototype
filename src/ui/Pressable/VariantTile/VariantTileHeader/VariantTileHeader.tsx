@@ -4,10 +4,13 @@ import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
 import { AdviceLevel, FutureVariant } from "game";
 import Color from "color";
-import { GearButton } from "./GearButton";
+import { ModalGearButton } from "ui/Pressable";
 import { StarIcon } from "primitives/icons";
 import { TextIcon } from "ui";
-import { ModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals/shared/ModalTypes";
+import {
+  ModalInfo,
+  ModalType,
+} from "components/RootStackNavigator/VariantSelectScreen/Modals/shared/ModalTypes";
 import { RuleNamesWithParamSettings } from "game/CompactRules";
 import { keys } from "utilities";
 
@@ -42,10 +45,13 @@ export const VariantTileHeader: SFC<Props> = ({
     <Container color={color}>
       <View style={{ width: 40, paddingLeft: "8px" }}>
         {showGear && (
-          <GearButton
-            variantTitle={variant.title}
+          <ModalGearButton
+            modalInfo={{
+              type: ModalType.variantModal,
+              variant: variant.title,
+              ruleSettings: ruleSettings,
+            }}
             setModalInfo={setModalInfo}
-            ruleSettings={ruleSettings}
           />
         )}
       </View>

@@ -5,6 +5,7 @@ import { ParamIntegerOptions } from "./ParamIntegerOptions";
 import { ParamBooleanOptions } from "./ParamBooleanOptions";
 import { ParamPieceCyclesOptions } from "./ParamPieceCyclesOptions";
 import { ParamProps } from "./shared/ParamProps";
+import { ItemContainer } from "components/RootStackNavigator/VariantSelectScreen/Modals/shared";
 
 const PARAM_OPTIONS: { [type in ParamSettingType]: SFC<ParamProps> | undefined } = {
   [ParamSettingType.Integer]: ParamIntegerOptions,
@@ -26,21 +27,22 @@ export const ParamOptions: SFC<ParamProps> = ({
   if (ParamOption === undefined) return <></>;
 
   return (
-    <ParamOption
-      ruleName={ruleName}
-      paramName={paramName}
-      paramSettings={paramSettings}
-      paramDefault={paramDefault}
-      tempParamOptions={tempParamOptions}
-      setTempParamOptions={setTempParamOptions}
-      style={[
-        style,
-        {
-          padding: 12,
-          flexDirection: "row",
-          alignItems: "center",
-        },
-      ]}
-    />
+    <ItemContainer>
+      <ParamOption
+        ruleName={ruleName}
+        paramName={paramName}
+        paramSettings={paramSettings}
+        paramDefault={paramDefault}
+        tempParamOptions={tempParamOptions}
+        setTempParamOptions={setTempParamOptions}
+        style={[
+          style,
+          {
+            flexDirection: "row",
+            alignItems: "center",
+          },
+        ]}
+      />
+    </ItemContainer>
   );
 };

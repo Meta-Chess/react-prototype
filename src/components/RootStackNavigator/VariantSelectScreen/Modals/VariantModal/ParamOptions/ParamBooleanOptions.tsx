@@ -3,7 +3,8 @@ import { View } from "react-native";
 import { SFC } from "primitives";
 import { LabeledCheckBox } from "ui";
 import { optionsChangeRuleParam } from "game/variantAndRuleProcessing";
-import { ParamProps, ParamTitle } from "./shared";
+import { ParamProps } from "./shared";
+import { ItemTitle } from "components/RootStackNavigator/VariantSelectScreen/Modals/shared";
 import { ParamSettingBoolean } from "game/CompactRules";
 
 export const ParamBooleanOptions: SFC<ParamProps> = ({
@@ -22,7 +23,7 @@ export const ParamBooleanOptions: SFC<ParamProps> = ({
 
   return (
     <View style={style}>
-      <ParamTitle paramName={paramName} />
+      <ItemTitle itemTitle={paramName} />
       <LabeledCheckBox
         value={checkbox}
         setValue={(value: boolean): void => {

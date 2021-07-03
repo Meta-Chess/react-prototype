@@ -3,7 +3,8 @@ import { View } from "react-native";
 import { SFC } from "primitives";
 import { TextInput } from "ui";
 import { optionsChangeRuleParam } from "game/variantAndRuleProcessing";
-import { ParamProps, ParamTitle } from "./shared";
+import { ParamProps } from "./shared";
+import { ItemTitle } from "components/RootStackNavigator/VariantSelectScreen/Modals/shared";
 import { ParamSettingInteger } from "game/CompactRules/RuleSettingTypes";
 
 export const ParamIntegerOptions: SFC<ParamProps> = ({
@@ -21,7 +22,7 @@ export const ParamIntegerOptions: SFC<ParamProps> = ({
 
   return (
     <View style={style}>
-      <ParamTitle paramName={paramName} />
+      <ItemTitle itemTitle={paramName} />
       <TextInput
         value={text}
         onChangeText={(value): void => {

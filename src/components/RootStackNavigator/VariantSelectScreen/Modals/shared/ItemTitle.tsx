@@ -3,13 +3,13 @@ import { Colors, Text } from "primitives";
 import { ParamName } from "game/CompactRules";
 
 interface Props {
-  paramName: ParamName;
+  itemTitle: ParamName | string;
 }
 
-export const ParamTitle: FC<Props> = ({ paramName }) => {
+export const ItemTitle: FC<Props> = ({ itemTitle }) => {
   return (
     <Text cat={"BodyM"} color={Colors.TEXT.LIGHT_SECONDARY.toString()}>
-      {paramName}
+      {itemTitle}
     </Text>
   );
 };

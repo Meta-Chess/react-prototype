@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { View } from "react-native";
 import { SFC } from "primitives";
 import { optionsChangeRuleParam } from "game/variantAndRuleProcessing";
-import { ParamProps, ParamTitle } from "../shared";
+import { ParamProps } from "../shared";
+import { ItemTitle } from "components/RootStackNavigator/VariantSelectScreen/Modals/shared";
 import { ParamSettingPieceCycles } from "game/CompactRules";
 import { PieceName } from "game/types";
 import { PieceSelectRow } from "./PieceSelectRow";
@@ -40,7 +41,7 @@ export const ParamPieceCyclesOptions: SFC<ParamProps> = ({
   return (
     <View>
       <View style={style}>
-        <ParamTitle paramName={paramName} />
+        <ItemTitle itemTitle={paramName} />
         <PieceSelectRow
           optionPieceCycles={optionPieceCycles}
           setOptionPieceCycles={setOptionPieceCycles}
@@ -58,7 +59,7 @@ export const ParamPieceCyclesOptions: SFC<ParamProps> = ({
             pieceCycle={pieceCycle}
             optionPieceCycles={optionPieceCycles}
             setOptionPieceCycles={setOptionPieceCycles}
-            style={{ paddingHorizontal: 12, paddingBottom: 12 }}
+            style={{ paddingTop: 12 }}
           />
         );
       })}

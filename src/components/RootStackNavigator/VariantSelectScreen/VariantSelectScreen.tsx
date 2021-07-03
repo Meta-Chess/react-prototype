@@ -12,7 +12,13 @@ import { TraitName } from "game/variants/traitInfo";
 import { useNavigation, Screens, useGoBackOrToStartScreen, useRoute } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
-import { FormatCard, FiltersCard, GameOptionsCard, AdviceCard } from "./CollapsableCards";
+import {
+  BoardCard,
+  FormatCard,
+  FiltersCard,
+  GameOptionsCard,
+  AdviceCard,
+} from "./CollapsableCards";
 import { Button, ButtonSecondary, Footer, AbsoluteView } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors } from "primitives";
@@ -91,10 +97,18 @@ const VariantSelectScreen: FC = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 12 }}
         >
+          <BoardCard
+            selectedFormat={gameOptions.format}
+            selectedVariants={selectedVariantsForFormat}
+            setSelectedVariants={setSelectedVariantsForFormat}
+            setModalInfo={setModalInfo}
+            ruleNamesWithParams={gameOptions.ruleNamesWithParams}
+          />
           <FormatCard
             selectedFormat={gameOptions.format}
             selectedVariants={selectedVariantsForFormat}
             setSelectedVariants={setSelectedVariantsForFormat}
+            setModalInfo={setModalInfo}
             ruleNamesWithParams={gameOptions.ruleNamesWithParams}
           />
           <AdviceCard

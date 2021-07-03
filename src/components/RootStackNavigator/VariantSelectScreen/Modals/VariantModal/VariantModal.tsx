@@ -14,13 +14,15 @@ export const VariantModal: SFC<ModalProps> = ({
   setGameOptions,
   style,
 }) => {
-  const ruleSettings = modalInfo.ruleSettings;
   const [tempParamOptions, setTempParamOptions] = useState<RuleNamesWithParams>(
     gameOptions.ruleNamesWithParams || {}
   );
 
   // changes keys for parameter options, so that reset refreshes all the components
   const [renderKeys, reRenderKeys] = useState(false);
+
+  if (modalInfo === undefined) return <></>;
+  const ruleSettings = modalInfo.ruleSettings;
 
   const reset = (): void => {
     {
@@ -55,6 +57,7 @@ export const VariantModal: SFC<ModalProps> = ({
       title={modalInfo.variant || ""}
       reset={reset}
       done={done}
+      priority={"secondary"}
       style={style}
     >
       <View style={{ flex: 1 }}>

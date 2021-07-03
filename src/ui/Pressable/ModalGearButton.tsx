@@ -2,34 +2,20 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { SFC, Colors, useHover } from "primitives";
 import { SparkleGearIcon } from "primitives/icons";
-import {
-  ModalInfo,
-  ModalType,
-} from "components/RootStackNavigator/VariantSelectScreen/Modals/shared/ModalTypes";
-import { RuleNamesWithParamSettings } from "game/CompactRules";
+import { ModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals/shared/ModalTypes";
 
 interface Props {
-  variantTitle: string;
+  modalInfo: ModalInfo;
   setModalInfo: (x: ModalInfo) => void;
-  ruleSettings?: RuleNamesWithParamSettings;
 }
-export const GearButton: SFC<Props> = ({
-  variantTitle,
-  setModalInfo,
-  ruleSettings = {},
-  style,
-}) => {
+export const ModalGearButton: SFC<Props> = ({ modalInfo, setModalInfo, style }) => {
   const [ref, hovered] = useHover();
   return (
     <TouchableOpacity
       style={style}
       ref={ref}
       onPress={(): void => {
-        setModalInfo({
-          type: ModalType.variantModal,
-          variant: variantTitle,
-          ruleSettings: ruleSettings,
-        });
+        setModalInfo(modalInfo);
       }}
     >
       <SparkleGearIcon

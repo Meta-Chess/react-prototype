@@ -8,28 +8,47 @@ import { PlusIcon, MinusIcon } from "primitives/icons";
 interface CollapsableCardProps {
   title: string;
   titleComponent?: ReactNode;
+  endComponent?: ReactNode;
+  defaultState?: boolean;
+  collapsable?: boolean;
 }
 
 const CollapsableCard: SFC<CollapsableCardProps> = ({
   title,
   titleComponent,
+  endComponent,
+  defaultState = true,
+  collapsable = true,
   children,
   style,
 }) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(defaultState);
   const plusMinusColor = Colors.DARKISH.toString();
   return (
     <Container style={style}>
-      <Header onPress={(): void => setOpen(!open)} includeSeperator={!open}>
+      <Header
+        onPress={(): void => {
+          if (collapsable) {
+            setOpen(!open);
+          }
+        }}
+        includeSeperator={!open}
+        disabled={!collapsable}
+      >
         <LeftHeaderContainer>
           <Text cat="DisplayXS">{title}</Text>
           {titleComponent && <View style={{ marginLeft: 6 }}>{titleComponent}</View>}
         </LeftHeaderContainer>
         <View style={{ marginRight: 6 }}>
-          {open ? (
-            <MinusIcon color={plusMinusColor} />
-          ) : (
-            <PlusIcon color={plusMinusColor} />
+          {endComponent && <View>{endComponent}</View>}
+          {collapsable && (
+            <>
+              {open ? (
+                <MinusIcon color={plusMinusColor} />
+              ) : (
+                <PlusIcon color={plusMinusColor} />
+              )}
+            </>
           )}
         </View>
       </Header>

@@ -1,19 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
-import { SFC, Colors } from "primitives";
-import { ButtonLight, ButtonSecondaryLight, Card, Footer } from "ui";
+import { SFC } from "primitives";
 import { GameOptions } from "game";
-import { Styles } from "primitives/Styles";
-import styled from "styled-components/native";
-import { ShadowBoard } from "components/RootStackNavigator/StartScreen";
-import { GameProvider } from "components/shared";
-import { calculateGameOptions } from "game";
-import { ModalProps } from "../shared";
-
-interface Props {
-  gameOptions: GameOptions;
-  setGameOptions: (gameOptions: GameOptions) => void;
-}
+import {
+  ItemTitle,
+  ItemContainer,
+} from "components/RootStackNavigator/VariantSelectScreen/Modals/shared";
+import { ModalProps, ModalTemplate } from "../shared";
+import { BoardOptions } from "./BoardOptions";
 
 export const BoardModal: SFC<ModalProps> = ({
   modalInfo,
@@ -22,32 +16,27 @@ export const BoardModal: SFC<ModalProps> = ({
   setGameOptions,
   style,
 }) => {
+  const [time, setTime] = useState<number | undefined>(2);
   return (
-    <ModalCard style={style} title={"Board Selection"}>
-      <Footer style={{ padding: 0 }} />
-      <View style={{ flex: 1 }}></View>
-      <Footer style={{ padding: 8 }}>
-        <ButtonSecondaryLight
-          label={"Reset"}
-          style={{ flex: 1 }}
-          onPress={(): void => {
-            return;
-          }}
-        />
-        <ButtonLight
-          label={"Done"}
-          style={{ flex: 1, marginLeft: 8 }}
-          onPress={(): void => {
-            return;
-          }}
-        />
-      </Footer>
-    </ModalCard>
+    <ModalTemplate
+      title={"Board - "}
+      reset={(): void => {
+        return;
+      }}
+      done={(): void => {
+        return;
+      }}
+      priority={"primary"}
+      style={style}
+    >
+      <View style={{ flex: 1 }}>
+        <ItemContainer style={{ flexDirection: "column" }}>
+          <ItemTitle itemTitle={"Board"} />
+          <ItemTitle itemTitle={"Player"} />
+        </ItemContainer>
+      </View>
+    </ModalTemplate>
   );
 };
 
-const ModalCard = styled(Card)`
-  ${Styles.BOX_SHADOW_STRONG}
-  background-color: ${Colors.DARKER.toString()};
-  height: 400px;
-`;
+const boardTypes = ["standard", "hex", "long"];
