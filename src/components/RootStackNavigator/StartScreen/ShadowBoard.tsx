@@ -6,8 +6,13 @@ import styled from "styled-components/native";
 import { TokenName } from "game";
 import { GameContext } from "components/shared";
 
-const ShadowBoard: FC = () => {
+interface Props {
+  showShadow?: boolean;
+}
+
+const ShadowBoard: FC<Props> = ({ showShadow = true }) => {
   const { gameMaster } = useContext(GameContext);
+
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const handleDimensions = useCallback(
     (event) => {
@@ -29,10 +34,12 @@ const ShadowBoard: FC = () => {
     backboard: false,
   });
 
+  //console.log(gameMaster.game.board);
+
   return (
     <Container onLayout={handleDimensions}>
       <Board measurements={boardMeasurements} backboard={false} />
-      <ShadowLayer />
+      <ShadowLayer showShadow={showShadow} />
     </Container>
   );
 };
@@ -42,8 +49,9 @@ const Container = styled(AbsoluteView)`
   justify-content: center;
 `;
 
-const ShadowLayer = styled(AbsoluteView)`
-  background-color: ${Colors.DARKEST.fade(0.1).toString()};
+const ShadowLayer = styled(AbsoluteView)<{ showShadow: boolean }>`
+  background-color: ${({ showShadow }): string =>
+    showShadow ? Colors.DARKEST.fade(0.1).toString() : "transparent"};
 `;
 
 export { ShadowBoard };

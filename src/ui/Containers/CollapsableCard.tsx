@@ -46,7 +46,7 @@ const Container = styled(View)`
 const Header = styled(TouchableOpacity)<{ includeSeperator: boolean }>`
   flex-direction: row;
   align-items: center;
-  height: ${({ includeSeperator }): number => (includeSeperator ? 38 : 36)}px;
+  height: ${({ includeSeperator }): number => (includeSeperator ? 42 : 40)}px;
   background-color: ${Colors.DARK.toString()};
   border-bottom-width: ${({ includeSeperator }): number => (includeSeperator ? 2 : 0)};
   border-bottom-color: ${Colors.DARKER.toString()};

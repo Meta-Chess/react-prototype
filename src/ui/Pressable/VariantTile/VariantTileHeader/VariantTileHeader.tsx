@@ -7,7 +7,7 @@ import Color from "color";
 import { GearButton } from "./GearButton";
 import { StarIcon } from "primitives/icons";
 import { TextIcon } from "ui";
-import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
+import { ModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals/shared/ModalTypes";
 import { RuleNamesWithParamSettings } from "game/CompactRules";
 import { keys } from "utilities";
 
@@ -16,7 +16,7 @@ interface Props {
   selected: boolean;
   conflictLevel: AdviceLevel | undefined;
   ruleSettings?: RuleNamesWithParamSettings;
-  setVariantModalInfo: (x: VariantModalInfo) => void;
+  setModalInfo: (x: ModalInfo) => void;
 }
 
 const BACKGROUND_COLOR: { [key in AdviceLevel]: Color } = {
@@ -31,7 +31,7 @@ export const VariantTileHeader: SFC<Props> = ({
   selected,
   ruleSettings = {},
   conflictLevel,
-  setVariantModalInfo,
+  setModalInfo,
 }) => {
   const color = !selected
     ? Colors.DARKISH
@@ -44,7 +44,7 @@ export const VariantTileHeader: SFC<Props> = ({
         {showGear && (
           <GearButton
             variantTitle={variant.title}
-            setVariantModalInfo={setVariantModalInfo}
+            setModalInfo={setModalInfo}
             ruleSettings={ruleSettings}
           />
         )}

@@ -23,7 +23,11 @@ import { FormatName } from "game/formats";
 import { rollableVariants } from "game/formats/rollableVariants";
 import { randomVariants } from "game/formats/randomVariants";
 import { getConflictLevel } from "./getConflictLevel";
-import { VariantModal, VariantModalInfo } from "./Modals/VariantModal";
+import { GenericModal } from "./Modals";
+import { ModalInfo } from "./Modals/shared/ModalTypes";
+
+// import { ShadowBoard } from "components/RootStackNavigator/StartScreen";
+// import { GameProvider } from "components/shared";
 
 const VariantSelectScreen: FC = () => {
   const playWithFriends = useRoute<Screens.VariantSelectScreen>().params?.playWithFriends;
@@ -65,9 +69,11 @@ const VariantSelectScreen: FC = () => {
   );
   const conflictLevel = getConflictLevel(gameOptions.format, variantConflicts);
 
-  const [variantModalInfo, setVariantModalInfo] = useState<VariantModalInfo>({
-    activated: false,
+  const [modalInfo, setModalInfo] = useState<ModalInfo>({
+    type: undefined,
   });
+
+  const topbarHeight = 40;
 
   return (
     <ScreenContainer
@@ -128,7 +134,7 @@ const VariantSelectScreen: FC = () => {
           selectedVariants={selectedVariantsForFormat}
           setSelectedVariants={setSelectedVariantsForFormat}
           conflictLevel={conflictLevel}
-          setVariantModalInfo={setVariantModalInfo}
+          setModalInfo={setModalInfo}
           ruleNamesWithParams={gameOptions.ruleNamesWithParams}
         />
         <Topbar
@@ -137,12 +143,15 @@ const VariantSelectScreen: FC = () => {
           conflictLevel={conflictLevel}
           gameOptions={gameOptions}
           setGameOptions={setGameOptions}
+          height={topbarHeight}
+          boardModal={modalInfo}
+          setBoardModal={setModalInfo}
         />
-        {variantModalInfo.activated && (
+        {modalInfo.type !== undefined && (
           <AbsoluteView style={{ backgroundColor: Colors.BLACK.fade(0.4).toString() }}>
-            <VariantModal
-              variantModalInfo={variantModalInfo}
-              setVariantModalInfo={setVariantModalInfo}
+            <GenericModal
+              modalInfo={modalInfo}
+              setModalInfo={setModalInfo}
               gameOptions={gameOptions}
               setGameOptions={setGameOptions}
             />

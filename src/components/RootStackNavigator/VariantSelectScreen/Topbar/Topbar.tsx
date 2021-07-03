@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import {
   AdviceLevel,
   FutureVariantName,
@@ -12,12 +12,16 @@ import { HelpMenu } from "components/shared";
 import { PlayerOptions } from "./PlayerOptions";
 import { FormatOptions } from "./FormatOptions";
 import { FormatName } from "game/formats";
+import { ModalInfo, ModalType } from "../Modals/shared";
 interface Props {
   gameOptions: GameOptions;
   setGameOptions: (x: GameOptions) => void;
   selectedVariants: FutureVariantName[];
   displayVariants: FutureVariantName[];
   conflictLevel: AdviceLevel | undefined;
+  height: number;
+  boardModal: ModalInfo;
+  setBoardModal: (x: ModalInfo) => void;
 }
 
 const Topbar: SFC<Props> = ({
@@ -26,6 +30,9 @@ const Topbar: SFC<Props> = ({
   selectedVariants,
   displayVariants,
   conflictLevel,
+  height,
+  boardModal,
+  setBoardModal,
 }) => {
   const setNumberOfPlayers = useCallback(
     (numberOfPlayers: number): void =>
@@ -43,7 +50,7 @@ const Topbar: SFC<Props> = ({
   if (!longBoardOn) gameOptions.numberOfPlayers = 2;
 
   return (
-    <Container>
+    <Container height={height}>
       <OptionsContainer>
         <PlayerOptions
           numberOfPlayers={gameOptions.numberOfPlayers}
@@ -55,6 +62,12 @@ const Topbar: SFC<Props> = ({
           setFormat={setFormat}
           style={{ marginLeft: 32 }}
         />
+        <TouchableOpacity
+          style={{ width: 20, height: 20, backgroundColor: "red" }}
+          onPress={(): void => {
+            setBoardModal({ ...boardModal, type: ModalType.boardModal });
+          }}
+        />
       </OptionsContainer>
       <CenterHelpMenu>
         <HelpMenu context={{ selectedVariants, displayVariants, conflictLevel }} />
@@ -63,8 +76,8 @@ const Topbar: SFC<Props> = ({
   );
 };
 
-const Container = styled(View)`
-  height: 40px;
+const Container = styled(View)<{ height: number }>`
+  height: ${({ height }): number => height}px;
   flex-direction: row;
   background-color: ${Colors.DARK.toString()};
   border-bottom-width: 1px;

@@ -1,1 +1,1 @@
-export * from "./VariantModal";
+export * from "./GenericModal";

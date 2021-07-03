@@ -8,7 +8,7 @@ import {
   partitionDisplayVariantsByComplexity,
 } from "./partitionDisplayVariantsByComplexity";
 import styled from "styled-components/native";
-import { VariantModalInfo } from "./Modals";
+import { ModalInfo } from "./Modals/shared/ModalTypes";
 import { RuleNamesWithParams } from "game/CompactRules";
 import { doGameOptionsModifyVariant } from "game/variantAndRuleProcessing";
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
   selectedVariants: FutureVariantName[];
   setSelectedVariants: (x: FutureVariantName[]) => void;
   conflictLevel: AdviceLevel | undefined;
-  setVariantModalInfo: (x: VariantModalInfo) => void;
+  setModalInfo: (x: ModalInfo) => void;
   ruleNamesWithParams?: RuleNamesWithParams;
 }
 
@@ -26,7 +26,7 @@ const VariantCardGrid: SFC<Props> = ({
   selectedVariants,
   setSelectedVariants,
   conflictLevel,
-  setVariantModalInfo,
+  setModalInfo,
   ruleNamesWithParams = {},
 }) => {
   const partitionedDisplayVariants = partitionDisplayVariantsByComplexity(
@@ -67,7 +67,7 @@ const VariantCardGrid: SFC<Props> = ({
                                 )
                               : setSelectedVariants([...selectedVariants, variant])
                           }
-                          setVariantModalInfo={setVariantModalInfo}
+                          setModalInfo={setModalInfo}
                           modified={doGameOptionsModifyVariant(
                             futureVariants[variant],
                             ruleNamesWithParams
@@ -96,9 +96,7 @@ const CatagorySeparator = styled(View)`
   flex: 1px;
   height: 2px;
   margin-right: 20px;
-  margin-bottom: 16px;
-  border-bottom-width: 2px;
-  border-bottom-color: ${Colors.DARK.toString()};
+  margin-bottom: 4px;
 `;
 
 export { VariantCardGrid };

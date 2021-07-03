@@ -2,17 +2,20 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { SFC, Colors, useHover } from "primitives";
 import { SparkleGearIcon } from "primitives/icons";
-import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
+import {
+  ModalInfo,
+  ModalType,
+} from "components/RootStackNavigator/VariantSelectScreen/Modals/shared/ModalTypes";
 import { RuleNamesWithParamSettings } from "game/CompactRules";
 
 interface Props {
   variantTitle: string;
-  setVariantModalInfo: (x: VariantModalInfo) => void;
+  setModalInfo: (x: ModalInfo) => void;
   ruleSettings?: RuleNamesWithParamSettings;
 }
 export const GearButton: SFC<Props> = ({
   variantTitle,
-  setVariantModalInfo,
+  setModalInfo,
   ruleSettings = {},
   style,
 }) => {
@@ -22,8 +25,8 @@ export const GearButton: SFC<Props> = ({
       style={style}
       ref={ref}
       onPress={(): void => {
-        setVariantModalInfo({
-          activated: true,
+        setModalInfo({
+          type: ModalType.variantModal,
           variant: variantTitle,
           ruleSettings: ruleSettings,
         });

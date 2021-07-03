@@ -9,13 +9,13 @@ import { VariantTileImage } from "./VariantTileImage";
 import { Styles } from "primitives/Styles";
 import { AbsoluteView } from "ui";
 import { allRuleSettings } from "game/CompactRules";
-import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
+import { ModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals/shared/ModalTypes";
 interface Props {
   variant: FutureVariant;
   selected: boolean;
   conflictLevel: AdviceLevel | undefined;
   onPress: () => void;
-  setVariantModalInfo: (x: VariantModalInfo) => void;
+  setModalInfo: (x: ModalInfo) => void;
   modified: boolean;
 }
 
@@ -25,7 +25,7 @@ export const VariantTile: SFC<Props> = ({
   selected,
   conflictLevel,
   onPress,
-  setVariantModalInfo,
+  setModalInfo,
   modified,
 }) => {
   const implemented = variant.implemented;
@@ -53,7 +53,7 @@ export const VariantTile: SFC<Props> = ({
         selected={selected}
         conflictLevel={conflictLevel}
         ruleSettings={ruleSettings}
-        setVariantModalInfo={setVariantModalInfo}
+        setModalInfo={setModalInfo}
       />
       <VariantTileBody>
         <VariantTileInfo variant={variant} style={{ flex: 1 }} />
