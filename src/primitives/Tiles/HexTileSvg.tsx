@@ -18,11 +18,14 @@ const TilePath: FC = () => {
 export const hexSvgScaleFactor = 1.41;
 
 export const HexTileSvg: FC<Props> = ({ size, color, animatedColor }) => {
+  //negative size is sometimes lazily passed in, and svg doesnt like it
+  const positiveSize = size > 0 ? size : 0;
+
   //the below animated size exception is to ensure there aren't gaps for adjacent transparent animations
   //remove if grid is not flush or on canvas board refactor
   const tileSize = animatedColor
-    ? (hexSvgScaleFactor + 0.02) * size
-    : hexSvgScaleFactor * size;
+    ? (hexSvgScaleFactor + 0.02) * positiveSize
+    : hexSvgScaleFactor * positiveSize;
   return (
     <Svg width={tileSize} height={tileSize} viewBox="0 0 200 200">
       {animatedColor ? (

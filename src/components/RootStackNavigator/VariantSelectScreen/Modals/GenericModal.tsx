@@ -21,8 +21,6 @@ export const GenericModal: SFC<ModalProps> = ({
   if (modalInfo.type === undefined) return <></>;
   const ChosenModal = MODAL_OPTIONS[modalInfo.type];
 
-  console.log(modalInfo);
-
   return (
     <ChosenModal
       modalInfo={modalInfo}

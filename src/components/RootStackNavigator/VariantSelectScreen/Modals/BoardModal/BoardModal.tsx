@@ -23,22 +23,9 @@ export const BoardModal: SFC<ModalProps> = ({
   style,
 }) => {
   return (
-    <ModalCard style={style} title={"BOARD TEST"}>
+    <ModalCard style={style} title={"Board Selection"}>
       <Footer style={{ padding: 0 }} />
-      <View style={{ flex: 1 }}>
-        <GameProvider
-          gameOptions={{
-            ...calculateGameOptions(gameOptions, ["hex"]),
-            time: undefined,
-            online: false,
-            flipBoard: false,
-            checkEnabled: false,
-          }}
-          key={gameOptions.format === "variantComposition" ? 1 : 0}
-        >
-          <ShadowBoard showShadow={false} />
-        </GameProvider>
-      </View>
+      <View style={{ flex: 1 }}></View>
       <Footer style={{ padding: 8 }}>
         <ButtonSecondaryLight
           label={"Reset"}

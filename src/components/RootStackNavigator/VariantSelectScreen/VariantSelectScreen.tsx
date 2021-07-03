@@ -24,10 +24,10 @@ import { rollableVariants } from "game/formats/rollableVariants";
 import { randomVariants } from "game/formats/randomVariants";
 import { getConflictLevel } from "./getConflictLevel";
 import { GenericModal } from "./Modals";
-import { ModalInfo } from "./Modals/shared/ModalTypes";
+import { ModalInfo, ModalType } from "./Modals/shared/ModalTypes";
 
-// import { ShadowBoard } from "components/RootStackNavigator/StartScreen";
-// import { GameProvider } from "components/shared";
+import { ShadowBoard } from "components/RootStackNavigator/StartScreen";
+import { GameProvider } from "components/shared";
 
 const VariantSelectScreen: FC = () => {
   const playWithFriends = useRoute<Screens.VariantSelectScreen>().params?.playWithFriends;
@@ -128,15 +128,32 @@ const VariantSelectScreen: FC = () => {
         </Footer>
       </Sidebar>
       <LeftContainer style={{ flex: 1, flexDirection: "column-reverse" }}>
-        <VariantCardGrid
-          style={{ flex: 1, paddingLeft: 24, paddingRight: 4 }}
-          displayVariants={displayVariants}
-          selectedVariants={selectedVariantsForFormat}
-          setSelectedVariants={setSelectedVariantsForFormat}
-          conflictLevel={conflictLevel}
-          setModalInfo={setModalInfo}
-          ruleNamesWithParams={gameOptions.ruleNamesWithParams}
-        />
+        {modalInfo.type === ModalType.boardModal ? (
+          <View style={{ flex: 1, margin: 16 }}>
+            <GameProvider
+              gameOptions={{
+                ...calculateGameOptions(gameOptions, ["hex"]),
+                time: undefined,
+                online: false,
+                flipBoard: false,
+                checkEnabled: false,
+              }}
+              key={gameOptions.format === "variantComposition" ? 1 : 0}
+            >
+              <ShadowBoard showShadow={false} />
+            </GameProvider>
+          </View>
+        ) : (
+          <VariantCardGrid
+            style={{ flex: 1, paddingLeft: 24, paddingRight: 4 }}
+            displayVariants={displayVariants}
+            selectedVariants={selectedVariantsForFormat}
+            setSelectedVariants={setSelectedVariantsForFormat}
+            conflictLevel={conflictLevel}
+            setModalInfo={setModalInfo}
+            ruleNamesWithParams={gameOptions.ruleNamesWithParams}
+          />
+        )}
         <Topbar
           displayVariants={displayVariants}
           selectedVariants={selectedVariantsForFormat}
