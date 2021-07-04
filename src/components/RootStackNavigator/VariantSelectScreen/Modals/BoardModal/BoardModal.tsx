@@ -5,7 +5,7 @@ import { defaultGameOptions } from "game";
 import { ItemContainer } from "components/RootStackNavigator/VariantSelectScreen/Modals/shared";
 import { ModalProps, ModalTemplate } from "../shared";
 import { LabelWithDetails } from "ui/LabelWithDetails";
-import { BoardTypeName, boardTypes } from "game/boardTypes";
+import { boardTypes, defaultBoardVariant } from "game/boardTypes";
 import { keys } from "utilities";
 import {
   getVariantsSelectedBoard,
@@ -34,12 +34,18 @@ export const BoardModal: SFC<ModalProps> = ({
 
   return (
     <ModalTemplate
-      title={"Board - " + "Standard"}
+      title={
+        "Board - " +
+        getVariantsSelectedBoard(selectedVariants).title +
+        " " +
+        gameOptions.numberOfPlayers.toString() +
+        "P"
+      }
       reset={(): void => {
         setVariantsSelectedBoard(
           selectedVariants,
           setSelectedVariants,
-          getVariantsSelectedBoard(defaultGameOptions.baseVariants)
+          getVariantsSelectedBoard([defaultBoardVariant])
         );
         setNumberOfPlayers(defaultGameOptions.numberOfPlayers);
       }}
@@ -70,7 +76,7 @@ export const BoardModal: SFC<ModalProps> = ({
                   setVariantsSelectedBoard(
                     selectedVariants,
                     setSelectedVariants,
-                    boardTypeName
+                    boardTypes[boardTypeName]
                   );
                   setNumberOfPlayers(
                     boardTypes[boardTypeName].allowedPlayers.includes(

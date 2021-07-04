@@ -1,5 +1,7 @@
 import { FutureVariantName } from "../variants";
 
+export const defaultBoardVariant = "standard";
+
 export interface BoardType {
   title: string;
   description: string;

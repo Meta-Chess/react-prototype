@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { Colors, DiscordIcon, MChessLogo } from "primitives";
-import { GameOptions, defaultGameOptions, GameMaster } from "game";
+import { GameOptions, defaultGameOptions } from "game";
 import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
 import { GameProvider, HelpMenu } from "components/shared";

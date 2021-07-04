@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { PreviewIcon, useHover, SFC, Colors, HoverRef } from "primitives";
+import { PreviewIcon, SFC, Colors, HoverRef } from "primitives";
 
 interface Props {
   hoverRef: HoverRef;

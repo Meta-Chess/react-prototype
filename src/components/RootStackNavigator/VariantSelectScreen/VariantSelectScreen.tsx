@@ -27,6 +27,7 @@ import styled from "styled-components/native";
 import { FormatName } from "game/formats";
 import { rollableVariants } from "game/formats/rollableVariants";
 import { randomVariants } from "game/formats/randomVariants";
+import { defaultBoardVariant } from "game/boardTypes";
 import { getConflictLevel } from "./getConflictLevel";
 import { GenericModal } from "./Modals";
 import { ModalInfo } from "./Modals/shared/ModalTypes";
@@ -48,9 +49,9 @@ const VariantSelectScreen: FC = () => {
   const [selectedVariants, setSelectedVariants] = useState<
     { [key in FormatName]: FutureVariantName[] }
   >({
-    variantComposition: ["standard"],
-    randomVariants: [...randomVariants, "standard"],
-    rollingVariants: [...rollableVariants, "standard"],
+    variantComposition: [defaultBoardVariant],
+    randomVariants: [...randomVariants, defaultBoardVariant],
+    rollingVariants: [...rollableVariants, defaultBoardVariant],
   });
   const selectedVariantsForFormat = selectedVariants[gameOptions.format];
   const setSelectedVariantsForFormat = useCallback(
@@ -179,7 +180,7 @@ const VariantSelectScreen: FC = () => {
               checkEnabled: false,
             }}
             key={
-              getVariantsSelectedBoard(selectedVariantsForFormat) +
+              getVariantsSelectedBoard(selectedVariantsForFormat).title +
               gameOptions.numberOfPlayers
             }
           >

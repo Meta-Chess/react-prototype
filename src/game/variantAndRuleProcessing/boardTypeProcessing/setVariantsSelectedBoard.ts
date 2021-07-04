@@ -1,11 +1,11 @@
 import { FutureVariantName } from "game";
-import { boardTypes, BoardTypeName } from "game/boardTypes";
+import { boardTypes, BoardType } from "game/boardTypes";
 import { keys } from "utilities";
 
 export function setVariantsSelectedBoard(
   selectedVariants: FutureVariantName[],
   setSelectedVariants: (x: FutureVariantName[]) => void,
-  boardType: BoardTypeName
+  boardType: BoardType
 ): void {
   const allBoardVariants = keys(boardTypes).map(
     (boardTypeName) => boardTypes[boardTypeName].baseVariant
@@ -13,6 +13,6 @@ export function setVariantsSelectedBoard(
 
   setSelectedVariants([
     ...selectedVariants.filter((variantName) => !allBoardVariants.includes(variantName)),
-    boardTypes[boardType].baseVariant,
+    boardType.baseVariant,
   ]);
 }

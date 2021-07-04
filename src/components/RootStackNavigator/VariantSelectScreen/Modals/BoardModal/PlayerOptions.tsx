@@ -1,5 +1,4 @@
 import React from "react";
-import { range } from "utilities";
 import { SFC, Text } from "primitives";
 import { OptionGroup } from "ui/Forms";
 

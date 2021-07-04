@@ -1,15 +1,10 @@
 import React from "react";
-import { View } from "react-native";
-import styled from "styled-components/native";
-import { futureVariants, GameOptions } from "game";
+import { GameOptions } from "game";
 import { CollapsableCard } from "ui/Containers";
 import { ModalGearButton } from "ui/Pressable";
-import { SFC, Text, Colors, HoverRef } from "primitives";
+import { SFC, HoverRef } from "primitives";
 import { FutureVariantName } from "game";
-import { PreviewIcon } from "primitives";
 import { RuleNamesWithParams } from "game/CompactRules";
-import { VariantLabel } from "components/shared/Labels";
-import { BoardTypeName, boardTypes } from "game/boardTypes";
 import {
   ModalInfo,
   ModalType,
@@ -30,14 +25,11 @@ interface Props {
 
 const BoardCard: SFC<Props> = ({
   selectedVariants,
-  setSelectedVariants,
   gameOptions,
-  setGameOptions,
   modalInfo,
   setModalInfo,
   boardPreviewRef,
   boardPreviewHover,
-  ruleNamesWithParams = {},
 }) => {
   const playerNumber = gameOptions.numberOfPlayers;
   return (
