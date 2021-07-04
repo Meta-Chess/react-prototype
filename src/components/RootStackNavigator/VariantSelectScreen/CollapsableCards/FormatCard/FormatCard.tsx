@@ -14,7 +14,7 @@ import {
   ModalInfo,
   ModalType,
 } from "components/RootStackNavigator/VariantSelectScreen/Modals/shared";
-
+import { filterVariantsForBoardType } from "game/variantAndRuleProcessing/boardTypeProcessing";
 interface Props {
   selectedFormat: FormatName;
   selectedVariants: FutureVariantName[];
@@ -32,6 +32,10 @@ const FormatCard: SFC<Props> = ({
   setModalInfo,
   ruleNamesWithParams = {},
 }) => {
+  const nonBoardSelectedVariants = filterVariantsForBoardType(
+    selectedVariants,
+    selectedVariants
+  );
   return (
     <CollapsableCard
       title={"Format - " + formats[selectedFormat].title}
@@ -56,7 +60,7 @@ const FormatCard: SFC<Props> = ({
         {formats[selectedFormat].shortExplanation}
       </Text>
       <Container>
-        {selectedVariants.map((variant) => {
+        {nonBoardSelectedVariants.map((variant) => {
           return (
             <VariantLabel
               key={futureVariants[variant].title}

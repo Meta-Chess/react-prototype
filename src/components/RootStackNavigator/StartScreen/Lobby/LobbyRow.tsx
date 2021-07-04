@@ -10,6 +10,10 @@ import styled from "styled-components/native";
 import { LobbyGame } from "./useLobbyQuery";
 import { Screens, useNavigation } from "navigation";
 import { shuffleInPlace } from "utilities/random";
+import {
+  getVariantsSelectedBoard,
+  getAllBoardTypeVariants,
+} from "game/variantAndRuleProcessing/boardTypeProcessing";
 
 interface Props {
   lobbyGame: LobbyGame;
@@ -35,6 +39,12 @@ export const LobbyRow: SFC<Props> = ({ lobbyGame }) => {
 
   if (players === undefined || variants === undefined) return null;
 
+  const boardType = getVariantsSelectedBoard(baseVariants) || undefined;
+  const allBoardVariants = getAllBoardTypeVariants();
+  const nonBoardVariants = variants.filter(
+    (variant) => !allBoardVariants.includes(variant)
+  );
+
   return (
     <Container
       ref={hoverRef}
@@ -51,13 +61,24 @@ export const LobbyRow: SFC<Props> = ({ lobbyGame }) => {
       <FlexContainer>
         <TopRow>
           <FlexContainer>
-            <LabelWithDetails
-              label={format.title}
-              details={format.description}
-              key={format.title}
-              color={Colors.MCHESS_ORANGE}
-              style={{ alignSelf: "flex-start" }}
-            />
+            <ScrollLabelRow horizontal showsHorizontalScrollIndicator={false}>
+              {boardType && (
+                <LabelWithDetails
+                  label={boardType.title}
+                  details={boardType.description}
+                  key={boardType.title}
+                  color={Colors.MCHESS_ORANGE}
+                  style={{ alignSelf: "flex-start", marginRight: 4 }}
+                />
+              )}
+              <LabelWithDetails
+                label={format.title}
+                details={format.description}
+                key={format.title}
+                color={Colors.MCHESS_ORANGE}
+                style={{ alignSelf: "flex-start" }}
+              />
+            </ScrollLabelRow>
           </FlexContainer>
           <EndContainer>
             <InfoContainer style={{ marginRight: 6 }}>
@@ -82,7 +103,7 @@ export const LobbyRow: SFC<Props> = ({ lobbyGame }) => {
           style={{ paddingBottom: 8 }}
         >
           {!check && <NoCheckLabel style={{ marginRight: 4 }} />}
-          {variants.map((variant) => (
+          {nonBoardVariants.map((variant) => (
             <VariantLabel
               key={variant.title}
               variant={variant}
@@ -90,7 +111,9 @@ export const LobbyRow: SFC<Props> = ({ lobbyGame }) => {
               style={{ marginRight: 4 }}
             />
           ))}
-          {check && variants.length === 0 && <ChessLabel />}
+          {check && variants[0].title === "Standard" && variants.length === 1 && (
+            <ChessLabel />
+          )}
         </ScrollLabelRow>
       </FlexContainer>
       {hovered && <LobbyRowCover pointerEvents={"none"} />}

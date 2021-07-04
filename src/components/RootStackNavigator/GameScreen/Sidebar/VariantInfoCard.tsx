@@ -10,6 +10,10 @@ import { VariantLabel, NoCheckLabel, ChessLabel } from "components/shared/Labels
 import { VariantLabelInfo } from "game/types";
 import Color from "color";
 import { GameContext } from "components/shared";
+import {
+  getVariantsSelectedBoard,
+  getAllBoardTypeVariants,
+} from "game/variantAndRuleProcessing/boardTypeProcessing";
 
 const VARIANT_LABEL_COLORS: { [key in VariantLabelInfo]: Color } = {
   [VariantLabelInfo.VariantLeaving]: Colors.HIGHLIGHT.ERROR,
@@ -21,10 +25,20 @@ const VariantInfoCard: SFC = ({ style }) => {
   if (!gameMaster) return null;
   const format = formats[gameMaster.getFormatName()];
   const variants = gameMaster.getVariantNames().map((name) => allVariants[name]);
-  const title =
+  const boardType =
+    getVariantsSelectedBoard(gameMaster.gameOptions.baseVariants) || undefined;
+  const allBoardVariants = getAllBoardTypeVariants();
+  const nonBoardVariants = variants.filter(
+    (variant) => !allBoardVariants.includes(variant)
+  );
+
+  const titlePrefix =
+    boardType && boardType.title !== "Standard" ? boardType.title + " " : "";
+  const titleBase =
     gameMaster.getFormatName() === "variantComposition"
-      ? [...variants.map((v) => v.title), "Chess"].join(" ")
+      ? [...nonBoardVariants.map((v) => v.title), "Chess"].join(" ")
       : format.title;
+  const title = titlePrefix + titleBase;
   const noCheck = !gameMaster.getRuleNames().includes("check");
 
   return (
@@ -34,6 +48,15 @@ const VariantInfoCard: SFC = ({ style }) => {
         <WASD style={{ marginLeft: 8, marginTop: 4 }} />
       </Row>
       <View style={{ flexWrap: "wrap", flexDirection: "row", marginTop: 8 }}>
+        {boardType && (
+          <LabelWithDetails
+            label={boardType.title}
+            details={boardType.description}
+            key={boardType.title}
+            color={Colors.MCHESS_ORANGE}
+            style={{ alignSelf: "flex-start", marginRight: 4, marginTop: 4 }}
+          />
+        )}
         <LabelWithDetails
           label={format.title}
           details={format.description}
@@ -41,11 +64,11 @@ const VariantInfoCard: SFC = ({ style }) => {
           color={Colors.MCHESS_ORANGE}
           style={{ marginRight: 4, marginTop: 4 }}
         />
-        {!noCheck && variants.length === 0 && (
+        {!noCheck && variants[0].title === "Standard" && variants.length === 1 && (
           <ChessLabel style={{ marginRight: 4, marginTop: 4 }} />
         )}
         {noCheck && <NoCheckLabel style={{ marginRight: 4, marginTop: 4 }} />}
-        {variants.map((variant, index) => (
+        {nonBoardVariants.map((variant, index) => (
           <VariantLabel
             key={variant.title}
             variant={variant}

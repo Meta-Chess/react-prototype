@@ -27,7 +27,7 @@ export const boardTypes: { [key in BoardTypeName]: BoardType } = {
     allowedPlayers: [2],
   },
   longBoard: {
-    title: "Long",
+    title: "Longboard",
     description:
       "The top and bottom rows are connected and pawns march the way they are pointing.",
     baseVariant: "longBoard",

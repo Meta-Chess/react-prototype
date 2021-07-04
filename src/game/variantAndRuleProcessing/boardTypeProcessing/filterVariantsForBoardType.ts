@@ -14,7 +14,7 @@ export function filterVariantsForBoardType(
     (boardTypeName) => boardTypes[boardTypeName].baseVariant
   );
   // variantName which corresponds to selected boardType
-  const selectedBoardTypeVariant = boardTypes[boardType].baseVariant;
+  const selectedBoardTypeVariant = boardType.baseVariant;
 
   // all ruleNames which are contained by boardTypeVariants
   const boardTypeRules = boardTypeVariants.flatMap(

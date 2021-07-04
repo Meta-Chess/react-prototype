@@ -171,7 +171,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   },
   standard: {
     title: "Standard",
-    shortDescription: "No changes to the game.",
+    shortDescription: "A standard chess board.",
     traits: [],
     imageName: undefined,
     implemented: true,

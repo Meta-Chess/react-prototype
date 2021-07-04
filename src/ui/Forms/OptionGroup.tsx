@@ -29,7 +29,7 @@ export function OptionGroup<T>({
   return (
     <Container style={style}>
       {title && (
-        <Text cat={"DisplayXS"} style={{ marginRight: 12 }}>
+        <Text cat={"DisplayXS"} style={{ marginRight: 8 }}>
           {title}
         </Text>
       )}

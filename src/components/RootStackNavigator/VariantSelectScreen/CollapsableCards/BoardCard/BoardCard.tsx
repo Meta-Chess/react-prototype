@@ -44,7 +44,7 @@ const BoardCard: SFC<Props> = ({
     <CollapsableCard
       title={
         "Board - " +
-        boardTypes[getVariantsSelectedBoard(selectedVariants)].title +
+        getVariantsSelectedBoard(selectedVariants).title +
         " " +
         playerNumber.toString() +
         "P"

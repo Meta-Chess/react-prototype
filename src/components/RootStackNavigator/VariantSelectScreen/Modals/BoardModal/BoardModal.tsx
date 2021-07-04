@@ -62,7 +62,10 @@ export const BoardModal: SFC<ModalProps> = ({
                 key={boardTypes[boardTypeName].title}
                 color={Colors.MCHESS_ORANGE}
                 textCat={"BodyXS"}
-                selected={getVariantsSelectedBoard(selectedVariants) === boardTypeName}
+                selected={
+                  getVariantsSelectedBoard(selectedVariants).title ===
+                  boardTypes[boardTypeName].title
+                }
                 onPress={(): void => {
                   setVariantsSelectedBoard(
                     selectedVariants,
@@ -92,9 +95,7 @@ export const BoardModal: SFC<ModalProps> = ({
           <PlayerOptions
             numberOfPlayers={gameOptions.numberOfPlayers}
             setNumberOfPlayers={setNumberOfPlayers}
-            allowedPlayers={
-              boardTypes[getVariantsSelectedBoard(selectedVariants)].allowedPlayers
-            }
+            allowedPlayers={getVariantsSelectedBoard(selectedVariants).allowedPlayers}
           />
         </ItemContainer>
       </View>

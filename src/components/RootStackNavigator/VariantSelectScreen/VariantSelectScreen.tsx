@@ -48,9 +48,9 @@ const VariantSelectScreen: FC = () => {
   const [selectedVariants, setSelectedVariants] = useState<
     { [key in FormatName]: FutureVariantName[] }
   >({
-    variantComposition: defaultGameOptions.baseVariants,
-    randomVariants: [...randomVariants, ...defaultGameOptions.baseVariants],
-    rollingVariants: [...rollableVariants, ...defaultGameOptions.baseVariants],
+    variantComposition: ["standard"],
+    randomVariants: [...randomVariants, "standard"],
+    rollingVariants: [...rollableVariants, "standard"],
   });
   const selectedVariantsForFormat = selectedVariants[gameOptions.format];
   const setSelectedVariantsForFormat = useCallback(
