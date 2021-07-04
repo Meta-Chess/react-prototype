@@ -47,7 +47,7 @@ export const FormatModal: SFC<ModalProps> = ({
                 key={formats[formatName].title}
                 color={Colors.MCHESS_ORANGE}
                 textCat={"BodyXS"}
-                selected={formats[formatName].title === formats[gameOptions.format].title}
+                selected={formatName === gameOptions.format}
                 onPress={(): void => setFormat(formatName)}
                 noHover={true}
                 style={{

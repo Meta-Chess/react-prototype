@@ -19,6 +19,7 @@ interface Props {
   selectedFormat: FormatName;
   selectedVariants: FutureVariantName[];
   setSelectedVariants: (x: FutureVariantName[]) => void;
+  modalInfo: ModalInfo;
   setModalInfo: (x: ModalInfo) => void;
   ruleNamesWithParams?: RuleNamesWithParams;
 }
@@ -27,18 +28,20 @@ const FormatCard: SFC<Props> = ({
   selectedFormat,
   selectedVariants,
   setSelectedVariants,
+  modalInfo,
   setModalInfo,
   ruleNamesWithParams = {},
 }) => {
   return (
     <CollapsableCard
-      title={formats[selectedFormat].title}
+      title={"Format - " + formats[selectedFormat].title}
       titleComponent={<FormatIcon format={selectedFormat} />}
       endComponent={
         <ModalGearButton
-          modalInfo={{
+          customModalInfo={{
             type: ModalType.formatModal,
           }}
+          modalInfo={modalInfo}
           setModalInfo={setModalInfo}
         />
       }

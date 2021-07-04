@@ -6,16 +6,16 @@ import { OptionGroup } from "ui/Forms";
 interface Props {
   numberOfPlayers: number;
   setNumberOfPlayers: (x: number) => void;
-  disabledPlayers: number[];
+  allowedPlayers: number[];
 }
 
 const PlayerOptions: SFC<Props> = ({
   numberOfPlayers,
   setNumberOfPlayers,
-  disabledPlayers,
+  allowedPlayers,
   style,
 }) => {
-  const options = range(2, 3).map((n) => {
+  const options = allowedPlayers.map((n) => {
     return {
       label: (
         <Text cat={"BodyL"} selectable={false}>
@@ -23,7 +23,6 @@ const PlayerOptions: SFC<Props> = ({
         </Text>
       ),
       value: n,
-      disabled: disabledPlayers.includes(n),
     };
   });
 

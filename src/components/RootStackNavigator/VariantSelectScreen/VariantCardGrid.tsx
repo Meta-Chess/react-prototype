@@ -16,6 +16,7 @@ interface Props {
   selectedVariants: FutureVariantName[];
   setSelectedVariants: (x: FutureVariantName[]) => void;
   conflictLevel: AdviceLevel | undefined;
+  modalInfo: ModalInfo;
   setModalInfo: (x: ModalInfo) => void;
   ruleNamesWithParams?: RuleNamesWithParams;
 }
@@ -26,6 +27,7 @@ const VariantCardGrid: SFC<Props> = ({
   selectedVariants,
   setSelectedVariants,
   conflictLevel,
+  modalInfo,
   setModalInfo,
   ruleNamesWithParams = {},
 }) => {
@@ -67,6 +69,7 @@ const VariantCardGrid: SFC<Props> = ({
                                 )
                               : setSelectedVariants([...selectedVariants, variant])
                           }
+                          modalInfo={modalInfo}
                           setModalInfo={setModalInfo}
                           modified={doGameOptionsModifyVariant(
                             futureVariants[variant],

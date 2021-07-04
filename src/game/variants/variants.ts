@@ -136,6 +136,7 @@ export type FutureVariantName =
   | "emptyCenter"
   | "fatigue"
   | "hex"
+  | "longBoard"
   | "kingOfTheHill"
   | "kleinBottle"
   | "mobius"
@@ -154,7 +155,8 @@ export type FutureVariantName =
   | "gambit"
   | "centerfold"
   | "fortifications"
-  | "royallyScrewed";
+  | "royallyScrewed"
+  | "standard";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   atomic: {
@@ -166,6 +168,15 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     implemented: true,
     ruleNames: ["atomic"],
     complexity: 1,
+  },
+  standard: {
+    title: "Standard",
+    shortDescription: "No changes to the game.",
+    traits: [],
+    imageName: undefined,
+    implemented: true,
+    ruleNames: [],
+    complexity: 0,
   },
   royallyScrewed: {
     title: "Royally Screwed",
@@ -400,6 +411,16 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     implemented: false,
     ruleNames: [],
     complexity: 0,
+  },
+  longBoard: {
+    title: "Long",
+    shortDescription:
+      "The top and bottom rows are connected and pawns march the way they are pointing.",
+    traits: ["Board"],
+    imageName: undefined,
+    implemented: true,
+    ruleNames: ["longBoard", "verticallyCylindrical"],
+    complexity: 1,
   },
 };
 

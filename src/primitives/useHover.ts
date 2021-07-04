@@ -2,7 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { Platform } from "react-native";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useHover(): [React.MutableRefObject<any>, boolean] {
+export type HoverRef = React.MutableRefObject<any>;
+export function useHover(): [HoverRef, boolean] {
   const [value, setValue] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

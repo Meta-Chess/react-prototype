@@ -1,4 +1,4 @@
-import { GameOptions } from "game";
+import { FutureVariantName, GameOptions } from "game";
 import { RuleNamesWithParamSettings } from "game/CompactRules";
 
 export interface ModalProps {
@@ -6,6 +6,8 @@ export interface ModalProps {
   setModalInfo: (modalInfo: ModalInfo) => void;
   gameOptions: GameOptions;
   setGameOptions: (gameOptions: GameOptions) => void;
+  selectedVariants?: FutureVariantName[];
+  setSelectedVariants?: (x: FutureVariantName[]) => void;
 }
 
 export interface ModalInfo {

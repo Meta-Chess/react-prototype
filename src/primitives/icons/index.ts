@@ -24,3 +24,4 @@ export * from "./SkipBackIcon";
 export * from "./GearIcon";
 export * from "./SparkleGearIcon";
 export * from "./StarIcon";
+export * from "./PreviewIcon";

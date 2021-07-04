@@ -20,20 +20,19 @@ import {
   AdviceCard,
 } from "./CollapsableCards";
 import { Button, ButtonSecondary, Footer, AbsoluteView } from "ui";
-import { ScreenContainer } from "components/shared";
-import { Colors } from "primitives";
+import { ScreenContainer, HelpMenu } from "components/shared";
+import { Colors, useHover } from "primitives";
 import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
-import { Topbar } from "./Topbar";
 import { FormatName } from "game/formats";
 import { rollableVariants } from "game/formats/rollableVariants";
 import { randomVariants } from "game/formats/randomVariants";
 import { getConflictLevel } from "./getConflictLevel";
 import { GenericModal } from "./Modals";
-import { ModalInfo, ModalType } from "./Modals/shared/ModalTypes";
-
+import { ModalInfo } from "./Modals/shared/ModalTypes";
 import { ShadowBoard } from "components/RootStackNavigator/StartScreen";
 import { GameProvider } from "components/shared";
+import { getVariantsSelectedBoard } from "game/variantAndRuleProcessing/boardTypeProcessing";
 
 const VariantSelectScreen: FC = () => {
   const playWithFriends = useRoute<Screens.VariantSelectScreen>().params?.playWithFriends;
@@ -46,23 +45,24 @@ const VariantSelectScreen: FC = () => {
     publicGame: !playWithFriends,
   });
 
-  const [activeFilters, setActiveFilters] = useState<TraitName[]>([]);
-  const displayVariants: FutureVariantName[] = getFilteredVariantsInDisplayOrder(
-    activeFilters
-  );
-
   const [selectedVariants, setSelectedVariants] = useState<
     { [key in FormatName]: FutureVariantName[] }
   >({
-    variantComposition: [],
-    randomVariants: randomVariants,
-    rollingVariants: rollableVariants,
+    variantComposition: defaultGameOptions.baseVariants,
+    randomVariants: [...randomVariants, ...defaultGameOptions.baseVariants],
+    rollingVariants: [...rollableVariants, ...defaultGameOptions.baseVariants],
   });
   const selectedVariantsForFormat = selectedVariants[gameOptions.format];
   const setSelectedVariantsForFormat = useCallback(
     (variants: FutureVariantName[]) =>
       setSelectedVariants({ ...selectedVariants, [gameOptions.format]: variants }),
     [selectedVariants, gameOptions.format]
+  );
+
+  const [activeFilters, setActiveFilters] = useState<TraitName[]>([]);
+  const displayVariants: FutureVariantName[] = getFilteredVariantsInDisplayOrder(
+    activeFilters,
+    selectedVariantsForFormat
   );
 
   const variantConflicts: {
@@ -78,8 +78,7 @@ const VariantSelectScreen: FC = () => {
   const [modalInfo, setModalInfo] = useState<ModalInfo>({
     type: undefined,
   });
-
-  const topbarHeight = 40;
+  const [boardPreviewRef, boardPreviewHovered] = useHover();
 
   return (
     <ScreenContainer
@@ -98,16 +97,21 @@ const VariantSelectScreen: FC = () => {
           contentContainerStyle={{ paddingBottom: 12 }}
         >
           <BoardCard
-            selectedFormat={gameOptions.format}
             selectedVariants={selectedVariantsForFormat}
             setSelectedVariants={setSelectedVariantsForFormat}
+            gameOptions={gameOptions}
+            setGameOptions={setGameOptions}
+            modalInfo={modalInfo}
             setModalInfo={setModalInfo}
             ruleNamesWithParams={gameOptions.ruleNamesWithParams}
+            boardPreviewRef={boardPreviewRef}
+            boardPreviewHover={boardPreviewHovered}
           />
           <FormatCard
             selectedFormat={gameOptions.format}
             selectedVariants={selectedVariantsForFormat}
             setSelectedVariants={setSelectedVariantsForFormat}
+            modalInfo={modalInfo}
             setModalInfo={setModalInfo}
             ruleNamesWithParams={gameOptions.ruleNamesWithParams}
           />
@@ -142,42 +146,17 @@ const VariantSelectScreen: FC = () => {
         </Footer>
       </Sidebar>
       <LeftContainer style={{ flex: 1, flexDirection: "column-reverse" }}>
-        {modalInfo.type === ModalType.boardModal ? (
-          <View style={{ flex: 1, margin: 16 }}>
-            <GameProvider
-              gameOptions={{
-                ...calculateGameOptions(gameOptions, ["hex"]),
-                time: undefined,
-                online: false,
-                flipBoard: false,
-                checkEnabled: false,
-              }}
-              key={gameOptions.format === "variantComposition" ? 1 : 0}
-            >
-              <ShadowBoard showShadow={false} />
-            </GameProvider>
-          </View>
-        ) : (
-          <VariantCardGrid
-            style={{ flex: 1, paddingLeft: 24, paddingRight: 4 }}
-            displayVariants={displayVariants}
-            selectedVariants={selectedVariantsForFormat}
-            setSelectedVariants={setSelectedVariantsForFormat}
-            conflictLevel={conflictLevel}
-            setModalInfo={setModalInfo}
-            ruleNamesWithParams={gameOptions.ruleNamesWithParams}
-          />
-        )}
-        <Topbar
+        <VariantCardGrid
+          style={{ flex: 1, paddingLeft: 24, paddingRight: 4 }}
           displayVariants={displayVariants}
           selectedVariants={selectedVariantsForFormat}
+          setSelectedVariants={setSelectedVariantsForFormat}
           conflictLevel={conflictLevel}
-          gameOptions={gameOptions}
-          setGameOptions={setGameOptions}
-          height={topbarHeight}
-          boardModal={modalInfo}
-          setBoardModal={setModalInfo}
+          modalInfo={modalInfo}
+          setModalInfo={setModalInfo}
+          ruleNamesWithParams={gameOptions.ruleNamesWithParams}
         />
+        <HelpMenu context={{ selectedVariants, displayVariants, conflictLevel }} />
         {modalInfo.type !== undefined && (
           <AbsoluteView style={{ backgroundColor: Colors.BLACK.fade(0.4).toString() }}>
             <GenericModal
@@ -185,9 +164,42 @@ const VariantSelectScreen: FC = () => {
               setModalInfo={setModalInfo}
               gameOptions={gameOptions}
               setGameOptions={setGameOptions}
+              selectedVariants={selectedVariantsForFormat}
+              setSelectedVariants={setSelectedVariantsForFormat}
             />
           </AbsoluteView>
         )}
+        <AbsoluteView pointerEvents={"none"} style={{ flex: 1 }}>
+          <GameProvider
+            gameOptions={{
+              ...calculateGameOptions(gameOptions, selectedVariantsForFormat),
+              time: undefined,
+              online: false,
+              flipBoard: false,
+              checkEnabled: false,
+            }}
+            key={
+              getVariantsSelectedBoard(selectedVariantsForFormat) +
+              gameOptions.numberOfPlayers
+            }
+          >
+            {boardPreviewHovered && (
+              <View
+                style={{
+                  flex: 1,
+                  width: "100%",
+                  backgroundColor: boardPreviewHovered
+                    ? Colors.DARKEST.toString()
+                    : "transparent",
+                }}
+              >
+                <View style={{ flex: 1, width: "100%", margin: 16 }}>
+                  <ShadowBoard showShadow={false} />
+                </View>
+              </View>
+            )}
+          </GameProvider>
+        </AbsoluteView>
       </LeftContainer>
     </ScreenContainer>
   );

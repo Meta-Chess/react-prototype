@@ -11,7 +11,7 @@ export const ItemContainer: SFC<Props> = ({ bottomFooter = false, children, styl
   return (
     <View>
       <View style={[style, { padding: 12 }]}>{children}</View>
-      {bottomFooter && <Footer />}
+      {bottomFooter && <Footer style={{ paddingBottom: 0 }} />}
     </View>
   );
 };

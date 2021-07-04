@@ -15,6 +15,7 @@ interface Props {
   selected: boolean;
   conflictLevel: AdviceLevel | undefined;
   onPress: () => void;
+  modalInfo: ModalInfo;
   setModalInfo: (x: ModalInfo) => void;
   modified: boolean;
 }
@@ -25,6 +26,7 @@ export const VariantTile: SFC<Props> = ({
   selected,
   conflictLevel,
   onPress,
+  modalInfo,
   setModalInfo,
   modified,
 }) => {
@@ -53,6 +55,7 @@ export const VariantTile: SFC<Props> = ({
         selected={selected}
         conflictLevel={conflictLevel}
         ruleSettings={ruleSettings}
+        modalInfo={modalInfo}
         setModalInfo={setModalInfo}
       />
       <VariantTileBody>

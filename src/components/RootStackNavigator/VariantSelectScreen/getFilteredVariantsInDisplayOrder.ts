@@ -1,11 +1,13 @@
 import { FutureVariantName, futureVariants } from "game";
 import { TraitName } from "game/variants/traitInfo";
 import { keys } from "utilities";
+import { filterVariantsForBoardType } from "game/variantAndRuleProcessing/boardTypeProcessing";
 
 export function getFilteredVariantsInDisplayOrder(
-  activeFilters: TraitName[]
+  activeFilters: TraitName[],
+  selectedVariants: FutureVariantName[]
 ): FutureVariantName[] {
-  const variantNames = keys(futureVariants);
+  const variantNames = filterVariantsForBoardType(keys(futureVariants), selectedVariants);
   return variantNames
     .filter(
       (variant) =>

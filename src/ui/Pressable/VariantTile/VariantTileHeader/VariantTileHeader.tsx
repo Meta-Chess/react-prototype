@@ -19,6 +19,7 @@ interface Props {
   selected: boolean;
   conflictLevel: AdviceLevel | undefined;
   ruleSettings?: RuleNamesWithParamSettings;
+  modalInfo: ModalInfo;
   setModalInfo: (x: ModalInfo) => void;
 }
 
@@ -34,6 +35,7 @@ export const VariantTileHeader: SFC<Props> = ({
   selected,
   ruleSettings = {},
   conflictLevel,
+  modalInfo,
   setModalInfo,
 }) => {
   const color = !selected
@@ -46,11 +48,12 @@ export const VariantTileHeader: SFC<Props> = ({
       <View style={{ width: 40, paddingLeft: "8px" }}>
         {showGear && (
           <ModalGearButton
-            modalInfo={{
+            customModalInfo={{
               type: ModalType.variantModal,
               variant: variant.title,
               ruleSettings: ruleSettings,
             }}
+            modalInfo={modalInfo}
             setModalInfo={setModalInfo}
           />
         )}
