@@ -33,7 +33,7 @@ export interface AllRuleParamValue {
   "No Attacking More Than": number;
   "Excited At": number;
   "True Fatigue": boolean;
-  "King Can't Move": boolean;
+  "Kings cannot move": boolean;
 }
 
 export type ParamName = keyof AllRuleParamValue;
