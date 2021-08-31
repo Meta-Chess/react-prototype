@@ -28,6 +28,16 @@ export const longBoard: ParameterRule = (): Rule => {
     }): ForSquareGenerationModify => {
       board.addSquares(generateStandardSquares(numberOfPlayers));
       board.defineRegion("center", centerRegion(numberOfPlayers));
+      board.defineClockwiseDirections([
+        Direction.N,
+        Direction.NE,
+        Direction.E,
+        Direction.SE,
+        Direction.S,
+        Direction.SW,
+        Direction.W,
+        Direction.NW,
+      ]);
       range(0, numberOfPlayers).forEach((n) =>
         board.defineRegion(
           "promotion",

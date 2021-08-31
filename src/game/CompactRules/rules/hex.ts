@@ -30,6 +30,14 @@ export const hex: ParameterRule = (): Rule => {
       board.defineRegion("center", centerRegion);
       board.defineRegion("promotion", promotionRegionWhite, PlayerName.White);
       board.defineRegion("promotion", promotionRegionBlack, PlayerName.Black);
+      board.defineClockwiseDirections([
+        Direction.H2,
+        Direction.H4,
+        Direction.H6,
+        Direction.H8,
+        Direction.H10,
+        Direction.H12,
+      ]);
       return { board, numberOfPlayers };
     },
     onBoardCreate: ({ board, numberOfPlayers }): OnBoardCreate => {

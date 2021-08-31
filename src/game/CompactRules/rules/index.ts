@@ -27,3 +27,4 @@ export * from "./stalemate";
 export * from "./threeCheck";
 export * from "./verticallyCylindrical";
 export * from "./royallyScrewed";
+export * from "./pawnOrbit";

@@ -33,4 +33,13 @@ export class Adjacencies extends Map<Direction, string[]> {
   getAllAdjacencies(): string[] {
     return Object.values(this.dictionary).flat().filter(isPresent);
   }
+
+  getClockwiseOrderedLocations(clockwiseOrder: Direction[]): string[] {
+    // TODO: doesn't handle multiple adjacencies to same square
+    return clockwiseOrder.flatMap((dir) => this.dictionary[dir]).filter(isPresent);
+  }
+
+  getAntiClockwiseOrderedLocations(clockwiseOrder: Direction[]): string[] {
+    return this.getClockwiseOrderedLocations(clockwiseOrder).reverse();
+  }
 }

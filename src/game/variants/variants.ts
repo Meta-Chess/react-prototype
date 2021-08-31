@@ -155,7 +155,8 @@ export type FutureVariantName =
   | "extinction"
   | "centerfold"
   | "fortifications"
-  | "royallyScrewed";
+  | "royallyScrewed"
+  | "pawnOrbit";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   atomic: {
@@ -167,6 +168,16 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     implemented: true,
     ruleNames: ["atomic"],
     complexity: 1,
+  },
+  pawnOrbit: {
+    title: "Pawn Orbit",
+    shortDescription:
+      "Pawns can rotate pieces around themselves clockwise or anticlockwise.",
+    traits: ["Piece", "Ability"],
+    imageName: "pawnOrbitImage",
+    implemented: true,
+    ruleNames: ["pawnOrbit"],
+    complexity: 3,
   },
   royallyScrewed: {
     title: "Royally Screwed",
