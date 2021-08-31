@@ -35,9 +35,9 @@ export const allRuleSettings: {
     },
   },
   noForkSettings: {
-    "A fork means attacking a minimum of": {
+    "No Attacking More Than": {
       paramType: ParamSettingType.Integer,
-      defaultValue: 2,
+      defaultValue: 1,
       allowValue: (value: number): boolean => {
         return value > -1 || value < 100;
       },

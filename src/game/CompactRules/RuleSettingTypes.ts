@@ -30,7 +30,7 @@ export interface AllRuleParamValue {
   "Number of Checks": number;
   "Forced Pull": boolean;
   "Piece Cycles": PieceName[][];
-  "A fork means attacking a minimum of": number;
+  "No Attacking More Than": number;
   "Excited At": number;
   "True Fatigue": boolean;
   "King Can't Move": boolean;
