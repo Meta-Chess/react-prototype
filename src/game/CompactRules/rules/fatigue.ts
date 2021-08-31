@@ -8,8 +8,11 @@ import {
   InPostMoveGenerationFilter,
 } from "../CompactRules";
 import { isPresent } from "utilities";
+import { getDefaultParams } from "../utilities";
 
-export const fatigue: ParameterRule = (): Rule => {
+export const fatigue: ParameterRule = (
+  ruleParams = getDefaultParams("fatigueSettings")
+): Rule => {
   return {
     title: "Fatigue",
     description:
@@ -39,7 +42,11 @@ export const fatigue: ParameterRule = (): Rule => {
             gaits: gaits
               .filter((g) => !g.mustNotCapture)
               .map((g) => {
-                return { ...g, mustCapture: true };
+                return {
+                  ...g,
+                  mustCapture: true,
+                  mustNotCapture: ruleParams["True Fatigue"],
+                };
               }),
             piece,
           }
