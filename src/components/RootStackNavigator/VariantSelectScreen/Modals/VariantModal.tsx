@@ -13,7 +13,6 @@ import {
 import { ParamOptions } from "./ParamOptions";
 import { optionsChangeRuleParam } from "game/variantAndRuleProcessing";
 import { keys } from "utilities";
-import { render } from "react-dom";
 
 export interface VariantModalInfo {
   activated: boolean;
