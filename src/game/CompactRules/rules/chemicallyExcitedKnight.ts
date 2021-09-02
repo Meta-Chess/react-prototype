@@ -41,7 +41,10 @@ export const chemicallyExcitedKnight: ParameterRule = (
             noForkSearch: false,
             chainReactionSearch: false,
           }).findPaths();
-          if (moves.filter(doesCapture).length > (ruleParams["Excited At"] || 2) - 1) {
+          const excitedAt =
+            ruleParams["Excited At"] === undefined ? 2 : ruleParams["Excited At"];
+          const safeAttack = excitedAt - 1;
+          if (moves.filter(doesCapture).length > safeAttack) {
             const knightSquarePieces = board.getPiecesAt(knight.location);
             knightSquarePieces.forEach((piece, index) => {
               if (piece.id === knight.id) {

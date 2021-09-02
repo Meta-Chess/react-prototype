@@ -22,7 +22,10 @@ export const noFork: ParameterRule = (
         ...input,
         filtered: isThereAnyKnightFork({
           ...input,
-          minFork: ruleParams["No Attacking More Than"] || 1,
+          minFork:
+            ruleParams["No Attacking More Than"] === undefined
+              ? 1
+              : ruleParams["No Attacking More Than"],
         }),
       };
     },

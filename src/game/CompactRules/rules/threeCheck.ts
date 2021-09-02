@@ -21,7 +21,12 @@ export const threeCheck: ParameterRule = (
         return { playerName, game, gameClones, interrupt, dead };
       const playerIndex = game.players.findIndex((player) => player.name === playerName);
 
-      if (checkCounters[playerIndex] >= (ruleParams["Number of Checks"] || 1))
+      if (
+        checkCounters[playerIndex] >=
+        (ruleParams["Number of Checks"] === undefined
+          ? 1
+          : ruleParams["Number of Checks"])
+      )
         return {
           playerName,
           game,
