@@ -44,7 +44,7 @@ export const allRuleSettings: {
     },
   },
   patheticKingSettings: {
-    "Kings cannot move": {
+    "And cannot move": {
       paramType: ParamSettingType.Boolean,
       defaultValue: false,
     },

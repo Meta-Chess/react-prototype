@@ -11,7 +11,7 @@ export const patheticKing: ParameterRule = (
     onGaitsGeneratedModify: ({ gaits, piece }): OnGaitsGeneratedModify => ({
       gaits:
         piece.name === PieceName.King
-          ? ruleParams["Kings cannot move"] || false
+          ? ruleParams["And cannot move"] || false
             ? gaits.flatMap((_gait) => [])
             : gaits.flatMap((gait) => [{ ...gait, mustNotCapture: true }])
           : gaits,
