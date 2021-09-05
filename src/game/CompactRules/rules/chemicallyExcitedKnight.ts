@@ -8,8 +8,11 @@ import {
 import { Pather } from "game/Pather";
 import { allAdjacencies, addAnimationTokenToSquare, doesCapture } from "../utilities";
 import { uniq } from "lodash";
+import { getDefaultParams } from "../utilities";
 
-export const chemicallyExcitedKnight: ParameterRule = (): Rule => {
+export const chemicallyExcitedKnight: ParameterRule = (
+  ruleParams = getDefaultParams("chemicallyExcitedKnightSettings")
+): Rule => {
   return {
     title: "Chemically Excited Knight",
     //thinking maybe have this variant be 'see' 3 enemy pieces (with scanner update)
@@ -38,7 +41,10 @@ export const chemicallyExcitedKnight: ParameterRule = (): Rule => {
             noForkSearch: false,
             chainReactionSearch: false,
           }).findPaths();
-          if (moves.filter(doesCapture).length > 2) {
+          const excitedAt =
+            ruleParams["Excited At"] === undefined ? 2 : ruleParams["Excited At"];
+          const safeAttack = excitedAt - 1;
+          if (moves.filter(doesCapture).length > safeAttack) {
             const knightSquarePieces = board.getPiecesAt(knight.location);
             knightSquarePieces.forEach((piece, index) => {
               if (piece.id === knight.id) {

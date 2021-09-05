@@ -25,6 +25,36 @@ export const allRuleSettings: {
       },
     },
   },
+  chemicallyExcitedKnightSettings: {
+    "Excited At": {
+      paramType: ParamSettingType.Integer,
+      defaultValue: 3,
+      allowValue: (value: number): boolean => {
+        return value > -1 || value < 100;
+      },
+    },
+  },
+  noForkSettings: {
+    "No Attacking More Than": {
+      paramType: ParamSettingType.Integer,
+      defaultValue: 1,
+      allowValue: (value: number): boolean => {
+        return value > -1 || value < 100;
+      },
+    },
+  },
+  patheticKingSettings: {
+    "And cannot move": {
+      paramType: ParamSettingType.Boolean,
+      defaultValue: false,
+    },
+  },
+  fatigueSettings: {
+    "True Fatigue": {
+      paramType: ParamSettingType.Boolean,
+      defaultValue: false,
+    },
+  },
   pullSettings: {
     "Forced Pull": {
       paramType: ParamSettingType.Boolean,

@@ -30,6 +30,10 @@ export interface AllRuleParamValue {
   "Number of Checks": number;
   "Forced Pull": boolean;
   "Piece Cycles": PieceName[][];
+  "No Attacking More Than": number;
+  "Excited At": number;
+  "True Fatigue": boolean;
+  "And cannot move": boolean;
 }
 
 export type ParamName = keyof AllRuleParamValue;

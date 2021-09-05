@@ -40,6 +40,7 @@ export const VariantModal: SFC<Props> = ({
   );
 
   // changes keys for parameter options, so that reset refreshes all the components
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [renderKeys, reRenderKeys] = useState(false);
   return (
     <ModalCard style={style} title={variantModalInfo.variant}>
@@ -92,7 +93,10 @@ export const VariantModal: SFC<Props> = ({
                   });
                 });
             }
-            reRenderKeys(!renderKeys);
+            setVariantModalInfo({ activated: false });
+            // WARNING: something gross is going on in the reset button - if we dont close the modal, the state wont set to default when closing through done...
+            // current behavior is totally convenient though so leaving it...
+            // reRenderKeys(!renderKeys);
           }}
         />
         <ButtonLight
