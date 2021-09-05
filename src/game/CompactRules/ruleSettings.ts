@@ -40,7 +40,7 @@ export const allRuleSettings: {
         value;
         return true;
       },
-      excludedPieces: [PieceName.Pawn],
+      excludedPieces: [],
     },
   },
   royallyScrewedSettings: {
@@ -52,7 +52,7 @@ export const allRuleSettings: {
         value;
         return true;
       },
-      excludedPieces: [PieceName.Pawn],
+      excludedPieces: [],
     },
   },
 };
