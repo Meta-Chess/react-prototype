@@ -36,7 +36,6 @@ const VariantTileInfo: SFC<VariantTileInfoProps> = ({ style, variant }) => {
 
 const Container = styled(View)`
   justify-content: space-between;
-  background-color: ${Colors.DARK.toString()};
   padding-horizontal: 12px;
   padding-vertical: 8px;
 `;
