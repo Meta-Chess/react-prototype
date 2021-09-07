@@ -37,9 +37,8 @@ const VariantSelectScreen: FC = () => {
   });
 
   const [activeFilters, setActiveFilters] = useState<TraitName[]>([]);
-  const displayVariants: FutureVariantName[] = getFilteredVariantsInDisplayOrder(
-    activeFilters
-  );
+  const displayVariants: FutureVariantName[] =
+    getFilteredVariantsInDisplayOrder(activeFilters);
 
   const [selectedVariants, setSelectedVariants] = useState<
     { [key in FormatName]: FutureVariantName[] }

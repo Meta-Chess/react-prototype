@@ -98,20 +98,22 @@ export const PieceCycleRow: SFC<Props> = ({
   );
 };
 
-const onPieceButtonPress = (
-  pieceName: PieceName,
-  optionPieceCycles: PieceName[][],
-  setOptionPieceCycles: (optionPieceCycles: PieceName[][]) => void
-) => (): void => {
-  setOptionPieceCycles(
-    optionPieceCycles
-      .map((pieceCycle) => pieceCycle.filter((name) => pieceName !== name))
-      .filter(
-        (pieceCycle, index, pieceCycles) =>
-          pieceCycle.length > 1 || index === pieceCycles.length - 1
-      )
-  );
-};
+const onPieceButtonPress =
+  (
+    pieceName: PieceName,
+    optionPieceCycles: PieceName[][],
+    setOptionPieceCycles: (optionPieceCycles: PieceName[][]) => void
+  ) =>
+  (): void => {
+    setOptionPieceCycles(
+      optionPieceCycles
+        .map((pieceCycle) => pieceCycle.filter((name) => pieceName !== name))
+        .filter(
+          (pieceCycle, index, pieceCycles) =>
+            pieceCycle.length > 1 || index === pieceCycles.length - 1
+        )
+    );
+  };
 
 const PiecesAndArrowsContainer = styled(View)`
   flex: 1;
