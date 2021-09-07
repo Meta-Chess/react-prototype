@@ -9,7 +9,6 @@ export const royallyScrewed: ParameterRule = (
   return {
     title: "Royally Screwed",
     description: "After every move, friendly kings and queens swap places.",
-
     postMove: ({ game, interrupt, board, move, currentTurn }): PostMove => {
       const pieceCycleParam = ruleParams["Piece Cycles"];
       if (!pieceCycleParam) return { game, interrupt, board, move, currentTurn };

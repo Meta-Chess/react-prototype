@@ -13,6 +13,7 @@ interface Props {
   pieceCycle: PieceName[];
   optionPieceCycles: PieceName[][];
   setOptionPieceCycles: (optionPieceCycles: PieceName[][]) => void;
+  isSet?: boolean;
 }
 
 export const PieceCycleRow: SFC<Props> = ({
@@ -20,6 +21,7 @@ export const PieceCycleRow: SFC<Props> = ({
   pieceCycle,
   optionPieceCycles,
   setOptionPieceCycles,
+  isSet = false,
   style,
 }) => {
   const lastCycleRow = index === optionPieceCycles.length - 1;
@@ -39,10 +41,14 @@ export const PieceCycleRow: SFC<Props> = ({
             return (
               <View style={{ flexDirection: "row" }} key={pieceName}>
                 <View style={{ height: 40, justifyContent: "center" }}>
-                  <ArrowForwardIcon
-                    size={20}
-                    color={Colors.MCHESS_BLUE.mix(Colors.GREY, 0.9).toString()}
-                  />
+                  {isSet ? (
+                    <View style={{ width: 8 }} />
+                  ) : (
+                    <ArrowForwardIcon
+                      size={20}
+                      color={Colors.MCHESS_BLUE.mix(Colors.GREY, 0.9).toString()}
+                    />
+                  )}
                 </View>
                 <PieceButton
                   key={pieceName}
@@ -68,7 +74,7 @@ export const PieceCycleRow: SFC<Props> = ({
                     setOptionPieceCycles([...optionPieceCycles, []]);
                   }}
                   style={{ marginHorizontal: 12 }}
-                  label={"New Cycle"}
+                  label={isSet ? "New Set" : "New Cycle"}
                   size={"Small"}
                 />
               )}
@@ -82,7 +88,7 @@ export const PieceCycleRow: SFC<Props> = ({
                 ]);
               }}
               style={{ marginHorizontal: 12 }}
-              label={"Delete Cycle"}
+              label={isSet ? "Delete Set" : "Delete Cycle"}
               size={"Small"}
             />
           )}

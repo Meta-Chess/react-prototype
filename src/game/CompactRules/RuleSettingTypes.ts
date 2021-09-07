@@ -23,6 +23,7 @@ export type ParamSettingPieceCycles = {
   allowValue: (value: PieceName[][]) => boolean;
   //describeValue: (value: PieceName[][]) => string;
   excludedPieces: PieceName[];
+  usePieceSets?: boolean; // if true removes graphical arrows and language from cycle to set for the param
 };
 
 export interface AllRuleParamValue {
