@@ -51,6 +51,8 @@ export enum PieceName {
   Knight,
 }
 
+export const allPossiblePieceNames = getValues<PieceName>(PieceName);
+
 export enum AccessMarker {
   Normal,
 }
@@ -101,7 +103,7 @@ interface TokenData {
   id?: number;
   counters?: number[];
   pieceVisualData?: PieceVisualData;
-  extinctionData?: PieceName[];
+  extinctionData?: PieceName[][];
 }
 
 export interface PieceVisualData {

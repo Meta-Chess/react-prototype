@@ -31,6 +31,7 @@ export interface AllRuleParamValue {
   "Number of Checks": number;
   "Forced Pull": boolean;
   "Piece Cycles": PieceName[][];
+  Species: PieceName[][];
   "No Attacking More Than": number;
   "Excited At": number;
   "True Fatigue": boolean;
