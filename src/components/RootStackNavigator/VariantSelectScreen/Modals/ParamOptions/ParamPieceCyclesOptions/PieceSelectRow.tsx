@@ -45,13 +45,15 @@ export const PieceSelectRow: SFC<Props> = ({
   );
 };
 
-const onPieceButtonPress = (
-  pieceName: PieceName,
-  optionPieceCycles: PieceName[][],
-  setOptionPieceCycles: (optionPieceCycles: PieceName[][]) => void
-) => (): void => {
-  setOptionPieceCycles([
-    ...optionPieceCycles.slice(0, optionPieceCycles.length - 1),
-    [...optionPieceCycles[optionPieceCycles.length - 1], pieceName],
-  ]);
-};
+const onPieceButtonPress =
+  (
+    pieceName: PieceName,
+    optionPieceCycles: PieceName[][],
+    setOptionPieceCycles: (optionPieceCycles: PieceName[][]) => void
+  ) =>
+  (): void => {
+    setOptionPieceCycles([
+      ...optionPieceCycles.slice(0, optionPieceCycles.length - 1),
+      [...optionPieceCycles[optionPieceCycles.length - 1], pieceName],
+    ]);
+  };

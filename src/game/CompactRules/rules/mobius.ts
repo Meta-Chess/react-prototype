@@ -26,12 +26,12 @@ export const mobius: ParameterRule = (): Rule => {
   };
 };
 
-const mobiusAdjacenciesRule = (bounds: RankAndFileBounds) => (
-  square: Square
-): Adjacency[] => {
-  const locationUnderSquare = getLocationUnderSquare(square, bounds);
-  return [{ direction: Direction.Down, location: locationUnderSquare }];
-};
+const mobiusAdjacenciesRule =
+  (bounds: RankAndFileBounds) =>
+  (square: Square): Adjacency[] => {
+    const locationUnderSquare = getLocationUnderSquare(square, bounds);
+    return [{ direction: Direction.Down, location: locationUnderSquare }];
+  };
 
 const getLocationUnderSquare = (
   square: Square,

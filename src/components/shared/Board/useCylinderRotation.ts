@@ -38,8 +38,9 @@ export const useCylinderRotation = (
       : 0;
   }, [assignedPlayer, players, verticalRotationAllowed, numberOfRanks]);
 
-  const animationOffset = useRef(new Animated.ValueXY({ x: 0, y: defaultYOffset }))
-    .current;
+  const animationOffset = useRef(
+    new Animated.ValueXY({ x: 0, y: defaultYOffset })
+  ).current;
   const animationTargetX = useRef(0);
   const animationTargetY = useRef(defaultYOffset);
 

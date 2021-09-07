@@ -75,3 +75,6 @@ export { chainReactionImage };
 
 import royallyScrewedImage from "./royallyScrewedImage.png";
 export { royallyScrewedImage };
+
+import extinctionImage from "./extinctionImage.png";
+export { extinctionImage };

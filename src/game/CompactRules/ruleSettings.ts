@@ -1,9 +1,12 @@
 import { ParamName, ParamSetting, ParamSettingType } from "./RuleSettingTypes";
 import { PieceName } from "game/types";
+import { RuleName } from ".";
 
-//NOTE: It's important we have the form ruleName + "Settings" as the keys of this dictionary
+export type RuleSetting = `${RuleName}Settings`;
+
+// NOTE: It's important we have the form ruleName + "Settings" as the keys of this dictionary
 export const allRuleSettings: {
-  [ruleSettingsName: string]: {
+  [ruleSetting in RuleSetting]?: {
     [paramName in ParamName]?: ParamSetting;
   };
 } = {
@@ -71,6 +74,19 @@ export const allRuleSettings: {
         return true;
       },
       excludedPieces: [],
+    },
+  },
+  extinctionSettings: {
+    Species: {
+      paramType: ParamSettingType.PieceCycles,
+      defaultValue: [[]],
+      allowValue: (value: PieceName[][]): boolean => {
+        // TODO: proper restriction - i.e. no single or empty piece cycle
+        value;
+        return true;
+      },
+      excludedPieces: [],
+      usePieceSets: true,
     },
   },
   royallyScrewedSettings: {

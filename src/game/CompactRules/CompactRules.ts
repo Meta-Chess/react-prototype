@@ -14,6 +14,7 @@ import { variantsToRules } from "game/variantAndRuleProcessing/variantsToRules";
 import { RuleParamValue, RuleSetting } from "./RuleSettingTypes";
 import { uniq } from "lodash";
 import { keys } from "utilities";
+import { Player } from "game/Player";
 
 // Note: These linting exceptions should only ever be used with great caution
 // Take care to check extra carefully for errors in this file because we have less type safety
@@ -136,10 +137,12 @@ function compareRulesByList(t1: string, t2: string, list: string[]): number {
 const ruleOrderPerInterruptionPoint: {
   [key in InterruptionName]?: (RuleName | "theRest")[];
 } = {
+  lethalCondition: ["extinction", "theRest", "loseWithNoKings"],
   processMoves: ["pull", "theRest", "promotion", "chainReaction"],
   lossCondition: ["theRest", "check", "threeCheck"],
   inPostMoveGenerationFilter: ["theRest", "check"],
   onPieceDisplaced: ["theRest", "promotion"],
+  postMove: ["royallyScrewed", "chemicallyExcitedKnight", "theRest"],
 };
 
 export interface AfterBoardCreation {
@@ -207,10 +210,9 @@ export interface InPostMoveGenerationFilter {
   patherParams: PatherParams;
   filtered: boolean;
 }
-
 export interface LethalCondition {
-  board: Board;
-  player: PlayerName;
+  game: Game;
+  player: Player;
   dead: string | false;
 }
 

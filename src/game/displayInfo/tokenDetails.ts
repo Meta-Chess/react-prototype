@@ -53,4 +53,9 @@ export const tokenDetails: { [k in TokenName]: Details } = {
     description:
       "How many times has each player been in check? The board is keeping count.",
   },
+  [TokenName.Extinction]: {
+    name: "Extinction Token",
+    description:
+      "Keeps track of what piece types a player has for the purpose of checking extinction.",
+  },
 };

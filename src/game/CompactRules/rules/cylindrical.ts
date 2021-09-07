@@ -16,34 +16,33 @@ export const cylindrical: ParameterRule = (): Rule => {
   };
 };
 
-const cylindricalAdjacenciesRule = (
-  { minFile, maxFile }: RankAndFileBounds,
-  board: Board
-) => (square: Square): Adjacency[] => {
-  const { rank, file } = square.getCoordinates();
-  return file === minFile
-    ? [
-        { direction: Direction.W, location: toLocation({ rank, file: maxFile }) },
-        ...(board
-          ?.squareAt(toLocation({ rank, file: maxFile }))
-          ?.go(Direction.N)
-          ?.map((location) => ({ direction: Direction.NW, location })) || []),
-        ...(board
-          ?.squareAt(toLocation({ rank, file: maxFile }))
-          ?.go(Direction.S)
-          ?.map((location) => ({ direction: Direction.SW, location })) || []),
-      ]
-    : file === maxFile
-    ? [
-        { direction: Direction.E, location: toLocation({ rank, file: minFile }) },
-        ...(board
-          ?.squareAt(toLocation({ rank, file: minFile }))
-          ?.go(Direction.N)
-          ?.map((location) => ({ direction: Direction.NE, location })) || []),
-        ...(board
-          ?.squareAt(toLocation({ rank, file: minFile }))
-          ?.go(Direction.S)
-          ?.map((location) => ({ direction: Direction.SE, location })) || []),
-      ]
-    : [];
-};
+const cylindricalAdjacenciesRule =
+  ({ minFile, maxFile }: RankAndFileBounds, board: Board) =>
+  (square: Square): Adjacency[] => {
+    const { rank, file } = square.getCoordinates();
+    return file === minFile
+      ? [
+          { direction: Direction.W, location: toLocation({ rank, file: maxFile }) },
+          ...(board
+            ?.squareAt(toLocation({ rank, file: maxFile }))
+            ?.go(Direction.N)
+            ?.map((location) => ({ direction: Direction.NW, location })) || []),
+          ...(board
+            ?.squareAt(toLocation({ rank, file: maxFile }))
+            ?.go(Direction.S)
+            ?.map((location) => ({ direction: Direction.SW, location })) || []),
+        ]
+      : file === maxFile
+      ? [
+          { direction: Direction.E, location: toLocation({ rank, file: minFile }) },
+          ...(board
+            ?.squareAt(toLocation({ rank, file: minFile }))
+            ?.go(Direction.N)
+            ?.map((location) => ({ direction: Direction.NE, location })) || []),
+          ...(board
+            ?.squareAt(toLocation({ rank, file: minFile }))
+            ?.go(Direction.S)
+            ?.map((location) => ({ direction: Direction.SE, location })) || []),
+        ]
+      : [];
+  };

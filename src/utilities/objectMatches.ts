@@ -1,10 +1,11 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-export const objectMatches = (comparisonObject: Obj) => (object: any): boolean => {
-  const matches = Object.keys(comparisonObject).reduce(
-    (acc, key) => acc && !!object[key] && object[key] === comparisonObject[key],
-    true
-  );
-  return matches;
-};
+import { keys } from "./keys";
 
-type Obj = { [key in string | number | symbol]: unknown };
+export const objectMatches =
+  <K extends string | symbol | number>(comparisonObject: { [k in K]?: unknown }) =>
+  (object: { [k in K]?: unknown }): boolean => {
+    const matches = keys(comparisonObject).reduce(
+      (acc, key) => acc && !!object[key] && object[key] === comparisonObject[key],
+      true
+    );
+    return matches;
+  };

@@ -27,13 +27,11 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
 
   if (!square) return <View style={[style, { width: size, height: size }]} />;
 
-  const backgroundColor = Colors.SQUARE[
-    colorIndex({ ...square.getCoordinates(), shape })
-  ].string();
+  const backgroundColor =
+    Colors.SQUARE[colorIndex({ ...square.getCoordinates(), shape })].string();
 
-  const piecesOrPieceAnimationsOnSquare: (string | Token)[] = getDisplayPiecesAndTokens(
-    square
-  );
+  const piecesOrPieceAnimationsOnSquare: (string | Token)[] =
+    getDisplayPiecesAndTokens(square);
   const { pieceIds: piecesUnderSquare } = gameMaster.interrupt.for.piecesUnderSquare({
     // TODO: handle piece animation with chess+ and shadows
     square,

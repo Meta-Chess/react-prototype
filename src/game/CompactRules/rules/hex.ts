@@ -73,29 +73,49 @@ const generateHexSquares = (): { location: string; square: Square }[] =>
       return { location, square: new Square(location, { rank: y, file: x }) };
     });
 
-const hexAdjacencies = (_bounds: RankAndFileBounds) => (square: Square): Adjacency[] => {
-  const { rank, file } = square.getCoordinates();
-  return [
-    { direction: Direction.H1, location: toLocation({ rank: rank + 3, file: file + 1 }) },
-    { direction: Direction.H2, location: toLocation({ rank: rank + 1, file: file + 1 }) },
-    { direction: Direction.H3, location: toLocation({ rank, file: file + 2 }) },
-    { direction: Direction.H4, location: toLocation({ rank: rank - 1, file: file + 1 }) },
-    { direction: Direction.H5, location: toLocation({ rank: rank - 3, file: file + 1 }) },
-    { direction: Direction.H6, location: toLocation({ rank: rank - 2, file }) },
-    { direction: Direction.H7, location: toLocation({ rank: rank - 3, file: file - 1 }) },
-    { direction: Direction.H8, location: toLocation({ rank: rank - 1, file: file - 1 }) },
-    { direction: Direction.H9, location: toLocation({ rank, file: file - 2 }) },
-    {
-      direction: Direction.H10,
-      location: toLocation({ rank: rank + 1, file: file - 1 }),
-    },
-    {
-      direction: Direction.H11,
-      location: toLocation({ rank: rank + 3, file: file - 1 }),
-    },
-    { direction: Direction.H12, location: toLocation({ rank: rank + 2, file }) },
-  ];
-};
+const hexAdjacencies =
+  (_bounds: RankAndFileBounds) =>
+  (square: Square): Adjacency[] => {
+    const { rank, file } = square.getCoordinates();
+    return [
+      {
+        direction: Direction.H1,
+        location: toLocation({ rank: rank + 3, file: file + 1 }),
+      },
+      {
+        direction: Direction.H2,
+        location: toLocation({ rank: rank + 1, file: file + 1 }),
+      },
+      { direction: Direction.H3, location: toLocation({ rank, file: file + 2 }) },
+      {
+        direction: Direction.H4,
+        location: toLocation({ rank: rank - 1, file: file + 1 }),
+      },
+      {
+        direction: Direction.H5,
+        location: toLocation({ rank: rank - 3, file: file + 1 }),
+      },
+      { direction: Direction.H6, location: toLocation({ rank: rank - 2, file }) },
+      {
+        direction: Direction.H7,
+        location: toLocation({ rank: rank - 3, file: file - 1 }),
+      },
+      {
+        direction: Direction.H8,
+        location: toLocation({ rank: rank - 1, file: file - 1 }),
+      },
+      { direction: Direction.H9, location: toLocation({ rank, file: file - 2 }) },
+      {
+        direction: Direction.H10,
+        location: toLocation({ rank: rank + 1, file: file - 1 }),
+      },
+      {
+        direction: Direction.H11,
+        location: toLocation({ rank: rank + 3, file: file - 1 }),
+      },
+      { direction: Direction.H12, location: toLocation({ rank: rank + 2, file }) },
+    ];
+  };
 
 const hexPieceSetupRule = (square: Square): Piece[] => {
   const { rank, file } = square.getCoordinates();

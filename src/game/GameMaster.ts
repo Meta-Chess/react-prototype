@@ -524,8 +524,8 @@ export class GameMaster {
   applyLossConditions(): void {
     this.game.alivePlayers().forEach((player) => {
       let { dead } = this.interrupt.for.lethalCondition({
-        board: this.game.board,
-        player: player.name,
+        game: this.game,
+        player: player,
         dead: false,
       });
       if (dead === false) {

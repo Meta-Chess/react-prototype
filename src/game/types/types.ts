@@ -51,6 +51,8 @@ export enum PieceName {
   Knight,
 }
 
+export const allPossiblePieceNames = getValues<PieceName>(PieceName);
+
 export enum AccessMarker {
   Normal,
 }
@@ -73,6 +75,7 @@ export enum TokenName {
   Shape,
   ActiveCastling,
   PassiveCastling,
+  Extinction,
   CaptureToken,
   Fatigue,
   AnimationToken,
@@ -86,18 +89,21 @@ export enum AnimationType {
 export enum PieceAnimationType {
   chemicallyExcited = "chemicallyExcited",
 }
+
 interface TokenData {
+  turnNumber?: number;
   history?: string[];
   shape?: SquareShape;
   pieceId?: string;
   condition?: (piece: Piece) => boolean;
-  type?: AnimationType;
+  type?: AnimationType; // TODO: type is a special word, maybe this key should be animationType?
   createdAt?: number;
   duration?: number;
   delay?: number;
   id?: number;
   counters?: number[];
   pieceVisualData?: PieceVisualData;
+  extinctionData?: PieceName[][];
 }
 
 export interface PieceVisualData {

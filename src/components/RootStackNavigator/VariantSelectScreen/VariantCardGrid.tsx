@@ -29,9 +29,8 @@ const VariantCardGrid: SFC<Props> = ({
   setVariantModalInfo,
   ruleNamesWithParams = {},
 }) => {
-  const partitionedDisplayVariants = partitionDisplayVariantsByComplexity(
-    displayVariants
-  );
+  const partitionedDisplayVariants =
+    partitionDisplayVariantsByComplexity(displayVariants);
   return (
     <View style={style}>
       <ScrollView

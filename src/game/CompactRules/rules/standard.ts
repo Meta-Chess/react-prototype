@@ -53,21 +53,33 @@ const generateStandardSquares = (): { location: string; square: Square }[] =>
       return { location, square: new Square(location, { rank: y, file: x }) };
     });
 
-const standardAdjacencies = (_bounds: RankAndFileBounds) => (
-  square: Square
-): Adjacency[] => {
-  const { rank, file } = square.getCoordinates();
-  return [
-    { direction: Direction.N, location: toLocation({ rank: rank + 1, file }) },
-    { direction: Direction.NE, location: toLocation({ rank: rank + 1, file: file + 1 }) },
-    { direction: Direction.E, location: toLocation({ rank, file: file + 1 }) },
-    { direction: Direction.SE, location: toLocation({ rank: rank - 1, file: file + 1 }) },
-    { direction: Direction.S, location: toLocation({ rank: rank - 1, file }) },
-    { direction: Direction.SW, location: toLocation({ rank: rank - 1, file: file - 1 }) },
-    { direction: Direction.W, location: toLocation({ rank, file: file - 1 }) },
-    { direction: Direction.NW, location: toLocation({ rank: rank + 1, file: file - 1 }) },
-  ];
-};
+const standardAdjacencies =
+  (_bounds: RankAndFileBounds) =>
+  (square: Square): Adjacency[] => {
+    const { rank, file } = square.getCoordinates();
+    return [
+      { direction: Direction.N, location: toLocation({ rank: rank + 1, file }) },
+      {
+        direction: Direction.NE,
+        location: toLocation({ rank: rank + 1, file: file + 1 }),
+      },
+      { direction: Direction.E, location: toLocation({ rank, file: file + 1 }) },
+      {
+        direction: Direction.SE,
+        location: toLocation({ rank: rank - 1, file: file + 1 }),
+      },
+      { direction: Direction.S, location: toLocation({ rank: rank - 1, file }) },
+      {
+        direction: Direction.SW,
+        location: toLocation({ rank: rank - 1, file: file - 1 }),
+      },
+      { direction: Direction.W, location: toLocation({ rank, file: file - 1 }) },
+      {
+        direction: Direction.NW,
+        location: toLocation({ rank: rank + 1, file: file - 1 }),
+      },
+    ];
+  };
 
 const standardPiecesRule = (square: Square): Piece[] => {
   const { rank, file } = square.getCoordinates();

@@ -27,99 +27,99 @@ const generateEdgeStitchingSquares = (): { location: string; square: Square }[] 
     };
   });
 
-const cylindricalAdjacenciesRule = ({ minFile, maxFile }: RankAndFileBounds) => (
-  square: Square
-): Adjacency[] => {
-  const { rank, file } = square.getCoordinates();
-  return file === minFile
-    ? [
-        {
-          direction: Direction.H7,
-          location: toLocation({ rank: rank - 3, file: 0, prefix: "E" }),
-        },
-        {
-          direction: Direction.H8,
-          location: toLocation({ rank: rank - 1, file: 0, prefix: "E" }),
-        },
-        { direction: Direction.H9, location: toLocation({ rank, file: maxFile }) },
-        {
-          direction: Direction.H10,
-          location: toLocation({ rank: rank + 1, file: 0, prefix: "E" }),
-        },
-        {
-          direction: Direction.H11,
-          location: toLocation({ rank: rank + 3, file: 0, prefix: "E" }),
-        },
-      ]
-    : file === minFile + 1
-    ? [
-        {
-          direction: Direction.H9,
-          location: toLocation({ rank, file: 0, prefix: "E" }),
-        },
-      ]
-    : file === maxFile
-    ? [
-        {
-          direction: Direction.H1,
-          location: toLocation({ rank: rank + 3, file: 0, prefix: "E" }),
-        },
-        {
-          direction: Direction.H2,
-          location: toLocation({ rank: rank + 1, file: 0, prefix: "E" }),
-        },
-        { direction: Direction.H3, location: toLocation({ rank, file: minFile }) },
-        {
-          direction: Direction.H4,
-          location: toLocation({ rank: rank - 1, file: 0, prefix: "E" }),
-        },
-        {
-          direction: Direction.H5,
-          location: toLocation({ rank: rank - 3, file: 0, prefix: "E" }),
-        },
-      ]
-    : file === maxFile - 1
-    ? [
-        {
-          direction: Direction.H3,
-          location: toLocation({ rank, file: 0, prefix: "E" }),
-        },
-      ]
-    : file === 0 && square.getLocation().charAt(0) === "E"
-    ? [
-        { direction: Direction.H1, location: toLocation({ rank: rank + 3, file: 1 }) },
-        { direction: Direction.H2, location: toLocation({ rank: rank + 1, file: 1 }) },
-        { direction: Direction.H3, location: toLocation({ rank, file: 2 }) },
-        { direction: Direction.H4, location: toLocation({ rank: rank - 1, file: 1 }) },
-        { direction: Direction.H5, location: toLocation({ rank: rank - 3, file: 1 }) },
-        {
-          direction: Direction.H6,
-          location: toLocation({ rank: rank - 2, file: 0, prefix: "E" }),
-        },
-        {
-          direction: Direction.H7,
-          location: toLocation({ rank: rank - 3, file: maxFile }),
-        },
-        {
-          direction: Direction.H8,
-          location: toLocation({ rank: rank - 1, file: maxFile }),
-        },
-        {
-          direction: Direction.H9,
-          location: toLocation({ rank, file: maxFile - 1 }),
-        },
-        {
-          direction: Direction.H10,
-          location: toLocation({ rank: rank + 1, file: maxFile }),
-        },
-        {
-          direction: Direction.H11,
-          location: toLocation({ rank: rank + 3, file: maxFile }),
-        },
-        {
-          direction: Direction.H12,
-          location: toLocation({ rank: rank + 2, file: 0, prefix: "E" }),
-        },
-      ]
-    : [];
-};
+const cylindricalAdjacenciesRule =
+  ({ minFile, maxFile }: RankAndFileBounds) =>
+  (square: Square): Adjacency[] => {
+    const { rank, file } = square.getCoordinates();
+    return file === minFile
+      ? [
+          {
+            direction: Direction.H7,
+            location: toLocation({ rank: rank - 3, file: 0, prefix: "E" }),
+          },
+          {
+            direction: Direction.H8,
+            location: toLocation({ rank: rank - 1, file: 0, prefix: "E" }),
+          },
+          { direction: Direction.H9, location: toLocation({ rank, file: maxFile }) },
+          {
+            direction: Direction.H10,
+            location: toLocation({ rank: rank + 1, file: 0, prefix: "E" }),
+          },
+          {
+            direction: Direction.H11,
+            location: toLocation({ rank: rank + 3, file: 0, prefix: "E" }),
+          },
+        ]
+      : file === minFile + 1
+      ? [
+          {
+            direction: Direction.H9,
+            location: toLocation({ rank, file: 0, prefix: "E" }),
+          },
+        ]
+      : file === maxFile
+      ? [
+          {
+            direction: Direction.H1,
+            location: toLocation({ rank: rank + 3, file: 0, prefix: "E" }),
+          },
+          {
+            direction: Direction.H2,
+            location: toLocation({ rank: rank + 1, file: 0, prefix: "E" }),
+          },
+          { direction: Direction.H3, location: toLocation({ rank, file: minFile }) },
+          {
+            direction: Direction.H4,
+            location: toLocation({ rank: rank - 1, file: 0, prefix: "E" }),
+          },
+          {
+            direction: Direction.H5,
+            location: toLocation({ rank: rank - 3, file: 0, prefix: "E" }),
+          },
+        ]
+      : file === maxFile - 1
+      ? [
+          {
+            direction: Direction.H3,
+            location: toLocation({ rank, file: 0, prefix: "E" }),
+          },
+        ]
+      : file === 0 && square.getLocation().charAt(0) === "E"
+      ? [
+          { direction: Direction.H1, location: toLocation({ rank: rank + 3, file: 1 }) },
+          { direction: Direction.H2, location: toLocation({ rank: rank + 1, file: 1 }) },
+          { direction: Direction.H3, location: toLocation({ rank, file: 2 }) },
+          { direction: Direction.H4, location: toLocation({ rank: rank - 1, file: 1 }) },
+          { direction: Direction.H5, location: toLocation({ rank: rank - 3, file: 1 }) },
+          {
+            direction: Direction.H6,
+            location: toLocation({ rank: rank - 2, file: 0, prefix: "E" }),
+          },
+          {
+            direction: Direction.H7,
+            location: toLocation({ rank: rank - 3, file: maxFile }),
+          },
+          {
+            direction: Direction.H8,
+            location: toLocation({ rank: rank - 1, file: maxFile }),
+          },
+          {
+            direction: Direction.H9,
+            location: toLocation({ rank, file: maxFile - 1 }),
+          },
+          {
+            direction: Direction.H10,
+            location: toLocation({ rank: rank + 1, file: maxFile }),
+          },
+          {
+            direction: Direction.H11,
+            location: toLocation({ rank: rank + 3, file: maxFile }),
+          },
+          {
+            direction: Direction.H12,
+            location: toLocation({ rank: rank + 2, file: 0, prefix: "E" }),
+          },
+        ]
+      : [];
+  };

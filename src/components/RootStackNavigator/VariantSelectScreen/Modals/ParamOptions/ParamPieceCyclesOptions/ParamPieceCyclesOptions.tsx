@@ -58,6 +58,7 @@ export const ParamPieceCyclesOptions: SFC<ParamProps> = ({
             pieceCycle={pieceCycle}
             optionPieceCycles={optionPieceCycles}
             setOptionPieceCycles={setOptionPieceCycles}
+            isSet={paramSettingPieceCycles.usePieceSets}
             style={{ paddingHorizontal: 12, paddingBottom: 12 }}
           />
         );
