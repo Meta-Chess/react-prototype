@@ -12,6 +12,7 @@ import {
 } from "game/variantAndRuleProcessing";
 import { pieceCyclesLabel } from "./pieceCyclesLabel";
 import { keys } from "utilities";
+import { ParamSettingPieceCycles } from "game/CompactRules/RuleSettingTypes";
 
 export function getVariantLabelFromParams(
   variant: FutureVariant,
@@ -23,13 +24,16 @@ export function getVariantLabelFromParams(
       const ruleName = tuple[0];
       const params = tuple[1];
       keys(params).forEach((paramName) => {
-        const paramType =
+        const ruleSetting =
           allRuleSettings[ruleName.toString() + "Settings"][
             paramName as keyof AllRuleParamValue
-          ]?.paramType;
+          ];
+
+        const paramType = ruleSetting?.paramType;
 
         if (paramType === ParamSettingType.PieceCycles) {
-          details += pieceCyclesLabel(params, paramName as ParamName);
+          const isSet = (ruleSetting as ParamSettingPieceCycles).usePieceSets;
+          details += pieceCyclesLabel(params, paramName as ParamName, isSet);
         } else {
           details += details + "\n- " + paramName + ": " + params[paramName];
         }

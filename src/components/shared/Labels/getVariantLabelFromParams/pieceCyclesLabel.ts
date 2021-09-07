@@ -2,7 +2,11 @@ import { RuleParamValues, ParamName } from "game/CompactRules";
 import { PieceName } from "game";
 import { pieceDetails } from "game/displayInfo";
 
-export function pieceCyclesLabel(params: RuleParamValues, paramName: ParamName): string {
+export function pieceCyclesLabel(
+  params: RuleParamValues,
+  paramName: ParamName,
+  isSet = false
+): string {
   let details = "";
   const pieceCycles = params[paramName] as PieceName[][];
 
@@ -11,7 +15,7 @@ export function pieceCyclesLabel(params: RuleParamValues, paramName: ParamName):
     pieceCycle
       .slice(1)
       .forEach((piece) => (cycleString += ", " + pieceDetails[piece].name));
-    details = details + "\n- Piece Cycle: " + cycleString;
+    details = details + (isSet ? "\n- Piece Set: " : "\n- Piece Cycle: ") + cycleString;
   });
 
   return details;
