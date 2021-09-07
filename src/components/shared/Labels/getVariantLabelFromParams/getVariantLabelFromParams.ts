@@ -1,7 +1,6 @@
 import { FutureVariant } from "game/variants";
 import {
   RuleNamesWithParams,
-  AllRuleParamValue,
   allRuleSettings,
   ParamSettingType,
   ParamName,
@@ -24,11 +23,7 @@ export function getVariantLabelFromParams(
       const ruleName = tuple[0];
       const params = tuple[1];
       keys(params).forEach((paramName) => {
-        const ruleSetting =
-          allRuleSettings[ruleName.toString() + "Settings"][
-            paramName as keyof AllRuleParamValue
-          ];
-
+        const ruleSetting = allRuleSettings[`${ruleName}Settings`]?.[paramName];
         const paramType = ruleSetting?.paramType;
 
         if (paramType === ParamSettingType.PieceCycles) {
