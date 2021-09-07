@@ -403,11 +403,5 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   },
 };
 
-export type AdviceLevel = "SUCCESS" | "ERROR" | "WARNING" | "NEUTRAL";
-
-interface VariantConflict {
-  variant1: FutureVariantName;
-  variant2: FutureVariantName;
-  message: string;
-  level: AdviceLevel;
-}
+export type ConflictLevel = "ERROR" | "WARNING";
+export type AdviceLevel = ConflictLevel | "SUCCESS" | "NEUTRAL";

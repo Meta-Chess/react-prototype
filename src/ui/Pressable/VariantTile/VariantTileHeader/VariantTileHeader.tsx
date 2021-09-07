@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
-import { AdviceLevel, FutureVariant } from "game";
+import { ConflictLevel, FutureVariant } from "game";
 import Color from "color";
 import { GearButton } from "./GearButton";
 import { StarIcon } from "primitives/icons";
@@ -14,28 +14,29 @@ import { keys } from "utilities";
 interface Props {
   variant: FutureVariant;
   selected: boolean;
-  conflictLevel: AdviceLevel | undefined;
+  hovered: boolean;
+  conflictLevel?: ConflictLevel | "NO_CONFLICT";
   ruleSettings?: RuleNamesWithParamSettings;
   setVariantModalInfo: (x: VariantModalInfo) => void;
 }
 
-const BACKGROUND_COLOR: { [key in AdviceLevel]: Color } = {
-  NEUTRAL: Colors.SUCCESS.fade(0.25), // TODO: maybe handle types here better
-  SUCCESS: Colors.SUCCESS.fade(0.25),
-  ERROR: Colors.ERROR.fade(0.25),
-  WARNING: Colors.WARNING.fade(0.25),
+const BACKGROUND_COLOR: { [key in ConflictLevel | "NO_CONFLICT"]: Color } = {
+  NO_CONFLICT: Colors.SUCCESS.fade(0.5),
+  ERROR: Colors.ERROR.fade(0.5),
+  WARNING: Colors.WARNING.fade(0.5),
 };
 
 export const VariantTileHeader: SFC<Props> = ({
   variant,
   selected,
+  hovered,
   ruleSettings = {},
-  conflictLevel,
+  conflictLevel = "NO_CONFLICT",
   setVariantModalInfo,
 }) => {
-  const color = !selected
-    ? Colors.DARKISH
-    : BACKGROUND_COLOR[conflictLevel || "SUCCESS"].mix(Colors.DARKISH, 0.4);
+  const color = (!selected ? Colors.DARKISH : BACKGROUND_COLOR[conflictLevel])
+    .fade(hovered ? 0.1 : 0)
+    .toString();
 
   const showGear = selected && keys(ruleSettings).length > 0;
   return (
@@ -82,12 +83,12 @@ export const VariantTileHeader: SFC<Props> = ({
   );
 };
 
-const Container = styled(View)<{ color: Color }>`
+const Container = styled(View)<{ color: string }>`
   height: 30px;
   flex-grow: 1;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ color }): string => color.toString()};
+  background-color: ${({ color }): string => color};
 `;
 
 const TitleText = styled(Text)`

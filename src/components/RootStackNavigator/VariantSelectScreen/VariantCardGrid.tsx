@@ -2,7 +2,7 @@ import React from "react";
 import { View, ScrollView } from "react-native";
 import { SFC, Colors, Text } from "primitives";
 import { VariantTile } from "ui/Pressable/VariantTile";
-import { AdviceLevel, FutureVariantName, futureVariants } from "game";
+import { ConflictLevel, FutureVariantName, futureVariants } from "game";
 import {
   complexityLevels,
   partitionDisplayVariantsByComplexity,
@@ -15,7 +15,7 @@ interface Props {
   displayVariants: FutureVariantName[];
   selectedVariants: FutureVariantName[];
   setSelectedVariants: (x: FutureVariantName[]) => void;
-  conflictLevel: AdviceLevel | undefined;
+  conflictLevel: ConflictLevel | undefined;
   setVariantModalInfo: (x: VariantModalInfo) => void;
   ruleNamesWithParams?: RuleNamesWithParams;
 }

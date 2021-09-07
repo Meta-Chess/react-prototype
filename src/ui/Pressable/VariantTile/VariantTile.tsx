@@ -1,19 +1,19 @@
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
-import { SFC, Colors } from "primitives";
-import { AdviceLevel, FutureVariant } from "game";
-import { VariantTileHeader } from "./VariantTileHeader";
+import { SFC, Colors, useHover } from "primitives";
+import { ConflictLevel, FutureVariant } from "game";
 import { VariantTileInfo } from "./VariantTileInfo";
 import { VariantTileImage } from "./VariantTileImage";
 import { Styles } from "primitives/Styles";
 import { AbsoluteView } from "ui";
 import { allRuleSettings } from "game/CompactRules";
 import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
+import { VariantTileHeader } from "./VariantTileHeader";
 interface Props {
   variant: FutureVariant;
   selected: boolean;
-  conflictLevel: AdviceLevel | undefined;
+  conflictLevel: ConflictLevel | undefined;
   onPress: () => void;
   setVariantModalInfo: (x: VariantModalInfo) => void;
   modified: boolean;
@@ -28,7 +28,9 @@ export const VariantTile: SFC<Props> = ({
   setVariantModalInfo,
   modified,
 }) => {
+  const [ref, hovered] = useHover();
   const implemented = variant.implemented;
+  const hoverState = hovered && implemented;
   const ruleSettings = Object.assign(
     {},
     ...variant.ruleNames
@@ -43,6 +45,7 @@ export const VariantTile: SFC<Props> = ({
   );
   return (
     <TouchableContainer
+      ref={ref}
       style={style}
       onPress={onPress}
       activeOpacity={0.6}
@@ -54,8 +57,9 @@ export const VariantTile: SFC<Props> = ({
         conflictLevel={conflictLevel}
         ruleSettings={ruleSettings}
         setVariantModalInfo={setVariantModalInfo}
+        hovered={hoverState}
       />
-      <VariantTileBody>
+      <VariantTileBody hovered={hoverState}>
         <VariantTileInfo variant={variant} style={{ flex: 1 }} />
         <VariantTileImage
           variant={variant}
@@ -76,9 +80,10 @@ const TouchableContainer = styled(TouchableOpacity)`
   overflow: hidden;
 `;
 
-const VariantTileBody = styled(View)`
+const VariantTileBody = styled(View)<{ hovered: boolean }>`
   flex-direction: row;
-  background-color: ${Colors.DARK.toString()};
+  background-color: ${({ hovered }): string =>
+    Colors.DARK.fade(hovered ? 0.1 : 0).toString()};
 `;
 
 const CoverView = styled(AbsoluteView)`
