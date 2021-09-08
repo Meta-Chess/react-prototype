@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
 import { Piece, ShadowPiece, PieceAnimation } from "../Piece";
 import { GridArrangement } from "./GridArrangement";
-import { Square, SquareShape } from "game";
+import { RuleName, Square, SquareShape } from "game";
 import { TilePressableContainer } from "./TilePressableContainer";
 import { AnimationOverlays } from "./AnimationOverlays";
 import { Highlight } from "./Highlight";
@@ -13,6 +13,7 @@ import { Token } from "game/types";
 import { getDisplayPiecesAndTokens } from "./getDisplayPiecesAndTokens";
 import { hexSvgScaleFactor } from "primitives/Tiles";
 import { GameContext } from "components/shared";
+import { TokenName } from "game";
 
 interface Props {
   square: Square | undefined;
@@ -23,12 +24,12 @@ interface Props {
 const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
   const modals = useModals();
   const { gameMaster } = useContext(GameContext);
+  const rules = gameMaster?.getRuleNames();
   if (!gameMaster) return null;
 
   if (!square) return <View style={[style, { width: size, height: size }]} />;
 
-  const backgroundColor =
-    Colors.SQUARE[colorIndex({ ...square.getCoordinates(), shape })].string();
+  const backgroundColor = calculateBackgroundColor(square, shape, rules);
 
   const piecesOrPieceAnimationsOnSquare: (string | Token)[] =
     getDisplayPiecesAndTokens(square);
@@ -91,6 +92,22 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
     </OuterContainer>
   );
 };
+
+function calculateBackgroundColor(
+  square: Square,
+  shape: SquareShape,
+  rules?: RuleName[]
+): string {
+  return Colors.SQUARE[colorIndex({ ...square.getCoordinates(), shape })]
+    .fade(shouldFadeSquare(square, rules) ? 0.2 : 0)
+    .string();
+}
+function shouldFadeSquare(square: Square, rules?: RuleName[]): boolean {
+  return (
+    !!rules?.includes("thinIce") &&
+    (square.firstTokenWithName(TokenName.ThinIce)?.data?.thinIceData ?? 2) <= 1
+  );
+}
 
 const colorIndex = ({
   rank,
