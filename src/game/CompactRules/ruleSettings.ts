@@ -47,7 +47,7 @@ export const allRuleSettings: {
     },
   },
   patheticKingSettings: {
-    "And cannot move": {
+    "And cannot move without assistance": {
       paramType: ParamSettingType.Boolean,
       defaultValue: false,
     },

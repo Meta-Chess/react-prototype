@@ -343,7 +343,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     imageName: "extinctionImage",
     implemented: true,
     ruleNames: ["extinction"],
-    complexity: 2,
+    complexity: 3,
   },
   pull: {
     title: "Pull",
