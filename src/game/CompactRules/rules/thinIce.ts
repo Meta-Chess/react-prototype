@@ -3,9 +3,7 @@ import { TokenName } from "game/types";
 import { PieceDelta } from "game/Move";
 import { Rule, ParameterRule, OnPieceDisplaced } from "../CompactRules";
 
-const STEPS_TO_BREAK = 3;
-
-export const thinIce: ParameterRule = (): Rule => {
+export const thinIce: ParameterRule = (params): Rule => {
   return {
     title: "Thin Ice",
     description:
@@ -13,8 +11,9 @@ export const thinIce: ParameterRule = (): Rule => {
 
     onPieceDisplaced: ({ board, pieceDelta }): OnPieceDisplaced => {
       const landingSquare = board.squareAt(pieceDelta.path.getEnd());
+      const squareDurability = params?.["Square Durability"];
 
-      incrementThinIceToken(landingSquare);
+      incrementThinIceToken(landingSquare, squareDurability);
 
       if (squareShouldBreak(landingSquare)) breakSquare(board, pieceDelta);
 
@@ -36,13 +35,13 @@ function getStepAllowanceOnSquare(square?: Square): number {
   return square?.firstTokenWithName(TokenName.ThinIce)?.data?.thinIceData || 0;
 }
 
-function incrementThinIceToken(square?: Square): void {
+function incrementThinIceToken(square?: Square, squareDurability?: number): void {
   if (!square) return;
   const currentToken = square.firstTokenWithName(TokenName.ThinIce);
   square.removeTokensByName(TokenName.ThinIce);
   square.addToken({
     name: TokenName.ThinIce,
-    data: { thinIceData: (currentToken?.data?.thinIceData ?? STEPS_TO_BREAK) - 1 },
+    data: { thinIceData: (currentToken?.data?.thinIceData ?? squareDurability ?? 1) - 1 },
     expired: () => false,
   });
 }
