@@ -23,6 +23,16 @@ export const standard: ParameterRule = (): Rule => {
       board.defineRegion("center", centerRegion);
       board.defineRegion("promotion", promotionRegionWhite, PlayerName.White);
       board.defineRegion("promotion", promotionRegionBlack, PlayerName.Black);
+      board.defineClockwiseDirections([
+        Direction.N,
+        Direction.NE,
+        Direction.E,
+        Direction.SE,
+        Direction.S,
+        Direction.SW,
+        Direction.W,
+        Direction.NW,
+      ]);
       return { board, numberOfPlayers };
     },
     onBoardCreate: ({ board, numberOfPlayers }): OnBoardCreate => {

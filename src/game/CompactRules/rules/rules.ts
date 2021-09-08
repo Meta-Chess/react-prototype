@@ -28,5 +28,6 @@ export { stalemate } from "./stalemate";
 export { threeCheck } from "./threeCheck";
 export { verticallyCylindrical } from "./verticallyCylindrical";
 export { royallyScrewed } from "./royallyScrewed";
+export { pawnOrbit } from "./pawnOrbit";
 
 // Note: Only rules should be exported from this file

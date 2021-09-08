@@ -78,3 +78,6 @@ export { royallyScrewedImage };
 
 import extinctionImage from "./extinctionImage.png";
 export { extinctionImage };
+
+import pawnOrbitImage from "./pawnOrbitImage.png";
+export { pawnOrbitImage };

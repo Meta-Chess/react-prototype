@@ -33,7 +33,8 @@ interface PieceIdMap {
 // TODO: This class is too long!
 class Board extends TokenOwner {
   private idGenerator: IdGenerator;
-  private regions: Regions = defaultRegions;
+  private regions: Regions = defaultRegions; //if many more properties arise, we might want to think about a more general storage of them.
+  private clockwiseDirections: Direction[] = [];
 
   constructor(
     public interrupt: CompactRules,
@@ -145,6 +146,10 @@ class Board extends TokenOwner {
     return keys<string>(this.squares);
   }
 
+  isLocationGraveyard(location: string): boolean {
+    return location.slice(0, 1) === SpecialLocation.graveyard;
+  }
+
   getSquares(includeGraveyards = false): Square[] {
     return includeGraveyards
       ? Object.values(this.squares)
@@ -169,10 +174,18 @@ class Board extends TokenOwner {
     this.regions[region][player] = squareLocations;
   }
 
+  defineClockwiseDirections(directions: Direction[]): void {
+    this.clockwiseDirections = directions;
+  }
+
   getRegion(region: Region, player: PlayerName | "default" = "default"): Square[] {
     return (this.regions[region][player] || [])
       .map((loc) => this.squareAt(loc))
       .filter(isPresent);
+  }
+
+  getClockwiseDirections(): Direction[] {
+    return this.clockwiseDirections;
   }
 
   addAdjacenciesByRule(rule: ((square: Square) => Adjacency[]) | undefined): void {
