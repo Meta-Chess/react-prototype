@@ -27,4 +27,8 @@ export * from "./stalemate";
 export * from "./threeCheck";
 export * from "./verticallyCylindrical";
 export * from "./royallyScrewed";
+<<<<<<< HEAD
 export * from "./pawnOrbit";
+=======
+export * from "./thinIce";
+>>>>>>> 37bcac6 (feat: mvp for thin ice variant)

@@ -28,6 +28,10 @@ export { stalemate } from "./stalemate";
 export { threeCheck } from "./threeCheck";
 export { verticallyCylindrical } from "./verticallyCylindrical";
 export { royallyScrewed } from "./royallyScrewed";
+<<<<<<< HEAD
 export { pawnOrbit } from "./pawnOrbit";
+=======
+export { thinIce } from "./thinIce";
+>>>>>>> 37bcac6 (feat: mvp for thin ice variant)
 
 // Note: Only rules should be exported from this file
