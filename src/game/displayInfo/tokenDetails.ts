@@ -58,4 +58,8 @@ export const tokenDetails: { [k in TokenName]: Details } = {
     description:
       "Keeps track of what piece types a player has for the purpose of checking extinction.",
   },
+  [TokenName.ThinIce]: {
+    name: "Thin Ice Token",
+    description: "Keeps track of how many times a square has been stepped on.",
+  },
 };
