@@ -45,7 +45,7 @@ export const pawnOrbit: ParameterRule = (): Rule => {
           pieceId: piece.id,
           location: pieceLocation,
           pieceDeltas: deltas,
-          playerName: game.getCurrentPlayerName(),
+          playerName: piece.owner,
         };
       });
       return { game, piece, interrupt, moves: [...moves, ...newMoves] };
