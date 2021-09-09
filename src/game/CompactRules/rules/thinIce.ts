@@ -2,8 +2,11 @@ import { Board, Square } from "game/Board";
 import { TokenName } from "game/types";
 import { PieceDelta } from "game/Move";
 import { Rule, ParameterRule, OnPieceDisplaced } from "../CompactRules";
+import { getDefaultParams } from "../utilities";
 
-export const thinIce: ParameterRule = (params): Rule => {
+export const thinIce: ParameterRule = (
+  ruleParams = getDefaultParams("morphlingsSettings")
+): Rule => {
   return {
     title: "Thin Ice",
     description:
@@ -11,7 +14,9 @@ export const thinIce: ParameterRule = (params): Rule => {
 
     onPieceDisplaced: ({ board, pieceDelta }): OnPieceDisplaced => {
       const landingSquare = board.squareAt(pieceDelta.path.getEnd());
-      const squareDurability = params?.["Square Durability"];
+      const squareDurability = ruleParams["Square Durability"];
+
+      if (!landingSquare || !squareDurability) return { board, pieceDelta };
 
       incrementThinIceToken(landingSquare, squareDurability);
 
@@ -35,13 +40,12 @@ function getStepAllowanceOnSquare(square?: Square): number {
   return square?.firstTokenWithName(TokenName.ThinIce)?.data?.thinIceData || 0;
 }
 
-function incrementThinIceToken(square?: Square, squareDurability?: number): void {
-  if (!square) return;
+function incrementThinIceToken(square: Square, squareDurability: number): void {
   const currentToken = square.firstTokenWithName(TokenName.ThinIce);
   square.removeTokensByName(TokenName.ThinIce);
   square.addToken({
     name: TokenName.ThinIce,
-    data: { thinIceData: (currentToken?.data?.thinIceData ?? squareDurability ?? 1) - 1 },
+    data: { thinIceData: (currentToken?.data?.thinIceData ?? squareDurability) - 1 },
     expired: () => false,
   });
 }
