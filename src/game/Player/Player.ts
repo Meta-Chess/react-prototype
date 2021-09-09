@@ -25,7 +25,7 @@ export class Player extends TokenOwner {
     const cloneConstructorInput: Required<ConstructorParameters<typeof Player>> = [
       this.name,
       this.alive,
-      cloneDeep(this.tokens),
+      this.cloneTokens(this.tokens),
       this.wantsToDraw,
       this.endGameMessage,
       cloneDeep(this.hasLegalMoves),

@@ -1,7 +1,30 @@
 import { Token, TokenName } from "game/types";
+import { keys } from "utilities/keys";
 
+type Data<K extends string | symbol | number> = {
+  [k in K]?: Data<K> | any; // eslint-disable-line @typescript-eslint/no-explicit-any
+};
 export class TokenOwner {
   constructor(public tokens: Token[] = []) {}
+
+  cloneTokens(tokens: Token[]): Token[] {
+    return tokens.map(
+      (t: Token): Token => ({
+        name: t.name,
+        expired: t.expired,
+        data: t.data ? this.cloneData(t.data) : undefined,
+      })
+    );
+  }
+
+  private cloneData<K extends string | symbol | number>(_data: Data<K>): Data<K> {
+    const data: Data<K> = {};
+    keys(_data).forEach((k) => {
+      const datum = _data[k];
+      data[k] = typeof datum === "object" ? this.cloneData(datum) : datum;
+    });
+    return data;
+  }
 
   addToken(token: Token, replaceMatches = false): void {
     if (replaceMatches) this.tokens = this.tokens.filter((t) => t.name !== token.name);

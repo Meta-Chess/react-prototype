@@ -27,7 +27,7 @@ export class Square extends TokenOwner {
       this.location,
       clone(this.coordinates),
       clone(this.whiteListedMarkers),
-      clone(this.tokens),
+      this.cloneTokens(this.tokens),
       this.adjacencies.clone(),
       clone(this.pieces),
     ];
