@@ -1,6 +1,5 @@
-import { Board, Square } from "game/Board";
+import { Square } from "game/Board";
 import { TokenName } from "game/types";
-import { PieceDelta } from "game/Move";
 import { Rule, ParameterRule, OnPieceDisplaced } from "../CompactRules";
 import { getDefaultParams } from "../utilities";
 
@@ -20,17 +19,12 @@ export const thinIce: ParameterRule = (
 
       incrementThinIceToken(landingSquare, squareDurability);
 
-      if (squareShouldBreak(landingSquare)) breakSquare(board, pieceDelta);
+      if (squareShouldBreak(landingSquare)) board.destroySquare(pieceDelta.path.getEnd());
 
       return { board, pieceDelta };
     },
   };
 };
-
-function breakSquare(board: Board, pieceDelta: PieceDelta): void {
-  board.killPiecesAt({ piecesLocation: pieceDelta.path.getEnd() });
-  delete board.squares[pieceDelta.path.getEnd()];
-}
 
 function squareShouldBreak(square?: Square): boolean {
   return getStepAllowanceOnSquare(square) <= 0;
