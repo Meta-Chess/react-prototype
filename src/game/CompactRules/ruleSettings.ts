@@ -64,6 +64,13 @@ export const allRuleSettings: {
       defaultValue: false,
     },
   },
+  thinIceSettings: {
+    "Square Durability": {
+      paramType: ParamSettingType.Integer,
+      defaultValue: 4,
+      allowValue: (v: number): boolean => v > 0,
+    },
+  },
   morphlingsSettings: {
     "Piece Cycles": {
       paramType: ParamSettingType.PieceCycles,

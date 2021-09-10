@@ -25,7 +25,6 @@ export class GameMaster {
   public result: string | undefined;
   public drawOffers: { [playerName in PlayerName]?: boolean } = {};
   public gameOver = false;
-  public positionInHistory = 0;
   public formatVariants: FutureVariantName[] = [];
   public formatVariantLabelColors: {
     [formatVariantsIndex: number]: VariantLabelInfo;
@@ -50,9 +49,12 @@ export class GameMaster {
     public assignedPlayer: PlayerAssignment = "all",
     protected renderer?: Renderer,
     public playerActionHistory: PlayerAction[] = [],
-    protected evaluateEndGameConditions = true
+    protected evaluateEndGameConditions = true,
+    public positionInHistory = 0
   ) {
-    this.gameClones = [game.clone(), game.clone(), game.clone(), game.clone()];
+    this.gameClones = evaluateEndGameConditions
+      ? [game.clone(), game.clone(), game.clone(), game.clone()]
+      : [game.clone(), game.clone()];
 
     this.drawOffers = game.players.reduce(
       (acc: { [n in PlayerName]?: boolean }, p) => ({ ...acc, [p.name]: false }),
@@ -145,11 +147,12 @@ export class GameMaster {
     return new GameMaster(
       this.game.clone(),
       this.interrupt.clone(),
-      this.gameOptions,
+      cloneDeep(this.gameOptions),
       this.assignedPlayer,
       renderer || new Renderer(),
       cloneDeep(this.playerActionHistory),
-      evaluateEndGameConditions
+      evaluateEndGameConditions,
+      this.positionInHistory
     );
   }
 

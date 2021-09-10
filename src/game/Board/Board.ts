@@ -67,7 +67,7 @@ class Board extends TokenOwner {
       this.events.clone(),
       squaresClone,
       piecesClone,
-      clone(this.tokens),
+      this.cloneTokens(this.tokens),
     ];
     return new Board(...cloneConstructorInput);
   }

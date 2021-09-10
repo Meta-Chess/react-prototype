@@ -143,6 +143,7 @@ export type FutureVariantName =
   | "patheticKing"
   | "polar"
   | "spherical"
+  | "thinIce"
   | "threeCheck"
   | "toroidal"
   | "chemicallyExcitedKnight"
@@ -327,6 +328,14 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     imageName: "sphericalImage",
     implemented: true,
     ruleNames: ["cylindrical", "polar"],
+    complexity: 3,
+  },
+  thinIce: {
+    title: "Thin Ice",
+    shortDescription: "You're skating on thin ice!",
+    traits: ["Board", "Restriction"],
+    implemented: true,
+    ruleNames: ["thinIce"],
     complexity: 3,
   },
   threeCheck: {

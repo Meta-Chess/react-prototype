@@ -36,6 +36,7 @@ export interface AllRuleParamValue {
   "Excited At": number;
   "True Fatigue": boolean;
   "And cannot move without assistance": boolean;
+  "Square Durability": number;
 }
 
 export type ParamName = keyof AllRuleParamValue;

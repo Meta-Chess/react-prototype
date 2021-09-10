@@ -1,7 +1,18 @@
 import { Token, TokenName } from "game/types";
+import { cloneDeep } from "lodash";
 
 export class TokenOwner {
   constructor(public tokens: Token[] = []) {}
+
+  cloneTokens(tokens: Token[]): Token[] {
+    return tokens.map(
+      (t: Token): Token => ({
+        name: t.name,
+        expired: t.expired,
+        data: cloneDeep(t.data),
+      })
+    );
+  }
 
   addToken(token: Token, replaceMatches = false): void {
     if (replaceMatches) this.tokens = this.tokens.filter((t) => t.name !== token.name);

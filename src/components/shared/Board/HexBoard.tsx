@@ -3,11 +3,12 @@ import { View } from "react-native";
 import styled from "styled-components/native";
 import { Colors } from "primitives";
 import { objectMatches, range } from "utilities";
-import { TokenName, SquareShape } from "game";
+import { TokenName, SquareShape, Square as GameSquare } from "game";
 import { Square } from "./Square";
 import { BoardProps } from "components/shared/Board/Board";
 import { HexBackboard } from "./HexBackboard";
 import { GameContext } from "components/shared";
+import { BoardMeasurements } from "./calculateBoardMeasurements";
 
 const HexBoard: FC<BoardProps> = ({
   backboard = true,
@@ -20,7 +21,7 @@ const HexBoard: FC<BoardProps> = ({
 
   const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
   const fileCoordinates = range(minFile, maxFile - minFile + 1);
-  const rankCoordinates = range(minRank, maxRank - minFile + 1);
+  const rankCoordinates = range(minRank, maxRank - minRank + 1);
 
   return (
     <HexBackboard
@@ -36,18 +37,15 @@ const HexBoard: FC<BoardProps> = ({
         {fileCoordinates.map((file) => (
           <ColumnContainer flipBoard={flipBoard} key={file}>
             {rankCoordinates.map((rank) => {
-              const square = game.board.firstSquareSatisfyingRule(
-                (square) =>
-                  objectMatches({
-                    rank,
-                    file,
-                  })(square.coordinates) &&
-                  !square.hasTokenWithName(TokenName.InvisibilityToken)
+              const square = game.board.firstSquareSatisfyingRule((square) =>
+                objectMatches({
+                  rank,
+                  file,
+                })(square.coordinates)
               );
-              // TODO: Handle hidden squares in hex better - maybe a rule to determine which coordinates belong on a hex grid?
               return (
                 <Square
-                  size={square ? measurements.squareSize : measurements.spacings[0]}
+                  size={getHexSquareDimensions(file, rank, measurements, square)}
                   square={square}
                   shape={SquareShape.Hex}
                   key={JSON.stringify([rank, file])}
@@ -64,5 +62,16 @@ const HexBoard: FC<BoardProps> = ({
 const ColumnContainer = styled(View)<{ flipBoard: boolean }>`
   flex-direction: ${({ flipBoard }): string => (flipBoard ? "column" : "column-reverse")};
 `;
+
+function getHexSquareDimensions(
+  file: number,
+  rank: number,
+  measurements: BoardMeasurements,
+  square?: GameSquare
+): number {
+  return square?.hasTokenWithName(TokenName.InvisibilityToken) || !((file + rank) % 2)
+    ? measurements.spacings[0]
+    : measurements.squareSize;
+}
 
 export { HexBoard };

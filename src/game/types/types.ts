@@ -61,12 +61,6 @@ export interface GaitParams {
   tokens: Token[];
 }
 
-export interface Token {
-  name: TokenName;
-  expired: (turn: number) => boolean;
-  data: undefined | TokenData;
-}
-
 export enum TokenName {
   PawnDoubleStep,
   PolarToken,
@@ -80,6 +74,13 @@ export enum TokenName {
   Fatigue,
   AnimationToken,
   CheckCounter,
+  ThinIce,
+}
+
+export interface Token {
+  name: TokenName;
+  expired: (turn: number) => boolean;
+  data: undefined | TokenData;
 }
 
 export enum AnimationType {
@@ -104,6 +105,7 @@ interface TokenData {
   counters?: number[];
   pieceVisualData?: PieceVisualData;
   extinctionData?: PieceName[][];
+  thinIceData?: number;
 }
 
 export interface PieceVisualData {

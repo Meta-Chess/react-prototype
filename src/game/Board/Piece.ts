@@ -20,7 +20,7 @@ class Piece extends TokenOwner {
       this.owner,
       this.generateGaits,
       this.location,
-      [...this.tokens],
+      this.cloneTokens(this.tokens),
       this.id,
       [...this.AccessMarkers],
     ];
