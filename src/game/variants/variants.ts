@@ -334,6 +334,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Thin Ice",
     shortDescription: "You're skating on thin ice!",
     traits: ["Board", "Restriction"],
+    imageName: "thinIceImage",
     implemented: true,
     ruleNames: ["thinIce"],
     complexity: 3,

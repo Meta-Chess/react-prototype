@@ -81,3 +81,6 @@ export { extinctionImage };
 
 import pawnOrbitImage from "./pawnOrbitImage.png";
 export { pawnOrbitImage };
+
+import thinIceImage from "./thinIceImage.png";
+export { thinIceImage };
