@@ -1,9 +1,6 @@
 import { Token, TokenName } from "game/types";
-import { keys } from "utilities/keys";
+import { cloneDeep } from "lodash";
 
-type Data<K extends string | symbol | number> = {
-  [k in K]?: Data<K> | any; // eslint-disable-line @typescript-eslint/no-explicit-any
-};
 export class TokenOwner {
   constructor(public tokens: Token[] = []) {}
 
@@ -12,18 +9,9 @@ export class TokenOwner {
       (t: Token): Token => ({
         name: t.name,
         expired: t.expired,
-        data: t.data ? this.cloneData(t.data) : undefined,
+        data: cloneDeep(t.data),
       })
     );
-  }
-
-  private cloneData<K extends string | symbol | number>(_data: Data<K>): Data<K> {
-    const data: Data<K> = {};
-    keys(_data).forEach((k) => {
-      const datum = _data[k];
-      data[k] = typeof datum === "object" ? this.cloneData(datum) : datum;
-    });
-    return data;
   }
 
   addToken(token: Token, replaceMatches = false): void {
