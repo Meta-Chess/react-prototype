@@ -2,6 +2,8 @@ import { PieceName, AnimationType } from "game/types";
 import { Rule, ParameterRule, SubscribeToEvents } from "../CompactRules";
 import { allAdjacencies, addAnimationTokenToSquare } from "../utilities";
 
+const DEEP_IMPACT = true;
+
 export const atomic: ParameterRule = (): Rule => {
   return {
     title: "Atomic",
@@ -35,6 +37,9 @@ export const atomic: ParameterRule = (): Rule => {
             delay: 0,
             animationType: AnimationType.explosion,
           });
+
+          if (DEEP_IMPACT) board.destroySquare(square.getLocation());
+
           return { board, square };
         },
       });
