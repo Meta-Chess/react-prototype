@@ -316,6 +316,11 @@ class Board extends TokenOwner {
     );
   }
 
+  destroySquare(location: string): void {
+    this.killPiecesAt({ piecesLocation: location });
+    delete this.squares[location];
+  }
+
   squareAt(location?: string): Square | undefined {
     return location ? this.squares[location] : undefined;
   }

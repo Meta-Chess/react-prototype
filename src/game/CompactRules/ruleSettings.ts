@@ -10,6 +10,12 @@ export const allRuleSettings: {
     [paramName in ParamName]?: ParamSetting;
   };
 } = {
+  atomicSettings: {
+    "Deep Impact": {
+      paramType: ParamSettingType.Boolean,
+      defaultValue: false,
+    },
+  },
   chainReactionSettings: {
     "Max Chain Length": {
       paramType: ParamSettingType.Integer,
