@@ -4,7 +4,7 @@ import { Rule, ParameterRule, OnPieceDisplaced } from "../CompactRules";
 import { getDefaultParams } from "../utilities";
 
 export const thinIce: ParameterRule = (
-  ruleParams = getDefaultParams("morphlingsSettings")
+  ruleParams = getDefaultParams("thinIceSettings")
 ): Rule => {
   return {
     title: "Thin Ice",
