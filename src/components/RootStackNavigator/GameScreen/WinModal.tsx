@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { ScrollView, View } from "react-native";
-import { Colors, PieceImage, SFC, Text } from "primitives";
+import { Colors, PieceImage, SFC, Text, TrackingPixel } from "primitives";
 import { PieceName, PlayerName } from "game";
 import styled from "styled-components/native";
 import { ButtonTertiaryLight, Row } from "ui";
@@ -68,6 +68,7 @@ export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
           style={{ flex: 1, marginLeft: 8 }}
         />
       </ButtonRow>
+      <TrackingPixel urlEnd={"WinModal"} />
     </Container>
   );
 };

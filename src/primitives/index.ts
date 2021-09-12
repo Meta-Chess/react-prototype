@@ -9,3 +9,4 @@ export * from "./icons";
 export * from "./images";
 export * from "./useHover";
 export * from "./AnimatedGroup";
+export * from "./TrackingPixel";

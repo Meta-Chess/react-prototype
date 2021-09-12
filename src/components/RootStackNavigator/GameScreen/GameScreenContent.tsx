@@ -16,6 +16,7 @@ import { WinModal } from "./WinModal";
 import { MoveDisambiguationModal } from "./MoveDisambiguationModal";
 import { getPromotionDisambiguationOpportunities } from "./getPromotionDisambiguationOpportunities";
 import { PromotionDisambiguationModal } from "./PromotionDisambiguationModal";
+import { TrackingPixel } from "primitives";
 
 export const GameScreenContent: FC = () => {
   const { height, width } = useWindowDimensions();
@@ -63,6 +64,7 @@ export const GameScreenContent: FC = () => {
       portraitFriendly={true}
       style={{ flexDirection: portrait ? "column" : "row", padding }}
     >
+      <TrackingPixel urlEnd={"GameScreenContent"} />
       <Container portrait={portrait}>
         <View>
           <Board

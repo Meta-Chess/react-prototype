@@ -10,6 +10,7 @@ import {
   FeedbackIcon,
   useHover,
   InfoIcon,
+  TrackingPixel,
 } from "primitives";
 import { HorizontalSeparator } from "ui";
 import { debounce } from "lodash";
@@ -57,6 +58,7 @@ export const HelpMenu: SFC<Props> = ({ context, style }) => {
 
   return (
     <IconPositioningContainer ref={iconRef} style={style}>
+      <TrackingPixel urlEnd={"HelpMenu"} />
       <HelpIcon />
       {menuOpen && (
         <MenuContainer ref={menuRef}>

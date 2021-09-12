@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Colors, DiscordIcon, MChessLogo } from "primitives";
+import { Colors, DiscordIcon, MChessLogo, TrackingPixel } from "primitives";
 import { GameOptions, defaultGameOptions } from "game";
 import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
@@ -7,7 +7,7 @@ import { GameProvider, HelpMenu } from "components/shared";
 import { Lobby } from "./Lobby";
 import { SpotlightGame } from "./SpotlightGame";
 import { PlayWithFriends } from "./PlayWithFriends";
-import { ScrollView, Linking, Platform, Image } from "react-native";
+import { ScrollView, Linking, Platform } from "react-native";
 import { ErrorBoundary } from "components/shared/ErrorBoundary";
 import { IconButton } from "ui/Buttons/IconButton";
 
@@ -56,10 +56,7 @@ const StartScreen: FC = () => {
           </ErrorBoundary>
         </ScrollView>
       </GameProvider>
-      <Image
-        style={{ position: "absolute", width: 1, height: 1 }}
-        source={{ uri: "https://mchess.goatcounter.com/count?p=/test" }}
-      />
+      <TrackingPixel urlEnd={"StartScreen"} />
     </>
   );
 };

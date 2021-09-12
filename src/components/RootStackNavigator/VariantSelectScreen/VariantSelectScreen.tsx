@@ -15,7 +15,7 @@ import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDispla
 import { FormatCard, FiltersCard, GameOptionsCard, AdviceCard } from "./CollapsableCards";
 import { Button, ButtonSecondary, Footer, AbsoluteView } from "ui";
 import { ScreenContainer } from "components/shared";
-import { Colors } from "primitives";
+import { Colors, TrackingPixel } from "primitives";
 import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
 import { Topbar } from "./Topbar";
@@ -148,6 +148,7 @@ const VariantSelectScreen: FC = () => {
           </AbsoluteView>
         )}
       </LeftContainer>
+      <TrackingPixel urlEnd={"VariantSelectScreen"} />
     </ScreenContainer>
   );
 };

@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { TrackingPixel } from "primitives";
 import { Screens, useRoute } from "navigation";
 import { GameScreenContent } from "./GameScreenContent";
 import { GameProvider } from "components/shared";
@@ -12,6 +13,7 @@ export const GameScreen: FC<Props> = () => {
   return (
     <GameProvider {...params}>
       <GameScreenContent />
+      <TrackingPixel urlEnd={"GameScreen"} />
     </GameProvider>
   );
 };
