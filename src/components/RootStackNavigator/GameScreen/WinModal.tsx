@@ -54,17 +54,13 @@ export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
           ))}
       </ScrollView>
       <ButtonRow>
+        <ButtonTertiaryLight onPress={onClose} label={"View Board"} style={{ flex: 1 }} />
         <ButtonTertiaryLight
           onPress={(): void => {
             gameMaster?.endGame();
             navigation.navigate(Screens.StartScreen);
           }}
-          label={"Done"}
-          style={{ flex: 1 }}
-        />
-        <ButtonTertiaryLight
-          onPress={onClose}
-          label={"View Board"}
+          label={"Leave Game"}
           style={{ flex: 1, marginLeft: 8 }}
         />
       </ButtonRow>
