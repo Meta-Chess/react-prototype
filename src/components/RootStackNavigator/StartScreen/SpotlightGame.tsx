@@ -2,7 +2,6 @@ import React from "react";
 import { SFC } from "primitives";
 import { Button, Card, Footer } from "ui";
 import { calculateGameOptions, GameOptions } from "game";
-import { rollableVariants } from "game/formats/rollableVariants";
 import { Screens, useNavigation } from "navigation";
 
 const calculateSpotLightGameOptions = (): GameOptions =>
