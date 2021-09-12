@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Colors, DiscordIcon, MChessLogo, TrackingPixel } from "primitives";
+import { Colors, DiscordIcon, MChessLogo, TrackingPixel, DISCORD_URL } from "primitives";
 import { GameOptions, defaultGameOptions } from "game";
 import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
@@ -10,8 +10,6 @@ import { PlayWithFriends } from "./PlayWithFriends";
 import { ScrollView, Linking, Platform } from "react-native";
 import { ErrorBoundary } from "components/shared/ErrorBoundary";
 import { IconButton } from "ui/Buttons/IconButton";
-
-const DISCORD_URL = "https://discord.gg/wxBjaKfhDu";
 
 const StartScreen: FC = () => {
   const [gameOptions] = useState<GameOptions>(defaultGameOptions);
