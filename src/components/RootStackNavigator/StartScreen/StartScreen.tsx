@@ -17,44 +17,51 @@ const StartScreen: FC = () => {
   const [gameOptions] = useState<GameOptions>(defaultGameOptions);
 
   return (
-    <GameProvider
-      gameOptions={{ ...gameOptions, time: undefined, online: false, flipBoard: false }}
-    >
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          backgroundColor: Colors.DARKEST.toString(),
-        }}
-        showsVerticalScrollIndicator={false}
+    <>
+      <GameProvider
+        gameOptions={{ ...gameOptions, time: undefined, online: false, flipBoard: false }}
       >
-        <ErrorBoundary>
-          <StartScreenLayoutContainer
-            a={
-              <>
-                <ShadowBoard />
-                <MChessLogo />
-              </>
-            }
-            b={
-              <>
-                <SpotlightGame />
-                <PlayWithFriends style={{ marginTop: 12 }} />
-                <Lobby style={{ marginTop: 12 }} />
-              </>
-            }
-          />
-          <IconButton
-            style={{ position: "absolute", top: 44, right: 9 }}
-            Icon={DiscordIcon}
-            onPress={(): void => {
-              if (Platform.OS == "web") window.open(DISCORD_URL, "_blank");
-              else Linking.openURL(DISCORD_URL);
-            }}
-          />
-          <HelpMenu context={{ gameOptions }} />
-        </ErrorBoundary>
-      </ScrollView>
-    </GameProvider>
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            backgroundColor: Colors.DARKEST.toString(),
+          }}
+          showsVerticalScrollIndicator={false}
+        >
+          <ErrorBoundary>
+            <StartScreenLayoutContainer
+              a={
+                <>
+                  <ShadowBoard />
+                  <MChessLogo />
+                </>
+              }
+              b={
+                <>
+                  <SpotlightGame />
+                  <PlayWithFriends style={{ marginTop: 12 }} />
+                  <Lobby style={{ marginTop: 12 }} />
+                </>
+              }
+            />
+            <IconButton
+              style={{ position: "absolute", top: 44, right: 9 }}
+              Icon={DiscordIcon}
+              onPress={(): void => {
+                if (Platform.OS == "web") window.open(DISCORD_URL, "_blank");
+                else Linking.openURL(DISCORD_URL);
+              }}
+            />
+            <HelpMenu context={{ gameOptions }} />
+          </ErrorBoundary>
+        </ScrollView>
+      </GameProvider>
+      <script
+        data-goatcounter="https://mchess.goatcounter.com/count"
+        async
+        src="//gc.zgo.at/count.js"
+      ></script>
+    </>
   );
 };
 
