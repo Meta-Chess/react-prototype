@@ -7,11 +7,14 @@ import { GameProvider, HelpMenu } from "components/shared";
 import { Lobby } from "./Lobby";
 import { SpotlightGame } from "./SpotlightGame";
 import { PlayWithFriends } from "./PlayWithFriends";
-import { ScrollView, Linking, Platform } from "react-native";
+import { ScrollView, Linking, Platform, useWindowDimensions } from "react-native";
 import { ErrorBoundary } from "components/shared/ErrorBoundary";
 import { IconButton } from "ui/Buttons/IconButton";
+import { UpdateLog } from "./UpdateLog";
 
 const StartScreen: FC = () => {
+  const { height, width } = useWindowDimensions();
+  const [showUpdateLog, setShowUpdateLog] = useState<boolean>(true);
   const [gameOptions] = useState<GameOptions>(defaultGameOptions);
 
   return (
@@ -28,6 +31,8 @@ const StartScreen: FC = () => {
         >
           <ErrorBoundary>
             <StartScreenLayoutContainer
+              windowWidth={width}
+              windowHeight={height}
               a={
                 <>
                   <ShadowBoard />
@@ -50,9 +55,13 @@ const StartScreen: FC = () => {
                 else Linking.openURL(DISCORD_URL);
               }}
             />
+
             <HelpMenu context={{ gameOptions }} />
           </ErrorBoundary>
         </ScrollView>
+        {showUpdateLog && (
+          <UpdateLog setShowUpdateLog={setShowUpdateLog} windowHeight={height} />
+        )}
       </GameProvider>
       <TrackingPixel urlEnd={"StartScreen"} />
     </>
