@@ -58,17 +58,19 @@ export const HelpMenu: SFC<Props> = ({ context, style }) => {
 
   return (
     <IconPositioningContainer ref={iconRef} style={style}>
-      <TrackingPixel urlEnd={"HelpMenu"} />
       <HelpIcon />
       {menuOpen && (
-        <MenuContainer ref={menuRef}>
-          {MENU_OPTIONS.map((option) => (
-            <View key={option.label}>
-              <HelpMenuListItem {...option} context={contextWithRoute} />
-              <HorizontalSeparator />
-            </View>
-          ))}
-        </MenuContainer>
+        <>
+          <TrackingPixel urlEnd={"HelpMenuHover"} />
+          <MenuContainer ref={menuRef}>
+            {MENU_OPTIONS.map((option) => (
+              <View key={option.label}>
+                <HelpMenuListItem {...option} context={contextWithRoute} />
+                <HorizontalSeparator />
+              </View>
+            ))}
+          </MenuContainer>
+        </>
       )}
     </IconPositioningContainer>
   );
