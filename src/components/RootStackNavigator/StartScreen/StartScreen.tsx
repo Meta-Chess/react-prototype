@@ -7,7 +7,7 @@ import { GameProvider, HelpMenu } from "components/shared";
 import { Lobby } from "./Lobby";
 import { SpotlightGame } from "./SpotlightGame";
 import { PlayWithFriends } from "./PlayWithFriends";
-import { ScrollView, Linking, Platform } from "react-native";
+import { ScrollView, Linking, Platform, Image } from "react-native";
 import { ErrorBoundary } from "components/shared/ErrorBoundary";
 import { IconButton } from "ui/Buttons/IconButton";
 
@@ -56,11 +56,10 @@ const StartScreen: FC = () => {
           </ErrorBoundary>
         </ScrollView>
       </GameProvider>
-      <script
-        data-goatcounter="https://mchess.goatcounter.com/count"
-        async
-        src="//gc.zgo.at/count.js"
-      ></script>
+      <Image
+        style={{ position: "absolute", width: 1, height: 1 }}
+        source={{ uri: "https://mchess.goatcounter.com/count?p=/test" }}
+      />
     </>
   );
 };
