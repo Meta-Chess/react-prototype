@@ -16,6 +16,7 @@ import { HorizontalSeparator } from "ui";
 import { debounce } from "lodash";
 import { useRoute } from "navigation";
 import { HelpMenuListItem } from "./HelpMenuListItem";
+import { BiNews } from "react-icons/bi";
 
 const MENU_OPTIONS = [
   {
@@ -31,6 +32,11 @@ const MENU_OPTIONS = [
   {
     label: "Suggestions",
     IconComponent: FeedbackIcon,
+    category: "SUGGESTION",
+  },
+  {
+    label: "Change log",
+    IconComponent: BiNews,
     category: "SUGGESTION",
   },
 ] as const;
