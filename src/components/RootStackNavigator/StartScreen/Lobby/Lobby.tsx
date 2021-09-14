@@ -13,7 +13,17 @@ export const Lobby: SFC = ({ style }) => {
   const navigation = useNavigation();
 
   return (
-    <Container style={style} title={"Public Games"} subtitle={"Click to play"}>
+    <Container
+      style={style}
+      title={"Public Games"}
+      subtitle={
+        !lobbyQueryResult.data
+          ? "Connecting to games"
+          : !lobbyQueryResult.data.length
+          ? "No public games are currently available"
+          : "Click to play"
+      }
+    >
       <ScrollLobbyRows
         contentContainerStyle={{
           flexGrow: 1,
