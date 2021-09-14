@@ -1,10 +1,10 @@
 import React from "react";
 import { ScrollView } from "react-native";
 import { SFC, Colors } from "primitives";
-import { Card, Footer, AbsoluteView } from "ui";
+import { Card, Divider, AbsoluteView } from "ui";
 import { ButtonSecondary } from "ui/Buttons";
-import { updateGroups } from "./UpdateTypes";
 import { UpdateGroup } from "./UpdateGroup";
+import { updates } from "./updates";
 
 interface Props {
   setShowUpdateLog: (x: boolean) => void;
@@ -21,13 +21,13 @@ export const UpdateLog: SFC<Props> = ({ setShowUpdateLog, windowHeight, style })
         ]}
         title={"Recent Updates"}
       >
-        <Footer style={{ padding: 0 }} />
+        <Divider style={{ padding: 0 }} />
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          {updateGroups.map((updateGroup, i) => {
-            return <UpdateGroup key={i} updateGroup={updateGroup} footer={i !== 0} />;
+          {updates.map((updateGroup, i) => {
+            return <UpdateGroup key={i} updateGroup={updateGroup} divider={i !== 0} />;
           })}
         </ScrollView>
-        <Footer>
+        <Divider>
           <ButtonSecondary
             label={"Done"}
             style={{ flex: 1 }}
@@ -36,7 +36,7 @@ export const UpdateLog: SFC<Props> = ({ setShowUpdateLog, windowHeight, style })
               return;
             }}
           />
-        </Footer>
+        </Divider>
       </Card>
     </AbsoluteView>
   );

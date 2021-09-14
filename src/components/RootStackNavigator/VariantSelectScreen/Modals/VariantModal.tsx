@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View } from "react-native";
 import { SFC, Colors } from "primitives";
-import { ButtonLight, ButtonSecondaryLight, Card, Footer } from "ui";
+import { ButtonLight, ButtonSecondaryLight, Card, Divider } from "ui";
 import { GameOptions } from "game";
 import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
@@ -44,7 +44,7 @@ export const VariantModal: SFC<Props> = ({
   const [renderKeys, reRenderKeys] = useState(false);
   return (
     <ModalCard style={style} title={variantModalInfo.variant}>
-      <Footer style={{ padding: 0 }} />
+      <Divider style={{ padding: 0 }} />
       <View style={{ flex: 1 }}>
         {ruleSettings &&
           keys(ruleSettings).flatMap((ruleName) => {
@@ -69,7 +69,7 @@ export const VariantModal: SFC<Props> = ({
             });
           })}
       </View>
-      <Footer>
+      <Divider>
         <ButtonSecondaryLight
           label={"Reset"}
           style={{ flex: 1 }}
@@ -107,7 +107,7 @@ export const VariantModal: SFC<Props> = ({
             setVariantModalInfo({ activated: false });
           }}
         />
-      </Footer>
+      </Divider>
     </ModalCard>
   );
 };

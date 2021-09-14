@@ -1,6 +1,6 @@
 import React from "react";
 import { SFC } from "primitives";
-import { Button, Card, Footer } from "ui";
+import { Button, Card, Divider } from "ui";
 import { calculateGameOptions, GameOptions } from "game";
 import { Screens, useNavigation } from "navigation";
 
@@ -23,7 +23,7 @@ export const SpotlightGame: SFC = ({ style }) => {
 
   return (
     <Card style={style} title={"Spotlight: Cylindrical Chess"}>
-      <Footer>
+      <Divider>
         <Button
           label={"Play Now!"}
           style={{ flex: 1 }}
@@ -33,7 +33,7 @@ export const SpotlightGame: SFC = ({ style }) => {
             });
           }}
         />
-      </Footer>
+      </Divider>
     </Card>
   );
 };

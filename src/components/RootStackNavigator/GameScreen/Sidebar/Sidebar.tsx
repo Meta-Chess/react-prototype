@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { ScrollView, TouchableOpacity, useWindowDimensions, View } from "react-native";
-import { Button, Footer, useModals } from "ui";
+import { Button, Divider, useModals } from "ui";
 import { useGoBackOrToStartScreen } from "navigation";
 import { Colors, SFC } from "primitives";
 import { OnlineGameMaster } from "game";
@@ -93,7 +93,7 @@ const Sidebar: SFC = ({ style }) => {
           </View>
         </TouchableOpacity>
       </ScrollView>
-      <Footer>
+      <Divider>
         {!gameMaster?.getRuleNames().includes("longBoard") && (
           <HalfContainer style={{ marginRight: 12 }}>
             <BackHistoryButton style={{ flex: 1 }} />
@@ -114,7 +114,7 @@ const Sidebar: SFC = ({ style }) => {
             </>
           )}
         </HalfContainer>
-      </Footer>
+      </Divider>
     </Container>
   );
 };

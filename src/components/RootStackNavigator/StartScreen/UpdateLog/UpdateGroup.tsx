@@ -1,20 +1,20 @@
 import React from "react";
 import { View } from "react-native";
 import { SFC, Colors, Text } from "primitives";
-import { Footer } from "ui";
+import { Divider } from "ui";
 import { UpdateGroup as UpdateGroupType } from "./UpdateTypes";
 import { getDateString } from "utilities";
 import { Update } from "./Update";
 
 interface Props {
   updateGroup: UpdateGroupType;
-  footer: boolean;
+  divider: boolean;
 }
 
-export const UpdateGroup: SFC<Props> = ({ updateGroup, footer = true, style }) => {
+export const UpdateGroup: SFC<Props> = ({ updateGroup, divider = true, style }) => {
   return (
     <>
-      {footer && <Footer style={{ padding: 0 }} />}
+      {divider && <Divider style={{ padding: 0 }} />}
       <View style={[style, { flexDirection: "column", padding: 16 }]}>
         <Text
           cat="BodyXS"

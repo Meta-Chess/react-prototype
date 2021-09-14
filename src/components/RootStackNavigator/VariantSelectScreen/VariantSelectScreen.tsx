@@ -13,7 +13,7 @@ import { useNavigation, Screens, useGoBackOrToStartScreen, useRoute } from "navi
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
 import { FormatCard, FiltersCard, GameOptionsCard, AdviceCard } from "./CollapsableCards";
-import { Button, ButtonSecondary, Footer, AbsoluteView } from "ui";
+import { Button, ButtonSecondary, Divider, AbsoluteView } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors, TrackingPixel } from "primitives";
 import { Styles } from "primitives/Styles";
@@ -101,7 +101,7 @@ const VariantSelectScreen: FC = () => {
             setActiveFilters={setActiveFilters}
           />
         </ScrollView>
-        <Footer>
+        <Divider>
           <ButtonSecondary
             label="Back"
             onPress={goBackOrToStartScreen}
@@ -118,7 +118,7 @@ const VariantSelectScreen: FC = () => {
             }}
             style={{ flex: 1, marginLeft: 8 }}
           />
-        </Footer>
+        </Divider>
       </Sidebar>
       <LeftContainer style={{ flex: 1, flexDirection: "column-reverse" }}>
         <VariantCardGrid
