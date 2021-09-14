@@ -14,38 +14,45 @@ import {
 } from "primitives";
 import { HorizontalSeparator } from "ui";
 import { debounce } from "lodash";
-import { useRoute } from "navigation";
-import { HelpMenuListItem } from "./HelpMenuListItem";
+import { Screens, useRoute } from "navigation";
+import { HelpMenuListItem, HelpMenuListItemProps } from "./HelpMenuListItem";
 import { BiNews } from "react-icons/bi";
+import { useNavigation } from "@react-navigation/core";
 
-const MENU_OPTIONS = [
-  {
-    label: "About",
-    IconComponent: InfoIcon,
-    category: "INFO",
-  },
-  {
-    label: "Bug report",
-    IconComponent: BugIcon,
-    category: "BUG",
-  },
-  {
-    label: "Suggestions",
-    IconComponent: FeedbackIcon,
-    category: "SUGGESTION",
-  },
-  {
-    label: "Change log",
-    IconComponent: BiNews,
-    category: "SUGGESTION",
-  },
-] as const;
+const getMenuOptions = <T extends Exclude<HelpMenuListItemProps, "context">>(
+  navigateToAboutScreen?: () => void,
+  openChangeLog?: () => void
+): T[] => {
+  return [
+    {
+      label: "About",
+      IconComponent: InfoIcon,
+      onPress: navigateToAboutScreen,
+    },
+    {
+      label: "Bug report",
+      IconComponent: BugIcon,
+      category: "BUG",
+    },
+    {
+      label: "Suggestions",
+      IconComponent: FeedbackIcon,
+      category: "SUGGESTION",
+    },
+    {
+      label: "Change log",
+      IconComponent: BiNews,
+      onPress: openChangeLog,
+    },
+  ].filter((option) => option.category || option.onPress) as T[];
+};
 
 interface Props {
   context?: Record<string, unknown>;
+  openChangeLog?: () => void;
 }
 
-export const HelpMenu: SFC<Props> = ({ context, style }) => {
+export const HelpMenu: SFC<Props> = ({ context, style, openChangeLog }) => {
   const [iconRef, iconHovered] = useHover();
   const [menuRef, menuHovered] = useHover();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -62,6 +69,11 @@ export const HelpMenu: SFC<Props> = ({ context, style }) => {
 
   const contextWithRoute = { route: useRoute(), ...context };
 
+  const navigation = useNavigation();
+  const navigateToAboutScreen = useCallback(() => {
+    navigation.navigate(Screens.AboutScreen);
+  }, [navigation]);
+
   return (
     <IconPositioningContainer ref={iconRef} style={style}>
       <HelpIcon />
@@ -69,7 +81,7 @@ export const HelpMenu: SFC<Props> = ({ context, style }) => {
         <>
           <TrackingPixel urlEnd={"HelpMenuHover"} />
           <MenuContainer ref={menuRef}>
-            {MENU_OPTIONS.map((option) => (
+            {getMenuOptions(navigateToAboutScreen, openChangeLog).map((option) => (
               <View key={option.label}>
                 <HelpMenuListItem {...option} context={contextWithRoute} />
                 <HorizontalSeparator />

@@ -2,38 +2,36 @@ import React, { FC, useCallback } from "react";
 import { ListItem, useModals } from "ui";
 import { Colors, Text } from "primitives";
 import { Category, FeedbackModal } from "./FeedbackModal";
-import { Screens, useNavigation } from "navigation";
 
-interface Props {
+export interface HelpMenuListItemProps {
   context: Record<string, unknown>;
-  category: Category;
+  category?: Category;
   label: string;
   IconComponent: FC<{ color?: string; size?: number }>;
+  onPress?: () => void;
 }
 
-export const HelpMenuListItem: FC<Props> = ({
+export const HelpMenuListItem: FC<HelpMenuListItemProps> = ({
   context,
   category,
   label,
   IconComponent,
+  onPress,
 }) => {
   const modals = useModals();
   const openFeedbackModal = useCallback(() => {
-    modals.show({
-      id: Math.random(),
-      content: (
-        <FeedbackModal category={category} context={context} onClose={modals.hideAll} />
-      ),
-    });
+    if (category) {
+      modals.show({
+        id: Math.random(),
+        content: (
+          <FeedbackModal category={category} context={context} onClose={modals.hideAll} />
+        ),
+      });
+    }
   }, [category, context, modals]);
 
-  const navigation = useNavigation();
-  const navigateToAboutScreen = useCallback(() => {
-    navigation.navigate(Screens.AboutScreen);
-  }, [navigation]);
-
   return (
-    <ListItem onPress={category === "INFO" ? navigateToAboutScreen : openFeedbackModal}>
+    <ListItem onPress={onPress || openFeedbackModal}>
       <IconComponent color={Colors.TEXT.LIGHT_SECONDARY.toString()} size={20} />
       <Text
         cat={"BodyS"}

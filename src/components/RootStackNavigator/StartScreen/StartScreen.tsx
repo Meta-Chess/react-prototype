@@ -71,7 +71,10 @@ const StartScreen: FC = () => {
               }}
             />
 
-            <HelpMenu context={{ gameOptions }} />
+            <HelpMenu
+              context={{ gameOptions }}
+              openChangeLog={(): void => setShowUpdateLog(true)}
+            />
           </ErrorBoundary>
         </ScrollView>
         {showUpdateLog && <UpdateLog onDismiss={onDismiss} windowHeight={height} />}
