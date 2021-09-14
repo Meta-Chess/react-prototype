@@ -2,9 +2,10 @@ import React, { FC } from "react";
 import { View, Image } from "react-native";
 import { Spinner } from "ui";
 import { Colors, ErrorScreen, Text } from "primitives";
-import { LobbyRow } from "./LobbyRow";
+import { LobbyRow } from "../LobbyRow";
 import styled from "styled-components/native";
-import { LobbyQueryResult } from "./useLobbyQuery";
+import { LobbyQueryResult } from "../useLobbyQuery";
+import { EmptyLobby } from "./EmptyLobby";
 
 interface Props {
   lobbyQueryResult: LobbyQueryResult;
@@ -30,17 +31,7 @@ export const LobbyGameList: FC<Props> = ({ lobbyQueryResult }) => {
 
   if (!lobbyGames) return <Spinner />;
 
-  if (!lobbyGames.length)
-    return (
-      <Text
-        cat={"BodyXS"}
-        color={Colors.TEXT.LIGHT_SECONDARY.toString()}
-        alignment={"center"}
-        style={{ marginTop: 12 }}
-      >
-        {"No games currently on offer\nCreate one for someone else to join!"}
-      </Text>
-    );
+  if (!lobbyGames.length) return <EmptyLobby />;
 
   return (
     <View style={{ width: "100%", height: "100%" }}>

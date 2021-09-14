@@ -51,4 +51,5 @@ export const Colors = {
   SQUARE: [Color("#A4B9CC"), Color("#E8E5E5"), Color("#C9D1DA")],
   MCHESS_ORANGE: Color("#F26100"),
   MCHESS_BLUE: Color("#99caf7"),
+  DISCORD: Color("#7289DA"),
 };

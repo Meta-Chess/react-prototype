@@ -5,14 +5,16 @@ import { SFC, Colors, useHover } from "primitives";
 import Color from "color";
 
 interface Props {
-  Icon: FC<{ color?: string }>;
+  Icon: FC<{ color?: string; size?: number }>;
   color?: Color;
+  size?: number;
   onPress: () => void;
 }
 
 export const IconButton: SFC<Props> = ({
   Icon,
   color = Colors.MCHESS_ORANGE,
+  size,
   ...rest
 }) => {
   const [ref, hovered] = useHover();
@@ -27,7 +29,7 @@ export const IconButton: SFC<Props> = ({
       }}
       {...rest}
     >
-      <Icon color={color.fade(fade).toString()} />
+      <Icon color={color.fade(fade).toString()} size={size} />
     </TouchableContainer>
   );
 };

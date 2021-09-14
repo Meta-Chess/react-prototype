@@ -24,7 +24,7 @@ export const PlayWithFriends: SFC = ({ style }) => {
         <ButtonSecondaryLight
           label={"Join Game"}
           style={{ flex: 3, marginLeft: 8 }}
-          // disabled={roomId.length < 3}
+          disabled={roomId.length < 3}
           onPress={(): void => {
             navigation.navigate(Screens.GameScreen, { roomId });
           }}
