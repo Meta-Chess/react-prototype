@@ -1,9 +1,9 @@
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { Colors, DiscordIcon, MChessLogo, TrackingPixel, DISCORD_URL } from "primitives";
 import { GameOptions, defaultGameOptions } from "game";
 import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
-import { GameProvider, HelpMenu } from "components/shared";
+import { GameProvider, HelpMenu, useAsyncStorage } from "components/shared";
 import { Lobby } from "./Lobby";
 import { SpotlightGame } from "./SpotlightGame";
 import { PlayWithFriends } from "./PlayWithFriends";
@@ -14,7 +14,22 @@ import { UpdateLog } from "./UpdateLog";
 
 const StartScreen: FC = () => {
   const { height, width } = useWindowDimensions();
-  const [showUpdateLog, setShowUpdateLog] = useState<boolean>(true);
+  const [setLastViewedUpdateOn, getLastViewedUpdateOn] =
+    useAsyncStorage("lastViewedUpdateOn");
+  const [showUpdateLog, setShowUpdateLog] = useState(false);
+
+  useEffect(() => {
+    async function setStateAsynchronously(): Promise<void> {
+      setShowUpdateLog(await shouldShowUpdateLog(getLastViewedUpdateOn()));
+    }
+    setStateAsynchronously();
+  }, []);
+
+  const onDismiss = useCallback(() => {
+    setShowUpdateLog(false);
+    setLastViewedUpdateOn(new Date(Date.now()));
+  }, []);
+
   const [gameOptions] = useState<GameOptions>(defaultGameOptions);
 
   return (
@@ -59,13 +74,21 @@ const StartScreen: FC = () => {
             <HelpMenu context={{ gameOptions }} />
           </ErrorBoundary>
         </ScrollView>
-        {showUpdateLog && (
-          <UpdateLog setShowUpdateLog={setShowUpdateLog} windowHeight={height} />
-        )}
+        {showUpdateLog && <UpdateLog onDismiss={onDismiss} windowHeight={height} />}
       </GameProvider>
       <TrackingPixel urlEnd={"StartScreen"} />
     </>
   );
 };
+
+async function shouldShowUpdateLog(
+  lastViewedUpdateOn: Promise<Date | undefined>
+): Promise<boolean> {
+  const lastViewedUpdateOnDate = await lastViewedUpdateOn;
+  if (!lastViewedUpdateOnDate) return true;
+  const now = new Date(Date.now());
+  lastViewedUpdateOnDate.setDate(lastViewedUpdateOnDate.getDate() + 7);
+  return now > lastViewedUpdateOnDate;
+}
 
 export { StartScreen };

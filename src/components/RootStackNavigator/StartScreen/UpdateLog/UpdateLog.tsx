@@ -7,11 +7,11 @@ import { UpdateGroup } from "./UpdateGroup";
 import { updates } from "./updates";
 
 interface Props {
-  setShowUpdateLog: (x: boolean) => void;
+  onDismiss: () => void;
   windowHeight: number;
 }
 
-export const UpdateLog: SFC<Props> = ({ setShowUpdateLog, windowHeight, style }) => {
+export const UpdateLog: SFC<Props> = ({ onDismiss, windowHeight, style }) => {
   return (
     <AbsoluteView style={{ backgroundColor: Colors.BLACK.fade(0.2).toString() }}>
       <Card
@@ -28,14 +28,7 @@ export const UpdateLog: SFC<Props> = ({ setShowUpdateLog, windowHeight, style })
           })}
         </ScrollView>
         <Divider>
-          <ButtonSecondary
-            label={"Done"}
-            style={{ flex: 1 }}
-            onPress={(): void => {
-              setShowUpdateLog(false);
-              return;
-            }}
-          />
+          <ButtonSecondary label={"Done"} style={{ flex: 1 }} onPress={onDismiss} />
         </Divider>
       </Card>
     </AbsoluteView>

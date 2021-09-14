@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@expo-google-fonts/roboto-mono": "^0.1.0",
+    "@react-native-async-storage/async-storage": "^1.15.7",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
