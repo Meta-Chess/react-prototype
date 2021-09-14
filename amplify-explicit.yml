@@ -17,8 +17,6 @@ frontend:
         - expo build:web
   artifacts:
     baseDirectory: web-build
-    files:
-      - '**/*'
   cache:
     paths:
       - node_modules/**/*
