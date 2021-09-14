@@ -5,15 +5,15 @@ import { Row } from "ui";
 interface Props {
   windowWidth: number;
   windowHeight: number;
-  a: ReactElement;
-  b: ReactElement;
+  primaryComponent: ReactElement;
+  secondaryComponent: ReactElement;
 }
 
 export const StartScreenLayoutContainer: FC<Props> = ({
   windowWidth,
   windowHeight,
-  a,
-  b,
+  primaryComponent,
+  secondaryComponent,
 }) => {
   const portrait = windowHeight > windowWidth;
 
@@ -24,14 +24,18 @@ export const StartScreenLayoutContainer: FC<Props> = ({
           contentContainerStyle={{ flexGrow: 1, padding: 16 }}
           showsVerticalScrollIndicator={false}
         >
-          <Container style={{ height: Math.min(windowWidth, 600) }}>{a}</Container>
-          <Container style={{ flexGrow: 1, marginVertical: 24 }}>{b}</Container>
+          <Container style={{ height: Math.min(windowWidth, 600) }}>
+            {primaryComponent}
+          </Container>
+          <Container style={{ flexGrow: 1, marginVertical: 24 }}>
+            {secondaryComponent}
+          </Container>
         </ScrollView>
       </View>
     </>
   ) : (
     <Row style={{ flex: 1, alignItems: "stretch", padding: 16, minWidth: 600 }}>
-      <Container style={{ flex: 2 }}>{a}</Container>
+      <Container style={{ flex: 2 }}>{primaryComponent}</Container>
       <Container
         style={{
           flex: 1,
@@ -40,7 +44,7 @@ export const StartScreenLayoutContainer: FC<Props> = ({
           justifyContent: "center",
         }}
       >
-        {b}
+        {secondaryComponent}
       </Container>
     </Row>
   );

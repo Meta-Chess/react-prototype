@@ -33,13 +33,13 @@ const StartScreen: FC = () => {
             <StartScreenLayoutContainer
               windowWidth={width}
               windowHeight={height}
-              a={
+              primaryComponent={
                 <>
                   <ShadowBoard />
                   <MChessLogo />
                 </>
               }
-              b={
+              secondaryComponent={
                 <>
                   <SpotlightGame />
                   <PlayWithFriends style={{ marginTop: 12 }} />
