@@ -14,7 +14,7 @@ frontend:
           fi
     build:
       commands:
-        - expo build:web
+        - GENERATE_SOURCEMAP=false expo build:web
   artifacts:
     baseDirectory: web-build
   cache:
