@@ -3,7 +3,7 @@ import { ScrollView } from "react-native";
 import { SFC } from "primitives";
 import styled from "styled-components/native";
 import { LobbyGameList } from "./LobbyGameList";
-import { Button, ButtonSecondary, Card, Footer } from "ui";
+import { Button, ButtonSecondary, Card, Divider } from "ui";
 import { Screens, useNavigation } from "navigation";
 import { useLobbyQuery } from "./useLobbyQuery";
 import { randomChoice } from "utilities";
@@ -34,7 +34,7 @@ export const Lobby: SFC = ({ style }) => {
       >
         <LobbyGameList lobbyQueryResult={lobbyQueryResult} />
       </ScrollLobbyRows>
-      <Footer>
+      <Divider>
         <ButtonSecondary
           label={"Join Random"}
           onPress={(): void =>
@@ -52,7 +52,7 @@ export const Lobby: SFC = ({ style }) => {
           }
           style={{ flex: 1, marginLeft: 8 }}
         />
-      </Footer>
+      </Divider>
     </Container>
   );
 };
