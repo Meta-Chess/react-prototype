@@ -90,8 +90,9 @@ async function shouldShowUpdateLog(
   const lastViewedUpdateOnDate = await lastViewedUpdateOn;
   if (!lastViewedUpdateOnDate) return true;
   const now = new Date(Date.now());
-  lastViewedUpdateOnDate.setDate(lastViewedUpdateOnDate.getDate() + 7);
-  return now > lastViewedUpdateOnDate;
+  const lastDateToNotShowUpdate = new Date();
+  lastDateToNotShowUpdate.setDate(lastViewedUpdateOnDate.getDate() + 7);
+  return now > lastDateToNotShowUpdate;
 }
 
 export { StartScreen };
