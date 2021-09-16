@@ -117,6 +117,7 @@ export class Pather {
         gait,
         remainingSteps,
         currentSquare: continuingSquares[0], // Later: Handle multiple continuing squares
+        pather: this,
       }));
 
       pathSoFar.push(currentSquare.location);
@@ -256,7 +257,7 @@ export class Pather {
     return (
       from.adjacencies
         .go(direction)
-        ?.map((location) => this.game.board.squareAt(location))
+        .map((location) => this.game.board.squareAt(location))
         .filter(isPresent) || []
     );
   }

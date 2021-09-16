@@ -8,27 +8,36 @@ import {
   AfterBoardCreation,
 } from "../CompactRules";
 import { invisibilityToken, polarToken } from "../constants";
-import { rotate180 } from "../utilities";
+import { getDefaultParams, rotate180 } from "../utilities";
 
-const DIAGONAL_POLAR = false;
-
-export const polar: ParameterRule = (): Rule => {
+export const polar: ParameterRule = (
+  { ["Diagonal Poles"]: diagonalPolar } = getDefaultParams("polarSettings")
+): Rule => {
   return {
     title: "Polar",
     description: `The top and bottom of the board behave like the poles of a sphere. The top edge of the board is wrapped around the edge of an invisible octagonal 'square' that pieces can cross but can't stop on. The bottom edge of the board is similarly wrapped around its own octagonal square. Diagonal movement through the poles is ${
-      DIAGONAL_POLAR ? "allowed" : "not allowed"
+      diagonalPolar ? "allowed" : "not allowed"
     }.`,
-    afterStepModify: ({ gait, remainingSteps, currentSquare }): AfterStepModify => {
+    afterStepModify: ({
+      gait,
+      remainingSteps,
+      currentSquare,
+      ...rest
+    }): AfterStepModify => {
       return currentSquare.hasTokenWithName(TokenName.PolarToken)
         ? {
             gait: { ...gait, pattern: rotate180(gait.pattern) },
             remainingSteps: rotate180(remainingSteps),
             currentSquare,
+            ...rest,
           }
-        : { gait, remainingSteps, currentSquare };
+        : { gait, remainingSteps, currentSquare, ...rest };
     },
     afterBoardCreation: ({ board }): AfterBoardCreation => {
-      const polarSetup = generatePolarSetup(board.rankAndFileBounds());
+      const polarSetup = generatePolarSetup({
+        ...board.rankAndFileBounds(),
+        diagonalPolar,
+      });
       board.addSquares(polarSetup.squares);
       board.addAdjacenciesByRule(polarSetup.adjacenciesRule);
       return { board };
@@ -41,7 +50,8 @@ const generatePolarSetup = ({
   maxRank,
   minFile,
   maxFile,
-}: RankAndFileBounds): {
+  diagonalPolar,
+}: RankAndFileBounds & { diagonalPolar?: boolean }): {
   squares: { location: string; square: Square }[];
   adjacenciesRule: (square: Square) => Adjacency[];
 } => {
@@ -114,7 +124,7 @@ const generatePolarSetup = ({
               },
             ]
           : [];
-      const diagonalAdjacencies: Adjacency[] = DIAGONAL_POLAR
+      const diagonalAdjacencies: Adjacency[] = diagonalPolar
         ? rank === minRank - 1
           ? [
               {

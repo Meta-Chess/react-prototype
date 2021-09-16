@@ -6,6 +6,7 @@ export * from "./standard";
 export * from "./chemicallyExcitedKnight";
 export * from "./crazyhouse";
 export * from "./cylindrical";
+export * from "./diagonalMirror";
 export * from "./emptyCenter";
 export * from "./fatigue";
 export * from "./hex";

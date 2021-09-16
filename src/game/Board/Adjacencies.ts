@@ -16,8 +16,8 @@ export class Adjacencies extends Map<Direction, string[]> {
     return new Adjacencies(...cloneConstructorInput);
   }
 
-  go(direction: Direction): string[] {
-    return this.dictionary[direction] || [];
+  go(direction?: Direction): string[] {
+    return (direction !== undefined && this.dictionary[direction]) || [];
   }
 
   addAdjacency({ direction, location }: Adjacency): void {

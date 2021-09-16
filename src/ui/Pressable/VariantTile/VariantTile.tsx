@@ -31,18 +31,12 @@ export const VariantTile: SFC<Props> = ({
   const [ref, hovered] = useHover();
   const implemented = variant.implemented;
   const hoverState = hovered && implemented;
-  const ruleSettings = Object.assign(
-    {},
-    ...variant.ruleNames
-      .filter(
-        (ruleName) =>
-          allRuleSettings[(ruleName + "Settings") as keyof typeof allRuleSettings]
-      )
-      .map((ruleName) => ({
-        [ruleName]:
-          allRuleSettings[(ruleName + "Settings") as keyof typeof allRuleSettings],
-      }))
-  );
+  const ruleSettings = variant.ruleNames
+    .filter((ruleName) => allRuleSettings[`${ruleName}Settings`])
+    .reduce(
+      (acc, ruleName) => ({ ...acc, [ruleName]: allRuleSettings[`${ruleName}Settings`] }),
+      {}
+    );
   return (
     <TouchableContainer
       ref={ref}
