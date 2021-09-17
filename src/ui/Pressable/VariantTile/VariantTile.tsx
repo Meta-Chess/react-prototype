@@ -32,7 +32,7 @@ export const VariantTile: SFC<Props> = ({
   const implemented = variant.implemented;
   const hoverState = hovered && implemented;
   const ruleSettings = variant.ruleNames
-    .filter((ruleName) => allRuleSettings[`${ruleName}Settings`])
+    .filter((ruleName) => allRuleSettings[`${ruleName}Settings`] !== undefined)
     .reduce(
       (acc, ruleName) => ({ ...acc, [ruleName]: allRuleSettings[`${ruleName}Settings`] }),
       {}
