@@ -41,7 +41,7 @@ export const VariantModal: SFC<Props> = ({
 
   // changes keys for parameter options, so that reset refreshes all the components
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [renderKeys, reRenderKeys] = useState(false);
+  const [renderKeys, _reRenderKeys] = useState(false);
   return (
     <ModalCard style={style} title={variantModalInfo.variant}>
       <Divider style={{ padding: 0 }} />
@@ -79,18 +79,18 @@ export const VariantModal: SFC<Props> = ({
                 keys(ruleSettings).forEach((ruleName) => {
                   const ruleSetting: RuleSetting | undefined = ruleSettings[ruleName];
                   if (ruleSetting === undefined) return;
-                  return keys(ruleSetting).forEach((paramName) => {
-                    setGameOptions({
-                      ...gameOptions,
-                      ruleNamesWithParams: optionsChangeRuleParam({
+                  const ruleNamesWithParams = keys(ruleSetting).reduce(
+                    (previousValue, paramName) =>
+                      optionsChangeRuleParam({
                         ruleName: ruleName,
                         paramName: paramName,
-                        tempParamOptions: gameOptions.ruleNamesWithParams,
+                        tempParamOptions: previousValue,
                         paramSettings: ruleSetting[paramName],
                         paramNewValue: ruleSetting[paramName]?.defaultValue,
                       }),
-                    });
-                  });
+                    gameOptions.ruleNamesWithParams
+                  );
+                  setGameOptions({ ...gameOptions, ruleNamesWithParams });
                 });
             }
             setVariantModalInfo({ activated: false });

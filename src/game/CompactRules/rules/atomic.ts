@@ -49,7 +49,7 @@ function atomicExplosion(
   board: Board,
   square: Square,
   BOOM = 0,
-  explosionImmunePieces: PieceName[][] = []
+  explosionImmunePieces: PieceName[][] = [[PieceName.Pawn]]
 ): Square[] {
   let explosionSquares = [square];
   const explosionType = (BOOM + 1) % NUMBER_OF_EXPLOSION_PATTERNS;

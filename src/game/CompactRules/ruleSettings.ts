@@ -18,7 +18,7 @@ export const allRuleSettings: {
     BOOM: {
       paramType: ParamSettingType.Integer,
       defaultValue: 2,
-      allowValue: (n: number): boolean => n >= 0 && n <= 8,
+      allowValue: (n: number): boolean => n > -1 && n < 11,
     },
     "Immune Pieces": {
       paramType: ParamSettingType.PieceCycles,
