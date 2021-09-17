@@ -5,13 +5,9 @@ import { isPresent } from "utilities/isPresent";
 import { Rule, ParameterRule, SubscribeToEvents } from "../CompactRules";
 import { addAnimationTokenToSquare, getDefaultParams } from "../utilities";
 
-export const atomic: ParameterRule = (
-  {
-    BOOM,
-    ["Deep Impact"]: deepImpact,
-    ["Immune Pieces"]: explosionImmunePieces,
-  } = getDefaultParams("atomicSettings")
-): Rule => {
+const defaultParams = getDefaultParams("atomicSettings"); // TODO: these are still possibly undefined - this typing for defaults should be separated out
+
+export const atomic: ParameterRule = (ruleParams): Rule => {
   return {
     title: "Atomic",
     description:
@@ -21,7 +17,12 @@ export const atomic: ParameterRule = (
       events.subscribe({
         name: "capture",
         consequence: ({ board, square }) => {
-          atomicExplosion(board, square, BOOM, explosionImmunePieces)
+          atomicExplosion(
+            board,
+            square,
+            ruleParams?.["BOOM"] ?? defaultParams["BOOM"] ?? 0, // TODO: at least get this to 'ruleParams?.["BOOM"] ?? defaultParams["BOOM"]'
+            ruleParams?.["Immune Pieces"] ?? defaultParams["Immune Pieces"] ?? [[]]
+          )
             .map((s) => s.location)
             .forEach((location) => {
               board.killPiecesAt({ piecesLocation: location });
@@ -35,7 +36,8 @@ export const atomic: ParameterRule = (
               });
             });
 
-          if (deepImpact) board.destroySquare(square.getLocation());
+          if (ruleParams?.["Deep Impact"] ?? defaultParams["Deep Impact"] ?? false)
+            board.destroySquare(square.getLocation());
 
           return { board, square };
         },
@@ -48,10 +50,11 @@ export const atomic: ParameterRule = (
 function atomicExplosion(
   board: Board,
   square: Square,
-  BOOM = 0,
-  explosionImmunePieces: PieceName[][] = [[PieceName.Pawn]]
+  BOOM: number,
+  explosionImmunePieces: PieceName[][]
 ): Square[] {
   let explosionSquares = [square];
+
   const explosionType = (BOOM + 1) % NUMBER_OF_EXPLOSION_PATTERNS;
   const explosionRadius = BOOM / NUMBER_OF_EXPLOSION_PATTERNS;
   for (let radius = 0; radius < explosionRadius; radius++) {

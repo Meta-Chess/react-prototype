@@ -1,6 +1,7 @@
 import { ParamName, ParamSetting, ParamSettingType } from "./RuleSettingTypes";
 import { PieceName } from "game/types";
 import { RuleName } from ".";
+import { every } from "lodash";
 
 export type RuleSetting = `${RuleName}Settings`;
 
@@ -23,7 +24,8 @@ export const allRuleSettings: {
     "Immune Pieces": {
       paramType: ParamSettingType.PieceCycles,
       defaultValue: [[PieceName.Pawn]],
-      allowValue: (sets: PieceName[][]): boolean => sets.length < 2 && sets.length > -1,
+      allowValue: (sets: PieceName[][]): boolean =>
+        sets.length == 1 && sets[0].length >= 0,
       excludedPieces: [],
       usePieceSets: true,
       maxCycles: 1,
@@ -94,10 +96,8 @@ export const allRuleSettings: {
     "Piece Cycles": {
       paramType: ParamSettingType.PieceCycles,
       defaultValue: [[PieceName.Knight, PieceName.Bishop]],
-      allowValue: (value: PieceName[][]): boolean => {
-        // TODO: proper restriction - i.e. no single or empty piece cycle
-        value;
-        return true;
+      allowValue: (cycles: PieceName[][]): boolean => {
+        return cycles.length > 0 && cycles.every((cycle) => cycle.length > 1);
       },
       excludedPieces: [],
     },
@@ -112,10 +112,11 @@ export const allRuleSettings: {
     Species: {
       paramType: ParamSettingType.PieceCycles,
       defaultValue: [[]],
-      allowValue: (value: PieceName[][]): boolean => {
-        // TODO: proper restriction - i.e. no single or empty piece cycle
-        value;
-        return true;
+      allowValue: (sets: PieceName[][]): boolean => {
+        return (
+          (sets.length === 1 && sets[0].length === 0) ||
+          sets.every((set) => set.length > 1)
+        );
       },
       excludedPieces: [],
       usePieceSets: true,
@@ -125,10 +126,8 @@ export const allRuleSettings: {
     "Piece Cycles": {
       paramType: ParamSettingType.PieceCycles,
       defaultValue: [[PieceName.Queen, PieceName.King]],
-      allowValue: (value: PieceName[][]): boolean => {
-        // TODO: proper restriction - i.e. no single or empty piece cycle
-        value;
-        return true;
+      allowValue: (cycles: PieceName[][]): boolean => {
+        return cycles.length > 0 && cycles.every((cycle) => cycle.length > 1);
       },
       excludedPieces: [],
     },

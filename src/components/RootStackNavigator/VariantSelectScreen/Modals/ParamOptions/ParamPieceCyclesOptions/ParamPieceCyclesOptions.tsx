@@ -29,15 +29,17 @@ export const ParamPieceCyclesOptions: SFC<ParamProps> = ({
   );
 
   useEffect(() => {
-    setTempParamOptions(
-      optionsChangeRuleParam({
-        ruleName: ruleName,
-        paramName: paramName,
-        tempParamOptions: tempParamOptions,
-        paramSettings: paramSettingPieceCycles,
-        paramNewValue: optionPieceCycles,
-      })
-    );
+    if (paramSettingPieceCycles.allowValue(optionPieceCycles)) {
+      setTempParamOptions(
+        optionsChangeRuleParam({
+          ruleName: ruleName,
+          paramName: paramName,
+          tempParamOptions: tempParamOptions,
+          paramSettings: paramSettingPieceCycles,
+          paramNewValue: optionPieceCycles,
+        })
+      );
+    }
   }, [optionPieceCycles]);
 
   return (
