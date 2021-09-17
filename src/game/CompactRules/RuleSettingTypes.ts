@@ -24,6 +24,7 @@ export type ParamSettingPieceCycles = {
   //describeValue: (value: PieceName[][]) => string;
   excludedPieces: PieceName[];
   usePieceSets?: boolean; // if true removes graphical arrows and language from cycle to set for the param
+  maxCycles?: number;
 };
 
 export interface AllRuleParamValue {
@@ -37,6 +38,8 @@ export interface AllRuleParamValue {
   "True Fatigue": boolean;
   "And cannot move without assistance": boolean;
   "Square Durability": number;
+  BOOM: number;
+  "Immune Pieces": PieceName[][];
   "Deep Impact": boolean;
   "Diagonal Poles": boolean;
 }

@@ -15,6 +15,19 @@ export const allRuleSettings: {
       paramType: ParamSettingType.Boolean,
       defaultValue: false,
     },
+    BOOM: {
+      paramType: ParamSettingType.Integer,
+      defaultValue: 2,
+      allowValue: (n: number): boolean => n >= 0 && n <= 8,
+    },
+    "Immune Pieces": {
+      paramType: ParamSettingType.PieceCycles,
+      defaultValue: [[PieceName.Pawn]],
+      allowValue: (sets: PieceName[][]): boolean => sets.length < 2 && sets.length > -1,
+      excludedPieces: [],
+      usePieceSets: true,
+      maxCycles: 1,
+    },
   },
   chainReactionSettings: {
     "Max Chain Length": {

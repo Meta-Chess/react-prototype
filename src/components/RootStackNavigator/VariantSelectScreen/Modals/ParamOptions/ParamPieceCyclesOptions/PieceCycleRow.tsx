@@ -14,6 +14,7 @@ interface Props {
   optionPieceCycles: PieceName[][];
   setOptionPieceCycles: (optionPieceCycles: PieceName[][]) => void;
   isSet?: boolean;
+  maxIndex: number;
 }
 
 export const PieceCycleRow: SFC<Props> = ({
@@ -22,6 +23,7 @@ export const PieceCycleRow: SFC<Props> = ({
   optionPieceCycles,
   setOptionPieceCycles,
   isSet = false,
+  maxIndex,
   style,
 }) => {
   const lastCycleRow = index === optionPieceCycles.length - 1;
@@ -30,7 +32,8 @@ export const PieceCycleRow: SFC<Props> = ({
     pieceDisplayOrder.length - optionPieceCycles.flatMap((name) => name).length >= 2;
   const lastCycleContainsTwoPieces =
     optionPieceCycles[optionPieceCycles.length - 1].length >= 2;
-  const displayNewCycleButton = atLeastTwoPiecesLeft && lastCycleContainsTwoPieces;
+  const displayNewCycleButton =
+    atLeastTwoPiecesLeft && lastCycleContainsTwoPieces && index < maxIndex;
 
   return (
     <View style={style}>
