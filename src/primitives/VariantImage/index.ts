@@ -84,3 +84,6 @@ export { pawnOrbitImage };
 
 import thinIceImage from "./thinIceImage.png";
 export { thinIceImage };
+
+import diagonalMirrorImage from "./diagonalMirrorImage.png";
+export { diagonalMirrorImage };

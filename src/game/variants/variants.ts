@@ -212,6 +212,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Diagonal Mirror",
     shortDescription: "Pieces may reflect diagonally off of edges.",
     traits: ["Geometry"],
+    imageName: "diagonalMirrorImage",
     implemented: true,
     ruleNames: ["diagonalMirror"],
     complexity: 1,
