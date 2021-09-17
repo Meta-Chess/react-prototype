@@ -11,6 +11,6 @@ export interface ParamProps {
   paramName: ParamName;
   paramSettings?: ParamSetting;
   paramDefault?: ParamValue;
-  tempParamOptions: RuleNamesWithParams;
+  tempParamOptions?: RuleNamesWithParams;
   setTempParamOptions: (tempParamOptions: RuleNamesWithParams) => void;
 }
