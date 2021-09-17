@@ -89,6 +89,12 @@ export const allRuleSettings: {
       excludedPieces: [],
     },
   },
+  polarSettings: {
+    "Diagonal Poles": {
+      paramType: ParamSettingType.Boolean,
+      defaultValue: false,
+    },
+  },
   extinctionSettings: {
     Species: {
       paramType: ParamSettingType.PieceCycles,

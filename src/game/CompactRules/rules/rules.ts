@@ -6,6 +6,7 @@ export { standard } from "./standard";
 export { chemicallyExcitedKnight } from "./chemicallyExcitedKnight";
 export { crazyhouse } from "./crazyhouse";
 export { cylindrical } from "./cylindrical";
+export { diagonalMirror } from "./diagonalMirror";
 export { emptyCenter } from "./emptyCenter";
 export { extinction } from "./extinction";
 export { fatigue } from "./fatigue";

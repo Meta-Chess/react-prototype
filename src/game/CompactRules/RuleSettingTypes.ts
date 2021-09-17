@@ -38,6 +38,7 @@ export interface AllRuleParamValue {
   "And cannot move without assistance": boolean;
   "Square Durability": number;
   "Deep Impact": boolean;
+  "Diagonal Poles": boolean;
 }
 
 export type ParamName = keyof AllRuleParamValue;

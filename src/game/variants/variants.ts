@@ -133,6 +133,7 @@ export type FutureVariantName =
   | "atomic"
   | "crazyhouse"
   | "cylindrical"
+  | "diagonalMirror"
   | "emptyCenter"
   | "fatigue"
   | "hex"
@@ -205,6 +206,14 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     imageName: "cylinderImage",
     implemented: true,
     ruleNames: ["cylindrical"],
+    complexity: 1,
+  },
+  diagonalMirror: {
+    title: "Diagonal Mirror",
+    shortDescription: "Pieces may reflect diagonally off of edges.",
+    traits: ["Geometry"],
+    implemented: true,
+    ruleNames: ["diagonalMirror"],
     complexity: 1,
   },
   emptyCenter: {

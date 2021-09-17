@@ -5,7 +5,7 @@ import { Board, Piece, Square } from "../Board";
 import { Game } from "game/Game";
 import { Move, PieceDelta } from "game/Move";
 import { EventCenter } from "game/EventCenter";
-import { PatherParams } from "game/Pather";
+import { Pather, PatherParams } from "game/Pather";
 import { GameMaster } from "game/GameMaster";
 import { FutureVariantName } from "game/variants";
 import { FormatName, formats as allFormats } from "game/formats";
@@ -137,6 +137,7 @@ function compareRulesByList(t1: string, t2: string, list: string[]): number {
 const ruleOrderPerInterruptionPoint: {
   [key in InterruptionName]?: (RuleName | "theRest")[];
 } = {
+  afterStepModify: ["polar", "theRest", "diagonalMirror"],
   lethalCondition: ["extinction", "theRest", "loseWithNoKings"],
   processMoves: ["pull", "theRest", "promotion", "chainReaction"],
   lossCondition: ["theRest", "check", "threeCheck"],
@@ -157,12 +158,7 @@ export interface AfterStepModify {
   gait: Gait;
   remainingSteps: Direction[];
   currentSquare: Square;
-}
-
-export interface AfterStepModify {
-  gait: Gait;
-  remainingSteps: Direction[];
-  currentSquare: Square;
+  pather: Pather;
 }
 
 export interface GetGaitGenerator {
