@@ -1,7 +1,6 @@
 import { ParamName, ParamSetting, ParamSettingType } from "./RuleSettingTypes";
 import { PieceName } from "game/types";
 import { RuleName } from ".";
-import { every } from "lodash";
 
 export type RuleSetting = `${RuleName}Settings`;
 

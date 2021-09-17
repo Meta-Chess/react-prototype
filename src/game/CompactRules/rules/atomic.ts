@@ -5,9 +5,8 @@ import { isPresent } from "utilities/isPresent";
 import { Rule, ParameterRule, SubscribeToEvents } from "../CompactRules";
 import { addAnimationTokenToSquare, getDefaultParams } from "../utilities";
 
-const defaultParams = getDefaultParams("atomicSettings"); // TODO: these are still possibly undefined - this typing for defaults should be separated out
-
 export const atomic: ParameterRule = (ruleParams): Rule => {
+  const defaultParams = getDefaultParams("atomicSettings"); // TODO: these are still possibly undefined - this typing for defaults should be separated out
   return {
     title: "Atomic",
     description:
