@@ -125,6 +125,6 @@ const PiecesAndArrowsContainer = styled(View)`
 `;
 
 const CycleButtonsContainer = styled(View)`
-  height: 40;
+  height: 40px;
   justify-content: center;
 `;
