@@ -12,7 +12,7 @@ export const diagonalMirror: ParameterRule = (): Rule => {
     afterStepModify: (input): AfterStepModify => {
       const { gait, remainingSteps, currentSquare, pather } = input;
 
-      // TODO: handle more general reflection
+      // TODO: handle more general reflection (ie lateral as apposed to diagonal reflection)
       if (!isDiagonal(remainingSteps[0])) return input;
 
       if (pather.go({ from: currentSquare, direction: remainingSteps[0] }).length)
