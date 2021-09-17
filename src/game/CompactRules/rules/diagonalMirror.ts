@@ -20,7 +20,7 @@ export const diagonalMirror: ParameterRule = (): Rule => {
 
       const reflectedSquares = getReflections(pather, currentSquare, remainingSteps[0]);
 
-      // TODO: handle multiple continuing squares then allow path splitting here
+      // TODO (Extension): handle multiple continuing squares then allow path splitting here
       if (!XOR(reflectedSquares)) return input;
 
       // TODO: generic edge detection
