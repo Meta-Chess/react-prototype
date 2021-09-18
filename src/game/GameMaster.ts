@@ -334,8 +334,9 @@ export class GameMaster {
 
   async onSquarePress(location: string, pieceId?: string): Promise<void> {
     this.loadingSquares.push(location);
-    this.render();
+    const delayedRender = setTimeout(this.render, 50);
     await doAsync(this.handleSquarePressed)(location, pieceId);
+    clearTimeout(delayedRender);
     this.loadingSquares = this.loadingSquares.filter((l) => l != location);
     this.render();
   }
@@ -373,7 +374,6 @@ export class GameMaster {
       this.unselectAllPieces();
       pieceId !== undefined ? this.selectPiece(pieceId) : this.selectPieces(location);
     }
-    this.render();
   }
 
   doPlayerAction({
