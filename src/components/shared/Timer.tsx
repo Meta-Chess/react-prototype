@@ -1,7 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
-import { SFC, Text, Colors } from "primitives";
+import { Colors, SFC, Text } from "primitives";
 import { OnlineGameMaster, PlayerName } from "game";
 import { GameContext } from "./GameContext";
 
@@ -40,15 +40,19 @@ const Timer: SFC<Props> = ({ style, playerName, hidden, alignment = "center" }) 
     }
   }, [timer, gameMaster, timeRemaining]);
 
-  const timeout = setTimeout(
-    () => {
-      setDummy(!dummy);
-    },
-    validFor ? validFor : 100
-  );
+  const timeout = timer
+    ? setTimeout(
+        () => {
+          setDummy(!dummy);
+        },
+        validFor ? validFor : 100
+      )
+    : undefined;
 
   useEffect(() => {
-    return (): void => clearTimeout(timeout);
+    return (): void => {
+      if (timeout) clearTimeout(timeout);
+    };
   }, [timeout]);
 
   if (!timer) return null;
