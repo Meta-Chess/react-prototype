@@ -4,12 +4,11 @@ import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
 import { ConflictLevel, FutureVariant } from "game";
 import Color from "color";
-import { GearButton } from "./GearButton";
+import { DropdownIndicator } from "./DropdownIndicator";
 import { StarIcon } from "primitives/icons";
 import { TextIcon } from "ui";
 import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
 import { RuleNamesWithParamSettings } from "game/CompactRules";
-import { keys } from "utilities";
 
 interface Props {
   variant: FutureVariant;
@@ -18,6 +17,8 @@ interface Props {
   conflictLevel?: ConflictLevel | "NO_CONFLICT";
   ruleSettings?: RuleNamesWithParamSettings;
   setVariantModalInfo: (x: VariantModalInfo) => void;
+  showAdvancedMenu: boolean;
+  setShowAdvancedMenu: (x: boolean) => void;
 }
 
 const BACKGROUND_COLOR: { [key in ConflictLevel | "NO_CONFLICT"]: Color } = {
@@ -30,23 +31,21 @@ export const VariantTileHeader: SFC<Props> = ({
   variant,
   selected,
   hovered,
-  ruleSettings = {},
   conflictLevel = "NO_CONFLICT",
-  setVariantModalInfo,
+  showAdvancedMenu,
+  setShowAdvancedMenu,
 }) => {
   const color = (!selected ? Colors.DARKISH : BACKGROUND_COLOR[conflictLevel])
     .fade(hovered ? 0.1 : 0)
     .toString();
 
-  const showGear = selected && keys(ruleSettings).length > 0;
   return (
     <Container color={color}>
       <View style={{ width: 40, paddingLeft: "8px" }}>
-        {showGear && (
-          <GearButton
-            variantTitle={variant.title}
-            setVariantModalInfo={setVariantModalInfo}
-            ruleSettings={ruleSettings}
+        {hovered && (
+          <DropdownIndicator
+            showAdvancedMenu={showAdvancedMenu}
+            setShowAdvancedMenu={setShowAdvancedMenu}
           />
         )}
       </View>
