@@ -11,23 +11,23 @@ describe("In standard chess", () => {
     const board = gameMaster.game.board;
 
     // White pawn to F3
-    gameMaster.onPress(toLocation({ rank: 2, file: 6 }));
-    gameMaster.onPress(toLocation({ rank: 3, file: 6 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 6 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 3, file: 6 }));
     expect(board.getPiecesAt(toLocation({ rank: 3, file: 6 })).length).toEqual(1);
 
     // Black pawn to E5
-    gameMaster.onPress(toLocation({ rank: 7, file: 5 }));
-    gameMaster.onPress(toLocation({ rank: 5, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 5 }));
     expect(board.getPiecesAt(toLocation({ rank: 5, file: 5 })).length).toEqual(1);
 
     // White pawn to G4
-    gameMaster.onPress(toLocation({ rank: 2, file: 7 }));
-    gameMaster.onPress(toLocation({ rank: 4, file: 7 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 7 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 7 }));
     expect(board.getPiecesAt(toLocation({ rank: 4, file: 7 })).length).toEqual(1);
 
     // Black queen to H4
-    gameMaster.onPress(toLocation({ rank: 8, file: 4 }));
-    gameMaster.onPress(toLocation({ rank: 4, file: 8 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 8, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 8 }));
     expect(board.getPiecesAt(toLocation({ rank: 4, file: 8 })).length).toEqual(1);
 
     // Should be checkmate

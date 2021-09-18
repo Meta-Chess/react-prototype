@@ -11,13 +11,14 @@ import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { CompactRules, RuleName } from "./CompactRules";
 import { FutureVariantName } from "./variants";
-import { uniqWith, uniq, cloneDeep } from "lodash";
+import { cloneDeep, uniq, uniqWith } from "lodash";
 import { Move, movesAreEqual } from "game/Move";
 import { SquareInfo, SquaresInfo } from "game/SquaresInfo";
 import { FormatName } from "game/formats";
 import { doesCapture } from "./CompactRules/utilities";
-import { PlayerAction, Resignation, Draw } from "./PlayerAction";
-import { isPresent, sleep } from "utilities";
+import { Draw, PlayerAction, Resignation } from "./PlayerAction";
+import { isPresent, sleep, doAsync } from "utilities";
+import autoBind from "auto-bind";
 
 export class GameMaster {
   // WARNING: Default values exist both here and in `GameMaster.resetToStartOfGame`
@@ -36,6 +37,7 @@ export class GameMaster {
   public allowableMoves: Move[] = [];
   public locationSelected = false;
   public squaresInfo = new SquaresInfo();
+  public loadingSquares: string[] = [];
   public timersAsOf?: number = undefined;
 
   // TODO: Consider restructure to encapsulate visualisation details in a nice abstraction
@@ -52,6 +54,7 @@ export class GameMaster {
     protected evaluateEndGameConditions = true,
     public positionInHistory = 0
   ) {
+    autoBind(this);
     this.gameClones = evaluateEndGameConditions
       ? [game.clone(), game.clone(), game.clone(), game.clone()]
       : [game.clone(), game.clone()];
@@ -88,6 +91,7 @@ export class GameMaster {
     this.deck = deck;
     this.game = game;
     this.interrupt = interrupt;
+    this.loadingSquares = [];
     this.startOfTurn();
   }
 
@@ -328,8 +332,16 @@ export class GameMaster {
     this.render();
   }
 
-  onPress(location: string, pieceId?: string): Move | undefined {
-    // console.log(`${this.selectedPieces.length ? "" : "\n\n// Move ... ???\n"}gameMaster.onPress("${location}");`); // TEST WRITING HELPER COMMENT
+  async onSquarePress(location: string, pieceId?: string): Promise<void> {
+    this.loadingSquares.push(location);
+    this.render();
+    await doAsync(this.handleSquarePressed)(location, pieceId);
+    this.loadingSquares = this.loadingSquares.filter((l) => l != location);
+    this.render();
+  }
+
+  handleSquarePressed(location: string, pieceId?: string): Move | undefined {
+    // console.log(`${this.selectedPieces.length ? "" : "\n\n// Move ... ???\n"}gameMaster.handleSquarePressed("${location}");`); // TEST WRITING HELPER COMMENT
     const moves = uniqWith(
       this.allowableMoves.filter((m) => m.location === location),
       movesAreEqual

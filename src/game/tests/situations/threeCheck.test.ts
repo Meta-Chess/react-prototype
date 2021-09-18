@@ -21,40 +21,40 @@ describe("With three check enabled", () => {
     });
 
     // White pawn to E3
-    gameMaster.onPress(toLocation({ rank: 2, file: 5 }));
-    gameMaster.onPress(toLocation({ rank: 3, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 3, file: 5 }));
     expect(board.getPiecesAt(toLocation({ rank: 3, file: 5 })).length).toEqual(1);
 
     // Black pawn to D6
-    gameMaster.onPress(toLocation({ rank: 7, file: 4 }));
-    gameMaster.onPress(toLocation({ rank: 6, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 6, file: 4 }));
     expect(board.getPiecesAt(toLocation({ rank: 6, file: 4 })).length).toEqual(1);
 
     // White bishop to B5 - check 1
-    gameMaster.onPress(toLocation({ rank: 1, file: 6 }));
-    gameMaster.onPress(toLocation({ rank: 5, file: 2 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 6 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 2 }));
     expect(board.getPiecesAt(toLocation({ rank: 5, file: 2 })).length).toEqual(1);
     expect(mockCheckConsequence).toHaveBeenCalledTimes(1);
 
     // Black pawn to C6
-    gameMaster.onPress(toLocation({ rank: 7, file: 3 }));
-    gameMaster.onPress(toLocation({ rank: 6, file: 3 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 3 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 6, file: 3 }));
     expect(board.getPiecesAt(toLocation({ rank: 6, file: 3 })).length).toEqual(1);
 
     // White bishop to C6 - check 2
-    gameMaster.onPress(toLocation({ rank: 5, file: 2 }));
-    gameMaster.onPress(toLocation({ rank: 6, file: 3 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 2 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 6, file: 3 }));
     expect(board.getPiecesAt(toLocation({ rank: 6, file: 3 })).length).toEqual(1);
     expect(mockCheckConsequence).toHaveBeenCalledTimes(2);
 
     // Black queen to D2
-    gameMaster.onPress(toLocation({ rank: 8, file: 4 }));
-    gameMaster.onPress(toLocation({ rank: 7, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 8, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 4 }));
     expect(board.getPiecesAt(toLocation({ rank: 7, file: 4 })).length).toEqual(1);
 
     // White bishop to D2 - check 3
-    gameMaster.onPress(toLocation({ rank: 6, file: 3 }));
-    gameMaster.onPress(toLocation({ rank: 7, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 6, file: 3 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 4 }));
     expect(board.getPiecesAt(toLocation({ rank: 7, file: 4 })).length).toEqual(1);
     expect(mockCheckConsequence).toHaveBeenCalledTimes(3);
 

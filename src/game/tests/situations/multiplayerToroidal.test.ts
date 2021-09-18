@@ -12,38 +12,38 @@ describe("On a klein bottle with 3 players", () => {
     const board = gameMaster.game.board;
 
     // Move b4 -> c6
-    gameMaster.onPress("R4F2");
-    gameMaster.onPress("R6F3");
+    gameMaster.handleSquarePressed("R4F2");
+    gameMaster.handleSquarePressed("R6F3");
     expect(board.getPiecesAt("R6F3").length).toEqual(1);
 
     // Move b10 -> c8
-    gameMaster.onPress("R10F2");
-    gameMaster.onPress("R8F3");
+    gameMaster.handleSquarePressed("R10F2");
+    gameMaster.handleSquarePressed("R8F3");
     expect(board.getPiecesAt("R8F3").length).toEqual(1);
 
     // Move b16 -> c14
-    gameMaster.onPress("R16F2");
-    gameMaster.onPress("R14F3");
+    gameMaster.handleSquarePressed("R16F2");
+    gameMaster.handleSquarePressed("R14F3");
     expect(board.getPiecesAt("R14F3").length).toEqual(1);
 
     // Move e3 -> e2
-    gameMaster.onPress("R3F5");
-    gameMaster.onPress("R2F5");
+    gameMaster.handleSquarePressed("R3F5");
+    gameMaster.handleSquarePressed("R2F5");
     expect(board.getPiecesAt("R2F5").length).toEqual(1);
 
     // More moves ...
-    gameMaster.onPress("R10F7");
-    gameMaster.onPress("R12F6");
+    gameMaster.handleSquarePressed("R10F7");
+    gameMaster.handleSquarePressed("R12F6");
     expect(board.getPiecesAt("R12F6").length).toEqual(1);
 
     // Move
-    gameMaster.onPress("R14F3");
-    gameMaster.onPress("R12F4");
+    gameMaster.handleSquarePressed("R14F3");
+    gameMaster.handleSquarePressed("R12F4");
     expect(board.getPiecesAt("R12F4").length).toEqual(1);
 
     // Move
-    gameMaster.onPress("R6F3");
-    gameMaster.onPress("R8F4");
+    gameMaster.handleSquarePressed("R6F3");
+    gameMaster.handleSquarePressed("R8F4");
     expect(board.getPiecesAt("R8F4").length).toEqual(1);
 
     // Black is dead.
@@ -68,53 +68,53 @@ describe("On a klein bottle with 3 players", () => {
     // checking both players 3 times and killing them.
 
     // white move
-    gameMaster.onPress("R4F4");
+    gameMaster.handleSquarePressed("R4F4");
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([expect.objectContaining({ location: "R13F5" })])
     );
-    gameMaster.onPress("R13F5");
+    gameMaster.handleSquarePressed("R13F5");
     expect(board.getPiecesAt("R13F5").length).toEqual(1);
 
     // black move
-    gameMaster.onPress("R11F5");
+    gameMaster.handleSquarePressed("R11F5");
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([expect.objectContaining({ location: "R12F5" })])
     );
-    gameMaster.onPress("R12F5");
+    gameMaster.handleSquarePressed("R12F5");
     expect(board.getPiecesAt("R12F5").length).toEqual(1);
 
     // silver move
-    gameMaster.onPress("R15F5");
+    gameMaster.handleSquarePressed("R15F5");
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([expect.objectContaining({ location: "R14F5" })])
     );
-    gameMaster.onPress("R14F5");
+    gameMaster.handleSquarePressed("R14F5");
     expect(board.getPiecesAt("R14F5").length).toEqual(1);
 
     // white move
-    gameMaster.onPress("R13F5");
-    gameMaster.onPress("R13F8");
+    gameMaster.handleSquarePressed("R13F5");
+    gameMaster.handleSquarePressed("R13F8");
     expect(board.getPiecesAt("R13F8").length).toEqual(1);
 
     // black move
-    gameMaster.onPress("R11F7");
+    gameMaster.handleSquarePressed("R11F7");
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([expect.objectContaining({ location: "R12F7" })])
     );
-    gameMaster.onPress("R12F7");
+    gameMaster.handleSquarePressed("R12F7");
     expect(board.getPiecesAt("R12F7").length).toEqual(1);
 
     // silver move
-    gameMaster.onPress("R15F7");
+    gameMaster.handleSquarePressed("R15F7");
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([expect.objectContaining({ location: "R14F7" })])
     );
-    gameMaster.onPress("R14F7");
+    gameMaster.handleSquarePressed("R14F7");
     expect(board.getPiecesAt("R14F7").length).toEqual(1);
 
     // white move
-    gameMaster.onPress("R13F8");
-    gameMaster.onPress("R13F2");
+    gameMaster.handleSquarePressed("R13F8");
+    gameMaster.handleSquarePressed("R13F2");
     expect(board.getPiecesAt("R13F2").length).toEqual(1);
 
     // Game over

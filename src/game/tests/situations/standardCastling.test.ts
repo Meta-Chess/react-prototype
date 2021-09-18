@@ -9,7 +9,7 @@ describe("In standard chess", () => {
     killBishopsKnightsAndQueens(gameMaster.game.board);
 
     // White king should have four available moves
-    gameMaster.onPress(toLocation({ rank: 1, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 5 }));
     expect(gameMaster.allowableMoves.length).toEqual(4);
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
@@ -21,7 +21,7 @@ describe("In standard chess", () => {
     );
 
     // Black king should have four available moves
-    gameMaster.onPress(toLocation({ rank: 8, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 8, file: 5 }));
     expect(gameMaster.allowableMoves.length).toEqual(4);
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
@@ -38,11 +38,11 @@ describe("In standard chess", () => {
     killBishopsKnightsAndQueens(gameMaster.game.board);
 
     // Move white king
-    gameMaster.onPress(toLocation({ rank: 1, file: 5 }));
-    gameMaster.onPress(toLocation({ rank: 1, file: 6 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 6 }));
 
     // White king should only have two available moves
-    gameMaster.onPress(toLocation({ rank: 1, file: 6 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 6 }));
     expect(gameMaster.allowableMoves.length).toEqual(2);
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
@@ -57,11 +57,11 @@ describe("In standard chess", () => {
     killBishopsKnightsAndQueens(gameMaster.game.board);
 
     // Move white rook
-    gameMaster.onPress(toLocation({ rank: 1, file: 1 }));
-    gameMaster.onPress(toLocation({ rank: 1, file: 2 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 1 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 2 }));
 
     // White king should have four available moves
-    gameMaster.onPress(toLocation({ rank: 1, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 5 }));
     expect(gameMaster.allowableMoves.length).toEqual(3);
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
@@ -77,11 +77,11 @@ describe("In standard chess", () => {
     killBishopsKnightsAndQueens(gameMaster.game.board);
 
     // Move white rook
-    gameMaster.onPress(toLocation({ rank: 1, file: 8 }));
-    gameMaster.onPress(toLocation({ rank: 1, file: 7 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 8 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 7 }));
 
     // White king should have four available moves
-    gameMaster.onPress(toLocation({ rank: 1, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 5 }));
     expect(gameMaster.allowableMoves.length).toEqual(3);
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
@@ -98,8 +98,8 @@ describe("In standard chess", () => {
     killBishopsKnightsAndQueens(board);
 
     // Castle queen-side
-    gameMaster.onPress(toLocation({ rank: 1, file: 5 }));
-    gameMaster.onPress(toLocation({ rank: 1, file: 3 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 3 }));
 
     // King and rook should be in correct places
     expect(board.getPiecesAt(toLocation({ rank: 1, file: 3 })).length).toEqual(1);
@@ -121,37 +121,37 @@ describe("In standard chess", () => {
     const board = gameMaster.game.board;
 
     // White pawn E4
-    gameMaster.onPress("R2F5");
-    gameMaster.onPress("R4F5");
+    gameMaster.handleSquarePressed("R2F5");
+    gameMaster.handleSquarePressed("R4F5");
     expect(board.getPiecesAt("R4F5").length).toEqual(1);
 
     // Black pawn B6
-    gameMaster.onPress("R7F2");
-    gameMaster.onPress("R6F2");
+    gameMaster.handleSquarePressed("R7F2");
+    gameMaster.handleSquarePressed("R6F2");
     expect(board.getPiecesAt("R6F2").length).toEqual(1);
 
     // White bishop A6
-    gameMaster.onPress("R1F6");
-    gameMaster.onPress("R6F1");
+    gameMaster.handleSquarePressed("R1F6");
+    gameMaster.handleSquarePressed("R6F1");
     expect(board.getPiecesAt("R6F1").length).toEqual(1);
 
     // Black bishop takes A6
-    gameMaster.onPress("R8F3");
-    gameMaster.onPress("R6F1");
+    gameMaster.handleSquarePressed("R8F3");
+    gameMaster.handleSquarePressed("R6F1");
     expect(board.getPiecesAt("R6F1").length).toEqual(1);
 
     // White knight F3
-    gameMaster.onPress("R1F7");
-    gameMaster.onPress("R3F6");
+    gameMaster.handleSquarePressed("R1F7");
+    gameMaster.handleSquarePressed("R3F6");
     expect(board.getPiecesAt("R3F6").length).toEqual(1);
 
     // Black bishop F1
-    gameMaster.onPress("R6F1");
-    gameMaster.onPress("R1F6");
+    gameMaster.handleSquarePressed("R6F1");
+    gameMaster.handleSquarePressed("R1F6");
     expect(board.getPiecesAt("R1F6").length).toEqual(1);
 
     // Select white king
-    gameMaster.onPress("R1F5");
+    gameMaster.handleSquarePressed("R1F5");
     // It should not be able to castle
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
@@ -162,17 +162,17 @@ describe("In standard chess", () => {
     expect(gameMaster.allowableMoves.length).toEqual(2);
 
     // White pawn D3
-    gameMaster.onPress("R2F4");
-    gameMaster.onPress("R3F4");
+    gameMaster.handleSquarePressed("R2F4");
+    gameMaster.handleSquarePressed("R3F4");
     expect(board.getPiecesAt("R3F4").length).toEqual(1);
 
     // Black bishop takes D3
-    gameMaster.onPress("R1F6");
-    gameMaster.onPress("R3F4");
+    gameMaster.handleSquarePressed("R1F6");
+    gameMaster.handleSquarePressed("R3F4");
     expect(board.getPiecesAt("R3F4").length).toEqual(1);
 
     // Select white king
-    gameMaster.onPress("R1F5");
+    gameMaster.handleSquarePressed("R1F5");
     // It should be able to castle
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
@@ -184,7 +184,7 @@ describe("In standard chess", () => {
     );
     expect(gameMaster.allowableMoves.length).toEqual(4);
     // It castles
-    gameMaster.onPress("R1F7");
+    gameMaster.handleSquarePressed("R1F7");
     expect(board.getPiecesAt("R1F5").length).toEqual(0);
     expect(board.getPiecesAt("R1F6").length).toEqual(1);
     expect(board.getPiecesAt("R1F7").length).toEqual(1);

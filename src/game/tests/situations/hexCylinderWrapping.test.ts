@@ -13,17 +13,17 @@ describe("With fatigue enabled", () => {
     const board = gameMaster.game.board;
 
     // White middle bishop forwards far right
-    gameMaster.onPress(toLocation({ rank: 3, file: 6 }));
-    gameMaster.onPress(toLocation({ rank: 15, file: 10 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 3, file: 6 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 15, file: 10 }));
     expect(board.getPiecesAt(toLocation({ rank: 15, file: 10 })).length).toEqual(1);
 
     // Black pawn forwards
-    gameMaster.onPress(toLocation({ rank: 14, file: 5 }));
-    gameMaster.onPress(toLocation({ rank: 10, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 14, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 10, file: 5 }));
     expect(board.getPiecesAt(toLocation({ rank: 10, file: 5 })).length).toEqual(1);
 
     // Select the white bishop we just moved
-    gameMaster.onPress(toLocation({ rank: 15, file: 10 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 15, file: 10 }));
     expect(gameMaster.allowableMoves.length).toEqual(10);
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
@@ -41,12 +41,12 @@ describe("With fatigue enabled", () => {
     );
 
     // White pawn forwards
-    gameMaster.onPress(toLocation({ rank: 7, file: 8 }));
-    gameMaster.onPress(toLocation({ rank: 9, file: 8 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 8 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 9, file: 8 }));
     expect(board.getPiecesAt(toLocation({ rank: 9, file: 8 })).length).toEqual(1);
 
     // Select free black rook
-    gameMaster.onPress(toLocation({ rank: 18, file: 9 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 18, file: 9 }));
     expect(gameMaster.allowableMoves.length).toEqual(11);
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
