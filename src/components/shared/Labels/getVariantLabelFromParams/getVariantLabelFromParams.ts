@@ -1,9 +1,9 @@
 import { FutureVariant } from "game/variants";
 import {
   RuleNamesWithParams,
-  allRuleSettings,
   ParamSettingType,
   ParamName,
+  AllRuleSettings,
 } from "game/CompactRules";
 import {
   doGameOptionsModifyVariant,
@@ -18,12 +18,13 @@ export function getVariantLabelFromParams(
   ruleNamesWithParams?: RuleNamesWithParams
 ): string {
   let details = "";
+  const allRuleSettings = new AllRuleSettings();
   if (doGameOptionsModifyVariant(variant, ruleNamesWithParams)) {
     getGameOptionParamsForVariant(variant, ruleNamesWithParams).forEach((tuple) => {
       const ruleName = tuple[0];
       const params = tuple[1];
       keys(params).forEach((paramName) => {
-        const ruleSetting = allRuleSettings[`${ruleName}Settings`]?.[paramName];
+        const ruleSetting = ((allRuleSettings as any)[ruleName] as any)[paramName];
         const paramType = ruleSetting?.paramType;
 
         if (paramType === ParamSettingType.PieceCycles) {

@@ -3,10 +3,13 @@ import { PieceName, AnimationType, Direction } from "game/types";
 import { uniq } from "lodash";
 import { isPresent } from "utilities/isPresent";
 import { Rule, ParameterRule, SubscribeToEvents } from "../CompactRules";
-import { addAnimationTokenToSquare, getDefaultParams } from "../utilities";
+import { addAnimationTokenToSquare } from "../utilities";
 
-export const atomic: ParameterRule = (ruleParams): Rule => {
-  const defaultParams = getDefaultParams("atomicSettings"); // TODO: these are still possibly undefined - this typing for defaults should be separated out
+export const atomic: ParameterRule<"atomic"> = ({
+  BOOM,
+  "Immune Pieces": immunePieces,
+  "Deep Impact": deepImpact,
+}): Rule => {
   return {
     title: "Atomic",
     description:
@@ -16,12 +19,7 @@ export const atomic: ParameterRule = (ruleParams): Rule => {
       events.subscribe({
         name: "capture",
         consequence: ({ board, square }) => {
-          atomicExplosion(
-            board,
-            square,
-            ruleParams?.["BOOM"] ?? defaultParams["BOOM"] ?? 0, // TODO: at least get this to 'ruleParams?.["BOOM"] ?? defaultParams["BOOM"]'
-            ruleParams?.["Immune Pieces"] ?? defaultParams["Immune Pieces"] ?? [[]]
-          )
+          atomicExplosion(board, square, BOOM, immunePieces)
             .map((s) => s.location)
             .forEach((location) => {
               board.killPiecesAt({ piecesLocation: location });
@@ -35,8 +33,7 @@ export const atomic: ParameterRule = (ruleParams): Rule => {
               });
             });
 
-          if (ruleParams?.["Deep Impact"] ?? defaultParams["Deep Impact"] ?? false)
-            board.destroySquare(square.getLocation());
+          if (deepImpact) board.destroySquare(square.getLocation());
 
           return { board, square };
         },

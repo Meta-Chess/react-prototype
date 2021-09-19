@@ -5,7 +5,7 @@ import { SFC, Colors, useHover } from "primitives";
 import { ConflictLevel, FutureVariant } from "game";
 import { VariantTileInfo } from "./VariantTileInfo";
 import { VariantTileImage } from "./VariantTileImage";
-import { allRuleSettings } from "game/CompactRules";
+import { RuleNamesWithParamSettings, AllRuleSettings } from "game/CompactRules";
 import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
 import { VariantTileHeader } from "./VariantTileHeader";
 import { VariantTileGraph } from "./VariantTileGraph";
@@ -51,16 +51,24 @@ export const VariantTile: SFC<Props> = ({
   const [ref, hovered] = useHover();
   color = hovered ? color.fade(0.2) : color;
   const implemented = variant.implemented;
+
   const showDetailedView = (hovered || detailedView) && implemented && !zenMode;
   const showStar = showDetailedView;
   const showGear = !zenMode && hovered;
 
-  const ruleSettings = variant.ruleNames
-    .filter((ruleName) => allRuleSettings[`${ruleName}Settings`] !== undefined)
-    .reduce(
-      (acc, ruleName) => ({ ...acc, [ruleName]: allRuleSettings[`${ruleName}Settings`] }),
-      {}
-    );
+  const ruleSettings: RuleNamesWithParamSettings = useMemo(() => {
+    const allRuleSettings = new AllRuleSettings();
+    return variant.ruleNames
+      .filter((ruleName) => ruleName in allRuleSettings)
+      .reduce(
+        (acc, ruleName) => ({
+          ...acc,
+          [ruleName]: allRuleSettings[ruleName as keyof AllRuleSettings],
+        }),
+        {}
+      );
+  }, []);
+
   const onGearPress = useMemo(
     () =>
       keys(ruleSettings).length > 0

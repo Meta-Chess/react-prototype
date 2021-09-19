@@ -9,12 +9,22 @@ import { Pather, PatherParams } from "game/Pather";
 import { GameMaster } from "game/GameMaster";
 import { FutureVariantName } from "game/variants";
 import { FormatName, formats as allFormats } from "game/formats";
-import { RuleName, rules as allRules } from "game/CompactRules";
+import {
+  getDefaults,
+  RuleName,
+  rules,
+  RuleSetting,
+  RuleParamValue,
+  RuleParam,
+  RulesWithoutParams,
+  RulesWithParams,
+} from "game/CompactRules";
 import { variantsToRules } from "game/variantAndRuleProcessing/variantsToRules";
-import { RuleParamValue, RuleSetting } from "./RuleSettingTypes";
 import { uniq } from "lodash";
 import { keys } from "utilities";
 import { Player } from "game/Player";
+
+const allRules: AllParameterRules = rules;
 
 // Note: These linting exceptions should only ever be used with great caution
 // Take care to check extra carefully for errors in this file because we have less type safety
@@ -41,17 +51,20 @@ export class CompactRules {
 
     const interruptionNames = keys(identityRule);
 
+    const buildRule = <R extends RuleName>(ruleName: R): Rule => {
+      const rule = allRules[ruleName] as ParameterRule<R>;
+      const params = {
+        ...getDefaults(ruleName),
+        ...ruleParams[ruleName],
+      };
+      return rule(params);
+    };
+
     const interruptionPoints = interruptionNames.map((interruptionPointName) => ({
       name: interruptionPointName,
       functions: this.ruleNames
-        .filter(
-          (ruleName) =>
-            !!allRules[ruleName](ruleParams?.[ruleName])[interruptionPointName]
-        )
         .sort(compareRulesPerInterruptionPoint(interruptionPointName))
-        .map(
-          (ruleName) => allRules[ruleName](ruleParams?.[ruleName])[interruptionPointName]
-        )
+        .map((ruleName) => buildRule(ruleName)[interruptionPointName])
         .filter(isPresent),
     }));
 
@@ -113,7 +126,11 @@ export type Rule = Partial<CompleteRule> & {
   title: string;
   description: string;
 };
-export type ParameterRule = (ruleParams?: RuleParamValue) => Rule;
+export type ParameterRule<R extends RuleName> = (ruleParams: RuleParam<R>) => Rule;
+export type TrivialParameterRule = ParameterRule<any>;
+type AllParameterRules = {
+  [ruleName in RulesWithoutParams | RulesWithParams]: ParameterRule<ruleName>;
+};
 
 export type RuleNamesWithParams = { [k in RuleName]?: RuleParamValue };
 export type RuleNamesWithParamSettings = { [k in RuleName]?: RuleSetting };
