@@ -82,28 +82,28 @@ export class CompactRules {
 }
 
 const identityRule = {
-  afterBoardCreation: (x: AfterBoardCreation) => x,
-  afterGameCreation: (x: AfterGameCreation) => x,
-  afterStepModify: (x: AfterStepModify) => x,
-  getGaitGenerator: (x: GetGaitGenerator) => x,
-  forSquareGenerationModify: (x: ForSquareGenerationModify) => x,
-  generateSpecialPacifistMoves: (x: GenerateSpecialPacifistMoves) => x,
-  lossCondition: (x: LossCondition) => x,
-  drawCondition: (x: DrawCondition) => x,
-  formatControlAtTurnStart: (x: FormatControlAtTurnStart) => x,
-  inPostMoveGenerationFilter: (x: InPostMoveGenerationFilter) => x,
-  lethalCondition: (x: LethalCondition) => x,
-  onBoardCreate: (x: OnBoardCreate) => x,
-  onSendPieceToGrave: (x: OnSendPieceToGrave) => x,
-  onGaitsGeneratedModify: (x: OnGaitsGeneratedModify) => x,
-  onPieceDisplaced: (x: OnPieceDisplaced) => x,
-  onPieceGeneratedModify: (x: OnPieceGeneratedModify) => x,
-  piecesUnderSquare: (x: PiecesUnderSquare) => x,
-  postCapture: (x: PostCapture) => x,
-  postMove: (x: PostMove) => x,
-  processMoves: (x: ProcessMoves) => x,
-  subscribeToEvents: (x: SubscribeToEvents) => x,
-  inFindPathsModifyInputParams: (x: InFindPathsModifyInputParams) => x,
+  afterBoardCreation: (x: AfterBoardCreation) => x, //Board.ts (on create)
+  afterGameCreation: (x: AfterGameCreation) => x, //GameMaster.ts - unused
+  afterStepModify: (x: AfterStepModify) => x, //Pather.ts
+  getGaitGenerator: (x: GetGaitGenerator) => x, //promotion.ts, mutatePiece.ts
+  forSquareGenerationModify: (x: ForSquareGenerationModify) => x, //Board.ts (on square create)
+  generateSpecialPacifistMoves: (x: GenerateSpecialPacifistMoves) => x, //Pather.ts
+  lossCondition: (x: LossCondition) => x, //GameMaster.ts
+  drawCondition: (x: DrawCondition) => x, //GameMaster.ts
+  formatControlAtTurnStart: (x: FormatControlAtTurnStart) => x, //GameMaster.ts
+  inPostMoveGenerationFilter: (x: InPostMoveGenerationFilter) => x, //Pather.ts (at end)
+  lethalCondition: (x: LethalCondition) => x, //check.ts, GameMaster.ts
+  onBoardCreate: (x: OnBoardCreate) => x, //Board.ts (on create)
+  onSendPieceToGrave: (x: OnSendPieceToGrave) => x, //Board.ts (post move - on capture)
+  onGaitsGeneratedModify: (x: OnGaitsGeneratedModify) => x, //Pather.ts
+  onPieceDisplaced: (x: OnPieceDisplaced) => x, //Board.ts (post move)
+  onPieceGeneratedModify: (x: OnPieceGeneratedModify) => x, //unused
+  piecesUnderSquare: (x: PiecesUnderSquare) => x, //Square.tsx (component)
+  postCapture: (x: PostCapture) => x, //unused
+  postMove: (x: PostMove) => x, //Game.ts (post move)
+  processMoves: (x: ProcessMoves) => x, //Pather.ts
+  subscribeToEvents: (x: SubscribeToEvents) => x, //Game.ts, Game.ts
+  inFindPathsModifyInputParams: (x: InFindPathsModifyInputParams) => x, //Pather.ts (dont like the lack of clarity on this one)
 };
 
 export type CompleteRule = typeof identityRule;
