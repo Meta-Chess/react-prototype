@@ -15,6 +15,20 @@ export const allRuleSettings: {
       paramType: ParamSettingType.Boolean,
       defaultValue: false,
     },
+    BOOM: {
+      paramType: ParamSettingType.Integer,
+      defaultValue: 2,
+      allowValue: (n: number): boolean => n > -1 && n < 11,
+    },
+    "Immune Pieces": {
+      paramType: ParamSettingType.PieceCycles,
+      defaultValue: [[PieceName.Pawn]],
+      allowValue: (sets: PieceName[][]): boolean =>
+        sets.length == 1 && sets[0].length >= 0,
+      excludedPieces: [],
+      usePieceSets: true,
+      maxCycles: 1,
+    },
   },
   chainReactionSettings: {
     "Max Chain Length": {
@@ -81,10 +95,8 @@ export const allRuleSettings: {
     "Piece Cycles": {
       paramType: ParamSettingType.PieceCycles,
       defaultValue: [[PieceName.Knight, PieceName.Bishop]],
-      allowValue: (value: PieceName[][]): boolean => {
-        // TODO: proper restriction - i.e. no single or empty piece cycle
-        value;
-        return true;
+      allowValue: (cycles: PieceName[][]): boolean => {
+        return cycles.length > 0 && cycles.every((cycle) => cycle.length > 1);
       },
       excludedPieces: [],
     },
@@ -99,10 +111,11 @@ export const allRuleSettings: {
     Species: {
       paramType: ParamSettingType.PieceCycles,
       defaultValue: [[]],
-      allowValue: (value: PieceName[][]): boolean => {
-        // TODO: proper restriction - i.e. no single or empty piece cycle
-        value;
-        return true;
+      allowValue: (sets: PieceName[][]): boolean => {
+        return (
+          (sets.length === 1 && sets[0].length === 0) ||
+          sets.every((set) => set.length > 1)
+        );
       },
       excludedPieces: [],
       usePieceSets: true,
@@ -112,10 +125,8 @@ export const allRuleSettings: {
     "Piece Cycles": {
       paramType: ParamSettingType.PieceCycles,
       defaultValue: [[PieceName.Queen, PieceName.King]],
-      allowValue: (value: PieceName[][]): boolean => {
-        // TODO: proper restriction - i.e. no single or empty piece cycle
-        value;
-        return true;
+      allowValue: (cycles: PieceName[][]): boolean => {
+        return cycles.length > 0 && cycles.every((cycle) => cycle.length > 1);
       },
       excludedPieces: [],
     },

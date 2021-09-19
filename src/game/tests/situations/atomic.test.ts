@@ -2,7 +2,7 @@ import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
 import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
 import { Board } from "game/Board";
-import { AnimationType, TokenName } from "game/types";
+import { AnimationType, PieceName, TokenName } from "game/types";
 
 const mockCaptureConsequence = jest.fn();
 
@@ -10,10 +10,15 @@ describe("With atomic enabled", () => {
   it("pieces should blow up on capture", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs({
-        gameOptions: calculateGameOptions({ checkEnabled: false }, [
-          "atomic",
-          "cylindrical",
-        ]),
+        gameOptions: calculateGameOptions(
+          {
+            checkEnabled: false,
+            ruleNamesWithParams: {
+              atomic: { BOOM: 2, ["Immune Pieces"]: [[PieceName.Pawn]] },
+            },
+          },
+          ["atomic", "cylindrical"]
+        ),
       })
     );
     const board = gameMaster.game.board;
@@ -53,9 +58,9 @@ describe("With atomic enabled", () => {
     expectExplosionVisualAt({ rank: 8, file: 1 }, board);
     expectExplosionVisualAt({ rank: 8, file: 2 }, board);
     expectExplosionVisualAt({ rank: 8, file: 3 }, board);
-    expectExplosionVisualAt({ rank: 7, file: 1 }, board);
+    // expectExplosionVisualAt({ rank: 7, file: 1 }, board); Pawn here
     expectExplosionVisualAt({ rank: 7, file: 2 }, board);
-    expectExplosionVisualAt({ rank: 7, file: 3 }, board);
+    // expectExplosionVisualAt({ rank: 7, file: 3 }, board); Pawn here
     expectExplosionVisualAt({ rank: 6, file: 1 }, board);
     expectExplosionVisualAt({ rank: 6, file: 2 }, board);
     expectExplosionVisualAt({ rank: 6, file: 3 }, board);

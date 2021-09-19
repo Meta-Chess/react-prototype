@@ -15,7 +15,10 @@ export function pieceCyclesLabel(
     pieceCycle
       .slice(1)
       .forEach((piece) => (cycleString += ", " + pieceDetails[piece].name));
-    details = details + (isSet ? "\n- Piece Set: " : "\n- Piece Cycle: ") + cycleString;
+    details =
+      details +
+      (isSet ? "\n- Piece Set: " : "\n- Piece Cycle: ") +
+      (cycleString ?? "No Pieces");
   });
 
   return details;

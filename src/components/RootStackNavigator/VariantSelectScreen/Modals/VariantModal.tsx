@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { SFC, Colors } from "primitives";
 import { ButtonLight, ButtonSecondaryLight, Card, Divider } from "ui";
-import { GameOptions } from "game";
+import { GameOptions, RuleName } from "game";
 import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
 import {
@@ -31,17 +31,23 @@ export const VariantModal: SFC<Props> = ({
   variantModalInfo,
   setVariantModalInfo,
   gameOptions,
-  setGameOptions,
+  setGameOptions: _setGameOptions,
   style,
 }) => {
   const ruleSettings = variantModalInfo.ruleSettings;
-  const [tempParamOptions, setTempParamOptions] = useState<RuleNamesWithParams>(
-    gameOptions.ruleNamesWithParams || {}
-  );
+  const [tempParamOptions, setTempParamOptions] = useState<
+    RuleNamesWithParams | undefined
+  >(gameOptions.ruleNamesWithParams || {});
 
-  // changes keys for parameter options, so that reset refreshes all the components
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [renderKeys, reRenderKeys] = useState(false);
+  const [renderKeys, rerenderKeys] = useState(false);
+  const rerender = (): void => rerenderKeys(!renderKeys);
+
+  const setGameOptions = (gameOptions: GameOptions): void => {
+    _setGameOptions(gameOptions);
+    setTempParamOptions(gameOptions.ruleNamesWithParams);
+    rerender();
+  };
+
   return (
     <ModalCard style={style} title={variantModalInfo.variant}>
       <Divider style={{ padding: 0 }} />
@@ -73,31 +79,7 @@ export const VariantModal: SFC<Props> = ({
         <ButtonSecondaryLight
           label={"Reset"}
           style={{ flex: 1 }}
-          onPress={(): void => {
-            {
-              ruleSettings &&
-                keys(ruleSettings).forEach((ruleName) => {
-                  const ruleSetting: RuleSetting | undefined = ruleSettings[ruleName];
-                  if (ruleSetting === undefined) return;
-                  return keys(ruleSetting).forEach((paramName) => {
-                    setGameOptions({
-                      ...gameOptions,
-                      ruleNamesWithParams: optionsChangeRuleParam({
-                        ruleName: ruleName,
-                        paramName: paramName,
-                        tempParamOptions: gameOptions.ruleNamesWithParams,
-                        paramSettings: ruleSetting[paramName],
-                        paramNewValue: ruleSetting[paramName]?.defaultValue,
-                      }),
-                    });
-                  });
-                });
-            }
-            setVariantModalInfo({ activated: false });
-            // WARNING: something gross is going on in the reset button - if we dont close the modal, the state wont set to default when closing through done...
-            // current behavior is totally convenient though so leaving it...
-            // reRenderKeys(!renderKeys);
-          }}
+          onPress={resetRuleSettings(gameOptions, setGameOptions, ruleSettings)}
         />
         <ButtonLight
           label={"Done"}
@@ -111,6 +93,49 @@ export const VariantModal: SFC<Props> = ({
     </ModalCard>
   );
 };
+
+const resetRuleSettings =
+  (
+    gameOptions: GameOptions,
+    setGameOptions: (gameOptions: GameOptions) => void,
+    ruleSettings?: RuleNamesWithParamSettings
+  ) =>
+  (): void => {
+    if (!ruleSettings) return;
+
+    const ruleNamesWithParams = buildDefaultRuleNamesWithParams(
+      ruleSettings,
+      gameOptions.ruleNamesWithParams
+    );
+
+    setGameOptions({ ...gameOptions, ruleNamesWithParams });
+  };
+
+const buildDefaultRuleNamesWithParams = (
+  ruleSettings: RuleNamesWithParamSettings,
+  gameRuleNamesWithParams: RuleNamesWithParams = {}
+): RuleNamesWithParams =>
+  keys(ruleSettings)
+    .filter((ruleName) => ruleSettings[ruleName])
+    .reduce(buildDefaultRuleNamesWithParamForRule(ruleSettings), gameRuleNamesWithParams);
+
+const buildDefaultRuleNamesWithParamForRule =
+  (ruleSettings: RuleNamesWithParamSettings) =>
+  (
+    ruleNameWithParamsPerRuleName: RuleNamesWithParams,
+    ruleName: RuleName
+  ): RuleNamesWithParams =>
+    keys(ruleSettings[ruleName]).reduce(
+      (ruleNameWithParamsPerParam, paramName) =>
+        optionsChangeRuleParam({
+          ruleName,
+          paramName,
+          tempParamOptions: ruleNameWithParamsPerParam,
+          paramSettings: ruleSettings[ruleName]?.[paramName],
+          paramNewValue: ruleSettings[ruleName]?.[paramName]?.defaultValue,
+        }),
+      ruleNameWithParamsPerRuleName
+    );
 
 const ModalCard = styled(Card)`
   ${Styles.BOX_SHADOW_STRONG}

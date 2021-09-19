@@ -8,6 +8,8 @@ import { PieceName } from "game/types";
 import { PieceSelectRow } from "./PieceSelectRow";
 import { PieceCycleRow } from "./PieceCycleRow";
 
+const DEFAULT_MAX_CYCLES = 8;
+
 export const ParamPieceCyclesOptions: SFC<ParamProps> = ({
   ruleName,
   paramName,
@@ -20,21 +22,24 @@ export const ParamPieceCyclesOptions: SFC<ParamProps> = ({
   const paramSettingPieceCycles = paramSettings as ParamSettingPieceCycles;
   const paramDefaultPieceCycles = paramDefault as PieceName[][];
   const excludePieces = paramSettingPieceCycles.excludedPieces;
+  const maxIndex = (paramSettingPieceCycles.maxCycles || DEFAULT_MAX_CYCLES) - 1;
 
   const [optionPieceCycles, setOptionPieceCycles] = useState<PieceName[][]>(
     paramDefaultPieceCycles
   );
 
   useEffect(() => {
-    setTempParamOptions(
-      optionsChangeRuleParam({
-        ruleName: ruleName,
-        paramName: paramName,
-        tempParamOptions: tempParamOptions,
-        paramSettings: paramSettingPieceCycles,
-        paramNewValue: optionPieceCycles,
-      })
-    );
+    if (paramSettingPieceCycles.allowValue(optionPieceCycles)) {
+      setTempParamOptions(
+        optionsChangeRuleParam({
+          ruleName: ruleName,
+          paramName: paramName,
+          tempParamOptions: tempParamOptions,
+          paramSettings: paramSettingPieceCycles,
+          paramNewValue: optionPieceCycles,
+        })
+      );
+    }
   }, [optionPieceCycles]);
 
   return (
@@ -60,6 +65,7 @@ export const ParamPieceCyclesOptions: SFC<ParamProps> = ({
             setOptionPieceCycles={setOptionPieceCycles}
             isSet={paramSettingPieceCycles.usePieceSets}
             style={{ paddingHorizontal: 12, paddingBottom: 12 }}
+            maxIndex={maxIndex}
           />
         );
       })}

@@ -30,7 +30,7 @@ export function getVariantLabelFromParams(
           const isSet = (ruleSetting as ParamSettingPieceCycles).usePieceSets;
           details += pieceCyclesLabel(params, paramName as ParamName, isSet);
         } else {
-          details += details + "\n- " + paramName + ": " + params[paramName];
+          details += "\n- " + paramName + ": " + params[paramName];
         }
       });
     });
