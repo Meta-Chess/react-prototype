@@ -1,10 +1,10 @@
 import { Rule, ParameterRule, OnPieceDisplaced } from "../CompactRules";
-import { getDefaultParams, createPieceMutator, mutatePiece } from "../utilities";
+import { createPieceMutator, mutatePiece } from "../utilities";
 
 // TODO: this should be in the same place as promotion
-export const morphlings: ParameterRule = (
-  ruleParams = getDefaultParams("morphlingsSettings")
-): Rule => {
+export const morphlings: ParameterRule<"morphlings"> = ({
+  "Piece Cycles": pieceCycles,
+}): Rule => {
   return {
     title: "Morphlings",
     description:
@@ -13,9 +13,7 @@ export const morphlings: ParameterRule = (
     onPieceDisplaced: ({ board, pieceDelta }): OnPieceDisplaced => {
       const piece = board.getPiece(pieceDelta.pieceId);
       if (piece) {
-        const newPieceName = createPieceMutator(ruleParams["Piece Cycles"] || [])[
-          piece.name
-        ];
+        const newPieceName = createPieceMutator(pieceCycles)[piece.name];
         mutatePiece(piece, newPieceName, board);
       }
       return { board, pieceDelta };

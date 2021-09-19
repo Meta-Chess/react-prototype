@@ -1,4 +1,4 @@
-import { Rule, ParameterRule, FormatControlAtTurnStart } from "../CompactRules";
+import { TrivialParameterRule, FormatControlAtTurnStart } from "../CompactRules";
 import { GameMaster } from "game";
 import { Player } from "game/Player/Player";
 import { range } from "lodash";
@@ -11,63 +11,58 @@ const VARIANTS_ROLLING_OUT = 1;
 const STARTING_ROLLING_VARIANTS = 0;
 
 // TODO: fatigue rolling remove tokens(?), rebuild event center when rolling
-export const rollingVariants: ParameterRule = (): Rule => {
-  return {
-    title: "Rolling Variants",
-    description:
-      "At the end of the turn on which the rolling counter hits zero, the variant that's been in play longest deactivates, and a new variant is randomly chosen from the deck",
+export const rollingVariants: TrivialParameterRule = () => ({
+  title: "Rolling Variants",
+  description:
+    "At the end of the turn on which the rolling counter hits zero, the variant that's been in play longest deactivates, and a new variant is randomly chosen from the deck",
 
-    formatControlAtTurnStart: ({ gameMaster }): FormatControlAtTurnStart => {
-      const playerWithRollCounter = findRollCounter(gameMaster);
-      const playerIndex = gameMaster.game.getIndexOfPlayer(playerWithRollCounter);
-      const counterValue = playerWithRollCounter?.getRuleData("rollingVariantsCounter");
-      const atVariantLimit = gameMaster.formatVariants.length >= MAX_ROLLING_VARIANTS;
-      changeVariantLabelColors(gameMaster);
+  formatControlAtTurnStart: ({ gameMaster }): FormatControlAtTurnStart => {
+    const playerWithRollCounter = findRollCounter(gameMaster);
+    const playerIndex = gameMaster.game.getIndexOfPlayer(playerWithRollCounter);
+    const counterValue = playerWithRollCounter?.getRuleData("rollingVariantsCounter");
+    const atVariantLimit = gameMaster.formatVariants.length >= MAX_ROLLING_VARIANTS;
+    changeVariantLabelColors(gameMaster);
 
-      if (
-        playerWithRollCounter === undefined ||
-        counterValue === undefined ||
-        playerIndex === undefined
-      ) {
-        rollVariants({
+    if (
+      playerWithRollCounter === undefined ||
+      counterValue === undefined ||
+      playerIndex === undefined
+    ) {
+      rollVariants({
+        gameMaster,
+        rollingInNumber: STARTING_ROLLING_VARIANTS,
+        rollingOffNumber: 0,
+      });
+      moveCounterToPreviousOrLastPlayer(gameMaster, NUMBER_OF_TURNS);
+    } else if (
+      counterValue === 1 &&
+      gameMaster.game.currentPlayerIndex ===
+        gameMaster.game.getPreviousAlivePlayer(playerIndex)?.name
+    ) {
+      if (atVariantLimit) {
+        changeVariantLabelColors(
           gameMaster,
-          rollingInNumber: STARTING_ROLLING_VARIANTS,
-          rollingOffNumber: 0,
-        });
-        moveCounterToPreviousOrLastPlayer(gameMaster, NUMBER_OF_TURNS);
-      } else if (
-        counterValue === 1 &&
-        gameMaster.game.currentPlayerIndex ===
-          gameMaster.game.getPreviousAlivePlayer(playerIndex)?.name
-      ) {
-        if (atVariantLimit) {
-          changeVariantLabelColors(
-            gameMaster,
-            VariantLabelInfo.VariantLeaving,
-            VARIANTS_ROLLING_OUT
-          );
-        }
-      } else if (
-        counterValue === 1 &&
-        gameMaster.game.currentPlayerIndex === playerIndex
-      ) {
-        rollVariants({
-          gameMaster,
-          rollingInNumber: VARIANTS_ROLLING_IN,
-          rollingOffNumber: atVariantLimit ? VARIANTS_ROLLING_OUT : 0,
-        });
-        moveCounterToPreviousOrLastPlayer(gameMaster, NUMBER_OF_TURNS);
-      } else if (gameMaster.game.currentPlayerIndex === playerIndex) {
-        playerWithRollCounter.setRuleData({
-          key: "rollingVariantsCounter",
-          value: counterValue - 1,
-        });
+          VariantLabelInfo.VariantLeaving,
+          VARIANTS_ROLLING_OUT
+        );
       }
+    } else if (counterValue === 1 && gameMaster.game.currentPlayerIndex === playerIndex) {
+      rollVariants({
+        gameMaster,
+        rollingInNumber: VARIANTS_ROLLING_IN,
+        rollingOffNumber: atVariantLimit ? VARIANTS_ROLLING_OUT : 0,
+      });
+      moveCounterToPreviousOrLastPlayer(gameMaster, NUMBER_OF_TURNS);
+    } else if (gameMaster.game.currentPlayerIndex === playerIndex) {
+      playerWithRollCounter.setRuleData({
+        key: "rollingVariantsCounter",
+        value: counterValue - 1,
+      });
+    }
 
-      return { gameMaster };
-    },
-  };
-};
+    return { gameMaster };
+  },
+});
 
 function findRollCounter(gameMaster: GameMaster): Player | undefined {
   return gameMaster.game

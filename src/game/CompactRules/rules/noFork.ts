@@ -1,36 +1,26 @@
-import {
-  CompactRules,
-  Rule,
-  ParameterRule,
-  InPostMoveGenerationFilter,
-} from "../CompactRules";
+import { CompactRules, ParameterRule, InPostMoveGenerationFilter } from "../CompactRules";
 import { Pather } from "game/Pather";
 import { Game, Move } from "game";
 import { PieceName } from "game/types";
-import { doesCapture, getDefaultParams } from "../utilities";
+import { doesCapture } from "../utilities";
 
-export const noFork: ParameterRule = (
-  ruleParams = getDefaultParams("noForkSettings")
-): Rule => {
-  return {
-    title: "No Fork",
-    description:
-      "No moves are allowed which result in knights attacking more than 1 enemy piece.",
-    inPostMoveGenerationFilter: (input): InPostMoveGenerationFilter => {
-      if (input.filtered) return input;
-      return {
+export const noFork: ParameterRule<"noFork"> = ({
+  "No Attacking More Than": minFork,
+}) => ({
+  title: "No Fork",
+  description:
+    "No moves are allowed which result in knights attacking more than 1 enemy piece.",
+  inPostMoveGenerationFilter: (input): InPostMoveGenerationFilter => {
+    if (input.filtered) return input;
+    return {
+      ...input,
+      filtered: isThereAnyKnightFork({
         ...input,
-        filtered: isThereAnyKnightFork({
-          ...input,
-          minFork:
-            ruleParams["No Attacking More Than"] === undefined
-              ? 1
-              : ruleParams["No Attacking More Than"],
-        }),
-      };
-    },
-  };
-};
+        minFork,
+      }),
+    };
+  },
+});
 
 function isThereAnyKnightFork({
   move,

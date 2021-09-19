@@ -1,7 +1,6 @@
 import { range, toLocation } from "utilities";
 import {
-  Rule,
-  ParameterRule,
+  TrivialParameterRule,
   ForSquareGenerationModify,
   OnBoardCreate,
   GetGaitGenerator,
@@ -17,50 +16,45 @@ import {
 } from "game/types";
 import { createPiece, determineGaitGenerator, PieceSet } from "../utilities";
 
-export const hex: ParameterRule = (): Rule => {
-  return {
-    title: "Hexagon",
-    description:
-      "Every place on the board has a hexagonal geometry rather than a square geometry. Note that diagonal steps are a bit longer than usual. Click on a piece to find out how it moves!",
-    forSquareGenerationModify: ({
-      board,
-      numberOfPlayers,
-    }): ForSquareGenerationModify => {
-      board.addSquares(generateHexSquares());
-      board.defineRegion("center", centerRegion);
-      board.defineRegion("promotion", promotionRegionWhite, PlayerName.White);
-      board.defineRegion("promotion", promotionRegionBlack, PlayerName.Black);
-      board.defineClockwiseDirections([
-        Direction.H2,
-        Direction.H4,
-        Direction.H6,
-        Direction.H8,
-        Direction.H10,
-        Direction.H12,
-      ]);
-      return { board, numberOfPlayers };
-    },
-    onBoardCreate: ({ board, numberOfPlayers }): OnBoardCreate => {
-      const bounds = board.rankAndFileBounds();
-      board.addAdjacenciesByRule(hexAdjacencies(bounds));
-      board.addPiecesByRule(hexPieceSetupRule);
-      board.addToken(hexShapeToken);
-      return { board, numberOfPlayers };
-    },
-    getGaitGenerator: ({ gaitGenerator, name, owner }): GetGaitGenerator => {
-      return {
-        gaitGenerator: determineGaitGenerator({
-          gaitGenerators: gaitGenerator ? [gaitGenerator] : [],
-          name,
-          set: PieceSet.HexStandard,
-          owner: owner || PlayerName.White,
-        }),
+export const hex: TrivialParameterRule = () => ({
+  title: "Hexagon",
+  description:
+    "Every place on the board has a hexagonal geometry rather than a square geometry. Note that diagonal steps are a bit longer than usual. Click on a piece to find out how it moves!",
+  forSquareGenerationModify: ({ board, numberOfPlayers }): ForSquareGenerationModify => {
+    board.addSquares(generateHexSquares());
+    board.defineRegion("center", centerRegion);
+    board.defineRegion("promotion", promotionRegionWhite, PlayerName.White);
+    board.defineRegion("promotion", promotionRegionBlack, PlayerName.Black);
+    board.defineClockwiseDirections([
+      Direction.H2,
+      Direction.H4,
+      Direction.H6,
+      Direction.H8,
+      Direction.H10,
+      Direction.H12,
+    ]);
+    return { board, numberOfPlayers };
+  },
+  onBoardCreate: ({ board, numberOfPlayers }): OnBoardCreate => {
+    const bounds = board.rankAndFileBounds();
+    board.addAdjacenciesByRule(hexAdjacencies(bounds));
+    board.addPiecesByRule(hexPieceSetupRule);
+    board.addToken(hexShapeToken);
+    return { board, numberOfPlayers };
+  },
+  getGaitGenerator: ({ gaitGenerator, name, owner }): GetGaitGenerator => {
+    return {
+      gaitGenerator: determineGaitGenerator({
+        gaitGenerators: gaitGenerator ? [gaitGenerator] : [],
         name,
-        owner,
-      };
-    },
-  };
-};
+        set: PieceSet.HexStandard,
+        owner: owner || PlayerName.White,
+      }),
+      name,
+      owner,
+    };
+  },
+});
 
 const hexShapeToken = {
   name: TokenName.Shape,

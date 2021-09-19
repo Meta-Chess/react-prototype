@@ -1,20 +1,18 @@
 import { Adjacency, Board, Square } from "game/Board";
-import { Rule, ParameterRule, AfterBoardCreation } from "../CompactRules";
+import { TrivialParameterRule, AfterBoardCreation } from "../CompactRules";
 import { Direction, RankAndFileBounds } from "game/types";
 import { toLocation } from "utilities";
 
-export const verticallyCylindrical: ParameterRule = (): Rule => {
-  return {
-    title: "Vertical Cylinder",
-    description:
-      "The board has been wrapped onto a cylinder, and the top and bottom ranks have been glued together. This allows pieces to move off the top edge of the board onto the bottom edge, and vice versa.",
-    afterBoardCreation: ({ board }): AfterBoardCreation => {
-      const bounds = board.rankAndFileBounds();
-      board.addAdjacenciesByRule(cylindricalAdjacenciesRule(bounds, board));
-      return { board };
-    },
-  };
-};
+export const verticallyCylindrical: TrivialParameterRule = () => ({
+  title: "Vertical Cylinder",
+  description:
+    "The board has been wrapped onto a cylinder, and the top and bottom ranks have been glued together. This allows pieces to move off the top edge of the board onto the bottom edge, and vice versa.",
+  afterBoardCreation: ({ board }): AfterBoardCreation => {
+    const bounds = board.rankAndFileBounds();
+    board.addAdjacenciesByRule(cylindricalAdjacenciesRule(bounds, board));
+    return { board };
+  },
+});
 
 const cylindricalAdjacenciesRule =
   ({ minRank, maxRank }: RankAndFileBounds, board: Board) =>
