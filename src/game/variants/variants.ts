@@ -165,7 +165,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Atomic",
     shortDescription:
       "Captures lead to a small explosion. Pawns are immune to the blast zone.",
-    traits: ["Ability"],
+    traits: ["Reaction"],
     imageName: "atomicImage",
     implemented: true,
     ruleNames: ["atomic"],
@@ -175,7 +175,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Pawn Orbit",
     shortDescription:
       "Pawns can rotate pieces around themselves clockwise or anticlockwise.",
-    traits: ["Piece", "Ability"],
+    traits: ["Movement"],
     imageName: "pawnOrbitImage",
     implemented: true,
     ruleNames: ["pawnOrbit"],
@@ -184,7 +184,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   royallyScrewed: {
     title: "Royally Screwed",
     shortDescription: "After every move, friendly kings and queens swap places.",
-    traits: ["Piece"],
+    traits: ["Reaction"],
     imageName: "royallyScrewedImage",
     implemented: true,
     ruleNames: ["royallyScrewed"],
@@ -193,7 +193,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   crazyhouse: {
     title: "Crazyhouse",
     shortDescription: "Play captured pieces on the board.",
-    traits: ["Ability"],
+    traits: ["Movement", "Reaction"],
     imageName: "crazyhouseImage",
     implemented: true,
     ruleNames: ["crazyhouse"],
@@ -211,7 +211,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   diagonalMirror: {
     title: "Diagonal Mirror",
     shortDescription: "Pieces may reflect diagonally off of edges.",
-    traits: ["Geometry"],
+    traits: ["Geometry", "Movement"],
     imageName: "diagonalMirrorImage",
     implemented: true,
     ruleNames: ["diagonalMirror"],
@@ -220,7 +220,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   emptyCenter: {
     title: "Empty Center",
     shortDescription: "No pieces allowed in the center!",
-    traits: ["Restriction"],
+    traits: ["Geometry", "Restriction"],
     imageName: "emptyCenterImage",
     implemented: true,
     ruleNames: ["emptyCenter"],
@@ -230,7 +230,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Fatigue",
     shortDescription:
       "Pieces can't be moved twice in a row, unless they can kill the king.",
-    traits: ["Restriction"],
+    traits: ["Reaction", "Restriction"],
     imageName: "fatigueImage",
     implemented: true,
     ruleNames: ["fatigue"],
@@ -239,7 +239,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   hex: {
     title: "Hex",
     shortDescription: "A board tiled with hexagons.",
-    traits: ["Board"],
+    traits: ["Geometry"],
     imageName: "hexImage",
     implemented: true,
     ruleNames: ["hex"],
@@ -257,7 +257,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   kleinBottle: {
     title: "Klein Bottle",
     shortDescription: "Chess on a klein bottle!? [Mobius and Cylinder]",
-    traits: ["Board", "Geometry"],
+    traits: ["Geometry"],
     imageName: "kleinBottleImage",
     implemented: true,
     ruleNames: [
@@ -273,7 +273,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Möbius",
     shortDescription:
       "A long board möbius strip, with the ability to phase through to empty squares.",
-    traits: ["Board", "Geometry"],
+    traits: ["Geometry"],
     imageName: "mobiusImage",
     implemented: true,
     ruleNames: [
@@ -288,7 +288,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "No Fork",
     shortDescription:
       "No moves are allowed which result in knights attacking more than 1 enemy piece.",
-    traits: ["Piece", "Restriction"],
+    traits: ["Restriction"],
     imageName: "noForkImage",
     implemented: true,
     ruleNames: ["noFork"],
@@ -297,7 +297,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   chemicallyExcitedKnight: {
     title: "Chemically Excited Knight",
     shortDescription: "Knights that can see 3 enemy pieces explode.",
-    traits: ["Piece", "Ability"],
+    traits: ["Reaction"],
     imageName: "chemicallyExcitedKnightImage",
     implemented: true,
     ruleNames: ["chemicallyExcitedKnight"],
@@ -307,7 +307,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Chain Reaction",
     shortDescription:
       "When a piece is captured it captures all the pieces it was threatening.",
-    traits: ["Ability"],
+    traits: ["Reaction"],
     imageName: "chainReactionImage",
     implemented: true,
     ruleNames: ["chainReaction"],
@@ -316,7 +316,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   patheticKing: {
     title: "Pathetic King",
     shortDescription: "Kings cannot capture.",
-    traits: ["Piece", "Restriction"],
+    traits: ["Movement", "Restriction"],
     imageName: "patheticKingImage",
     implemented: true,
     ruleNames: ["patheticKing"],
@@ -343,7 +343,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   thinIce: {
     title: "Thin Ice",
     shortDescription: "You're skating on thin ice!",
-    traits: ["Board", "Restriction"],
+    traits: ["Geometry", "Reaction", "Restriction"],
     imageName: "thinIceImage",
     implemented: true,
     ruleNames: ["thinIce"],
@@ -361,7 +361,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   toroidal: {
     title: "Toroidal",
     shortDescription: "Double the cylinder and pawns!",
-    traits: ["Board", "Geometry"],
+    traits: ["Geometry"],
     imageName: "toroidalImage",
     implemented: true,
     ruleNames: ["longBoard", "cylindrical", "verticallyCylindrical"],
@@ -379,7 +379,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   pull: {
     title: "Pull",
     shortDescription: "Pull friendly pieces along a path.",
-    traits: ["Ability"],
+    traits: ["Movement"],
     imageName: "pullImage",
     implemented: true,
     ruleNames: ["pull"],
@@ -389,7 +389,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Morphlings",
     shortDescription:
       "When knights move they turn into bishops and when bishops move they turn into knights",
-    traits: ["Piece"],
+    traits: ["Reaction"],
     imageName: "morphlingsImage",
     implemented: true,
     ruleNames: ["morphlings"],
@@ -399,7 +399,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Zone of Control",
     shortDescription:
       "Pieces can only continue for a single step after entering enemy territory.",
-    traits: ["Ability", "Restriction"],
+    traits: [],
     imageName: "zoneOfControlImage",
     implemented: false,
     ruleNames: [],
@@ -417,7 +417,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   gambit: {
     title: "Gambit",
     shortDescription: "A player can capture their own pieces.",
-    traits: ["Ability"],
+    traits: [],
     imageName: "gambitImage",
     implemented: false,
     ruleNames: [],
@@ -436,7 +436,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   fortifications: {
     title: "Fortifications",
     shortDescription: "Rooks cannot capture or be captured.",
-    traits: ["Ability"],
+    traits: [],
     imageName: "fortificationsImage",
     implemented: false,
     ruleNames: [],

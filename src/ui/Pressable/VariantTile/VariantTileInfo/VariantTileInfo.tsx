@@ -5,6 +5,7 @@ import { FutureVariant } from "game";
 import styled from "styled-components/native";
 import { TraitName, traitInfo } from "game/variants/traitInfo";
 import { LabelWithDetails } from "ui";
+import { VariantTileGraph } from "./VariantTileGraph";
 
 interface VariantTileInfoProps {
   variant: FutureVariant;
@@ -18,18 +19,7 @@ const VariantTileInfo: SFC<VariantTileInfoProps> = ({ style, variant }) => {
           {variant.shortDescription}
         </Text>
       </View>
-      <View style={{ flexDirection: "row", marginBottom: 2 }}>
-        {variant.traits.map((trait: TraitName, index: number) => (
-          <LabelWithDetails
-            key={index}
-            label={trait}
-            details={traitInfo[trait].description}
-            color={traitInfo[trait].color}
-            style={{ marginRight: 8 }}
-            textCat={"BodyXS"}
-          />
-        ))}
-      </View>
+      <VariantTileGraph variant={variant} />
     </Container>
   );
 };
