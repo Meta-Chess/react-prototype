@@ -37,51 +37,29 @@ const VariantCardGrid: SFC<Props> = ({
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingVertical: 24 }}
       >
-        {complexityLevels.map((catagory) => {
-          return (
-            <View key={catagory}>
-              {partitionedDisplayVariants[catagory].length > 0 && (
-                <>
-                  <Text
-                    cat={"DisplayM"}
-                    alignment={"left"}
-                    color={Colors.TEXT.LIGHT_SECONDARY.fade(0.4).toString()}
-                    style={{ marginLeft: 4 }}
-                  >
-                    {catagory}
-                  </Text>
-                  <CatagorySeparator />
-                  <CardContainer>
-                    {partitionedDisplayVariants[catagory].map((variant, i) => {
-                      return (
-                        <VariantTile
-                          key={variant}
-                          color={Colors.DARK}
-                          variant={futureVariants[variant]}
-                          selected={selectedVariants.includes(variant)}
-                          conflictLevel={conflictLevel}
-                          onPress={(): void =>
-                            selectedVariants.includes(variant)
-                              ? setSelectedVariants(
-                                  selectedVariants.filter((x) => x !== variant)
-                                )
-                              : setSelectedVariants([...selectedVariants, variant])
-                          }
-                          setVariantModalInfo={setVariantModalInfo}
-                          modified={doGameOptionsModifyVariant(
-                            futureVariants[variant],
-                            ruleNamesWithParams
-                          )}
-                          style={{ margin: 4 }}
-                        />
-                      );
-                    })}
-                  </CardContainer>
-                </>
-              )}
-            </View>
-          );
-        })}
+        <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+          {displayVariants.map((variant, i) => {
+            return (
+              <VariantTile
+                key={variant}
+                color={i % 2 === 0 ? Colors.DARK : Colors.DARKER} //Colors.DARK : Colors.DARKER
+                variant={futureVariants[variant]}
+                selected={selectedVariants.includes(variant)}
+                conflictLevel={conflictLevel}
+                onPress={(): void =>
+                  selectedVariants.includes(variant)
+                    ? setSelectedVariants(selectedVariants.filter((x) => x !== variant))
+                    : setSelectedVariants([...selectedVariants, variant])
+                }
+                setVariantModalInfo={setVariantModalInfo}
+                modified={doGameOptionsModifyVariant(
+                  futureVariants[variant],
+                  ruleNamesWithParams
+                )}
+              />
+            );
+          })}
+        </View>
       </ScrollView>
     </View>
   );

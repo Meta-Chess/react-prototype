@@ -31,7 +31,7 @@ export const VariantTile: SFC<Props> = ({
   onPress,
   setVariantModalInfo,
   modified,
-  color = Color,
+  color,
 }) => {
   const [ref, hovered] = useHover();
   const implemented = variant.implemented;
@@ -62,8 +62,8 @@ export const VariantTile: SFC<Props> = ({
         }}
       >
         <TitleText
-          cat="DisplayXS"
-          weight="thin"
+          cat="BodyM"
+          weight="normal"
           color={Colors.TEXT.LIGHT.toString()}
           numberOfLines={1}
         >
@@ -100,8 +100,6 @@ const TouchableContainer = styled(TouchableOpacity)<{ color: Color }>`
   width: 200px;
   height: 200px;
   background: ${({ color }): string => color.toString()};
-  ${Styles.BOX_SHADOW_STRONG}
-  border-radius: 4px;
   overflow: hidden;
   padding-vertical: 16px;
 `;
