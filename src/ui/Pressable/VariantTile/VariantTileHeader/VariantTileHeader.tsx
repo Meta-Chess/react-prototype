@@ -34,38 +34,49 @@ export const VariantTileHeader: SFC<Props> = ({
   conflictLevel = "NO_CONFLICT",
   setVariantModalInfo,
 }) => {
-  const color = (!selected ? Colors.DARKISH : BACKGROUND_COLOR[conflictLevel])
+  const color = (!selected ? Colors.DARK : BACKGROUND_COLOR[conflictLevel])
     .fade(hovered ? 0.1 : 0)
     .toString();
 
   const showGear = selected && keys(ruleSettings).length > 0;
   return (
     <Container color={color}>
-      <View style={{ width: 40, paddingLeft: "8px" }}>
-        {showGear && (
-          <GearButton
-            variantTitle={variant.title}
-            setVariantModalInfo={setVariantModalInfo}
-            ruleSettings={ruleSettings}
-          />
-        )}
-      </View>
       <View style={{ flex: 1 }}>
         <TitleText
           cat="DisplayXS"
-          weight="heavy"
+          weight="thin"
           color={Colors.TEXT.LIGHT.toString()}
           numberOfLines={1}
         >
-          {variant.title}
+          {variant.shortTitle ?? variant.title}
         </TitleText>
       </View>
+    </Container>
+  );
+};
+
+const Container = styled(View)<{ color: string }>`
+  height: 24px;
+  flex-grow: 1;
+  flex-direction: row;
+  align-items: center;
+  background-color: ${({ color }): string => color};
+`;
+
+const TitleText = styled(Text)`
+  padding-horizontal: 8px;
+  text-align: center;
+`;
+
+/*
+
       <View
         style={{
-          width: 40,
+          width: 24,
           flexDirection: "row-reverse",
           justifyContent: "center",
           alignItems: "center",
+          paddingRight: "8px",
         }}
       >
         <TextIcon Icon={StarIcon} />
@@ -79,19 +90,15 @@ export const VariantTileHeader: SFC<Props> = ({
           {variant.complexity}
         </Text>
       </View>
-    </Container>
-  );
-};
-
-const Container = styled(View)<{ color: string }>`
-  height: 30px;
-  flex-grow: 1;
-  flex-direction: row;
-  align-items: center;
-  background-color: ${({ color }): string => color};
-`;
-
-const TitleText = styled(Text)`
-  padding-horizontal: 8px;
-  text-align: center;
-`;
+      */
+/*
+<View style={{ paddingLeft: "8px", width: 24 }}>
+        {showGear && (
+          <GearButton
+            variantTitle={variant.title}
+            setVariantModalInfo={setVariantModalInfo}
+            ruleSettings={ruleSettings}
+          />
+        )}
+      </View>
+      */

@@ -17,7 +17,7 @@ interface Props {
 const TraitNode: FC<Props> = ({ fillColor, cx, cy }) => {
   return fillColor === undefined ? (
     <>
-      <Circle cx={cx} cy={cy} r={0.4} fill={Colors.BLACK.toString()} />
+      <Circle cx={cx} cy={cy} r={0.4} fill={Colors.DARKEST.toString()} />
     </>
   ) : (
     <>
@@ -25,8 +25,8 @@ const TraitNode: FC<Props> = ({ fillColor, cx, cy }) => {
         cx={cx}
         cy={cy}
         r={0.4}
-        stroke={Colors.BLACK.toString()}
-        strokeWidth={0.2}
+        stroke={Colors.DARKEST.toString()}
+        strokeWidth={0.15}
         fill={fillColor}
       />
     </>

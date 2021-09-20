@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
-import { SFC, Colors, useHover } from "primitives";
+import { SFC, Colors, useHover, Text } from "primitives";
 import { ConflictLevel, FutureVariant } from "game";
 import { VariantTileInfo } from "./VariantTileInfo";
 import { VariantTileImage } from "./VariantTileImage";
@@ -10,6 +10,8 @@ import { AbsoluteView } from "ui";
 import { allRuleSettings } from "game/CompactRules";
 import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
 import { VariantTileHeader } from "./VariantTileHeader";
+import { VariantTileGraph } from "./VariantTileGraph";
+
 interface Props {
   variant: FutureVariant;
   selected: boolean;
@@ -45,21 +47,44 @@ export const VariantTile: SFC<Props> = ({
       activeOpacity={0.6}
       disabled={!implemented}
     >
-      <VariantTileHeader
-        variant={variant}
-        selected={selected}
-        conflictLevel={conflictLevel}
-        ruleSettings={ruleSettings}
-        setVariantModalInfo={setVariantModalInfo}
-        hovered={hoverState}
-      />
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: Colors.DARK.toString(),
+          justifyContent: "center",
+          alignItems: "center",
+          marginBottom: 4,
+        }}
+      >
+        <TitleText
+          cat="DisplayXS"
+          weight="thin"
+          color={Colors.TEXT.LIGHT.toString()}
+          numberOfLines={1}
+        >
+          {variant.shortTitle ?? variant.title}
+        </TitleText>
+      </View>
+
       <VariantTileBody hovered={hoverState}>
-        <VariantTileInfo variant={variant} style={{ flex: 1 }} />
         <VariantTileImage
           variant={variant}
           modified={modified}
-          style={{ width: 120, height: 120, margin: 8 }}
+          style={{
+            width: 140,
+            height: 140,
+            backgroundColor: Colors.DARK.toString(),
+          }}
         />
+        <View
+          style={{
+            width: 20,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <VariantTileGraph variant={variant} style={{ flex: 1 }} />
+        </View>
       </VariantTileBody>
       {!implemented && <CoverView />}
     </TouchableContainer>
@@ -67,19 +92,30 @@ export const VariantTile: SFC<Props> = ({
 };
 
 const TouchableContainer = styled(TouchableOpacity)`
-  width: 300px;
-  background: transparent;
+  width: 200px;
+  height: 200px;
+  background: ${Colors.DARK.toString()};
   ${Styles.BOX_SHADOW_STRONG}
   border-radius: 4px;
   overflow: hidden;
+  padding-vertical: 16px;
 `;
 
 const VariantTileBody = styled(View)<{ hovered: boolean }>`
   flex-direction: row;
   background-color: ${({ hovered }): string =>
     Colors.DARK.fade(hovered ? 0.1 : 0).toString()};
+  justify-content: center;
+  align-items: center;
+  margin-left: 4;
+  margin-bottom: 4;
 `;
 
 const CoverView = styled(AbsoluteView)`
   background-color: ${Colors.BLACK.fade(0.25).toString()};
+`;
+
+const TitleText = styled(Text)`
+  padding-horizontal: 8px;
+  text-align: center;
 `;
