@@ -1,15 +1,16 @@
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
-import { SFC, Colors, useHover } from "primitives";
+import { SFC, Colors, useHover, Text, StarIcon } from "primitives";
 import { ConflictLevel, FutureVariant } from "game";
 import { VariantTileInfo } from "./VariantTileInfo";
 import { VariantTileImage } from "./VariantTileImage";
 import { Styles } from "primitives/Styles";
-import { AbsoluteView } from "ui";
+import { AbsoluteView, TextIcon } from "ui";
 import { allRuleSettings } from "game/CompactRules";
 import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
 import { VariantTileHeader } from "./VariantTileHeader";
+import { VariantTileGraph } from "./VariantTileGraph";
 interface Props {
   variant: FutureVariant;
   selected: boolean;
@@ -54,12 +55,21 @@ export const VariantTile: SFC<Props> = ({
         hovered={hoverState}
       />
       <VariantTileBody hovered={hoverState}>
-        <VariantTileInfo variant={variant} style={{ flex: 1 }} />
         <VariantTileImage
           variant={variant}
           modified={modified}
-          style={{ width: 120, height: 120, margin: 8 }}
+          style={{
+            width: 140,
+            height: 140,
+            marginHorizontal: 8,
+            marginBottom: 8,
+            backgroundColor: Colors.DARKER.toString(),
+          }}
         />
+
+        <View style={{ justifyContent: "center", alignItems: "center", marginBottom: 8 }}>
+          <VariantTileGraph variant={variant} />
+        </View>
       </VariantTileBody>
       {!implemented && <CoverView />}
     </TouchableContainer>
@@ -67,7 +77,7 @@ export const VariantTile: SFC<Props> = ({
 };
 
 const TouchableContainer = styled(TouchableOpacity)`
-  width: 300px;
+  width: 156px;
   background: transparent;
   ${Styles.BOX_SHADOW_STRONG}
   border-radius: 4px;
@@ -75,9 +85,9 @@ const TouchableContainer = styled(TouchableOpacity)`
 `;
 
 const VariantTileBody = styled(View)<{ hovered: boolean }>`
-  flex-direction: row;
+  flex-direction: column;
   background-color: ${({ hovered }): string =>
-    Colors.DARK.fade(hovered ? 0.1 : 0).toString()};
+    Colors.DARKISH.fade(hovered ? 0.6 : 0.5).toString()};
 `;
 
 const CoverView = styled(AbsoluteView)`

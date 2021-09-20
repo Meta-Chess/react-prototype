@@ -35,12 +35,63 @@ export const VariantTileHeader: SFC<Props> = ({
   setVariantModalInfo,
 }) => {
   const color = (!selected ? Colors.DARKISH : BACKGROUND_COLOR[conflictLevel])
-    .fade(hovered ? 0.1 : 0)
+    .fade(hovered ? 0.6 : 0.5)
     .toString();
 
   const showGear = selected && keys(ruleSettings).length > 0;
   return (
     <Container color={color}>
+      <View style={{ flex: 1 }}>
+        <TitleText
+          cat="BodyS"
+          weight="heavy"
+          color={Colors.TEXT.LIGHT.toString()}
+          numberOfLines={1}
+        >
+          {variant.shortTitle ?? variant.title}
+        </TitleText>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <View
+            style={{
+              width: 40,
+              flexDirection: "row-reverse",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <TextIcon
+              Icon={StarIcon}
+              color={Colors.TEXT.LIGHT_SECONDARY.fade(0.4).toString()}
+            />
+            <Text
+              cat="BodyS"
+              weight="heavy"
+              alignment="center"
+              color={Colors.TEXT.LIGHT_SECONDARY.fade(0.4).toString()}
+              selectable={false}
+            >
+              {variant.complexity}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </Container>
+  );
+};
+
+const Container = styled(View)<{ color: string }>`
+  flex-grow: 1;
+  flex-direction: row;
+  align-items: center;
+  background-color: ${({ color }): string => color};
+`;
+
+const TitleText = styled(Text)`
+  padding-horizontal: 8px;
+  text-align: center;
+`;
+/*
+
       <View style={{ width: 40, paddingLeft: "8px" }}>
         {showGear && (
           <GearButton
@@ -50,17 +101,10 @@ export const VariantTileHeader: SFC<Props> = ({
           />
         )}
       </View>
-      <View style={{ flex: 1 }}>
-        <TitleText
-          cat="DisplayXS"
-          weight="heavy"
-          color={Colors.TEXT.LIGHT.toString()}
-          numberOfLines={1}
-        >
-          {variant.title}
-        </TitleText>
-      </View>
-      <View
+
+*/
+/*
+<View
         style={{
           width: 40,
           flexDirection: "row-reverse",
@@ -79,19 +123,4 @@ export const VariantTileHeader: SFC<Props> = ({
           {variant.complexity}
         </Text>
       </View>
-    </Container>
-  );
-};
-
-const Container = styled(View)<{ color: string }>`
-  height: 30px;
-  flex-grow: 1;
-  flex-direction: row;
-  align-items: center;
-  background-color: ${({ color }): string => color};
-`;
-
-const TitleText = styled(Text)`
-  padding-horizontal: 8px;
-  text-align: center;
-`;
+*/

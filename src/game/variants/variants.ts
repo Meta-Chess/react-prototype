@@ -121,6 +121,7 @@ export const variants: { [name in VariantName]: Variant } = {
 
 export interface FutureVariant {
   title: string;
+  shortTitle?: string;
   shortDescription: string;
   traits: TraitName[];
   imageName?: keyof typeof VariantImages;
@@ -296,6 +297,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   },
   chemicallyExcitedKnight: {
     title: "Chemically Excited Knight",
+    shortTitle: "Chem Knight",
     shortDescription: "Knights that can see 3 enemy pieces explode.",
     traits: ["Reaction"],
     imageName: "chemicallyExcitedKnightImage",

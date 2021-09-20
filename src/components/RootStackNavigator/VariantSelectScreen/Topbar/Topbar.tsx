@@ -42,6 +42,7 @@ const Topbar: SFC<Props> = ({
   );
   if (!longBoardOn) gameOptions.numberOfPlayers = 2;
 
+  return <></>;
   return (
     <Container>
       <OptionsContainer>

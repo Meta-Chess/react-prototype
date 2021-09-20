@@ -25,8 +25,8 @@ const VariantTileGraph: SFC<VariantTileGraphProps> = ({ variant, style }) => {
   );
 
   return (
-    <View style={{ width: 120, height: 20 }}>
-      <Svg style={{ backgroundColor: "none" }} viewBox="0 0 8 1">
+    <View style={{ width: 100 }}>
+      <Svg style={{ backgroundColor: "none" }} viewBox="0 0 7 1">
         <Line
           x1={0.5}
           x2={2}

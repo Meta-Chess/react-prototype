@@ -5,7 +5,7 @@ import { FutureVariant } from "game";
 import styled from "styled-components/native";
 import { TraitName, traitInfo } from "game/variants/traitInfo";
 import { LabelWithDetails } from "ui";
-import { VariantTileGraph } from "./VariantTileGraph";
+import { VariantTileGraph } from "../VariantTileGraph";
 
 interface VariantTileInfoProps {
   variant: FutureVariant;

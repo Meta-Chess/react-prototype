@@ -29,15 +29,59 @@ const VariantCardGrid: SFC<Props> = ({
   setVariantModalInfo,
   ruleNamesWithParams = {},
 }) => {
-  const partitionedDisplayVariants =
-    partitionDisplayVariantsByComplexity(displayVariants);
   return (
     <View style={style}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingVertical: 24 }}
       >
-        {complexityLevels.map((catagory) => {
+        <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+          {displayVariants.map((variant) => {
+            return (
+              <VariantTile
+                key={variant}
+                variant={futureVariants[variant]}
+                selected={selectedVariants.includes(variant)}
+                conflictLevel={conflictLevel}
+                onPress={(): void =>
+                  selectedVariants.includes(variant)
+                    ? setSelectedVariants(selectedVariants.filter((x) => x !== variant))
+                    : setSelectedVariants([...selectedVariants, variant])
+                }
+                setVariantModalInfo={setVariantModalInfo}
+                modified={doGameOptionsModifyVariant(
+                  futureVariants[variant],
+                  ruleNamesWithParams
+                )}
+                style={{ margin: 4 }}
+              />
+            );
+          })}
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
+
+const CardContainer = styled(View)`
+  flex-flow: row wrap;
+  margin: 0px 0px 20px 0px;
+`;
+
+const CatagorySeparator = styled(View)`
+  flex: 1px;
+  height: 2px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+  border-bottom-width: 2px;
+  border-bottom-color: ${Colors.DARK.toString()};
+`;
+
+export { VariantCardGrid };
+
+/*
+
+{complexityLevels.map((catagory) => {
           return (
             <View key={catagory}>
               {partitionedDisplayVariants[catagory].length > 0 && (
@@ -80,24 +124,4 @@ const VariantCardGrid: SFC<Props> = ({
               )}
             </View>
           );
-        })}
-      </ScrollView>
-    </View>
-  );
-};
-
-const CardContainer = styled(View)`
-  flex-flow: row wrap;
-  margin: 0px 0px 20px 0px;
-`;
-
-const CatagorySeparator = styled(View)`
-  flex: 1px;
-  height: 2px;
-  margin-right: 20px;
-  margin-bottom: 16px;
-  border-bottom-width: 2px;
-  border-bottom-color: ${Colors.DARK.toString()};
-`;
-
-export { VariantCardGrid };
+        })}*/
