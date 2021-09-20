@@ -11,6 +11,7 @@ import { allRuleSettings } from "game/CompactRules";
 import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
 import { VariantTileHeader } from "./VariantTileHeader";
 import { VariantTileGraph } from "./VariantTileGraph";
+import Color from "color";
 
 interface Props {
   variant: FutureVariant;
@@ -19,6 +20,7 @@ interface Props {
   onPress: () => void;
   setVariantModalInfo: (x: VariantModalInfo) => void;
   modified: boolean;
+  color: Color;
 }
 
 export const VariantTile: SFC<Props> = ({
@@ -29,6 +31,7 @@ export const VariantTile: SFC<Props> = ({
   onPress,
   setVariantModalInfo,
   modified,
+  color = Color,
 }) => {
   const [ref, hovered] = useHover();
   const implemented = variant.implemented;
@@ -39,6 +42,7 @@ export const VariantTile: SFC<Props> = ({
       (acc, ruleName) => ({ ...acc, [ruleName]: allRuleSettings[`${ruleName}Settings`] }),
       {}
     );
+
   return (
     <TouchableContainer
       ref={ref}
@@ -46,11 +50,12 @@ export const VariantTile: SFC<Props> = ({
       onPress={onPress}
       activeOpacity={0.6}
       disabled={!implemented}
+      color={color}
     >
       <View
         style={{
           flex: 1,
-          backgroundColor: Colors.DARK.toString(),
+          backgroundColor: color.toString(),
           justifyContent: "center",
           alignItems: "center",
           marginBottom: 4,
@@ -66,14 +71,14 @@ export const VariantTile: SFC<Props> = ({
         </TitleText>
       </View>
 
-      <VariantTileBody hovered={hoverState}>
+      <VariantTileBody hovered={hoverState} color={color}>
         <VariantTileImage
           variant={variant}
           modified={modified}
           style={{
             width: 140,
             height: 140,
-            backgroundColor: Colors.DARK.toString(),
+            backgroundColor: color.toString(),
           }}
         />
         <View
@@ -91,20 +96,20 @@ export const VariantTile: SFC<Props> = ({
   );
 };
 
-const TouchableContainer = styled(TouchableOpacity)`
+const TouchableContainer = styled(TouchableOpacity)<{ color: Color }>`
   width: 200px;
   height: 200px;
-  background: ${Colors.DARK.toString()};
+  background: ${({ color }): string => color.toString()};
   ${Styles.BOX_SHADOW_STRONG}
   border-radius: 4px;
   overflow: hidden;
   padding-vertical: 16px;
 `;
 
-const VariantTileBody = styled(View)<{ hovered: boolean }>`
+const VariantTileBody = styled(View)<{ hovered: boolean; color: Color }>`
   flex-direction: row;
-  background-color: ${({ hovered }): string =>
-    Colors.DARK.fade(hovered ? 0.1 : 0).toString()};
+  background-color: ${({ hovered, color }): string =>
+    color.fade(hovered ? 0.1 : 0).toString()};
   justify-content: center;
   align-items: center;
   margin-left: 4;

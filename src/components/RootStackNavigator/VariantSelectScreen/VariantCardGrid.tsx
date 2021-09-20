@@ -52,10 +52,11 @@ const VariantCardGrid: SFC<Props> = ({
                   </Text>
                   <CatagorySeparator />
                   <CardContainer>
-                    {partitionedDisplayVariants[catagory].map((variant) => {
+                    {partitionedDisplayVariants[catagory].map((variant, i) => {
                       return (
                         <VariantTile
                           key={variant}
+                          color={Colors.DARK}
                           variant={futureVariants[variant]}
                           selected={selectedVariants.includes(variant)}
                           conflictLevel={conflictLevel}
