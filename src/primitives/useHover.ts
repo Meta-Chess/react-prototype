@@ -1,12 +1,19 @@
-import { useState, useRef, useEffect } from "react";
-import { Platform } from "react-native";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  ReactChild,
+  ReactElement,
+  ReactComponentElement,
+} from "react";
+import { Platform, View } from "react-native";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useHover(): [React.MutableRefObject<any>, boolean] {
+export function useHover<T extends Node>(): [React.RefObject<T>, boolean] {
   const [value, setValue] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const ref: any = useRef(null);
+  const ref = useRef<T>(null);
 
   const handleMouseOver = (): void => setValue(true);
   const handleMouseOut = (): void => setValue(false);

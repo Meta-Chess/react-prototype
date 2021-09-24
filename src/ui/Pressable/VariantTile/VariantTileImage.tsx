@@ -1,6 +1,6 @@
 import React from "react";
 import { SFC, Colors, Text } from "primitives";
-import { Image } from "react-native";
+import { Image, ViewStyle } from "react-native";
 import { FutureVariant } from "game";
 import * as VariantImages from "primitives/VariantImage";
 import { VariantTileImageFrame } from "./VariantTileImageFrame";
@@ -8,9 +8,16 @@ import { VariantTileImageFrame } from "./VariantTileImageFrame";
 interface VariantTileImageProps {
   variant: FutureVariant;
   modified: boolean;
+  size: ViewStyle["width"];
 }
 
-const VariantTileImage: SFC<VariantTileImageProps> = ({ style, variant, modified }) => {
+const VariantTileImage: SFC<VariantTileImageProps> = ({
+  style,
+  variant,
+  modified,
+  size,
+}) => {
+  style = { width: size, height: size, ...style };
   if (variant.imageName === undefined) {
     return (
       <VariantTileImageFrame style={style} modified={modified}>
@@ -30,7 +37,7 @@ const VariantTileImage: SFC<VariantTileImageProps> = ({ style, variant, modified
 
   return (
     <VariantTileImageFrame style={style} modified={modified}>
-      <Image source={currentImage} style={{ width: "80%", height: "80%" }} />
+      <Image source={currentImage} style={{ width: size, height: size }} />
     </VariantTileImageFrame>
   );
 };

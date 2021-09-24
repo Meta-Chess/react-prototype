@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors, useHover, Text } from "primitives";
@@ -12,6 +12,7 @@ import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScr
 import { VariantTileHeader } from "./VariantTileHeader";
 import { VariantTileGraph } from "./VariantTileGraph";
 import Color from "color";
+import { block } from "react-native-reanimated";
 
 interface Props {
   variant: FutureVariant;
@@ -33,7 +34,9 @@ export const VariantTile: SFC<Props> = ({
   modified,
   color,
 }) => {
-  const [ref, hovered] = useHover();
+  const [ref, hovered] = useHover<any>();
+  color = selected ? color.mix(Colors.SUCCESS.darken(0.1), 0.3) : color;
+  color = hovered ? color.fade(0.2) : color;
   const implemented = variant.implemented;
   const hoverState = hovered && implemented;
   const ruleSettings = variant.ruleNames
@@ -42,6 +45,15 @@ export const VariantTile: SFC<Props> = ({
       (acc, ruleName) => ({ ...acc, [ruleName]: allRuleSettings[`${ruleName}Settings`] }),
       {}
     );
+
+  const [h, setH] = useState(undefined);
+  const [w, setW] = useState(undefined);
+
+  console.log(ref);
+  useEffect(() => {
+    setW(ref?.current?.offsetWidth);
+    setH(ref?.current?.offsetHeight);
+  }, [ref.current]);
 
   return (
     <TouchableContainer
@@ -52,46 +64,66 @@ export const VariantTile: SFC<Props> = ({
       disabled={!implemented}
       color={color}
     >
+      {hoverState && (
+        <View
+          style={{
+            flexDirection: "column",
+            height: "100%",
+            alignContent: "center",
+            padding: 12,
+          }}
+        >
+          <TitleText
+            cat="BodyM"
+            weight="normal"
+            color={Colors.TEXT.LIGHT.toString()}
+            numberOfLines={1}
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {variant.shortTitle ?? variant.title}
+          </TitleText>
+          <VariantTileBody style={{ width: "100%" }}>
+            <VariantTileInfo
+              variant={variant}
+              style={{ width: "100%", height: "100%" }}
+            />
+          </VariantTileBody>
+          <VariantTileGraph
+            variant={variant}
+            orientation={"horizontal"}
+            style={{
+              alignSelf: "center",
+              width: "80%",
+              marginBottom: 0,
+              marginTop: "auto",
+            }}
+          />
+        </View>
+      )}
       <View
         style={{
-          flex: 1,
-          backgroundColor: color.toString(),
-          justifyContent: "center",
+          height: "100%",
+          width: "100%",
           alignItems: "center",
-          marginBottom: 4,
+          justifyContent: "center",
+          position: "absolute",
+          opacity: hoverState ? 0.1 : 1,
         }}
       >
-        <TitleText
-          cat="BodyM"
-          weight="normal"
-          color={Colors.TEXT.LIGHT.toString()}
-          numberOfLines={1}
-        >
-          {variant.shortTitle ?? variant.title}
-        </TitleText>
-      </View>
-
-      <VariantTileBody hovered={hoverState} color={color}>
         <VariantTileImage
           variant={variant}
           modified={modified}
+          size={0.6 * (w || 0)}
           style={{
-            width: 140,
-            height: 140,
-            backgroundColor: color.toString(),
+            margin: 0,
+            padding: 0,
+            backgroundColor: Colors.TRANSPARENT.toString(),
           }}
         />
-        <View
-          style={{
-            width: 20,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <VariantTileGraph variant={variant} style={{ flex: 1 }} />
-        </View>
-      </VariantTileBody>
-      {!implemented && <CoverView />}
+      </View>
     </TouchableContainer>
   );
 };
@@ -101,21 +133,13 @@ const TouchableContainer = styled(TouchableOpacity)<{ color: Color }>`
   height: 200px;
   background: ${({ color }): string => color.toString()};
   overflow: hidden;
-  padding-vertical: 16px;
 `;
 
-const VariantTileBody = styled(View)<{ hovered: boolean; color: Color }>`
-  flex-direction: row;
-  background-color: ${({ hovered, color }): string =>
-    color.fade(hovered ? 0.1 : 0).toString()};
+const VariantTileBody = styled(View)`
   justify-content: center;
   align-items: center;
   margin-left: 4;
   margin-bottom: 4;
-`;
-
-const CoverView = styled(AbsoluteView)`
-  background-color: ${Colors.BLACK.fade(0.25).toString()};
 `;
 
 const TitleText = styled(Text)`

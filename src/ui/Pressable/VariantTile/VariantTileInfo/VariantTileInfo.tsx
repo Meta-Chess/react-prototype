@@ -1,6 +1,6 @@
 import React from "react";
 import { SFC, Text, Colors } from "primitives";
-import { View } from "react-native";
+import { View, ViewStyle } from "react-native";
 import { FutureVariant } from "game";
 import styled from "styled-components/native";
 import { TraitName, traitInfo } from "game/variants/traitInfo";
@@ -11,23 +11,22 @@ interface VariantTileInfoProps {
   variant: FutureVariant;
 }
 
-const VariantTileInfo: SFC<VariantTileInfoProps> = ({ style, variant }) => {
-  return (
-    <Container style={style}>
-      <View>
-        <Text cat="BodyXS" color={Colors.TEXT.LIGHT.toString()} numberOfLines={4}>
-          {variant.shortDescription}
-        </Text>
-      </View>
-      <VariantTileGraph variant={variant} />
-    </Container>
-  );
+const defaultStyle: ViewStyle = {
+  alignSelf: "flex-start",
+  padding: 8,
 };
 
-const Container = styled(View)`
-  justify-content: space-between;
-  padding-horizontal: 12px;
-  padding-vertical: 8px;
-`;
+const VariantTileInfo: SFC<VariantTileInfoProps> = ({ style, variant }) => {
+  return (
+    <Text
+      style={{ ...defaultStyle, ...style }}
+      cat="BodyXS"
+      color={Colors.TEXT.LIGHT.toString()}
+      numberOfLines={4}
+    >
+      {variant.shortDescription}
+    </Text>
+  );
+};
 
 export { VariantTileInfo };
