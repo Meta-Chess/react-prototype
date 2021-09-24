@@ -22,6 +22,7 @@ interface Props {
   setVariantModalInfo: (x: VariantModalInfo) => void;
   modified: boolean;
   color: Color;
+  detailedView?: boolean;
 }
 
 export const VariantTile: SFC<Props> = ({
@@ -33,12 +34,13 @@ export const VariantTile: SFC<Props> = ({
   setVariantModalInfo,
   modified,
   color,
+  detailedView,
 }) => {
-  const [ref, hovered] = useHover<any>();
+  const [ref, hovered] = useHover();
   color = selected ? color.mix(Colors.SUCCESS.darken(0.1), 0.3) : color;
   color = hovered ? color.fade(0.2) : color;
   const implemented = variant.implemented;
-  const hoverState = hovered && implemented;
+  const hoverState = (hovered || detailedView) && implemented;
   const ruleSettings = variant.ruleNames
     .filter((ruleName) => allRuleSettings[`${ruleName}Settings`] !== undefined)
     .reduce(
@@ -64,45 +66,48 @@ export const VariantTile: SFC<Props> = ({
       disabled={!implemented}
       color={color}
     >
-      {hoverState && (
-        <View
+      <View
+        style={{
+          flexDirection: "column",
+          height: "100%",
+          alignContent: "center",
+          padding: 12,
+        }}
+      >
+        <TitleText
+          cat="BodyM"
+          weight="normal"
+          color={Colors.TEXT.LIGHT.toString()}
+          numberOfLines={1}
           style={{
-            flexDirection: "column",
-            height: "100%",
-            alignContent: "center",
-            padding: 12,
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <TitleText
-            cat="BodyM"
-            weight="normal"
-            color={Colors.TEXT.LIGHT.toString()}
-            numberOfLines={1}
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            {variant.shortTitle ?? variant.title}
-          </TitleText>
-          <VariantTileBody style={{ width: "100%" }}>
-            <VariantTileInfo
+          {variant.shortTitle ?? variant.title}
+        </TitleText>
+        {hoverState && (
+          <>
+            <VariantTileBody style={{ width: "100%" }}>
+              <VariantTileInfo
+                variant={variant}
+                style={{ width: "100%", height: "100%" }}
+              />
+            </VariantTileBody>
+            <VariantTileGraph
               variant={variant}
-              style={{ width: "100%", height: "100%" }}
+              orientation={"horizontal"}
+              style={{
+                alignSelf: "center",
+                width: "80%",
+                marginBottom: 0,
+                marginTop: "auto",
+              }}
             />
-          </VariantTileBody>
-          <VariantTileGraph
-            variant={variant}
-            orientation={"horizontal"}
-            style={{
-              alignSelf: "center",
-              width: "80%",
-              marginBottom: 0,
-              marginTop: "auto",
-            }}
-          />
-        </View>
-      )}
+          </>
+        )}
+      </View>
+
       <View
         style={{
           height: "100%",
@@ -111,6 +116,7 @@ export const VariantTile: SFC<Props> = ({
           justifyContent: "center",
           position: "absolute",
           opacity: hoverState ? 0.1 : 1,
+          paddingTop: 20,
         }}
       >
         <VariantTileImage

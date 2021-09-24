@@ -390,7 +390,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   morphlings: {
     title: "Morphlings",
     shortDescription:
-      "When knights move they turn into bishops and when bishops move they turn into knights",
+      "When knights move they turn into bishops and when bishops move they turn into knights.",
     traits: ["Reaction"],
     imageName: "morphlingsImage",
     implemented: true,

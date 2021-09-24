@@ -9,7 +9,7 @@ import React, {
 import { Platform, View } from "react-native";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useHover<T extends Node>(): [React.RefObject<T>, boolean] {
+export function useHover<T extends Node = any>(): [React.RefObject<T>, boolean] {
   const [value, setValue] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
