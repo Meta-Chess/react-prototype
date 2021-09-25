@@ -51,7 +51,6 @@ export const VariantTile: SFC<Props> = ({
   const [h, setH] = useState(undefined);
   const [w, setW] = useState(undefined);
 
-  console.log(ref);
   useEffect(() => {
     setW(ref?.current?.offsetWidth);
     setH(ref?.current?.offsetHeight);
@@ -144,8 +143,8 @@ const TouchableContainer = styled(TouchableOpacity)<{ color: Color }>`
 const VariantTileBody = styled(View)`
   justify-content: center;
   align-items: center;
-  margin-left: 4;
-  margin-bottom: 4;
+  margin-left: 4px;
+  margin-bottom: 4px;
 `;
 
 const TitleText = styled(Text)`

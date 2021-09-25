@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, ScrollView, Switch } from "react-native";
+import React from "react";
+import { View, ScrollView } from "react-native";
 import { SFC, Colors, Text } from "primitives";
 import { VariantTile } from "ui/Pressable/VariantTile";
 import { ConflictLevel, FutureVariantName, futureVariants } from "game";
@@ -13,6 +13,7 @@ import { RuleNamesWithParams } from "game/CompactRules";
 import { doGameOptionsModifyVariant } from "game/variantAndRuleProcessing";
 import { IconButton } from "ui/Buttons/IconButton";
 import { GoEye, GoEyeClosed } from "react-icons/go";
+import { useUserSettings } from "components/shared";
 
 interface Props {
   displayVariants: FutureVariantName[];
@@ -34,7 +35,9 @@ const VariantCardGrid: SFC<Props> = ({
 }) => {
   const partitionedDisplayVariants =
     partitionDisplayVariantsByComplexity(displayVariants);
-  const [detailedView, setDetailedView] = useState(true);
+
+  const [detailedView, setDetailedView] = useUserSettings("showDetailedView", false);
+
   return (
     <View style={style}>
       <ScrollView
@@ -81,7 +84,6 @@ const VariantCardGrid: SFC<Props> = ({
         }}
       >
         <IconButton
-          // style={{ borderRadius: 100, overflow: "hidden" }}
           size={detailedView ? 30 : 30}
           color={detailedView ? Colors.WHITE : Colors.WHITE}
           Icon={detailedView ? GoEye : GoEyeClosed}
