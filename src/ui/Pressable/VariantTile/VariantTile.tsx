@@ -1,19 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
-import { SFC, Colors, useHover, Text } from "primitives";
+import { SFC, Colors, useHover } from "primitives";
 import { ConflictLevel, FutureVariant } from "game";
 import { VariantTileInfo } from "./VariantTileInfo";
 import { VariantTileImage } from "./VariantTileImage";
-import { Styles } from "primitives/Styles";
-import { AbsoluteView } from "ui";
 import { allRuleSettings } from "game/CompactRules";
 import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
 import { VariantTileHeader } from "./VariantTileHeader";
 import { VariantTileGraph } from "./VariantTileGraph";
 import Color from "color";
-import { block } from "react-native-reanimated";
-import { useCalculatedDimensions } from "components/shared/useCalculatedDimensions";
 
 interface Props {
   variant: FutureVariant;
@@ -40,10 +36,17 @@ export const VariantTile: SFC<Props> = ({
   size = 200,
 }) => {
   const [ref, hovered] = useHover();
-  color = selected ? color.mix(Colors.SUCCESS.darken(0.1), 0.3) : color;
+  if (conflictLevel !== undefined && selected) {
+    color =
+      conflictLevel === "ERROR"
+        ? color.mix(Colors.ERROR.darken(0.1), 0.3)
+        : color.mix(Colors.SUCCESS.darken(0.1), 0.3);
+  } else if (selected) {
+    color = color.mix(Colors.SUCCESS.darken(0.1), 0.3);
+  }
   color = hovered ? color.fade(0.2) : color;
   const implemented = variant.implemented;
-  const hoverState = (hovered || detailedView) && implemented;
+  const showDetailedView = (hovered || detailedView) && implemented;
   const ruleSettings = variant.ruleNames
     .filter((ruleName) => allRuleSettings[`${ruleName}Settings`] !== undefined)
     .reduce(
@@ -56,7 +59,7 @@ export const VariantTile: SFC<Props> = ({
   return (
     <TouchableContainer
       ref={ref}
-      style={style}
+      style={{ opacity: implemented ? 1 : 0.4, ...style }}
       size={size}
       onPress={onPress}
       activeOpacity={0.6}
@@ -65,25 +68,38 @@ export const VariantTile: SFC<Props> = ({
     >
       <View
         style={{
+          height: "100%",
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "absolute",
+          opacity: showDetailedView ? 0.1 : 1,
+          paddingTop: 20,
+        }}
+      >
+        <VariantTileImage
+          variant={variant}
+          modified={modified}
+          size={imageWidth}
+          style={{
+            margin: 0,
+            padding: 0,
+            backgroundColor: Colors.TRANSPARENT.toString(),
+          }}
+        />
+      </View>
+      <View
+        style={{
           flexDirection: "column",
           height: "100%",
           alignContent: "center",
           padding: 12,
         }}
       >
-        <TitleText
-          cat="BodyM"
-          weight="normal"
-          color={Colors.TEXT.LIGHT.toString()}
-          numberOfLines={1}
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {variant.shortTitle ?? variant.title}
-        </TitleText>
-        {hoverState && (
+        <VariantTileHeader
+          {...{ variant, selected, hovered, ruleSettings, setVariantModalInfo }}
+        />
+        {showDetailedView && (
           <>
             <VariantTileBody style={{ width: "100%" }}>
               <VariantTileInfo
@@ -104,29 +120,6 @@ export const VariantTile: SFC<Props> = ({
           </>
         )}
       </View>
-
-      <View
-        style={{
-          height: "100%",
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "absolute",
-          opacity: hoverState ? 0.1 : 1,
-          paddingTop: 20,
-        }}
-      >
-        <VariantTileImage
-          variant={variant}
-          modified={modified}
-          size={imageWidth}
-          style={{
-            margin: 0,
-            padding: 0,
-            backgroundColor: Colors.TRANSPARENT.toString(),
-          }}
-        />
-      </View>
     </TouchableContainer>
   );
 };
@@ -141,11 +134,4 @@ const TouchableContainer = styled(TouchableOpacity)<{ color: Color; size: number
 const VariantTileBody = styled(View)`
   justify-content: center;
   align-items: center;
-  margin-left: 4px;
-  margin-bottom: 4px;
-`;
-
-const TitleText = styled(Text)`
-  padding-horizontal: 8px;
-  text-align: center;
 `;

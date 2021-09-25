@@ -16,7 +16,6 @@ import { FormatCard, FiltersCard, GameOptionsCard, AdviceCard } from "./Collapsa
 import { Button, ButtonSecondary, Divider, AbsoluteView } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors, TrackingPixel } from "primitives";
-import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
 import { Topbar } from "./Topbar";
 import { FormatName } from "game/formats";

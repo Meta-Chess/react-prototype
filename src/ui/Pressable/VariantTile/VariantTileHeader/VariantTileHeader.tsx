@@ -2,8 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
-import { ConflictLevel, FutureVariant } from "game";
-import Color from "color";
+import { FutureVariant } from "game";
 import { GearButton } from "./GearButton";
 import { StarIcon } from "primitives/icons";
 import { TextIcon } from "ui";
@@ -13,86 +12,25 @@ import { keys } from "utilities";
 
 interface Props {
   variant: FutureVariant;
-  selected: boolean;
   hovered: boolean;
-  conflictLevel?: ConflictLevel | "NO_CONFLICT";
   ruleSettings?: RuleNamesWithParamSettings;
   setVariantModalInfo: (x: VariantModalInfo) => void;
+  showGear?: boolean;
+  showStar?: boolean;
 }
-
-const BACKGROUND_COLOR: { [key in ConflictLevel | "NO_CONFLICT"]: Color } = {
-  NO_CONFLICT: Colors.SUCCESS.fade(0.5),
-  ERROR: Colors.ERROR.fade(0.5),
-  WARNING: Colors.WARNING.fade(0.5),
-};
 
 export const VariantTileHeader: SFC<Props> = ({
   variant,
-  selected,
   hovered,
-  ruleSettings = {},
-  conflictLevel = "NO_CONFLICT",
+  ruleSettings,
   setVariantModalInfo,
+  showGear = hovered && keys(ruleSettings).length > 0,
+  showStar = hovered,
+  style,
 }) => {
-  const color = (!selected ? Colors.DARK : BACKGROUND_COLOR[conflictLevel])
-    .fade(hovered ? 0.1 : 0)
-    .toString();
-
-  const showGear = selected && keys(ruleSettings).length > 0;
   return (
-    <Container color={color}>
-      <View style={{ flex: 1 }}>
-        <TitleText
-          cat="DisplayXS"
-          weight="thin"
-          color={Colors.TEXT.LIGHT.toString()}
-          numberOfLines={1}
-        >
-          {variant.shortTitle ?? variant.title}
-        </TitleText>
-      </View>
-    </Container>
-  );
-};
-
-const Container = styled(View)<{ color: string }>`
-  height: 24px;
-  flex-grow: 1;
-  flex-direction: row;
-  align-items: center;
-  background-color: ${({ color }): string => color};
-`;
-
-const TitleText = styled(Text)`
-  padding-horizontal: 8px;
-  text-align: center;
-`;
-
-/*
-
-      <View
-        style={{
-          width: 24,
-          flexDirection: "row-reverse",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingRight: "8px",
-        }}
-      >
-        <TextIcon Icon={StarIcon} />
-        <Text
-          cat="BodyS"
-          weight="heavy"
-          alignment="center"
-          color={Colors.TEXT.LIGHT_SECONDARY.toString()}
-          selectable={false}
-        >
-          {variant.complexity}
-        </Text>
-      </View>
-      */
-/*
-<View style={{ paddingLeft: "8px", width: 24 }}>
+    <Container style={style}>
+      <View style={{ marginLeft: 0, marginTop: -4, marginRight: "auto" }}>
         {showGear && (
           <GearButton
             variantTitle={variant.title}
@@ -101,4 +39,55 @@ const TitleText = styled(Text)`
           />
         )}
       </View>
-      */
+      <TitleText
+        cat="BodyM"
+        weight="normal"
+        color={Colors.TEXT.LIGHT.toString()}
+        numberOfLines={1}
+        style={{
+          position: "absolute",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {variant.shortTitle ?? variant.title}
+      </TitleText>
+      <View
+        style={{
+          marginRight: 0,
+          marginTop: -7,
+          marginLeft: "auto",
+          flexDirection: "row-reverse",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {showStar && (
+          <>
+            <TextIcon Icon={StarIcon} style={{ marginTop: -1 }} />
+            <Text
+              cat="BodyS"
+              weight="heavy"
+              alignment="center"
+              color={Colors.TEXT.LIGHT_SECONDARY.toString()}
+              selectable={false}
+            >
+              {variant.complexity}
+            </Text>
+          </>
+        )}
+      </View>
+    </Container>
+  );
+};
+
+const Container = styled(View)`
+  justify-content: center;
+  flex-direction: row;
+  height: 15%;
+  width: 100%;
+`;
+
+const TitleText = styled(Text)`
+  text-align: center;
+`;

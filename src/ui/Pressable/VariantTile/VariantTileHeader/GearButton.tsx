@@ -13,7 +13,7 @@ interface Props {
 export const GearButton: SFC<Props> = ({
   variantTitle,
   setVariantModalInfo,
-  ruleSettings = {},
+  ruleSettings,
   style,
 }) => {
   const [ref, hovered] = useHover();
