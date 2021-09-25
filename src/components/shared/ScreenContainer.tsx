@@ -66,7 +66,7 @@ const Container: SFC<Props> = ({
             paddingVertical,
             backgroundColor: Colors.DARKEST.toString(),
             flex: 1,
-            height: height - 1, // TODO: why is this necessary to stop scroll bar from appearing on certain resolutions?
+            height: height, // TODO: should this be height - 1?
           },
           style,
         ]}

@@ -1,13 +1,8 @@
 import React, { useCallback, useMemo, useRef } from "react";
 import { View, ScrollView } from "react-native";
-import { SFC, Colors, Text } from "primitives";
+import { SFC, Colors } from "primitives";
 import { VariantTile } from "ui/Pressable/VariantTile";
 import { ConflictLevel, FutureVariantName, futureVariants } from "game";
-import {
-  complexityLevels,
-  partitionDisplayVariantsByComplexity,
-} from "./partitionDisplayVariantsByComplexity";
-import styled from "styled-components/native";
 import { VariantModalInfo } from "./Modals";
 import { RuleNamesWithParams } from "game/CompactRules";
 import { doGameOptionsModifyVariant } from "game/variantAndRuleProcessing";
@@ -36,25 +31,32 @@ const VariantCardGrid: SFC<Props> = ({
   setVariantModalInfo,
   ruleNamesWithParams = {},
 }) => {
-  const partitionedDisplayVariants =
-    partitionDisplayVariantsByComplexity(displayVariants);
-
   const [detailedView, setDetailedView] = useUserSettings("showDetailedView", false);
   const ref = useRef<View>(null);
   const [width] = useCalculatedDimensions(ref);
-  const numberOfTilesPerRow = useMemo(() => Math.floor(width / TILE_SIZE), [width]) || 2;
+  const numberOfTilesPerRow = useMemo(() => Math.floor(width / TILE_SIZE), [width]) || 3;
   const row = useCallback(
     (index: number) => Math.floor(index / numberOfTilesPerRow),
     [numberOfTilesPerRow]
   );
 
   return (
-    <View style={style}>
+    <View style={style} ref={ref}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingTop: 24, paddingBottom: 80 }}
+        contentContainerStyle={{
+          paddingTop: 24,
+          paddingBottom: 80,
+          alignItems: "center",
+        }}
       >
-        <View ref={ref} style={{ flexDirection: "row", flexWrap: "wrap" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            width: TILE_SIZE * numberOfTilesPerRow,
+          }}
+        >
           {displayVariants.map((variant, i) => {
             return (
               <VariantTile
@@ -108,19 +110,5 @@ const VariantCardGrid: SFC<Props> = ({
     </View>
   );
 };
-
-const CardContainer = styled(View)`
-  flex-flow: row wrap;
-  margin: 0px 0px 20px 0px;
-`;
-
-const CatagorySeparator = styled(View)`
-  flex: 1px;
-  height: 2px;
-  margin-right: 20px;
-  margin-bottom: 16px;
-  border-bottom-width: 2px;
-  border-bottom-color: ${Colors.DARK.toString()};
-`;
 
 export { VariantCardGrid };
