@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { View, ScrollView } from "react-native";
 import { SFC, Colors, Text } from "primitives";
 import { VariantTile } from "ui/Pressable/VariantTile";
@@ -14,6 +14,9 @@ import { doGameOptionsModifyVariant } from "game/variantAndRuleProcessing";
 import { IconButton } from "ui/Buttons/IconButton";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import { useUserSettings } from "components/shared";
+import { useCalculatedDimensions } from "components/shared/useCalculatedDimensions";
+
+const TILE_SIZE = 200;
 
 interface Props {
   displayVariants: FutureVariantName[];
@@ -37,6 +40,13 @@ const VariantCardGrid: SFC<Props> = ({
     partitionDisplayVariantsByComplexity(displayVariants);
 
   const [detailedView, setDetailedView] = useUserSettings("showDetailedView", false);
+  const ref = useRef<View>(null);
+  const [width] = useCalculatedDimensions(ref);
+  const numberOfTilesPerRow = useMemo(() => Math.floor(width / TILE_SIZE), [width]) || 2;
+  const row = useCallback(
+    (index: number) => Math.floor(index / numberOfTilesPerRow),
+    [numberOfTilesPerRow]
+  );
 
   return (
     <View style={style}>
@@ -44,13 +54,18 @@ const VariantCardGrid: SFC<Props> = ({
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingTop: 24, paddingBottom: 80 }}
       >
-        <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+        <View ref={ref} style={{ flexDirection: "row", flexWrap: "wrap" }}>
           {displayVariants.map((variant, i) => {
             return (
               <VariantTile
                 key={variant}
+                size={TILE_SIZE}
                 detailedView={detailedView}
-                color={i % 2 === 0 ? Colors.DARK : Colors.DARKER} //Colors.DARK : Colors.DARKER
+                color={
+                  ((i % 2) + (row(i) % 2) * ((numberOfTilesPerRow + 1) % 2)) % 2 === 0
+                    ? Colors.DARK
+                    : Colors.DARKER
+                }
                 variant={futureVariants[variant]}
                 selected={selectedVariants.includes(variant)}
                 conflictLevel={conflictLevel}

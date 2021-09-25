@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors, useHover, Text } from "primitives";
@@ -13,6 +13,7 @@ import { VariantTileHeader } from "./VariantTileHeader";
 import { VariantTileGraph } from "./VariantTileGraph";
 import Color from "color";
 import { block } from "react-native-reanimated";
+import { useCalculatedDimensions } from "components/shared/useCalculatedDimensions";
 
 interface Props {
   variant: FutureVariant;
@@ -23,6 +24,7 @@ interface Props {
   modified: boolean;
   color: Color;
   detailedView?: boolean;
+  size?: number;
 }
 
 export const VariantTile: SFC<Props> = ({
@@ -35,6 +37,7 @@ export const VariantTile: SFC<Props> = ({
   modified,
   color,
   detailedView,
+  size = 200,
 }) => {
   const [ref, hovered] = useHover();
   color = selected ? color.mix(Colors.SUCCESS.darken(0.1), 0.3) : color;
@@ -48,18 +51,13 @@ export const VariantTile: SFC<Props> = ({
       {}
     );
 
-  const [h, setH] = useState(undefined);
-  const [w, setW] = useState(undefined);
-
-  useEffect(() => {
-    setW(ref?.current?.offsetWidth);
-    setH(ref?.current?.offsetHeight);
-  }, [ref.current]);
+  const imageWidth = useMemo(() => 0.6 * size, [size]);
 
   return (
     <TouchableContainer
       ref={ref}
       style={style}
+      size={size}
       onPress={onPress}
       activeOpacity={0.6}
       disabled={!implemented}
@@ -121,7 +119,7 @@ export const VariantTile: SFC<Props> = ({
         <VariantTileImage
           variant={variant}
           modified={modified}
-          size={0.6 * (w || 0)}
+          size={imageWidth}
           style={{
             margin: 0,
             padding: 0,
@@ -133,9 +131,9 @@ export const VariantTile: SFC<Props> = ({
   );
 };
 
-const TouchableContainer = styled(TouchableOpacity)<{ color: Color }>`
-  width: 200px;
-  height: 200px;
+const TouchableContainer = styled(TouchableOpacity)<{ color: Color; size: number }>`
+  width: ${({ size }): string => size?.toString()}px;
+  height: ${({ size }): string => size?.toString()}px;
   background: ${({ color }): string => color.toString()};
   overflow: hidden;
 `;
