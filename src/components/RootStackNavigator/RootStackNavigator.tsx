@@ -5,6 +5,7 @@ import { StartScreen } from "./StartScreen";
 import { VariantSelectScreen } from "./VariantSelectScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Screens } from "navigation/Screens";
+import { Colors } from "primitives/Colors";
 
 const Stack = createStackNavigator();
 
@@ -12,7 +13,10 @@ export const RootStackNavigator: FC = () => {
   return (
     <Stack.Navigator
       initialRouteName={Screens.StartScreen}
-      screenOptions={{ headerShown: false }}
+      screenOptions={{
+        headerShown: false,
+        cardStyle: { backgroundColor: Colors.DARKEST.toString() },
+      }}
     >
       <Stack.Screen
         name={Screens.GameScreen}
