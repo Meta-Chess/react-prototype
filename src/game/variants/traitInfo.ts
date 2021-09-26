@@ -6,27 +6,27 @@ export type TraitName = keyof typeof traitInfo;
 export const traitInfo = {
   Restriction: {
     color: Colors.TRAIT.RESTRICTION,
-    description: "Piece movement is restricted",
+    description: "Variants that restrict what the player can do",
   },
   Reaction: {
     color: Colors.TRAIT.REACTION,
-    description: "A new mechanic",
+    description: "Variants that trigger in response to some event",
   },
   Ending: {
     color: Colors.TRAIT.ENDING,
-    description: "The game can end for a player in a new way",
+    description: "Variants that change how the game can end",
   },
   Movement: {
     color: Colors.TRAIT.MOVEMENT,
-    description: "Changes are made to regular turn structure",
+    description: "Variants that modify the way pieces move",
   },
-  Geometry: {
-    color: Colors.TRAIT.GEOMETRY,
-    description: "Changes are made to how squares connect with each other",
+  Board: {
+    color: Colors.TRAIT.BOARD,
+    description: "Variants that modify the underlying board",
   },
-  Special: {
-    color: Colors.TRAIT.SPECIAL,
-    description: "Changes are made to how squares connect with each other",
+  Simulation: {
+    color: Colors.TRAIT.SIMULATION,
+    description: "Variants that involve simulation of future game states",
   },
 };
 

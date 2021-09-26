@@ -30,12 +30,12 @@ export const Colors = {
     ERROR: Color("#FF1900"),
   },
   TRAIT: {
-    GEOMETRY: Color("#00C1FF"),
-    MOVEMENT: Color("#0064FD"),
+    MOVEMENT: Color("#00C1FF"),
+    BOARD: Color("#0064FD"),
     REACTION: Color("#FF5D00"),
     RESTRICTION: Color("#FF2222"),
     ENDING: Color("#D4AF37"),
-    SPECIAL: Color("#6780FB"),
+    SIMULATION: Color("#6780FB"),
   },
   PLAYER: [
     Color("#FCFCFC"),

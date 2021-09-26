@@ -42,11 +42,11 @@ const VariantTileGraph: SFC<VariantTileGraphProps> = ({
   orientation = "vertical",
 }) => {
   const nodeOrder: TraitName[] = [
-    "Geometry",
+    "Board",
     "Movement",
     "Reaction",
     "Ending",
-    "Special",
+    "Simulation",
   ];
   const fillColors = nodeOrder.map((traitName) =>
     variant.traits.includes(traitName) ? traitInfo[traitName].color.toString() : undefined

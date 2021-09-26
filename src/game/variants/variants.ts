@@ -203,7 +203,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   cylindrical: {
     title: "Cylindrical",
     shortDescription: "End columns of the board are glued together.",
-    traits: ["Geometry"],
+    traits: ["Board"],
     imageName: "cylinderImage",
     implemented: true,
     ruleNames: ["cylindrical"],
@@ -212,7 +212,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   diagonalMirror: {
     title: "Diagonal Mirror",
     shortDescription: "Pieces may reflect diagonally off of edges.",
-    traits: ["Geometry", "Movement"],
+    traits: ["Movement"],
     imageName: "diagonalMirrorImage",
     implemented: true,
     ruleNames: ["diagonalMirror"],
@@ -221,7 +221,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   emptyCenter: {
     title: "Empty Center",
     shortDescription: "No pieces allowed in the center!",
-    traits: ["Geometry", "Restriction"],
+    traits: ["Movement", "Restriction"],
     imageName: "emptyCenterImage",
     implemented: true,
     ruleNames: ["emptyCenter"],
@@ -240,7 +240,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   hex: {
     title: "Hex",
     shortDescription: "A board tiled with hexagons.",
-    traits: ["Geometry"],
+    traits: ["Board"],
     imageName: "hexImage",
     implemented: true,
     ruleNames: ["hex"],
@@ -258,7 +258,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   kleinBottle: {
     title: "Klein Bottle",
     shortDescription: "Chess on a klein bottle!? [Mobius and Cylinder]",
-    traits: ["Geometry"],
+    traits: ["Board"],
     imageName: "kleinBottleImage",
     implemented: true,
     ruleNames: [
@@ -274,7 +274,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Möbius",
     shortDescription:
       "A long board möbius strip, with the ability to phase through to empty squares.",
-    traits: ["Geometry"],
+    traits: ["Board"],
     imageName: "mobiusImage",
     implemented: true,
     ruleNames: [
@@ -289,7 +289,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "No Fork",
     shortDescription:
       "No moves are allowed which result in knights attacking more than 1 enemy piece.",
-    traits: ["Restriction"],
+    traits: ["Restriction", "Simulation"],
     imageName: "noForkImage",
     implemented: true,
     ruleNames: ["noFork"],
@@ -309,7 +309,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Chain Reaction",
     shortDescription:
       "When a piece is captured it captures all the pieces it was threatening.",
-    traits: ["Reaction"],
+    traits: ["Reaction", "Simulation"],
     imageName: "chainReactionImage",
     implemented: true,
     ruleNames: ["chainReaction"],
@@ -327,7 +327,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   polar: {
     title: "Polar",
     shortDescription: "Slide through end rows and re-emerge through the same row.",
-    traits: ["Geometry"],
+    traits: ["Board"],
     imageName: "polarImage",
     implemented: true,
     ruleNames: ["polar"],
@@ -336,7 +336,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   spherical: {
     title: "Spherical",
     shortDescription: "The board wrapped around a sphere. [Polar and Cylinder]",
-    traits: ["Geometry"],
+    traits: ["Board"],
     imageName: "sphericalImage",
     implemented: true,
     ruleNames: ["cylindrical", "polar"],
@@ -345,7 +345,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   thinIce: {
     title: "Thin Ice",
     shortDescription: "You're skating on thin ice!",
-    traits: ["Geometry", "Reaction", "Restriction"],
+    traits: ["Board", "Reaction", "Restriction"],
     imageName: "thinIceImage",
     implemented: true,
     ruleNames: ["thinIce"],
@@ -354,7 +354,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   threeCheck: {
     title: "3-Check",
     shortDescription: "3 checks and you're out.",
-    traits: ["Ending"],
+    traits: ["Ending", "Simulation"],
     imageName: "threeCheckImage",
     implemented: true,
     ruleNames: ["threeCheck"],
@@ -363,7 +363,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   toroidal: {
     title: "Toroidal",
     shortDescription: "Double the cylinder and pawns!",
-    traits: ["Geometry"],
+    traits: ["Board"],
     imageName: "toroidalImage",
     implemented: true,
     ruleNames: ["longBoard", "cylindrical", "verticallyCylindrical"],
@@ -429,7 +429,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Centerfold",
     shortDescription:
       "North and south sides of a board connect to themselves like a racetrack.",
-    traits: ["Geometry"],
+    traits: ["Board"],
     imageName: "centerfoldImage",
     implemented: false,
     ruleNames: [],
