@@ -10,6 +10,7 @@ import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScr
 import { VariantTileHeader } from "./VariantTileHeader";
 import { VariantTileGraph } from "./VariantTileGraph";
 import Color from "color";
+import { keys } from "utilities/keys";
 
 interface Props {
   variant: FutureVariant;
@@ -20,6 +21,7 @@ interface Props {
   modified: boolean;
   color: Color;
   detailedView?: boolean;
+  zenMode?: boolean;
   size?: number;
 }
 
@@ -33,20 +35,21 @@ export const VariantTile: SFC<Props> = ({
   modified,
   color,
   detailedView,
+  zenMode,
   size = 200,
 }) => {
   const [ref, hovered] = useHover();
   if (conflictLevel !== undefined && selected) {
     color =
       conflictLevel === "ERROR"
-        ? color.mix(Colors.ERROR.darken(0.1), 0.3)
-        : color.mix(Colors.SUCCESS.darken(0.1), 0.3);
+        ? color.mix(Colors.ERROR.darken(0.4), 0.3)
+        : color.mix(Colors.SUCCESS.darken(0.4), 0.3);
   } else if (selected) {
-    color = color.mix(Colors.SUCCESS.darken(0.1), 0.3);
+    color = color.mix(Colors.SUCCESS.darken(0.4), 0.3);
   }
   color = hovered ? color.fade(0.2) : color;
   const implemented = variant.implemented;
-  const showDetailedView = (hovered || detailedView) && implemented;
+  const showDetailedView = (hovered || detailedView) && implemented && !zenMode;
   const ruleSettings = variant.ruleNames
     .filter((ruleName) => allRuleSettings[`${ruleName}Settings`] !== undefined)
     .reduce(
@@ -56,12 +59,27 @@ export const VariantTile: SFC<Props> = ({
 
   const imageWidth = useMemo(() => 0.6 * size, [size]);
 
+  const onGearPress = useMemo(
+    () =>
+      keys(ruleSettings).length > 0
+        ? (): void => {
+            setVariantModalInfo({
+              activated: true,
+              variant: variant.title,
+              ruleSettings: ruleSettings,
+            });
+          }
+        : undefined,
+    [variant, ruleSettings]
+  );
+
   return (
     <TouchableContainer
       ref={ref}
       style={{ opacity: implemented ? 1 : 0.4, ...style }}
       size={size}
       onPress={onPress}
+      onLongPress={onGearPress}
       activeOpacity={0.6}
       disabled={!implemented}
       color={color}
@@ -97,7 +115,14 @@ export const VariantTile: SFC<Props> = ({
         }}
       >
         <VariantTileHeader
-          {...{ variant, selected, hovered, ruleSettings, setVariantModalInfo }}
+          {...{
+            variant,
+            selected,
+            hovered,
+            showStar: showDetailedView,
+            showGear: !zenMode && hovered,
+            onGearPress,
+          }}
         />
         {showDetailedView && (
           <>

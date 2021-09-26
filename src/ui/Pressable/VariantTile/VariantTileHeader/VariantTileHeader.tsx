@@ -6,38 +6,28 @@ import { FutureVariant } from "game";
 import { GearButton } from "./GearButton";
 import { StarIcon } from "primitives/icons";
 import { TextIcon } from "ui";
-import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
-import { RuleNamesWithParamSettings } from "game/CompactRules";
-import { keys } from "utilities";
 
 interface Props {
   variant: FutureVariant;
   hovered: boolean;
-  ruleSettings?: RuleNamesWithParamSettings;
-  setVariantModalInfo: (x: VariantModalInfo) => void;
   showGear?: boolean;
   showStar?: boolean;
+  onGearPress?: () => void;
 }
 
 export const VariantTileHeader: SFC<Props> = ({
   variant,
   hovered,
-  ruleSettings,
-  setVariantModalInfo,
-  showGear = hovered && keys(ruleSettings).length > 0,
+  showGear: _showGear = hovered,
   showStar = hovered,
   style,
+  onGearPress,
 }) => {
+  const showGear = _showGear && onGearPress;
   return (
     <Container style={style}>
       <View style={{ marginLeft: 0, marginTop: -4, marginRight: "auto" }}>
-        {showGear && (
-          <GearButton
-            variantTitle={variant.title}
-            setVariantModalInfo={setVariantModalInfo}
-            ruleSettings={ruleSettings}
-          />
-        )}
+        {showGear && <GearButton onPress={onGearPress} />}
       </View>
       <TitleText
         cat="BodyM"

@@ -1,3 +1,5 @@
+import { parseBooleanString, stringifyBoolean } from "./dataParsers";
+
 export type DataKey = keyof UserLocalData;
 export type Data<K extends DataKey> = Partial<UserLocalData>[K];
 export type SetData<K extends DataKey> = NonNullable<UserLocalData>[K];
@@ -11,13 +13,15 @@ export type SetData<K extends DataKey> = NonNullable<UserLocalData>[K];
 export interface UserLocalData {
   lastViewedUpdateOn: Date;
   showDetailedView: boolean;
+  zenMode: boolean;
 }
 
 export const stringifyData: {
   [key in DataKey]: (value: SetData<key>) => string;
 } = {
   lastViewedUpdateOn: (date) => date.toDateString(),
-  showDetailedView: (bool) => (bool ? "true" : "false"),
+  showDetailedView: stringifyBoolean,
+  zenMode: stringifyBoolean,
 };
 
 export const dataFromString: {
@@ -27,8 +31,6 @@ export const dataFromString: {
     const dateString = await date;
     return dateString ? new Date(dateString) : undefined;
   },
-  showDetailedView: async (bool) => {
-    const boolString = await bool;
-    return boolString !== undefined ? (boolString === "true" ? true : false) : undefined;
-  },
+  showDetailedView: parseBooleanString,
+  zenMode: parseBooleanString,
 };

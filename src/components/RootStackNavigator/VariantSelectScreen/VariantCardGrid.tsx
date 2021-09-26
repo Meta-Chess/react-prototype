@@ -8,6 +8,7 @@ import { RuleNamesWithParams } from "game/CompactRules";
 import { doGameOptionsModifyVariant } from "game/variantAndRuleProcessing";
 import { IconButton } from "ui/Buttons/IconButton";
 import { GoEye, GoEyeClosed } from "react-icons/go";
+import { GiNinjaStar } from "react-icons/gi";
 import { useUserSettings } from "components/shared";
 import { useCalculatedDimensions } from "components/shared/useCalculatedDimensions";
 
@@ -32,6 +33,7 @@ const VariantCardGrid: SFC<Props> = ({
   ruleNamesWithParams = {},
 }) => {
   const [detailedView, setDetailedView] = useUserSettings("showDetailedView", false);
+  const [zenMode, setZenMode] = useUserSettings("zenMode", false);
   const ref = useRef<View>(null);
   const [width] = useCalculatedDimensions(ref);
   const numberOfTilesPerRow = useMemo(() => Math.floor(width / TILE_SIZE), [width]) || 3;
@@ -63,6 +65,7 @@ const VariantCardGrid: SFC<Props> = ({
                   key={variant}
                   size={TILE_SIZE}
                   detailedView={detailedView}
+                  zenMode={zenMode}
                   color={
                     ((i % 2) + (row(i) % 2) * ((numberOfTilesPerRow + 1) % 2)) % 2 === 0
                       ? Colors.DARK
@@ -102,10 +105,14 @@ const VariantCardGrid: SFC<Props> = ({
         }}
       >
         <IconButton
-          size={detailedView ? 30 : 30}
-          color={detailedView ? Colors.WHITE : Colors.WHITE}
-          Icon={detailedView ? GoEye : GoEyeClosed}
-          onPress={(): void => setDetailedView(!detailedView)}
+          size={30}
+          color={Colors.WHITE}
+          Icon={zenMode ? GiNinjaStar : detailedView ? GoEye : GoEyeClosed}
+          onPress={(): void => {
+            setDetailedView(!detailedView);
+            setZenMode(false);
+          }}
+          onLongPress={(): void => setZenMode(!zenMode)}
         />
       </View>
     </View>

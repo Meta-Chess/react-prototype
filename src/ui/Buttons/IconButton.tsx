@@ -9,6 +9,7 @@ interface Props {
   color?: Color;
   size?: number;
   onPress: () => void;
+  onLongPress?: () => void;
 }
 
 export const IconButton: SFC<Props> = ({
