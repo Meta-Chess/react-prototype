@@ -8,7 +8,7 @@ export const morphlings: ParameterRule = (
   return {
     title: "Morphlings",
     description:
-      "When knights move they turn into bishops and when bishops move they turn into knights",
+      "When knights move they turn into bishops and when bishops move they turn into knights.",
 
     onPieceDisplaced: ({ board, pieceDelta }): OnPieceDisplaced => {
       const piece = board.getPiece(pieceDelta.pieceId);

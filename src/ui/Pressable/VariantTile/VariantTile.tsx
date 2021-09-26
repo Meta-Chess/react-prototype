@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors, useHover } from "primitives";
 import { ConflictLevel, FutureVariant } from "game";
 import { VariantTileInfo } from "./VariantTileInfo";
 import { VariantTileImage } from "./VariantTileImage";
-import { Styles } from "primitives/Styles";
-import { AbsoluteView } from "ui";
 import { allRuleSettings } from "game/CompactRules";
 import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
 import { VariantTileHeader } from "./VariantTileHeader";
+import { VariantTileGraph } from "./VariantTileGraph";
+import Color from "color";
+import { keys } from "utilities/keys";
+
 interface Props {
   variant: FutureVariant;
   selected: boolean;
@@ -17,6 +19,10 @@ interface Props {
   onPress: () => void;
   setVariantModalInfo: (x: VariantModalInfo) => void;
   modified: boolean;
+  color: Color;
+  detailedView?: boolean;
+  zenMode?: boolean;
+  size?: number;
 }
 
 export const VariantTile: SFC<Props> = ({
@@ -27,59 +33,109 @@ export const VariantTile: SFC<Props> = ({
   onPress,
   setVariantModalInfo,
   modified,
+  color,
+  detailedView,
+  zenMode,
+  size = 200,
 }) => {
+  if (conflictLevel !== undefined && selected) {
+    color =
+      conflictLevel === "ERROR"
+        ? color.mix(Colors.ERROR.darken(0.4), 0.3)
+        : color.mix(Colors.SUCCESS.darken(0.4), 0.3);
+  } else if (selected) {
+    color = color.mix(Colors.SUCCESS.darken(0.4), 0.3);
+  }
+  const imageWidth = useMemo(() => 0.6 * size, [size]);
+
   const [ref, hovered] = useHover();
+  color = hovered ? color.fade(0.2) : color;
   const implemented = variant.implemented;
-  const hoverState = hovered && implemented;
+  const showDetailedView = (hovered || detailedView) && implemented && !zenMode;
+  const showStar = showDetailedView;
+  const showGear = !zenMode && hovered;
+
   const ruleSettings = variant.ruleNames
     .filter((ruleName) => allRuleSettings[`${ruleName}Settings`] !== undefined)
     .reduce(
       (acc, ruleName) => ({ ...acc, [ruleName]: allRuleSettings[`${ruleName}Settings`] }),
       {}
     );
+  const onGearPress = useMemo(
+    () =>
+      keys(ruleSettings).length > 0
+        ? (): void => {
+            setVariantModalInfo({
+              activated: true,
+              variant: variant.title,
+              ruleSettings: ruleSettings,
+            });
+          }
+        : undefined,
+    [variant, ruleSettings]
+  );
+
   return (
     <TouchableContainer
       ref={ref}
-      style={style}
+      style={{ opacity: implemented ? 1 : 0.4, ...style }}
+      size={size}
       onPress={onPress}
+      onLongPress={onGearPress}
       activeOpacity={0.6}
       disabled={!implemented}
+      color={color}
     >
-      <VariantTileHeader
-        variant={variant}
-        selected={selected}
-        conflictLevel={conflictLevel}
-        ruleSettings={ruleSettings}
-        setVariantModalInfo={setVariantModalInfo}
-        hovered={hoverState}
-      />
-      <VariantTileBody hovered={hoverState}>
-        <VariantTileInfo variant={variant} style={{ flex: 1 }} />
+      <VariantImageContainer showDetailedView={showDetailedView}>
         <VariantTileImage
           variant={variant}
           modified={modified}
-          style={{ width: 120, height: 120, margin: 8 }}
+          size={imageWidth}
+          style={{ backgroundColor: Colors.TRANSPARENT.toString() }}
         />
-      </VariantTileBody>
-      {!implemented && <CoverView />}
+      </VariantImageContainer>
+      <VariantTileContent>
+        <VariantTileHeader
+          {...{ variant, selected, hovered, showGear, showStar, onGearPress }}
+        />
+        {showDetailedView && (
+          <VariantTileInfo variant={variant} style={{ width: "100%", height: "100%" }} />
+        )}
+        {showDetailedView && (
+          <StyledVariantTileGraph variant={variant} orientation={"horizontal"} />
+        )}
+      </VariantTileContent>
     </TouchableContainer>
   );
 };
 
-const TouchableContainer = styled(TouchableOpacity)`
-  width: 300px;
-  background: transparent;
-  ${Styles.BOX_SHADOW_STRONG}
-  border-radius: 4px;
+const StyledVariantTileGraph = styled(VariantTileGraph)`
+  align-self: center;
+  width: 80%;
+  margin-bottom: 0px;
+  margin-top: auto;
+`;
+
+const TouchableContainer = styled(TouchableOpacity)<{ color: Color; size: number }>`
+  width: ${({ size }): string => size?.toString()}px;
+  height: ${({ size }): string => size?.toString()}px;
+  background: ${({ color }): string => color.toString()};
   overflow: hidden;
 `;
 
-const VariantTileBody = styled(View)<{ hovered: boolean }>`
-  flex-direction: row;
-  background-color: ${({ hovered }): string =>
-    Colors.DARK.fade(hovered ? 0.1 : 0).toString()};
+const VariantTileContent = styled(View)`
+  flex-direction: column;
+  height: 100%;
+  align-content: center;
+  padding: 12px;
 `;
 
-const CoverView = styled(AbsoluteView)`
-  background-color: ${Colors.BLACK.fade(0.25).toString()};
+const VariantImageContainer = styled(View)<{ showDetailedView?: boolean }>`
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  opacity: ${({ showDetailedView }): number => (showDetailedView ? 0.1 : 1)};
+  padding-top: 20px;
 `;

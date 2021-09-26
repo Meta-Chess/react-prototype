@@ -5,9 +5,9 @@ import { View, Platform, useWindowDimensions } from "react-native";
 import { Colors, SFC } from "primitives";
 import { ErrorBoundary } from "components/shared/ErrorBoundary";
 import { ScrollView } from "react-native-gesture-handler";
+import { isWindows } from "../../utilities/isWindows";
 
 interface Props {
-  height: number;
   width: number;
   paddingHorizontal: number;
   paddingVertical: number;
@@ -38,16 +38,17 @@ export const ScreenContainer: SFC<{ portraitFriendly?: boolean }> = ({
   }, [width, height, portraitFriendly]);
 
   return (
-    <Container {...{ ...screenSizeVariables, height, style }}>
-      <ErrorBoundary>{children}</ErrorBoundary>
-    </Container>
+    <View style={{ height: isWindows() ? height - 1 : height }}>
+      <Container {...{ ...screenSizeVariables, style }}>
+        <ErrorBoundary>{children}</ErrorBoundary>
+      </Container>
+    </View>
   );
 };
 
 const Container: SFC<Props> = ({
   paddingHorizontal,
   paddingVertical,
-  height,
   width,
   style,
   children,
@@ -66,7 +67,6 @@ const Container: SFC<Props> = ({
             paddingVertical,
             backgroundColor: Colors.DARKEST.toString(),
             flex: 1,
-            height: height - 1, // TODO: why is this necessary to stop scroll bar from appearing on certain resolutions?
           },
           style,
         ]}

@@ -24,7 +24,7 @@ interface Props {
   children: React.ReactNode;
   color?: string;
   fontFamily?: string;
-  weight?: "normal" | "heavy";
+  weight?: "normal" | "heavy" | "thin";
   lineHeight?: number;
   loading?: boolean;
   monospaceNumbers?: boolean;
@@ -64,7 +64,7 @@ const Text: FC<Props> = (props) => {
           fontSize: size,
           lineHeight,
           color: color,
-          fontWeight: weight === "normal" ? "normal" : "600",
+          fontWeight: weight === "normal" ? "normal" : weight === "thin" ? "100" : "600",
           fontFamily: fontFamily,
           textAlign: alignment,
           overflow: "visible",

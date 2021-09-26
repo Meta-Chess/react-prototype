@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { View, ScrollView } from "react-native";
-import { SFC, Colors, Text } from "primitives";
+import { SFC, Colors } from "primitives";
 import { VariantTile } from "ui/Pressable/VariantTile";
 import { ConflictLevel, FutureVariantName, futureVariants } from "game";
-import {
-  complexityLevels,
-  partitionDisplayVariantsByComplexity,
-} from "./partitionDisplayVariantsByComplexity";
-import styled from "styled-components/native";
 import { VariantModalInfo } from "./Modals";
 import { RuleNamesWithParams } from "game/CompactRules";
 import { doGameOptionsModifyVariant } from "game/variantAndRuleProcessing";
+import { IconButton } from "ui/Buttons/IconButton";
+import { GoEye, GoEyeClosed } from "react-icons/go";
+import { GiNinjaStar } from "react-icons/gi";
+import { useUserSettings } from "components/shared";
+import { useCalculatedDimensions } from "components/shared/useCalculatedDimensions";
+import styled from "styled-components/native";
+
+const TILE_SIZE = 200;
+
 interface Props {
   displayVariants: FutureVariantName[];
   selectedVariants: FutureVariantName[];
@@ -29,75 +33,94 @@ const VariantCardGrid: SFC<Props> = ({
   setVariantModalInfo,
   ruleNamesWithParams = {},
 }) => {
-  const partitionedDisplayVariants =
-    partitionDisplayVariantsByComplexity(displayVariants);
+  const [detailedView, setDetailedView] = useUserSettings("showDetailedView", false);
+  const [zenMode, setZenMode] = useUserSettings("zenMode", false);
+  const ref = useRef<View>(null);
+  const [width] = useCalculatedDimensions(ref);
+  const numberOfTilesPerRow = useMemo(() => Math.floor(width / TILE_SIZE), [width]);
+  const row = useCallback(
+    (index: number) => Math.floor(index / numberOfTilesPerRow),
+    [numberOfTilesPerRow]
+  );
+
   return (
     <View style={style}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingVertical: 24 }}
+        contentContainerStyle={{
+          padding: 20,
+          paddingBottom: 80,
+        }}
       >
-        {complexityLevels.map((catagory) => {
-          return (
-            <View key={catagory}>
-              {partitionedDisplayVariants[catagory].length > 0 && (
-                <>
-                  <Text
-                    cat={"DisplayM"}
-                    alignment={"left"}
-                    color={Colors.TEXT.LIGHT_SECONDARY.fade(0.4).toString()}
-                    style={{ marginLeft: 4 }}
-                  >
-                    {catagory}
-                  </Text>
-                  <CatagorySeparator />
-                  <CardContainer>
-                    {partitionedDisplayVariants[catagory].map((variant) => {
-                      return (
-                        <VariantTile
-                          key={variant}
-                          variant={futureVariants[variant]}
-                          selected={selectedVariants.includes(variant)}
-                          conflictLevel={conflictLevel}
-                          onPress={(): void =>
-                            selectedVariants.includes(variant)
-                              ? setSelectedVariants(
-                                  selectedVariants.filter((x) => x !== variant)
-                                )
-                              : setSelectedVariants([...selectedVariants, variant])
-                          }
-                          setVariantModalInfo={setVariantModalInfo}
-                          modified={doGameOptionsModifyVariant(
-                            futureVariants[variant],
-                            ruleNamesWithParams
-                          )}
-                          style={{ margin: 4 }}
-                        />
-                      );
-                    })}
-                  </CardContainer>
-                </>
-              )}
-            </View>
-          );
-        })}
+        <View ref={ref} style={{ width: "100%", alignItems: "center" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              width: TILE_SIZE * numberOfTilesPerRow,
+            }}
+          >
+            {!!width &&
+              displayVariants.map((variant, i) => {
+                return (
+                  <VariantTile
+                    key={variant}
+                    size={TILE_SIZE}
+                    detailedView={detailedView}
+                    zenMode={zenMode}
+                    color={
+                      ((i % 2) + (row(i) % 2) * ((numberOfTilesPerRow + 1) % 2)) % 2 === 0
+                        ? Colors.DARK
+                        : Colors.DARKER
+                    }
+                    variant={futureVariants[variant]}
+                    selected={selectedVariants.includes(variant)}
+                    conflictLevel={conflictLevel}
+                    onPress={(): void =>
+                      selectedVariants.includes(variant)
+                        ? setSelectedVariants(
+                            selectedVariants.filter((x) => x !== variant)
+                          )
+                        : setSelectedVariants([...selectedVariants, variant])
+                    }
+                    setVariantModalInfo={setVariantModalInfo}
+                    modified={doGameOptionsModifyVariant(
+                      futureVariants[variant],
+                      ruleNamesWithParams
+                    )}
+                  />
+                );
+              })}
+          </View>
+        </View>
       </ScrollView>
+
+      <FloatingButtonContainer>
+        <IconButton
+          size={30}
+          color={Colors.WHITE}
+          Icon={zenMode ? GiNinjaStar : detailedView ? GoEye : GoEyeClosed}
+          onPress={(): void => {
+            if (zenMode) setZenMode(false);
+            else setDetailedView(!detailedView);
+          }}
+          onLongPress={(): void => setZenMode(!zenMode)}
+        />
+      </FloatingButtonContainer>
     </View>
   );
 };
 
-const CardContainer = styled(View)`
-  flex-flow: row wrap;
-  margin: 0px 0px 20px 0px;
-`;
-
-const CatagorySeparator = styled(View)`
-  flex: 1px;
-  height: 2px;
-  margin-right: 20px;
-  margin-bottom: 16px;
-  border-bottom-width: 2px;
-  border-bottom-color: ${Colors.DARK.toString()};
+const FloatingButtonContainer = styled(View)`
+  position: absolute;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  bottom: 20px;
+  width: 70px;
+  height: 40px;
+  background-color: ${Colors.DARKISH.toString()};
+  border-radius: 10px;
 `;
 
 export { VariantCardGrid };

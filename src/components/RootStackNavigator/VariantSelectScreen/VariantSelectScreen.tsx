@@ -16,7 +16,6 @@ import { FormatCard, FiltersCard, GameOptionsCard, AdviceCard } from "./Collapsa
 import { Button, ButtonSecondary, Divider, AbsoluteView } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors, TrackingPixel } from "primitives";
-import { Styles } from "primitives/Styles";
 import styled from "styled-components/native";
 import { Topbar } from "./Topbar";
 import { FormatName } from "game/formats";
@@ -71,8 +70,8 @@ const VariantSelectScreen: FC = () => {
   return (
     <ScreenContainer
       style={{
-        paddingHorizontal: 0,
         paddingVertical: 0,
+        paddingHorizontal: 0,
         flexDirection: "row-reverse",
       }}
     >
@@ -120,9 +119,14 @@ const VariantSelectScreen: FC = () => {
           />
         </Divider>
       </Sidebar>
-      <LeftContainer style={{ flex: 1, flexDirection: "column-reverse" }}>
+      <LeftContainer
+        style={{
+          flex: 1,
+          flexDirection: "column-reverse",
+        }}
+      >
         <VariantCardGrid
-          style={{ flex: 1, paddingLeft: 24, paddingRight: 4 }}
+          style={{ flex: 1 }}
           displayVariants={displayVariants}
           selectedVariants={selectedVariantsForFormat}
           setSelectedVariants={setSelectedVariantsForFormat}
@@ -163,7 +167,6 @@ const Sidebar = styled(View)`
   background-color: ${Colors.DARKER.toString()};
   border-left-width: 1px;
   border-left-color: ${Colors.DARKISH.toString()};
-  ${Styles.BOX_SHADOW}
 `;
 
 export { VariantSelectScreen };

@@ -2,96 +2,84 @@ import React from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
-import { ConflictLevel, FutureVariant } from "game";
-import Color from "color";
+import { FutureVariant } from "game";
 import { GearButton } from "./GearButton";
 import { StarIcon } from "primitives/icons";
 import { TextIcon } from "ui";
-import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
-import { RuleNamesWithParamSettings } from "game/CompactRules";
-import { keys } from "utilities";
 
 interface Props {
   variant: FutureVariant;
-  selected: boolean;
   hovered: boolean;
-  conflictLevel?: ConflictLevel | "NO_CONFLICT";
-  ruleSettings?: RuleNamesWithParamSettings;
-  setVariantModalInfo: (x: VariantModalInfo) => void;
+  showGear?: boolean;
+  showStar?: boolean;
+  onGearPress?: () => void;
 }
-
-const BACKGROUND_COLOR: { [key in ConflictLevel | "NO_CONFLICT"]: Color } = {
-  NO_CONFLICT: Colors.SUCCESS.fade(0.5),
-  ERROR: Colors.ERROR.fade(0.5),
-  WARNING: Colors.WARNING.fade(0.5),
-};
 
 export const VariantTileHeader: SFC<Props> = ({
   variant,
-  selected,
   hovered,
-  ruleSettings = {},
-  conflictLevel = "NO_CONFLICT",
-  setVariantModalInfo,
+  showGear: _showGear = hovered,
+  showStar = hovered,
+  style,
+  onGearPress,
 }) => {
-  const color = (!selected ? Colors.DARKISH : BACKGROUND_COLOR[conflictLevel])
-    .fade(hovered ? 0.1 : 0)
-    .toString();
-
-  const showGear = selected && keys(ruleSettings).length > 0;
+  const showGear = _showGear && onGearPress;
   return (
-    <Container color={color}>
-      <View style={{ width: 40, paddingLeft: "8px" }}>
-        {showGear && (
-          <GearButton
-            variantTitle={variant.title}
-            setVariantModalInfo={setVariantModalInfo}
-            ruleSettings={ruleSettings}
-          />
-        )}
-      </View>
-      <View style={{ flex: 1 }}>
-        <TitleText
-          cat="DisplayXS"
-          weight="heavy"
-          color={Colors.TEXT.LIGHT.toString()}
-          numberOfLines={1}
-        >
-          {variant.title}
-        </TitleText>
-      </View>
-      <View
-        style={{
-          width: 40,
-          flexDirection: "row-reverse",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+    <Container style={style}>
+      <GearContainer>{showGear && <GearButton onPress={onGearPress} />}</GearContainer>
+      <TitleText
+        cat="BodyM"
+        weight="normal"
+        color={Colors.TEXT.LIGHT.toString()}
+        numberOfLines={1}
       >
-        <TextIcon Icon={StarIcon} />
-        <Text
-          cat="BodyS"
-          weight="heavy"
-          alignment="center"
-          color={Colors.TEXT.LIGHT_SECONDARY.toString()}
-          selectable={false}
-        >
-          {variant.complexity}
-        </Text>
-      </View>
+        {variant.shortTitle ?? variant.title}
+      </TitleText>
+      <ComplexityContainer>
+        {showStar && (
+          <>
+            <TextIcon Icon={StarIcon} style={{ marginTop: -1 }} />
+            <Text
+              cat="BodyS"
+              weight="heavy"
+              alignment="center"
+              color={Colors.TEXT.LIGHT_SECONDARY.toString()}
+              selectable={false}
+            >
+              {variant.complexity}
+            </Text>
+          </>
+        )}
+      </ComplexityContainer>
     </Container>
   );
 };
 
-const Container = styled(View)<{ color: string }>`
-  height: 30px;
-  flex-grow: 1;
+const Container = styled(View)`
+  justify-content: center;
   flex-direction: row;
+  height: 15%;
+  width: 100%;
+`;
+
+const GearContainer = styled(View)`
+  margin-left: 0px;
+  margin-top: -4px;
+  margin-right: auto;
+`;
+
+const ComplexityContainer = styled(View)`
+  margin-right: 0px;
+  margin-top: -7px;
+  margin-left: auto;
+  flex-direction: row-reverse;
+  justify-content: center;
   align-items: center;
-  background-color: ${({ color }): string => color};
 `;
 
 const TitleText = styled(Text)`
-  padding-horizontal: 8px;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 `;
