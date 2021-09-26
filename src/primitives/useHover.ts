@@ -1,12 +1,5 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  ReactChild,
-  ReactElement,
-  ReactComponentElement,
-} from "react";
-import { Platform, View } from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import { Platform } from "react-native";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useHover<T extends Node = any>(): [React.RefObject<T>, boolean] {

@@ -1,12 +1,6 @@
 import React, { FC } from "react";
-import { SFC, Text, Colors } from "primitives";
-import { View } from "react-native";
-import { FutureVariant } from "game";
-import styled from "styled-components/native";
-import { TraitName, traitInfo } from "game/variants/traitInfo";
-import { LabelWithDetails } from "ui";
-import { Svg, Circle, Line } from "react-native-svg";
-import Color from "color";
+import { Colors } from "primitives";
+import { Circle } from "react-native-svg";
 
 interface Props {
   cx: number;

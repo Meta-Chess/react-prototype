@@ -1,13 +1,10 @@
 import React, { ComponentProps } from "react";
-import { SFC, Text, Colors } from "primitives";
+import { SFC, Colors } from "primitives";
 import { View } from "react-native";
 import { FutureVariant } from "game";
-import styled from "styled-components/native";
 import { TraitName, traitInfo } from "game/variants/traitInfo";
-import { LabelWithDetails } from "ui";
-import { Svg, Circle, Line, Rect, SvgProps, Orient } from "react-native-svg";
+import { Svg, Line } from "react-native-svg";
 import { TraitNode } from "./TraitNode";
-import Color from "color";
 
 type Orientation = "horizontal" | "vertical";
 interface VariantTileGraphProps {

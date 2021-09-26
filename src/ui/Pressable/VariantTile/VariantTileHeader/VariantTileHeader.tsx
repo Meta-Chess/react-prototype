@@ -26,32 +26,16 @@ export const VariantTileHeader: SFC<Props> = ({
   const showGear = _showGear && onGearPress;
   return (
     <Container style={style}>
-      <View style={{ marginLeft: 0, marginTop: -4, marginRight: "auto" }}>
-        {showGear && <GearButton onPress={onGearPress} />}
-      </View>
+      <GearContainer>{showGear && <GearButton onPress={onGearPress} />}</GearContainer>
       <TitleText
         cat="BodyM"
         weight="normal"
         color={Colors.TEXT.LIGHT.toString()}
         numberOfLines={1}
-        style={{
-          position: "absolute",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
       >
         {variant.shortTitle ?? variant.title}
       </TitleText>
-      <View
-        style={{
-          marginRight: 0,
-          marginTop: -7,
-          marginLeft: "auto",
-          flexDirection: "row-reverse",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <ComplexityContainer>
         {showStar && (
           <>
             <TextIcon Icon={StarIcon} style={{ marginTop: -1 }} />
@@ -66,7 +50,7 @@ export const VariantTileHeader: SFC<Props> = ({
             </Text>
           </>
         )}
-      </View>
+      </ComplexityContainer>
     </Container>
   );
 };
@@ -78,6 +62,24 @@ const Container = styled(View)`
   width: 100%;
 `;
 
+const GearContainer = styled(View)`
+  margin-left: 0;
+  margin-top: -4;
+  margin-right: auto;
+`;
+
+const ComplexityContainer = styled(View)`
+  margin-right: 0;
+  margin-top: -7;
+  margin-left: auto;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+`;
+
 const TitleText = styled(Text)`
+  position: absolute;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 `;

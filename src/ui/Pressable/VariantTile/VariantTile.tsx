@@ -38,7 +38,6 @@ export const VariantTile: SFC<Props> = ({
   zenMode,
   size = 200,
 }) => {
-  const [ref, hovered] = useHover();
   if (conflictLevel !== undefined && selected) {
     color =
       conflictLevel === "ERROR"
@@ -47,18 +46,21 @@ export const VariantTile: SFC<Props> = ({
   } else if (selected) {
     color = color.mix(Colors.SUCCESS.darken(0.4), 0.3);
   }
+  const imageWidth = useMemo(() => 0.6 * size, [size]);
+
+  const [ref, hovered] = useHover();
   color = hovered ? color.fade(0.2) : color;
   const implemented = variant.implemented;
   const showDetailedView = (hovered || detailedView) && implemented && !zenMode;
+  const showStar = showDetailedView;
+  const showGear = !zenMode && hovered;
+
   const ruleSettings = variant.ruleNames
     .filter((ruleName) => allRuleSettings[`${ruleName}Settings`] !== undefined)
     .reduce(
       (acc, ruleName) => ({ ...acc, [ruleName]: allRuleSettings[`${ruleName}Settings`] }),
       {}
     );
-
-  const imageWidth = useMemo(() => 0.6 * size, [size]);
-
   const onGearPress = useMemo(
     () =>
       keys(ruleSettings).length > 0
@@ -84,70 +86,35 @@ export const VariantTile: SFC<Props> = ({
       disabled={!implemented}
       color={color}
     >
-      <View
-        style={{
-          height: "100%",
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "absolute",
-          opacity: showDetailedView ? 0.1 : 1,
-          paddingTop: 20,
-        }}
-      >
+      <VariantImageContainer showDetailedView={showDetailedView}>
         <VariantTileImage
           variant={variant}
           modified={modified}
           size={imageWidth}
-          style={{
-            margin: 0,
-            padding: 0,
-            backgroundColor: Colors.TRANSPARENT.toString(),
-          }}
+          style={{ backgroundColor: Colors.TRANSPARENT.toString() }}
         />
-      </View>
-      <View
-        style={{
-          flexDirection: "column",
-          height: "100%",
-          alignContent: "center",
-          padding: 12,
-        }}
-      >
+      </VariantImageContainer>
+      <VariantTileContent>
         <VariantTileHeader
-          {...{
-            variant,
-            selected,
-            hovered,
-            showStar: showDetailedView,
-            showGear: !zenMode && hovered,
-            onGearPress,
-          }}
+          {...{ variant, selected, hovered, showGear, showStar, onGearPress }}
         />
         {showDetailedView && (
-          <>
-            <VariantTileBody style={{ width: "100%" }}>
-              <VariantTileInfo
-                variant={variant}
-                style={{ width: "100%", height: "100%" }}
-              />
-            </VariantTileBody>
-            <VariantTileGraph
-              variant={variant}
-              orientation={"horizontal"}
-              style={{
-                alignSelf: "center",
-                width: "80%",
-                marginBottom: 0,
-                marginTop: "auto",
-              }}
-            />
-          </>
+          <VariantTileInfo variant={variant} style={{ width: "100%", height: "100%" }} />
         )}
-      </View>
+        {showDetailedView && (
+          <StyledVariantTileGraph variant={variant} orientation={"horizontal"} />
+        )}
+      </VariantTileContent>
     </TouchableContainer>
   );
 };
+
+const StyledVariantTileGraph = styled(VariantTileGraph)`
+  align-self: center;
+  width: 80%;
+  margin-bottom: 0;
+  margin-top: auto;
+`;
 
 const TouchableContainer = styled(TouchableOpacity)<{ color: Color; size: number }>`
   width: ${({ size }): string => size?.toString()}px;
@@ -156,7 +123,19 @@ const TouchableContainer = styled(TouchableOpacity)<{ color: Color; size: number
   overflow: hidden;
 `;
 
-const VariantTileBody = styled(View)`
-  justify-content: center;
+const VariantTileContent = styled(View)`
+  flex-direction: column;
+  height: 100%;
+  align-content: center;
+  padding: 12px;
+`;
+
+const VariantImageContainer = styled(View)<{ showDetailedView?: boolean }>`
+  height: 100%;
+  width: 100%;
   align-items: center;
+  justify-content: center;
+  position: absolute;
+  opacity: ${({ showDetailedView }): number => (showDetailedView ? 0.1 : 1)};
+  padding-top: 20px;
 `;

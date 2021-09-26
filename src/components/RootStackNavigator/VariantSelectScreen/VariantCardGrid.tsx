@@ -109,8 +109,8 @@ const VariantCardGrid: SFC<Props> = ({
           color={Colors.WHITE}
           Icon={zenMode ? GiNinjaStar : detailedView ? GoEye : GoEyeClosed}
           onPress={(): void => {
-            setDetailedView(!detailedView);
-            setZenMode(false);
+            if (zenMode) setZenMode(false);
+            else setDetailedView(!detailedView);
           }}
           onLongPress={(): void => setZenMode(!zenMode)}
         />
