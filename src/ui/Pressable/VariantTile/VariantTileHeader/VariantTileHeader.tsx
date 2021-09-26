@@ -63,14 +63,14 @@ const Container = styled(View)`
 `;
 
 const GearContainer = styled(View)`
-  margin-left: 0;
-  margin-top: -4;
+  margin-left: 0px;
+  margin-top: -4px;
   margin-right: auto;
 `;
 
 const ComplexityContainer = styled(View)`
-  margin-right: 0;
-  margin-top: -7;
+  margin-right: 0px;
+  margin-top: -7px;
   margin-left: auto;
   flex-direction: row-reverse;
   justify-content: center;

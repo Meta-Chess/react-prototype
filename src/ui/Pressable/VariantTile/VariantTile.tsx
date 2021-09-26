@@ -112,7 +112,7 @@ export const VariantTile: SFC<Props> = ({
 const StyledVariantTileGraph = styled(VariantTileGraph)`
   align-self: center;
   width: 80%;
-  margin-bottom: 0;
+  margin-bottom: 0px;
   margin-top: auto;
 `;
 

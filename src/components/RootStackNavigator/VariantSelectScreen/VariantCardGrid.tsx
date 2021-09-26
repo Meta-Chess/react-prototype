@@ -11,6 +11,7 @@ import { GoEye, GoEyeClosed } from "react-icons/go";
 import { GiNinjaStar } from "react-icons/gi";
 import { useUserSettings } from "components/shared";
 import { useCalculatedDimensions } from "components/shared/useCalculatedDimensions";
+import styled from "styled-components/native";
 
 const TILE_SIZE = 200;
 
@@ -94,19 +95,7 @@ const VariantCardGrid: SFC<Props> = ({
         </View>
       </ScrollView>
 
-      <View
-        style={{
-          position: "absolute",
-          alignSelf: "center",
-          alignItems: "center",
-          justifyContent: "center",
-          bottom: 20,
-          width: 70,
-          height: 40,
-          backgroundColor: Colors.DARKISH.toString(),
-          borderRadius: 10,
-        }}
-      >
+      <FloatingButtonContainer>
         <IconButton
           size={30}
           color={Colors.WHITE}
@@ -117,9 +106,21 @@ const VariantCardGrid: SFC<Props> = ({
           }}
           onLongPress={(): void => setZenMode(!zenMode)}
         />
-      </View>
+      </FloatingButtonContainer>
     </View>
   );
 };
+
+const FloatingButtonContainer = styled(View)`
+  position: absolute;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  bottom: 20px;
+  width: 70px;
+  height: 40px;
+  background-color: ${Colors.DARKISH.toString()};
+  border-radius: 10px;
+`;
 
 export { VariantCardGrid };
