@@ -41,49 +41,50 @@ const VariantCardGrid: SFC<Props> = ({
   );
 
   return (
-    <View style={style} ref={ref}>
+    <View style={style}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: 24,
+          padding: 20,
           paddingBottom: 80,
-          alignItems: "center",
         }}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            width: TILE_SIZE * numberOfTilesPerRow,
-          }}
-        >
-          {displayVariants.map((variant, i) => {
-            return (
-              <VariantTile
-                key={variant}
-                size={TILE_SIZE}
-                detailedView={detailedView}
-                color={
-                  ((i % 2) + (row(i) % 2) * ((numberOfTilesPerRow + 1) % 2)) % 2 === 0
-                    ? Colors.DARK
-                    : Colors.DARKER
-                }
-                variant={futureVariants[variant]}
-                selected={selectedVariants.includes(variant)}
-                conflictLevel={conflictLevel}
-                onPress={(): void =>
-                  selectedVariants.includes(variant)
-                    ? setSelectedVariants(selectedVariants.filter((x) => x !== variant))
-                    : setSelectedVariants([...selectedVariants, variant])
-                }
-                setVariantModalInfo={setVariantModalInfo}
-                modified={doGameOptionsModifyVariant(
-                  futureVariants[variant],
-                  ruleNamesWithParams
-                )}
-              />
-            );
-          })}
+        <View ref={ref} style={{ width: "100%", alignItems: "center" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              width: TILE_SIZE * numberOfTilesPerRow,
+            }}
+          >
+            {displayVariants.map((variant, i) => {
+              return (
+                <VariantTile
+                  key={variant}
+                  size={TILE_SIZE}
+                  detailedView={detailedView}
+                  color={
+                    ((i % 2) + (row(i) % 2) * ((numberOfTilesPerRow + 1) % 2)) % 2 === 0
+                      ? Colors.DARK
+                      : Colors.DARKER
+                  }
+                  variant={futureVariants[variant]}
+                  selected={selectedVariants.includes(variant)}
+                  conflictLevel={conflictLevel}
+                  onPress={(): void =>
+                    selectedVariants.includes(variant)
+                      ? setSelectedVariants(selectedVariants.filter((x) => x !== variant))
+                      : setSelectedVariants([...selectedVariants, variant])
+                  }
+                  setVariantModalInfo={setVariantModalInfo}
+                  modified={doGameOptionsModifyVariant(
+                    futureVariants[variant],
+                    ruleNamesWithParams
+                  )}
+                />
+              );
+            })}
+          </View>
         </View>
       </ScrollView>
 

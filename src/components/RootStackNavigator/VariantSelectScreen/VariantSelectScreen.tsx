@@ -126,7 +126,7 @@ const VariantSelectScreen: FC = () => {
         }}
       >
         <VariantCardGrid
-          style={{ flex: 1, marginLeft: 20, marginRight: 20 }}
+          style={{ flex: 1 }}
           displayVariants={displayVariants}
           selectedVariants={selectedVariantsForFormat}
           setSelectedVariants={setSelectedVariantsForFormat}

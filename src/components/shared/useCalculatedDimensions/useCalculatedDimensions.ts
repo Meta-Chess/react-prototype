@@ -10,7 +10,7 @@ export function useCalculatedDimensions(
 
   const calculateDimensions: () => [number, number] = useCallback(
     () =>
-      hasDimensions(ref) ? [ref.current.offsetWidth, ref.current.offsetHeight] : [0, 0],
+      hasDimensions(ref) ? [ref.current.clientWidth, ref.current.clientHeight] : [0, 0],
     [ref.current]
   );
 
@@ -30,10 +30,10 @@ export function useCalculatedDimensions(
 }
 
 type RefWithDimensions = React.MutableRefObject<{
-  offsetWidth: number;
-  offsetHeight: number;
+  clientWidth: number;
+  clientHeight: number;
 }>;
 
 function hasDimensions(ref: React.MutableRefObject<any>): ref is RefWithDimensions {
-  return ref.current?.offsetWidth !== undefined && ref.current.offsetHeight !== undefined;
+  return ref.current?.clientWidth !== undefined && ref.current.clientHeight !== undefined;
 }
