@@ -24,7 +24,7 @@ const PieceBank: SFC<Props> = ({ pieces, pieceSize, gameMaster }) => {
               : "transparent"
           }
           onPress={(): void => {
-            gameMaster.onPress(piece.location, piece.id);
+            gameMaster.onSquarePress(piece.location, piece.id);
           }}
           key={index}
         />

@@ -11,47 +11,47 @@ describe("In standard chess, when a piece gets to the end of the board", () => {
     const board = gameMaster.game.board;
 
     // White pawn G4
-    gameMaster.onPress("R2F7");
-    gameMaster.onPress("R4F7");
+    gameMaster.handleSquarePressed("R2F7");
+    gameMaster.handleSquarePressed("R4F7");
     expect(board.getPiecesAt("R4F7").length).toEqual(1);
 
     // Black pawn F5
-    gameMaster.onPress("R7F6");
-    gameMaster.onPress("R5F6");
+    gameMaster.handleSquarePressed("R7F6");
+    gameMaster.handleSquarePressed("R5F6");
     expect(board.getPiecesAt("R5F6").length).toEqual(1);
 
     // White pawn takes F5
-    gameMaster.onPress("R4F7");
-    gameMaster.onPress("R5F6");
+    gameMaster.handleSquarePressed("R4F7");
+    gameMaster.handleSquarePressed("R5F6");
     expect(board.getPiecesAt("R5F6").length).toEqual(1);
 
     // Black pawn G6
-    gameMaster.onPress("R7F7");
-    gameMaster.onPress("R6F7");
+    gameMaster.handleSquarePressed("R7F7");
+    gameMaster.handleSquarePressed("R6F7");
     expect(board.getPiecesAt("R6F7").length).toEqual(1);
 
     // White pawn takes G6
-    gameMaster.onPress("R5F6");
-    gameMaster.onPress("R6F7");
+    gameMaster.handleSquarePressed("R5F6");
+    gameMaster.handleSquarePressed("R6F7");
     expect(board.getPiecesAt("R6F7").length).toEqual(1);
 
     // Black knight F6
-    gameMaster.onPress("R8F7");
-    gameMaster.onPress("R6F6");
+    gameMaster.handleSquarePressed("R8F7");
+    gameMaster.handleSquarePressed("R6F6");
     expect(board.getPiecesAt("R6F6").length).toEqual(1);
 
     // White pawn takes H7
-    gameMaster.onPress("R6F7");
-    gameMaster.onPress("R7F8");
+    gameMaster.handleSquarePressed("R6F7");
+    gameMaster.handleSquarePressed("R7F8");
     expect(board.getPiecesAt("R7F8").length).toEqual(1);
 
     // Black knight G8
-    gameMaster.onPress("R6F6");
-    gameMaster.onPress("R8F7");
+    gameMaster.handleSquarePressed("R6F6");
+    gameMaster.handleSquarePressed("R8F7");
     expect(board.getPiecesAt("R8F7").length).toEqual(1);
 
     // Select white pawn at H7
-    gameMaster.onPress("R7F8");
+    gameMaster.handleSquarePressed("R7F8");
 
     // Expect allowable moves to be the four promotion options
     expect(gameMaster.allowableMoves.length).toEqual(4);

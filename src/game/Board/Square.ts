@@ -1,6 +1,6 @@
 import { Piece } from "./Piece";
 import { Adjacencies, Adjacency } from "./Adjacencies";
-import { Direction, Token, AccessMarker } from "game/types";
+import { AccessMarker, Direction, Token } from "game/types";
 import { TokenOwner } from "./TokenOwner";
 import { clone } from "lodash";
 import { resetArrayTo } from "utilities";

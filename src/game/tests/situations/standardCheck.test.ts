@@ -30,7 +30,7 @@ describe("In standard chess", () => {
     });
 
     // King should not be able to move into path of rook
-    gameMaster.onPress(toLocation({ rank: 5, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 5 }));
     expect(gameMaster.allowableMoves.length).toEqual(4);
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
@@ -49,22 +49,22 @@ describe("In standard chess", () => {
     const board = gameMaster.game.board;
 
     // White pawn to E4
-    gameMaster.onPress(toLocation({ rank: 2, file: 5 }));
-    gameMaster.onPress(toLocation({ rank: 4, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 5 }));
     expect(board.getPiecesAt(toLocation({ rank: 4, file: 5 })).length).toEqual(1);
 
     // Black pawn to E5 - unimportant
-    gameMaster.onPress(toLocation({ rank: 7, file: 5 }));
-    gameMaster.onPress(toLocation({ rank: 5, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 5 }));
     expect(board.getPiecesAt(toLocation({ rank: 5, file: 5 })).length).toEqual(1);
 
     // White queen to H5
-    gameMaster.onPress(toLocation({ rank: 1, file: 4 }));
-    gameMaster.onPress(toLocation({ rank: 5, file: 8 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 8 }));
     expect(board.getPiecesAt(toLocation({ rank: 5, file: 8 })).length).toEqual(1);
 
     // Select black pawn at F7
-    gameMaster.onPress(toLocation({ rank: 7, file: 6 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 6 }));
     expect(gameMaster.allowableMoves.length).toEqual(0);
   });
 
@@ -75,28 +75,28 @@ describe("In standard chess", () => {
     const board = gameMaster.game.board;
 
     // White pawn to E4
-    gameMaster.onPress(toLocation({ rank: 2, file: 5 }));
-    gameMaster.onPress(toLocation({ rank: 4, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 5 }));
     expect(board.getPiecesAt(toLocation({ rank: 4, file: 5 })).length).toEqual(1);
 
     // Black knight to C6
-    gameMaster.onPress(toLocation({ rank: 8, file: 2 }));
-    gameMaster.onPress(toLocation({ rank: 6, file: 3 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 8, file: 2 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 6, file: 3 }));
     expect(board.getPiecesAt(toLocation({ rank: 6, file: 3 })).length).toEqual(1);
 
     // White queen to H5
-    gameMaster.onPress(toLocation({ rank: 1, file: 4 }));
-    gameMaster.onPress(toLocation({ rank: 5, file: 8 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 8 }));
     expect(board.getPiecesAt(toLocation({ rank: 5, file: 8 })).length).toEqual(1);
 
     // Black knight to E5
-    gameMaster.onPress(toLocation({ rank: 6, file: 3 }));
-    gameMaster.onPress(toLocation({ rank: 5, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 6, file: 3 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 5 }));
     expect(board.getPiecesAt(toLocation({ rank: 5, file: 5 })).length).toEqual(1);
 
     // White queen to F7 - Check!
-    gameMaster.onPress(toLocation({ rank: 5, file: 8 }));
-    gameMaster.onPress(toLocation({ rank: 7, file: 6 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 8 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 6 }));
     expect(board.getPiecesAt(toLocation({ rank: 7, file: 6 })).length).toEqual(1);
 
     // Game should not have ended
@@ -104,37 +104,37 @@ describe("In standard chess", () => {
     expect(gameMaster.game.alivePlayers().length).toEqual(2);
 
     // King should have one allowable move: take the queen
-    gameMaster.onPress(toLocation({ rank: 8, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 8, file: 5 }));
     expect(gameMaster.allowableMoves.length).toEqual(1);
     expect(gameMaster.allowableMoves).toEqual([
       expect.objectContaining({ location: toLocation({ rank: 7, file: 6 }) }),
     ]);
 
     // Knight should have one allowable move: take the queen.
-    gameMaster.onPress(toLocation({ rank: 5, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 5 }));
     expect(gameMaster.allowableMoves.length).toEqual(1);
     expect(gameMaster.allowableMoves).toEqual([
       expect.objectContaining({ location: toLocation({ rank: 7, file: 6 }) }),
     ]);
 
     // Other pieces should have no allowable moves
-    gameMaster.onPress(toLocation({ rank: 8, file: 1 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 8, file: 1 }));
     expect(gameMaster.allowableMoves.length).toEqual(0);
-    gameMaster.onPress(toLocation({ rank: 8, file: 7 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 8, file: 7 }));
     expect(gameMaster.allowableMoves.length).toEqual(0);
-    gameMaster.onPress(toLocation({ rank: 7, file: 1 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 1 }));
     expect(gameMaster.allowableMoves.length).toEqual(0);
-    gameMaster.onPress(toLocation({ rank: 7, file: 2 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 2 }));
     expect(gameMaster.allowableMoves.length).toEqual(0);
-    gameMaster.onPress(toLocation({ rank: 7, file: 3 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 3 }));
     expect(gameMaster.allowableMoves.length).toEqual(0);
-    gameMaster.onPress(toLocation({ rank: 7, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 4 }));
     expect(gameMaster.allowableMoves.length).toEqual(0);
-    gameMaster.onPress(toLocation({ rank: 7, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 5 }));
     expect(gameMaster.allowableMoves.length).toEqual(0);
-    gameMaster.onPress(toLocation({ rank: 7, file: 7 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 7 }));
     expect(gameMaster.allowableMoves.length).toEqual(0);
-    gameMaster.onPress(toLocation({ rank: 7, file: 8 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 8 }));
     expect(gameMaster.allowableMoves.length).toEqual(0);
   });
 });

@@ -6,7 +6,7 @@ import { Piece, ShadowPiece, PieceAnimation } from "../Piece";
 import { GridArrangement } from "./GridArrangement";
 import { RuleName, Square, SquareShape } from "game";
 import { TilePressableContainer } from "./TilePressableContainer";
-import { AnimationOverlays } from "./AnimationOverlays";
+import { AnimationOverlays, LoadingOverlay } from "./AnimationOverlays";
 import { Highlight } from "./Highlight";
 import { useModals, Tile } from "ui";
 import { Token } from "game/types";
@@ -49,7 +49,7 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
 
   const onPress = (): void => {
     modals.hideAll();
-    gameMaster.onPress(square.location);
+    gameMaster.onSquarePress(square.location);
   };
 
   return (
@@ -89,6 +89,9 @@ const SquareComponent: SFC<Props> = ({ style, square, size, shape }) => {
         </PositioningContainer>
       </TilePressableContainer>
       <AnimationOverlays square={square} shape={shape} size={size} />
+      {gameMaster.loadingSquares.includes(square.location) && (
+        <LoadingOverlay shape={shape} size={size} />
+      )}
     </OuterContainer>
   );
 };

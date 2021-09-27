@@ -7,7 +7,7 @@ describe("In standard chess", () => {
     const gameMaster = new GameMaster(...GameMaster.processConstructorInputs());
 
     // Select white pawn at E2
-    gameMaster.onPress(toLocation({ rank: 2, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 5 }));
 
     expect(gameMaster.allowableMoves.length).toEqual(2);
     expect(gameMaster.allowableMoves).toEqual(
@@ -22,7 +22,7 @@ describe("In standard chess", () => {
     const gameMaster = new GameMaster(...GameMaster.processConstructorInputs());
 
     // Select black pawn at E7
-    gameMaster.onPress(toLocation({ rank: 7, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 5 }));
 
     expect(gameMaster.allowableMoves.length).toEqual(2);
     expect(gameMaster.allowableMoves).toEqual(
@@ -38,8 +38,8 @@ describe("In standard chess", () => {
     const board = gameMaster.game.board;
 
     // White pawn to E4
-    gameMaster.onPress(toLocation({ rank: 2, file: 5 }));
-    gameMaster.onPress(toLocation({ rank: 4, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 5 }));
 
     // There should be a white pawn at the end square
     expect(board.getPiecesAt(toLocation({ rank: 4, file: 5 })).length).toEqual(1);
@@ -56,8 +56,8 @@ describe("In standard chess", () => {
     const board = gameMaster.game.board;
 
     // White pawn to E4
-    gameMaster.onPress(toLocation({ rank: 2, file: 5 }));
-    gameMaster.onPress(toLocation({ rank: 3, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 3, file: 5 }));
 
     // There should be a white pawn at the end square
     expect(board.getPiecesAt(toLocation({ rank: 3, file: 5 })).length).toEqual(1);
@@ -73,15 +73,15 @@ describe("In standard chess", () => {
     const gameMaster = new GameMaster(...GameMaster.processConstructorInputs());
 
     // White pawn to E3
-    gameMaster.onPress(toLocation({ rank: 2, file: 5 }));
-    gameMaster.onPress(toLocation({ rank: 3, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 3, file: 5 }));
 
     // Black pawn to D5
-    gameMaster.onPress(toLocation({ rank: 7, file: 4 }));
-    gameMaster.onPress(toLocation({ rank: 5, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 4 }));
 
     // Select white pawn at E3
-    gameMaster.onPress(toLocation({ rank: 3, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 3, file: 5 }));
 
     expect(gameMaster.allowableMoves.length).toEqual(1);
     expect(gameMaster.allowableMoves).toEqual(
@@ -95,19 +95,19 @@ describe("In standard chess", () => {
     const gameMaster = new GameMaster(...GameMaster.processConstructorInputs());
 
     // White pawn to E3
-    gameMaster.onPress(toLocation({ rank: 2, file: 5 }));
-    gameMaster.onPress(toLocation({ rank: 3, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 3, file: 5 }));
 
     // Black pawn to D5
-    gameMaster.onPress(toLocation({ rank: 7, file: 4 }));
-    gameMaster.onPress(toLocation({ rank: 5, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 4 }));
 
     // White queen to H5
-    gameMaster.onPress(toLocation({ rank: 1, file: 4 }));
-    gameMaster.onPress(toLocation({ rank: 5, file: 8 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 8 }));
 
     // Select black pawn at D5
-    gameMaster.onPress(toLocation({ rank: 5, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 4 }));
 
     expect(gameMaster.allowableMoves.length).toEqual(1);
     expect(gameMaster.allowableMoves).toEqual(
@@ -122,37 +122,37 @@ describe("In standard chess", () => {
     const board = gameMaster.game.board;
 
     // White pawn to E4
-    gameMaster.onPress(toLocation({ rank: 2, file: 5 }));
-    gameMaster.onPress(toLocation({ rank: 4, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 5 }));
     expect(board.getPiecesAt(toLocation({ rank: 4, file: 5 })).length).toEqual(1);
 
     // Black pawn to D5
-    gameMaster.onPress(toLocation({ rank: 7, file: 4 }));
-    gameMaster.onPress(toLocation({ rank: 5, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 4 }));
     expect(board.getPiecesAt(toLocation({ rank: 5, file: 4 })).length).toEqual(1);
 
     // White queen to H5 - unimportant
-    gameMaster.onPress(toLocation({ rank: 1, file: 4 }));
-    gameMaster.onPress(toLocation({ rank: 5, file: 8 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 8 }));
     expect(board.getPiecesAt(toLocation({ rank: 5, file: 8 })).length).toEqual(1);
 
     // Black pawn to E5
-    gameMaster.onPress(toLocation({ rank: 7, file: 5 }));
-    gameMaster.onPress(toLocation({ rank: 5, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 5 }));
     expect(board.getPiecesAt(toLocation({ rank: 5, file: 5 })).length).toEqual(1);
 
     // White pawn to A3 - unimportant
-    gameMaster.onPress(toLocation({ rank: 2, file: 1 }));
-    gameMaster.onPress(toLocation({ rank: 3, file: 1 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 1 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 3, file: 1 }));
     expect(board.getPiecesAt(toLocation({ rank: 4, file: 5 })).length).toEqual(1);
 
     // Black pawn to F5
-    gameMaster.onPress(toLocation({ rank: 7, file: 6 }));
-    gameMaster.onPress(toLocation({ rank: 5, file: 6 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 6 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 6 }));
     expect(board.getPiecesAt(toLocation({ rank: 5, file: 6 })).length).toEqual(1);
 
     // Select white pawn at E4
-    gameMaster.onPress(toLocation({ rank: 4, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 5 }));
     expect(gameMaster.allowableMoves.length).toEqual(2);
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
@@ -162,11 +162,11 @@ describe("In standard chess", () => {
     );
 
     // Instead select black pawn at E5
-    gameMaster.onPress(toLocation({ rank: 5, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 5 }));
     expect(gameMaster.allowableMoves.length).toEqual(0);
 
     // Instead select black pawn at D5
-    gameMaster.onPress(toLocation({ rank: 5, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 4 }));
     expect(gameMaster.allowableMoves.length).toEqual(2);
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([

@@ -19,7 +19,7 @@ describe("In standard chess", () => {
       piece: createPiece({ owner: PlayerName.White, name: PieceName.Queen }),
       location,
     });
-    gameMaster.onPress(location);
+    gameMaster.handleSquarePressed(location);
     const locationsToMoveTo = gameMaster.allowableMoves.map((move) => move.location);
     expect(locationsToMoveTo).toEqual([
       ...["R5F4", "R6F4", "R7F4", "R8F4"],
@@ -39,7 +39,7 @@ describe("In standard chess", () => {
       piece: createPiece({ owner: PlayerName.White, name: PieceName.King }),
       location,
     });
-    gameMaster.onPress(location);
+    gameMaster.handleSquarePressed(location);
     const locationsToMoveTo = gameMaster.allowableMoves.map((move) => move.location);
     expect(locationsToMoveTo).toEqual([
       "R5F4",
@@ -59,7 +59,7 @@ describe("In standard chess", () => {
       piece: createPiece({ owner: PlayerName.White, name: PieceName.Knight }),
       location,
     });
-    gameMaster.onPress(location);
+    gameMaster.handleSquarePressed(location);
     const locationsToMoveTo = gameMaster.allowableMoves.map((move) => move.location);
     expect(locationsToMoveTo).toEqual(
       expect.arrayContaining([
@@ -81,7 +81,7 @@ describe("In standard chess", () => {
       piece: createPiece({ owner: PlayerName.White, name: PieceName.Rook }),
       location,
     });
-    gameMaster.onPress(location);
+    gameMaster.handleSquarePressed(location);
     const locationsToMoveTo = gameMaster.allowableMoves.map((move) => move.location);
     expect(locationsToMoveTo).toEqual([
       ...["R5F4", "R6F4", "R7F4", "R8F4"],
@@ -97,7 +97,7 @@ describe("In standard chess", () => {
       piece: createPiece({ owner: PlayerName.White, name: PieceName.Bishop }),
       location,
     });
-    gameMaster.onPress(location);
+    gameMaster.handleSquarePressed(location);
     const locationsToMoveTo = gameMaster.allowableMoves.map((move) => move.location);
     expect(locationsToMoveTo).toEqual([
       ...["R5F5", "R6F6", "R7F7", "R8F8"],
