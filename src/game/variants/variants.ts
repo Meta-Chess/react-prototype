@@ -221,7 +221,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   emptyCenter: {
     title: "Empty Center",
     shortDescription: "No pieces allowed in the center!",
-    traits: ["Movement", "Restriction"],
+    traits: ["Restriction"],
     imageName: "emptyCenterImage",
     implemented: true,
     ruleNames: ["emptyCenter"],
@@ -318,7 +318,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   patheticKing: {
     title: "Pathetic King",
     shortDescription: "Kings cannot capture.",
-    traits: ["Movement", "Restriction"],
+    traits: ["Restriction"],
     imageName: "patheticKingImage",
     implemented: true,
     ruleNames: ["patheticKing"],
@@ -345,7 +345,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   thinIce: {
     title: "Thin Ice",
     shortDescription: "You're skating on thin ice!",
-    traits: ["Board", "Reaction", "Restriction"],
+    traits: ["Board", "Reaction"],
     imageName: "thinIceImage",
     implemented: true,
     ruleNames: ["thinIce"],
