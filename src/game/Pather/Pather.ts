@@ -4,11 +4,14 @@ import { Direction, Gait, TokenName } from "../types";
 import { clone, flatMap } from "lodash";
 import { Path } from "./Path";
 import { Move } from "game/Move";
+import autoBind from "auto-bind";
 
 export interface PatherParams {
   checkDepth?: number;
   noForkSearch?: boolean;
   chainReactionSearch?: boolean;
+  dontFilter?: boolean;
+  dontProcess?: boolean;
 }
 
 const MAX_STEPS = 64; // To be considered further
@@ -20,7 +23,9 @@ export class Pather {
     private piece: Piece,
     private interrupt: CompactRules,
     private params: PatherParams = {}
-  ) {}
+  ) {
+    autoBind(this);
+  }
 
   findPaths({ filterPacifistMoves } = { filterPacifistMoves: false }): Move[] {
     filterPacifistMoves = this.interrupt.for.inFindPathsModifyInputParams({
@@ -62,18 +67,23 @@ export class Pather {
           piece: this.piece,
           interrupt: this.interrupt,
           moves: [],
+          gaits,
         }).moves;
 
     const allMoves = moves.concat(specialPacifistMoves);
 
-    const processedMoves = this.interrupt.for.processMoves({
-      moves: allMoves,
-      game: this.game,
-      gameClones: this.gameClones,
-      params: this.params,
-    }).moves;
+    const processedMoves = this.params.dontProcess
+      ? allMoves
+      : this.interrupt.for.processMoves({
+          moves: allMoves,
+          game: this.game,
+          gameClones: this.gameClones,
+          params: this.params,
+        }).moves;
 
-    return processedMoves.filter((m) => this.postMoveGenerationFilter(m));
+    return this.params.dontFilter
+      ? processedMoves
+      : processedMoves.filter((m) => this.postMoveGenerationFilter(m));
   }
 
   path({
@@ -253,12 +263,12 @@ export class Pather {
     ].filter(isPresent);
   }
 
-  go({ from, direction }: { from: Square; direction: Direction }): Square[] {
+  go({ from, direction }: { from?: Square; direction: Direction }): Square[] {
     return (
-      from.adjacencies
-        .go(direction)
-        .map((location) => this.game.board.squareAt(location))
-        .filter(isPresent) || []
+      from?.adjacencies
+        ?.go(direction)
+        ?.map((location) => this.game.board.squareAt(location))
+        ?.filter(isPresent) || []
     );
   }
 

@@ -24,6 +24,7 @@ export { pawnDoubleStep } from "./pawnDoubleStep";
 export { polar } from "./polar";
 export { promotion } from "./promotion";
 export { pull } from "./pull";
+export { push } from "./push";
 export { rollingVariants } from "./rollingVariants";
 export { stalemate } from "./stalemate";
 export { threeCheck } from "./threeCheck";

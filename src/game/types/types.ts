@@ -10,6 +10,7 @@ export interface GaitData {
   interceptable?: boolean;
   interceptionCondition?: (piece: Piece) => boolean;
   linearMoverDirection?: Direction;
+  pathOffset?: number;
 }
 
 export interface Gait {

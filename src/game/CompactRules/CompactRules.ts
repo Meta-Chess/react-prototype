@@ -194,6 +194,7 @@ export interface GenerateSpecialPacifistMoves {
   piece: Piece;
   interrupt: CompactRules;
   moves: Move[];
+  gaits: Gait[];
 }
 
 export interface LossCondition {

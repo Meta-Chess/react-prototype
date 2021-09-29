@@ -10,7 +10,7 @@ import { Gait, PlayerName } from "game/types/types";
 import { Move, PieceDelta } from "game/Move";
 import { Square } from "game/Board";
 import { rotate180 } from "../utilities";
-import { cloneDeep } from "lodash";
+import { cloneDeep, intersection } from "lodash";
 import { Path } from "game/Pather";
 
 const MAX_CHAIN_LENGTH = 5;
@@ -33,7 +33,7 @@ export const pull: ParameterRule<"pull"> = ({ "Forced Pull": forcePull }): Rule 
       const processedMoves = moves.flatMap((move) => {
         if (
           move.data?.linearMoverDirection !== undefined &&
-          allPiecesOnStartSquareLeave(move, board)
+          leadersPathIsClear(move, board)
         ) {
           const forwards = move.data.linearMoverDirection;
           const backwards = rotate180([forwards])[0];
@@ -102,11 +102,16 @@ function squareBehindHasOnlyFriendlyPieces(
   );
 }
 
-function allPiecesOnStartSquareLeave(move: Move, board: Board): boolean {
-  return move.pieceDeltas.every((pieceDelta) =>
-    board
-      .getPiecesAt(move.pieceDeltas[0].path.getStart())
-      .some((p) => p.id === pieceDelta.pieceId)
+function leadersPathIsClear(move: Move, board: Board): boolean {
+  const leadersPath = move.pieceDeltas[0].path.getPath().slice(0, -1);
+  const pathEnds = move.pieceDeltas.map((pd) => pd.path.getEnd());
+  const piecesInMove = move.pieceDeltas.map((pd) => pd.pieceId);
+  const piecesInPath = leadersPath
+    .flatMap((location) => board.getPiecesAt(location))
+    .map((p) => p.id);
+  return (
+    intersection(leadersPath, pathEnds).length === 0 &&
+    intersection(piecesInMove, piecesInPath).length === piecesInPath.length
   );
 }
 

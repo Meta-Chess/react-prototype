@@ -39,10 +39,11 @@ export const crazyhouse: TrivialParameterRule = () => ({
     piece,
     interrupt,
     moves,
+    ...rest
   }): GenerateSpecialPacifistMoves => {
     const pieceLocation = piece.location;
     if (piece === undefined || pieceLocation.slice(0, 3) !== LocationPrefix.pieceBank)
-      return { game, piece, interrupt, moves };
+      return { game, piece, interrupt, moves, ...rest };
     const newMoves = game.board
       .getSquares()
       .filter((square) => {
@@ -66,6 +67,6 @@ export const crazyhouse: TrivialParameterRule = () => ({
         ],
         playerName: parseInt(pieceLocation.charAt(pieceLocation.length - 1)),
       }));
-    return { game, piece, interrupt, moves: [...moves, ...newMoves] };
+    return { game, piece, interrupt, moves: [...moves, ...newMoves], ...rest };
   },
 });

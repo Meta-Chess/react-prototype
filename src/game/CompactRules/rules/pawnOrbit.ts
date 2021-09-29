@@ -10,15 +10,16 @@ export const pawnOrbit: TrivialParameterRule = () => ({
     piece,
     interrupt,
     moves,
+    ...rest
   }): GenerateSpecialPacifistMoves => {
     const pieceLocation = piece.location;
     if (game.board.isLocationGraveyard(pieceLocation)) {
-      return { game, piece, interrupt, moves };
+      return { game, piece, interrupt, moves, ...rest };
     }
-    if (piece.name !== PieceName.Pawn) return { game, piece, interrupt, moves };
+    if (piece.name !== PieceName.Pawn) return { game, piece, interrupt, moves, ...rest };
 
     const currentSquare = game.board.squareAt(pieceLocation);
-    if (currentSquare === undefined) return { game, piece, interrupt, moves };
+    if (currentSquare === undefined) return { game, piece, interrupt, moves, ...rest };
 
     const orderedLocations = [
       currentSquare.adjacencies.getClockwiseOrderedLocations(
@@ -47,6 +48,6 @@ export const pawnOrbit: TrivialParameterRule = () => ({
         playerName: piece.owner,
       };
     });
-    return { game, piece, interrupt, moves: [...moves, ...newMoves] };
+    return { game, piece, interrupt, moves: [...moves, ...newMoves], ...rest };
   },
 });

@@ -151,6 +151,7 @@ export type FutureVariantName =
   | "chemicallyExcitedKnight"
   | "chainReaction"
   | "pull"
+  | "push"
   | "morphlings"
   | "zoneOfControl"
   | "loseOnStalemate"
@@ -385,6 +386,15 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     imageName: "pullImage",
     implemented: true,
     ruleNames: ["pull"],
+    complexity: 2,
+  },
+  push: {
+    title: "Push",
+    shortDescription: "Push friendly pieces along a path.",
+    traits: ["Movement"],
+    // imageName: "pushImage",
+    implemented: true,
+    ruleNames: ["push"],
     complexity: 2,
   },
   morphlings: {

@@ -109,8 +109,8 @@ class Board extends TokenOwner {
         );
   }
 
-  getPiece(pieceId: string): Piece | undefined {
-    return this.pieces[pieceId];
+  getPiece(pieceId?: string): Piece | undefined {
+    return pieceId ? this.pieces[pieceId] : undefined;
   }
 
   getPiecesByRule(rule: (p: Piece) => boolean): Piece[] {
