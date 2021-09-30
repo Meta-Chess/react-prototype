@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef, useCallback } from "react";
+import { useContext, useEffect, useRef, useCallback } from "react";
 import { BoardMeasurements, GameContext } from "components/shared";
 
 // TODO: There may be some bad ref/hook practice here...
@@ -56,13 +56,13 @@ export const useCircularRotation = (
       case "d":
         radialOffsetInwards();
         break;
-      case "s":
+      case "w":
         circularOffsetAnticlockwise();
         break;
       case "a":
         radialOffsetOutwards();
         break;
-      case "w":
+      case "s":
         circularOffsetClockwise();
         break;
     }

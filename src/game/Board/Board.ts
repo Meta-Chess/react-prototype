@@ -390,7 +390,6 @@ class Board extends TokenOwner {
 
     this.removeTokensByName(TokenName.Shape);
     this.addToken(boardShapeToken);
-    console.log(tokenName);
   }
 }
 
