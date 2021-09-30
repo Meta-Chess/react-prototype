@@ -6,6 +6,7 @@ export * from "./LabelWithDetails";
 export * from "./ListItem";
 export * from "./Modals";
 export * from "./Row";
+export * from "./Column";
 export * from "./Separators";
 export * from "./Spinner";
 export * from "./Tiles";

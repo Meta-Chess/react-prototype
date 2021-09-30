@@ -13,6 +13,8 @@ export interface BoardMeasurements {
     minFile: number;
     maxFile: number;
   };
+  boardAreaWidth: number;
+  boardAreaHeight: number;
 }
 
 export function calculateBoardMeasurements({
@@ -60,5 +62,7 @@ export function calculateBoardMeasurements({
     boardPaddingVertical,
     spacings,
     rankAndFileBounds: { minRank, maxRank, minFile, maxFile },
+    boardAreaWidth,
+    boardAreaHeight,
   };
 }

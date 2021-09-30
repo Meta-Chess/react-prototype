@@ -52,7 +52,7 @@ const ChemicallyExcited: FC<AnimationComponentProps> = ({
         animatedColor: animatedBodyColor,
         animatedOutlineColor: animatedOutlineColor,
       }}
-      size={size}
+      size={size ?? 0}
     />
   );
 };

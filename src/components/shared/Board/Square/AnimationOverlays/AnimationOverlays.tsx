@@ -3,14 +3,21 @@ import { SFC } from "primitives";
 import { SquareShape, Token, TokenName, Square } from "game";
 import { AbsoluteView } from "ui/Containers";
 import { TileAnimation } from "./TileAnimation";
+import { TileSchematic } from "ui/Tiles/TileProps";
 
 interface AnimationOverlaysProps {
   square: Square;
   shape: SquareShape;
-  size: number;
+  tileSchematic?: TileSchematic;
+  size?: number;
 }
 
-const AnimationOverlays: SFC<AnimationOverlaysProps> = ({ square, shape, size }) => {
+const AnimationOverlays: SFC<AnimationOverlaysProps> = ({
+  square,
+  shape,
+  tileSchematic,
+  size,
+}) => {
   return (
     <AbsoluteView pointerEvents={"none"}>
       {square
@@ -20,7 +27,13 @@ const AnimationOverlays: SFC<AnimationOverlaysProps> = ({ square, shape, size })
             token.data?.pieceVisualData === undefined
         )
         .map((token) => (
-          <TileAnimation shape={shape} size={size} token={token} key={token.data?.id} />
+          <TileAnimation
+            shape={shape}
+            tileSchematic={tileSchematic}
+            size={size}
+            token={token}
+            key={token.data?.id}
+          />
         ))}
     </AbsoluteView>
   );

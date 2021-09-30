@@ -4,6 +4,7 @@ import { AdjustHexSvg } from "./AdjustHexSvg";
 import { AnimatedTileProps } from "../TileProps";
 
 export const HexTileAnimated: FC<AnimatedTileProps> = ({ size, color }) => {
+  if (size === undefined) return <></>;
   return (
     <AdjustHexSvg size={0}>
       <HexTileSvg size={size} animatedColor={color} />

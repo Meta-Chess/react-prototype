@@ -25,6 +25,7 @@ export const GameScreenContent: FC = () => {
   const { gameMaster } = useContext(GameContext);
   const [winModalHidden, setWinModalHidden] = useState(false);
   const hideWinModal = useCallback(() => setWinModalHidden(true), []);
+
   const allowableMoves = gameMaster?.allowableMoves;
   const moveDisambiguationRequired =
     gameMaster?.locationSelected && (allowableMoves?.length || 0) > 1;
@@ -35,6 +36,7 @@ export const GameScreenContent: FC = () => {
         : [],
     [moveDisambiguationRequired, allowableMoves]
   );
+
   const { flipBoard } = useFlipBoard();
   if (!gameMaster)
     return (
@@ -80,7 +82,7 @@ export const GameScreenContent: FC = () => {
             <AbsoluteView>
               <PromotionDisambiguationModal
                 promotion={promotionDisambiguationOpportunities[0]}
-                pieceSize={boardMeasurements.squareSize}
+                pieceSize={60}
               />
             </AbsoluteView>
           ) : moveDisambiguationRequired ? (

@@ -20,3 +20,8 @@ export * from "./sleep";
 export * from "./titleUppercase";
 export * from "./toLocation";
 export * from "./wrapToCylinder";
+export * from "./keys";
+export * from "./getDateString";
+export * from "./tileSchematicHelpers";
+export * from "./polarToCartesian";
+export * from "./euclideanDistance";

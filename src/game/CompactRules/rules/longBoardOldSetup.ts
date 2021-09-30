@@ -71,7 +71,7 @@ export const longBoard: ParameterRule = (): Rule => {
 const generateStandardSquares = (
   numberOfPlayers: number
 ): { location: string; square: Square }[] =>
-  range2(1, 4, 1, 8 * numberOfPlayers)
+  range2(1, 8, 1, 7 * numberOfPlayers - numberOfPlayers * (numberOfPlayers % 2))
     .flat()
     .map(({ x, y }) => {
       const location = toLocation({ rank: y, file: x });
@@ -107,11 +107,11 @@ const toroidalAdjacencies =
   };
 
 const toroidalPiecesRule =
-  (_numberOfPlayers: number) =>
+  (numberOfPlayers: number) =>
   (square: Square): Piece[] => {
     const { rank, file } = square.getCoordinates();
     const location = toLocation({ rank, file });
-    const ranks_per_player = 8;
+    const ranks_per_player = 7 - (numberOfPlayers % 2);
     const owner: PlayerName = allPossiblePlayerNames[Math.floor(rank / ranks_per_player)];
     const relativeRank = rank % ranks_per_player;
 
@@ -120,18 +120,16 @@ const toroidalPiecesRule =
         new Piece(PieceName.Pawn, owner, () => standardGaits.BLACK_PAWN_GAITS, location),
       ];
     if (relativeRank === 4) {
-      if (file === 4) return [createPiece({ location, owner, name: PieceName.Rook })];
-      if (file === 3) return [createPiece({ location, owner, name: PieceName.Knight })];
-      if (file === 2) return [createPiece({ location, owner, name: PieceName.Bishop })];
-      if (file === 1) return [createPiece({ location, owner, name: PieceName.King })];
+      if (file === 1 || file === 8)
+        return [createPiece({ location, owner, name: PieceName.Rook })];
+      if (file === 2 || file === 7)
+        return [createPiece({ location, owner, name: PieceName.Knight })];
+      if (file === 3 || file === 6)
+        return [createPiece({ location, owner, name: PieceName.Bishop })];
+      if (file === 4) return [createPiece({ location, owner, name: PieceName.Queen })];
+      if (file === 5) return [createPiece({ location, owner, name: PieceName.King })];
     }
-    if (relativeRank === 5) {
-      if (file === 4) return [createPiece({ location, owner, name: PieceName.Rook })];
-      if (file === 3) return [createPiece({ location, owner, name: PieceName.Knight })];
-      if (file === 2) return [createPiece({ location, owner, name: PieceName.Bishop })];
-      if (file === 1) return [createPiece({ location, owner, name: PieceName.Queen })];
-    }
-    if (relativeRank === 6)
+    if (relativeRank === 5)
       return [
         new Piece(PieceName.Pawn, owner, () => standardGaits.WHITE_PAWN_GAITS, location),
       ];
@@ -140,25 +138,22 @@ const toroidalPiecesRule =
   };
 
 function centerRegion(numberOfPlayers: number): string[] {
-  const ranks_per_player = 8;
+  const ranks_per_player = 7 - (numberOfPlayers % 2);
 
   return range(0, numberOfPlayers).flatMap((i) => [
-    toLocation({ rank: 1 + ranks_per_player * i, file: 2 }),
-    toLocation({ rank: 1 + ranks_per_player * i, file: 3 }),
-    toLocation({ rank: 8 + ranks_per_player * i, file: 2 }),
-    toLocation({ rank: 8 + ranks_per_player * i, file: 3 }),
+    toLocation({ rank: 1 + ranks_per_player * i, file: 4 }),
+    toLocation({ rank: 1 + ranks_per_player * i, file: 5 }),
+    toLocation({ rank: 7 + ranks_per_player * i, file: 4 }),
+    toLocation({ rank: 7 + ranks_per_player * i, file: 5 }),
   ]);
 }
 
 function promotionRegion(numberOfPlayers: number, playerIndex: number): string[] {
-  const ranks_per_player = 8;
+  const ranks_per_player = 7 - (numberOfPlayers % 2);
 
   return range(0, numberOfPlayers).flatMap((i) =>
     i === playerIndex
       ? []
-      : range(1, 4).flatMap((file) => [
-          toLocation({ rank: 4 + ranks_per_player * i, file }),
-          toLocation({ rank: 5 + ranks_per_player * i, file }),
-        ])
+      : range(1, 8).map((file) => toLocation({ rank: 4 + ranks_per_player * i, file }))
   );
 }

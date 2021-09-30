@@ -159,7 +159,8 @@ export type FutureVariantName =
   | "centerfold"
   | "fortifications"
   | "royallyScrewed"
-  | "pawnOrbit";
+  | "pawnOrbit"
+  | "longboard";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   atomic: {
@@ -443,6 +444,14 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     implemented: false,
     ruleNames: [],
     complexity: 0,
+  },
+  longboard: {
+    title: "Longboard",
+    shortDescription: "Longboard.",
+    traits: ["Board"],
+    implemented: true,
+    ruleNames: ["longBoard", "verticallyCylindrical"],
+    complexity: 1,
   },
 };
 
