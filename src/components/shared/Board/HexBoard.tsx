@@ -1,4 +1,4 @@
-import React, { useContext, FC } from "react";
+import React, { useContext, FC, useEffect } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { Colors } from "primitives";
@@ -16,6 +16,7 @@ const HexBoard: FC<BoardProps> = ({
   flipBoard = false,
 }) => {
   const { gameMaster } = useContext(GameContext);
+  useEffect(() => gameMaster?.game.board.setVisualShapeToken(SquareShape.Hex));
   const game = gameMaster?.game;
   if (!game) return null;
 

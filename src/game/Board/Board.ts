@@ -22,6 +22,8 @@ import { EventCenter } from "game/EventCenter";
 import { invisibilityToken } from "game/CompactRules/constants";
 import { keys } from "utilities";
 
+import { TokenName, SquareShape } from "game/types";
+
 interface LocationMap {
   [location: string]: Square;
 }
@@ -375,6 +377,20 @@ class Board extends TokenOwner {
     return Object.values(this.pieces)
       .filter((p) => square.pieces.some((pId) => p.id === pId))
       .filter(rule);
+  }
+
+  setVisualShapeToken(tokenName: SquareShape): void {
+    const boardShapeToken = {
+      name: TokenName.Shape,
+      expired: (): boolean => {
+        return false;
+      },
+      data: { shape: tokenName },
+    };
+
+    this.removeTokensByName(TokenName.Shape);
+    this.addToken(boardShapeToken);
+    console.log(tokenName);
   }
 }
 

@@ -6,6 +6,7 @@ import { IconButton } from "ui/Buttons/IconButton";
 import styled from "styled-components/native";
 import { Styles } from "primitives/Styles";
 import { GameContext } from "components/shared";
+import { SquareShape, TokenName } from "game/types";
 
 interface Props {
   flipBoard: boolean;
@@ -14,8 +15,8 @@ interface Props {
 export const MoveDisambiguationModal: FC<Props> = ({ flipBoard }) => {
   const { gameMaster } = useContext(GameContext);
   if (!gameMaster) return null;
-  const moves = gameMaster?.allowableMoves;
-
+  const moves = gameMaster.allowableMoves;
+  const shape = gameMaster.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape;
   if (!moves) return null; // TODO: consider throwing an error?
 
   return (
@@ -43,6 +44,7 @@ export const MoveDisambiguationModal: FC<Props> = ({ flipBoard }) => {
               <StaticBoard
                 gameMaster={moveDemoGameMaster}
                 flipBoard={flipBoard}
+                circularBoard={shape === SquareShape.Arc}
                 onPress={(): void => gameMaster.doMove({ move })}
                 style={{ marginLeft: index > 0 ? 12 : undefined }}
               />

@@ -38,14 +38,14 @@ export const GameScreenContent: FC = () => {
   );
 
   const { flipBoard } = useFlipBoard();
+  const shape = gameMaster?.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape;
+
   if (!gameMaster)
     return (
       <StyledContainer>
         <Spinner />
       </StyledContainer>
     );
-
-  const shape = gameMaster.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape;
 
   const backboard = Platform.OS === "web";
   const padding = Platform.OS === "web" || shape === SquareShape.Hex ? 16 : 0;
@@ -82,7 +82,7 @@ export const GameScreenContent: FC = () => {
             <AbsoluteView>
               <PromotionDisambiguationModal
                 promotion={promotionDisambiguationOpportunities[0]}
-                pieceSize={60}
+                pieceSize={shape === SquareShape.Arc ? 60 : boardMeasurements.squareSize}
               />
             </AbsoluteView>
           ) : moveDisambiguationRequired ? (

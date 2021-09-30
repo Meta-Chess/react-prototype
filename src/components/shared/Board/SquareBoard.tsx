@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useMemo, useEffect } from "react";
 import { View, Animated } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Colors } from "primitives";
@@ -18,6 +18,7 @@ const SquareBoard: SFC<BoardProps> = ({
   flipBoard = false,
 }) => {
   const { gameMaster } = useContext(GameContext);
+  useEffect(() => gameMaster?.game.board.setVisualShapeToken(SquareShape.Square));
   const {
     rotationMarginLeft,
     rotationMarginBottom,

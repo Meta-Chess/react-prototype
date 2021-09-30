@@ -18,9 +18,12 @@ export const Board: FC<BoardProps> = (props) => {
   const { gameMaster } = useContext(GameContext);
   const shapeToken = gameMaster?.game.board.firstTokenWithName(TokenName.Shape);
 
-  const showCircularBoard = useCircularBoard();
+  const setCircularBoard = useCircularBoard();
+  const showCircularBoard = props.circularBoard ?? setCircularBoard;
 
-  if (showCircularBoard) return <CircularBoard {...props} />;
+  if (showCircularBoard) {
+    return <CircularBoard {...props} />;
+  }
   return (
     <>
       {shapeToken?.data?.shape === SquareShape.Hex ? (

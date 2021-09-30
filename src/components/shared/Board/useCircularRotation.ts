@@ -7,7 +7,9 @@ export const useCircularRotation = (
   radialOffset: number,
   setRadialOffset: (x: number) => void,
   circularOffset: number,
-  setCircularOffset: (x: number) => void
+  setCircularOffset: (x: number) => void,
+  numberOfFiles: number,
+  numberOfRanks: number
 ): {
   radialRotationAllowed: boolean;
   circularRotationAllowed: boolean;
@@ -19,10 +21,6 @@ export const useCircularRotation = (
     ?.getRuleNames()
     .includes("verticallyCylindrical");
   const radialRotationAllowed = !!gameMaster?.getRuleNames().includes("cylindrical");
-
-  const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
-  const numberOfFiles = useMemo(() => maxFile - minFile + 1, [minFile, maxFile]);
-  const numberOfRanks = useMemo(() => maxRank - minRank + 1, [minRank, maxRank]);
 
   const radialOffsetRef = useRef(radialOffset);
   const circularOffsetRef = useRef(circularOffset);
