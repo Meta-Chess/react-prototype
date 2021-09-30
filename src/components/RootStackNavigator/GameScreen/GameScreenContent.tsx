@@ -68,6 +68,14 @@ export const GameScreenContent: FC = () => {
     >
       <TrackingPixel urlEnd={"GameScreenContent"} />
       <Container portrait={portrait}>
+        <SidebarContainer portrait={portrait} boardMeasurements={boardMeasurements}>
+          <Sidebar
+            style={[
+              portrait ? { marginHorizontal: 4 } : { marginVertical: 4 },
+              { flex: 1 },
+            ]}
+          />
+        </SidebarContainer>
         <View>
           <Board
             measurements={boardMeasurements}
@@ -91,14 +99,6 @@ export const GameScreenContent: FC = () => {
             </AbsoluteView>
           ) : null}
         </View>
-        <SidebarContainer portrait={portrait} boardMeasurements={boardMeasurements}>
-          <Sidebar
-            style={[
-              portrait ? { marginHorizontal: 4 } : { marginVertical: 4 },
-              { flex: 1 },
-            ]}
-          />
-        </SidebarContainer>
       </Container>
       <HelpMenu context={{ gameMaster }} />
     </StyledContainer>
@@ -119,8 +119,8 @@ const Container = styled(View)<{ portrait: boolean }>`
   ${({ portrait }): string => (portrait ? "width: 100%; height: 100%;" : "flex: 1;")}
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  ${({ portrait }): string => "flex-direction: " + (portrait ? "column" : "row") + ";"}
+  ${({ portrait }): string =>
+    "flex-direction: " + (portrait ? "column-reverse" : "row-reverse") + ";"}
 `;
 
 const SidebarContainer = styled(View)<SidebarContainerProps>`
