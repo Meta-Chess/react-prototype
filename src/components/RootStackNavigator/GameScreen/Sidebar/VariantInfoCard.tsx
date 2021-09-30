@@ -5,7 +5,7 @@ import { futureVariants as allVariants, formats } from "game";
 import { LabelWithDetails, Row } from "ui";
 import { View } from "react-native";
 import { Text } from "primitives";
-import { WASD } from "./ActiveKeycaps";
+import { WASD } from "./VisualEffectButtons";
 import { VariantLabel, NoCheckLabel, ChessLabel } from "components/shared/Labels";
 import { VariantLabelInfo } from "game/types";
 import Color from "color";

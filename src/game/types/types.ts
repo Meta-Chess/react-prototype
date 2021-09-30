@@ -129,6 +129,7 @@ export interface RankAndFileBounds {
 export enum SquareShape {
   Square,
   Hex,
+  Arc,
 }
 
 export interface GameOptions {
@@ -190,3 +191,6 @@ export enum VariantLabelInfo {
   VariantLeaving,
   NewVariant,
 }
+
+export type Point = { x: number; y: number };
+export type Degrees = number;

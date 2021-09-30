@@ -3,11 +3,13 @@ import { Animated, Easing, Platform } from "react-native";
 import { AbsoluteView } from "ui/Containers";
 import { AnimatedTile } from "ui";
 import { SquareShape } from "game/types";
+import { TileSchematic } from "ui/Tiles/TileProps";
 
-export const LoadingOverlay: FC<{ size: number; shape?: SquareShape }> = ({
-  size,
-  shape = SquareShape.Square,
-}) => {
+export const LoadingOverlay: FC<{
+  size?: number;
+  tileSchematic?: TileSchematic;
+  shape?: SquareShape;
+}> = ({ size = 0, shape = SquareShape.Square, tileSchematic }) => {
   const colorValue = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
@@ -37,7 +39,12 @@ export const LoadingOverlay: FC<{ size: number; shape?: SquareShape }> = ({
 
   return (
     <AbsoluteView pointerEvents={"none"}>
-      <AnimatedTile shape={shape} size={size} color={animatedColor} />
+      <AnimatedTile
+        shape={shape}
+        size={size}
+        tileSchematic={tileSchematic}
+        color={animatedColor}
+      />
     </AbsoluteView>
   );
 };

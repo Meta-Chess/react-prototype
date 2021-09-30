@@ -3,10 +3,12 @@ import { SFC } from "primitives";
 import { AnimationType, SquareShape, Token } from "game";
 import { Explosion } from "ui/VariantContent";
 import { AnimationComponentProps } from "ui/VariantContent/AnimationComponentProps";
+import { TileSchematic } from "ui/Tiles/TileProps";
 
 interface TileAnimationProps {
   shape: SquareShape;
-  size: number;
+  tileSchematic?: TileSchematic;
+  size?: number;
   token: Token;
 }
 
@@ -14,7 +16,12 @@ const ANIMATIONS: { [type in AnimationType]: FC<AnimationComponentProps> } = {
   explosion: Explosion,
 };
 
-const TileAnimation: SFC<TileAnimationProps> = ({ shape, size, token }) => {
+const TileAnimation: SFC<TileAnimationProps> = ({
+  shape,
+  size,
+  tileSchematic,
+  token,
+}) => {
   const animationType = token.data?.type;
   const animationDuration = token.data?.duration;
   const animationDelay = token.data?.delay;
@@ -26,6 +33,7 @@ const TileAnimation: SFC<TileAnimationProps> = ({ shape, size, token }) => {
     <AnimationComponent
       shape={shape}
       size={size}
+      tileSchematic={tileSchematic}
       duration={animationDuration}
       delay={animationDelay}
     />

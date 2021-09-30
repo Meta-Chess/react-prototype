@@ -138,37 +138,38 @@ export interface FutureVariant {
 
 export type FutureVariantName =
   | "atomic"
+  | "brick"
+  | "centerfold"
+  | "chainReaction"
+  | "chemicallyExcitedKnight"
+  | "completedKnight"
   | "crazyhouse"
   | "cylindrical"
   | "diagonalMirror"
   | "emptyCenter"
+  | "extinction"
   | "fatigue"
+  | "gambit"
+  | "grandChess"
   | "hex"
   | "kingOfTheHill"
   | "kleinBottle"
+  | "longboard"
+  | "loseOnStalemate"
   | "mobius"
+  | "morphlings"
   | "noFork"
   | "patheticKing"
+  | "pawnOrbit"
   | "polar"
+  | "pull"
+  | "puppeteers"
+  | "royallyScrewed"
   | "spherical"
   | "thinIce"
   | "threeCheck"
   | "toroidal"
-  | "chemicallyExcitedKnight"
-  | "chainReaction"
-  | "pull"
-  | "morphlings"
-  | "zoneOfControl"
-  | "loseOnStalemate"
-  | "gambit"
-  | "extinction"
-  | "centerfold"
-  | "brick"
-  | "royallyScrewed"
-  | "pawnOrbit"
-  | "completedKnight"
-  | "puppeteers"
-  | "grandChess";
+  | "zoneOfControl";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   grandChess: {
@@ -496,6 +497,14 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     imageName: "completedKnightImage",
     implemented: true,
     ruleNames: ["completedKnight"],
+    complexity: 1,
+  },
+  longboard: {
+    title: "Longboard",
+    shortDescription: "Longboard.",
+    traits: ["Board"],
+    implemented: true,
+    ruleNames: ["longBoard", "verticallyCylindrical"],
     complexity: 1,
   },
 };
