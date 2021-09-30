@@ -1,9 +1,9 @@
 import { isPresent } from "utilities";
-import { CompactRules, Game, Piece, Square } from "game";
+import type { CompactRules, Game, Piece, Square } from "game";
 import { Direction, Gait, TokenName } from "../types";
 import { clone, flatMap } from "lodash";
 import { Path } from "./Path";
-import { Move } from "game/Move";
+import type { Move } from "game/Move";
 import autoBind from "auto-bind";
 
 export interface PatherParams {

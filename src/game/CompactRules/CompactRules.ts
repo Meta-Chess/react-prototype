@@ -1,13 +1,5 @@
 import { isPresent } from "ts-is-present";
-import { Direction, Gait, GaitParams, PieceName, PlayerName } from "../types";
 import { applyInSequence } from "utilities";
-import { Board, Piece, Square } from "../Board";
-import { Game } from "game/Game";
-import { Move, PieceDelta } from "game/Move";
-import { EventCenter } from "game/EventCenter";
-import { Pather, PatherParams } from "game/Pather";
-import { GameMaster } from "game/GameMaster";
-import { FutureVariantName } from "game/variants";
 import { FormatName, formats as allFormats } from "game/formats";
 import {
   getDefaults,
@@ -22,7 +14,16 @@ import {
 import { variantsToRules } from "game/variantAndRuleProcessing/variantsToRules";
 import { uniq } from "lodash";
 import { keys } from "utilities";
-import { Player } from "game/Player";
+import type { Direction, Gait, GaitParams, PieceName, PlayerName } from "../types";
+import type { Board, Piece, Square } from "../Board";
+import type { Game } from "game/Game";
+import type { Move, PieceDelta } from "game/Move";
+import type { EventCenter } from "game/EventCenter";
+import type { Pather, PatherParams } from "game/Pather";
+import type { GameMaster } from "game/GameMaster";
+import type { FutureVariantName } from "game/variants";
+import type { RuleParamValue, RuleSetting } from "./RuleSettingTypes";
+import type { Player } from "game/Player";
 
 const allRules: AllParameterRules = rules;
 

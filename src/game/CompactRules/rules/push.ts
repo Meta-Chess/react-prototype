@@ -1,8 +1,8 @@
-import { Rule, ParameterRule } from "../CompactRules";
-import { GenerateSpecialPacifistMoves, Pather, Piece } from "game";
+import type { Rule, ParameterRule, GenerateSpecialPacifistMoves } from "../CompactRules";
+import { Piece } from "game";
 import { Gait } from "game/types/types";
 import { Move } from "game/Move";
-import { Path } from "game/Pather";
+import { Pather, Path } from "game/Pather";
 
 export const push: ParameterRule = (): Rule => {
   return {
