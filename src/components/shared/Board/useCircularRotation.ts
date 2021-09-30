@@ -54,15 +54,19 @@ export const useCircularRotation = (
   const onKeypressEvent = useCallback((event) => {
     switch (event.key) {
       case "d":
+      case "D":
         radialOffsetInwards();
         break;
       case "w":
+      case "W":
         circularOffsetAnticlockwise();
         break;
       case "a":
+      case "A":
         radialOffsetOutwards();
         break;
       case "s":
+      case "S":
         circularOffsetClockwise();
         break;
     }
