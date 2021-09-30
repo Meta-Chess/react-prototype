@@ -22,7 +22,6 @@ import type { EventCenter } from "game/EventCenter";
 import type { Pather, PatherParams } from "game/Pather";
 import type { GameMaster } from "game/GameMaster";
 import type { FutureVariantName } from "game/variants";
-import type { RuleParamValue, RuleSetting } from "./RuleSettingTypes";
 import type { Player } from "game/Player";
 
 const allRules: AllParameterRules = rules;

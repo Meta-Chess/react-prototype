@@ -1,10 +1,14 @@
-import type { Rule, ParameterRule, GenerateSpecialPacifistMoves } from "../CompactRules";
+import type {
+  Rule,
+  TrivialParameterRule,
+  GenerateSpecialPacifistMoves,
+} from "../CompactRules";
 import { Piece } from "game";
 import { Gait } from "game/types/types";
 import { Move } from "game/Move";
 import { Pather, Path } from "game/Pather";
 
-export const push: ParameterRule = (): Rule => {
+export const push: TrivialParameterRule = (): Rule => {
   return {
     title: "Push",
     description: "Adjacent friendly pieces can be pushed.",
@@ -28,8 +32,9 @@ export const push: ParameterRule = (): Rule => {
             square?.go(gait.pattern[0])[0]
           )[0];
           if (nextPiece) {
+            nextPiece.tokens = piece.cloneTokens(piece.tokens);
             return nextPiece.owner === piece.owner
-              ? push()
+              ? push({})
                   .generateSpecialPacifistMoves?.({
                     game: gameClone,
                     piece: nextPiece,
