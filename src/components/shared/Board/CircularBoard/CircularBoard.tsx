@@ -125,8 +125,7 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
             >
               {rowList.map((rowNum, rowIndex) => {
                 const boardCenter = svgBox / 2;
-                const tileStartAngle: SvgMeasurement =
-                  rowNum * rowWidth - TILE_DISPLAY_OVERFLOW;
+                const tileStartAngle: SvgMeasurement = rowNum * rowWidth;
                 const tileCenterAngle: SvgMeasurement = (rowNum + 0.5) * rowWidth;
                 const tileEndAngle: SvgMeasurement =
                   (rowNum + 1) * rowWidth + TILE_DISPLAY_OVERFLOW;
