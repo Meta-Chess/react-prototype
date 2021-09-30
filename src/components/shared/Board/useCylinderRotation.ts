@@ -47,18 +47,22 @@ export const useCylinderRotation = (
   const onKeyDownEvent = useCallback((event) => {
     switch (event.key) {
       case "w":
+      case "W":
         if (verticalRotationAllowed)
           animationTargetY.current = animationTargetY.current - 1;
         break;
       case "a":
+      case "A":
         if (horizontalRotationAllowed)
           animationTargetX.current = animationTargetX.current + 1;
         break;
       case "s":
+      case "S":
         if (verticalRotationAllowed)
           animationTargetY.current = animationTargetY.current + 1;
         break;
       case "d":
+      case "D":
         if (horizontalRotationAllowed)
           animationTargetX.current = animationTargetX.current - 1;
         break;

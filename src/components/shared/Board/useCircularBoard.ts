@@ -27,6 +27,7 @@ export const useCircularBoard = (): boolean => {
   const onKeypressEvent = useCallback((event) => {
     switch (event.key) {
       case "e":
+      case "E":
         if (showCircularBoardPossible) {
           pressRef.current = !pressRef.current;
           gameMaster?.unselectAllPieces();
