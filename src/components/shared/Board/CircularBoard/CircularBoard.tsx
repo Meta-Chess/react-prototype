@@ -37,17 +37,17 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
   const playerIndex = playerNames.indexOf(assignedPlayerName);
   ////
 
-  //TODO: this calc nice
-  const defaultRadialOffset = 0;
-  const defaultCircularOffset = 4 * players.length - 5 + playerIndex * 8;
-
-  const [radialOffset, setRadialOffset] = useState(defaultRadialOffset);
-  const [circularOffset, setCircularOffset] = useState(defaultCircularOffset);
-
   // revisit this... it's also in useCylinderRotation
   const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
   const numberOfColumns = useMemo(() => maxFile - minFile + 1, [minFile, maxFile]);
   const numberOfRows = useMemo(() => maxRank - minRank + 1, [minRank, maxRank]);
+
+  //TODO: this calc nice
+  const defaultRadialOffset = 0;
+  const defaultCircularOffset = 4 * players.length + 5 - (playerIndex + 1) * 8;
+
+  const [radialOffset, setRadialOffset] = useState(defaultRadialOffset);
+  const [circularOffset, setCircularOffset] = useState(defaultCircularOffset);
 
   useCircularRotation(
     measurements,
@@ -84,7 +84,7 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
   const columnList = range(1, numberOfColumns + 1);
   const rowList = range(1, numberOfRows + 1);
   const squareColumnList = rotateArray(columnList, radialOffset);
-  const squareRowList = rotateArray(rowList, circularOffset);
+  const squareRowList = rotateArray(rowList, circularOffset).reverse();
 
   return (
     <View
