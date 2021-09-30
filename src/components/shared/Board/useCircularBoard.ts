@@ -29,6 +29,7 @@ export const useCircularBoard = (): boolean => {
       case "e":
         if (showCircularBoardPossible) {
           pressRef.current = !pressRef.current;
+          gameMaster?.unselectAllPieces();
           gameMaster?.render();
         }
         break;

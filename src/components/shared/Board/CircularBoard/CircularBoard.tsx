@@ -1,4 +1,4 @@
-import React, { FC, useContext, useMemo, useState } from "react";
+import React, { FC, useContext, useEffect, useMemo, useState } from "react";
 import { GameContext } from "components/shared";
 import { Colors } from "primitives";
 import { View } from "react-native";
@@ -25,6 +25,7 @@ export const TILE_DISPLAY_OVERFLOW: SvgMeasurement = 0.5; // svgs which are supp
 
 export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }) => {
   const { gameMaster } = useContext(GameContext);
+  useEffect(() => gameMaster?.game.board.setVisualShapeToken(SquareShape.Arc));
 
   // rotation
   const players = gameMaster?.game.players ?? [];
@@ -45,12 +46,19 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
   const [radialOffset, setRadialOffset] = useState(defaultRadialOffset);
   const [circularOffset, setCircularOffset] = useState(defaultCircularOffset);
 
+  // revisit this... it's also in useCylinderRotation
+  const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
+  const numberOfColumns = useMemo(() => maxFile - minFile + 1, [minFile, maxFile]);
+  const numberOfRows = useMemo(() => maxRank - minRank + 1, [minRank, maxRank]);
+
   useCircularRotation(
     measurements,
     radialOffset,
     setRadialOffset,
     circularOffset,
-    setCircularOffset
+    setCircularOffset,
+    numberOfColumns,
+    numberOfRows
   );
 
   //
@@ -61,11 +69,6 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
   const svgToPixel = (svgLength: SvgMeasurement): PixelMeasurement => {
     return boardSize * (svgLength / svgBox);
   };
-
-  // revisit this... it's also in useCylinderRotation
-  const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
-  const numberOfColumns = useMemo(() => maxFile - minFile + 1, [minFile, maxFile]);
-  const numberOfRows = useMemo(() => maxRank - minRank + 1, [minRank, maxRank]);
 
   const centerGapWidthAsColumnWidthMultiple = 2;
   const columnWidth: SvgMeasurement =
@@ -122,7 +125,8 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
             >
               {rowList.map((rowNum, rowIndex) => {
                 const boardCenter = svgBox / 2;
-                const tileStartAngle: SvgMeasurement = rowNum * rowWidth;
+                const tileStartAngle: SvgMeasurement =
+                  rowNum * rowWidth - TILE_DISPLAY_OVERFLOW;
                 const tileCenterAngle: SvgMeasurement = (rowNum + 0.5) * rowWidth;
                 const tileEndAngle: SvgMeasurement =
                   (rowNum + 1) * rowWidth + TILE_DISPLAY_OVERFLOW;
@@ -174,7 +178,7 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
                           startAngle: tileStartAngle,
                           endAngle: tileEndAngle,
                         }),
-                        tileWidth: columnWidth + TILE_DISPLAY_OVERFLOW,
+                        tileWidth: columnWidth + 4 * TILE_DISPLAY_OVERFLOW,
                       },
                       leftAdjustmentToTileCenter,
                       topAdjustmentToTileCenter,
