@@ -17,6 +17,7 @@ import { Animated } from "react-native";
 import { AnimatedGroup } from "primitives";
 import { PieceDecorationName } from "components/shared/Board/Piece/getPieceDecorationNames";
 import { PieceDecorations } from "./PieceDecorations";
+import { GameMaster } from "game";
 interface Props {
   type: PieceName;
   color?: string | undefined;
@@ -29,6 +30,7 @@ interface Props {
   animatedColor?: Animated.AnimatedInterpolation | undefined;
   animatedOutlineColor?: Animated.AnimatedInterpolation | undefined;
   pieceDecorationNames?: PieceDecorationName[];
+  gameMaster?: GameMaster;
 }
 
 const PIECE_SPRITE: { [name in PieceName]: React.ReactNode } = {
@@ -54,6 +56,7 @@ const PieceImage: SFC<Props> = ({
   animatedColor,
   animatedOutlineColor,
   pieceDecorationNames,
+  gameMaster,
 }) => {
   if (size < 0) return null;
   const primary = color;

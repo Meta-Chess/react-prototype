@@ -1,13 +1,27 @@
-import React, { FC, ReactElement } from "react";
+import React, { FC, ReactElement, useMemo, useEffect } from "react";
 import { Path } from "react-native-svg";
 import { PieceDecorationName } from "components/shared/Board/Piece/getPieceDecorationNames";
-
+import { BsArrowClockwise, BsArrowCounterclockwise } from "react-icons/bs";
+import { GameMaster } from "game";
+import { TokenName, SquareShape } from "game/types";
+import { Svg } from "react-native-svg";
 interface Props {
   pieceDecorationNames?: PieceDecorationName[];
+  gameMaster?: GameMaster;
 }
 
-function CHOOSE_DECORATION(name: PieceDecorationName): ReactElement | void {
+// TODO: change this into a map...
+function CHOOSE_DECORATION(
+  name: PieceDecorationName,
+  circularBoard: boolean
+): ReactElement | void {
   if (name === PieceDecorationName.UpDirectionArrow) {
+    if (circularBoard)
+      return (
+        <Svg viewBox={"-17 -15.5 45 45"}>
+          <BsArrowCounterclockwise key={name} viewBox={"0 0 25 25"} />
+        </Svg>
+      );
     return (
       <Path
         key={name}
@@ -15,6 +29,12 @@ function CHOOSE_DECORATION(name: PieceDecorationName): ReactElement | void {
       />
     );
   } else if (name === PieceDecorationName.DownDirectionArrow) {
+    if (circularBoard)
+      return (
+        <Svg viewBox={"-17 -15.5 45 45"}>
+          <BsArrowClockwise key={name} viewBox={"0 0 25 25"} />
+        </Svg>
+      );
     return (
       <Path
         key={name}
@@ -25,12 +45,26 @@ function CHOOSE_DECORATION(name: PieceDecorationName): ReactElement | void {
   return;
 }
 
-const PieceDecorations: FC<Props> = ({ pieceDecorationNames }) => {
+// TODO: Probably better to extract decorations as components absolutely positioned on the PieceImage (rather than paths/svgs in here)
+const PieceDecorations: FC<Props> = ({ pieceDecorationNames, gameMaster }) => {
+  // change decorations when displaying a circular board
+  const circularBoard = useMemo(
+    () =>
+      gameMaster?.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape ===
+      SquareShape.Arc,
+    [gameMaster?.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape]
+  );
+  useEffect(
+    () => gameMaster?.render(),
+    [gameMaster?.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape]
+  );
+
   if (pieceDecorationNames === undefined) return null;
+
   return (
     <>
       {pieceDecorationNames?.map((pieceDecorationName) => {
-        return CHOOSE_DECORATION(pieceDecorationName);
+        return CHOOSE_DECORATION(pieceDecorationName, circularBoard);
       })}
     </>
   );

@@ -1,15 +1,19 @@
-import { Piece, PieceName, RuleName } from "game";
+import { Piece, PieceName } from "game";
 import { Direction } from "game/types";
+import { GameMaster } from "game";
 
 export enum PieceDecorationName {
   UpDirectionArrow,
   DownDirectionArrow,
+  ClockwiseDirectionArrow,
+  AnticlockwiseDirectionArrow,
 }
 
 export function getPieceDecorationNames(
   piece: Piece,
-  ruleNames?: RuleName[]
+  gameMaster?: GameMaster
 ): PieceDecorationName[] {
+  const ruleNames = gameMaster?.getRuleNames();
   if (ruleNames === undefined) return [];
 
   const pieceDecorations: PieceDecorationName[] = [];

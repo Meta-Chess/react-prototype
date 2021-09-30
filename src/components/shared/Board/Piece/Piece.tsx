@@ -33,9 +33,10 @@ const Piece: FC<Props> = ({
   ignoreTokens,
 }) => {
   const { gameMaster } = useContext(GameContext);
+
   if (piece === undefined) return null;
 
-  const pieceDecorationNames = getPieceDecorationNames(piece, gameMaster?.getRuleNames());
+  const pieceDecorationNames = getPieceDecorationNames(piece, gameMaster);
 
   const animated = animatedData !== undefined;
   const chosenColor = color
@@ -61,6 +62,7 @@ const Piece: FC<Props> = ({
       animatedColor={animated ? animatedData?.animatedColor : undefined}
       animatedOutlineColor={animated ? animatedData?.animatedOutlineColor : undefined}
       pieceDecorationNames={pieceDecorationNames}
+      gameMaster={gameMaster}
     />
   );
   return onPress ? (
