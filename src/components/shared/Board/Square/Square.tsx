@@ -124,7 +124,7 @@ const SquareComponent: SFC<Props> = ({
         tileSchematic={tileSchematic}
       />
       {gameMaster.loadingSquares.includes(square.location) && (
-        <LoadingOverlay shape={shape} size={size} />
+        <LoadingOverlay shape={shape} size={size} tileSchematic={tileSchematic} />
       )}
     </OuterContainer>
   );
