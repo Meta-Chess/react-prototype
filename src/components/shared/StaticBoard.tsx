@@ -5,7 +5,6 @@ import { AbsoluteTouchableOpacity } from "ui";
 import { GameMaster, TokenName } from "game";
 import { View } from "react-native";
 import { SimpleGameProvider } from "./GameContext";
-import { CircularBoard } from "./Board/CircularBoard";
 
 interface Props {
   gameMaster: GameMaster;

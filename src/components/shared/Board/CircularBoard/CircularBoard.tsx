@@ -7,11 +7,9 @@ import { BoardProps } from "components/shared/Board/Board";
 import { Square } from "../Square";
 import { SquareShape } from "game";
 import { objectMatches } from "utilities";
-import { SvgAnnulus } from "primitives/Shapes";
 import { CircularBackboard } from "./CircularBackboard";
 import { polarToCartesian, euclideanDistance } from "utilities";
 import { describeArc, ARC_TILE_WORKING_AREA } from "ui/Tiles/Arc";
-import styled from "styled-components/native";
 import { useCircularRotation } from "../useCircularRotation";
 import type { Point, Degrees } from "game/types";
 import { PlayerName } from "game/types";
@@ -98,6 +96,16 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
         overflow: "visible",
       }}
     >
+      {backboard && (
+        <CircularBackboard
+          boardSize={pixelToSvg(boardSize)}
+          centerGapSize={centerGapWidthAsColumnWidthMultiple * columnWidth}
+          radialWidth={pixelToSvg(backboardRadialSize)}
+          shadowRadialWidth={pixelToSvg(backboardShadowRadialSize)}
+          color={Colors.DARK.toString()}
+          shadowColor={Colors.BLACK.fade(0.5).toString()}
+        />
+      )}
       <View
         style={{
           width: boardSize,
@@ -107,15 +115,6 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
           overflow: "visible",
         }}
       >
-        <BackcolorBoard
-          WorkingLength={pixelToSvg(boardSize)}
-          OuterRadius={pixelToSvg(boardSize / 2) + 2 * TILE_DISPLAY_OVERFLOW}
-          InnerRadius={
-            centerGapWidthAsColumnWidthMultiple * columnWidth - 2 * TILE_DISPLAY_OVERFLOW
-          }
-          color={Colors.DARK.toString()}
-          uniqueMaskId={"BackcolorBoard"}
-        />
         {columnList.map((colNum, colIndex) => {
           return (
             <View
@@ -177,7 +176,7 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
                           startAngle: tileStartAngle,
                           endAngle: tileEndAngle,
                         }),
-                        tileWidth: columnWidth + 4 * TILE_DISPLAY_OVERFLOW,
+                        tileWidth: columnWidth + 2 * TILE_DISPLAY_OVERFLOW,
                       },
                       leftAdjustmentToTileCenter,
                       topAdjustmentToTileCenter,
@@ -190,20 +189,6 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
           );
         })}
       </View>
-
-      {backboard && (
-        <CircularBackboard
-          boardSizePixel={boardSize}
-          boardSize={pixelToSvg(boardSize)}
-          centerGapSize={centerGapWidthAsColumnWidthMultiple * columnWidth}
-          radialWidth={pixelToSvg(backboardRadialSize)}
-          shadowRadialWidth={pixelToSvg(backboardShadowRadialSize)}
-          color={Colors.DARK.toString()}
-          shadowColor={Colors.BLACK.fade(0.5).toString()}
-        />
-      )}
     </View>
   );
 };
-
-const BackcolorBoard = styled(SvgAnnulus)``; //This component visually smooths gaps between the arc tiles
