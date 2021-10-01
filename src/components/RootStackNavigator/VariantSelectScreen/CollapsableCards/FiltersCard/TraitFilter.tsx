@@ -20,8 +20,7 @@ const TraitFilter: SFC<TraitFilterProps> = ({
   selected,
   onPress,
 }) => {
-  const baseColor = traitInfo[trait].color.fade(0.5);
-  const color = selected ? baseColor : baseColor.fade(0.5);
+  const color = traitInfo[trait].color.fade(0.4);
   const labelPadding = 4;
   const counterPadding = 4;
   const verticalPadding = 1;
