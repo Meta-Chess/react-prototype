@@ -4,6 +4,31 @@ export const updates: UpdateGroup[] = [
   // note js month counting starts from 0 = january
   {
     version: { major: 0, minor: 1, patch: 1 },
+    date: new Date(2021, 8, 26),
+    updates: [
+      {
+        label: "Update!",
+        description:
+          "Variant cards redesign, traits redesign into game loop graph. Still evolving!",
+      },
+    ],
+  },
+  {
+    version: { major: 0, minor: 1, patch: 1 },
+    date: new Date(2021, 8, 22),
+    updates: [
+      {
+        label: "Variant",
+        description: "Diagonal Mirror! - bishops are deadly...",
+      },
+      {
+        label: "Update!",
+        description: "BOOM and piece immunity atomic params",
+      },
+    ],
+  },
+  {
+    version: { major: 0, minor: 1, patch: 1 },
     date: new Date(2021, 8, 16),
     updates: [
       {
