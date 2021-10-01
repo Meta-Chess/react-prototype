@@ -41,15 +41,19 @@ const VariantTileGraph: SFC<VariantTileGraphProps> = ({
   style,
   orientation = "vertical",
 }) => {
-  const nodeOrder: TraitName[] = [
-    "Board",
-    "Movement",
-    "Reaction",
-    "Ending",
-    "Simulation",
+  const nodeOrder: TraitName[][] = [
+    ["Board"],
+    ["Movement", "Restriction"],
+    ["Reaction"],
+    ["Ending"],
+    ["Simulation"],
   ];
-  const fillColors = nodeOrder.map((traitName) =>
-    variant.traits.includes(traitName) ? traitInfo[traitName].color.toString() : undefined
+  const fillColors = nodeOrder.map((traitNames) =>
+    traitNames.map((traitName) =>
+      variant.traits.includes(traitName)
+        ? traitInfo[traitName].color.toString()
+        : undefined
+    )
   );
 
   return (
@@ -89,49 +93,25 @@ const VariantTileGraph: SFC<VariantTileGraphProps> = ({
           })}
         />
         <>
-          {fillColors.map((color, i) => {
+          {fillColors.map((colorList, i) => {
             return (
               <TraitNode
                 key={i}
                 {...transformTraitNodeProps(orientation)({
+                  order: i,
                   cx: 0.5,
                   cy: 0.5 + i * 1.5,
-                  fillColor: color,
+                  fillColor: colorList[0] ?? colorList[1],
+                  secondFillColor: colorList[0] ? colorList[1] : undefined,
                 })}
               />
             );
           })}
         </>
-
-        {variant.traits.includes("Restriction") && (
-          <>
-            <Line
-              {...transformLineProps(orientation)({
-                x1: 0,
-                x2: 1,
-                y1: 2 + 0.3 + 0.1 + (variant.traits.includes("Movement") ? 0.1 : 0),
-                y2: 2 + 0.3 + 0.1 + (variant.traits.includes("Movement") ? 0.1 : 0),
-                strokeWidth: 0.2,
-                stroke: Colors.DARKEST.toString(),
-              })}
-            />
-            <Line
-              {...transformLineProps(orientation)({
-                x1: 0.1,
-                x2: 0.9,
-                y1: 2 + 0.3 + 0.11 + (variant.traits.includes("Movement") ? 0.1 : 0),
-                y2: 2 + 0.3 + 0.11 + (variant.traits.includes("Movement") ? 0.1 : 0),
-                strokeWidth: 0.05,
-                stroke: Colors.TRAIT.RESTRICTION.toString(),
-              })}
-            />
-          </>
-        )}
       </Svg>
     </View>
   );
 };
-
 /*
 <Circle cx:0.5} cy={0.5} r={0.4} fill={Colors.BLACK.toString()} />
         <Circle
