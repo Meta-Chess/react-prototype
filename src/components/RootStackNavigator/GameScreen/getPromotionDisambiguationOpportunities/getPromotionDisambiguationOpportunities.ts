@@ -1,4 +1,4 @@
-import { Move } from "game";
+import { Move, PieceName } from "game";
 import { hasPresentKey } from "ts-is-present";
 import { isEqual } from "lodash";
 
@@ -17,8 +17,21 @@ export function getPromotionDisambiguationOpportunities(moves?: Move[]): Promoti
     );
     if (promotionDisambiguationOpportunities.length === 0) return [];
   }
-  return promotionDisambiguationOpportunities;
+  return promotionDisambiguationOpportunities.filter(promotionAmbiguous(moves));
 }
+
+const promotionAmbiguous =
+  (moves: Move[]) =>
+  (promotion: Promotion): boolean => {
+    const promotionPieces = moves
+      .map((m) =>
+        m.pieceDeltas.find(
+          (d) => d.pieceId === promotion.pieceId && d.path.getEnd() === promotion.location
+        )
+      )
+      .map((d) => d?.promoteTo) as PieceName[];
+    return promotionPieces.findIndex((p) => p !== promotionPieces[0]) > -1;
+  };
 
 function getPromotions(move: Move): Promotion[] {
   return move.pieceDeltas.filter(hasPresentKey("promoteTo")).map((delta) => ({

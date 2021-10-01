@@ -33,7 +33,7 @@ export const GameScreenContent: FC = () => {
       moveDisambiguationRequired
         ? getPromotionDisambiguationOpportunities(allowableMoves)
         : [],
-    [moveDisambiguationRequired, allowableMoves]
+    [moveDisambiguationRequired, allowableMoves, allowableMoves?.length]
   );
   const { flipBoard } = useFlipBoard();
   if (!gameMaster)

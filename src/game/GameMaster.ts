@@ -249,6 +249,7 @@ export class GameMaster {
       this.doMove({ move });
       return move;
     }
+    this.render();
   }
 
   async setPositionInHistoryToLatest(): Promise<void> {
