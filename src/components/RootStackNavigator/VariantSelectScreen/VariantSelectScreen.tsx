@@ -13,23 +13,25 @@ import { useNavigation, Screens, useGoBackOrToStartScreen, useRoute } from "navi
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
 import {
-  FormatCard,
+  VariantCard,
   FiltersCard,
   GameOptionsCard,
   AdviceCard,
   BoardCard,
+  FormatCard,
 } from "./CollapsableCards";
 import { Button, ButtonSecondary, Divider, AbsoluteView } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors, TrackingPixel } from "primitives";
 import styled from "styled-components/native";
-import { Topbar } from "./Topbar";
 import { FormatName } from "game/formats";
 import { rollableVariants } from "game/formats/rollableVariants";
 import { randomVariants } from "game/formats/randomVariants";
 import { getConflictLevel } from "./getConflictLevel";
 import { VariantModal, VariantModalInfo } from "./Modals/VariantModal";
 import { boardOrder } from "game/boards";
+
+import { HelpMenu } from "components/shared";
 
 const VariantSelectScreen: FC = () => {
   const playWithFriends = useRoute<Screens.VariantSelectScreen>().params?.playWithFriends;
@@ -102,7 +104,7 @@ const VariantSelectScreen: FC = () => {
             variantConflicts={variantConflicts}
             gameOptions={gameOptions}
           />
-          <FormatCard
+          <VariantCard
             selectedFormat={gameOptions.format}
             selectedVariants={selectedVariantsForFormat}
             setSelectedVariants={setSelectedVariantsForFormat}
@@ -114,6 +116,7 @@ const VariantSelectScreen: FC = () => {
             gameOptions={gameOptions}
             setGameOptions={setGameOptions}
           />
+          <FormatCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
         </ScrollView>
         <Divider>
           <ButtonSecondary
@@ -162,6 +165,7 @@ const VariantSelectScreen: FC = () => {
             />
           </AbsoluteView>
         )}
+        <HelpMenu context={{ selectedVariants, displayVariants, conflictLevel }} />
       </LeftContainer>
       <TrackingPixel urlEnd={"VariantSelectScreen"} />
     </ScreenContainer>
@@ -181,14 +185,3 @@ const Sidebar = styled(View)`
 `;
 
 export { VariantSelectScreen };
-
-/*
-
-        <Topbar
-          displayVariants={displayVariants}
-          selectedVariants={selectedVariantsForFormat}
-          conflictLevel={conflictLevel}
-          gameOptions={gameOptions}
-          setGameOptions={setGameOptions}
-        />
-        */
