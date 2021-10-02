@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import { View } from "react-native";
 import { SFC } from "primitives";
-import { CollapsableCard } from "ui/Containers";
 import { GameOptions } from "game";
 import { SelectInput } from "ui/Forms";
 import { Row } from "ui";
@@ -24,7 +23,7 @@ const FormatCard: SFC<Props> = ({ gameOptions, setGameOptions, style }) => {
   );
 
   return (
-    <CollapsableCard title={"Format"} style={[style, { overflow: "visible" }]}>
+    <View style={[style, { overflow: "visible" }]}>
       <Row style={{ width: "100%", alignSelf: "center", marginVertical: 4 }}>
         <View style={{ flex: 1, alignItems: "flex-end" }}>
           <FormatIcon format={gameOptions.format} />
@@ -53,11 +52,11 @@ const FormatCard: SFC<Props> = ({ gameOptions, setGameOptions, style }) => {
       <Text
         color={Colors.TEXT.LIGHT_SECONDARY.toString()}
         cat="BodyXS"
-        style={{ marginVertical: 6, marginLeft: 8 }}
+        style={{ marginVertical: 6, marginLeft: 8, paddingBottom: 4 }}
       >
         {formats[gameOptions.format].description}
       </Text>
-    </CollapsableCard>
+    </View>
   );
 };
 

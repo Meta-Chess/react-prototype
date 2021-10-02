@@ -86,6 +86,27 @@ const VariantSelectScreen: FC = () => {
       }}
     >
       <Sidebar>
+        <Divider>
+          <ButtonSecondary
+            label="Back"
+            onPress={goBackOrToStartScreen}
+            style={{ flex: 1 }}
+          />
+          <Button
+            label="Start Game"
+            onPress={(): void => {
+              // console.log(`const gameMaster = new GameMaster(...GameMaster.processConstructorInputs({ gameOptions: calculateGameOptions(${JSON.stringify((Object.keys(gameOptions) as (keyof typeof gameOptions)[]).reduce((acc, k) => gameOptions[k] !== "chess" ? { ...acc, [k]: gameOptions[k] } : { ...acc }, {}))}, ${JSON.stringify(selectedVariants)}) } ));\n const board = gameMaster.game.board;\n\n`); // TEST WRITING HELPER COMMENT
+              navigation.navigate(Screens.GameScreen, {
+                gameOptions: calculateGameOptions(gameOptions, [
+                  ...selectedVariantsForFormat,
+                  boardVariant,
+                ]),
+                roomId: gameOptions.roomId,
+              });
+            }}
+            style={{ flex: 1, marginLeft: 8 }}
+          />
+        </Divider>
         <ScrollView
           style={{
             flex: 1,
@@ -116,29 +137,17 @@ const VariantSelectScreen: FC = () => {
             gameOptions={gameOptions}
             setGameOptions={setGameOptions}
           />
-          <FormatCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
         </ScrollView>
-        <Divider>
-          <ButtonSecondary
-            label="Back"
-            onPress={goBackOrToStartScreen}
-            style={{ flex: 1 }}
-          />
-          <Button
-            label="Start Game"
-            onPress={(): void => {
-              // console.log(`const gameMaster = new GameMaster(...GameMaster.processConstructorInputs({ gameOptions: calculateGameOptions(${JSON.stringify((Object.keys(gameOptions) as (keyof typeof gameOptions)[]).reduce((acc, k) => gameOptions[k] !== "chess" ? { ...acc, [k]: gameOptions[k] } : { ...acc }, {}))}, ${JSON.stringify(selectedVariants)}) } ));\n const board = gameMaster.game.board;\n\n`); // TEST WRITING HELPER COMMENT
-              navigation.navigate(Screens.GameScreen, {
-                gameOptions: calculateGameOptions(gameOptions, [
-                  ...selectedVariantsForFormat,
-                  boardVariant,
-                ]),
-                roomId: gameOptions.roomId,
-              });
-            }}
-            style={{ flex: 1, marginLeft: 8 }}
-          />
-        </Divider>
+        <Divider style={{ padding: 0 }} />
+        <FormatCard
+          gameOptions={gameOptions}
+          setGameOptions={setGameOptions}
+          style={{
+            backgroundColor: Colors.DARKER.toString(),
+            paddingTop: 8,
+            paddingHorizontal: 4,
+          }}
+        />
       </Sidebar>
       <LeftContainer
         style={{
@@ -177,7 +186,7 @@ const LeftContainer = styled(View)`
 `;
 
 const Sidebar = styled(View)`
-  flex-direction: column;
+  flex-direction: column-reverse;
   width: 400px;
   background-color: ${Colors.DARKER.toString()};
   border-left-width: 1px;
