@@ -2,49 +2,44 @@ import { Board, Square } from "game/Board";
 import { PieceName, AnimationType, Direction } from "game/types";
 import { uniq } from "lodash";
 import { isPresent } from "utilities/isPresent";
-import { Rule, ParameterRule, SubscribeToEvents } from "../CompactRules";
-import { addAnimationTokenToSquare, getDefaultParams } from "../utilities";
+import { ParameterRule, SubscribeToEvents } from "../CompactRules";
+import { addAnimationTokenToSquare } from "../utilities";
 
-export const atomic: ParameterRule = (ruleParams): Rule => {
-  const defaultParams = getDefaultParams("atomicSettings"); // TODO: these are still possibly undefined - this typing for defaults should be separated out
-  return {
-    title: "Atomic",
-    description:
-      "When a piece is captured, all pieces on adjacent squares are destroyed. Pawns shield their square from this effect. The capturing piece is also destroyed.",
+export const atomic: ParameterRule<"atomic"> = ({
+  BOOM,
+  "Immune Pieces": immunePieces,
+  "Deep Impact": deepImpact,
+}) => ({
+  title: "Atomic",
+  description:
+    "When a piece is captured, all pieces on adjacent squares are destroyed. Pawns shield their square from this effect. The capturing piece is also destroyed.",
 
-    subscribeToEvents: ({ events }): SubscribeToEvents => {
-      events.subscribe({
-        name: "capture",
-        consequence: ({ board, square }) => {
-          atomicExplosion(
-            board,
-            square,
-            ruleParams?.["BOOM"] ?? defaultParams["BOOM"] ?? 0, // TODO: at least get this to 'ruleParams?.["BOOM"] ?? defaultParams["BOOM"]'
-            ruleParams?.["Immune Pieces"] ?? defaultParams["Immune Pieces"] ?? [[]]
-          )
-            .map((s) => s.location)
-            .forEach((location) => {
-              board.killPiecesAt({ piecesLocation: location });
+  subscribeToEvents: ({ events }): SubscribeToEvents => {
+    events.subscribe({
+      name: "capture",
+      consequence: ({ board, square }) => {
+        atomicExplosion(board, square, BOOM, immunePieces)
+          .map((s) => s.location)
+          .forEach((location) => {
+            board.killPiecesAt({ piecesLocation: location });
 
-              addAnimationTokenToSquare({
-                board: board,
-                squareLocation: location,
-                duration: ANIMATION_DURATION,
-                delay: 0,
-                animationType: AnimationType.explosion,
-              });
+            addAnimationTokenToSquare({
+              board: board,
+              squareLocation: location,
+              duration: ANIMATION_DURATION,
+              delay: 0,
+              animationType: AnimationType.explosion,
             });
+          });
 
-          if (ruleParams?.["Deep Impact"] ?? defaultParams["Deep Impact"] ?? false)
-            board.destroySquare(square.getLocation());
+        if (deepImpact) board.destroySquare(square.getLocation());
 
-          return { board, square };
-        },
-      });
-      return { events };
-    },
-  };
-};
+        return { board, square };
+      },
+    });
+    return { events };
+  },
+});
 
 function atomicExplosion(
   board: Board,

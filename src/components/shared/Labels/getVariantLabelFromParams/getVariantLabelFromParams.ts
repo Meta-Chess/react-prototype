@@ -1,9 +1,10 @@
 import { FutureVariant } from "game/variants";
 import {
   RuleNamesWithParams,
-  allRuleSettings,
   ParamSettingType,
   ParamName,
+  getDefaultSettings,
+  RulesWithParams,
 } from "game/CompactRules";
 import {
   doGameOptionsModifyVariant,
@@ -20,14 +21,17 @@ export function getVariantLabelFromParams(
   let details = "";
   if (doGameOptionsModifyVariant(variant, ruleNamesWithParams)) {
     getGameOptionParamsForVariant(variant, ruleNamesWithParams).forEach((tuple) => {
-      const ruleName = tuple[0];
+      const ruleName = tuple[0] as RulesWithParams;
       const params = tuple[1];
+      const ruleSetting = getDefaultSettings(ruleName);
       keys(params).forEach((paramName) => {
-        const ruleSetting = allRuleSettings[`${ruleName}Settings`]?.[paramName];
-        const paramType = ruleSetting?.paramType;
+        const paramSetting =
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          paramName in ruleSetting ? (ruleSetting as any)[paramName] : undefined;
+        const paramType = paramSetting?.paramType;
 
         if (paramType === ParamSettingType.PieceCycles) {
-          const isSet = (ruleSetting as ParamSettingPieceCycles).usePieceSets;
+          const isSet = (paramSetting as ParamSettingPieceCycles).usePieceSets;
           details += pieceCyclesLabel(params, paramName as ParamName, isSet);
         } else {
           details += "\n- " + paramName + ": " + params[paramName];

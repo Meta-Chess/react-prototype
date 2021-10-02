@@ -2,39 +2,37 @@ import { Square } from "game/Board";
 import { Pather } from "game/Pather";
 import { Direction } from "game/types";
 import { sum } from "lodash";
-import { Rule, ParameterRule, AfterStepModify } from "../CompactRules";
+import { TrivialParameterRule, AfterStepModify } from "../CompactRules";
 import { rotate180 } from "../utilities";
 
-export const diagonalMirror: ParameterRule = (): Rule => {
-  return {
-    title: "Diagonal Mirror",
-    description: "Pieces may reflect diagonally off of edges.",
-    afterStepModify: (input): AfterStepModify => {
-      const { gait, remainingSteps, currentSquare, pather } = input;
+export const diagonalMirror: TrivialParameterRule = () => ({
+  title: "Diagonal Mirror",
+  description: "Pieces may reflect diagonally off of edges.",
+  afterStepModify: (input): AfterStepModify => {
+    const { gait, remainingSteps, currentSquare, pather } = input;
 
-      // TODO (Extension): handle more general reflection (ie lateral as apposed to diagonal reflection)
-      if (!isDiagonal(remainingSteps[0])) return input;
+    // TODO (Extension): handle more general reflection (ie lateral as apposed to diagonal reflection)
+    if (!isDiagonal(remainingSteps[0])) return input;
 
-      if (pather.go({ from: currentSquare, direction: remainingSteps[0] }).length)
-        return input;
+    if (pather.go({ from: currentSquare, direction: remainingSteps[0] }).length)
+      return input;
 
-      const reflectedSquares = getReflections(pather, currentSquare, remainingSteps[0]);
+    const reflectedSquares = getReflections(pather, currentSquare, remainingSteps[0]);
 
-      // TODO (Extension): handle multiple continuing squares then allow path splitting here
-      if (!XOR(reflectedSquares)) return input;
+    // TODO (Extension): handle multiple continuing squares then allow path splitting here
+    if (!XOR(reflectedSquares)) return input;
 
-      // TODO (Extension): generic edge detection
-      const reflection = reflections[reflectedSquares.findIndex((x) => !!x)];
+    // TODO (Extension): generic edge detection
+    const reflection = reflections[reflectedSquares.findIndex((x) => !!x)];
 
-      return {
-        gait: { ...gait, pattern: gait.pattern.map(reflection) },
-        remainingSteps: remainingSteps.map(reflection),
-        currentSquare,
-        pather,
-      };
-    },
-  };
-};
+    return {
+      gait: { ...gait, pattern: gait.pattern.map(reflection) },
+      remainingSteps: remainingSteps.map(reflection),
+      currentSquare,
+      pather,
+    };
+  },
+});
 
 function getReflections(
   pather: Pather,

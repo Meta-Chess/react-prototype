@@ -4,11 +4,8 @@ import { Player } from "game/Player";
 import { allPossiblePieceNames, PieceName, PlayerName, TokenName } from "game/types";
 import { uniq } from "lodash";
 import { LethalCondition, ParameterRule } from "../CompactRules";
-import { getDefaultParams } from "../utilities";
 
-export const extinction: ParameterRule = (
-  { Species: _species } = getDefaultParams("extinctionSettings")
-) => ({
+export const extinction: ParameterRule<"extinction"> = ({ Species: _species }) => ({
   title: "Extinction",
   description: "If a piece type goes extinct for a player, they lose the game.",
 
