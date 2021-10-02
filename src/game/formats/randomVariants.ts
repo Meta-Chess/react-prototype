@@ -1,20 +1,4 @@
-import { FutureVariantName } from "game";
+import { futureVariants } from "game/variants";
+import { keys } from "utilities";
 
-export const randomVariants = [
-  "atomic",
-  "chainReaction",
-  "chemicallyExcitedKnight",
-  "crazyhouse",
-  "fatigue",
-  "noFork",
-  "patheticKing",
-  "threeCheck",
-  "pull",
-  "morphlings",
-  "emptyCenter",
-  "cylindrical",
-  "polar",
-  "spherical",
-  "hex",
-  "toroidal",
-] as FutureVariantName[];
+export const randomVariants = keys(futureVariants);

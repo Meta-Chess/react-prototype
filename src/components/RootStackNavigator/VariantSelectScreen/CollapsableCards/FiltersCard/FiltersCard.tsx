@@ -9,11 +9,11 @@ import { TraitsInSetInfo } from "game";
 import { TraitName, traitInfo } from "game/variants/traitInfo";
 
 interface Props {
-  activeFilters: TraitName[];
-  setActiveFilters: (x: TraitName[]) => void;
+  userFilters: TraitName[];
+  setUserFilters: (x: TraitName[]) => void;
 }
 
-const FiltersCard: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => {
+const FiltersCard: SFC<Props> = ({ userFilters, setUserFilters, style }) => {
   const traitsInSet: TraitsInSetInfo[] = getTraitInfoForSet();
   return (
     <CollapsableCard title={"Filters"} style={style}>
@@ -25,24 +25,24 @@ const FiltersCard: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => 
                 key={info.name}
                 trait={info.name}
                 numberOfVariantsWithTrait={info.count}
-                selected={activeFilters.includes(info.name)}
+                selected={userFilters.includes(info.name)}
                 onPress={(): void =>
-                  activeFilters.includes(info.name)
-                    ? setActiveFilters([])
-                    : setActiveFilters([info.name])
+                  userFilters.includes(info.name)
+                    ? setUserFilters([])
+                    : setUserFilters([info.name])
                 }
                 style={{ flexDirection: "row", margin: 4 }}
               />
             )
         )}
       </Container>
-      {activeFilters.length > 0 && (
+      {userFilters.length > 0 && (
         <Text
           color={Colors.TEXT.LIGHT_SECONDARY.toString()}
           cat="BodyXS"
           style={{ fontStyle: "italic", marginVertical: 6, marginLeft: 8 }}
         >
-          {activeFilters[0] + ": " + traitInfo[activeFilters[0]].description}
+          {userFilters[0] + ": " + traitInfo[userFilters[0]].description}
         </Text>
       )}
     </CollapsableCard>

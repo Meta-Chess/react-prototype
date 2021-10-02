@@ -1,4 +1,8 @@
+import { FutureVariantName, futureVariants } from "game/variants";
 import { RuleName } from "../CompactRules";
+import { randomVariants } from "./randomVariants";
+import { rollableVariants } from "./rollableVariants";
+import { keys } from "utilities";
 
 interface Format {
   title: string;
@@ -28,4 +32,11 @@ export const formats: { [key in FormatName]: Format } = {
     shortExplanation: "Variants in play will change throughout the game",
     ruleNames: ["rollingVariants"],
   },
+};
+
+// could just combine this with formats? might be passing around a lot?
+export const formatVariantValidity: { [key in FormatName]: FutureVariantName[] } = {
+  variantComposition: keys(futureVariants),
+  randomVariants: randomVariants,
+  rollingVariants: rollableVariants,
 };

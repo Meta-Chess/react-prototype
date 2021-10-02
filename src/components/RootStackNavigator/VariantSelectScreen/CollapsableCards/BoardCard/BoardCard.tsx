@@ -94,15 +94,15 @@ const BoardCard: SFC<Props> = ({
 const DropdownContainer = styled(View)`
   overflow: visible;
   flex: 1;
-  margin-left: 12;
-  margin-right: 4;
+  margin-left: 12px;
+  margin-right: 4px;
   flex-direction: column-reverse;
   align-self: flex-start;
 `;
 
 const BoardContainer = styled(View)`
-  width: 200;
-  height: 200;
+  width: 200px;
+  height: 200px;
   justify-content: center;
   align-items: center;
 `;

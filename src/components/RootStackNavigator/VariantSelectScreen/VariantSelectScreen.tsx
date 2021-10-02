@@ -44,10 +44,7 @@ const VariantSelectScreen: FC = () => {
     publicGame: !playWithFriends,
   });
 
-  const [activeFilters, setActiveFilters] = useState<TraitName[]>([]);
-  const displayVariants: FutureVariantName[] =
-    getFilteredVariantsInDisplayOrder(activeFilters);
-
+  const [userFilters, setUserFilters] = useState<TraitName[]>([]);
   const [boardVariant, setBoardVariant] = useState(boardOrder[0]);
   const [selectedVariants, setSelectedVariants] = useState<
     { [key in FormatName]: FutureVariantName[] }
@@ -62,6 +59,12 @@ const VariantSelectScreen: FC = () => {
       setSelectedVariants({ ...selectedVariants, [gameOptions.format]: variants }),
     [selectedVariants, gameOptions.format]
   );
+
+  const displayVariants: FutureVariantName[] = getFilteredVariantsInDisplayOrder({
+    selectedFormat: gameOptions.format,
+    selectedBoard: boardVariant,
+    userFilters: userFilters,
+  });
 
   const variantConflicts: {
     message: string;
@@ -114,10 +117,7 @@ const VariantSelectScreen: FC = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 12, flexDirection: "column-reverse" }}
         >
-          <FiltersCard
-            activeFilters={activeFilters}
-            setActiveFilters={setActiveFilters}
-          />
+          <FiltersCard userFilters={userFilters} setUserFilters={setUserFilters} />
 
           <GameOptionsCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
           <AdviceCard
