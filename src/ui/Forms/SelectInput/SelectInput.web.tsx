@@ -9,9 +9,15 @@ interface Props {
   options: Option[];
   onChange?: (value?: any) => void; //eslint-disable-line @typescript-eslint/no-explicit-any
   zIndex?: number;
+  defaultOptionIndex?: number;
 }
 
-export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
+export const SelectInput: SFC<Props> = ({
+  options,
+  style,
+  onChange,
+  defaultOptionIndex = 0,
+}) => {
   return (
     <View style={style}>
       <Select
@@ -27,7 +33,7 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
         isDisabled={options.length === 1}
         components={{ DropdownIndicator }}
         formatOptionLabel={OptionLabel}
-        defaultValue={options[0]}
+        defaultValue={options[defaultOptionIndex]}
         isSearchable={false}
         theme={(theme): Theme => ({
           ...theme,
@@ -56,7 +62,8 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange }) => {
           menu: (baseStyle): CSSProperties => ({
             ...baseStyle,
             backgroundColor: Colors.DARK.toString(),
-            boxShadow: `0px 1px 8px ${Colors.BLACK.fade(0.5).string()}`,
+            boxShadow: "0px 1px 4px",
+            marginTop: 4,
           }),
           option: (baseStyle, { isFocused, isSelected }): CSSProperties => ({
             ...baseStyle,

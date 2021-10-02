@@ -159,7 +159,9 @@ export type FutureVariantName =
   | "centerfold"
   | "fortifications"
   | "royallyScrewed"
-  | "pawnOrbit";
+  | "pawnOrbit"
+  | "circular"
+  | "standard";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   atomic: {
@@ -245,6 +247,22 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     implemented: true,
     ruleNames: ["hex"],
     complexity: 3,
+  },
+  circular: {
+    title: "Circular",
+    shortDescription: "Circular chess.",
+    traits: ["Board"],
+    implemented: true,
+    ruleNames: ["longBoard", "verticallyCylindrical"],
+    complexity: 2,
+  },
+  standard: {
+    title: "Standard",
+    shortDescription: "Standard chess.",
+    traits: ["Board"],
+    implemented: true,
+    ruleNames: [],
+    complexity: 1,
   },
   kingOfTheHill: {
     title: "King of the Hill",

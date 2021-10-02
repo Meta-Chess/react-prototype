@@ -12,7 +12,13 @@ import { TraitName } from "game/variants/traitInfo";
 import { useNavigation, Screens, useGoBackOrToStartScreen, useRoute } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
-import { FormatCard, FiltersCard, GameOptionsCard, AdviceCard } from "./CollapsableCards";
+import {
+  FormatCard,
+  FiltersCard,
+  GameOptionsCard,
+  AdviceCard,
+  BoardCard,
+} from "./CollapsableCards";
 import { Button, ButtonSecondary, Divider, AbsoluteView } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors, TrackingPixel } from "primitives";
@@ -23,6 +29,7 @@ import { rollableVariants } from "game/formats/rollableVariants";
 import { randomVariants } from "game/formats/randomVariants";
 import { getConflictLevel } from "./getConflictLevel";
 import { VariantModal, VariantModalInfo } from "./Modals/VariantModal";
+import { boardOrder } from "game/boards";
 
 const VariantSelectScreen: FC = () => {
   const playWithFriends = useRoute<Screens.VariantSelectScreen>().params?.playWithFriends;
@@ -39,6 +46,7 @@ const VariantSelectScreen: FC = () => {
   const displayVariants: FutureVariantName[] =
     getFilteredVariantsInDisplayOrder(activeFilters);
 
+  const [boardVariant, setBoardVariant] = useState(boardOrder[0]);
   const [selectedVariants, setSelectedVariants] = useState<
     { [key in FormatName]: FutureVariantName[] }
   >({
@@ -81,23 +89,30 @@ const VariantSelectScreen: FC = () => {
             flex: 1,
           }}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 12 }}
+          contentContainerStyle={{ paddingBottom: 12, flexDirection: "column-reverse" }}
         >
+          <FiltersCard
+            activeFilters={activeFilters}
+            setActiveFilters={setActiveFilters}
+          />
+
+          <GameOptionsCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
+          <AdviceCard
+            selectedVariants={selectedVariantsForFormat}
+            variantConflicts={variantConflicts}
+            gameOptions={gameOptions}
+          />
           <FormatCard
             selectedFormat={gameOptions.format}
             selectedVariants={selectedVariantsForFormat}
             setSelectedVariants={setSelectedVariantsForFormat}
             ruleNamesWithParams={gameOptions.ruleNamesWithParams}
           />
-          <AdviceCard
-            selectedVariants={selectedVariantsForFormat}
-            variantConflicts={variantConflicts}
+          <BoardCard
+            boardVariant={boardVariant}
+            setBoardVariant={setBoardVariant}
             gameOptions={gameOptions}
-          />
-          <GameOptionsCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
-          <FiltersCard
-            activeFilters={activeFilters}
-            setActiveFilters={setActiveFilters}
+            setGameOptions={setGameOptions}
           />
         </ScrollView>
         <Divider>
@@ -111,7 +126,10 @@ const VariantSelectScreen: FC = () => {
             onPress={(): void => {
               // console.log(`const gameMaster = new GameMaster(...GameMaster.processConstructorInputs({ gameOptions: calculateGameOptions(${JSON.stringify((Object.keys(gameOptions) as (keyof typeof gameOptions)[]).reduce((acc, k) => gameOptions[k] !== "chess" ? { ...acc, [k]: gameOptions[k] } : { ...acc }, {}))}, ${JSON.stringify(selectedVariants)}) } ));\n const board = gameMaster.game.board;\n\n`); // TEST WRITING HELPER COMMENT
               navigation.navigate(Screens.GameScreen, {
-                gameOptions: calculateGameOptions(gameOptions, selectedVariantsForFormat),
+                gameOptions: calculateGameOptions(gameOptions, [
+                  ...selectedVariantsForFormat,
+                  boardVariant,
+                ]),
                 roomId: gameOptions.roomId,
               });
             }}
@@ -133,13 +151,6 @@ const VariantSelectScreen: FC = () => {
           conflictLevel={conflictLevel}
           setVariantModalInfo={setVariantModalInfo}
           ruleNamesWithParams={gameOptions.ruleNamesWithParams}
-        />
-        <Topbar
-          displayVariants={displayVariants}
-          selectedVariants={selectedVariantsForFormat}
-          conflictLevel={conflictLevel}
-          gameOptions={gameOptions}
-          setGameOptions={setGameOptions}
         />
         {variantModalInfo.activated && (
           <AbsoluteView style={{ backgroundColor: Colors.BLACK.fade(0.4).toString() }}>
@@ -170,3 +181,14 @@ const Sidebar = styled(View)`
 `;
 
 export { VariantSelectScreen };
+
+/*
+
+        <Topbar
+          displayVariants={displayVariants}
+          selectedVariants={selectedVariantsForFormat}
+          conflictLevel={conflictLevel}
+          gameOptions={gameOptions}
+          setGameOptions={setGameOptions}
+        />
+        */
