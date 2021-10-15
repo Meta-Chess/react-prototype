@@ -182,10 +182,27 @@ class Board extends TokenOwner {
     this.clockwiseDirections = directions;
   }
 
+  getRegionLocations(
+    region: Region,
+    player: PlayerName | "default" = "default"
+  ): string[] {
+    return this.regions[region][player] || [];
+  }
+
   getRegion(region: Region, player: PlayerName | "default" = "default"): Square[] {
-    return (this.regions[region][player] || [])
+    return this.getRegionLocations(region, player)
       .map((loc) => this.squareAt(loc))
       .filter(isPresent);
+  }
+
+  squareInRegion(
+    square: Square,
+    region: Region,
+    player: PlayerName | "default" = "default"
+  ): boolean {
+    return this.getRegionLocations(region, player).some(
+      (regionLocation) => square.getLocation() === regionLocation
+    );
   }
 
   getClockwiseDirections(): Direction[] {
