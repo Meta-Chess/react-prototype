@@ -17,6 +17,8 @@ import { TileSchematic } from "ui/Tiles/TileProps";
 import { OuterContainer } from "./OuterContainer";
 import { TileBase } from "./TileBase";
 import { PositioningContainer } from "./PositioningContainer";
+import { Board } from "game/Board";
+import Color from "color";
 interface Props {
   square: Square | undefined;
   shape: SquareShape;
@@ -38,7 +40,12 @@ const SquareComponent: SFC<Props> = ({
 
   if (!square) return <View style={[style, { width: size, height: size }]} />;
 
-  const backgroundColor = calculateBackgroundColor(square, shape, rules);
+  const backgroundColor = calculateBackgroundColor(
+    square,
+    shape,
+    rules,
+    gameMaster.game.board
+  );
 
   const piecesOrPieceAnimationsOnSquare: (string | Token)[] =
     getDisplayPiecesAndTokens(square);
@@ -133,11 +140,16 @@ const SquareComponent: SFC<Props> = ({
 function calculateBackgroundColor(
   square: Square,
   shape: SquareShape,
-  rules?: RuleName[]
+  rules?: RuleName[],
+  board?: Board
 ): string {
-  return Colors.SQUARE[colorIndex({ ...square.getCoordinates(), shape })]
-    .mix(Colors.DARK, shouldMixSquare(square, rules) ? 0.4 : 0)
-    .string();
+  let baseColor = Colors.SQUARE[colorIndex({ ...square.getCoordinates(), shape })];
+  if (rules?.includes("emptyCenter")) {
+    // this should likely happen last (as it is a filter?)
+    if (board?.squareInRegion("center", square))
+      baseColor = baseColor.desaturate(1).mix(Color("red"), 0.2);
+  }
+  return baseColor.mix(Colors.DARK, shouldMixSquare(square, rules) ? 0.4 : 0).string();
 }
 function shouldMixSquare(square: Square, rules?: RuleName[]): boolean {
   return (

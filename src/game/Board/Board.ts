@@ -186,6 +186,12 @@ class Board extends TokenOwner {
       .filter(isPresent);
   }
 
+  squareInRegion(region: Region, square: Square): boolean {
+    return this.getRegion(region).some(
+      (regionSquare) => regionSquare.location === square.location
+    );
+  }
+
   getClockwiseDirections(): Direction[] {
     return this.clockwiseDirections;
   }
