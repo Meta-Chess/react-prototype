@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Colors, SFC } from "primitives";
 import { Block } from "ui/Containers/Block";
 import { futureVariants as allVariants, formats } from "game";
+import { boardVariants } from "game/boards";
 import { LabelWithDetails, Row } from "ui";
 import { View } from "react-native";
 import { Text } from "primitives";
@@ -16,7 +17,12 @@ const VariantInfoCard: SFC = ({ style }) => {
   const variants = gameMaster.getVariantNames().map((name) => allVariants[name]);
   const title =
     gameMaster.getFormatName() === "variantComposition"
-      ? [...variants.map((v) => v.title), "Chess"].join(" ")
+      ? [
+          ...variants
+            .map((v) => v.title)
+            .sort((v1, _v2) => (v1 in boardVariants ? 1 : 0)),
+          "Chess",
+        ].join(" ")
       : format.title;
 
   return (
