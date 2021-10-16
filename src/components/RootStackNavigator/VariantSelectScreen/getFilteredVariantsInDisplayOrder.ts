@@ -46,7 +46,7 @@ export function baseFilters({
     variantIsImplemented(variantName) &&
     variantNotABoard(variantName) &&
     variantValidWithFormat(variantName, selectedFormat) &&
-    variantValidWithBoard(variantName, selectedBoard, selectedFormat)
+    variantValidWithBoard(variantName, selectedBoard)
   );
 }
 
@@ -67,12 +67,11 @@ function variantValidWithFormat(
 
 function variantValidWithBoard(
   variantName: FutureVariantName,
-  selectedBoard: BoardVariantName,
-  selectedFormat: FormatName
+  selectedBoard: BoardVariantName
 ): boolean {
   return (
     variantIsNotForAnotherBoard(variantName, selectedBoard) &&
-    variantDoesNotConflictBoard(variantName, selectedBoard, selectedFormat)
+    variantDoesNotConflictBoard(variantName, selectedBoard)
   );
 }
 
@@ -90,11 +89,10 @@ function variantIsNotForAnotherBoard(
 
 function variantDoesNotConflictBoard(
   variantName: FutureVariantName,
-  selectedBoard: BoardVariantName,
-  selectedFormat: FormatName
+  selectedBoard: BoardVariantName
 ): boolean {
   return (
-    findConflicts(selectedFormat, [variantName, selectedBoard]).filter(
+    findConflicts("variantComposition", [variantName, selectedBoard]).filter(
       (conflict) => conflict.level === "ERROR"
     ).length === 0
   );

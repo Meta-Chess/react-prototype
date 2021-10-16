@@ -12,6 +12,7 @@ import { GiNinjaStar } from "react-icons/gi";
 import { useUserSettings } from "components/shared";
 import { useCalculatedDimensions } from "components/shared/useCalculatedDimensions";
 import styled from "styled-components/native";
+import { FormatName } from "game/Formats";
 
 const TILE_SIZE = 200;
 
@@ -22,6 +23,7 @@ interface Props {
   conflictLevel: ConflictLevel | undefined;
   setVariantModalInfo: (x: VariantModalInfo) => void;
   ruleNamesWithParams?: RuleNamesWithParams;
+  selectedFormat?: FormatName;
 }
 
 const VariantCardGrid: SFC<Props> = ({
@@ -32,6 +34,7 @@ const VariantCardGrid: SFC<Props> = ({
   conflictLevel,
   setVariantModalInfo,
   ruleNamesWithParams = {},
+  selectedFormat,
 }) => {
   const [detailedView, setDetailedView] = useUserSettings("showDetailedView", false);
   const [zenMode, setZenMode] = useUserSettings("zenMode", false);
@@ -88,6 +91,7 @@ const VariantCardGrid: SFC<Props> = ({
                       futureVariants[variant],
                       ruleNamesWithParams
                     )}
+                    selectedFormat={selectedFormat}
                   />
                 );
               })}

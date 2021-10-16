@@ -169,6 +169,7 @@ const VariantSelectScreen: FC = () => {
           conflictLevel={conflictLevel}
           setVariantModalInfo={setVariantModalInfo}
           ruleNamesWithParams={gameOptions.ruleNamesWithParams}
+          selectedFormat={gameOptions.format}
         />
         {variantModalInfo.activated && (
           <AbsoluteView style={{ backgroundColor: Colors.BLACK.fade(0.4).toString() }}>

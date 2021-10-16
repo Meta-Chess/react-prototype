@@ -11,6 +11,7 @@ import { VariantTileHeader } from "./VariantTileHeader";
 import { VariantTileGraph } from "./VariantTileGraph";
 import Color from "color";
 import { keys } from "utilities/keys";
+import { FormatName } from "game/Formats";
 
 interface Props {
   variant: FutureVariant;
@@ -23,6 +24,7 @@ interface Props {
   detailedView?: boolean;
   zenMode?: boolean;
   size?: number;
+  selectedFormat?: FormatName;
 }
 
 export const VariantTile: SFC<Props> = ({
@@ -37,17 +39,23 @@ export const VariantTile: SFC<Props> = ({
   detailedView,
   zenMode,
   size = 200,
+  selectedFormat = "variantComposition",
 }) => {
-  if (conflictLevel !== undefined && selected) {
-    color =
-      conflictLevel === "ERROR"
-        ? color.mix(Colors.ERROR.darken(0.4), 0.3)
-        : color.mix(Colors.SUCCESS.darken(0.4), 0.3);
-  } else if (selected) {
-    color = color.mix(Colors.SUCCESS.darken(0.4), 0.3);
+  if (selected) {
+    // TODO: want this to be if in deck select mode
+    if (["randomVariants", "rollingVariants"].includes(selectedFormat)) {
+      color = color.mix(Colors.INFO.darken(0.4), 0.2);
+    } else if (conflictLevel !== undefined) {
+      color =
+        conflictLevel === "ERROR"
+          ? color.mix(Colors.ERROR.darken(0.4), 0.3)
+          : color.mix(Colors.SUCCESS.darken(0.4), 0.3);
+    } else {
+      color = color.mix(Colors.SUCCESS.darken(0.4), 0.3);
+    }
   }
-  const imageWidth = useMemo(() => 0.6 * size, [size]);
 
+  const imageWidth = useMemo(() => 0.6 * size, [size]);
   const [ref, hovered] = useHover();
   color = hovered ? color.fade(0.2) : color;
   const implemented = variant.implemented;

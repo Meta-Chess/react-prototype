@@ -19,6 +19,7 @@ const VariantTileInfo: SFC<VariantTileInfoProps> = ({ style, variant }) => {
       cat="BodyXS"
       color={Colors.TEXT.LIGHT.toString()}
       numberOfLines={4}
+      selectable={false}
     >
       {variant.shortDescription}
     </Text>

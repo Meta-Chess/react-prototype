@@ -32,6 +32,7 @@ export const VariantTileHeader: SFC<Props> = ({
         weight="normal"
         color={Colors.TEXT.LIGHT.toString()}
         numberOfLines={1}
+        selectable={false}
       >
         {variant.shortTitle ?? variant.title}
       </TitleText>
