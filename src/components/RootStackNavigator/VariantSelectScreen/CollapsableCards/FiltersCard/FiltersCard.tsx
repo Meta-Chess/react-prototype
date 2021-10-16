@@ -7,14 +7,26 @@ import { getTraitInfoForSet } from "./getTraitInfoForSet";
 import { CollapsableCard } from "ui/Containers";
 import { TraitsInSetInfo } from "game";
 import { TraitName, traitInfo } from "game/variants/traitInfo";
-
+import { BoardVariantName } from "game/boards";
+import { FormatName } from "game/formats";
 interface Props {
   userFilters: TraitName[];
   setUserFilters: (x: TraitName[]) => void;
+  selectedFormat: FormatName;
+  selectedBoard: BoardVariantName;
 }
 
-const FiltersCard: SFC<Props> = ({ userFilters, setUserFilters, style }) => {
-  const traitsInSet: TraitsInSetInfo[] = getTraitInfoForSet();
+const FiltersCard: SFC<Props> = ({
+  userFilters,
+  setUserFilters,
+  selectedFormat,
+  selectedBoard,
+  style,
+}) => {
+  const traitsInSet: TraitsInSetInfo[] = getTraitInfoForSet(
+    selectedFormat,
+    selectedBoard
+  );
   return (
     <CollapsableCard title={"Filters"} style={style}>
       <Container>

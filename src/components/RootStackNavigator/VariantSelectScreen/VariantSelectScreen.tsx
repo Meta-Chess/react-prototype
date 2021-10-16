@@ -118,7 +118,12 @@ const VariantSelectScreen: FC = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 12, flexDirection: "column-reverse" }}
         >
-          <FiltersCard userFilters={userFilters} setUserFilters={setUserFilters} />
+          <FiltersCard
+            selectedFormat={gameOptions.format}
+            selectedBoard={boardVariant}
+            userFilters={userFilters}
+            setUserFilters={setUserFilters}
+          />
 
           <GameOptionsCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
           <AdviceCard

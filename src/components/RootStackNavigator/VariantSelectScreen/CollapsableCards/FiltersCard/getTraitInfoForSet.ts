@@ -1,14 +1,27 @@
 import { futureVariants, TraitsInSetInfo } from "game";
-import { TraitName, allTraitNames } from "game/variants/traitInfo";
+import { TraitName, allTraitNames, traitGraphOrder } from "game/variants/traitInfo";
 import { keys } from "utilities/keys";
+import { baseFilters } from "../../getFilteredVariantsInDisplayOrder";
+import { BoardVariantName } from "game/boards";
+import { FormatName } from "game/formats";
 
 // TODO: soon sets will be groups of variants, and be passed into this function
-export function getTraitInfoForSet(): TraitsInSetInfo[] {
+export function getTraitInfoForSet(
+  selectedFormat: FormatName,
+  selectedBoard: BoardVariantName
+): TraitsInSetInfo[] {
+  const traitOrder = traitGraphOrder.flatMap((trait) => trait);
   const counter: {
     [key in TraitName]: number;
   } = Object.assign({}, ...allTraitNames.map((name) => ({ [name]: 0 })));
   keys(futureVariants)
-    .filter((variantName) => futureVariants[variantName].implemented)
+    .filter((variant) =>
+      baseFilters({
+        variantName: variant,
+        selectedFormat,
+        selectedBoard,
+      })
+    )
     .map((variantName) => futureVariants[variantName])
     .forEach((variant) => {
       for (const trait of variant.traits) {
@@ -16,15 +29,7 @@ export function getTraitInfoForSet(): TraitsInSetInfo[] {
       }
     });
   return keys(counter)
-    .sort((k1, k2) =>
-      counter[k1] != counter[k2]
-        ? counter[k1] > counter[k2]
-          ? -1
-          : 1
-        : k2.localeCompare(k1)
-        ? -1
-        : 1
-    )
+    .sort((k1, k2) => (traitOrder.indexOf(k2) < traitOrder.indexOf(k1) ? 1 : -1))
     .map((key) => ({
       name: key,
       count: counter[key] ?? 0,

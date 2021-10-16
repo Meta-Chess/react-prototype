@@ -33,7 +33,7 @@ export function getFilteredVariantsInDisplayOrder({
     );
 }
 
-function baseFilters({
+export function baseFilters({
   variantName,
   selectedFormat,
   selectedBoard,

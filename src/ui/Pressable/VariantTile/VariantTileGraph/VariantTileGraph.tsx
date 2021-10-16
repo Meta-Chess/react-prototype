@@ -2,7 +2,7 @@ import React, { ComponentProps } from "react";
 import { SFC, Colors } from "primitives";
 import { View } from "react-native";
 import { FutureVariant } from "game";
-import { TraitName, traitInfo } from "game/variants/traitInfo";
+import { traitGraphOrder, traitInfo } from "game/variants/traitInfo";
 import { Svg, Line } from "react-native-svg";
 import { TraitNode } from "./TraitNode";
 
@@ -41,14 +41,7 @@ const VariantTileGraph: SFC<VariantTileGraphProps> = ({
   style,
   orientation = "vertical",
 }) => {
-  const nodeOrder: TraitName[][] = [
-    ["Board"],
-    ["Movement", "Restriction"],
-    ["Reaction"],
-    ["Ending"],
-    ["Simulation"],
-  ];
-  const fillColors = nodeOrder.map((traitNames) =>
+  const fillColors = traitGraphOrder.map((traitNames) =>
     traitNames.map((traitName) =>
       variant.traits.includes(traitName)
         ? traitInfo[traitName].color.toString()
@@ -112,19 +105,5 @@ const VariantTileGraph: SFC<VariantTileGraphProps> = ({
     </View>
   );
 };
-/*
-<Circle cx:0.5} cy={0.5} r={0.4} fill={Colors.BLACK.toString()} />
-        <Circle
-          cx={2}
-          cy={0.5}
-          r={0.4}
-          stroke={Colors.BLACK.toString()}
-          strokeWidth={0.2}
-          fill={Colors.TRAIT.ABILITY.mix(Colors.DARK, 0.2).toString()}
-        />
-        <Circle cx={3.5} cy={0.5} r={0.4} fill={Colors.BLACK.toString()} />
-        <Circle cx={5} cy={0.5} r={0.4} fill={Colors.BLACK.toString()} />
-        <Circle cx={6.5} cy={0.5} r={0.4} fill={Colors.BLACK.toString()} />
-*/
 
 export { VariantTileGraph };
