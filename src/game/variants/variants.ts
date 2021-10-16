@@ -258,7 +258,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   },
   standard: {
     title: "Standard",
-    shortDescription: "Standard chess.",
+    shortDescription: "Standard chess board.",
     traits: ["Board"],
     implemented: true,
     ruleNames: [],

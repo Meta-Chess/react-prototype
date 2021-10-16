@@ -5,19 +5,22 @@ import { chooseRandomVariants } from "./formatProcessing";
 
 export function calculateGameOptions(
   gameOptions: Partial<GameOptions>,
-  selectedVariants: FutureVariantName[]
+  selectedVariants: FutureVariantName[],
+  boardVariant?: FutureVariantName
 ): GameOptions {
   gameOptions.format = gameOptions.format || "variantComposition";
+  const otherBaseVariants =
+    boardVariant !== "standard" && boardVariant !== undefined ? [boardVariant] : [];
   return {
     ...defaultGameOptions,
     ...gameOptions,
     baseVariants: [
       ...(gameOptions.baseVariants || []),
       ...(gameOptions.format === "variantComposition"
-        ? selectedVariants
+        ? [...selectedVariants, ...otherBaseVariants]
         : gameOptions.format === "randomVariants"
-        ? chooseRandomVariants(selectedVariants)
-        : []),
+        ? [...chooseRandomVariants(selectedVariants), ...otherBaseVariants]
+        : otherBaseVariants),
     ],
     deck:
       gameOptions.format === "rollingVariants"

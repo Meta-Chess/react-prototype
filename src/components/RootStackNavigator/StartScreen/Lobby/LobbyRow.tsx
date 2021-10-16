@@ -5,11 +5,11 @@ import { NoTimerIcon, PlayerIcon, TimerIcon } from "primitives/icons";
 import { Colors, SFC, Text, useHover } from "primitives";
 import { formats, FutureVariant, futureVariants as allVariants } from "game";
 import { FormatIcon } from "components/shared";
-import { ChessLabel, NoCheckLabel, VariantLabel } from "components/shared/Labels";
 import styled from "styled-components/native";
 import { LobbyGame } from "./useLobbyQuery";
 import { Screens, useNavigation } from "navigation";
 import { shuffleInPlace } from "utilities/random";
+import { GameVariantLabels } from "components/shared/Labels";
 
 interface Props {
   lobbyGame: LobbyGame;
@@ -18,7 +18,6 @@ interface Props {
 export const LobbyRow: SFC<Props> = ({ lobbyGame }) => {
   const navigation = useNavigation();
   const [hoverRef, hovered] = useHover();
-  const check = lobbyGame.gameOptions.checkEnabled;
   const formatName = lobbyGame.gameOptions.format;
   const format = formats[formatName];
   const deck = lobbyGame.gameOptions.deck;
@@ -81,16 +80,7 @@ export const LobbyRow: SFC<Props> = ({ lobbyGame }) => {
           showsHorizontalScrollIndicator={false}
           style={{ paddingBottom: 8 }}
         >
-          {!check && <NoCheckLabel style={{ marginRight: 4 }} />}
-          {variants.map((variant) => (
-            <VariantLabel
-              key={variant.title}
-              variant={variant}
-              ruleNamesWithParams={lobbyGame.gameOptions.ruleNamesWithParams}
-              style={{ marginRight: 4 }}
-            />
-          ))}
-          {check && variants.length === 0 && <ChessLabel />}
+          <GameVariantLabels givenGameOptions={lobbyGame.gameOptions} marginTop={0} />
         </ScrollLabelRow>
       </FlexContainer>
       {hovered && <LobbyRowCover pointerEvents={"none"} />}

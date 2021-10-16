@@ -6,15 +6,8 @@ import { LabelWithDetails, Row } from "ui";
 import { View } from "react-native";
 import { Text } from "primitives";
 import { WASD } from "./ActiveKeycaps";
-import { VariantLabel, NoCheckLabel, ChessLabel } from "components/shared/Labels";
-import { VariantLabelInfo } from "game/types";
-import Color from "color";
 import { GameContext } from "components/shared";
-
-const VARIANT_LABEL_COLORS: { [key in VariantLabelInfo]: Color } = {
-  [VariantLabelInfo.VariantLeaving]: Colors.HIGHLIGHT.ERROR,
-  [VariantLabelInfo.NewVariant]: Colors.HIGHLIGHT.SUCCESS,
-};
+import { GameVariantLabels } from "components/shared/Labels";
 
 const VariantInfoCard: SFC = ({ style }) => {
   const { gameMaster } = useContext(GameContext);
@@ -25,7 +18,6 @@ const VariantInfoCard: SFC = ({ style }) => {
     gameMaster.getFormatName() === "variantComposition"
       ? [...variants.map((v) => v.title), "Chess"].join(" ")
       : format.title;
-  const noCheck = !gameMaster.getRuleNames().includes("check");
 
   return (
     <Block style={style}>
@@ -41,19 +33,7 @@ const VariantInfoCard: SFC = ({ style }) => {
           color={Colors.MCHESS_ORANGE}
           style={{ marginRight: 4, marginTop: 4 }}
         />
-        {!noCheck && variants.length === 0 && (
-          <ChessLabel style={{ marginRight: 4, marginTop: 4 }} />
-        )}
-        {noCheck && <NoCheckLabel style={{ marginRight: 4, marginTop: 4 }} />}
-        {variants.map((variant, index) => (
-          <VariantLabel
-            key={variant.title}
-            variant={variant}
-            ruleNamesWithParams={gameMaster.gameOptions.ruleNamesWithParams}
-            color={VARIANT_LABEL_COLORS[gameMaster.formatVariantLabelColors[index]]}
-            style={{ marginRight: 4, marginTop: 4 }}
-          />
-        ))}
+        <GameVariantLabels gameMaster={gameMaster} marginTop={4} />
       </View>
     </Block>
   );

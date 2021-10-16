@@ -100,10 +100,11 @@ const VariantSelectScreen: FC = () => {
             onPress={(): void => {
               // console.log(`const gameMaster = new GameMaster(...GameMaster.processConstructorInputs({ gameOptions: calculateGameOptions(${JSON.stringify((Object.keys(gameOptions) as (keyof typeof gameOptions)[]).reduce((acc, k) => gameOptions[k] !== "chess" ? { ...acc, [k]: gameOptions[k] } : { ...acc }, {}))}, ${JSON.stringify(selectedVariants)}) } ));\n const board = gameMaster.game.board;\n\n`); // TEST WRITING HELPER COMMENT
               navigation.navigate(Screens.GameScreen, {
-                gameOptions: calculateGameOptions(gameOptions, [
-                  ...selectedVariantsForFormat,
-                  boardVariant,
-                ]),
+                gameOptions: calculateGameOptions(
+                  gameOptions,
+                  selectedVariantsForFormat,
+                  boardVariant
+                ),
                 roomId: gameOptions.roomId,
               });
             }}
