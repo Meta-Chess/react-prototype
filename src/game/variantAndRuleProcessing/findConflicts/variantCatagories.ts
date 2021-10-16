@@ -25,4 +25,5 @@ export const VARIANT_CATAGORIES: VariantCatagories = {
     "kleinBottle",
     "mobius",
   ],
+  overrideCylinderOnCircular: ["circular", "cylindrical"],
 };

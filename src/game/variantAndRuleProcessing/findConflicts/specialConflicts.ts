@@ -32,5 +32,12 @@ export function specialConflicts(selectedVariants: VariantCatagories): Conflict[
       level: "WARNING",
     });
 
+  // TODO: an easy way to filter out cylindrical for circular, as toroidal exists - can do this more generally
+  if (selectedVariants.overrideCylinderOnCircular.length === 2)
+    conflicts.push({
+      message: "Variants are overridden by other variants",
+      level: "ERROR",
+    });
+
   return conflicts;
 }
