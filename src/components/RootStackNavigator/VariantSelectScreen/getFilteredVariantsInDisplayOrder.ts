@@ -3,6 +3,7 @@ import { TraitName } from "game/variants/traitInfo";
 import { keys } from "utilities";
 import { boardVariants, BoardVariantName, boardRestrictedVariants } from "game/boards";
 import { formatVariantValidity, FormatName } from "game/formats";
+import { findConflicts } from "game/variantAndRuleProcessing";
 
 export function getFilteredVariantsInDisplayOrder({
   selectedFormat,
@@ -45,7 +46,7 @@ function baseFilters({
     variantIsImplemented(variantName) &&
     variantNotABoard(variantName) &&
     variantValidWithFormat(variantName, selectedFormat) &&
-    variantValidWithBoard(variantName, selectedBoard)
+    variantValidWithBoard(variantName, selectedBoard, selectedFormat)
   );
 }
 
@@ -66,6 +67,17 @@ function variantValidWithFormat(
 
 function variantValidWithBoard(
   variantName: FutureVariantName,
+  selectedBoard: BoardVariantName,
+  selectedFormat: FormatName
+): boolean {
+  return (
+    variantIsNotForAnotherBoard(variantName, selectedBoard) &&
+    variantDoesNotConflictBoard(variantName, selectedBoard, selectedFormat)
+  );
+}
+
+function variantIsNotForAnotherBoard(
+  variantName: FutureVariantName,
   selectedBoard: BoardVariantName
 ): boolean {
   return !keys(boardVariants).some((boardVariant) => {
@@ -74,4 +86,16 @@ function variantValidWithBoard(
     const boardIsSelected = boardVariant === selectedBoard;
     return boardContainedByVariant && !boardIsSelected;
   });
+}
+
+function variantDoesNotConflictBoard(
+  variantName: FutureVariantName,
+  selectedBoard: BoardVariantName,
+  selectedFormat: FormatName
+): boolean {
+  return (
+    findConflicts(selectedFormat, [variantName, selectedBoard]).filter(
+      (conflict) => conflict.level === "ERROR"
+    ).length === 0
+  );
 }
