@@ -149,6 +149,7 @@ export type FutureVariantName =
   | "emptyCenter"
   | "extinction"
   | "fatigue"
+  | "fortifications"
   | "gambit"
   | "grandChess"
   | "hex"
@@ -497,14 +498,6 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     imageName: "completedKnightImage",
     implemented: true,
     ruleNames: ["completedKnight"],
-    complexity: 1,
-  },
-  longboard: {
-    title: "Longboard",
-    shortDescription: "Longboard.",
-    traits: ["Board"],
-    implemented: true,
-    ruleNames: ["longBoard", "verticallyCylindrical"],
     complexity: 1,
   },
 };
