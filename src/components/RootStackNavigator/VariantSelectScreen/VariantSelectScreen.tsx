@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback } from "react";
+import React, { FC, useState, useCallback, useEffect } from "react";
 import { View, ScrollView } from "react-native";
 import {
   calculateGameOptions,
@@ -11,7 +11,10 @@ import {
 import { TraitName } from "game/variants/traitInfo";
 import { useNavigation, Screens, useGoBackOrToStartScreen, useRoute } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
-import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
+import {
+  getFilteredVariantsInDisplayOrder,
+  baseFilters,
+} from "./getFilteredVariantsInDisplayOrder";
 import {
   VariantCard,
   FiltersCard,
@@ -30,7 +33,6 @@ import { randomVariants } from "game/formats/randomVariants";
 import { getConflictLevel } from "./getConflictLevel";
 import { VariantModal, VariantModalInfo } from "./Modals/VariantModal";
 import { boardOrder } from "game/boards";
-
 import { HelpMenu } from "components/shared";
 
 const VariantSelectScreen: FC = () => {
@@ -43,6 +45,9 @@ const VariantSelectScreen: FC = () => {
     ...defaultGameOptions,
     publicGame: !playWithFriends,
   });
+
+  /*
+  ,*/
 
   const [userFilters, setUserFilters] = useState<TraitName[]>([]);
   const [boardVariant, setBoardVariant] = useState(boardOrder[0]);
@@ -59,6 +64,19 @@ const VariantSelectScreen: FC = () => {
       setSelectedVariants({ ...selectedVariants, [gameOptions.format]: variants }),
     [selectedVariants, gameOptions.format]
   );
+
+  useEffect(() => {
+    const validVariants = selectedVariantsForFormat.filter((variant) =>
+      baseFilters({
+        variantName: variant,
+        selectedFormat: gameOptions.format,
+        selectedBoard: boardVariant,
+      })
+    );
+    setSelectedVariantsForFormat(
+      selectedVariantsForFormat.filter((variant) => validVariants.includes(variant))
+    );
+  }, [boardVariant, gameOptions.format]);
 
   const displayVariants: FutureVariantName[] = getFilteredVariantsInDisplayOrder({
     selectedFormat: gameOptions.format,
