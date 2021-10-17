@@ -109,7 +109,7 @@ export class CompactRules {
 }
 
 const identityRule = {
-  turnStartPreprocessing: (x: TurnStartPreprocessing) => x,
+  preprocessingAtTurnStart: (x: PreprocessingAtTurnStart) => x,
   afterBoardCreation: (x: AfterBoardCreation) => x,
   afterGameCreation: (x: AfterGameCreation) => x,
   afterStepModify: (x: AfterStepModify) => x,
@@ -300,9 +300,10 @@ export interface ProcessMoves {
   params: PatherParams;
 }
 
-export interface TurnStartPreprocessing {
+export interface PreprocessingAtTurnStart {
   game: Game;
   gameClones: Game[];
+  player: Player;
 }
 
 export interface SubscribeToEvents {

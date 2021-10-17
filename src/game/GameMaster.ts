@@ -474,6 +474,11 @@ export class GameMaster {
 
   startOfTurn(): void {
     this.interrupt.for.formatControlAtTurnStart({ gameMaster: this });
+    this.interrupt.for.preprocessingAtTurnStart({
+      game: this.game,
+      gameClones: this.gameClones,
+      player: this.game.getCurrentPlayer(),
+    });
     if (this.game.getCurrentPlayer().alive || this.game.alivePlayers().length === 0) {
       this.checkGameEndConditions();
       this.render(); // TODO: avoid excess renders when pressing back button
@@ -482,10 +487,6 @@ export class GameMaster {
     } else {
       this.render();
     }
-    this.interrupt.for.turnStartPreprocessing({
-      game: this.game,
-      gameClones: this.gameClones,
-    });
   }
 
   unselectAllPieces(): void {

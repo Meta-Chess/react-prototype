@@ -4,7 +4,7 @@ import {
   OnGaitsGeneratedModify,
   Rule,
   TrivialParameterRule,
-  TurnStartPreprocessing,
+  PreprocessingAtTurnStart,
 } from "../CompactRules";
 import { clone } from "lodash";
 
@@ -12,7 +12,12 @@ export const puppeteers: TrivialParameterRule = (): Rule => {
   return {
     title: "Puppeteers",
     description: "Pieces seen by friendly knights can move as the knights",
-    turnStartPreprocessing: ({ game, gameClones }): TurnStartPreprocessing => {
+    preprocessingAtTurnStart: ({
+      game,
+      gameClones,
+      player,
+      ...rest
+    }): PreprocessingAtTurnStart => {
       const friendlyKnights = game.board.getPiecesByRule(
         (p) => p.name === PieceName.Knight && p.owner === game.currentPlayerIndex
       );
@@ -64,7 +69,7 @@ export const puppeteers: TrivialParameterRule = (): Rule => {
         })
       );
 
-      return { game, gameClones };
+      return { game, gameClones, player, ...rest };
     },
     onGaitsGeneratedModify: ({ game, gaits, piece }): OnGaitsGeneratedModify => {
       const puppeteerTokens = piece.tokensSatisfyingRule(
