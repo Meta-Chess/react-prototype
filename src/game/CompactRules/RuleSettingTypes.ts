@@ -42,6 +42,7 @@ export interface AllRuleParamValue {
   "Immune Pieces": PieceName[][];
   "Deep Impact": boolean;
   "Diagonal Poles": boolean;
+  Large: boolean;
 }
 
 export type ParamName = keyof AllRuleParamValue;

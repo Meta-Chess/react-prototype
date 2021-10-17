@@ -58,10 +58,10 @@ describe("With empty center", () => {
   it("center pawns only have one allowable move on a toroidal board", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs({
-        gameOptions: calculateGameOptions({ checkEnabled: false }, [
-          "emptyCenter",
-          "toroidal",
-        ]),
+        gameOptions: calculateGameOptions(
+          { checkEnabled: false, ruleNamesWithParams: { longBoard: { Large: true } } },
+          ["emptyCenter", "toroidal"]
+        ),
       })
     );
 

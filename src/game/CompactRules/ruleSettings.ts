@@ -30,6 +30,12 @@ export const allRuleSettings: {
       maxCycles: 1,
     },
   },
+  longBoardSettings: {
+    Large: {
+      paramType: ParamSettingType.Boolean,
+      defaultValue: false,
+    },
+  },
   chainReactionSettings: {
     "Max Chain Length": {
       paramType: ParamSettingType.Integer,
