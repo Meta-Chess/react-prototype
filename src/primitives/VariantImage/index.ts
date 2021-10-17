@@ -64,8 +64,8 @@ export { gambitImage };
 import centerfoldImage from "./centerfoldImage.png";
 export { centerfoldImage };
 
-import fortificationsImage from "./fortificationsImage.png";
-export { fortificationsImage };
+import brickImage from "./brickImage.png";
+export { brickImage };
 
 import morphlingsImage from "./morphlingsImage.png";
 export { morphlingsImage };
