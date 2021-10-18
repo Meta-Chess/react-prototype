@@ -31,6 +31,7 @@ export class Pather {
     if (!currentSquare) return [];
 
     const allGaits = this.interrupt.for.onGaitsGeneratedModify({
+      game: this.game,
       gaits: this.piece.generateGaits(),
       piece: this.piece,
     }).gaits;

@@ -30,10 +30,11 @@ export const fatigue: ParameterRule<"fatigue"> = ({ "True Fatigue": trueFatigue 
     });
     return { game, interrupt, board, move, currentTurn };
   },
-  onGaitsGeneratedModify: ({ piece, gaits }): OnGaitsGeneratedModify =>
+  onGaitsGeneratedModify: ({ game, piece, gaits }): OnGaitsGeneratedModify =>
     /* Fatigued pieces can only move to capture king */
     piece.hasTokenWithName(TokenName.Fatigue)
       ? {
+          game,
           gaits: gaits
             .filter((g) => !g.mustNotCapture)
             .map((g) => {
@@ -45,7 +46,7 @@ export const fatigue: ParameterRule<"fatigue"> = ({ "True Fatigue": trueFatigue 
             }),
           piece,
         }
-      : { piece, gaits },
+      : { game, piece, gaits },
   inPostMoveGenerationFilter: ({
     move,
     game,

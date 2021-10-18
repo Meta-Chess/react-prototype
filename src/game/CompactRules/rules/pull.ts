@@ -22,9 +22,9 @@ export const pull: ParameterRule<"pull"> = ({ "Forced Pull": forcePull }): Rule 
       forcePull ? "must" : "may"
     } pull allied pieces along with it. Max chain length: ${MAX_CHAIN_LENGTH} pieces. Pull moves are calculated based on the way the lead piece would move if Pull was not enabled.`,
 
-    onGaitsGeneratedModify: ({ gaits, piece }): OnGaitsGeneratedModify => {
+    onGaitsGeneratedModify: ({ game, gaits, piece }): OnGaitsGeneratedModify => {
       gaits.filter(isLinear).forEach(addLinearMoverToGaitData);
-      return { gaits, piece };
+      return { game, gaits, piece };
     },
 
     //Note: a more rigorous implementation would probably interrupt during pathing not after to allow chains of pieces to not self interfere.

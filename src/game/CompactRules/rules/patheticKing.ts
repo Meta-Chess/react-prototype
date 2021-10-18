@@ -7,7 +7,8 @@ export const patheticKing: ParameterRule<"patheticKing"> = ({
   return {
     title: "Pathetic King",
     description: "Kings cannot capture",
-    onGaitsGeneratedModify: ({ gaits, piece }): OnGaitsGeneratedModify => ({
+    onGaitsGeneratedModify: ({ game, gaits, piece }): OnGaitsGeneratedModify => ({
+      game,
       gaits:
         piece.name === PieceName.King
           ? cantMove

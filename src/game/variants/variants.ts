@@ -161,8 +161,18 @@ export type FutureVariantName =
   | "royallyScrewed"
   | "pawnOrbit"
   | "completedKnight";
+  | "puppeteers";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
+  puppeteers: {
+    title: "Puppeteers",
+    shortDescription: "Pieces seen by friendly knights can move as the knights",
+    traits: ["Movement"],
+    imageName: "puppeteersImage",
+    implemented: true,
+    ruleNames: ["puppeteers"],
+    complexity: 1,
+  },
   atomic: {
     title: "Atomic",
     shortDescription:
