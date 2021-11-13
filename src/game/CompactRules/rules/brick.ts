@@ -35,24 +35,3 @@ export const brick: ParameterRule = (): Rule => {
     },
   };
 };
-
-/*
-filter
- {
-        move:
-        game,
-        gameClones,
-        interrupt,
-        patherParams,
-        filtered,
-      }
-
-
-      gaits:
-        piece.name === PieceName.King
-          ? ruleParams["And cannot move without assistance"] || false
-            ? gaits.flatMap((_gait) => [])
-            : gaits.flatMap((gait) => [{ ...gait, mustNotCapture: true }])
-          : gaits,
-      piece,
-      */
