@@ -1,4 +1,4 @@
-import { Pather } from "game/Pather";
+import { Pather, getAllGaits } from "game/Pather";
 import { PieceName, Gait, TokenName } from "game/types";
 import {
   Rule,
@@ -75,9 +75,16 @@ export const puppeteers: TrivialParameterRule = (): Rule => {
         const pieceId = token.data?.pieceId;
         return pieceId ? board.getPiece(pieceId) ?? [] : [];
       });
+
+      const newCompactRules = game.interrupt.cloneWithoutRule("puppeteers");
       return {
         game,
-        gaits: [...gaits, ...puppeteerPieces.flatMap((piece) => piece?.generateGaits())],
+        gaits: [
+          ...gaits,
+          ...puppeteerPieces.flatMap((piece) =>
+            getAllGaits(newCompactRules, game, piece)
+          ),
+        ],
         piece,
       };
     },

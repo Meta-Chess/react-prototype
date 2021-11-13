@@ -4,6 +4,7 @@ import { Direction, Gait, TokenName } from "../types";
 import { clone, flatMap } from "lodash";
 import { Path } from "./Path";
 import { Move } from "game/Move";
+import { getAllGaits } from "./getAllGaits";
 
 export interface PatherParams {
   checkDepth?: number;
@@ -30,11 +31,7 @@ export class Pather {
     const currentSquare = this.game.board.squareAt(this.piece.location);
     if (!currentSquare) return [];
 
-    const allGaits = this.interrupt.for.onGaitsGeneratedModify({
-      game: this.game,
-      gaits: this.piece.generateGaits(),
-      piece: this.piece,
-    }).gaits;
+    const allGaits = getAllGaits(this.interrupt, this.game, this.piece);
 
     const gaits = filterPacifistMoves
       ? allGaits.filter((g) => !g.mustNotCapture)

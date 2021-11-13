@@ -160,7 +160,7 @@ export type FutureVariantName =
   | "fortifications"
   | "royallyScrewed"
   | "pawnOrbit"
-  | "completedKnight";
+  | "completedKnight"
   | "puppeteers";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
