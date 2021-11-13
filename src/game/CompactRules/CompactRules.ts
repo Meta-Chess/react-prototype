@@ -171,6 +171,7 @@ const ruleOrderPerInterruptionPoint: {
   inPostMoveGenerationFilter: ["theRest", "check"],
   onPieceDisplaced: ["theRest", "promotion"],
   postMove: ["royallyScrewed", "chemicallyExcitedKnight", "theRest"],
+  onGaitsGeneratedModify: ["theRest", "brick"], // filter functionality at the end
 };
 
 export interface AfterBoardCreation {
