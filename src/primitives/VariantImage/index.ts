@@ -87,3 +87,6 @@ export { thinIceImage };
 
 import diagonalMirrorImage from "./diagonalMirrorImage.png";
 export { diagonalMirrorImage };
+
+import completedKnightImage from "./completedKnightImage.png";
+export { completedKnightImage };

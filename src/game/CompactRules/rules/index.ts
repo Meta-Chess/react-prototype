@@ -30,3 +30,4 @@ export * from "./verticallyCylindrical";
 export * from "./royallyScrewed";
 export * from "./pawnOrbit";
 export * from "./thinIce";
+export * from "./completedKnight";

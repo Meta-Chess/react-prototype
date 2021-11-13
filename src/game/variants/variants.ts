@@ -159,7 +159,8 @@ export type FutureVariantName =
   | "centerfold"
   | "fortifications"
   | "royallyScrewed"
-  | "pawnOrbit";
+  | "pawnOrbit"
+  | "completedKnight";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   atomic: {
@@ -443,6 +444,15 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     implemented: false,
     ruleNames: [],
     complexity: 0,
+  },
+  completedKnight: {
+    title: "Completed Knight",
+    shortDescription: "Knights can additionally move 3 spaces in each lateral direction.",
+    traits: ["Movement"],
+    imageName: "completedKnightImage",
+    implemented: true,
+    ruleNames: ["completedKnight"],
+    complexity: 1,
   },
 };
 

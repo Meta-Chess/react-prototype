@@ -31,5 +31,6 @@ export { verticallyCylindrical } from "./verticallyCylindrical";
 export { royallyScrewed } from "./royallyScrewed";
 export { pawnOrbit } from "./pawnOrbit";
 export { thinIce } from "./thinIce";
+export { completedKnight } from "./completedKnight";
 
 // Note: Only rules should be exported from this file
