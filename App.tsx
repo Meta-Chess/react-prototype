@@ -7,8 +7,20 @@ import styled from "styled-components/native";
 import { Colors } from "primitives";
 import { ModalProvider } from "ui";
 import { linking } from "navigation";
+import Amplify from "aws-amplify";
+// TODO: Extract config
+Amplify.configure({
+  Auth: {
+    identityPoolId: "ap-southeast-2:db492aba-f5bf-4a18-bdf3-28119732d791",
+    region: "ap-southeast-2",
+    userPoolId: "ap-southeast-2_E3Huhuflp",
+    userPoolWebClientId: "2ah1g01gu9htpis9lt74bs8fna",
+  },
+});
+// @ts-ignore
+import { withAuthenticator } from "aws-amplify-react-native";
 
-export default function App(): ReactElement {
+function App(): ReactElement {
   return (
     <NavigationContainer linking={linking}>
       <ModalProvider>
@@ -23,6 +35,8 @@ export default function App(): ReactElement {
     </NavigationContainer>
   );
 }
+
+export default withAuthenticator(App);
 
 const KeyboardAvoidingContainer = styled(KeyboardAvoidingView)`
   flex: 1;
