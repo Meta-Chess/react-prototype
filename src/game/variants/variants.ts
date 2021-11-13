@@ -157,7 +157,7 @@ export type FutureVariantName =
   | "gambit"
   | "extinction"
   | "centerfold"
-  | "fortifications"
+  | "brick"
   | "royallyScrewed"
   | "pawnOrbit"
   | "completedKnight"
@@ -446,14 +446,14 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     ruleNames: [],
     complexity: 0,
   },
-  fortifications: {
-    title: "Fortifications",
-    shortDescription: "Rooks cannot capture or be captured.",
-    traits: [],
-    imageName: "fortificationsImage",
-    implemented: false,
-    ruleNames: [],
-    complexity: 0,
+  brick: {
+    title: "Brick",
+    shortDescription: "Rooks cannot initiate capture or be captured.",
+    traits: ["Restriction"],
+    imageName: "brickImage",
+    implemented: true,
+    ruleNames: ["brick"],
+    complexity: 1,
   },
   completedKnight: {
     title: "Completed Knight",

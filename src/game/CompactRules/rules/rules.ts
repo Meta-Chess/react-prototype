@@ -33,5 +33,6 @@ export { pawnOrbit } from "./pawnOrbit";
 export { thinIce } from "./thinIce";
 export { completedKnight } from "./completedKnight";
 export { puppeteers } from "./puppeteers";
+export { brick } from "./brick";
 
 // Note: Only rules should be exported from this file
