@@ -1,21 +1,22 @@
 import { PieceName } from "game/types";
 import {
   Rule,
-  ParameterRule,
   OnGaitsGeneratedModify,
   InPostMoveGenerationFilter,
 } from "../CompactRules";
+import { TrivialParameterRule } from "game";
 
-export const brick: ParameterRule = (): Rule => {
+export const brick: TrivialParameterRule = (): Rule => {
   return {
     title: "Brick",
     description: "Rooks cannot initiate capture or be captured",
-    onGaitsGeneratedModify: ({ gaits, piece }): OnGaitsGeneratedModify => {
+    onGaitsGeneratedModify: ({ game, gaits, piece }): OnGaitsGeneratedModify => {
       if (piece.name === PieceName.Rook) {
         gaits = gaits.flatMap((gait) => [{ ...gait, mustNotCapture: true }]);
       }
 
       return {
+        game: game,
         gaits: gaits,
         piece: piece,
       };
