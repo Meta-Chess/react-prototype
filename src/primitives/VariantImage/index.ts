@@ -90,3 +90,5 @@ export { diagonalMirrorImage };
 
 import completedKnightImage from "./completedKnightImage.png";
 export { completedKnightImage };
+import puppeteersImage from "./puppeteersImage.png";
+export { puppeteersImage };

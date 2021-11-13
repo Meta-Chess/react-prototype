@@ -6,7 +6,8 @@ export const completedKnight: TrivialParameterRule = (): Rule => {
   return {
     title: "Completed Knight",
     description: "Knights additionally move 3 spaces in each lateral direction.",
-    onGaitsGeneratedModify: ({ gaits, piece }): OnGaitsGeneratedModify => ({
+    onGaitsGeneratedModify: ({ game, gaits, piece }): OnGaitsGeneratedModify => ({
+      game,
       gaits:
         piece.name === PieceName.Knight
           ? [

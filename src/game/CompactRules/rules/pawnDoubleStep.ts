@@ -25,7 +25,8 @@ export const pawnDoubleStep: TrivialParameterRule = () => ({
     });
     return { game, interrupt, board, move, currentTurn };
   },
-  onGaitsGeneratedModify: ({ gaits, piece }): OnGaitsGeneratedModify => ({
+  onGaitsGeneratedModify: ({ game, gaits, piece }): OnGaitsGeneratedModify => ({
+    game,
     gaits: [
       ...gaits,
       ...(piece.hasTokenWithName(TokenName.PawnDoubleStep)

@@ -85,6 +85,15 @@ export class CompactRules {
     return this.ruleParams;
   }
 
+  cloneWithoutRule(removeRule: RuleName): CompactRules {
+    return new CompactRules(
+      [],
+      [],
+      this.getRuleNames().filter((ruleName) => ruleName !== removeRule),
+      this.getRuleParams()
+    );
+  }
+
   clone(): CompactRules {
     return new CompactRules([], [], this.getRuleNames(), this.getRuleParams());
   }
@@ -95,6 +104,7 @@ export class CompactRules {
 }
 
 const identityRule = {
+  turnStartPreprocessing: (x: TurnStartPreprocessing) => x,
   afterBoardCreation: (x: AfterBoardCreation) => x,
   afterGameCreation: (x: AfterGameCreation) => x,
   afterStepModify: (x: AfterStepModify) => x,
@@ -242,6 +252,7 @@ export interface OnSendPieceToGrave {
 }
 
 export interface OnGaitsGeneratedModify {
+  game: Game;
   gaits: Gait[];
   piece: Piece;
 }
@@ -279,6 +290,11 @@ export interface ProcessMoves {
   game: Game;
   gameClones: Game[];
   params: PatherParams;
+}
+
+export interface TurnStartPreprocessing {
+  game: Game;
+  gameClones: Game[];
 }
 
 export interface SubscribeToEvents {

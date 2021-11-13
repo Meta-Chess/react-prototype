@@ -31,6 +31,7 @@ const SelectedPieceInfoCard: SFC<Props> = ({ pieces, style }) => {
                 label={tokenDetails[token.name].name}
                 details={tokenDetails[token.name].description}
                 key={index}
+                style={{ marginLeft: index === 0 ? 0 : 4, marginTop: 4 }}
               />
             ))}
           </View>

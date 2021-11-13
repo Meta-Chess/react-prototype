@@ -482,6 +482,10 @@ export class GameMaster {
     } else {
       this.render();
     }
+    this.interrupt.for.turnStartPreprocessing({
+      game: this.game,
+      gameClones: this.gameClones,
+    });
   }
 
   unselectAllPieces(): void {

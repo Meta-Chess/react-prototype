@@ -75,6 +75,7 @@ export enum TokenName {
   AnimationToken,
   CheckCounter,
   ThinIce,
+  Puppeteered,
 }
 
 export interface Token {
