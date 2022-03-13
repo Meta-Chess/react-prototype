@@ -9,7 +9,11 @@ export const integrateWithOtherRules: {
     return ruleNames.includes("hex") ? ["hexCylindrical"] : ["cylindrical"];
   },
   standard: (rules: RuleName[]): RuleName[] => {
-    return rules.includes("hex") || rules.includes("longBoard") ? [] : ["standard"];
+    return rules.includes("hex") ||
+      rules.includes("longBoard") ||
+      rules.includes("grandChess")
+      ? []
+      : ["standard"];
   },
 };
 
@@ -161,9 +165,21 @@ export type FutureVariantName =
   | "royallyScrewed"
   | "pawnOrbit"
   | "completedKnight"
-  | "puppeteers";
+  | "puppeteers"
+  | "grandChess";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
+  grandChess: {
+    title: "Grand",
+    shortDescription:
+      "Grand chess is a large-board chess variant invented by Dutch games designer Christian Freeling in 1984",
+    traits: ["Board"],
+    imageName: undefined,
+    implemented: true,
+    ruleNames: ["grandChess"],
+    complexity: 1,
+  },
+
   puppeteers: {
     title: "Puppeteers",
     shortDescription: "Pieces seen by friendly knights can move as the knights",
