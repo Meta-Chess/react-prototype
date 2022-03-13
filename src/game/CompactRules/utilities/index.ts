@@ -7,3 +7,4 @@ export * from "./rotate180";
 export * from "./createPieceBank";
 export * from "./createPieceMutator";
 export * from "./mutatePiece";
+export * from "./boardCreation";

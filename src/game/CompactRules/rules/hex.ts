@@ -14,7 +14,12 @@ import {
   SquareShape,
   TokenName,
 } from "game/types";
-import { createPiece, determineGaitGenerator, PieceSet } from "../utilities";
+import {
+  createPiece,
+  GET_GAIT_GENERATOR,
+  PieceSet,
+  HEX_CLOCKWISE_DIRECTIONS,
+} from "../utilities";
 
 export const hex: TrivialParameterRule = () => ({
   title: "Hexagon",
@@ -25,14 +30,7 @@ export const hex: TrivialParameterRule = () => ({
     board.defineRegion("center", centerRegion);
     board.defineRegion("promotion", promotionRegionWhite, PlayerName.White);
     board.defineRegion("promotion", promotionRegionBlack, PlayerName.Black);
-    board.defineClockwiseDirections([
-      Direction.H2,
-      Direction.H4,
-      Direction.H6,
-      Direction.H8,
-      Direction.H10,
-      Direction.H12,
-    ]);
+    board.defineClockwiseDirections(HEX_CLOCKWISE_DIRECTIONS);
     return { board, numberOfPlayers };
   },
   onBoardCreate: ({ board, numberOfPlayers }): OnBoardCreate => {
@@ -43,16 +41,7 @@ export const hex: TrivialParameterRule = () => ({
     return { board, numberOfPlayers };
   },
   getGaitGenerator: ({ gaitGenerator, name, owner }): GetGaitGenerator => {
-    return {
-      gaitGenerator: determineGaitGenerator({
-        gaitGenerators: gaitGenerator ? [gaitGenerator] : [],
-        name,
-        set: PieceSet.HexStandard,
-        owner: owner || PlayerName.White,
-      }),
-      name,
-      owner,
-    };
+    return GET_GAIT_GENERATOR({ gaitGenerator, name, owner, set: PieceSet.HexStandard });
   },
 });
 
