@@ -49,6 +49,8 @@ export enum PieceName {
   Queen,
   Bishop,
   Knight,
+  BishopKnight,
+  RookKnight,
 }
 
 export const allPossiblePieceNames = getValues<PieceName>(PieceName);
