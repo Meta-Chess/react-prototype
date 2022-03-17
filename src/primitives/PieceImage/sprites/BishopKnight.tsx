@@ -7,7 +7,6 @@ const BishopKnight: FC = () => {
       <Path
         fillOpacity={1}
         fillRule="evenodd"
-        stroke="#000"
         strokeLinecap="butt"
         strokeLinejoin="round"
         strokeMiterlimit={4}
@@ -18,7 +17,6 @@ const BishopKnight: FC = () => {
       <Path
         fillOpacity={1}
         fillRule="evenodd"
-        stroke="#000"
         strokeLinecap="butt"
         strokeLinejoin="round"
         strokeMiterlimit={4}
@@ -30,7 +28,6 @@ const BishopKnight: FC = () => {
         fill="none"
         fillOpacity={0.75}
         fillRule="evenodd"
-        stroke="#000"
         strokeLinecap="butt"
         strokeLinejoin="miter"
         strokeMiterlimit={4}
@@ -42,7 +39,6 @@ const BishopKnight: FC = () => {
         d="M22.029 36c-10.5-1-16.5-8-16-29h23c0 9-10 6.5-8 21"
         fillOpacity={1}
         fillRule="evenodd"
-        stroke="#000"
         strokeLinecap="round"
         strokeLinejoin="miter"
         strokeMiterlimit={4}
@@ -54,7 +50,6 @@ const BishopKnight: FC = () => {
         d="M20.029 28c-.385-2.911 5.553-7.369 8-9 3-2 2.82-4.343 5-4 1.042.944-1.413 3.038 0 3 1 0-.187-1.232 1-2 1 0 4.003-1 4 4 0 2-6 12-6 12s-1.886 1.902-2 3.5c.726.994.5 2 .5 3-1 1-3-2.5-3-2.5h-2s-.782 1.992-2.5 3c-1 0-1-3-1-3"
         fillOpacity={1}
         fillRule="evenodd"
-        stroke="#000"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit={4}
@@ -68,7 +63,6 @@ const BishopKnight: FC = () => {
         opacity={1}
         fill="#000"
         fillOpacity={1}
-        stroke="#000"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit={4}
@@ -81,7 +75,6 @@ const BishopKnight: FC = () => {
         opacity={1}
         fill="#000"
         fillOpacity={1}
-        stroke="#000"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit={4}
