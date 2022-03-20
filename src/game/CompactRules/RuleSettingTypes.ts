@@ -43,6 +43,7 @@ export interface AllRuleParamValue {
   "Deep Impact": boolean;
   "Diagonal Poles": boolean;
   "Only Friendly Dead Pieces": boolean;
+  "Non Promotion Moves": boolean;
 }
 
 export type ParamName = keyof AllRuleParamValue;

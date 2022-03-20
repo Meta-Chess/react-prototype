@@ -16,6 +16,7 @@ const PROMOTION_PIECES = [
 
 export const promotion: ParameterRule<"promotion"> = ({
   "Only Friendly Dead Pieces": onlyFriendlyDeadPieces,
+  "Non Promotion Moves": nonPromotionMoves,
 }) => ({
   title: "Promotion",
   description:
@@ -55,7 +56,10 @@ export const promotion: ParameterRule<"promotion"> = ({
         return [move];
       }
     });
-    return { moves: processedMoves, game, gameClones, params };
+    const finalMoves = nonPromotionMoves
+      ? [...moves, ...processedMoves]
+      : [...processedMoves];
+    return { moves: finalMoves, game, gameClones, params };
   },
 
   // onPieceDisplaced can be moved into a lower level utility rule when we make other rules to handle other kinds of promotion

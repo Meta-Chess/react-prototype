@@ -18,6 +18,10 @@ class AllRuleSettings implements AllRuleSettingsProto {
       paramType: ParamSettingType.Boolean,
       defaultValue: false,
     },
+    "Non Promotion Moves": {
+      paramType: ParamSettingType.Boolean,
+      defaultValue: true,
+    },
   };
 
   atomic = {
