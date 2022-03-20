@@ -1,4 +1,4 @@
-import { RuleName } from "../CompactRules";
+import { RuleName, RuleNamesWithParams } from "../CompactRules";
 import * as VariantImages from "primitives/VariantImage";
 import { TraitName } from "game/variants/traitInfo";
 
@@ -131,6 +131,7 @@ export interface FutureVariant {
   imageName?: keyof typeof VariantImages;
   implemented: boolean;
   ruleNames: RuleName[];
+  overrideRuleParams?: RuleNamesWithParams;
   complexity: number;
 }
 
@@ -177,6 +178,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     imageName: undefined,
     implemented: true,
     ruleNames: ["grandChess"],
+    overrideRuleParams: {},
     complexity: 1,
   },
 
