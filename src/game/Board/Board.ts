@@ -1,4 +1,4 @@
-import { Piece } from "./Piece";
+import { Piece, PieceStatus } from "./Piece";
 import { Square } from "./Square";
 import { Adjacency } from "./Adjacencies";
 import { TokenOwner } from "./TokenOwner";
@@ -33,7 +33,9 @@ interface PieceIdMap {
 // TODO: This class is too long!
 class Board extends TokenOwner {
   private idGenerator: IdGenerator;
-  private regions: Regions = defaultRegions; //if many more properties arise, we might want to think about a more general storage of them.
+
+  // todo: we want to start thinking about a general store for these properties
+  private regions: Regions = defaultRegions;
   private clockwiseDirections: Direction[] = [];
 
   constructor(
@@ -99,14 +101,33 @@ class Board extends TokenOwner {
     });
   }
 
-  getPieces(includeGraveyards = false): Piece[] {
-    return includeGraveyards
-      ? Object.values(this.pieces)
-      : Object.values(this.pieces).filter(
-          (piece) =>
-            piece.location.charAt(0) !== LocationPrefix.graveyard ||
-            piece.location.slice(0, 3) === LocationPrefix.pieceBank // TODO: maybe turn this into an interruption point or change the way graveyard prefixes work.
+  private pieceHasStatus(piece: Piece, status: PieceStatus): boolean {
+    // todo (when required): unify shared conditional logic
+    // e.g. graveyard means graveyard, but not piece bank - establish defined piece bank condition
+    const pieceStatus: { [status in PieceStatus]: (piece: Piece) => boolean } = {
+      [PieceStatus.Graveyard]: (piece: Piece) => {
+        return (
+          piece.location.charAt(0) === LocationPrefix.graveyard &&
+          piece.location.slice(0, 3) !== LocationPrefix.pieceBank
         );
+      },
+      [PieceStatus.NotGraveyard]: (piece: Piece) => {
+        return (
+          piece.location.charAt(0) !== LocationPrefix.graveyard ||
+          piece.location.slice(0, 3) === LocationPrefix.pieceBank
+        );
+      },
+      [PieceStatus.Dead]: (piece: Piece) => {
+        return piece.location.charAt(0) === LocationPrefix.graveyard;
+      },
+    };
+    return pieceStatus[status](piece);
+  }
+
+  getPieces(statuses: PieceStatus[] = [PieceStatus.NotGraveyard]): Piece[] {
+    return Object.values(this.pieces).filter((piece) =>
+      statuses.every((status) => this.pieceHasStatus(piece, status))
+    );
   }
 
   getPiece(pieceId: string): Piece | undefined {

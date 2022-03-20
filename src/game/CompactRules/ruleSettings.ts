@@ -13,6 +13,13 @@ type AllRuleSettingsProto = {
 };
 
 class AllRuleSettings implements AllRuleSettingsProto {
+  promotion = {
+    "Only Friendly Dead Pieces": {
+      paramType: ParamSettingType.Boolean,
+      defaultValue: false,
+    },
+  };
+
   atomic = {
     "Deep Impact": {
       paramType: ParamSettingType.Boolean,

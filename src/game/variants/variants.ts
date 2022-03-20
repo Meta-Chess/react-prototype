@@ -178,7 +178,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     imageName: undefined,
     implemented: true,
     ruleNames: ["grandChess"],
-    overrideRuleParams: {},
+    overrideRuleParams: { promotion: { "Only Friendly Dead Pieces": true } },
     complexity: 1,
   },
 

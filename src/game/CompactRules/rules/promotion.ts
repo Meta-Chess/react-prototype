@@ -1,10 +1,11 @@
 import { PieceName } from "game/types";
 import { ProcessMoves, OnPieceDisplaced } from "../CompactRules";
-import { Board, TrivialParameterRule } from "game";
+import { Board, ParameterRule } from "game";
 import { nthCartesianPower } from "utilities/nthCartesianPower";
 import { Gait } from "game/types/types";
 import { Move, PieceDelta } from "game/Move";
 import { cloneDeep } from "lodash";
+import { PieceStatus } from "game/Board/Piece";
 
 const PROMOTION_PIECES = [
   PieceName.Queen,
@@ -13,17 +14,30 @@ const PROMOTION_PIECES = [
   PieceName.Bishop,
 ];
 
-export const promotion: TrivialParameterRule = () => ({
+export const promotion: ParameterRule<"promotion"> = ({
+  "Only Friendly Dead Pieces": onlyFriendlyDeadPieces,
+}) => ({
   title: "Promotion",
   description:
     "When pawns reach a promotion square, they can be turned into a queen, knight, rook, or bishop",
 
   processMoves: ({ moves, game, gameClones, params }): ProcessMoves => {
+    let promotionPieces = PROMOTION_PIECES;
+    if (onlyFriendlyDeadPieces) {
+      const capturedPieceNames = game.board
+        .getPieces([PieceStatus.Dead])
+        .filter((piece) => piece.owner === game.currentPlayerIndex)
+        .map((piece) => piece.name);
+      promotionPieces = PROMOTION_PIECES.filter((pieceName) =>
+        capturedPieceNames.includes(pieceName)
+      );
+    }
+
     const board = game.board;
     const processedMoves = moves.flatMap((move) => {
       const [promotionDeltas, nonPromotionDeltas] = partitionDeltas(move, board);
       if (promotionDeltas.length !== 0) {
-        return nthCartesianPower(PROMOTION_PIECES, promotionDeltas.length).map(
+        return nthCartesianPower(promotionPieces, promotionDeltas.length).map(
           (promotions) => {
             return {
               ...cloneDeep(move),
