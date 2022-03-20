@@ -7,14 +7,8 @@ import { Move, PieceDelta } from "game/Move";
 import { cloneDeep } from "lodash";
 import { PieceStatus } from "game/Board/Piece";
 
-const PROMOTION_PIECES = [
-  PieceName.Queen,
-  PieceName.Rook,
-  PieceName.Knight,
-  PieceName.Bishop,
-];
-
 export const promotion: ParameterRule<"promotion"> = ({
+  "Promotion Pieces": paramPromotionPieces,
   "Only Friendly Dead Pieces": onlyFriendlyDeadPieces,
   "Non Promotion Moves": nonPromotionMoves,
 }) => ({
@@ -23,14 +17,15 @@ export const promotion: ParameterRule<"promotion"> = ({
     "When pawns reach a promotion square, they can be turned into a queen, knight, rook, or bishop",
 
   processMoves: ({ moves, game, gameClones, params }): ProcessMoves => {
-    let promotionPieces = PROMOTION_PIECES;
+    let promotionPieces = paramPromotionPieces[0];
     if (onlyFriendlyDeadPieces) {
-      const capturedPieceNames = game.board
+      const deadPieces = game.board
         .getPieces([PieceStatus.Dead])
         .filter((piece) => piece.owner === game.currentPlayerIndex)
         .map((piece) => piece.name);
-      promotionPieces = PROMOTION_PIECES.filter((pieceName) =>
-        capturedPieceNames.includes(pieceName)
+
+      promotionPieces = promotionPieces.filter((pieceName) =>
+        deadPieces.includes(pieceName)
       );
     }
 

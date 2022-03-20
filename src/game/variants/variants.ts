@@ -1,6 +1,7 @@
 import { RuleName, RuleNamesWithParams } from "../CompactRules";
 import * as VariantImages from "primitives/VariantImage";
 import { TraitName } from "game/variants/traitInfo";
+import { PieceName } from "game/types";
 
 export const integrateWithOtherRules: {
   [key in RuleName]?: (rules: RuleName[]) => RuleName[];
@@ -179,7 +180,20 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     implemented: true,
     ruleNames: ["grandChess"],
     overrideRuleParams: {
-      promotion: { "Only Friendly Dead Pieces": true, "Non Promotion Moves": true },
+      promotion: {
+        "Promotion Pieces": [
+          [
+            PieceName.Knight,
+            PieceName.Bishop,
+            PieceName.Rook,
+            PieceName.Queen,
+            PieceName.BishopKnight,
+            PieceName.RookKnight,
+          ],
+        ],
+        "Only Friendly Dead Pieces": true,
+        "Non Promotion Moves": true,
+      },
     },
     complexity: 1,
   },
