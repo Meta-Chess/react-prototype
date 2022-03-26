@@ -5,6 +5,7 @@ import {
   InPostMoveGenerationFilter,
 } from "../CompactRules";
 import { TrivialParameterRule } from "game";
+import { isPieceNameCaptured } from "../utilities";
 
 export const brick: TrivialParameterRule = (): Rule => {
   return {
@@ -27,11 +28,7 @@ export const brick: TrivialParameterRule = (): Rule => {
 
       return {
         ...input,
-        filtered: !!input.move.captures?.some((data) =>
-          data.pieceIds.some(
-            (pieceId) => board?.getPiece(pieceId)?.name === PieceName.Rook
-          )
-        ),
+        filtered: isPieceNameCaptured(input.move, board, PieceName.Rook),
       };
     },
   };
