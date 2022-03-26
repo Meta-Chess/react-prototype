@@ -175,6 +175,7 @@ function compareRulesByList(t1: string, t2: string, list: string[]): number {
 const ruleOrderPerInterruptionPoint: {
   [key in InterruptionName]?: (RuleName | "theRest")[];
 } = {
+  afterBoardCreation: ["theRest", "castling", "clearCastlingTokens"],
   afterStepModify: ["polar", "theRest", "diagonalMirror"],
   lethalCondition: ["extinction", "theRest", "loseWithNoKings"],
   processMoves: ["pull", "theRest", "promotion", "chainReaction"],

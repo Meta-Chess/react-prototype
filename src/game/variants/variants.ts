@@ -178,7 +178,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     traits: ["Board"],
     imageName: undefined,
     implemented: true,
-    ruleNames: ["grandChess"],
+    ruleNames: ["grandChess", "clearCastlingTokens"],
     overrideRuleParams: {
       promotion: {
         "Promotion Pieces": [
