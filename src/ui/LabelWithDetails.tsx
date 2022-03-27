@@ -68,6 +68,8 @@ export const LabelWithDetails: SFC<Props> = ({
               }}
               contentContainerStyle={{ padding: 12 }}
               bounces={false}
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
             >
               <Text cat={"BodyXS"}>{details}</Text>
             </ModalContainer>
