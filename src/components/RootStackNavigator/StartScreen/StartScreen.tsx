@@ -5,7 +5,6 @@ import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
 import { GameProvider, HelpMenu, useAsyncStorage } from "components/shared";
 import { Lobby } from "./Lobby";
-import { SpotlightGame } from "./SpotlightGame";
 import { PlayWithFriends } from "./PlayWithFriends";
 import { ScrollView, Linking, Platform, useWindowDimensions } from "react-native";
 import { ErrorBoundary } from "components/shared/ErrorBoundary";
@@ -56,7 +55,6 @@ const StartScreen: FC = () => {
               }
               secondaryComponent={
                 <>
-                  <SpotlightGame />
                   <PlayWithFriends style={{ marginTop: 12 }} />
                   <Lobby style={{ marginTop: 12 }} />
                 </>
