@@ -90,5 +90,15 @@ export { diagonalMirrorImage };
 
 import completedKnightImage from "./completedKnightImage.png";
 export { completedKnightImage };
+
 import puppeteersImage from "./puppeteersImage.png";
 export { puppeteersImage };
+
+import squareBoardImage from "./squareBoardImage.png";
+export { squareBoardImage };
+
+import circleBoardImage from "./circleBoardImage.png";
+export { circleBoardImage };
+
+import hexBoardImage from "./hexBoardImage.png";
+export { hexBoardImage };

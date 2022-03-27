@@ -252,7 +252,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Hex",
     shortDescription: "A board tiled with hexagons.",
     traits: ["Board"],
-    imageName: "hexImage",
+    imageName: "hexBoardImage",
     implemented: true,
     ruleNames: ["hex"],
     complexity: 3,
