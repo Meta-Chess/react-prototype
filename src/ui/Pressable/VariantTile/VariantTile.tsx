@@ -8,7 +8,7 @@ import { VariantTileImage } from "./VariantTileImage";
 import { RuleNamesWithParamSettings, AllRuleSettings } from "game/CompactRules";
 import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
 import { VariantTileHeader } from "./VariantTileHeader";
-import { VariantTileGraph } from "./VariantTileGraph";
+import { VariantTileTags } from "./VariantTileTags";
 import Color from "color";
 import { keys } from "utilities/keys";
 
@@ -109,20 +109,11 @@ export const VariantTile: SFC<Props> = ({
         {showDetailedView && (
           <VariantTileInfo variant={variant} style={{ width: "100%", height: "100%" }} />
         )}
-        {showDetailedView && (
-          <StyledVariantTileGraph variant={variant} orientation={"horizontal"} />
-        )}
+        {showDetailedView && <VariantTileTags variant={variant} />}
       </VariantTileContent>
     </TouchableContainer>
   );
 };
-
-const StyledVariantTileGraph = styled(VariantTileGraph)`
-  align-self: center;
-  width: 80%;
-  margin-bottom: 0px;
-  margin-top: auto;
-`;
 
 const TouchableContainer = styled(TouchableOpacity)<{ color: Color; size: number }>`
   width: ${({ size }): string => size?.toString()}px;

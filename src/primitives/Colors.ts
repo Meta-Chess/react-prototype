@@ -33,7 +33,7 @@ export const Colors = {
     MOVEMENT: Color("#00CCFF"),
     BOARD: Color("#0064FD"),
     REACTION: Color("#FF5D00"),
-    RESTRICTION: Color("#CC3300"),
+    RESTRICTION: Color("#DF2000"),
     ENDING: Color("#D4AF37"),
     SIMULATION: Color("#8C51FC"),
   },
