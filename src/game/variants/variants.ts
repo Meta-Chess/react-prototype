@@ -169,7 +169,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     shortDescription: "Pieces seen by friendly knights can move as the knights",
     traits: ["Movement"],
     imageName: "puppeteersImage",
-    implemented: true,
+    implemented: false,
     ruleNames: ["puppeteers"],
     complexity: 1,
   },
