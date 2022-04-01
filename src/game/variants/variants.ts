@@ -176,7 +176,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     shortDescription:
       "Grand chess is a large-board chess variant invented by Dutch games designer Christian Freeling in 1984",
     traits: ["Board"],
-    imageName: undefined,
+    imageName: "squareBoardImage",
     implemented: true,
     ruleNames: ["grandChess", "clearCastlingTokens"],
     overrideRuleParams: {
