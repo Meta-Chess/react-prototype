@@ -1,7 +1,7 @@
-import { RuleName } from "game";
-import { RuleNamesWithParams } from "game/CompactRules";
+import type { RuleName } from "game";
+import type { RuleNamesWithParams } from "game/CompactRules";
 import { keys } from "utilities";
-import { injectParamValue } from "./optionsChangeRuleParam";
+import { injectParamValue } from "../optionsChangeRuleParam";
 
 export const overrideRuleParamsWithRuleParams = ({
   baseRuleParams,

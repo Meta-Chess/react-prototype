@@ -1,4 +1,4 @@
-import { Piece, PieceStatus } from "./Piece";
+import { Piece } from "./Piece";
 import { Square } from "./Square";
 import { Adjacency } from "./Adjacencies";
 import { TokenOwner } from "./TokenOwner";
@@ -21,6 +21,7 @@ import { clone } from "lodash";
 import { EventCenter } from "game/EventCenter";
 import { invisibilityToken } from "game/CompactRules/constants";
 import { keys } from "utilities";
+import { PieceStatus, pieceStatusRules } from "./PieceStatus";
 
 interface LocationMap {
   [location: string]: Square;
@@ -102,26 +103,7 @@ class Board extends TokenOwner {
   }
 
   private pieceHasStatus(piece: Piece, status: PieceStatus): boolean {
-    // todo (when required): unify shared conditional logic
-    // e.g. graveyard means graveyard, but not piece bank - establish defined piece bank condition
-    const pieceStatus: { [status in PieceStatus]: (piece: Piece) => boolean } = {
-      [PieceStatus.Graveyard]: (piece: Piece) => {
-        return (
-          piece.location.charAt(0) === LocationPrefix.graveyard &&
-          piece.location.slice(0, 3) !== LocationPrefix.pieceBank
-        );
-      },
-      [PieceStatus.NotGraveyard]: (piece: Piece) => {
-        return (
-          piece.location.charAt(0) !== LocationPrefix.graveyard ||
-          piece.location.slice(0, 3) === LocationPrefix.pieceBank
-        );
-      },
-      [PieceStatus.Dead]: (piece: Piece) => {
-        return piece.location.charAt(0) === LocationPrefix.graveyard;
-      },
-    };
-    return pieceStatus[status](piece);
+    return pieceStatusRules[status](piece);
   }
 
   getPieces(statuses: PieceStatus[] = [PieceStatus.NotGraveyard]): Piece[] {

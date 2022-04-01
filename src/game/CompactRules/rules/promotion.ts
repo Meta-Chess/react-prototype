@@ -5,7 +5,7 @@ import { nthCartesianPower } from "utilities/nthCartesianPower";
 import { Gait } from "game/types/types";
 import { Move, PieceDelta } from "game/Move";
 import { cloneDeep } from "lodash";
-import { PieceStatus } from "game/Board/Piece";
+import { PieceStatus } from "game/Board/PieceStatus";
 
 export const promotion: ParameterRule<"promotion"> = ({
   "Promotion Pieces": paramPromotionPieces,

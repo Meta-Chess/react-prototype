@@ -8,7 +8,7 @@ export const clearCastlingTokens: TrivialParameterRule = () => ({
   afterBoardCreation: ({ board }): AfterBoardCreation => {
     board
       .getPieces()
-      .map((piece) =>
+      .forEach((piece) =>
         piece.removeTokensByNames([TokenName.PassiveCastling, TokenName.ActiveCastling])
       );
     return { board };

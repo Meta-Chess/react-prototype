@@ -1,11 +1,6 @@
 import { PieceName, PlayerName, Token, Gait, GaitParams, AccessMarker } from "game/types";
 import { TokenOwner } from "./TokenOwner";
 
-export enum PieceStatus {
-  "NotGraveyard",
-  "Graveyard",
-  "Dead",
-}
 class Piece extends TokenOwner {
   constructor(
     public name: PieceName,

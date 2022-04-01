@@ -7,7 +7,7 @@ import { Move, PieceDelta } from "game/Move";
 import { EventCenter } from "game/EventCenter";
 import { Pather, PatherParams } from "game/Pather";
 import { GameMaster } from "game/GameMaster";
-import { FutureVariantName, futureVariants } from "game/variants";
+import { FutureVariantName } from "game/variants";
 import { FormatName, formats as allFormats } from "game/formats";
 import {
   getDefaults,
@@ -20,7 +20,7 @@ import {
   RulesWithParams,
 } from "game/CompactRules";
 import { variantsToRules } from "game/variantAndRuleProcessing/variantsToRules";
-import { overrideRuleParamsWithRuleParams } from "game/variantAndRuleProcessing";
+import { overrideRuleParamsForVariants } from "game/variantAndRuleProcessing";
 import { uniq } from "lodash";
 import { keys } from "utilities";
 import { Player } from "game/Player";
@@ -49,15 +49,10 @@ export class CompactRules {
       ...otherRules,
     ]);
     this.ruleParams = ruleParams;
-
-    // overrideRuleParams for each variant
-    variants.forEach((variantName) => {
-      const variantRuleParams = futureVariants[variantName]?.overrideRuleParams;
-      this.ruleParams = overrideRuleParamsWithRuleParams({
-        baseRuleParams: this.ruleParams,
-        overrideRuleParams: variantRuleParams,
-        forRules: this.ruleNames,
-      });
+    this.ruleParams = overrideRuleParamsForVariants({
+      variants,
+      rules: this.ruleNames,
+      baseRuleParams: this.ruleParams,
     });
 
     const interruptionNames = keys(identityRule);
