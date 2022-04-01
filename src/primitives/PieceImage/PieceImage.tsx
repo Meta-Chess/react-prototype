@@ -2,7 +2,16 @@ import React from "react";
 import { PieceName } from "game";
 import { Svg, G } from "react-native-svg";
 import { Colors } from "../Colors";
-import { Bishop, King, Knight, Pawn, Queen, Rook } from "./sprites";
+import {
+  Bishop,
+  King,
+  Knight,
+  Pawn,
+  Queen,
+  Rook,
+  BishopKnight,
+  RookKnight,
+} from "./sprites";
 import { SFC } from "primitives/SFC";
 import { Animated } from "react-native";
 import { AnimatedGroup } from "primitives";
@@ -21,6 +30,17 @@ interface Props {
   animatedOutlineColor?: Animated.AnimatedInterpolation | undefined;
   pieceDecorationNames?: PieceDecorationName[];
 }
+
+const PIECE_SPRITE: { [name in PieceName]: React.ReactNode } = {
+  [PieceName.Pawn]: <Pawn />,
+  [PieceName.Knight]: <Knight />,
+  [PieceName.Bishop]: <Bishop />,
+  [PieceName.Rook]: <Rook />,
+  [PieceName.Queen]: <Queen />,
+  [PieceName.King]: <King />,
+  [PieceName.BishopKnight]: <BishopKnight />,
+  [PieceName.RookKnight]: <RookKnight />,
+};
 
 const PieceImage: SFC<Props> = ({
   type,
@@ -43,19 +63,7 @@ const PieceImage: SFC<Props> = ({
   const alphaModifier = opacity === undefined ? 1 : opacity;
   const paths = (
     <>
-      {type === PieceName.Pawn ? (
-        <Pawn />
-      ) : type === PieceName.Bishop ? (
-        <Bishop />
-      ) : type === PieceName.Knight ? (
-        <Knight />
-      ) : type === PieceName.Rook ? (
-        <Rook />
-      ) : type === PieceName.Queen ? (
-        <Queen />
-      ) : (
-        <King />
-      )}
+      {PIECE_SPRITE[type]}
       {<PieceDecorations pieceDecorationNames={pieceDecorationNames} />}
     </>
   );

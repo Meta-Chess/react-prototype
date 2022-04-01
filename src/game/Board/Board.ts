@@ -21,6 +21,7 @@ import { clone } from "lodash";
 import { EventCenter } from "game/EventCenter";
 import { invisibilityToken } from "game/CompactRules/constants";
 import { keys } from "utilities";
+import { PieceStatus, pieceStatusRules } from "./PieceStatus";
 
 interface LocationMap {
   [location: string]: Square;
@@ -33,7 +34,9 @@ interface PieceIdMap {
 // TODO: This class is too long!
 class Board extends TokenOwner {
   private idGenerator: IdGenerator;
-  private regions: Regions = defaultRegions; //if many more properties arise, we might want to think about a more general storage of them.
+
+  // todo: we want to start thinking about a general store for these properties
+  private regions: Regions = defaultRegions;
   private clockwiseDirections: Direction[] = [];
 
   constructor(
@@ -99,14 +102,14 @@ class Board extends TokenOwner {
     });
   }
 
-  getPieces(includeGraveyards = false): Piece[] {
-    return includeGraveyards
-      ? Object.values(this.pieces)
-      : Object.values(this.pieces).filter(
-          (piece) =>
-            piece.location.charAt(0) !== LocationPrefix.graveyard ||
-            piece.location.slice(0, 3) === LocationPrefix.pieceBank // TODO: maybe turn this into an interruption point or change the way graveyard prefixes work.
-        );
+  private pieceHasStatus(piece: Piece, status: PieceStatus): boolean {
+    return pieceStatusRules[status](piece);
+  }
+
+  getPieces(statuses: PieceStatus[] = [PieceStatus.NotGraveyard]): Piece[] {
+    return Object.values(this.pieces).filter((piece) =>
+      statuses.every((status) => this.pieceHasStatus(piece, status))
+    );
   }
 
   getPiece(pieceId: string): Piece | undefined {

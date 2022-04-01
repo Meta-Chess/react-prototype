@@ -1,47 +1,59 @@
 import { PieceName } from "game/types";
 import { ProcessMoves, OnPieceDisplaced } from "../CompactRules";
-import { Board, TrivialParameterRule } from "game";
+import { Board, ParameterRule } from "game";
 import { nthCartesianPower } from "utilities/nthCartesianPower";
 import { Gait } from "game/types/types";
 import { Move, PieceDelta } from "game/Move";
 import { cloneDeep } from "lodash";
+import { PieceStatus } from "game/Board/PieceStatus";
 
-const PROMOTION_PIECES = [
-  PieceName.Queen,
-  PieceName.Rook,
-  PieceName.Knight,
-  PieceName.Bishop,
-];
-
-export const promotion: TrivialParameterRule = () => ({
+export const promotion: ParameterRule<"promotion"> = ({
+  "Promotion Pieces": paramPromotionPieces,
+  "Only Friendly Dead Pieces": onlyFriendlyDeadPieces,
+  "Non Promotion Moves": nonPromotionMoves,
+}) => ({
   title: "Promotion",
   description:
     "When pawns reach a promotion square, they can be turned into a queen, knight, rook, or bishop",
 
   processMoves: ({ moves, game, gameClones, params }): ProcessMoves => {
+    let promotionPieces = paramPromotionPieces[0];
+    if (onlyFriendlyDeadPieces) {
+      const deadPieces = game.board
+        .getPieces([PieceStatus.Dead])
+        .filter((piece) => piece.owner === game.currentPlayerIndex)
+        .map((piece) => piece.name);
+
+      promotionPieces = promotionPieces.filter((pieceName) =>
+        deadPieces.includes(pieceName)
+      );
+    }
+
     const board = game.board;
-    const processedMoves = moves.flatMap((move) => {
+    const processMoves = moves.flatMap((move) => {
       const [promotionDeltas, nonPromotionDeltas] = partitionDeltas(move, board);
       if (promotionDeltas.length !== 0) {
-        return nthCartesianPower(PROMOTION_PIECES, promotionDeltas.length).map(
-          (promotions) => {
-            return {
-              ...cloneDeep(move),
-              pieceDeltas: [
-                ...promotionDeltas.map((delta, index) => ({
-                  ...cloneDeep(delta),
-                  promoteTo: promotions[index],
-                })),
-                ...cloneDeep(nonPromotionDeltas),
-              ],
-            };
-          }
-        );
+        const promotionMoves = nthCartesianPower(
+          promotionPieces,
+          promotionDeltas.length
+        ).map((promotions) => {
+          return {
+            ...cloneDeep(move),
+            pieceDeltas: [
+              ...promotionDeltas.map((delta, index) => ({
+                ...cloneDeep(delta),
+                promoteTo: promotions[index],
+              })),
+              ...cloneDeep(nonPromotionDeltas),
+            ],
+          };
+        });
+        return nonPromotionMoves ? [move, ...promotionMoves] : promotionMoves;
       } else {
         return [move];
       }
     });
-    return { moves: processedMoves, game, gameClones, params };
+    return { moves: processMoves, game, gameClones, params };
   },
 
   // onPieceDisplaced can be moved into a lower level utility rule when we make other rules to handle other kinds of promotion

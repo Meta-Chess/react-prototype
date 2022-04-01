@@ -34,5 +34,7 @@ export { thinIce } from "./thinIce";
 export { completedKnight } from "./completedKnight";
 export { puppeteers } from "./puppeteers";
 export { brick } from "./brick";
+export { grandChess } from "./grandChess";
+export { clearCastlingTokens } from "./clearCastlingTokens";
 
 // Note: Only rules should be exported from this file

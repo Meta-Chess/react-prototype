@@ -20,6 +20,7 @@ import {
   RulesWithParams,
 } from "game/CompactRules";
 import { variantsToRules } from "game/variantAndRuleProcessing/variantsToRules";
+import { overrideRuleParamsForVariants } from "game/variantAndRuleProcessing";
 import { uniq } from "lodash";
 import { keys } from "utilities";
 import { Player } from "game/Player";
@@ -48,6 +49,11 @@ export class CompactRules {
       ...otherRules,
     ]);
     this.ruleParams = ruleParams;
+    this.ruleParams = overrideRuleParamsForVariants({
+      variants,
+      rules: this.ruleNames,
+      baseRuleParams: this.ruleParams,
+    });
 
     const interruptionNames = keys(identityRule);
 
@@ -55,7 +61,7 @@ export class CompactRules {
       const rule = allRules[ruleName] as ParameterRule<R>;
       const params = {
         ...getDefaults(ruleName),
-        ...ruleParams[ruleName],
+        ...this.ruleParams[ruleName],
       };
       return rule(params);
     };
@@ -164,6 +170,7 @@ function compareRulesByList(t1: string, t2: string, list: string[]): number {
 const ruleOrderPerInterruptionPoint: {
   [key in InterruptionName]?: (RuleName | "theRest")[];
 } = {
+  afterBoardCreation: ["theRest", "castling", "clearCastlingTokens"],
   afterStepModify: ["polar", "theRest", "diagonalMirror"],
   lethalCondition: ["extinction", "theRest", "loseWithNoKings"],
   processMoves: ["pull", "theRest", "promotion", "chainReaction"],

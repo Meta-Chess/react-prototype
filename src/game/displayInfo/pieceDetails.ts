@@ -1,6 +1,6 @@
 import { PieceName } from "game/types";
 
-export const pieceDetails = {
+export const pieceDetails: { [name in PieceName]: { name: string } } = {
   [PieceName.Pawn]: {
     name: "Pawn",
   },
@@ -19,11 +19,19 @@ export const pieceDetails = {
   [PieceName.Knight]: {
     name: "Knight",
   },
+  [PieceName.RookKnight]: {
+    name: "Marshal",
+  },
+  [PieceName.BishopKnight]: {
+    name: "Cardinal",
+  },
 };
 
 export const pieceDisplayOrder = [
   PieceName.King,
   PieceName.Queen,
+  PieceName.RookKnight,
+  PieceName.BishopKnight,
   PieceName.Rook,
   PieceName.Bishop,
   PieceName.Knight,

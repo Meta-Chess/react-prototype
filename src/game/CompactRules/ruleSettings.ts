@@ -13,6 +13,28 @@ type AllRuleSettingsProto = {
 };
 
 class AllRuleSettings implements AllRuleSettingsProto {
+  promotion = {
+    "Promotion Pieces": {
+      paramType: ParamSettingType.PieceCycles,
+      defaultValue: [
+        [PieceName.Knight, PieceName.Bishop, PieceName.Rook, PieceName.Queen],
+      ],
+      allowValue: (sets: PieceName[][]): boolean =>
+        sets.length == 1 && sets[0].length >= 0,
+      excludedPieces: [],
+      usePieceSets: true,
+      maxCycles: 1,
+    },
+    "Only Friendly Dead Pieces": {
+      paramType: ParamSettingType.Boolean,
+      defaultValue: false,
+    },
+    "Non Promotion Moves": {
+      paramType: ParamSettingType.Boolean,
+      defaultValue: false,
+    },
+  };
+
   atomic = {
     "Deep Impact": {
       paramType: ParamSettingType.Boolean,
