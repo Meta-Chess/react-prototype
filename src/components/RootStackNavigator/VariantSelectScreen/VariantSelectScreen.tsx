@@ -32,7 +32,7 @@ const VariantSelectScreen: FC = () => {
 
   const [gameOptions, setGameOptions] = useState<GameOptions>({
     ...defaultGameOptions,
-    publicGame: !playWithFriends,
+    online: playWithFriends,
   });
 
   const [activeFilters, setActiveFilters] = useState<TraitName[]>([]);
