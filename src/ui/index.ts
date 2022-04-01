@@ -10,3 +10,4 @@ export * from "./Separators";
 export * from "./Spinner";
 export * from "./Tiles";
 export * from "./TextIcon";
+export * from "./SocialMedia";
