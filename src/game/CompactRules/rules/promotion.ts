@@ -30,31 +30,30 @@ export const promotion: ParameterRule<"promotion"> = ({
     }
 
     const board = game.board;
-    const processedMoves = moves.flatMap((move) => {
+    const processMoves = moves.flatMap((move) => {
       const [promotionDeltas, nonPromotionDeltas] = partitionDeltas(move, board);
       if (promotionDeltas.length !== 0) {
-        return nthCartesianPower(promotionPieces, promotionDeltas.length).map(
-          (promotions) => {
-            return {
-              ...cloneDeep(move),
-              pieceDeltas: [
-                ...promotionDeltas.map((delta, index) => ({
-                  ...cloneDeep(delta),
-                  promoteTo: promotions[index],
-                })),
-                ...cloneDeep(nonPromotionDeltas),
-              ],
-            };
-          }
-        );
+        const promotionMoves = nthCartesianPower(
+          promotionPieces,
+          promotionDeltas.length
+        ).map((promotions) => {
+          return {
+            ...cloneDeep(move),
+            pieceDeltas: [
+              ...promotionDeltas.map((delta, index) => ({
+                ...cloneDeep(delta),
+                promoteTo: promotions[index],
+              })),
+              ...cloneDeep(nonPromotionDeltas),
+            ],
+          };
+        });
+        return nonPromotionMoves ? [move, ...promotionMoves] : promotionMoves;
       } else {
         return [move];
       }
     });
-    const finalMoves = nonPromotionMoves
-      ? [...moves, ...processedMoves]
-      : [...processedMoves];
-    return { moves: finalMoves, game, gameClones, params };
+    return { moves: processMoves, game, gameClones, params };
   },
 
   // onPieceDisplaced can be moved into a lower level utility rule when we make other rules to handle other kinds of promotion
