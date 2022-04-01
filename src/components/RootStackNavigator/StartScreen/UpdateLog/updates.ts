@@ -1,13 +1,30 @@
 import type { UpdateGroup } from "./UpdateTypes";
+import { getDaysBetweenDates } from "utilities/dates";
 
 export const updates: UpdateGroup[] = [
   // note js month counting starts from 0 = january
   {
     version: { major: 0, minor: 1, patch: 1 },
+    date: new Date(2022, 3, 1),
+    updates: [
+      {
+        label: "Feature",
+        description:
+          "New Variant: Grand Chess! A 10x10 square board including fairy pieces",
+      },
+      {
+        label: "Update",
+        description: "UI tweaks, generic images for base boards",
+      },
+    ],
+  },
+
+  {
+    version: { major: 0, minor: 1, patch: 1 },
     date: new Date(2021, 8, 26),
     updates: [
       {
-        label: "Update!",
+        label: "Feature",
         description:
           "Variant cards redesign, traits redesign into game loop graph. Still evolving!",
       },
@@ -22,7 +39,7 @@ export const updates: UpdateGroup[] = [
         description: "Diagonal Mirror! - bishops are deadly...",
       },
       {
-        label: "Update!",
+        label: "Feature",
         description: "BOOM and piece immunity atomic params",
       },
     ],
@@ -102,3 +119,10 @@ export const updates: UpdateGroup[] = [
     ],
   },
 ];
+
+const STOP_SHOWING_AFTER_DAY = 28; // 4 weeks
+
+export const recentUpdates = updates.filter(
+  (updateGroup) =>
+    getDaysBetweenDates(new Date(Date.now()), updateGroup.date) <= STOP_SHOWING_AFTER_DAY
+);
