@@ -31,8 +31,8 @@ export function calculateGameOptions(
 
 export const defaultGameOptions = {
   checkEnabled: true,
-  online: true,
-  publicGame: true,
+  online: false,
+  publicGame: false,
   numberOfPlayers: 2,
   format: "variantComposition",
   baseVariants: [] as FutureVariantName[],
