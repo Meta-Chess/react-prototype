@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Colors, SFC } from "primitives";
-import { RuleName, Square, Token, TokenName } from "game";
+import { GameMaster, RuleName, Square, Token, TokenName } from "game";
 import { useModals } from "ui";
 import { GameContext, Piece3D } from "components/shared";
 import { TileSchematic } from "ui/Tiles/TileProps";
@@ -11,6 +11,8 @@ import {
   getMercatorSquareGeometry,
   rankFileToSphereCoords,
 } from "primitives/Shapes/MercatorSquare";
+import { getHighlightColorsAndTypes } from "components/shared/Board/Square/Highlight/getHighlightColorsAndTypes";
+import Color from "color";
 
 interface Props {
   square: Square | undefined;
@@ -32,7 +34,7 @@ const SphericalSquareComponent: SFC<Props> = ({
 
   if (!square) return null;
 
-  const backgroundColor = calculateBackgroundColor(square, rules);
+  const backgroundColor = calculateBackgroundColor(gameMaster, square, rules);
 
   const piecesOrPieceAnimationsOnSquare: (string | Token)[] =
     getDisplayPiecesAndTokens(square);
@@ -45,7 +47,7 @@ const SphericalSquareComponent: SFC<Props> = ({
 
   const center = new Vector3(
     ...rankFileToSphereCoords(file + 0.5, rank + 0.5, numberOfFiles, numberOfRanks)
-  ).setLength(0.99);
+  );
 
   return (
     <>
@@ -75,11 +77,10 @@ const SphericalSquareComponent: SFC<Props> = ({
           typeof pieceOrToken === "string" ? (
             <Piece3D
               piece={gameMaster.game.board.findPieceById(pieceOrToken)}
-              size={1} // TODO
               key={index}
-              position={center}
+              position={center.clone().setLength(0.99)}
             />
-          ) : null // TODO
+          ) : null // TODO: implement animation tokens
       )}
 
       <CenterHighlights3D
@@ -92,10 +93,21 @@ const SphericalSquareComponent: SFC<Props> = ({
   );
 };
 
-function calculateBackgroundColor(square: Square, rules?: RuleName[]): string {
-  return Colors.SQUARE[colorIndex({ ...square.getCoordinates() })]
-    .mix(Colors.DARK, shouldMixSquare(square, rules) ? 0.4 : 0)
-    .string();
+function calculateBackgroundColor(
+  gameMaster: GameMaster,
+  square: Square,
+  rules?: RuleName[]
+): string {
+  let color = Colors.SQUARE[colorIndex({ ...square.getCoordinates() })].mix(
+    Colors.DARK,
+    shouldMixSquare(square, rules) ? 0.4 : 0
+  );
+
+  getHighlightColorsAndTypes({ gameMaster, square })
+    .filter(({ type }) => type === "tile")
+    .forEach(({ color: highlightColor }) => (color = color.mix(Color(highlightColor))));
+
+  return color.toString();
 }
 
 function shouldMixSquare(square: Square, rules?: RuleName[]): boolean {

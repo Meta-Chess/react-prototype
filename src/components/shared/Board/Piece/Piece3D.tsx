@@ -13,7 +13,7 @@ interface animatedData {
 
 interface Props {
   piece?: PieceClass;
-  size: number;
+  size?: number;
   color?: string;
   outlineColor?: string;
   glowColor?: string;
@@ -46,7 +46,6 @@ export const Piece3D: FC<Props> = ({
     <PieceImage3D
       type={piece.name}
       color={chosenColor}
-      outlineColor={outlineColor}
       opacity={
         piece.hasTokenWithName(TokenName.Fatigue) &&
         !ignoreTokens &&

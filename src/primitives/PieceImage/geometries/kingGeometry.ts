@@ -3,8 +3,8 @@ import { mergeBufferGeometries } from "three/examples/jsm/utils/BufferGeometryUt
 
 const lathePoints = [
   new Vector2(0, 0),
-  new Vector2(0.1, 0),
-  new Vector2(0.1, 0.03),
+  new Vector2(0.09, 0),
+  new Vector2(0.09, 0.03),
   new Vector2(0.06, 0.03),
   new Vector2(0.05, 0.1),
   new Vector2(0.03, 0.19),
