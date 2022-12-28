@@ -20,8 +20,8 @@ const latheGeometry = new LatheGeometry(lathePoints, 20).toNonIndexed();
 
 const blockShape = new Shape();
 blockShape.moveTo(0.01, 0.29);
-blockShape.lineTo(0.01, 0.307);
-blockShape.lineTo(-0.01, 0.307);
+blockShape.lineTo(0.01, 0.32);
+blockShape.lineTo(-0.01, 0.32);
 blockShape.lineTo(-0.01, 0.29);
 
 const blockGeometry = new ExtrudeGeometry(blockShape, {

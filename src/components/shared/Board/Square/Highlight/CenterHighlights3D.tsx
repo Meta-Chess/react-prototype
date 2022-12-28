@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { GameMaster, Square } from "game";
 import { getHighlightColorsAndTypes } from "./getHighlightColorsAndTypes";
 import { CircleGeometry, Euler, Quaternion, Vector3 } from "three";
+import Color from "color";
 
 interface Props {
   gameMaster: GameMaster;
@@ -22,6 +23,7 @@ export const CenterHighlights3D: FC<Props> = ({
         .filter(({ type }) => type === "center")
         .map(({ color }, index) => (
           <mesh
+            key={index}
             geometry={new CircleGeometry(0.1, 20)}
             position={position}
             rotation={new Euler().setFromQuaternion(
@@ -30,7 +32,13 @@ export const CenterHighlights3D: FC<Props> = ({
             receiveShadow
             castShadow
           >
-            <meshStandardMaterial attach="material" color={color} roughness={0} />
+            <meshStandardMaterial
+              attach="material"
+              color={Color(color).opaquer(1).toString()}
+              roughness={0}
+              transparent={true}
+              opacity={0.7}
+            />
           </mesh>
         ))}
     </>
