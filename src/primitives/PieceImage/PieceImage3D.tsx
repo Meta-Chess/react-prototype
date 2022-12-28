@@ -62,7 +62,12 @@ const PieceImage3D: FC<Props> = ({
       receiveShadow
       castShadow
     >
-      <meshStandardMaterial attach="material" color={primary} roughness={0} />
+      <meshStandardMaterial
+        attach="material"
+        color={primary}
+        roughness={0.2}
+        metalness={0.5}
+      />
     </mesh>
   );
 };
