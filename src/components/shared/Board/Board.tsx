@@ -1,11 +1,11 @@
-import React, { useContext, FC } from "react";
-import { TokenName, SquareShape } from "game";
+import React, { FC, useContext } from "react";
+import { SquareShape, TokenName } from "game";
 import { HexBoard } from "./HexBoard";
-import { SquareBoard } from "./SquareBoard";
 import { BoardMeasurements } from "./calculateBoardMeasurements";
 import { GameContext } from "components/shared";
 import { CircularBoard } from "./CircularBoard";
 import { useCircularBoard } from "./useCircularBoard";
+import { SphericalBoard } from "components/shared/Board/SphericalBoard";
 
 export interface BoardProps {
   backboard?: boolean;
@@ -29,7 +29,7 @@ export const Board: FC<BoardProps> = (props) => {
       {shapeToken?.data?.shape === SquareShape.Hex ? (
         <HexBoard {...props} />
       ) : (
-        <SquareBoard {...props} />
+        <SphericalBoard {...props} />
       )}
     </>
   );
