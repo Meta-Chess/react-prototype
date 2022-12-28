@@ -3,17 +3,16 @@ import { SquareShape } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
 import { TileSchematic } from "ui/Tiles/TileProps";
-import type Color from "color";
 import { ArcTileCenterHighlight } from "./ArcTileCenterHighlight";
 
 interface Props {
-  color: Color;
+  color: string;
   shape: SquareShape;
   tileSchematic?: TileSchematic;
 }
 
 const HIGHLIGHTS: {
-  [key in SquareShape]?: FC<{ color: Color; tileSchematic: TileSchematic }>;
+  [key in SquareShape]?: FC<{ color: string; tileSchematic: TileSchematic }>;
 } = {
   [SquareShape.Arc]: ArcTileCenterHighlight,
 };
@@ -28,8 +27,8 @@ const CenterHighlight: FC<Props> = ({ color, shape, tileSchematic }) => {
   return <CustomHighlight color={color} tileSchematic={tileSchematic} />;
 };
 
-const DefaultHighlight = styled(View)<{ color: Color }>`
-  background-color: ${({ color }): string => color.fade(0.3).string()};
+const DefaultHighlight = styled(View)<{ color: string }>`
+  background-color: ${({ color }): string => color};
   position: absolute;
   top: 30%;
   right: 30%;
