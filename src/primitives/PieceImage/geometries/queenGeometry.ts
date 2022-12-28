@@ -32,5 +32,5 @@ for (let i = 0; i < 21; i++) {
     )
   );
 }
-
+// TODO: Consider doing a low res lathe for the crown to make it pointier
 export const queenGeometry = new LatheGeometry(pawnPoints, 20);

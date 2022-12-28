@@ -13,6 +13,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { Vector2 } from "three";
 import { SphericalSquare } from "components/shared/Board/SphericalSquare";
+import { getCapCirclesGeometry } from "primitives/Shapes";
 
 const SphericalBoard: SFC<BoardProps> = ({
   backboard = true,
@@ -61,10 +62,11 @@ const SphericalBoard: SFC<BoardProps> = ({
         style={{ overflow: "hidden", margin: measurements.boardPaddingHorizontal }}
       >
         <Canvas style={{ background: Colors.BLACK.toString() }} shadows>
-          <ambientLight intensity={0.5} />
+          <ambientLight intensity={0.45} />
           <directionalLight position={[20, 0, 0]} color={0xffcccc} castShadow={true} />
           <directionalLight position={[-10, 0, 17]} color={0xccccff} castShadow={true} />
-          <directionalLight position={[-10, 0, -17]} color={0xdddddd} castShadow={true} />
+          <directionalLight position={[-10, 0, -17]} color={0xe5cce5} castShadow={true} />
+
           {fileCoordinates.map((file) =>
             rankCoordinates.map((rank) => (
               <SphericalSquare
@@ -82,6 +84,18 @@ const SphericalBoard: SFC<BoardProps> = ({
               />
             ))
           )}
+          <mesh
+            geometry={getCapCirclesGeometry(numberOfFiles, numberOfRanks, 8)}
+            receiveShadow
+          >
+            <meshStandardMaterial
+              attach="material"
+              color={Colors.WHITE.toString()}
+              emissive={Colors.WHITE.toString()}
+              emissiveIntensity={1}
+              roughness={0.5}
+            />
+          </mesh>
           <OrbitControls />
         </Canvas>
       </AbsoluteView>
