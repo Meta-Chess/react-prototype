@@ -65,7 +65,11 @@ const SphericalBoard: SFC<BoardProps> = ({
       <AbsoluteView
         style={{ overflow: "hidden", margin: measurements.boardPaddingHorizontal }}
       >
-        <Canvas style={{ background: Colors.BLACK.toString() }} shadows>
+        <Canvas
+          style={{ background: Colors.BLACK.toString() }}
+          camera={{ fov: 4, position: [0, 0, -40] }}
+          shadows
+        >
           <ambientLight intensity={0.45} />
           <directionalLight position={[20, 0, 0]} color={0xffcccc} castShadow={true} />
           <directionalLight position={[-10, 0, 17]} color={0xccccff} castShadow={true} />
