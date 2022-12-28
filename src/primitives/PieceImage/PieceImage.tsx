@@ -1,6 +1,6 @@
 import React from "react";
 import { PieceName, SquareShape } from "game";
-import { G, Svg } from "react-native-svg";
+import { Svg, G } from "react-native-svg";
 import { Colors } from "../Colors";
 import {
   Bishop,
