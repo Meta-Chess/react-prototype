@@ -5,24 +5,24 @@ const lathePoints = [
   new Vector2(0, 0),
   new Vector2(0.1, 0),
   new Vector2(0.1, 0.03),
-  new Vector2(0.08, 0.03),
-  new Vector2(0.06, 0.1),
-  new Vector2(0.04, 0.19),
-  new Vector2(0.06, 0.19),
-  new Vector2(0.06, 0.2),
-  new Vector2(0.04, 0.2),
-  new Vector2(0.06, 0.28),
-  new Vector2(0.04, 0.29),
-  new Vector2(0.02, 0.295),
+  new Vector2(0.06, 0.03),
+  new Vector2(0.05, 0.1),
+  new Vector2(0.03, 0.19),
+  new Vector2(0.045, 0.19),
+  new Vector2(0.045, 0.2),
+  new Vector2(0.03, 0.2),
+  new Vector2(0.05, 0.28),
+  new Vector2(0.03, 0.29),
+  new Vector2(0.01, 0.295),
   new Vector2(0, 0.297),
 ];
 const latheGeometry = new LatheGeometry(lathePoints, 20).toNonIndexed();
 
 const blockShape = new Shape();
-blockShape.moveTo(0.01, 0.297);
+blockShape.moveTo(0.01, 0.29);
 blockShape.lineTo(0.01, 0.307);
 blockShape.lineTo(-0.01, 0.307);
-blockShape.lineTo(-0.01, 0.297);
+blockShape.lineTo(-0.01, 0.29);
 
 const blockGeometry = new ExtrudeGeometry(blockShape, {
   depth: 0.02,

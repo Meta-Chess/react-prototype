@@ -59,6 +59,8 @@ const PieceImage3D: FC<Props> = ({
       rotation={new Euler().setFromQuaternion(
         new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), position)
       )}
+      receiveShadow
+      castShadow
     >
       <meshStandardMaterial attach="material" color={primary} roughness={0} />
     </mesh>

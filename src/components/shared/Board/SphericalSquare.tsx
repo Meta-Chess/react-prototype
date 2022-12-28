@@ -7,6 +7,7 @@ import { TileSchematic } from "ui/Tiles/TileProps";
 import { Vector2, Vector3 } from "three";
 import Color from "color";
 import { getDisplayPiecesAndTokens } from "components/shared/Board/Square/getDisplayPiecesAndTokens";
+import { CenterHighlights3D } from "components/shared/Board/Square/Highlight/CenterHighlights3D";
 
 interface Props {
   square: Square | undefined;
@@ -40,6 +41,7 @@ const SphericalSquareComponent: SFC<Props> = ({
     gameMaster.onSquarePress(square.location);
   };
 
+  // TODO Spherical: extract and increase resolution
   const vertices = new Float32Array([
     ...toVertexCoords(file, rank, numberOfFiles, numberOfRanks),
     ...toVertexCoords(file, rank + 0.5, numberOfFiles, numberOfRanks),
@@ -81,7 +83,7 @@ const SphericalSquareComponent: SFC<Props> = ({
 
   return (
     <>
-      <mesh onClick={onPress}>
+      <mesh onClick={onPress} receiveShadow castShadow>
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
@@ -108,7 +110,7 @@ const SphericalSquareComponent: SFC<Props> = ({
             count={indices.length}
           />
         </bufferGeometry>
-        <meshPhongMaterial attach="material" color={backgroundColor} shininess={0.5} />
+        <meshStandardMaterial attach="material" color={backgroundColor} roughness={0.5} />
       </mesh>
 
       {piecesOrPieceAnimationsOnSquare.map(
@@ -122,6 +124,13 @@ const SphericalSquareComponent: SFC<Props> = ({
             />
           ) : null // TODO
       )}
+
+      <CenterHighlights3D
+        gameMaster={gameMaster}
+        square={square}
+        position={center}
+        normal={center}
+      />
     </>
   );
 };
