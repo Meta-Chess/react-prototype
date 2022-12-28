@@ -60,9 +60,11 @@ const SphericalBoard: SFC<BoardProps> = ({
       <AbsoluteView
         style={{ overflow: "hidden", margin: measurements.boardPaddingHorizontal }}
       >
-        <Canvas style={{ background: Colors.BLACK.toString() }}>
-          <ambientLight intensity={0.4} />
-          <directionalLight position={[0, 20, 10]} intensity={1.5} />
+        <Canvas style={{ background: Colors.BLACK.toString() }} shadows>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[20, 0, 0]} color={0xffcccc} castShadow={true} />
+          <directionalLight position={[-10, 0, 17]} color={0xccccff} castShadow={true} />
+          <directionalLight position={[-10, 0, -17]} color={0xdddddd} castShadow={true} />
           {fileCoordinates.map((file) =>
             rankCoordinates.map((rank) => (
               <SphericalSquare
