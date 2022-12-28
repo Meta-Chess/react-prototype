@@ -4,12 +4,13 @@ import { HexBoard } from "./HexBoard";
 import { BoardMeasurements } from "./calculateBoardMeasurements";
 import { GameContext } from "components/shared";
 import { CircularBoard } from "./CircularBoard";
-import { useCircularBoard } from "./useCircularBoard";
+import { useBoardType } from "./useBoardType";
 import { SphericalBoard } from "components/shared/Board/SphericalBoard";
+import { SquareBoard } from "components/shared/Board/SquareBoard";
 
 export interface BoardProps {
   backboard?: boolean;
-  measurements: BoardMeasurements;
+  measurements: BoardMeasurements; // TODO: the measurements should care about the board type
   flipBoard?: boolean;
   circularBoard?: boolean;
 }
@@ -18,18 +19,25 @@ export const Board: FC<BoardProps> = (props) => {
   const { gameMaster } = useContext(GameContext);
   const shapeToken = gameMaster?.game.board.firstTokenWithName(TokenName.Shape);
 
-  const setCircularBoard = useCircularBoard();
-  const showCircularBoard = props.circularBoard ?? setCircularBoard;
+  const boardTypeOverride =
+    props.circularBoard === true
+      ? "circular"
+      : props.circularBoard === false
+      ? "flat"
+      : undefined;
 
-  if (showCircularBoard) {
-    return <CircularBoard {...props} />;
-  }
+  const boardType = useBoardType(boardTypeOverride);
+
   return (
     <>
-      {shapeToken?.data?.shape === SquareShape.Hex ? (
+      {boardType === "circular" ? (
+        <CircularBoard {...props} />
+      ) : boardType === "spherical" ? (
+        <SphericalBoard {...props} />
+      ) : shapeToken?.data?.shape === SquareShape.Hex ? (
         <HexBoard {...props} />
       ) : (
-        <SphericalBoard {...props} />
+        <SquareBoard {...props} />
       )}
     </>
   );

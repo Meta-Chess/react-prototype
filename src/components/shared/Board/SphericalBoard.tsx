@@ -24,6 +24,10 @@ const SphericalBoard: SFC<BoardProps> = ({
   useEffect(() => gameMaster?.game.board.setVisualShapeToken(SquareShape.Square));
   const game = gameMaster?.game;
 
+  const boardSize = Math.min(measurements.boardAreaWidth, measurements.boardAreaHeight);
+  measurements.width = boardSize;
+  measurements.height = boardSize;
+
   const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
   const numberOfFiles = useMemo(() => maxFile - minFile + 1, [minFile, maxFile]);
   const numberOfRanks = useMemo(() => maxRank - minRank + 1, [minRank, maxRank]);
