@@ -1,6 +1,6 @@
 import React from "react";
-import { PieceName } from "game";
-import { Svg, G } from "react-native-svg";
+import { GameMaster, PieceName } from "game";
+import { G, Svg } from "react-native-svg";
 import { Colors } from "../Colors";
 import { Bishop, King, Knight, Pawn, Queen, Rook } from "./sprites";
 import { SFC } from "primitives/SFC";
@@ -8,7 +8,7 @@ import { Animated } from "react-native";
 import { AnimatedGroup } from "primitives";
 import { PieceDecorationName } from "components/shared/Board/Piece/getPieceDecorationNames";
 import { PieceDecorations } from "./PieceDecorations";
-import { GameMaster } from "game";
+
 interface Props {
   type: PieceName;
   color?: string | undefined;

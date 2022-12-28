@@ -1,10 +1,10 @@
 import React, { FC, useContext } from "react";
-import { Piece as PieceClass, PlayerName, TokenName } from "game";
-import { Colors, PieceImage } from "primitives";
-import { Animated, TouchableOpacity } from "react-native";
-import styled from "styled-components/native";
+import { Piece as PieceClass, TokenName } from "game";
+import { Colors, PieceImage3D } from "primitives";
+import { Animated } from "react-native";
 import { getPieceDecorationNames } from "./getPieceDecorationNames";
 import { GameContext } from "components/shared";
+import { Vector3 } from "three";
 
 interface animatedData {
   animatedColor: Animated.AnimatedInterpolation;
@@ -18,21 +18,17 @@ interface Props {
   outlineColor?: string;
   glowColor?: string;
   animatedData?: animatedData;
-  onPress?: () => void;
   ignoreTokens?: boolean;
-  threeDimensional?: boolean;
+  position: Vector3;
 }
 
-const Piece: FC<Props> = ({
+export const Piece3D: FC<Props> = ({
   piece,
-  size,
   color,
   outlineColor,
-  glowColor,
   animatedData,
-  onPress,
   ignoreTokens,
-  threeDimensional = false,
+  ...moreProps
 }) => {
   const { gameMaster } = useContext(GameContext);
 
@@ -46,13 +42,11 @@ const Piece: FC<Props> = ({
     : animated
     ? undefined
     : Colors.PLAYER[piece.owner].string();
-  const PieceImageComponent = (
-    <PieceImage
+  return (
+    <PieceImage3D
       type={piece.name}
       color={chosenColor}
       outlineColor={outlineColor}
-      size={size}
-      rotatePiece={gameMaster?.overTheBoard && piece.owner === PlayerName.Black}
       opacity={
         piece.hasTokenWithName(TokenName.Fatigue) &&
         !ignoreTokens &&
@@ -60,28 +54,10 @@ const Piece: FC<Props> = ({
           ? 0.4
           : 1
       }
-      glowColor={glowColor}
       animatedColor={animated ? animatedData?.animatedColor : undefined}
       animatedOutlineColor={animated ? animatedData?.animatedOutlineColor : undefined}
       pieceDecorationNames={pieceDecorationNames}
-      gameMaster={gameMaster}
-      threeDimensional={threeDimensional}
+      {...moreProps}
     />
   );
-  return onPress ? (
-    <PressableContainer size={size} onPress={onPress}>
-      {PieceImageComponent}
-    </PressableContainer>
-  ) : (
-    PieceImageComponent
-  );
 };
-
-const PressableContainer = styled(TouchableOpacity)<{ size: number }>`
-  width: ${({ size }): number => size}px;
-  height: ${({ size }): number => size}px;
-  border-radius: 50%;
-  overflow: visible;
-`;
-
-export { Piece };
