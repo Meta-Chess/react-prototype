@@ -18,7 +18,7 @@ import { getCapCirclesGeometry } from "primitives/Shapes";
 const SphericalBoard: SFC<BoardProps> = ({
   backboard = true,
   measurements,
-  flipBoard = false,
+  // flipBoard = false, // TODO
 }) => {
   const { gameMaster } = useContext(GameContext);
   useEffect(() => gameMaster?.game.board.setVisualShapeToken(SquareShape.Square));
@@ -124,10 +124,6 @@ const BoardContainer = styled(View)<{
   padding-horizontal: ${({ measurements }): number =>
     measurements.boardPaddingHorizontal}px;
   padding-vertical: ${({ measurements }): number => measurements.boardPaddingVertical}px;
-`;
-
-const ColumnContainer = styled(View)<{ flipBoard: boolean }>`
-  flex-direction: ${({ flipBoard }): string => (flipBoard ? "column" : "column-reverse")};
 `;
 
 export { SphericalBoard };

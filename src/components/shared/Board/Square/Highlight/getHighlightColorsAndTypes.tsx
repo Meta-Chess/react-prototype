@@ -1,4 +1,3 @@
-import React from "react";
 import { Colors } from "primitives";
 import { GameMaster, Square, SquareInfo } from "game";
 import Color from "color";
@@ -12,7 +11,7 @@ export const getHighlightColorsAndTypes = ({
 }): { color: string; type: "center" | "tile" }[] => {
   return gameMaster.squaresInfo
     .get(square.location) // TODO: sort highlights?
-    .map((info, index) =>
+    .map((info) =>
       ![
         SquareInfo.PossibleMovePassiveEndPoint,
         SquareInfo.PossibleMoveAggressiveEndPoint,

@@ -2,6 +2,7 @@ import { ExtrudeGeometry, LatheGeometry, Shape, Vector2 } from "three";
 import { mergeBufferGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 // TODO: try a smoother shape?
+// TODO: work out how to get the Knights to face the right way
 const horseShape = new Shape();
 horseShape.moveTo(0.055, 0.03);
 horseShape.lineTo(0.035, 0.08);
@@ -32,6 +33,4 @@ const basePoints = [
 ];
 const baseGeometry = new LatheGeometry(basePoints, 20).toNonIndexed();
 
-console.log(horseGeometry.index, baseGeometry.index);
 export const knightGeometry = mergeBufferGeometries([horseGeometry, baseGeometry], false);
-// export const knightGeometry = horseGeometry;

@@ -25,8 +25,7 @@ interface Props {
 export const Piece3D: FC<Props> = ({
   piece,
   color,
-  outlineColor,
-  animatedData,
+  animatedData, // TODO: animation handling
   ignoreTokens,
   ...moreProps
 }) => {
