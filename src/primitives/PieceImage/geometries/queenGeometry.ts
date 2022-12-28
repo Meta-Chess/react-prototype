@@ -2,8 +2,8 @@ import { LatheGeometry, Vector2 } from "three";
 
 const pawnPoints = [
   new Vector2(0, 0),
-  new Vector2(0.1, 0),
-  new Vector2(0.1, 0.03),
+  new Vector2(0.09, 0),
+  new Vector2(0.09, 0.03),
   new Vector2(0.08, 0.03),
   new Vector2(0.05, 0.1),
   new Vector2(0.035, 0.19),

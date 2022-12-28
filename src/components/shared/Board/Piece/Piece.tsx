@@ -20,7 +20,6 @@ interface Props {
   animatedData?: animatedData;
   onPress?: () => void;
   ignoreTokens?: boolean;
-  threeDimensional?: boolean;
 }
 
 const Piece: FC<Props> = ({
@@ -32,7 +31,6 @@ const Piece: FC<Props> = ({
   animatedData,
   onPress,
   ignoreTokens,
-  threeDimensional = false,
 }) => {
   const { gameMaster } = useContext(GameContext);
 
@@ -65,7 +63,6 @@ const Piece: FC<Props> = ({
       animatedOutlineColor={animated ? animatedData?.animatedOutlineColor : undefined}
       pieceDecorationNames={pieceDecorationNames}
       gameMaster={gameMaster}
-      threeDimensional={threeDimensional}
     />
   );
   return onPress ? (
