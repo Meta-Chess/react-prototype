@@ -3,12 +3,14 @@ import { PieceName } from "game";
 import { Animated } from "react-native";
 import { PieceDecorationName } from "components/shared/Board/Piece/getPieceDecorationNames";
 import { Euler, Quaternion, Vector3 } from "three";
-import { pawnGeometry } from "primitives/PieceImage/geometries/pawnGeometry";
-import { bishopGeometry } from "primitives/PieceImage/geometries/bishopGeometry";
-import { knightGeometry } from "primitives/PieceImage/geometries/knightGeometry";
-import { rookGeometry } from "primitives/PieceImage/geometries/rookGeometry";
-import { queenGeometry } from "primitives/PieceImage/geometries/queenGeometry";
-import { kingGeometry } from "primitives/PieceImage/geometries/kingGeometry";
+import {
+  bishopGeometry,
+  kingGeometry,
+  knightGeometry,
+  pawnGeometry,
+  queenGeometry,
+  rookGeometry,
+} from "./geometries";
 
 interface Props {
   type: PieceName;
