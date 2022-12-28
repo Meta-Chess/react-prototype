@@ -14,31 +14,16 @@ interface Props {
   type: PieceName;
   color?: string | undefined;
   position: Vector3;
-  outlineColor?: string | undefined;
-  size: number;
+  size?: number;
   opacity?: number;
-  glowColor?: string;
   animated?: boolean;
   animatedColor?: Animated.AnimatedInterpolation | undefined;
   animatedOutlineColor?: Animated.AnimatedInterpolation | undefined;
   pieceDecorationNames?: PieceDecorationName[];
 }
 
-const PieceImage3D: FC<Props> = ({
-  type,
-  color,
-  position,
-  outlineColor, // TODO
-  size, // TODO
-  opacity,
-  glowColor, // TODO
-  animatedColor, // TODO
-  animatedOutlineColor, // TODO
-  pieceDecorationNames, // TODO
-}) => {
-  if (size < 0) return null;
-  const primary = color;
-  const alphaModifier = opacity === undefined ? 1 : opacity;
+// TODO: Implement sizes, animations, and decorations
+const PieceImage3D: FC<Props> = ({ type, color, position, opacity }) => {
   const geometry =
     type === PieceName.Pawn
       ? pawnGeometry
@@ -64,9 +49,11 @@ const PieceImage3D: FC<Props> = ({
     >
       <meshStandardMaterial
         attach="material"
-        color={primary}
+        color={color}
         roughness={0.2}
         metalness={0.5}
+        transparent={opacity !== undefined}
+        opacity={opacity}
       />
     </mesh>
   );

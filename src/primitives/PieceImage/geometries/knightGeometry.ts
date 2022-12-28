@@ -3,31 +3,31 @@ import { mergeBufferGeometries } from "three/examples/jsm/utils/BufferGeometryUt
 
 // TODO: try a smoother shape?
 const horseShape = new Shape();
-horseShape.moveTo(0.07, 0.03);
-horseShape.lineTo(0.06, 0.08);
-horseShape.lineTo(0.08, 0.16);
-horseShape.lineTo(0.035, 0.19);
-horseShape.lineTo(0.03, 0.215);
-horseShape.lineTo(0.025, 0.19);
-horseShape.lineTo(-0.09, 0.17);
-horseShape.lineTo(-0.09, 0.15);
-horseShape.lineTo(-0.02, 0.15);
-horseShape.lineTo(-0.08, 0.08);
-horseShape.lineTo(-0.07, 0.03);
+horseShape.moveTo(0.055, 0.03);
+horseShape.lineTo(0.035, 0.08);
+horseShape.lineTo(0.045, 0.16);
+horseShape.lineTo(0.03, 0.19);
+horseShape.lineTo(0.025, 0.215);
+horseShape.lineTo(0.02, 0.19);
+horseShape.lineTo(-0.065, 0.17);
+horseShape.lineTo(-0.065, 0.155);
+horseShape.lineTo(-0.005, 0.155);
+horseShape.lineTo(-0.04, 0.08);
+horseShape.lineTo(-0.045, 0.03);
 const horseGeometry = new ExtrudeGeometry(horseShape, {
   steps: 2,
-  depth: 0.05,
+  depth: 0.03,
   bevelEnabled: true,
   bevelThickness: 0.02,
   bevelSize: 0.02,
   bevelOffset: 0,
-  bevelSegments: 1,
-}).translate(0, 0, -0.025);
+  bevelSegments: 3,
+}).translate(0, 0, -0.015);
 
 const basePoints = [
   new Vector2(0, 0),
-  new Vector2(0.1, 0),
-  new Vector2(0.1, 0.03),
+  new Vector2(0.09, 0),
+  new Vector2(0.09, 0.03),
   new Vector2(0, 0.03),
 ];
 const baseGeometry = new LatheGeometry(basePoints, 20).toNonIndexed();
