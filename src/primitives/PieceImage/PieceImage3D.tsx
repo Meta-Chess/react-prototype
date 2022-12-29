@@ -16,6 +16,7 @@ interface Props {
   type: PieceName;
   color?: string | undefined;
   position: Vector3;
+  normal: Vector3;
   size?: number;
   opacity?: number;
   animated?: boolean;
@@ -25,7 +26,7 @@ interface Props {
 }
 
 // TODO: Implement sizes, animations, and decorations
-const PieceImage3D: FC<Props> = ({ type, color, position, opacity }) => {
+const PieceImage3D: FC<Props> = ({ type, color, position, normal, opacity }) => {
   const geometry =
     type === PieceName.Pawn
       ? pawnGeometry
@@ -44,7 +45,7 @@ const PieceImage3D: FC<Props> = ({ type, color, position, opacity }) => {
       geometry={geometry}
       position={position}
       rotation={new Euler().setFromQuaternion(
-        new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), position)
+        new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), normal)
       )}
       receiveShadow
       castShadow

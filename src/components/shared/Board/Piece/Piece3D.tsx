@@ -20,6 +20,7 @@ interface Props {
   animatedData?: animatedData;
   ignoreTokens?: boolean;
   position: Vector3;
+  normal: Vector3;
 }
 
 export const Piece3D: FC<Props> = ({
