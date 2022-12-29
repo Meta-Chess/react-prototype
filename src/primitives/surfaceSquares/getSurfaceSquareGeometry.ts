@@ -2,23 +2,23 @@ import { BufferAttribute, BufferGeometry } from "three";
 
 export function getSurfaceSquareGeometry(
   projection: Projection,
-  x: number,
-  y: number,
-  xCount: number,
-  yCount: number,
-  xGranularity: number,
-  yGranularity: number
+  file: number,
+  rank: number,
+  numberOfFiles: number,
+  numberOfRanks: number,
+  fileGranularity: number,
+  rankGranularity: number
 ): BufferGeometry {
   const vertices = [];
   const normals = [];
-  for (let j = 0; j <= yGranularity; j++) {
-    for (let i = 0; i <= xGranularity; i++) {
-      const { position, normal } = projection(
-        x + i / xGranularity,
-        y + j / yGranularity,
-        xCount,
-        yCount
-      );
+  for (let j = 0; j <= rankGranularity; j++) {
+    for (let i = 0; i <= fileGranularity; i++) {
+      const { position, normal } = projection({
+        file: file + i / fileGranularity,
+        rank: rank + j / rankGranularity,
+        numberOfFiles,
+        numberOfRanks,
+      });
       vertices.push(...position);
       normals.push(...normal);
     }
@@ -26,13 +26,13 @@ export function getSurfaceSquareGeometry(
 
   // Each set of three vertex indices determines a triangular face and its orientation
   const indices = [];
-  for (let i = 0; i < xGranularity; i++) {
-    for (let j = 0; j < yGranularity; j++) {
+  for (let i = 0; i < fileGranularity; i++) {
+    for (let j = 0; j < rankGranularity; j++) {
       const [a, b, c, d] = [
-        i + j * (xGranularity + 1),
-        i + 1 + j * (xGranularity + 1),
-        i + (j + 1) * (xGranularity + 1),
-        i + 1 + (j + 1) * (xGranularity + 1),
+        i + j * (fileGranularity + 1),
+        i + 1 + j * (fileGranularity + 1),
+        i + (j + 1) * (fileGranularity + 1),
+        i + 1 + (j + 1) * (fileGranularity + 1),
       ];
       indices.push(a, c, b); // top left triangle
       indices.push(d, b, c); // bottom right triangle

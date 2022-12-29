@@ -95,18 +95,21 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
               />
             ))
           )}
-          <mesh
-            geometry={getCapCirclesGeometry(numberOfFiles, numberOfRanks, 8)}
-            receiveShadow
-          >
-            <meshStandardMaterial
-              attach="material"
-              color={Colors.WHITE.toString()}
-              emissive={Colors.WHITE.toString()}
-              emissiveIntensity={1}
-              roughness={0.5}
-            />
-          </mesh>
+
+          {type === "spherical" && (
+            <mesh
+              geometry={getCapCirclesGeometry(numberOfFiles, numberOfRanks, 8)}
+              receiveShadow
+            >
+              <meshStandardMaterial
+                attach="material"
+                color={Colors.WHITE.toString()}
+                emissive={Colors.WHITE.toString()}
+                emissiveIntensity={1}
+                roughness={0.5}
+              />
+            </mesh>
+          )}
           <OrbitControls />
         </Canvas>
       </AbsoluteView>
