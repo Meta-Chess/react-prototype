@@ -3,7 +3,8 @@ import { GameMaster } from "game";
 import { GameContext } from "components/shared";
 import { uniq } from "lodash";
 
-type BoardType = "flat" | "spherical" | "circular";
+export type BoardType3D = "spherical";
+export type BoardType = BoardType3D | "flat" | "circular";
 
 export const getPossibleBoards = (gameMaster?: GameMaster): BoardType[] => {
   const possibleBoards: BoardType[] = ["flat"];

@@ -5,12 +5,12 @@ import { BoardMeasurements } from "./calculateBoardMeasurements";
 import { GameContext } from "components/shared";
 import { CircularBoard } from "./CircularBoard";
 import { useBoardType } from "./useBoardType";
-import { SphericalBoard } from "components/shared/Board/SphericalBoard";
-import { SquareBoard } from "components/shared/Board/SquareBoard";
+import { SquareBoard } from "./SquareBoard";
+import { Board3D } from "./Board3D";
 
 export interface BoardProps {
   backboard?: boolean;
-  measurements: BoardMeasurements; // TODO: the measurements should care about the board type
+  measurements: BoardMeasurements; // TODO: the measurements should maybe care about the board type?
   flipBoard?: boolean;
   circularBoard?: boolean;
 }
@@ -33,7 +33,7 @@ export const Board: FC<BoardProps> = (props) => {
       {boardType === "circular" ? (
         <CircularBoard {...props} />
       ) : boardType === "spherical" ? (
-        <SphericalBoard {...props} />
+        <Board3D {...props} type={boardType} />
       ) : shapeToken?.data?.shape === SquareShape.Hex ? (
         <HexBoard {...props} />
       ) : (

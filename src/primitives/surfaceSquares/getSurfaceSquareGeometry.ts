@@ -1,12 +1,7 @@
 import { BufferAttribute, BufferGeometry } from "three";
 
 export function getSurfaceSquareGeometry(
-  projection: (
-    x: number,
-    y: number,
-    xCount: number,
-    yCount: number
-  ) => [number, number, number],
+  projection: Projection,
   x: number,
   y: number,
   xCount: number,
@@ -15,11 +10,17 @@ export function getSurfaceSquareGeometry(
   yGranularity: number
 ): BufferGeometry {
   const vertices = [];
+  const normals = [];
   for (let j = 0; j <= yGranularity; j++) {
     for (let i = 0; i <= xGranularity; i++) {
-      vertices.push(
-        ...projection(x + i / xGranularity, y + j / yGranularity, xCount, yCount)
+      const { position, normal } = projection(
+        x + i / xGranularity,
+        y + j / yGranularity,
+        xCount,
+        yCount
       );
+      vertices.push(...position);
+      normals.push(...normal);
     }
   }
 
@@ -40,7 +41,7 @@ export function getSurfaceSquareGeometry(
 
   const geometry = new BufferGeometry();
   geometry.setAttribute("position", new BufferAttribute(new Float32Array(vertices), 3));
-  geometry.setAttribute("normal", new BufferAttribute(new Float32Array(vertices), 3)); // this is special for spheres
+  geometry.setAttribute("normal", new BufferAttribute(new Float32Array(normals), 3));
   geometry.setIndex(indices);
 
   return geometry;
