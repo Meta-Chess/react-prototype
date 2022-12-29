@@ -14,10 +14,12 @@ import { OrbitControls } from "@react-three/drei";
 import { Vector2 } from "three";
 import { SphericalSquare } from "components/shared/Board/SphericalSquare";
 import { getCapCirclesGeometry } from "primitives/Shapes";
+import { BoardType3D } from "./useBoardType";
 
-const SphericalBoard: SFC<BoardProps> = ({
+export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
   backboard = true,
   measurements,
+  // type, // TODO
   // flipBoard = false, // TODO
 }) => {
   const { gameMaster } = useContext(GameContext);
@@ -125,5 +127,3 @@ const BoardContainer = styled(View)<{
     measurements.boardPaddingHorizontal}px;
   padding-vertical: ${({ measurements }): number => measurements.boardPaddingVertical}px;
 `;
-
-export { SphericalBoard };

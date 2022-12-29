@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Colors, SFC } from "primitives";
+import { Colors, getSurfaceSquareGeometry, SFC, sphereProjection } from "primitives";
 import { GameMaster, RuleName, Square, Token, TokenName } from "game";
 import { useModals } from "ui";
 import { GameContext, Piece3D } from "components/shared";
@@ -11,8 +11,6 @@ import {
   getHighlightColorsAndTypes,
 } from "./Square";
 import Color from "color";
-import { sphereProjection } from "primitives/surfaceSquares/sphereProjection";
-import { getSurfaceSquareGeometry } from "primitives/surfaceSquares/getSurfaceSquareGeometry";
 
 interface Props {
   square: Square | undefined;
@@ -45,9 +43,14 @@ const SphericalSquareComponent: SFC<Props> = ({
     gameMaster.onSquarePress(square.location);
   };
 
-  const center = new Vector3(
-    ...sphereProjection(file + 0.5, rank + 0.5, numberOfFiles, numberOfRanks)
+  const { position: positionArray, normal: normalArray } = sphereProjection(
+    file + 0.5,
+    rank + 0.5,
+    numberOfFiles,
+    numberOfRanks
   );
+  const centerPosition = new Vector3(...positionArray);
+  const centerNormal = new Vector3(...normalArray);
 
   return (
     <>
@@ -79,7 +82,8 @@ const SphericalSquareComponent: SFC<Props> = ({
             <Piece3D
               piece={gameMaster.game.board.findPieceById(pieceOrToken)}
               key={index}
-              position={center.clone().setLength(0.99)}
+              position={centerPosition}
+              normal={centerNormal}
             />
           ) : null // TODO: implement animation tokens
       )}
@@ -87,8 +91,8 @@ const SphericalSquareComponent: SFC<Props> = ({
       <CenterHighlights3D
         gameMaster={gameMaster}
         square={square}
-        position={center}
-        normal={center}
+        position={centerPosition}
+        normal={centerNormal}
       />
     </>
   );
