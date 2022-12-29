@@ -5,14 +5,14 @@ import { useModals } from "ui";
 import { GameContext, Piece3D } from "components/shared";
 import { TileSchematic } from "ui/Tiles/TileProps";
 import { Vector3 } from "three";
-import { getDisplayPiecesAndTokens } from "components/shared/Board/Square/getDisplayPiecesAndTokens";
-import { CenterHighlights3D } from "components/shared/Board/Square/Highlight/CenterHighlights3D";
 import {
-  getMercatorSquareGeometry,
-  rankFileToSphereCoords,
-} from "primitives/Shapes/MercatorSquare";
-import { getHighlightColorsAndTypes } from "components/shared/Board/Square/Highlight/getHighlightColorsAndTypes";
+  CenterHighlights3D,
+  getDisplayPiecesAndTokens,
+  getHighlightColorsAndTypes,
+} from "./Square";
 import Color from "color";
+import { sphereProjection } from "primitives/surfaceSquares/sphereProjection";
+import { getSurfaceSquareGeometry } from "primitives/surfaceSquares/getSurfaceSquareGeometry";
 
 interface Props {
   square: Square | undefined;
@@ -46,13 +46,14 @@ const SphericalSquareComponent: SFC<Props> = ({
   };
 
   const center = new Vector3(
-    ...rankFileToSphereCoords(file + 0.5, rank + 0.5, numberOfFiles, numberOfRanks)
+    ...sphereProjection(file + 0.5, rank + 0.5, numberOfFiles, numberOfRanks)
   );
 
   return (
     <>
       <mesh
-        geometry={getMercatorSquareGeometry(
+        geometry={getSurfaceSquareGeometry(
+          sphereProjection,
           file,
           rank,
           numberOfFiles,
