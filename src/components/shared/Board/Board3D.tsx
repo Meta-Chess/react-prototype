@@ -12,14 +12,14 @@ import { BoardMeasurements } from "./calculateBoardMeasurements";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { Vector2 } from "three";
-import { SphericalSquare } from "components/shared/Board/SphericalSquare";
+import { Square3D } from "./Square3D";
 import { getCapCirclesGeometry } from "primitives/Shapes";
 import { BoardType3D } from "./useBoardType";
 
 export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
   backboard = true,
   measurements,
-  // type, // TODO
+  type,
   // flipBoard = false, // TODO
 }) => {
   const { gameMaster } = useContext(GameContext);
@@ -79,7 +79,7 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
 
           {fileCoordinates.map((file) =>
             rankCoordinates.map((rank) => (
-              <SphericalSquare
+              <Square3D
                 key={JSON.stringify([rank, file])}
                 square={game.board.firstSquareSatisfyingRule(
                   (square) =>
@@ -91,6 +91,7 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
                 )}
                 numberOfRanks={numberOfRanks}
                 numberOfFiles={numberOfFiles}
+                type={type}
               />
             ))
           )}

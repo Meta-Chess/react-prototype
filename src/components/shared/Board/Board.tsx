@@ -32,12 +32,12 @@ export const Board: FC<BoardProps> = (props) => {
     <>
       {boardType === "circular" ? (
         <CircularBoard {...props} />
-      ) : boardType === "spherical" ? (
-        <Board3D {...props} type={boardType} />
-      ) : shapeToken?.data?.shape === SquareShape.Hex ? (
+      ) : boardType === "flat" && shapeToken?.data?.shape === SquareShape.Hex ? (
         <HexBoard {...props} />
-      ) : (
+      ) : boardType === "flat" ? (
         <SquareBoard {...props} />
+      ) : (
+        <Board3D {...props} type={boardType} />
       )}
     </>
   );
