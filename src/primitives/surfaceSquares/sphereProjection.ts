@@ -1,15 +1,22 @@
 import { Vector3 } from "three";
 
-export const sphereProjection: Projection = (
-  x: number,
-  y: number,
-  xCount: number,
-  yCount: number
-) => {
+export const sphereProjection: Projection = ({
+  file,
+  rank,
+  numberOfFiles,
+  numberOfRanks,
+  heightAdjustment = 0,
+}: {
+  file: number;
+  rank: number;
+  numberOfFiles: number;
+  numberOfRanks: number;
+  heightAdjustment?: number;
+}) => {
   const vector = new Vector3().setFromSphericalCoords(
-    1,
-    ((y - 0.5) * Math.PI) / (yCount + 1), // the +1 is to leave room at the poles
-    (x * 2 * Math.PI) / xCount
+    1 + heightAdjustment,
+    ((rank - 0.5) * Math.PI) / (numberOfRanks + 1), // the +1 is to leave room at the poles
+    (file * 2 * Math.PI) / numberOfFiles
   );
   return {
     position: [vector.x, vector.y, vector.z],

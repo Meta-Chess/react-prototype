@@ -4,7 +4,6 @@ import { Colors, PieceImage3D } from "primitives";
 import { Animated } from "react-native";
 import { getPieceDecorationNames } from "./getPieceDecorationNames";
 import { GameContext } from "components/shared";
-import { Vector3 } from "three";
 
 interface animatedData {
   animatedColor: Animated.AnimatedInterpolation;
@@ -19,8 +18,13 @@ interface Props {
   glowColor?: string;
   animatedData?: animatedData;
   ignoreTokens?: boolean;
-  position: Vector3;
-  normal: Vector3;
+  coordinates: {
+    rank: number;
+    file: number;
+    numberOfRanks: number;
+    numberOfFiles: number;
+  };
+  projection: Projection;
 }
 
 export const Piece3D: FC<Props> = ({

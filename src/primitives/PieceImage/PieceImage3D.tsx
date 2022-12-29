@@ -15,8 +15,13 @@ import {
 interface Props {
   type: PieceName;
   color?: string | undefined;
-  position: Vector3;
-  normal: Vector3;
+  coordinates: {
+    rank: number;
+    file: number;
+    numberOfRanks: number;
+    numberOfFiles: number;
+  };
+  projection: Projection;
   size?: number;
   opacity?: number;
   animated?: boolean;
@@ -26,7 +31,15 @@ interface Props {
 }
 
 // TODO: Implement sizes, animations, and decorations
-const PieceImage3D: FC<Props> = ({ type, color, position, normal, opacity }) => {
+const PieceImage3D: FC<Props> = ({ type, color, coordinates, projection, opacity }) => {
+  const { position, normal } = projection({
+    ...coordinates,
+    ...coordinates,
+    rank: coordinates.rank + 0.5,
+    file: coordinates.file + 0.5,
+    heightAdjustment: -0.01,
+  });
+
   const geometry =
     type === PieceName.Pawn
       ? pawnGeometry
@@ -44,8 +57,9 @@ const PieceImage3D: FC<Props> = ({ type, color, position, normal, opacity }) => 
     <mesh
       geometry={geometry}
       position={position}
+      // TODO: find a way to express the rotation that gets the knights pointing forwards
       rotation={new Euler().setFromQuaternion(
-        new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), normal)
+        new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), new Vector3(...normal))
       )}
       receiveShadow
       castShadow
