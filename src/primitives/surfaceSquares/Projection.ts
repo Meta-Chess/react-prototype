@@ -1,6 +1,7 @@
-type Projection = (
-  x: number,
-  y: number,
-  xCount: number,
-  yCount: number
-) => { position: [number, number, number]; normal: [number, number, number] };
+type Projection = (boardCoordinates: {
+  file: number;
+  rank: number;
+  numberOfFiles: number;
+  numberOfRanks: number;
+  heightAdjustment?: number;
+}) => { position: [number, number, number]; normal: [number, number, number] };

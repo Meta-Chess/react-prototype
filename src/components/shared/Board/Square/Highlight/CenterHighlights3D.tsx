@@ -7,16 +7,28 @@ import Color from "color";
 interface Props {
   gameMaster: GameMaster;
   square: Square;
-  position: Vector3;
-  normal: Vector3;
+  coordinates: {
+    rank: number;
+    file: number;
+    numberOfRanks: number;
+    numberOfFiles: number;
+  };
+  projection: Projection;
 }
 
 export const CenterHighlights3D: FC<Props> = ({
   gameMaster,
   square,
-  position,
-  normal,
+  coordinates,
+  projection,
 }) => {
+  const { position, normal } = projection({
+    ...coordinates,
+    rank: coordinates.rank + 0.5,
+    file: coordinates.file + 0.5,
+    heightAdjustment: 0.013,
+  });
+
   return (
     <>
       {getHighlightColorsAndTypes({ gameMaster, square })
@@ -25,9 +37,12 @@ export const CenterHighlights3D: FC<Props> = ({
           <mesh
             key={index}
             geometry={new CircleGeometry(0.1, 20)}
-            position={position}
+            position={new Vector3(...position)}
             rotation={new Euler().setFromQuaternion(
-              new Quaternion().setFromUnitVectors(new Vector3(0, 0, 1), normal)
+              new Quaternion().setFromUnitVectors(
+                new Vector3(0, 0, 1),
+                new Vector3(...normal)
+              )
             )}
             receiveShadow
             castShadow

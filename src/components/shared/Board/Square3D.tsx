@@ -10,7 +10,6 @@ import { GameMaster, RuleName, Square, Token, TokenName } from "game";
 import { useModals } from "ui";
 import { GameContext, Piece3D } from "components/shared";
 import { TileSchematic } from "ui/Tiles/TileProps";
-import { Vector3 } from "three";
 import {
   CenterHighlights3D,
   getDisplayPiecesAndTokens,
@@ -59,15 +58,6 @@ export const Square3D: SFC<Props> = ({
 
   const projection = PROJECTIONS[type];
 
-  const { position: positionArray, normal: normalArray } = projection(
-    file + 0.5,
-    rank + 0.5,
-    numberOfFiles,
-    numberOfRanks
-  );
-  const centerPosition = new Vector3(...positionArray);
-  const centerNormal = new Vector3(...normalArray);
-
   return (
     <>
       <mesh
@@ -98,8 +88,8 @@ export const Square3D: SFC<Props> = ({
             <Piece3D
               piece={gameMaster.game.board.findPieceById(pieceOrToken)}
               key={index}
-              position={centerPosition}
-              normal={centerNormal}
+              coordinates={{ rank, file, numberOfRanks, numberOfFiles }}
+              projection={projection}
             />
           ) : null // TODO: implement animation tokens
       )}
@@ -107,8 +97,8 @@ export const Square3D: SFC<Props> = ({
       <CenterHighlights3D
         gameMaster={gameMaster}
         square={square}
-        position={centerPosition}
-        normal={centerNormal}
+        coordinates={{ rank, file, numberOfRanks, numberOfFiles }}
+        projection={projection}
       />
     </>
   );
