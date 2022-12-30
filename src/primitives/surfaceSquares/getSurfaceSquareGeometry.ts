@@ -1,15 +1,23 @@
 import { BufferAttribute, BufferGeometry } from "three";
 import { Projection } from "./Projection";
 
-export function getSurfaceSquareGeometry(
-  projection: Projection,
-  file: number,
-  rank: number,
-  numberOfFiles: number,
-  numberOfRanks: number,
-  fileGranularity: number,
-  rankGranularity: number
-): BufferGeometry {
+export function getSurfaceSquareGeometry({
+  projection,
+  file,
+  rank,
+  numberOfFiles,
+  numberOfRanks,
+  fileGranularity,
+  rankGranularity,
+}: {
+  projection: Projection;
+  file: number;
+  rank: number;
+  numberOfFiles: number;
+  numberOfRanks: number;
+  fileGranularity: number;
+  rankGranularity: number;
+}): BufferGeometry {
   const vertices = [];
   const normals = [];
   for (let j = 0; j <= rankGranularity; j++) {
