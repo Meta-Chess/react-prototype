@@ -1,4 +1,5 @@
 import { BufferAttribute, BufferGeometry } from "three";
+import { Projection } from "./Projection";
 
 export function getSurfaceSquareGeometry(
   projection: Projection,
@@ -19,8 +20,8 @@ export function getSurfaceSquareGeometry(
         numberOfFiles,
         numberOfRanks,
       });
-      vertices.push(...position);
-      normals.push(...normal);
+      vertices.push(position.x, position.y, position.z);
+      normals.push(normal.x, normal.y, normal.z);
     }
   }
 
