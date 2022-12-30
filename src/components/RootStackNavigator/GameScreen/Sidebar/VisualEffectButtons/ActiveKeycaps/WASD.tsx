@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
-import { View } from "react-native";
 import { Row } from "ui";
 import { KeyCap } from "./KeyCap";
 import { SFC } from "primitives";
 import { GameContext } from "components/shared";
 import { getPossibleBoards } from "components/shared/Board/useBoardType";
+import { Tooltip } from "ui/Tooltip";
+import { isPresent } from "utilities";
 
 export const WASD: SFC = ({ style }) => {
   const { gameMaster } = useContext(GameContext);
@@ -19,9 +20,22 @@ export const WASD: SFC = ({ style }) => {
   if (!horizontalRotationAllowed && !verticalRotationAllowed && !multipleBoardsAllowed)
     return null;
 
+  const tooltipContent = [
+    multipleBoardsAllowed ? "Press E to change the view." : undefined,
+    horizontalRotationAllowed && verticalRotationAllowed
+      ? "Press W, A, S, or D to rotate the view."
+      : horizontalRotationAllowed
+      ? "Press A or D to rotate the view."
+      : verticalRotationAllowed
+      ? "Press W or S to rotate the view."
+      : undefined,
+  ]
+    .filter(isPresent)
+    .join("\n");
+
   // TODO: WASD should be disabled when showing 3D boards (until 3D boards use WASD)
   return (
-    <View style={style}>
+    <Tooltip content={tooltipContent} style={style}>
       <Row>
         <KeyCap />
         <KeyCap letter={"W"} active={verticalRotationAllowed} />
@@ -32,6 +46,6 @@ export const WASD: SFC = ({ style }) => {
         <KeyCap letter={"S"} active={verticalRotationAllowed} />
         <KeyCap letter={"D"} active={horizontalRotationAllowed} />
       </Row>
-    </View>
+    </Tooltip>
   );
 };
