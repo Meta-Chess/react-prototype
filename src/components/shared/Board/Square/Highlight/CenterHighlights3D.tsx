@@ -3,6 +3,7 @@ import { GameMaster, Square } from "game";
 import { getHighlightColorsAndTypes } from "./getHighlightColorsAndTypes";
 import { CircleGeometry, Euler, Quaternion, Vector3 } from "three";
 import Color from "color";
+import { Projection } from "primitives";
 
 interface Props {
   gameMaster: GameMaster;
@@ -28,7 +29,6 @@ export const CenterHighlights3D: FC<Props> = ({
     file: coordinates.file + 0.5,
     heightAdjustment: 0.013,
   });
-
   return (
     <>
       {getHighlightColorsAndTypes({ gameMaster, square })
@@ -37,12 +37,9 @@ export const CenterHighlights3D: FC<Props> = ({
           <mesh
             key={index}
             geometry={new CircleGeometry(0.1, 20)}
-            position={new Vector3(...position)}
+            position={position}
             rotation={new Euler().setFromQuaternion(
-              new Quaternion().setFromUnitVectors(
-                new Vector3(0, 0, 1),
-                new Vector3(...normal)
-              )
+              new Quaternion().setFromUnitVectors(new Vector3(0, 0, 1), normal)
             )}
             receiveShadow
             castShadow

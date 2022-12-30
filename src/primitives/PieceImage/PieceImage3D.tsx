@@ -11,6 +11,7 @@ import {
   queenGeometry,
   rookGeometry,
 } from "./geometries";
+import { Projection } from "primitives";
 
 interface Props {
   type: PieceName;
@@ -59,7 +60,7 @@ const PieceImage3D: FC<Props> = ({ type, color, coordinates, projection, opacity
       position={position}
       // TODO: find a way to express the rotation that gets the knights pointing forwards
       rotation={new Euler().setFromQuaternion(
-        new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), new Vector3(...normal))
+        new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), normal)
       )}
       receiveShadow
       castShadow

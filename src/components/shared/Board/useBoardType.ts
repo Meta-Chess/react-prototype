@@ -3,7 +3,7 @@ import { GameMaster } from "game";
 import { GameContext } from "components/shared";
 import { uniq } from "lodash";
 
-export type BoardType3D = "spherical" | "toroidal";
+export type BoardType3D = "spherical" | "toroidal" | "mobius";
 export type BoardType = BoardType3D | "flat" | "circular";
 
 export const getPossibleBoards = (gameMaster?: GameMaster): BoardType[] => {
@@ -16,6 +16,7 @@ export const getPossibleBoards = (gameMaster?: GameMaster): BoardType[] => {
     gameMaster?.getRuleNames().includes("cylindrical")
   )
     possibleBoards.push("toroidal");
+  if (gameMaster?.getRuleNames().includes("mobius")) possibleBoards.push("mobius");
   return uniq(possibleBoards);
 };
 
@@ -31,6 +32,8 @@ export const useBoardType = (boardTypeOverride?: BoardType): BoardType => {
       gameMaster?.getRuleNames().includes("cylindrical") &&
       gameMaster?.getRuleNames().includes("verticallyCylindrical")
         ? "toroidal"
+        : gameMaster?.getRuleNames().includes("mobius")
+        ? "mobius"
         : gameMaster?.getRuleNames().includes("longBoard") &&
           gameMaster?.getRuleNames().includes("verticallyCylindrical")
         ? "circular"

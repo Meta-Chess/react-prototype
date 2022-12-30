@@ -1,6 +1,6 @@
 import React, { FC, useContext } from "react";
 import { Piece as PieceClass, TokenName } from "game";
-import { Colors, PieceImage3D } from "primitives";
+import { Colors, PieceImage3D, Projection } from "primitives";
 import { Animated } from "react-native";
 import { getPieceDecorationNames } from "./getPieceDecorationNames";
 import { GameContext } from "components/shared";
