@@ -1,20 +1,35 @@
-import { rankFileToSphereCoords } from "primitives/Shapes";
-import { BufferAttribute, BufferGeometry } from "three";
+import { BufferAttribute, BufferGeometry, Vector3 } from "three";
+import { sphereProjection } from "./sphereProjection";
 
-export function getSpherePolarCapsGeometry(
-  xCount: number,
-  yCount: number,
-  xGranularity: number
-): BufferGeometry {
-  const pointCount = xCount * xGranularity;
+export function getSpherePolarCapsGeometry({
+  numberOfFiles,
+  numberOfRanks,
+  fileGranularity,
+}: {
+  numberOfFiles: number;
+  numberOfRanks: number;
+  fileGranularity: number;
+}): BufferGeometry {
+  const pointCount = numberOfFiles * fileGranularity;
   const vertices = [0, 1, 0, 0, -1, 0];
+  let vector: Vector3;
   for (let i = 0; i < pointCount; i++) {
-    vertices.push(...rankFileToSphereCoords(i / xGranularity, 0, xCount, yCount));
+    vector = sphereProjection({
+      file: i / fileGranularity,
+      rank: 0,
+      numberOfFiles,
+      numberOfRanks,
+    }).position;
+    vertices.push(vector.x, vector.y, vector.z);
   }
   for (let i = 0; i < pointCount; i++) {
-    vertices.push(
-      ...rankFileToSphereCoords(i / xGranularity, yCount + 1, xCount, yCount)
-    );
+    vector = sphereProjection({
+      rank: i / fileGranularity,
+      file: numberOfRanks + 1,
+      numberOfFiles,
+      numberOfRanks,
+    }).position;
+    vertices.push(vector.x, vector.y, vector.z);
   }
 
   // Each set of three vertex indices determines a triangular face and its orientation

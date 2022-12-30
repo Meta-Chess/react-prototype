@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
-import { Colors, SFC } from "primitives";
+import { Colors, getSpherePolarCapsGeometry, SFC } from "primitives";
 import { objectMatches, range, wrapToCylinder } from "utilities";
 import { SquareShape, TokenName } from "game";
 import { BoardProps } from "components/shared/Board/Board";
@@ -11,10 +11,9 @@ import { AbsoluteView } from "ui";
 import { BoardMeasurements } from "./calculateBoardMeasurements";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { Vector2 } from "three";
 import { Square3D } from "./Square3D";
-import { getCapCirclesGeometry } from "primitives/Shapes";
 import { BoardType3D } from "./useBoardType";
+import { getMobiusStripEdgeGeometry } from "primitives/surfaceSquares/getMobiusStripEdgeGeometry";
 
 export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
   backboard = true,
@@ -47,20 +46,19 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
   const horizontalWrap = wrapToCylinder(minFile, maxFile);
   const verticalWrap = wrapToCylinder(minRank, maxRank);
 
-  const pawnPoints = [
-    new Vector2(0, 0),
-    new Vector2(0.1, 0),
-    new Vector2(0.1, 0.03),
-    new Vector2(0, 0.03),
-  ];
-  for (let i = 0; i < 21; i++) {
-    pawnPoints.push(
-      new Vector2(
-        0.08 * Math.sin((i * Math.PI) / 20),
-        0.11 - 0.08 * Math.cos((i * Math.PI) / 20)
-      )
-    );
-  }
+  const extraGeometry =
+    type === "spherical"
+      ? getSpherePolarCapsGeometry({
+          numberOfFiles,
+          numberOfRanks,
+          fileGranularity: 64,
+        })
+      : type === "mobius"
+      ? getMobiusStripEdgeGeometry({
+          numberOfRanks,
+          rankGranularity: 64,
+        })
+      : null;
 
   return (
     <BoardContainer measurements={measurements} backboard={backboard}>
@@ -73,9 +71,9 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
           shadows
         >
           <ambientLight intensity={0.45} />
-          <directionalLight position={[20, 0, 0]} color={0xffcccc} castShadow={true} />
-          <directionalLight position={[-10, 0, 17]} color={0xccccff} castShadow={true} />
-          <directionalLight position={[-10, 0, -17]} color={0xe5cce5} castShadow={true} />
+          <directionalLight position={[0, 0, 20]} color={0xffcccc} castShadow={true} />
+          <directionalLight position={[17, 0, -10]} color={0xccccff} castShadow={true} />
+          <directionalLight position={[-17, 0, -10]} color={0xe5cce5} castShadow={true} />
 
           {fileCoordinates.map((file) =>
             rankCoordinates.map((rank) => (
@@ -95,12 +93,8 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
               />
             ))
           )}
-
-          {type === "spherical" && (
-            <mesh
-              geometry={getCapCirclesGeometry(numberOfFiles, numberOfRanks, 8)}
-              receiveShadow
-            >
+          {extraGeometry && (
+            <mesh geometry={extraGeometry} receiveShadow>
               <meshStandardMaterial
                 attach="material"
                 color={Colors.WHITE.toString()}
