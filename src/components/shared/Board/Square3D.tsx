@@ -23,6 +23,8 @@ import { BoardType3D } from "./useBoardType";
 interface Props {
   square: Square | undefined;
   tileSchematic?: TileSchematic;
+  positionRank: number;
+  positionFile: number;
   numberOfRanks: number;
   numberOfFiles: number;
   type: BoardType3D;
@@ -36,6 +38,8 @@ const PROJECTIONS: { [k in BoardType3D]: Projection } = {
 
 export const Square3D: SFC<Props> = ({
   square,
+  positionRank,
+  positionFile,
   numberOfRanks,
   numberOfFiles,
   type,
@@ -53,7 +57,6 @@ export const Square3D: SFC<Props> = ({
   const piecesOrPieceAnimationsOnSquare: (string | Token)[] =
     getDisplayPiecesAndTokens(square);
 
-  const { rank, file } = square.getCoordinates();
   const onPress = (): void => {
     modals.hideAll();
     gameMaster.onSquarePress(square.location);
@@ -64,15 +67,15 @@ export const Square3D: SFC<Props> = ({
   return (
     <>
       <mesh
-        geometry={getSurfaceSquareGeometry(
+        geometry={getSurfaceSquareGeometry({
           projection,
-          file,
-          rank,
+          file: positionFile,
+          rank: positionRank,
           numberOfFiles,
           numberOfRanks,
-          64,
-          64
-        )}
+          fileGranularity: 64,
+          rankGranularity: 64,
+        })}
         onClick={onPress}
         receiveShadow
         castShadow
@@ -91,7 +94,12 @@ export const Square3D: SFC<Props> = ({
             <Piece3D
               piece={gameMaster.game.board.findPieceById(pieceOrToken)}
               key={index}
-              coordinates={{ rank, file, numberOfRanks, numberOfFiles }}
+              coordinates={{
+                rank: positionRank,
+                file: positionFile,
+                numberOfRanks,
+                numberOfFiles,
+              }}
               projection={projection}
             />
           ) : null // TODO: implement animation tokens
@@ -100,7 +108,12 @@ export const Square3D: SFC<Props> = ({
       <CenterHighlights3D
         gameMaster={gameMaster}
         square={square}
-        coordinates={{ rank, file, numberOfRanks, numberOfFiles }}
+        coordinates={{
+          rank: positionRank,
+          file: positionFile,
+          numberOfRanks,
+          numberOfFiles,
+        }}
         projection={projection}
       />
     </>
