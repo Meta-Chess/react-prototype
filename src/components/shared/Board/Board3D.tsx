@@ -14,6 +14,7 @@ import { OrbitControls } from "@react-three/drei";
 import { Square3D } from "./Square3D";
 import { BoardType3D } from "./useBoardType";
 import { getMobiusStripEdgeGeometry } from "primitives/surfaceSquares/getMobiusStripEdgeGeometry";
+import { use3dCylinderRotation } from "components/shared/Board/use3dCylinderRotation";
 
 export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
   backboard = true,
@@ -40,6 +41,7 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
     () => range(minRank, numberOfRanks),
     [minRank, numberOfRanks]
   );
+  const { rankOffset, fileOffset } = use3dCylinderRotation();
 
   if (!game) return null;
 
@@ -76,22 +78,26 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
           <directionalLight position={[-17, 0, -10]} color={0xe5cce5} castShadow={true} />
 
           {fileCoordinates.map((file) =>
-            rankCoordinates.map((rank) => (
-              <Square3D
-                key={JSON.stringify([rank, file])}
-                square={game.board.firstSquareSatisfyingRule(
-                  (square) =>
-                    objectMatches({
-                      rank: verticalWrap(rank),
-                      file: horizontalWrap(file),
-                    })(square.coordinates) &&
-                    !square.hasTokenWithName(TokenName.InvisibilityToken)
-                )}
-                numberOfRanks={numberOfRanks}
-                numberOfFiles={numberOfFiles}
-                type={type}
-              />
-            ))
+            rankCoordinates.map((rank) => {
+              return (
+                <Square3D
+                  key={JSON.stringify([rank, file])}
+                  square={game.board.firstSquareSatisfyingRule(
+                    (square) =>
+                      objectMatches({
+                        rank: verticalWrap(rank),
+                        file: horizontalWrap(file),
+                      })(square.coordinates) &&
+                      !square.hasTokenWithName(TokenName.InvisibilityToken)
+                  )}
+                  positionRank={verticalWrap(rank + rankOffset)}
+                  positionFile={horizontalWrap(file + fileOffset)}
+                  numberOfRanks={numberOfRanks}
+                  numberOfFiles={numberOfFiles}
+                  type={type}
+                />
+              );
+            })
           )}
           {extraGeometry && (
             <mesh geometry={extraGeometry} receiveShadow>
