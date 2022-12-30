@@ -33,7 +33,6 @@ export const WASD: SFC = ({ style }) => {
     .filter(isPresent)
     .join("\n");
 
-  // TODO: WASD should be disabled when showing 3D boards (until 3D boards use WASD)
   return (
     <Tooltip content={tooltipContent} style={style}>
       <Row>
