@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import {
   Colors,
   getSurfaceSquareGeometry,
+  mobiusProjection,
+  Projection,
   SFC,
   sphereProjection,
   torusProjection,
@@ -29,6 +31,7 @@ interface Props {
 const PROJECTIONS: { [k in BoardType3D]: Projection } = {
   spherical: sphereProjection,
   toroidal: torusProjection,
+  mobius: mobiusProjection,
 };
 
 export const Square3D: SFC<Props> = ({
@@ -67,8 +70,8 @@ export const Square3D: SFC<Props> = ({
           rank,
           numberOfFiles,
           numberOfRanks,
-          8,
-          4
+          64,
+          64
         )}
         onClick={onPress}
         receiveShadow
