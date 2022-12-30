@@ -57,7 +57,7 @@ export const Square3D: SFC<Props> = ({
   const piecesOrPieceAnimationsOnSquare: (string | Token)[] =
     getDisplayPiecesAndTokens(square);
 
-  const onPress = (): void => {
+  const onClick = (): void => {
     modals.hideAll();
     gameMaster.onSquarePress(square.location);
   };
@@ -76,7 +76,7 @@ export const Square3D: SFC<Props> = ({
           fileGranularity: 64,
           rankGranularity: 64,
         })}
-        onClick={onPress}
+        onClick={onClick}
         receiveShadow
         castShadow
       >
@@ -100,6 +100,7 @@ export const Square3D: SFC<Props> = ({
                 numberOfRanks,
                 numberOfFiles,
               }}
+              onClick={onClick}
               projection={projection}
             />
           ) : null // TODO: implement animation tokens

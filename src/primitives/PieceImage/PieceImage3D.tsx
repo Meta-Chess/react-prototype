@@ -12,6 +12,7 @@ import {
   rookGeometry,
 } from "./geometries";
 import { Projection } from "primitives";
+import { ThreeEvent } from "@react-three/fiber";
 
 interface Props {
   type: PieceName;
@@ -29,10 +30,18 @@ interface Props {
   animatedColor?: Animated.AnimatedInterpolation | undefined;
   animatedOutlineColor?: Animated.AnimatedInterpolation | undefined;
   pieceDecorationNames?: PieceDecorationName[];
+  onClick?: (event: ThreeEvent<MouseEvent>) => void;
 }
 
 // TODO: Implement sizes, animations, and decorations
-const PieceImage3D: FC<Props> = ({ type, color, coordinates, projection, opacity }) => {
+const PieceImage3D: FC<Props> = ({
+  type,
+  color,
+  coordinates,
+  projection,
+  onClick,
+  opacity,
+}) => {
   const { position, normal } = projection({
     ...coordinates,
     ...coordinates,
@@ -62,6 +71,7 @@ const PieceImage3D: FC<Props> = ({ type, color, coordinates, projection, opacity
       rotation={new Euler().setFromQuaternion(
         new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), normal)
       )}
+      onClick={onClick}
       receiveShadow
       castShadow
     >
