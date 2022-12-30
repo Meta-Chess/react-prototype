@@ -60,13 +60,24 @@ export const Square3D: SFC<Props> = ({
   const piecesOrPieceAnimationsOnSquare: (string | Token)[] =
     getDisplayPiecesAndTokens(square);
 
+  const projection = PROJECTIONS[type];
+
+  // TODO: Think about alternatives - this is a bit of a hack
+  // Hides pieces that are sitting on the inside on the klein bottle
+  const shouldHidePiece =
+    type === "klein" &&
+    ((positionFile > numberOfFiles / 2 &&
+      positionRank >= numberOfRanks / 4 - 1 &&
+      positionRank <= (3 * numberOfRanks) / 4 - 1) ||
+      (positionFile <= numberOfFiles / 2 &&
+        positionRank > numberOfRanks / 4 - 1 &&
+        positionRank < (3 * numberOfRanks) / 4 - 1));
+
   const onClick = (event: ThreeEvent<MouseEvent>): void => {
     event.stopPropagation();
     modals.hideAll();
     gameMaster.onSquarePress(square.location);
   };
-
-  const projection = PROJECTIONS[type];
 
   return (
     <>
@@ -105,6 +116,7 @@ export const Square3D: SFC<Props> = ({
                 numberOfFiles,
               }}
               projection={projection}
+              hidden={shouldHidePiece}
             />
           ) : null // TODO: implement animation tokens
       )}

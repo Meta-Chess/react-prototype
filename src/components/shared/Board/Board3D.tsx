@@ -72,15 +72,15 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
           camera={{ fov: 4, position: [0, 0, -40] }}
           shadows
         >
-          <ambientLight intensity={0.1} />
+          <ambientLight intensity={0.45} />
           <directionalLight position={[0, 0, 20]} color={0xccccff} castShadow={true} />
           <directionalLight position={[17, 0, -10]} color={0xffcccc} castShadow={true} />
           <directionalLight position={[-17, 0, -10]} color={0xe5cce5} castShadow={true} />
           <pointLight
             position={[0, 0, 0]}
-            color={0xffcccc}
+            color={0xffeedd}
             castShadow={true}
-            intensity={0.5}
+            intensity={0.2}
           />
 
           {fileCoordinates.map((file) =>

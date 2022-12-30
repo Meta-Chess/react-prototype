@@ -29,10 +29,18 @@ interface Props {
   animatedColor?: Animated.AnimatedInterpolation | undefined;
   animatedOutlineColor?: Animated.AnimatedInterpolation | undefined;
   pieceDecorationNames?: PieceDecorationName[];
+  hidden?: boolean;
 }
 
 // TODO: Implement sizes, animations, and decorations
-const PieceImage3D: FC<Props> = ({ type, color, coordinates, projection, opacity }) => {
+const PieceImage3D: FC<Props> = ({
+  type,
+  color,
+  coordinates,
+  projection,
+  opacity,
+  hidden = false,
+}) => {
   const { position, normal } = projection({
     ...coordinates,
     ...coordinates,
@@ -63,15 +71,15 @@ const PieceImage3D: FC<Props> = ({ type, color, coordinates, projection, opacity
         new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), normal)
       )}
       receiveShadow
-      castShadow
+      castShadow={!hidden}
     >
       <meshStandardMaterial
         attach="material"
         color={color}
         roughness={0.2}
         metalness={0.5}
-        transparent={opacity !== undefined}
-        opacity={opacity}
+        transparent={opacity !== undefined || hidden}
+        opacity={(opacity ?? 1) * (hidden ? 0.4 : 1)}
       />
     </mesh>
   );

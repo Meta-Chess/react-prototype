@@ -25,6 +25,7 @@ interface Props {
     numberOfFiles: number;
   };
   projection: Projection;
+  hidden?: boolean;
 }
 
 export const Piece3D: FC<Props> = ({
