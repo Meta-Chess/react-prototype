@@ -4,6 +4,7 @@ import { Colors, PieceImage3D, Projection } from "primitives";
 import { Animated } from "react-native";
 import { getPieceDecorationNames } from "./getPieceDecorationNames";
 import { GameContext } from "components/shared";
+import { ThreeEvent } from "@react-three/fiber";
 
 interface animatedData {
   animatedColor: Animated.AnimatedInterpolation;
@@ -25,6 +26,7 @@ interface Props {
     numberOfFiles: number;
   };
   projection: Projection;
+  onClick?: (event: ThreeEvent<MouseEvent>) => void;
 }
 
 export const Piece3D: FC<Props> = ({
