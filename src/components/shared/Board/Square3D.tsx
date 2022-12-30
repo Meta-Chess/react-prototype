@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import {
   Colors,
   getSurfaceSquareGeometry,
+  kleinProjection,
   mobiusProjection,
   Projection,
   SFC,
@@ -19,6 +20,7 @@ import {
 } from "./Square";
 import Color from "color";
 import { BoardType3D } from "./useBoardType";
+import { ThreeEvent } from "@react-three/fiber";
 
 interface Props {
   square: Square | undefined;
@@ -34,6 +36,7 @@ const PROJECTIONS: { [k in BoardType3D]: Projection } = {
   spherical: sphereProjection,
   toroidal: torusProjection,
   mobius: mobiusProjection,
+  klein: kleinProjection,
 };
 
 export const Square3D: SFC<Props> = ({
@@ -57,7 +60,8 @@ export const Square3D: SFC<Props> = ({
   const piecesOrPieceAnimationsOnSquare: (string | Token)[] =
     getDisplayPiecesAndTokens(square);
 
-  const onPress = (): void => {
+  const onClick = (event: ThreeEvent<MouseEvent>): void => {
+    event.stopPropagation();
     modals.hideAll();
     gameMaster.onSquarePress(square.location);
   };
@@ -76,7 +80,7 @@ export const Square3D: SFC<Props> = ({
           fileGranularity: 64,
           rankGranularity: 64,
         })}
-        onClick={onPress}
+        onClick={onClick}
         receiveShadow
         castShadow
       >
