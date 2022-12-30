@@ -11,12 +11,12 @@ export const getPossibleBoards = (gameMaster?: GameMaster): BoardType[] => {
   if (gameMaster?.getRuleNames().includes("verticallyCylindrical"))
     possibleBoards.push("circular");
   if (gameMaster?.getRuleNames().includes("polar")) possibleBoards.push("spherical");
+  if (gameMaster?.getRuleNames().includes("mobius")) possibleBoards.push("mobius");
   if (
     gameMaster?.getRuleNames().includes("verticallyCylindrical") &&
     gameMaster?.getRuleNames().includes("cylindrical")
   )
     possibleBoards.push("toroidal");
-  if (gameMaster?.getRuleNames().includes("mobius")) possibleBoards.push("mobius");
   if (
     gameMaster?.getRuleNames().includes("mobius") &&
     gameMaster?.getRuleNames().includes("cylindrical") &&
@@ -35,11 +35,11 @@ export const useBoardType = (boardTypeOverride?: BoardType): BoardType => {
   );
   const defaultBoardType = useMemo(
     (): BoardType =>
-      gameMaster?.getRuleNames().includes("cylindrical") &&
-      gameMaster?.getRuleNames().includes("verticallyCylindrical")
-        ? "toroidal"
-        : gameMaster?.getRuleNames().includes("mobius")
+      gameMaster?.getRuleNames().includes("mobius")
         ? "mobius"
+        : gameMaster?.getRuleNames().includes("cylindrical") &&
+          gameMaster?.getRuleNames().includes("verticallyCylindrical")
+        ? "toroidal"
         : gameMaster?.getRuleNames().includes("longBoard") &&
           gameMaster?.getRuleNames().includes("verticallyCylindrical")
         ? "circular"
