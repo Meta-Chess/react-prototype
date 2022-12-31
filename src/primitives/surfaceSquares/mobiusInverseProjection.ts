@@ -1,5 +1,5 @@
 import { Vector3 } from "three";
-import { Projection } from "./Projection";
+import { InverseProjection } from "./InverseProjection";
 
 const R = 0.8;
 const STRIP_WIDTH = 0.8;
@@ -7,7 +7,7 @@ const HALF_THICKNESS = 0.03;
 
 const [sin, cos] = [Math.sin, Math.cos];
 
-export const mobiusProjection: Projection = ({
+export const mobiusInverseProjection: InverseProjection = ({
   file,
   rank,
   numberOfFiles,

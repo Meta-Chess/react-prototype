@@ -1,6 +1,6 @@
 import { Vector3 } from "three";
 
-export type Projection = (boardCoordinates: {
+export type InverseProjection = (boardCoordinates: {
   file: number;
   rank: number;
   numberOfFiles: number;

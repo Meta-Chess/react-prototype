@@ -1,10 +1,10 @@
 import { Vector3 } from "three";
-import { Projection } from "./Projection";
+import { InverseProjection } from "./InverseProjection";
 
 const CENTRAL_RADIUS = 0.8;
 const TUBE_RADIUS = 0.4;
 
-export const torusProjection: Projection = ({
+export const torusInverseProjection: InverseProjection = ({
   file,
   rank,
   numberOfFiles,

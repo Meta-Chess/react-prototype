@@ -1,10 +1,10 @@
 import { Vector3 } from "three";
-import { Projection } from "./Projection";
+import { InverseProjection } from "./InverseProjection";
 
 const RADIUS = 0.5;
 const LENGTH = 2;
 
-export const cylinderProjection: Projection = ({
+export const cylinderInverseProjection: InverseProjection = ({
   file,
   rank,
   numberOfFiles,

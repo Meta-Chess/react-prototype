@@ -1,15 +1,15 @@
 import { BufferAttribute, BufferGeometry, Vector3 } from "three";
-import { Projection } from "primitives";
+import { InverseProjection } from "primitives";
 
 export function getCapGeometry({
-  projection,
+  inverseProjection,
   numberOfFiles,
   numberOfRanks,
   fileGranularity,
   rankMinusOnePoint,
   rankMaxPlusOnePoint,
 }: {
-  projection: Projection;
+  inverseProjection: InverseProjection;
   numberOfFiles: number;
   numberOfRanks: number;
   fileGranularity: number;
@@ -21,7 +21,7 @@ export function getCapGeometry({
   const normals = [...rankMinusOnePoint, ...rankMaxPlusOnePoint];
   let proj: { position: Vector3; normal: Vector3 };
   for (let i = 0; i < pointCount; i++) {
-    proj = projection({
+    proj = inverseProjection({
       file: i / fileGranularity,
       rank: 1,
       numberOfFiles,
@@ -31,7 +31,7 @@ export function getCapGeometry({
     normals.push(proj.normal.x, proj.normal.y, proj.normal.z);
   }
   for (let i = 0; i < pointCount; i++) {
-    proj = projection({
+    proj = inverseProjection({
       file: i / fileGranularity,
       rank: numberOfRanks + 1,
       numberOfFiles,

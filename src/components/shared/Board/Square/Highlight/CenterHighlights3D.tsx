@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { GameMaster, Square } from "game";
 import { getHighlightColorsAndTypes } from "./getHighlightColorsAndTypes";
 import { CircleGeometry, Euler, Quaternion, Vector3 } from "three";
-import { Projection } from "primitives";
+import { InverseProjection } from "primitives";
 
 interface Props {
   gameMaster: GameMaster;
@@ -13,16 +13,16 @@ interface Props {
     numberOfRanks: number;
     numberOfFiles: number;
   };
-  projection: Projection;
+  inverseProjection: InverseProjection;
 }
 
 export const CenterHighlights3D: FC<Props> = ({
   gameMaster,
   square,
   coordinates,
-  projection,
+  inverseProjection,
 }) => {
-  const { position, normal } = projection({
+  const { position, normal } = inverseProjection({
     ...coordinates,
     rank: coordinates.rank + 0.5,
     file: coordinates.file + 0.5,
