@@ -1,4 +1,5 @@
 export * from "./InverseProjection";
+export * from "./constants";
 export * from "./cylinderInverseProjection";
 export * from "./getCylinderCapsGeometry";
 export * from "./getMobiusStripEdgeGeometry";

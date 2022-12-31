@@ -5,6 +5,7 @@ import {
   getMobiusStripEdgeGeometry,
   getSpherePolarCapsGeometry,
   SFC,
+  TILE_GRANULARITY,
 } from "primitives";
 import { objectMatches, range, wrapToCylinder } from "utilities";
 import { SquareShape, TokenName } from "game";
@@ -56,18 +57,18 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
       ? getSpherePolarCapsGeometry({
           numberOfFiles,
           numberOfRanks,
-          fileGranularity: 64,
+          fileGranularity: TILE_GRANULARITY,
         })
       : type === "cylindrical"
       ? getCylinderCapsGeometry({
           numberOfFiles,
           numberOfRanks,
-          fileGranularity: 64,
+          fileGranularity: TILE_GRANULARITY,
         })
       : type === "mobius"
       ? getMobiusStripEdgeGeometry({
           numberOfRanks,
-          rankGranularity: 64,
+          rankGranularity: TILE_GRANULARITY,
         })
       : null;
 
