@@ -20,6 +20,7 @@ import { OrbitControls } from "@react-three/drei";
 import { Square3D } from "./Square3D";
 import { BoardType3D } from "./useBoardType";
 import { use3dCylinderRotation } from "./use3dCylinderRotation";
+import { Lighting } from "./Lighting";
 
 export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
   backboard = true,
@@ -83,11 +84,7 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
           camera={{ fov: 4, position: [0, 0, -40] }}
           shadows
         >
-          <ambientLight intensity={0.45} />
-          <directionalLight position={[0, 0, 20]} color={0xffcccc} castShadow={true} />
-          <directionalLight position={[17, 0, -10]} color={0xccccff} castShadow={true} />
-          <directionalLight position={[-17, 0, -10]} color={0xe5cce5} castShadow={true} />
-
+          <Lighting />
           {fileCoordinates.map((file) =>
             rankCoordinates.map((rank) => {
               return (

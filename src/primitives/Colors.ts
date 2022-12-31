@@ -51,4 +51,9 @@ export const Colors = {
   MCHESS_ORANGE: Color("#F26100"),
   MCHESS_BLUE: Color("#99caf7"),
   DISCORD: Color("#7289DA"),
+  LIGHTING: {
+    WARM: Color("#FFCCCC"),
+    NEUTRAL: Color("#E5CCE5"),
+    COLD: Color("#CCCCFF"),
+  },
 };
