@@ -7,12 +7,6 @@ export const sphereProjection: Projection = ({
   numberOfFiles,
   numberOfRanks,
   heightAdjustment = 0,
-}: {
-  file: number;
-  rank: number;
-  numberOfFiles: number;
-  numberOfRanks: number;
-  heightAdjustment?: number;
 }) => {
   const position = new Vector3().setFromSphericalCoords(
     1 + heightAdjustment,

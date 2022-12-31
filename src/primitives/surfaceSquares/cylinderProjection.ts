@@ -10,12 +10,6 @@ export const cylinderProjection: Projection = ({
   numberOfFiles,
   numberOfRanks,
   heightAdjustment = 0,
-}: {
-  file: number;
-  rank: number;
-  numberOfFiles: number;
-  numberOfRanks: number;
-  heightAdjustment?: number;
 }) => {
   const angle = (file * 2 * Math.PI) / numberOfFiles;
 

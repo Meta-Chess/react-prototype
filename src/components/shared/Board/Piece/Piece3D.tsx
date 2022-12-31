@@ -52,6 +52,7 @@ export const Piece3D: FC<Props> = ({
     <PieceImage3D
       type={piece.name}
       color={chosenColor}
+      // TODO: This logic is probably duplicate and could be extracted
       opacity={
         piece.hasTokenWithName(TokenName.Fatigue) &&
         !ignoreTokens &&

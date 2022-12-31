@@ -10,12 +10,6 @@ export const torusProjection: Projection = ({
   numberOfFiles,
   numberOfRanks,
   heightAdjustment = 0,
-}: {
-  file: number;
-  rank: number;
-  numberOfFiles: number;
-  numberOfRanks: number;
-  heightAdjustment?: number;
 }) => {
   const centralAngle = (rank * 2 * Math.PI) / numberOfRanks;
   const tubeAngle = (file * 2 * Math.PI) / numberOfFiles;
