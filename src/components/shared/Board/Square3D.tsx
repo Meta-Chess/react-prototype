@@ -18,7 +18,6 @@ import {
   getDisplayPiecesAndTokens,
   getHighlightColorsAndTypes,
 } from "./Square";
-import Color from "color";
 import { BoardType3D } from "./useBoardType";
 import { ThreeEvent } from "@react-three/fiber";
 
@@ -137,7 +136,7 @@ function calculateBackgroundColor(
 
   getHighlightColorsAndTypes({ gameMaster, square })
     .filter(({ type }) => type === "tile")
-    .forEach(({ color: highlightColor }) => (color = color.mix(Color(highlightColor))));
+    .forEach(({ color: highlightColor }) => (color = color.mix(highlightColor)));
 
   return color.toString();
 }
