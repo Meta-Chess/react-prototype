@@ -13,12 +13,6 @@ export const mobiusProjection: Projection = ({
   numberOfFiles,
   numberOfRanks,
   heightAdjustment = 0,
-}: {
-  file: number;
-  rank: number;
-  numberOfFiles: number;
-  numberOfRanks: number;
-  heightAdjustment?: number;
 }) => {
   // phi is the twist angle which goes from 0 to 2*pi. It's half the central angle
   const phi = (rank * 2 * Math.PI) / numberOfRanks;
