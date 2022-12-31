@@ -9,8 +9,8 @@ interface Props {
   squareShape?: SquareShape | undefined;
 }
 
-// TODO: change this into a map...
-function CHOOSE_DECORATION(
+// TODO: consider changing this into a map...
+function getDecoration(
   name: PieceDecorationName,
   circularBoard: boolean
 ): ReactElement | void {
@@ -54,7 +54,7 @@ const PieceDecorations: FC<Props> = ({ pieceDecorationNames, squareShape }) => {
   return (
     <>
       {pieceDecorationNames?.map((pieceDecorationName) => {
-        return CHOOSE_DECORATION(pieceDecorationName, circularBoard);
+        return getDecoration(pieceDecorationName, circularBoard);
       })}
     </>
   );

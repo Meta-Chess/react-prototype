@@ -10,7 +10,9 @@ import {
   Region,
   Regions,
   WithOptional,
-  Token,
+  Token, 
+  TokenName, 
+  SquareShape,
 } from "game/types";
 import { LocationPrefix, SpecialLocation } from "./location";
 import { isPresent } from "utilities";
@@ -22,8 +24,6 @@ import { EventCenter } from "game/EventCenter";
 import { invisibilityToken } from "game/CompactRules/constants";
 import { keys } from "utilities";
 import { PieceStatus, pieceStatusRules } from "./PieceStatus";
-
-import { TokenName, SquareShape } from "game/types";
 
 interface LocationMap {
   [location: string]: Square;
