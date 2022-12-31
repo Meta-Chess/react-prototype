@@ -305,11 +305,10 @@ describe("with crazyhouse", () => {
   it("captured backwards toroidal pawns have their gaits changed, double step tokens are cleared on capture, a played piece will start fatigued", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs({
-        gameOptions: calculateGameOptions({ checkEnabled: false }, [
-          "crazyhouse",
-          "fatigue",
-          "toroidal",
-        ]),
+        gameOptions: calculateGameOptions(
+          { checkEnabled: false, ruleNamesWithParams: { longBoard: { Large: true } } },
+          ["crazyhouse", "fatigue", "toroidal"]
+        ),
       })
     );
     const board = gameMaster.game.board;

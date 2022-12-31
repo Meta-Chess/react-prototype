@@ -9,18 +9,19 @@ import {
   RankAndFileBounds,
   Region,
   Regions,
-  WithOptional,
+  SquareShape,
   Token,
+  TokenName,
+  WithOptional,
 } from "game/types";
 import { LocationPrefix, SpecialLocation } from "./location";
-import { isPresent } from "utilities";
+import { isPresent, keys } from "utilities";
 import { CompactRules } from "game/CompactRules/CompactRules";
 import { IdGenerator } from "utilities/IdGenerator";
 import { Move, PieceDelta } from "game/Move";
 import { clone } from "lodash";
 import { EventCenter } from "game/EventCenter";
 import { invisibilityToken } from "game/CompactRules/constants";
-import { keys } from "utilities";
 import { PieceStatus, pieceStatusRules } from "./PieceStatus";
 
 interface LocationMap {
@@ -378,6 +379,19 @@ class Board extends TokenOwner {
     return Object.values(this.pieces)
       .filter((p) => square.pieces.some((pId) => p.id === pId))
       .filter(rule);
+  }
+
+  setVisualShapeToken(tokenName: SquareShape): void {
+    const boardShapeToken = {
+      name: TokenName.Shape,
+      expired: (): boolean => {
+        return false;
+      },
+      data: { shape: tokenName },
+    };
+
+    this.removeTokensByName(TokenName.Shape);
+    this.addToken(boardShapeToken);
   }
 }
 

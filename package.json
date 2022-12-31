@@ -1,7 +1,7 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start --dev",
+    "start": "expo start",
     "android": "yarn start --android",
     "ios": "yarn start --ios",
     "web": "yarn start --web",
@@ -19,6 +19,9 @@
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
+    "@react-three/drei": "^9.48.1",
+    "@react-three/fiber": "^8.9.1",
+    "@tippyjs/react": "^4.2.6",
     "auto-bind": "^4.0.0",
     "axios": "^0.21.1",
     "color": "^3.1.3",
@@ -28,10 +31,10 @@
     "immutability-helper": "^3.1.1",
     "lodash": "^4.17.20",
     "moment": "^2.27.0",
-    "react": "^16.13.1",
-    "react-dom": "^17.0.0-rc.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-icons": "^4.2.0",
-    "react-native": "^0.62.0",
+    "react-native": "0.63.3",
     "react-native-dropdown-picker": "^3.6.8",
     "react-native-gesture-handler": "~1.7.0",
     "react-native-reanimated": "~1.13.0",
@@ -43,6 +46,7 @@
     "react-select": "^3.1.0",
     "socket.io-client": "^2.3.1",
     "styled-components": "^5.2.0",
+    "three": "^0.148.0",
     "ts-is-present": "^1.2.1"
   },
   "optionalDependencies": {
@@ -60,6 +64,7 @@
     "@types/react-select": "^3.0.22",
     "@types/socket.io-client": "^1.4.34",
     "@types/styled-components": "^5.1.3",
+    "@types/three": "^0.146.0",
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
     "babel-loader": "^8.1.0",

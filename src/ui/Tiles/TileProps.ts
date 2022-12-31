@@ -1,11 +1,28 @@
+import Color from "color";
 import { Animated } from "react-native";
 
-export interface TileProps {
-  size: number;
-  color: string;
+interface CoreTileProps {
+  size?: number;
+  tileSchematic?: TileSchematic;
+  pressable?: boolean;
 }
 
-export interface AnimatedTileProps {
-  size: number;
+export type TileProps = { color: Color } & CoreTileProps;
+export type AnimatedTileProps = {
   color: Animated.AnimatedInterpolation;
+} & CoreTileProps;
+
+export type TileSchematic = {
+  topAdjustmentToTileCenter: number;
+  leftAdjustmentToTileCenter: number;
+  centerMaxEmbeddedDiameter: number;
+} & ArcTileSchematic; // extend with ... | OtherTileSchematic ...
+
+export interface ArcTileSchematic {
+  arcSvgDetails: ArcSvgDetails;
+}
+
+interface ArcSvgDetails {
+  tilePath: string;
+  tileWidth: number;
 }

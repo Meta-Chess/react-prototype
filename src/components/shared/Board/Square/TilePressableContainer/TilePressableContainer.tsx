@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { SFC } from "primitives";
 import { TouchableOpacity } from "react-native";
 import { SquareShape } from "game";
@@ -18,27 +18,26 @@ const HexContainer = styled(TouchableOpacity)<{ size: number }>`
   border-radius: 50px;
 `;
 
-// All the containers should have the same type as the square container
-const CONTAINERS: { [shape in SquareShape]: typeof SquareContainer } = {
-  [SquareShape.Square]: SquareContainer,
-  [SquareShape.Hex]: HexContainer,
+const NoContainer: FC = ({ children }) => {
+  return <>{children}</>;
 };
 
-interface TilePressableContainerProps {
-  shape: SquareShape;
-  size: number;
-  onPress: () => void;
-}
+const CONTAINERS: {
+  [shape in SquareShape]: typeof SquareContainer | typeof NoContainer;
+} = {
+  [SquareShape.Square]: SquareContainer,
+  [SquareShape.Hex]: HexContainer,
+  [SquareShape.Arc]: NoContainer,
+};
 
-const TilePressableContainer: SFC<TilePressableContainerProps> = ({
-  shape,
-  size,
-  onPress,
-  children,
-}) => {
+const TilePressableContainer: SFC<{
+  size?: number;
+  shape: SquareShape;
+  onPress: () => void;
+}> = ({ size = 0, shape, onPress, children }) => {
   const Container = CONTAINERS[shape];
   return (
-    <Container size={size} onPress={onPress} activeOpacity={1} accessible={false}>
+    <Container size={size} onPress={onPress}>
       {children}
     </Container>
   );

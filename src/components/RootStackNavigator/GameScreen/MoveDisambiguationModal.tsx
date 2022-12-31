@@ -1,11 +1,12 @@
-import React, { useContext, FC } from "react";
-import { View, ScrollView, Platform } from "react-native";
+import React, { FC, useContext } from "react";
+import { Platform, ScrollView, View } from "react-native";
 import { CloseIcon, Colors, Text } from "primitives";
 import { StaticBoard } from "components/shared/StaticBoard";
 import { IconButton } from "ui/Buttons/IconButton";
 import styled from "styled-components/native";
 import { Styles } from "primitives/Styles";
 import { GameContext } from "components/shared";
+import { SquareShape, TokenName } from "game/types";
 
 interface Props {
   flipBoard: boolean;
@@ -14,8 +15,8 @@ interface Props {
 export const MoveDisambiguationModal: FC<Props> = ({ flipBoard }) => {
   const { gameMaster } = useContext(GameContext);
   if (!gameMaster) return null;
-  const moves = gameMaster?.allowableMoves;
-
+  const moves = gameMaster.allowableMoves;
+  const shape = gameMaster.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape;
   if (!moves) return null; // TODO: consider throwing an error?
 
   return (
@@ -43,6 +44,7 @@ export const MoveDisambiguationModal: FC<Props> = ({ flipBoard }) => {
               <StaticBoard
                 gameMaster={moveDemoGameMaster}
                 flipBoard={flipBoard}
+                circularBoard={shape === SquareShape.Arc}
                 onPress={(): void => gameMaster.doMove({ move })}
                 style={{ marginLeft: index > 0 ? 12 : undefined }}
               />
@@ -70,6 +72,7 @@ export const MoveDisambiguationModal: FC<Props> = ({ flipBoard }) => {
 
 const Container = styled(View)`
   flex-shrink: 1;
+  min-width: 300px;
   margin-horizontal: ${Platform.OS === "web" ? 24 : 0}px;
   background-color: ${Colors.DARKISH.toString()};
   ${Styles.BOX_SHADOW}

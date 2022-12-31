@@ -45,6 +45,7 @@ export interface AllRuleParamValue {
   "Promotion Pieces": PieceName[][];
   "Only Friendly Dead Pieces": boolean;
   "Non Promotion Moves": boolean;
+  Large: boolean;
 }
 
 export type ParamName = keyof AllRuleParamValue;

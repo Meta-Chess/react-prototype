@@ -9,6 +9,7 @@ import { SimpleGameProvider } from "./GameContext";
 interface Props {
   gameMaster: GameMaster;
   flipBoard?: boolean;
+  circularBoard?: boolean;
   onPress?: () => void;
   maxWidth?: number;
   maxHeight?: number;
@@ -17,6 +18,7 @@ interface Props {
 export const StaticBoard: SFC<Props> = ({
   gameMaster,
   flipBoard,
+  circularBoard,
   onPress,
   maxWidth = 200,
   maxHeight = 200,
@@ -35,7 +37,12 @@ export const StaticBoard: SFC<Props> = ({
   return (
     <View style={[style, { overflow: "hidden" }]}>
       <SimpleGameProvider gameMaster={gameMaster}>
-        <Board measurements={boardMeasurements} flipBoard={flipBoard} backboard={false} />
+        <Board
+          measurements={boardMeasurements}
+          flipBoard={flipBoard}
+          circularBoard={circularBoard}
+          backboard={false}
+        />
       </SimpleGameProvider>
       <AbsoluteTouchableOpacity
         onPress={onPress}

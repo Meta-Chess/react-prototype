@@ -55,6 +55,12 @@ class AllRuleSettings implements AllRuleSettingsProto {
       maxCycles: 1,
     },
   };
+  longBoard = {
+    Large: {
+      paramType: ParamSettingType.Boolean,
+      defaultValue: false,
+    },
+  };
   chainReaction = {
     "Max Chain Length": {
       paramType: ParamSettingType.Integer,

@@ -1,4 +1,5 @@
 export * from "./Buttons";
+export * from "./Column";
 export * from "./Containers";
 export * from "./Divider";
 export * from "./Forms";

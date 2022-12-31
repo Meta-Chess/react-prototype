@@ -7,6 +7,7 @@ import { SquareShape } from "game/types";
 
 const Explosion: FC<AnimationComponentProps> = ({
   size,
+  tileSchematic,
   duration,
   delay = 0,
   shape = SquareShape.Square,
@@ -39,7 +40,12 @@ const Explosion: FC<AnimationComponentProps> = ({
 
   return (
     <AbsoluteView pointerEvents={"none"}>
-      <AnimatedTile shape={shape} size={size} color={animatedColor} />
+      <AnimatedTile
+        shape={shape}
+        size={size}
+        tileSchematic={tileSchematic}
+        color={animatedColor}
+      />
     </AbsoluteView>
   );
 };
