@@ -1,6 +1,4 @@
 import React, { useContext, useEffect, useMemo } from "react";
-import { View } from "react-native";
-import styled from "styled-components/native";
 import {
   Colors,
   getCylinderCapsGeometry,
@@ -11,16 +9,15 @@ import {
 import { objectMatches, range, wrapToCylinder } from "utilities";
 import { SquareShape, TokenName } from "game";
 import { BoardProps } from "components/shared/Board/Board";
-import { Styles } from "primitives/Styles";
 import { GameContext } from "components/shared/GameContext";
 import { AbsoluteView } from "ui";
-import { BoardMeasurements } from "./calculateBoardMeasurements";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { Square3D } from "./Square3D";
 import { BoardType3D } from "./useBoardType";
 import { use3dCylinderRotation } from "./use3dCylinderRotation";
 import { Lighting } from "./Lighting";
+import { SquareBackboard } from "./SquareBackboard";
 
 export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
   backboard = true,
@@ -75,7 +72,7 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
       : null;
 
   return (
-    <BoardContainer measurements={measurements} backboard={backboard}>
+    <SquareBackboard measurements={measurements} backboard={backboard}>
       <AbsoluteView
         style={{ overflow: "hidden", margin: measurements.boardPaddingHorizontal }}
       >
@@ -121,21 +118,6 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
           <OrbitControls />
         </Canvas>
       </AbsoluteView>
-    </BoardContainer>
+    </SquareBackboard>
   );
 };
-
-const BoardContainer = styled(View)<{
-  backboard: boolean;
-  measurements: BoardMeasurements;
-}>`
-  position: relative;
-  ${({ backboard }): string => (backboard ? Styles.BOX_SHADOW_STRONG : "")}
-  ${({ backboard }): string =>
-    backboard ? `background-color: ${Colors.DARK.toString()}` : ""}
-          height: ${({ measurements }): number => measurements.height}px;
-  width: ${({ measurements }): number => measurements.width}px;
-  padding-horizontal: ${({ measurements }): number =>
-    measurements.boardPaddingHorizontal}px;
-  padding-vertical: ${({ measurements }): number => measurements.boardPaddingVertical}px;
-`;
