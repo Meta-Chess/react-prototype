@@ -45,7 +45,6 @@ export const Square3D: SFC<Props> = ({
   numberOfRanks,
   numberOfFiles,
   type,
-  // tileSchematic,
 }) => {
   const modals = useModals();
   const { gameMaster } = useContext(GameContext);
