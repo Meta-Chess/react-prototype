@@ -1,5 +1,5 @@
 import { PieceName } from "game/types";
-import { Rule, ParameterRule, OnGaitsGeneratedModify } from "../CompactRules";
+import { OnGaitsGeneratedModify, ParameterRule, Rule } from "../CompactRules";
 
 export const patheticKing: ParameterRule<"patheticKing"> = ({
   "And cannot move without assistance": cantMove,

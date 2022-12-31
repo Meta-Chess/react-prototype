@@ -1,4 +1,4 @@
-import { RankSetup, PIECE_SYMBOL_INFO } from "../Setup";
+import { PIECE_SYMBOL_INFO, RankSetup } from "../Setup";
 import { createPiece } from "game/CompactRules/utilities";
 import type { Board } from "game/Board";
 import { keys, toLocation } from "utilities";

@@ -1,4 +1,4 @@
-import { TrivialParameterRule, FormatControlAtTurnStart } from "../CompactRules";
+import { FormatControlAtTurnStart, TrivialParameterRule } from "../CompactRules";
 import { GameMaster } from "game";
 import { Player } from "game/Player/Player";
 import { range } from "lodash";

@@ -1,6 +1,6 @@
 import { isPresent } from "ts-is-present";
 import { Direction, Gait, GaitParams, PieceName, PlayerName } from "../types";
-import { applyInSequence } from "utilities";
+import { applyInSequence, keys } from "utilities";
 import { Board, Piece, Square } from "../Board";
 import { Game } from "game/Game";
 import { Move, PieceDelta } from "game/Move";
@@ -12,17 +12,16 @@ import { FormatName, formats as allFormats } from "game/formats";
 import {
   getDefaults,
   RuleName,
+  RuleParam,
+  RuleParamValue,
   rules,
   RuleSetting,
-  RuleParamValue,
-  RuleParam,
   RulesWithoutParams,
   RulesWithParams,
 } from "game/CompactRules";
 import { variantsToRules } from "game/variantAndRuleProcessing/variantsToRules";
 import { overrideRuleParamsForVariants } from "game/variantAndRuleProcessing";
 import { uniq } from "lodash";
-import { keys } from "utilities";
 import { Player } from "game/Player";
 
 const allRules: AllParameterRules = rules;

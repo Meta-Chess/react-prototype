@@ -1,5 +1,5 @@
 import { PieceName } from "game/types";
-import { Rule, TrivialParameterRule, OnGaitsGeneratedModify } from "../CompactRules";
+import { OnGaitsGeneratedModify, Rule, TrivialParameterRule } from "../CompactRules";
 import { range, uniq } from "lodash";
 
 export const completedKnight: TrivialParameterRule = (): Rule => {

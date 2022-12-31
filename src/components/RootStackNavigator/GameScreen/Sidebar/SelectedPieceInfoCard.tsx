@@ -1,7 +1,7 @@
 import React from "react";
 import { SFC, Text } from "primitives";
 import { Block } from "ui/Containers/Block";
-import { Piece, tokenDetails, pieceDetails } from "game";
+import { Piece, pieceDetails, tokenDetails } from "game";
 import { LabelWithDetails } from "ui";
 import { View } from "react-native";
 

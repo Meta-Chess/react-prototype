@@ -1,19 +1,19 @@
-import React, { FC, useState, useCallback } from "react";
-import { View, ScrollView } from "react-native";
+import React, { FC, useCallback, useState } from "react";
+import { ScrollView, View } from "react-native";
 import {
-  calculateGameOptions,
   AdviceLevel,
+  calculateGameOptions,
+  defaultGameOptions,
   findConflicts,
   FutureVariantName,
   GameOptions,
-  defaultGameOptions,
 } from "game";
 import { TraitName } from "game/variants/traitInfo";
-import { useNavigation, Screens, useGoBackOrToStartScreen, useRoute } from "navigation";
+import { Screens, useGoBackOrToStartScreen, useNavigation, useRoute } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
-import { FormatCard, FiltersCard, GameOptionsCard, AdviceCard } from "./CollapsableCards";
-import { Button, ButtonSecondary, Divider, AbsoluteView } from "ui";
+import { AdviceCard, FiltersCard, FormatCard, GameOptionsCard } from "./CollapsableCards";
+import { AbsoluteView, Button, ButtonSecondary, Divider } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors, TrackingPixel } from "primitives";
 import styled from "styled-components/native";

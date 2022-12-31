@@ -1,10 +1,10 @@
-import { Pather, getAllGaits } from "game/Pather";
-import { PieceName, Gait, TokenName } from "game/types";
+import { getAllGaits, Pather } from "game/Pather";
+import { Gait, PieceName, TokenName } from "game/types";
 import {
+  OnGaitsGeneratedModify,
   Rule,
   TrivialParameterRule,
   TurnStartPreprocessing,
-  OnGaitsGeneratedModify,
 } from "../CompactRules";
 import { clone } from "lodash";
 

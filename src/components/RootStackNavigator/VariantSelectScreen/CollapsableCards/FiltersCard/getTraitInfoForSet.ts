@@ -1,5 +1,5 @@
 import { futureVariants, TraitsInSetInfo } from "game";
-import { TraitName, allTraitNames } from "game/variants/traitInfo";
+import { allTraitNames, TraitName } from "game/variants/traitInfo";
 import { keys } from "utilities/keys";
 
 // TODO: soon sets will be groups of variants, and be passed into this function

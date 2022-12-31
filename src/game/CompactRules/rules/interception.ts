@@ -1,5 +1,5 @@
 import { TokenName } from "game/types";
-import { TrivialParameterRule, PostMove } from "../CompactRules";
+import { PostMove, TrivialParameterRule } from "../CompactRules";
 
 export const interception: TrivialParameterRule = () => ({
   title: "Interception",

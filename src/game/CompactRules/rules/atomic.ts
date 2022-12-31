@@ -1,5 +1,5 @@
 import { Board, Square } from "game/Board";
-import { PieceName, AnimationType, Direction } from "game/types";
+import { AnimationType, Direction, PieceName } from "game/types";
 import { uniq } from "lodash";
 import { isPresent } from "utilities/isPresent";
 import { ParameterRule, SubscribeToEvents } from "../CompactRules";

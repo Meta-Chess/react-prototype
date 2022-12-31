@@ -1,5 +1,5 @@
 import { Direction } from "game/types";
-import { TrivialParameterRule, OnGaitsGeneratedModify } from "../CompactRules";
+import { OnGaitsGeneratedModify, TrivialParameterRule } from "../CompactRules";
 
 export const passiveMoveThroughBoard: TrivialParameterRule = () => ({
   title: "Passive Move Through Board",

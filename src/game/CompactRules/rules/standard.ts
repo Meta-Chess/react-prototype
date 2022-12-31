@@ -1,19 +1,19 @@
 import { range, toLocation } from "utilities";
 import { PlayerName } from "game/types";
+import type { RankSetup } from "../utilities";
 import {
   addPiecesToSquareBoardByRankSetup,
   addStandardAdjacenciesToSquareBoard,
   generateSquareGrid,
   GET_GAIT_GENERATOR,
-  SQUARE_CLOCKWISE_DIRECTIONS,
   PieceSet,
+  SQUARE_CLOCKWISE_DIRECTIONS,
 } from "../utilities";
-import type { RankSetup } from "../utilities";
 import {
-  TrivialParameterRule,
   ForSquareGenerationModify,
-  OnBoardCreate,
   GetGaitGenerator,
+  OnBoardCreate,
+  TrivialParameterRule,
 } from "../CompactRules";
 
 export const standard: TrivialParameterRule = () => ({

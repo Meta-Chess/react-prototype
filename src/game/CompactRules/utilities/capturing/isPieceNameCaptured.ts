@@ -1,4 +1,4 @@
-import { Move, Board, PieceName } from "game";
+import { Board, Move, PieceName } from "game";
 
 export function isPieceNameCaptured(
   move: Move,

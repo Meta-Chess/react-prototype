@@ -1,8 +1,8 @@
-import { PieceName, Gait } from "game/types";
+import { Gait, PieceName } from "game/types";
 import { Path } from "game/Pather";
 import {
-  OnSendPieceToGrave,
   GenerateSpecialPacifistMoves,
+  OnSendPieceToGrave,
   TrivialParameterRule,
 } from "../CompactRules";
 import { LocationPrefix } from "game/Board/location";

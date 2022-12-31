@@ -1,6 +1,6 @@
 import { PieceName } from "game/types";
 import { LocationPrefix } from "game/Board/location";
-import { TrivialParameterRule, LethalCondition } from "../CompactRules";
+import { LethalCondition, TrivialParameterRule } from "../CompactRules";
 
 export const loseWithNoKings: TrivialParameterRule = () => ({
   title: "Lose with no kings",

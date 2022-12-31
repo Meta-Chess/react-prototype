@@ -27,6 +27,7 @@ interface Props {
   };
   inverseProjection: InverseProjection;
   onClick?: (event: ThreeEvent<MouseEvent>) => void;
+  hidden?: boolean;
 }
 
 export const Piece3D: FC<Props> = ({

@@ -1,9 +1,9 @@
 import { Direction } from "game/types";
 import {
-  Rule,
-  ParameterRule,
   OnGaitsGeneratedModify,
+  ParameterRule,
   ProcessMoves,
+  Rule,
 } from "../CompactRules";
 import { Board } from "game";
 import { Gait, PlayerName } from "game/types/types";

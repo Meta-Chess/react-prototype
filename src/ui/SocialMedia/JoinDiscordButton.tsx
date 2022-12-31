@@ -1,8 +1,7 @@
 import React, { FC } from "react";
-import { View, Linking, Platform, TouchableOpacity } from "react-native";
-import { Colors, Text } from "primitives";
+import { Linking, Platform, TouchableOpacity, View } from "react-native";
+import { Colors, DISCORD_URL, Text } from "primitives";
 import { DiscordWithTextIcon } from "primitives/icons";
-import { DISCORD_URL } from "primitives";
 
 export const JoinDiscordButton: FC<{ buttonText: string }> = ({ buttonText }) => {
   return (

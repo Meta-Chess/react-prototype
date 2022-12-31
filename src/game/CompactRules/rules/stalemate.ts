@@ -1,4 +1,4 @@
-import { TrivialParameterRule, DrawCondition } from "../CompactRules";
+import { DrawCondition, TrivialParameterRule } from "../CompactRules";
 import { hasLegalMoves } from "../utilities";
 
 export const stalemate: TrivialParameterRule = () => ({

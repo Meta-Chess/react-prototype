@@ -1,4 +1,4 @@
-import { PlayerName, PieceName } from "game/types";
+import { PieceName, PlayerName } from "game/types";
 
 export type PieceSymbol =
   | ""

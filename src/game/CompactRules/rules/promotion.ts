@@ -1,5 +1,5 @@
 import { PieceName } from "game/types";
-import { ProcessMoves, OnPieceDisplaced } from "../CompactRules";
+import { OnPieceDisplaced, ProcessMoves } from "../CompactRules";
 import { Board, ParameterRule } from "game";
 import { nthCartesianPower } from "utilities/nthCartesianPower";
 import { Gait } from "game/types/types";

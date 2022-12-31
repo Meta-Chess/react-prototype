@@ -1,10 +1,10 @@
 import { Gait, PieceName, TokenName } from "game/types";
 import { Piece } from "game/Board";
 import {
-  TrivialParameterRule,
-  PostMove,
-  OnGaitsGeneratedModify,
   AfterBoardCreation,
+  OnGaitsGeneratedModify,
+  PostMove,
+  TrivialParameterRule,
 } from "../CompactRules";
 import { pawnDoubleStepToken } from "../constants";
 import { isPresent } from "utilities";

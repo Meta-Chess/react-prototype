@@ -1,8 +1,8 @@
 import { RuleName } from "game";
 import {
+  ParamName,
   ParamSetting,
   ParamValue,
-  ParamName,
   RuleNamesWithParams,
 } from "game/CompactRules";
 import { cloneDeep } from "lodash";

@@ -1,5 +1,5 @@
 import { Adjacency, Board, Square } from "game/Board";
-import { TrivialParameterRule, AfterBoardCreation } from "../CompactRules";
+import { AfterBoardCreation, TrivialParameterRule } from "../CompactRules";
 import { Direction, RankAndFileBounds } from "game/types";
 import { toLocation } from "utilities";
 

@@ -21,6 +21,12 @@ export const Lighting: FC = () => {
         color={Colors.LIGHTING.NEUTRAL.toString()}
         castShadow={true}
       />
+      <pointLight
+        position={[0, 0, 0]}
+        color={Colors.LIGHTING.WARM.mix(Colors.LIGHTING.NEUTRAL, 0.5).toString()}
+        castShadow={true}
+        intensity={0.2}
+      />
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { Square } from "game/Board";
 import { TokenName } from "game/types";
-import { ParameterRule, OnPieceDisplaced } from "../CompactRules";
+import { OnPieceDisplaced, ParameterRule } from "../CompactRules";
 
 export const thinIce: ParameterRule<"thinIce"> = ({
   "Square Durability": squareDurability,

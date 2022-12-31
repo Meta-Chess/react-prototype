@@ -1,4 +1,4 @@
-import { ParameterRule, LossCondition, SubscribeToEvents } from "../CompactRules";
+import { LossCondition, ParameterRule, SubscribeToEvents } from "../CompactRules";
 import { TokenName } from "game/types";
 import { Game } from "game";
 

@@ -2,7 +2,7 @@ import { Square } from "game/Board";
 import { Pather } from "game/Pather";
 import { Direction } from "game/types";
 import { sum } from "lodash";
-import { TrivialParameterRule, AfterStepModify } from "../CompactRules";
+import { AfterStepModify, TrivialParameterRule } from "../CompactRules";
 import { rotate180 } from "../utilities";
 
 export const diagonalMirror: TrivialParameterRule = () => ({

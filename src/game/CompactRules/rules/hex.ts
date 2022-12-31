@@ -1,9 +1,9 @@
 import { range, toLocation } from "utilities";
 import {
-  TrivialParameterRule,
   ForSquareGenerationModify,
-  OnBoardCreate,
   GetGaitGenerator,
+  OnBoardCreate,
+  TrivialParameterRule,
 } from "../CompactRules";
 import { Adjacency, Piece, Square } from "game/Board";
 import {
@@ -17,8 +17,8 @@ import {
 import {
   createPiece,
   GET_GAIT_GENERATOR,
-  PieceSet,
   HEX_CLOCKWISE_DIRECTIONS,
+  PieceSet,
 } from "../utilities";
 
 export const hex: TrivialParameterRule = () => ({

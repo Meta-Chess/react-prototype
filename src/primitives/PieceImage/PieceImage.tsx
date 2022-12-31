@@ -1,15 +1,15 @@
 import React from "react";
 import { PieceName, SquareShape } from "game";
-import { Svg, G } from "react-native-svg";
+import { G, Svg } from "react-native-svg";
 import { Colors } from "../Colors";
 import {
   Bishop,
+  BishopKnight,
   King,
   Knight,
   Pawn,
   Queen,
   Rook,
-  BishopKnight,
   RookKnight,
 } from "./sprites";
 import { SFC } from "primitives/SFC";

@@ -3,6 +3,7 @@ import {
   cylinderInverseProjection,
   getSurfaceSquareGeometry,
   InverseProjection,
+  kleinInverseProjection,
   mobiusInverseProjection,
   SFC,
   sphereInverseProjection,
@@ -35,6 +36,7 @@ const INVERSE_PROJECTIONS: { [k in BoardType3D]: InverseProjection } = {
   toroidal: torusInverseProjection,
   mobius: mobiusInverseProjection,
   cylindrical: cylinderInverseProjection,
+  klein: kleinInverseProjection,
 };
 
 export const Square3D: SFC<Props> = ({

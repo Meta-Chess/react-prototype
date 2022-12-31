@@ -1,4 +1,4 @@
-import { Rule, ParameterRule, OnPieceDisplaced } from "../CompactRules";
+import { OnPieceDisplaced, ParameterRule, Rule } from "../CompactRules";
 import { createPieceMutator, mutatePiece } from "../utilities";
 
 // TODO: this should be in the same place as promotion

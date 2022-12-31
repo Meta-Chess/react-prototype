@@ -1,10 +1,10 @@
 import { PieceName, TokenName } from "game/types";
 import { Piece } from "game/Board";
 import {
+  InPostMoveGenerationFilter,
+  OnGaitsGeneratedModify,
   ParameterRule,
   PostMove,
-  OnGaitsGeneratedModify,
-  InPostMoveGenerationFilter,
 } from "../CompactRules";
 import { isPresent } from "utilities";
 

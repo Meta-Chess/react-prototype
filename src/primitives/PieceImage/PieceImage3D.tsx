@@ -31,6 +31,7 @@ interface Props {
   animatedOutlineColor?: Animated.AnimatedInterpolation | undefined;
   pieceDecorationNames?: PieceDecorationName[];
   onClick?: (event: ThreeEvent<MouseEvent>) => void;
+  hidden?: boolean;
 }
 
 // TODO: Implement sizes, animations, and decorations
@@ -41,6 +42,7 @@ const PieceImage3D: FC<Props> = ({
   inverseProjection,
   onClick,
   opacity,
+  hidden = false,
 }) => {
   const { position, normal } = inverseProjection({
     ...coordinates,
@@ -73,15 +75,15 @@ const PieceImage3D: FC<Props> = ({
       )}
       onClick={onClick}
       receiveShadow
-      castShadow
+      castShadow={!hidden}
     >
       <meshStandardMaterial
         attach="material"
         color={color}
         roughness={0.2}
         metalness={0.5}
-        transparent={opacity !== undefined}
-        opacity={opacity}
+        transparent={opacity !== undefined || hidden}
+        opacity={(opacity ?? 1) * (hidden ? 0.4 : 1)}
       />
     </mesh>
   );

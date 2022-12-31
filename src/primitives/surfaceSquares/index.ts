@@ -5,6 +5,7 @@ export * from "./getCylinderCapsGeometry";
 export * from "./getMobiusStripEdgeGeometry";
 export * from "./getSpherePolarCapsGeometry";
 export * from "./getSurfaceSquareGeometry";
+export * from "./kleinInverseProjection";
 export * from "./mobiusInverseProjection";
 export * from "./sphereInverseProjection";
 export * from "./torusInverseProjection";

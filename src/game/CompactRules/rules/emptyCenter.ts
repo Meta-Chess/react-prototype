@@ -1,4 +1,4 @@
-import { TrivialParameterRule, AfterBoardCreation } from "../CompactRules";
+import { AfterBoardCreation, TrivialParameterRule } from "../CompactRules";
 
 export const emptyCenter: TrivialParameterRule = () => ({
   title: "Empty Center",

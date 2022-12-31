@@ -1,7 +1,7 @@
-import { PieceName, AnimationType, PieceAnimationType, Location } from "game/types";
-import { ParameterRule, InFindPathsModifyInputParams, PostMove } from "../CompactRules";
+import { AnimationType, Location, PieceAnimationType, PieceName } from "game/types";
+import { InFindPathsModifyInputParams, ParameterRule, PostMove } from "../CompactRules";
 import { Pather } from "game/Pather";
-import { allAdjacencies, addAnimationTokenToSquare, doesCapture } from "../utilities";
+import { addAnimationTokenToSquare, allAdjacencies, doesCapture } from "../utilities";
 import { uniq } from "lodash";
 
 export const chemicallyExcitedKnight: ParameterRule<"chemicallyExcitedKnight"> = ({

@@ -4,7 +4,7 @@ import { GameContext } from "components/shared";
 import { uniq } from "lodash";
 import { Platform } from "react-native";
 
-export type BoardType3D = "spherical" | "toroidal" | "mobius" | "cylindrical";
+export type BoardType3D = "spherical" | "toroidal" | "mobius" | "cylindrical" | "klein";
 export type BoardType = BoardType3D | "flat" | "circular";
 
 // TODO: This logic should be within each variant, and here we should just have an interruption point
@@ -19,12 +19,18 @@ export const getPossibleBoards = (gameMaster?: GameMaster): BoardType[] => {
     !gameMaster?.getRuleNames().includes("polar")
   )
     possibleBoards.push("cylindrical");
+  if (gameMaster?.getRuleNames().includes("mobius")) possibleBoards.push("mobius");
   if (
     gameMaster?.getRuleNames().includes("cylindrical") &&
     gameMaster?.getRuleNames().includes("verticallyCylindrical")
   )
     possibleBoards.push("toroidal");
-  if (gameMaster?.getRuleNames().includes("mobius")) possibleBoards.push("mobius");
+  if (
+    gameMaster?.getRuleNames().includes("mobius") &&
+    gameMaster?.getRuleNames().includes("cylindrical") &&
+    gameMaster?.getRuleNames().includes("verticallyCylindrical")
+  )
+    possibleBoards.push("klein");
   return uniq(possibleBoards);
 };
 

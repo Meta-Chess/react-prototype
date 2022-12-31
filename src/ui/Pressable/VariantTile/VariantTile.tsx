@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
 import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
-import { SFC, Colors, useHover } from "primitives";
+import { Colors, SFC, useHover } from "primitives";
 import { ConflictLevel, FutureVariant } from "game";
 import { VariantTileInfo } from "./VariantTileInfo";
 import { VariantTileImage } from "./VariantTileImage";
-import { RuleNamesWithParamSettings, AllRuleSettings } from "game/CompactRules";
+import { AllRuleSettings, RuleNamesWithParamSettings } from "game/CompactRules";
 import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
 import { VariantTileHeader } from "./VariantTileHeader";
 import { VariantTileTags } from "./VariantTileTags";

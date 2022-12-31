@@ -1,8 +1,8 @@
 import { PieceName } from "game/types";
 import {
-  Rule,
-  OnGaitsGeneratedModify,
   InPostMoveGenerationFilter,
+  OnGaitsGeneratedModify,
+  Rule,
 } from "../CompactRules";
 import { TrivialParameterRule } from "game";
 import { isPieceNameCaptured } from "../utilities";

@@ -1,12 +1,12 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { Colors, DiscordIcon, MChessLogo, TrackingPixel, DISCORD_URL } from "primitives";
-import { GameOptions, defaultGameOptions } from "game";
+import { Colors, DISCORD_URL, DiscordIcon, MChessLogo, TrackingPixel } from "primitives";
+import { defaultGameOptions, GameOptions } from "game";
 import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
 import { GameProvider, HelpMenu, useAsyncStorage } from "components/shared";
 import { Lobby } from "./Lobby";
 import { PlayWithFriends } from "./PlayWithFriends";
-import { ScrollView, Linking, Platform, useWindowDimensions } from "react-native";
+import { Linking, Platform, ScrollView, useWindowDimensions } from "react-native";
 import { ErrorBoundary } from "components/shared/ErrorBoundary";
 import { IconButton } from "ui/Buttons/IconButton";
 import { UpdateLog } from "./UpdateLog";

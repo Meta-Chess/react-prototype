@@ -1,4 +1,4 @@
-import { CompactRules, ParameterRule, InPostMoveGenerationFilter } from "../CompactRules";
+import { CompactRules, InPostMoveGenerationFilter, ParameterRule } from "../CompactRules";
 import { Pather } from "game/Pather";
 import { Game, Move } from "game";
 import { PieceName } from "game/types";

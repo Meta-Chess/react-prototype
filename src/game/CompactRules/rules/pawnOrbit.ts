@@ -1,6 +1,6 @@
 import { PieceName } from "game/types";
 import { Path } from "game/Pather";
-import { TrivialParameterRule, GenerateSpecialPacifistMoves } from "../CompactRules";
+import { GenerateSpecialPacifistMoves, TrivialParameterRule } from "../CompactRules";
 
 export const pawnOrbit: TrivialParameterRule = () => ({
   title: "Pawn Orbit",

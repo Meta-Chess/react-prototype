@@ -1,12 +1,12 @@
 import { PieceName, TokenName } from "game/types";
 import { activeCastlingToken, passiveCastlingToken } from "../constants";
-import { isPresent, hasPresentKey } from "ts-is-present";
+import { hasPresentKey, isPresent } from "ts-is-present";
 import { Pather } from "game/Pather";
 import { Path } from "game/Pather/Path";
 import {
-  PostMove,
-  GenerateSpecialPacifistMoves,
   AfterBoardCreation,
+  GenerateSpecialPacifistMoves,
+  PostMove,
 } from "../CompactRules";
 import { Piece } from "game/Board";
 import { TrivialParameterRule } from "game";

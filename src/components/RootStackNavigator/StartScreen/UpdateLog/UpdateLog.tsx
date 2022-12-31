@@ -1,11 +1,10 @@
 import React from "react";
 import { ScrollView, View } from "react-native";
-import { SFC, Colors } from "primitives";
-import { Card, Divider, AbsoluteView } from "ui";
+import { Colors, SFC } from "primitives";
+import { AbsoluteView, Card, Divider, JoinDiscordButton } from "ui";
 import { ButtonSecondary } from "ui/Buttons";
 import { UpdateGroup } from "./UpdateGroup";
 import type { UpdateGroup as UpdateGroupType } from "./UpdateTypes";
-import { JoinDiscordButton } from "ui";
 
 interface Props {
   updates: UpdateGroupType[];

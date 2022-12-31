@@ -2,9 +2,9 @@ import { Adjacency, Square } from "game/Board";
 import { Direction, RankAndFileBounds } from "game/types";
 import { wrapToCylinder } from "utilities";
 import {
-  TrivialParameterRule,
-  PiecesUnderSquare,
   AfterBoardCreation,
+  PiecesUnderSquare,
+  TrivialParameterRule,
 } from "../CompactRules";
 
 export const mobius: TrivialParameterRule = () => ({

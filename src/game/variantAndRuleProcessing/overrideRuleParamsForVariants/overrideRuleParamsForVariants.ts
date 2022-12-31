@@ -1,6 +1,5 @@
 import { FutureVariantName, futureVariants } from "game/variants";
-import type { RuleName } from "game/CompactRules";
-import type { RuleNamesWithParams } from "game/CompactRules";
+import type { RuleName, RuleNamesWithParams } from "game/CompactRules";
 import { overrideRuleParamsWithRuleParams } from "./overrideRuleParamsWithRuleParams";
 
 export const overrideRuleParamsForVariants = ({

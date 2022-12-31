@@ -1,7 +1,7 @@
 import { Adjacency, Square } from "game/Board";
 import { Direction, RankAndFileBounds, TokenName } from "game/types";
 import { range, toLocation, wrapToCylinder } from "utilities";
-import { ParameterRule, AfterStepModify, AfterBoardCreation } from "../CompactRules";
+import { AfterBoardCreation, AfterStepModify, ParameterRule } from "../CompactRules";
 import { invisibilityToken, polarToken } from "../constants";
 import { rotate180 } from "../utilities";
 

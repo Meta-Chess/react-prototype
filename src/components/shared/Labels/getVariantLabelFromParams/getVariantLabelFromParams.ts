@@ -1,9 +1,9 @@
 import { FutureVariant } from "game/variants";
 import {
-  RuleNamesWithParams,
-  ParamSettingType,
-  ParamName,
   getDefaultSettings,
+  ParamName,
+  ParamSettingType,
+  RuleNamesWithParams,
   RulesWithParams,
 } from "game/CompactRules";
 import {
