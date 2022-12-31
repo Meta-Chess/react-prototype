@@ -1,6 +1,6 @@
 import React, { FC, useContext } from "react";
-import { Piece as PieceClass, TokenName, PlayerName } from "game";
-import { PieceImage, Colors } from "primitives";
+import { Piece as PieceClass, PlayerName, SquareShape, TokenName } from "game";
+import { Colors, PieceImage } from "primitives";
 import { Animated, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import { getPieceDecorationNames } from "./getPieceDecorationNames";
@@ -20,6 +20,7 @@ interface Props {
   animatedData?: animatedData;
   onPress?: () => void;
   ignoreTokens?: boolean;
+  squareShape?: SquareShape;
 }
 
 const Piece: FC<Props> = ({
@@ -31,6 +32,7 @@ const Piece: FC<Props> = ({
   animatedData,
   onPress,
   ignoreTokens,
+  squareShape,
 }) => {
   const { gameMaster } = useContext(GameContext);
 
@@ -62,7 +64,7 @@ const Piece: FC<Props> = ({
       animatedColor={animated ? animatedData?.animatedColor : undefined}
       animatedOutlineColor={animated ? animatedData?.animatedOutlineColor : undefined}
       pieceDecorationNames={pieceDecorationNames}
-      gameMaster={gameMaster}
+      squareShape={squareShape}
     />
   );
   return onPress ? (

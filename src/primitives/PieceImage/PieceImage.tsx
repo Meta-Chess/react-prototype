@@ -1,6 +1,6 @@
 import React from "react";
-import { PieceName } from "game";
-import { Svg, G } from "react-native-svg";
+import { PieceName, SquareShape } from "game";
+import { G, Svg } from "react-native-svg";
 import { Colors } from "../Colors";
 import {
   Bishop,
@@ -17,7 +17,7 @@ import { Animated } from "react-native";
 import { AnimatedGroup } from "primitives";
 import { PieceDecorationName } from "components/shared/Board/Piece/getPieceDecorationNames";
 import { PieceDecorations } from "./PieceDecorations";
-import { GameMaster } from "game";
+
 interface Props {
   type: PieceName;
   color?: string | undefined;
@@ -30,7 +30,7 @@ interface Props {
   animatedColor?: Animated.AnimatedInterpolation | undefined;
   animatedOutlineColor?: Animated.AnimatedInterpolation | undefined;
   pieceDecorationNames?: PieceDecorationName[];
-  gameMaster?: GameMaster;
+  squareShape?: SquareShape | undefined;
 }
 
 const PIECE_SPRITE: { [name in PieceName]: React.ReactNode } = {
@@ -56,7 +56,7 @@ const PieceImage: SFC<Props> = ({
   animatedColor,
   animatedOutlineColor,
   pieceDecorationNames,
-  gameMaster,
+  squareShape,
 }) => {
   if (size < 0) return null;
   const primary = color;
@@ -67,7 +67,12 @@ const PieceImage: SFC<Props> = ({
   const paths = (
     <>
       {PIECE_SPRITE[type]}
-      {<PieceDecorations pieceDecorationNames={pieceDecorationNames} />}
+      {
+        <PieceDecorations
+          pieceDecorationNames={pieceDecorationNames}
+          squareShape={squareShape}
+        />
+      }
     </>
   );
 

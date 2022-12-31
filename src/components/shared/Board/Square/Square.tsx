@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { View } from "react-native";
-import { SFC, Colors } from "primitives";
-import { Piece, ShadowPiece, PieceAnimation } from "../Piece";
+import { Colors, SFC } from "primitives";
+import { Piece, PieceAnimation, ShadowPiece } from "../Piece";
 import { GridArrangement } from "./GridArrangement";
-import { RuleName, Square, SquareShape } from "game";
+import { RuleName, Square, SquareShape, TokenName } from "game";
 import { TilePressableContainer } from "./TilePressableContainer";
 import { AnimationOverlays, LoadingOverlay } from "./AnimationOverlays";
 import { Highlight } from "./Highlight";
@@ -12,11 +12,11 @@ import { Token } from "game/types";
 import { getDisplayPiecesAndTokens } from "./getDisplayPiecesAndTokens";
 import { hexSvgScaleFactor } from "primitives/Tiles";
 import { GameContext } from "components/shared";
-import { TokenName } from "game";
 import { TileSchematic } from "ui/Tiles/TileProps";
 import { OuterContainer } from "./OuterContainer";
 import { TileBase } from "./TileBase";
 import { PositioningContainer } from "./PositioningContainer";
+
 interface Props {
   square: Square | undefined;
   shape: SquareShape;
@@ -104,6 +104,7 @@ const SquareComponent: SFC<Props> = ({
                 <Piece
                   piece={gameMaster.game.board.findPieceById(pieceOrToken)}
                   size={pieceSize}
+                  squareShape={shape}
                   key={index}
                 />
               ) : (
