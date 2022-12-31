@@ -1,20 +1,24 @@
 import React, { useContext, useEffect, useMemo } from "react";
-import { View } from "react-native";
-import styled from "styled-components/native";
-import { Colors, getSpherePolarCapsGeometry, SFC } from "primitives";
+import {
+  Colors,
+  getCylinderCapsGeometry,
+  getMobiusStripEdgeGeometry,
+  getSpherePolarCapsGeometry,
+  SFC,
+  TILE_GRANULARITY,
+} from "primitives";
 import { objectMatches, range, wrapToCylinder } from "utilities";
 import { SquareShape, TokenName } from "game";
 import { BoardProps } from "components/shared/Board/Board";
-import { Styles } from "primitives/Styles";
 import { GameContext } from "components/shared/GameContext";
 import { AbsoluteView } from "ui";
-import { BoardMeasurements } from "./calculateBoardMeasurements";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { Square3D } from "./Square3D";
+import { Square3D } from "./Square";
 import { BoardType3D } from "./useBoardType";
-import { getMobiusStripEdgeGeometry } from "primitives/surfaceSquares/getMobiusStripEdgeGeometry";
-import { use3dCylinderRotation } from "components/shared/Board/use3dCylinderRotation";
+import { use3dCylinderRotation } from "./use3dCylinderRotation";
+import { Lighting } from "./Lighting";
+import { SquareBackboard } from "./SquareBackboard";
 
 export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
   backboard = true,
@@ -53,17 +57,23 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
       ? getSpherePolarCapsGeometry({
           numberOfFiles,
           numberOfRanks,
-          fileGranularity: 64,
+          fileGranularity: TILE_GRANULARITY,
+        })
+      : type === "cylindrical"
+      ? getCylinderCapsGeometry({
+          numberOfFiles,
+          numberOfRanks,
+          fileGranularity: TILE_GRANULARITY,
         })
       : type === "mobius"
       ? getMobiusStripEdgeGeometry({
           numberOfRanks,
-          rankGranularity: 64,
+          rankGranularity: TILE_GRANULARITY,
         })
       : null;
 
   return (
-    <BoardContainer measurements={measurements} backboard={backboard}>
+    <SquareBackboard measurements={measurements} backboard={backboard}>
       <AbsoluteView
         style={{ overflow: "hidden", margin: measurements.boardPaddingHorizontal }}
       >
@@ -72,17 +82,7 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
           camera={{ fov: 4, position: [0, 0, -40] }}
           shadows
         >
-          <ambientLight intensity={0.45} />
-          <directionalLight position={[0, 0, 20]} color={0xccccff} castShadow={true} />
-          <directionalLight position={[17, 0, -10]} color={0xffcccc} castShadow={true} />
-          <directionalLight position={[-17, 0, -10]} color={0xe5cce5} castShadow={true} />
-          <pointLight
-            position={[0, 0, 0]}
-            color={0xffeedd}
-            castShadow={true}
-            intensity={0.2}
-          />
-
+          <Lighting />
           {fileCoordinates.map((file) =>
             rankCoordinates.map((rank) => {
               return (
@@ -119,21 +119,6 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
           <OrbitControls />
         </Canvas>
       </AbsoluteView>
-    </BoardContainer>
+    </SquareBackboard>
   );
 };
-
-const BoardContainer = styled(View)<{
-  backboard: boolean;
-  measurements: BoardMeasurements;
-}>`
-  position: relative;
-  ${({ backboard }): string => (backboard ? Styles.BOX_SHADOW_STRONG : "")}
-  ${({ backboard }): string =>
-    backboard ? `background-color: ${Colors.DARK.toString()}` : ""}
-          height: ${({ measurements }): number => measurements.height}px;
-  width: ${({ measurements }): number => measurements.width}px;
-  padding-horizontal: ${({ measurements }): number =>
-    measurements.boardPaddingHorizontal}px;
-  padding-vertical: ${({ measurements }): number => measurements.boardPaddingVertical}px;
-`;

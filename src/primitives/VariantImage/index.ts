@@ -1,89 +1,105 @@
 import threeCheckImage from "./threeCheckImage.png";
+import armageddonImage from "./armageddonImage.png";
+import atomicImage from "./atomicImage.png";
+import emptyCenterImage from "./emptyCenterImage.png";
+import cylinderImage from "./cylinderImage.png";
+import kingOfTheHillImage from "./kingOfTheHillImage.png";
+import patheticKingImage from "./patheticKingImage.png";
+import crazyhouseImage from "./crazyhouseImage.png";
+import fatigueImage from "./fatigueImage.png";
+import noForkImage from "./noForkImage.png";
+import polarImage from "./polarImage.png";
+import sphericalImage from "./sphericalImage.png";
+import hexImage from "./hexImage.png";
+import toroidalImage from "./toroidalImage.png";
+import mobiusImage from "./mobiusImage.png";
+import kleinBottleImage from "./kleinBottleImage.png";
+import chemicallyExcitedKnightImage from "./chemicallyExcitedKnightImage.png";
+import pullImage from "./pullImage.png";
+import zoneOfControlImage from "./zoneOfControlImage.png";
+import loseOnStalemateImage from "./loseOnStalemateImage.png";
+import gambitImage from "./gambitImage.png";
+import centerfoldImage from "./centerfoldImage.png";
+import brickImage from "./brickImage.png";
+import morphlingsImage from "./morphlingsImage.png";
+import chainReactionImage from "./chainReactionImage.png";
+import royallyScrewedImage from "./royallyScrewedImage.png";
+import extinctionImage from "./extinctionImage.png";
+import pawnOrbitImage from "./pawnOrbitImage.png";
+import thinIceImage from "./thinIceImage.png";
+import diagonalMirrorImage from "./diagonalMirrorImage.png";
+import completedKnightImage from "./completedKnightImage.png";
+import puppeteersImage from "./puppeteersImage.png";
+import squareBoardImage from "./squareBoardImage.png";
+import circleBoardImage from "./circleBoardImage.png";
+import hexBoardImage from "./hexBoardImage.png";
+
 export { threeCheckImage };
 
-import armageddonImage from "./armageddonImage.png";
 export { armageddonImage };
 
-import atomicImage from "./atomicImage.png";
 export { atomicImage };
 
-import emptyCenterImage from "./emptyCenterImage.png";
 export { emptyCenterImage };
 
-import cylinderImage from "./cylinderImage.png";
 export { cylinderImage };
 
-import kingOfTheHillImage from "./kingOfTheHillImage.png";
 export { kingOfTheHillImage };
 
-import patheticKingImage from "./patheticKingImage.png";
 export { patheticKingImage };
 
-import crazyhouseImage from "./crazyhouseImage.png";
 export { crazyhouseImage };
 
-import fatigueImage from "./fatigueImage.png";
 export { fatigueImage };
 
-import noForkImage from "./noForkImage.png";
 export { noForkImage };
 
-import polarImage from "./polarImage.png";
 export { polarImage };
 
-import sphericalImage from "./sphericalImage.png";
 export { sphericalImage };
 
-import hexImage from "./hexImage.png";
 export { hexImage };
 
-import toroidalImage from "./toroidalImage.png";
 export { toroidalImage };
 
-import mobiusImage from "./mobiusImage.png";
 export { mobiusImage };
 
-import kleinBottleImage from "./kleinBottleImage.png";
 export { kleinBottleImage };
 
-import chemicallyExcitedKnightImage from "./chemicallyExcitedKnightImage.png";
 export { chemicallyExcitedKnightImage };
 
-import pullImage from "./pullImage.png";
 export { pullImage };
 
-import zoneOfControlImage from "./zoneOfControlImage.png";
 export { zoneOfControlImage };
 
-import loseOnStalemateImage from "./loseOnStalemateImage.png";
 export { loseOnStalemateImage };
 
-import gambitImage from "./gambitImage.png";
 export { gambitImage };
 
-import centerfoldImage from "./centerfoldImage.png";
 export { centerfoldImage };
 
-import fortificationsImage from "./fortificationsImage.png";
-export { fortificationsImage };
+export { brickImage };
 
-import morphlingsImage from "./morphlingsImage.png";
 export { morphlingsImage };
 
-import chainReactionImage from "./chainReactionImage.png";
 export { chainReactionImage };
 
-import royallyScrewedImage from "./royallyScrewedImage.png";
 export { royallyScrewedImage };
 
-import extinctionImage from "./extinctionImage.png";
 export { extinctionImage };
 
-import pawnOrbitImage from "./pawnOrbitImage.png";
 export { pawnOrbitImage };
 
-import thinIceImage from "./thinIceImage.png";
 export { thinIceImage };
 
-import diagonalMirrorImage from "./diagonalMirrorImage.png";
 export { diagonalMirrorImage };
+
+export { completedKnightImage };
+
+export { puppeteersImage };
+
+export { squareBoardImage };
+
+export { circleBoardImage };
+
+export { hexBoardImage };

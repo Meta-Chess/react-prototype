@@ -2,19 +2,27 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "r
 import { GameMaster } from "game";
 import { GameContext } from "components/shared";
 import { uniq } from "lodash";
+import { Platform } from "react-native";
 
-export type BoardType3D = "spherical" | "toroidal" | "mobius" | "klein";
+export type BoardType3D = "spherical" | "toroidal" | "mobius" | "cylindrical" | "klein";
 export type BoardType = BoardType3D | "flat" | "circular";
 
+// TODO: This logic should be within each variant, and here we should just have an interruption point
 export const getPossibleBoards = (gameMaster?: GameMaster): BoardType[] => {
   const possibleBoards: BoardType[] = ["flat"];
   if (gameMaster?.getRuleNames().includes("verticallyCylindrical"))
     possibleBoards.push("circular");
   if (gameMaster?.getRuleNames().includes("polar")) possibleBoards.push("spherical");
+  if (
+    gameMaster?.getRuleNames().includes("cylindrical") &&
+    !gameMaster?.getRuleNames().includes("verticallyCylindrical") &&
+    !gameMaster?.getRuleNames().includes("polar")
+  )
+    possibleBoards.push("cylindrical");
   if (gameMaster?.getRuleNames().includes("mobius")) possibleBoards.push("mobius");
   if (
-    gameMaster?.getRuleNames().includes("verticallyCylindrical") &&
-    gameMaster?.getRuleNames().includes("cylindrical")
+    gameMaster?.getRuleNames().includes("cylindrical") &&
+    gameMaster?.getRuleNames().includes("verticallyCylindrical")
   )
     possibleBoards.push("toroidal");
   if (
@@ -26,7 +34,9 @@ export const getPossibleBoards = (gameMaster?: GameMaster): BoardType[] => {
   return uniq(possibleBoards);
 };
 
-export const useBoardType = (boardTypeOverride?: BoardType): BoardType => {
+export const useBoardType = (
+  boardTypeOverride?: BoardType
+): { boardType: BoardType; possibleBoards: BoardType[] } => {
   const { gameMaster } = useContext(GameContext);
 
   const possibleBoards = useMemo(
@@ -35,16 +45,20 @@ export const useBoardType = (boardTypeOverride?: BoardType): BoardType => {
   );
   const defaultBoardType = useMemo(
     (): BoardType =>
-      gameMaster?.getRuleNames().includes("mobius")
-        ? "mobius"
+      Platform.OS !== "web"
+        ? "flat"
         : gameMaster?.getRuleNames().includes("cylindrical") &&
           gameMaster?.getRuleNames().includes("verticallyCylindrical")
         ? "toroidal"
+        : gameMaster?.getRuleNames().includes("mobius")
+        ? "mobius"
         : gameMaster?.getRuleNames().includes("longBoard") &&
           gameMaster?.getRuleNames().includes("verticallyCylindrical")
         ? "circular"
         : gameMaster?.getRuleNames().includes("polar")
         ? "spherical"
+        : gameMaster?.getRuleNames().includes("cylindrical")
+        ? "cylindrical"
         : "flat",
     [gameMaster?.getRuleNames()]
   );
@@ -59,6 +73,7 @@ export const useBoardType = (boardTypeOverride?: BoardType): BoardType => {
       case "E":
         if (possibleBoards.length > 1) {
           pressRef.current = nextBoard(pressRef.current, possibleBoards); // relies on uniqueness of possible boards
+          gameMaster?.unselectAllPieces();
           gameMaster?.render();
         }
         break;
@@ -76,7 +91,10 @@ export const useBoardType = (boardTypeOverride?: BoardType): BoardType => {
     setBoardType(pressRef.current);
   }, [pressRef.current]);
 
-  return boardTypeOverride ?? boardType;
+  return {
+    boardType: boardTypeOverride ?? boardType,
+    possibleBoards,
+  };
 };
 
 function nextBoard(currentBoard: BoardType, possibleBoards: BoardType[]): BoardType {

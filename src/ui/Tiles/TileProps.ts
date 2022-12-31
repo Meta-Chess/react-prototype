@@ -1,3 +1,4 @@
+import Color from "color";
 import { Animated } from "react-native";
 
 interface CoreTileProps {
@@ -6,7 +7,7 @@ interface CoreTileProps {
   pressable?: boolean;
 }
 
-export type TileProps = { color: string } & CoreTileProps;
+export type TileProps = { color: Color } & CoreTileProps;
 export type AnimatedTileProps = {
   color: Animated.AnimatedInterpolation;
 } & CoreTileProps;

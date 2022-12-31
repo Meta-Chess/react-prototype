@@ -8,22 +8,34 @@ export const getHighlightColorsAndTypes = ({
 }: {
   gameMaster: GameMaster;
   square: Square;
-}): { color: string; type: "center" | "tile" }[] => {
+}): { color: Color; type: "center" | "tile" }[] => {
   return gameMaster.squaresInfo
     .get(square.location) // TODO: sort highlights?
     .map((info) =>
-      ![
-        SquareInfo.PossibleMovePassiveEndPoint,
-        SquareInfo.PossibleMoveAggressiveEndPoint,
-        SquareInfo.PossibleOtherPlayerMoveEndPoint,
-      ].includes(info) || square.hasPiece()
-        ? { type: "tile", color: HIGHLIGHT_COLORS[info].toString() }
+      highlightShouldCoverWholeTile({ info, square })
+        ? { type: "tile", color: HIGHLIGHT_COLORS[info].fade(0.3) }
         : {
             type: "center",
-            color: HIGHLIGHT_COLORS[info].fade(0.3).toString(),
+            color: HIGHLIGHT_COLORS[info],
           }
     );
 };
+
+function highlightShouldCoverWholeTile({
+  info,
+  square,
+}: {
+  info: SquareInfo;
+  square: Square;
+}): boolean {
+  return (
+    ![
+      SquareInfo.PossibleMovePassiveEndPoint,
+      SquareInfo.PossibleMoveAggressiveEndPoint,
+      SquareInfo.PossibleOtherPlayerMoveEndPoint,
+    ].includes(info) || square.hasPiece()
+  );
+}
 
 const HIGHLIGHT_COLORS: { [key in SquareInfo]: Color } = {
   [SquareInfo.PossibleMovePassiveEndPoint]: Colors.HIGHLIGHT.SUCCESS,

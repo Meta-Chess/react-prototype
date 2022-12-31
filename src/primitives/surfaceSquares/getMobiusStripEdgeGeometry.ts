@@ -1,5 +1,5 @@
 import { BufferAttribute, BufferGeometry, Vector3 } from "three";
-import { mobiusEdgeNormal, mobiusProjection } from "./mobiusProjection";
+import { mobiusEdgeNormal, mobiusInverseProjection } from "./mobiusInverseProjection";
 
 export function getMobiusStripEdgeGeometry({
   numberOfRanks,
@@ -14,7 +14,7 @@ export function getMobiusStripEdgeGeometry({
   let vector: Vector3;
   for (let i = 0; i < pointCount / 2; i++) {
     // Add two vertices and their normals that are at the edges of opposite faces of the strip
-    vector = mobiusProjection({
+    vector = mobiusInverseProjection({
       file: 1,
       rank: i / rankGranularity,
       numberOfFiles: 1,
@@ -24,7 +24,7 @@ export function getMobiusStripEdgeGeometry({
     vector = mobiusEdgeNormal({ rank: i / rankGranularity, numberOfRanks });
     normals.push(vector.x, vector.y, vector.z);
 
-    vector = mobiusProjection({
+    vector = mobiusInverseProjection({
       file: 2,
       rank: i / rankGranularity + numberOfRanks / 2,
       numberOfFiles: 1,

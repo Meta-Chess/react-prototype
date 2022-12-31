@@ -1,8 +1,8 @@
 import { RuleName } from "game";
 import {
+  ParamName,
   ParamSetting,
   ParamValue,
-  ParamName,
   RuleNamesWithParams,
 } from "game/CompactRules";
 import { cloneDeep } from "lodash";
@@ -51,7 +51,7 @@ const omitParamValue = ({
   return newOptions;
 };
 
-const injectParamValue = ({
+export const injectParamValue = ({
   ruleName,
   paramName,
   tempParamOptions,
@@ -72,7 +72,7 @@ const injectParamValue = ({
 };
 
 // TODO: need to do this for each type of ParamValue...
-//will not always simplify for list lists
+// will not always simplify for list lists
 const checkValueEqual = (
   value1: ParamValue | undefined,
   value2: ParamValue | undefined

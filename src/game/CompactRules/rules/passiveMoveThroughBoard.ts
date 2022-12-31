@@ -1,17 +1,16 @@
 import { Direction } from "game/types";
-import { Rule, ParameterRule, OnGaitsGeneratedModify } from "../CompactRules";
+import { OnGaitsGeneratedModify, TrivialParameterRule } from "../CompactRules";
 
-export const passiveMoveThroughBoard: ParameterRule = (): Rule => {
-  return {
-    title: "Passive Move Through Board",
-    description:
-      "All pieces can move through the board (assuming there's a square on the other side)!",
-    onGaitsGeneratedModify: ({ gaits, piece }): OnGaitsGeneratedModify => ({
-      gaits: [...gaits, passiveMoveThroughBoardGait],
-      piece,
-    }),
-  };
-};
+export const passiveMoveThroughBoard: TrivialParameterRule = () => ({
+  title: "Passive Move Through Board",
+  description:
+    "All pieces can move through the board (assuming there's a square on the other side)!",
+  onGaitsGeneratedModify: ({ game, gaits, piece }): OnGaitsGeneratedModify => ({
+    game,
+    gaits: [...gaits, passiveMoveThroughBoardGait],
+    piece,
+  }),
+});
 
 const passiveMoveThroughBoardGait = {
   pattern: [Direction.Down],

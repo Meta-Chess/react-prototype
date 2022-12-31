@@ -1,17 +1,17 @@
 import { PieceName } from "game/types";
-import { Rule, ParameterRule, OnGaitsGeneratedModify } from "../CompactRules";
-import { getDefaultParams } from "../utilities";
+import { OnGaitsGeneratedModify, ParameterRule, Rule } from "../CompactRules";
 
-export const patheticKing: ParameterRule = (
-  ruleParams = getDefaultParams("patheticKingSettings")
-): Rule => {
+export const patheticKing: ParameterRule<"patheticKing"> = ({
+  "And cannot move without assistance": cantMove,
+}): Rule => {
   return {
     title: "Pathetic King",
     description: "Kings cannot capture",
-    onGaitsGeneratedModify: ({ gaits, piece }): OnGaitsGeneratedModify => ({
+    onGaitsGeneratedModify: ({ game, gaits, piece }): OnGaitsGeneratedModify => ({
+      game,
       gaits:
         piece.name === PieceName.King
-          ? ruleParams["And cannot move without assistance"] || false
+          ? cantMove
             ? gaits.flatMap((_gait) => [])
             : gaits.flatMap((gait) => [{ ...gait, mustNotCapture: true }])
           : gaits,

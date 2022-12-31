@@ -1,8 +1,17 @@
 import React from "react";
-import { GameMaster, PieceName } from "game";
+import { PieceName, SquareShape } from "game";
 import { G, Svg } from "react-native-svg";
 import { Colors } from "../Colors";
-import { Bishop, King, Knight, Pawn, Queen, Rook } from "./sprites";
+import {
+  Bishop,
+  BishopKnight,
+  King,
+  Knight,
+  Pawn,
+  Queen,
+  Rook,
+  RookKnight,
+} from "./sprites";
 import { SFC } from "primitives/SFC";
 import { Animated } from "react-native";
 import { AnimatedGroup } from "primitives";
@@ -21,8 +30,19 @@ interface Props {
   animatedColor?: Animated.AnimatedInterpolation | undefined;
   animatedOutlineColor?: Animated.AnimatedInterpolation | undefined;
   pieceDecorationNames?: PieceDecorationName[];
-  gameMaster?: GameMaster;
+  squareShape?: SquareShape | undefined;
 }
+
+const PIECE_SPRITE: { [name in PieceName]: React.ReactNode } = {
+  [PieceName.Pawn]: <Pawn />,
+  [PieceName.Knight]: <Knight />,
+  [PieceName.Bishop]: <Bishop />,
+  [PieceName.Rook]: <Rook />,
+  [PieceName.Queen]: <Queen />,
+  [PieceName.King]: <King />,
+  [PieceName.BishopKnight]: <BishopKnight />,
+  [PieceName.RookKnight]: <RookKnight />,
+};
 
 const PieceImage: SFC<Props> = ({
   type,
@@ -36,7 +56,7 @@ const PieceImage: SFC<Props> = ({
   animatedColor,
   animatedOutlineColor,
   pieceDecorationNames,
-  gameMaster,
+  squareShape,
 }) => {
   if (size < 0) return null;
   const primary = color;
@@ -46,23 +66,11 @@ const PieceImage: SFC<Props> = ({
   const alphaModifier = opacity === undefined ? 1 : opacity;
   const paths = (
     <>
-      {type === PieceName.Pawn ? (
-        <Pawn />
-      ) : type === PieceName.Bishop ? (
-        <Bishop />
-      ) : type === PieceName.Knight ? (
-        <Knight />
-      ) : type === PieceName.Rook ? (
-        <Rook />
-      ) : type === PieceName.Queen ? (
-        <Queen />
-      ) : (
-        <King />
-      )}
+      {PIECE_SPRITE[type]}
       {
         <PieceDecorations
           pieceDecorationNames={pieceDecorationNames}
-          gameMaster={gameMaster}
+          squareShape={squareShape}
         />
       }
     </>

@@ -1,49 +1,40 @@
 import { Adjacency, Square } from "game/Board";
 import { Direction, RankAndFileBounds, TokenName } from "game/types";
 import { range, toLocation, wrapToCylinder } from "utilities";
-import {
-  Rule,
-  ParameterRule,
-  AfterStepModify,
-  AfterBoardCreation,
-} from "../CompactRules";
+import { AfterBoardCreation, AfterStepModify, ParameterRule } from "../CompactRules";
 import { invisibilityToken, polarToken } from "../constants";
-import { getDefaultParams, rotate180 } from "../utilities";
+import { rotate180 } from "../utilities";
 
-export const polar: ParameterRule = (
-  { ["Diagonal Poles"]: diagonalPolar } = getDefaultParams("polarSettings")
-): Rule => {
-  return {
-    title: "Polar",
-    description: `The top and bottom of the board behave like the poles of a sphere. The top edge of the board is wrapped around the edge of an invisible octagonal 'square' that pieces can cross but can't stop on. The bottom edge of the board is similarly wrapped around its own octagonal square. Diagonal movement through the poles is ${
-      diagonalPolar ? "allowed" : "not allowed"
-    }.`,
-    afterStepModify: ({
-      gait,
-      remainingSteps,
-      currentSquare,
-      ...rest
-    }): AfterStepModify => {
-      return currentSquare.hasTokenWithName(TokenName.PolarToken)
-        ? {
-            gait: { ...gait, pattern: rotate180(gait.pattern) },
-            remainingSteps: rotate180(remainingSteps),
-            currentSquare,
-            ...rest,
-          }
-        : { gait, remainingSteps, currentSquare, ...rest };
-    },
-    afterBoardCreation: ({ board }): AfterBoardCreation => {
-      const polarSetup = generatePolarSetup({
-        ...board.rankAndFileBounds(),
-        diagonalPolar,
-      });
-      board.addSquares(polarSetup.squares);
-      board.addAdjacenciesByRule(polarSetup.adjacenciesRule);
-      return { board };
-    },
-  };
-};
+export const polar: ParameterRule<"polar"> = ({ ["Diagonal Poles"]: diagonalPolar }) => ({
+  title: "Polar",
+  description: `The top and bottom of the board behave like the poles of a sphere. The top edge of the board is wrapped around the edge of an invisible octagonal 'square' that pieces can cross but can't stop on. The bottom edge of the board is similarly wrapped around its own octagonal square. Diagonal movement through the poles is ${
+    diagonalPolar ? "allowed" : "not allowed"
+  }.`,
+  afterStepModify: ({
+    gait,
+    remainingSteps,
+    currentSquare,
+    ...rest
+  }): AfterStepModify => {
+    return currentSquare.hasTokenWithName(TokenName.PolarToken)
+      ? {
+          gait: { ...gait, pattern: rotate180(gait.pattern) },
+          remainingSteps: rotate180(remainingSteps),
+          currentSquare,
+          ...rest,
+        }
+      : { gait, remainingSteps, currentSquare, ...rest };
+  },
+  afterBoardCreation: ({ board }): AfterBoardCreation => {
+    const polarSetup = generatePolarSetup({
+      ...board.rankAndFileBounds(),
+      diagonalPolar,
+    });
+    board.addSquares(polarSetup.squares);
+    board.addAdjacenciesByRule(polarSetup.adjacenciesRule);
+    return { board };
+  },
+});
 
 const generatePolarSetup = ({
   minRank,

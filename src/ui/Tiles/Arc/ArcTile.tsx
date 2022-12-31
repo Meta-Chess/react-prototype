@@ -18,7 +18,7 @@ export const ArcTile: FC<TileProps> = ({ tileSchematic, color, pressable = false
         <PathWithNoOutline
           d={svgDetails.tilePath}
           fill={"none"}
-          stroke={color}
+          stroke={color.toString()}
           strokeWidth={svgDetails.tileWidth}
           pointerEvents={pressable ? "auto" : "none"}
         />

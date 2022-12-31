@@ -1,17 +1,18 @@
-import React, { FC, useContext, useCallback, useState, useMemo } from "react";
+import React, { FC, useCallback, useContext, useMemo, useState } from "react";
 import { Platform, useWindowDimensions, View } from "react-native";
 import {
   Board,
   BoardMeasurements,
   calculateBoardMeasurements,
   GameContext,
+  HelpMenu,
+  ScreenContainer,
 } from "components/shared";
 import { Sidebar } from "./Sidebar";
 import { SquareShape, TokenName } from "game";
 import { useFlipBoard } from "./useFlipBoard";
 import { AbsoluteView, Spinner } from "ui";
 import styled from "styled-components/native";
-import { HelpMenu, ScreenContainer } from "components/shared";
 import { WinModal } from "./WinModal";
 import { MoveDisambiguationModal } from "./MoveDisambiguationModal";
 import { getPromotionDisambiguationOpportunities } from "./getPromotionDisambiguationOpportunities";
@@ -34,7 +35,7 @@ export const GameScreenContent: FC = () => {
       moveDisambiguationRequired
         ? getPromotionDisambiguationOpportunities(allowableMoves)
         : [],
-    [moveDisambiguationRequired, allowableMoves]
+    [moveDisambiguationRequired, allowableMoves, allowableMoves?.length]
   );
 
   const { flipBoard } = useFlipBoard();

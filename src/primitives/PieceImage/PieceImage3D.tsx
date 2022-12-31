@@ -11,7 +11,8 @@ import {
   queenGeometry,
   rookGeometry,
 } from "./geometries";
-import { Projection } from "primitives";
+import { InverseProjection } from "primitives";
+import { ThreeEvent } from "@react-three/fiber";
 
 interface Props {
   type: PieceName;
@@ -22,13 +23,14 @@ interface Props {
     numberOfRanks: number;
     numberOfFiles: number;
   };
-  projection: Projection;
+  inverseProjection: InverseProjection;
   size?: number;
   opacity?: number;
   animated?: boolean;
   animatedColor?: Animated.AnimatedInterpolation | undefined;
   animatedOutlineColor?: Animated.AnimatedInterpolation | undefined;
   pieceDecorationNames?: PieceDecorationName[];
+  onClick?: (event: ThreeEvent<MouseEvent>) => void;
   hidden?: boolean;
 }
 
@@ -37,11 +39,12 @@ const PieceImage3D: FC<Props> = ({
   type,
   color,
   coordinates,
-  projection,
+  inverseProjection,
+  onClick,
   opacity,
   hidden = false,
 }) => {
-  const { position, normal } = projection({
+  const { position, normal } = inverseProjection({
     ...coordinates,
     ...coordinates,
     rank: coordinates.rank + 0.5,
@@ -70,6 +73,7 @@ const PieceImage3D: FC<Props> = ({
       rotation={new Euler().setFromQuaternion(
         new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), normal)
       )}
+      onClick={onClick}
       receiveShadow
       castShadow={!hidden}
     >

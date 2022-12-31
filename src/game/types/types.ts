@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { Direction } from "./Direction";
-import { Piece, VariantName, FutureVariantName } from "game";
+import { FutureVariantName, Piece, VariantName } from "game";
 import { TraitName } from "game/variants/traitInfo";
 import { FormatName } from "game/formats";
 import { getValues } from "utilities";
@@ -49,6 +49,8 @@ export enum PieceName {
   Queen,
   Bishop,
   Knight,
+  BishopKnight,
+  RookKnight,
 }
 
 export const allPossiblePieceNames = getValues<PieceName>(PieceName);
@@ -75,6 +77,7 @@ export enum TokenName {
   AnimationToken,
   CheckCounter,
   ThinIce,
+  Puppeteered,
 }
 
 export interface Token {

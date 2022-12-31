@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import { SquareShape, TokenName } from "game";
 import { HexBoard } from "./HexBoard";
 import { BoardMeasurements } from "./calculateBoardMeasurements";
@@ -7,6 +7,7 @@ import { CircularBoard } from "./CircularBoard";
 import { useBoardType } from "./useBoardType";
 import { SquareBoard } from "./SquareBoard";
 import { Board3D } from "./Board3D";
+import { ChangeViewsReminderModal } from "components/shared/Board/ChangeViewsReminderModal";
 
 export interface BoardProps {
   backboard?: boolean;
@@ -26,7 +27,8 @@ export const Board: FC<BoardProps> = (props) => {
       ? "flat"
       : undefined;
 
-  const boardType = useBoardType(boardTypeOverride);
+  const { boardType, possibleBoards } = useBoardType(boardTypeOverride);
+  useEffect(() => gameMaster?.render(), [boardType]);
 
   return (
     <>
@@ -39,6 +41,7 @@ export const Board: FC<BoardProps> = (props) => {
       ) : (
         <Board3D {...props} type={boardType} />
       )}
+      {possibleBoards.length > 1 && <ChangeViewsReminderModal />}
     </>
   );
 };

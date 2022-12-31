@@ -1,16 +1,16 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { Colors, DiscordIcon, MChessLogo, TrackingPixel, DISCORD_URL } from "primitives";
-import { GameOptions, defaultGameOptions } from "game";
+import { Colors, DISCORD_URL, DiscordIcon, MChessLogo, TrackingPixel } from "primitives";
+import { defaultGameOptions, GameOptions } from "game";
 import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
 import { GameProvider, HelpMenu, useAsyncStorage } from "components/shared";
 import { Lobby } from "./Lobby";
-import { SpotlightGame } from "./SpotlightGame";
 import { PlayWithFriends } from "./PlayWithFriends";
-import { ScrollView, Linking, Platform, useWindowDimensions } from "react-native";
+import { Linking, Platform, ScrollView, useWindowDimensions } from "react-native";
 import { ErrorBoundary } from "components/shared/ErrorBoundary";
 import { IconButton } from "ui/Buttons/IconButton";
 import { UpdateLog } from "./UpdateLog";
+import { recentUpdates } from "./UpdateLog/updates";
 
 const StartScreen: FC = () => {
   const { height, width } = useWindowDimensions();
@@ -56,7 +56,6 @@ const StartScreen: FC = () => {
               }
               secondaryComponent={
                 <>
-                  <SpotlightGame />
                   <PlayWithFriends style={{ marginTop: 12 }} />
                   <Lobby style={{ marginTop: 12 }} />
                 </>
@@ -77,7 +76,13 @@ const StartScreen: FC = () => {
             />
           </ErrorBoundary>
         </ScrollView>
-        {showUpdateLog && <UpdateLog onDismiss={onDismiss} windowHeight={height} />}
+        {showUpdateLog && (
+          <UpdateLog
+            updates={recentUpdates}
+            onDismiss={onDismiss}
+            windowHeight={height}
+          />
+        )}
       </GameProvider>
       <TrackingPixel urlEnd={"StartScreen"} />
     </>

@@ -62,4 +62,8 @@ export const tokenDetails: { [k in TokenName]: Details } = {
     name: "Thin Ice Token",
     description: "Keeps track of how many times a square has been stepped on.",
   },
+  [TokenName.Puppeteered]: {
+    name: "Puppeteered Token",
+    description: "This piece can be controlled by a knight.",
+  },
 };

@@ -1,6 +1,6 @@
 import { isPresent } from "ts-is-present";
 import { Direction, Gait, GaitParams, PieceName, PlayerName } from "../types";
-import { applyInSequence } from "utilities";
+import { applyInSequence, keys } from "utilities";
 import { Board, Piece, Square } from "../Board";
 import { Game } from "game/Game";
 import { Move, PieceDelta } from "game/Move";
@@ -9,12 +9,22 @@ import { Pather, PatherParams } from "game/Pather";
 import { GameMaster } from "game/GameMaster";
 import { FutureVariantName } from "game/variants";
 import { FormatName, formats as allFormats } from "game/formats";
-import { RuleName, rules as allRules } from "game/CompactRules";
+import {
+  getDefaults,
+  RuleName,
+  RuleParam,
+  RuleParamValue,
+  rules,
+  RuleSetting,
+  RulesWithoutParams,
+  RulesWithParams,
+} from "game/CompactRules";
 import { variantsToRules } from "game/variantAndRuleProcessing/variantsToRules";
-import { RuleParamValue, RuleSetting } from "./RuleSettingTypes";
+import { overrideRuleParamsForVariants } from "game/variantAndRuleProcessing";
 import { uniq } from "lodash";
-import { keys } from "utilities";
 import { Player } from "game/Player";
+
+const allRules: AllParameterRules = rules;
 
 // Note: These linting exceptions should only ever be used with great caution
 // Take care to check extra carefully for errors in this file because we have less type safety
@@ -38,20 +48,28 @@ export class CompactRules {
       ...otherRules,
     ]);
     this.ruleParams = ruleParams;
+    this.ruleParams = overrideRuleParamsForVariants({
+      variants,
+      rules: this.ruleNames,
+      baseRuleParams: this.ruleParams,
+    });
 
     const interruptionNames = keys(identityRule);
+
+    const buildRule = <R extends RuleName>(ruleName: R): Rule => {
+      const rule = allRules[ruleName] as ParameterRule<R>;
+      const params = {
+        ...getDefaults(ruleName),
+        ...this.ruleParams[ruleName],
+      };
+      return rule(params);
+    };
 
     const interruptionPoints = interruptionNames.map((interruptionPointName) => ({
       name: interruptionPointName,
       functions: this.ruleNames
-        .filter(
-          (ruleName) =>
-            !!allRules[ruleName](ruleParams?.[ruleName])[interruptionPointName]
-        )
         .sort(compareRulesPerInterruptionPoint(interruptionPointName))
-        .map(
-          (ruleName) => allRules[ruleName](ruleParams?.[ruleName])[interruptionPointName]
-        )
+        .map((ruleName) => buildRule(ruleName)[interruptionPointName])
         .filter(isPresent),
     }));
 
@@ -72,6 +90,15 @@ export class CompactRules {
     return this.ruleParams;
   }
 
+  cloneWithoutRule(removeRule: RuleName): CompactRules {
+    return new CompactRules(
+      [],
+      [],
+      this.getRuleNames().filter((ruleName) => ruleName !== removeRule),
+      this.getRuleParams()
+    );
+  }
+
   clone(): CompactRules {
     return new CompactRules([], [], this.getRuleNames(), this.getRuleParams());
   }
@@ -82,6 +109,7 @@ export class CompactRules {
 }
 
 const identityRule = {
+  turnStartPreprocessing: (x: TurnStartPreprocessing) => x,
   afterBoardCreation: (x: AfterBoardCreation) => x,
   afterGameCreation: (x: AfterGameCreation) => x,
   afterStepModify: (x: AfterStepModify) => x,
@@ -113,7 +141,11 @@ export type Rule = Partial<CompleteRule> & {
   title: string;
   description: string;
 };
-export type ParameterRule = (ruleParams?: RuleParamValue) => Rule;
+export type ParameterRule<R extends RuleName> = (ruleParams: RuleParam<R>) => Rule;
+export type TrivialParameterRule = ParameterRule<any>;
+type AllParameterRules = {
+  [ruleName in RulesWithoutParams | RulesWithParams]: ParameterRule<ruleName>;
+};
 
 export type RuleNamesWithParams = { [k in RuleName]?: RuleParamValue };
 export type RuleNamesWithParamSettings = { [k in RuleName]?: RuleSetting };
@@ -137,6 +169,7 @@ function compareRulesByList(t1: string, t2: string, list: string[]): number {
 const ruleOrderPerInterruptionPoint: {
   [key in InterruptionName]?: (RuleName | "theRest")[];
 } = {
+  afterBoardCreation: ["theRest", "castling", "clearCastlingTokens"],
   afterStepModify: ["polar", "theRest", "diagonalMirror"],
   lethalCondition: ["extinction", "theRest", "loseWithNoKings"],
   processMoves: ["pull", "theRest", "promotion", "chainReaction"],
@@ -144,6 +177,7 @@ const ruleOrderPerInterruptionPoint: {
   inPostMoveGenerationFilter: ["theRest", "check"],
   onPieceDisplaced: ["theRest", "promotion"],
   postMove: ["royallyScrewed", "chemicallyExcitedKnight", "theRest"],
+  onGaitsGeneratedModify: ["theRest", "brick"], // filter functionality at the end
 };
 
 export interface AfterBoardCreation {
@@ -225,6 +259,7 @@ export interface OnSendPieceToGrave {
 }
 
 export interface OnGaitsGeneratedModify {
+  game: Game;
   gaits: Gait[];
   piece: Piece;
 }
@@ -262,6 +297,11 @@ export interface ProcessMoves {
   game: Game;
   gameClones: Game[];
   params: PatherParams;
+}
+
+export interface TurnStartPreprocessing {
+  game: Game;
+  gameClones: Game[];
 }
 
 export interface SubscribeToEvents {

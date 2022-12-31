@@ -1,16 +1,15 @@
-import React, { useContext, useMemo, useEffect } from "react";
-import { View, Animated } from "react-native";
+import React, { useContext, useEffect, useMemo } from "react";
+import { Animated, View } from "react-native";
 import styled from "styled-components/native";
-import { SFC, Colors } from "primitives";
+import { SFC } from "primitives";
 import { objectMatches, range, wrapToCylinder } from "utilities";
 import { SquareShape, TokenName } from "game";
 import { Square } from "./Square";
 import { BoardProps } from "components/shared/Board/Board";
-import { Styles } from "primitives/Styles";
 import { GameContext } from "components/shared/GameContext";
 import { AbsoluteView } from "ui";
-import { BoardMeasurements } from "./calculateBoardMeasurements";
 import { useCylinderRotation } from "./useCylinderRotation";
+import { SquareBackboard } from "./SquareBackboard";
 
 const SquareBoard: SFC<BoardProps> = ({
   backboard = true,
@@ -45,7 +44,7 @@ const SquareBoard: SFC<BoardProps> = ({
   const verticalWrap = wrapToCylinder(minRank, maxRank);
 
   return (
-    <BoardContainer measurements={measurements} backboard={backboard}>
+    <SquareBackboard measurements={measurements} backboard={backboard}>
       <AbsoluteView
         style={{ overflow: "hidden", margin: measurements.boardPaddingHorizontal }}
       >
@@ -77,24 +76,9 @@ const SquareBoard: SFC<BoardProps> = ({
           ))}
         </Animated.View>
       </AbsoluteView>
-    </BoardContainer>
+    </SquareBackboard>
   );
 };
-
-const BoardContainer = styled(View)<{
-  backboard: boolean;
-  measurements: BoardMeasurements;
-}>`
-  position: relative;
-  ${({ backboard }): string => (backboard ? Styles.BOX_SHADOW_STRONG : "")}
-  ${({ backboard }): string =>
-    backboard ? `background-color: ${Colors.DARK.toString()}` : ""}
-  height: ${({ measurements }): number => measurements.height}px;
-  width: ${({ measurements }): number => measurements.width}px;
-  padding-horizontal: ${({ measurements }): number =>
-    measurements.boardPaddingHorizontal}px;
-  padding-vertical: ${({ measurements }): number => measurements.boardPaddingVertical}px;
-`;
 
 const ColumnContainer = styled(View)<{ flipBoard: boolean }>`
   flex-direction: ${({ flipBoard }): string => (flipBoard ? "column" : "column-reverse")};

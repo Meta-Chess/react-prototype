@@ -1,32 +1,30 @@
 import { Direction } from "game/types";
 import {
-  Rule,
-  ParameterRule,
   OnGaitsGeneratedModify,
+  ParameterRule,
   ProcessMoves,
+  Rule,
 } from "../CompactRules";
 import { Board } from "game";
 import { Gait, PlayerName } from "game/types/types";
 import { Move, PieceDelta } from "game/Move";
 import { Square } from "game/Board";
-import { rotate180, getDefaultParams } from "../utilities";
+import { rotate180 } from "../utilities";
 import { cloneDeep } from "lodash";
 import { Path } from "game/Pather";
 
 const MAX_CHAIN_LENGTH = 5;
 
-export const pull: ParameterRule = (
-  ruleParams = getDefaultParams("pullSettings")
-): Rule => {
+export const pull: ParameterRule<"pull"> = ({ "Forced Pull": forcePull }): Rule => {
   return {
     title: "Pull",
     description: `When moving linearly a piece ${
-      ruleParams["Forced Pull"] ? "must" : "may"
+      forcePull ? "must" : "may"
     } pull allied pieces along with it. Max chain length: ${MAX_CHAIN_LENGTH} pieces. Pull moves are calculated based on the way the lead piece would move if Pull was not enabled.`,
 
-    onGaitsGeneratedModify: ({ gaits, piece }): OnGaitsGeneratedModify => {
+    onGaitsGeneratedModify: ({ game, gaits, piece }): OnGaitsGeneratedModify => {
       gaits.filter(isLinear).forEach(addLinearMoverToGaitData);
-      return { gaits, piece };
+      return { game, gaits, piece };
     },
 
     //Note: a more rigorous implementation would probably interrupt during pathing not after to allow chains of pieces to not self interfere.
@@ -72,7 +70,7 @@ export const pull: ParameterRule = (
 
             moves.push(newMove);
           }
-          return ruleParams["Forced Pull"] ? moves[moves.length - 1] : moves;
+          return forcePull ? moves[moves.length - 1] : moves;
         }
         return move;
       });

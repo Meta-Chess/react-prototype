@@ -1,14 +1,14 @@
 import React, { useMemo } from "react";
 import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
-import { SFC, Colors, useHover } from "primitives";
+import { Colors, SFC, useHover } from "primitives";
 import { ConflictLevel, FutureVariant } from "game";
 import { VariantTileInfo } from "./VariantTileInfo";
 import { VariantTileImage } from "./VariantTileImage";
-import { allRuleSettings } from "game/CompactRules";
+import { AllRuleSettings, RuleNamesWithParamSettings } from "game/CompactRules";
 import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScreen/Modals";
 import { VariantTileHeader } from "./VariantTileHeader";
-import { VariantTileGraph } from "./VariantTileGraph";
+import { VariantTileTags } from "./VariantTileTags";
 import Color from "color";
 import { keys } from "utilities/keys";
 
@@ -51,16 +51,24 @@ export const VariantTile: SFC<Props> = ({
   const [ref, hovered] = useHover();
   color = hovered ? color.fade(0.2) : color;
   const implemented = variant.implemented;
+
   const showDetailedView = (hovered || detailedView) && implemented && !zenMode;
   const showStar = showDetailedView;
   const showGear = !zenMode && hovered;
 
-  const ruleSettings = variant.ruleNames
-    .filter((ruleName) => allRuleSettings[`${ruleName}Settings`] !== undefined)
-    .reduce(
-      (acc, ruleName) => ({ ...acc, [ruleName]: allRuleSettings[`${ruleName}Settings`] }),
-      {}
-    );
+  const ruleSettings: RuleNamesWithParamSettings = useMemo(() => {
+    const allRuleSettings = new AllRuleSettings();
+    return variant.ruleNames
+      .filter((ruleName) => ruleName in allRuleSettings)
+      .reduce(
+        (acc, ruleName) => ({
+          ...acc,
+          [ruleName]: allRuleSettings[ruleName as keyof AllRuleSettings],
+        }),
+        {}
+      );
+  }, []);
+
   const onGearPress = useMemo(
     () =>
       keys(ruleSettings).length > 0
@@ -101,20 +109,11 @@ export const VariantTile: SFC<Props> = ({
         {showDetailedView && (
           <VariantTileInfo variant={variant} style={{ width: "100%", height: "100%" }} />
         )}
-        {showDetailedView && (
-          <StyledVariantTileGraph variant={variant} orientation={"horizontal"} />
-        )}
+        {showDetailedView && <VariantTileTags variant={variant} />}
       </VariantTileContent>
     </TouchableContainer>
   );
 };
-
-const StyledVariantTileGraph = styled(VariantTileGraph)`
-  align-self: center;
-  width: 80%;
-  margin-bottom: 0px;
-  margin-top: auto;
-`;
 
 const TouchableContainer = styled(TouchableOpacity)<{ color: Color; size: number }>`
   width: ${({ size }): string => size?.toString()}px;

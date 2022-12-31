@@ -1,4 +1,5 @@
 export * from "./Buttons";
+export * from "./Column";
 export * from "./Containers";
 export * from "./Divider";
 export * from "./Forms";
@@ -11,3 +12,4 @@ export * from "./Separators";
 export * from "./Spinner";
 export * from "./Tiles";
 export * from "./TextIcon";
+export * from "./SocialMedia";

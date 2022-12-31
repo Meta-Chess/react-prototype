@@ -1,6 +1,7 @@
 import * as rules from "./rules/rules";
+
 export * from "./rules";
-export { allRuleSettings } from "./ruleSettings";
+export * from "./ruleSettings";
 export * from "./CompactRules";
 export * from "./RuleSettingTypes";
 

@@ -1,6 +1,7 @@
-import { RuleName } from "../CompactRules";
+import { RuleName, RuleNamesWithParams } from "../CompactRules";
 import * as VariantImages from "primitives/VariantImage";
 import { TraitName } from "game/variants/traitInfo";
+import { PieceName } from "game/types";
 
 export const integrateWithOtherRules: {
   [key in RuleName]?: (rules: RuleName[]) => RuleName[];
@@ -9,7 +10,11 @@ export const integrateWithOtherRules: {
     return ruleNames.includes("hex") ? ["hexCylindrical"] : ["cylindrical"];
   },
   standard: (rules: RuleName[]): RuleName[] => {
-    return rules.includes("hex") || rules.includes("longBoard") ? [] : ["standard"];
+    return rules.includes("hex") ||
+      rules.includes("longBoard") ||
+      rules.includes("grandChess")
+      ? []
+      : ["standard"];
   },
 };
 
@@ -127,41 +132,81 @@ export interface FutureVariant {
   imageName?: keyof typeof VariantImages;
   implemented: boolean;
   ruleNames: RuleName[];
+  overrideRuleParams?: RuleNamesWithParams;
   complexity: number;
 }
 
 export type FutureVariantName =
   | "atomic"
+  | "brick"
+  | "centerfold"
+  | "chainReaction"
+  | "chemicallyExcitedKnight"
+  | "completedKnight"
   | "crazyhouse"
   | "cylindrical"
   | "diagonalMirror"
   | "emptyCenter"
+  | "extinction"
   | "fatigue"
+  | "gambit"
+  | "grandChess"
   | "hex"
   | "kingOfTheHill"
   | "kleinBottle"
+  | "loseOnStalemate"
   | "mobius"
+  | "morphlings"
   | "noFork"
   | "patheticKing"
+  | "pawnOrbit"
   | "polar"
+  | "pull"
+  | "puppeteers"
+  | "royallyScrewed"
   | "spherical"
   | "thinIce"
   | "threeCheck"
   | "toroidal"
-  | "chemicallyExcitedKnight"
-  | "chainReaction"
-  | "pull"
-  | "morphlings"
-  | "zoneOfControl"
-  | "loseOnStalemate"
-  | "gambit"
-  | "extinction"
-  | "centerfold"
-  | "fortifications"
-  | "royallyScrewed"
-  | "pawnOrbit";
+  | "zoneOfControl";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
+  grandChess: {
+    title: "Grand",
+    shortDescription:
+      "Grand chess is a large-board chess variant invented by Dutch games designer Christian Freeling in 1984",
+    traits: ["Board"],
+    imageName: "squareBoardImage",
+    implemented: true,
+    ruleNames: ["grandChess", "clearCastlingTokens"],
+    overrideRuleParams: {
+      promotion: {
+        "Promotion Pieces": [
+          [
+            PieceName.Knight,
+            PieceName.Bishop,
+            PieceName.Rook,
+            PieceName.Queen,
+            PieceName.BishopKnight,
+            PieceName.RookKnight,
+          ],
+        ],
+        "Only Friendly Dead Pieces": true,
+        "Non Promotion Moves": true,
+      },
+    },
+    complexity: 1,
+  },
+
+  puppeteers: {
+    title: "Puppeteers",
+    shortDescription: "Pieces seen by friendly knights can move as the knights",
+    traits: ["Movement"],
+    imageName: "puppeteersImage",
+    implemented: false,
+    ruleNames: ["puppeteers"],
+    complexity: 1,
+  },
   atomic: {
     title: "Atomic",
     shortDescription:
@@ -221,7 +266,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   emptyCenter: {
     title: "Empty Center",
     shortDescription: "No pieces allowed in the center!",
-    traits: ["Movement", "Restriction"],
+    traits: ["Restriction"],
     imageName: "emptyCenterImage",
     implemented: true,
     ruleNames: ["emptyCenter"],
@@ -241,7 +286,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     title: "Hex",
     shortDescription: "A board tiled with hexagons.",
     traits: ["Board"],
-    imageName: "hexImage",
+    imageName: "hexBoardImage",
     implemented: true,
     ruleNames: ["hex"],
     complexity: 3,
@@ -318,7 +363,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   patheticKing: {
     title: "Pathetic King",
     shortDescription: "Kings cannot capture.",
-    traits: ["Movement", "Restriction"],
+    traits: ["Restriction"],
     imageName: "patheticKingImage",
     implemented: true,
     ruleNames: ["patheticKing"],
@@ -345,7 +390,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   thinIce: {
     title: "Thin Ice",
     shortDescription: "You're skating on thin ice!",
-    traits: ["Board", "Reaction", "Restriction"],
+    traits: ["Board", "Reaction"],
     imageName: "thinIceImage",
     implemented: true,
     ruleNames: ["thinIce"],
@@ -435,14 +480,23 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     ruleNames: [],
     complexity: 0,
   },
-  fortifications: {
-    title: "Fortifications",
-    shortDescription: "Rooks cannot capture or be captured.",
-    traits: [],
-    imageName: "fortificationsImage",
-    implemented: false,
-    ruleNames: [],
-    complexity: 0,
+  brick: {
+    title: "Brick",
+    shortDescription: "Rooks cannot initiate capture or be captured.",
+    traits: ["Restriction"],
+    imageName: "brickImage",
+    implemented: true,
+    ruleNames: ["brick"],
+    complexity: 1,
+  },
+  completedKnight: {
+    title: "Completed Knight",
+    shortDescription: "Knights can additionally move 3 spaces in each lateral direction.",
+    traits: ["Movement"],
+    imageName: "completedKnightImage",
+    implemented: true,
+    ruleNames: ["completedKnight"],
+    complexity: 1,
   },
 };
 

@@ -1,24 +1,24 @@
 import { range, range2, toLocation } from "utilities";
 import { Adjacency, Piece, Square } from "game/Board";
 import {
+  allPossiblePlayerNames,
   Direction,
   PieceName,
   PlayerName,
-  allPossiblePlayerNames,
   RankAndFileBounds,
 } from "game/types";
 import {
-  Rule,
-  ParameterRule,
   ForSquareGenerationModify,
-  OnBoardCreate,
   GetGaitGenerator,
+  OnBoardCreate,
+  ParameterRule,
+  Rule,
 } from "../CompactRules";
-import { createPiece, determineGaitGenerator, getDefaultParams } from "../utilities";
+import { createPiece, determineGaitGenerator } from "../utilities";
 import { standardGaits } from "../constants";
 
-export const longBoard: ParameterRule = (
-  ruleParams = getDefaultParams("longBoardSettings")
+export const longBoard: ParameterRule<"longBoard"> = (
+  ruleParams = { Large: false }
 ): Rule => {
   return {
     title: "Long board",

@@ -1,11 +1,12 @@
 import React, { FC } from "react";
 import { Animated } from "react-native";
-import { G, Svg, Path } from "react-native-svg";
+import { G, Path, Svg } from "react-native-svg";
 import { AnimatedGroup } from "primitives";
+import Color from "color";
 
 interface Props {
   size: number;
-  color?: string;
+  color?: Color;
   animatedColor?: Animated.AnimatedInterpolation | undefined;
 }
 
@@ -30,7 +31,7 @@ export const HexTileSvg: FC<Props> = ({ size, color, animatedColor }) => {
           <TilePath />
         </AnimatedGroup>
       ) : (
-        <G fill={color}>
+        <G fill={color?.toString()}>
           <TilePath />
         </G>
       )}

@@ -42,6 +42,9 @@ export interface AllRuleParamValue {
   "Immune Pieces": PieceName[][];
   "Deep Impact": boolean;
   "Diagonal Poles": boolean;
+  "Promotion Pieces": PieceName[][];
+  "Only Friendly Dead Pieces": boolean;
+  "Non Promotion Moves": boolean;
   Large: boolean;
 }
 

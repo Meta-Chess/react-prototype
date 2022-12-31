@@ -30,4 +30,13 @@ export const traitInfo = {
   },
 };
 
+export const traitOrder: TraitName[] = [
+  "Board",
+  "Movement",
+  "Reaction",
+  "Restriction",
+  "Ending",
+  "Simulation",
+];
+
 export const allTraitNames = keys<TraitName>(traitInfo);

@@ -1,8 +1,7 @@
 import React from "react";
-import { SFC } from "primitives";
+import { Colors, SFC, Text } from "primitives";
 import { TouchableOpacity, View } from "react-native";
-import { TraitName, traitInfo } from "game/variants/traitInfo";
-import { Text, Colors } from "primitives";
+import { traitInfo, TraitName } from "game/variants/traitInfo";
 import styled from "styled-components/native";
 import Color from "color";
 
@@ -20,8 +19,7 @@ const TraitFilter: SFC<TraitFilterProps> = ({
   selected,
   onPress,
 }) => {
-  const baseColor = traitInfo[trait].color.fade(0.5);
-  const color = selected ? baseColor : baseColor.fade(0.5);
+  const color = traitInfo[trait].color.fade(0.4);
   const labelPadding = 4;
   const counterPadding = 4;
   const verticalPadding = 1;

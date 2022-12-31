@@ -1,7 +1,7 @@
 import React from "react";
 import { SFC, Text } from "primitives";
 import { Block } from "ui/Containers/Block";
-import { Piece, tokenDetails, pieceDetails } from "game";
+import { Piece, pieceDetails, tokenDetails } from "game";
 import { LabelWithDetails } from "ui";
 import { View } from "react-native";
 
@@ -31,6 +31,7 @@ const SelectedPieceInfoCard: SFC<Props> = ({ pieces, style }) => {
                 label={tokenDetails[token.name].name}
                 details={tokenDetails[token.name].description}
                 key={index}
+                style={{ marginLeft: index === 0 ? 0 : 4, marginTop: 4 }}
               />
             ))}
           </View>

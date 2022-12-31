@@ -1,30 +1,26 @@
 import { Square } from "game/Board";
 import { TokenName } from "game/types";
-import { Rule, ParameterRule, OnPieceDisplaced } from "../CompactRules";
-import { getDefaultParams } from "../utilities";
+import { OnPieceDisplaced, ParameterRule } from "../CompactRules";
 
-export const thinIce: ParameterRule = (
-  ruleParams = getDefaultParams("thinIceSettings")
-): Rule => {
-  return {
-    title: "Thin Ice",
-    description:
-      "You're skating on thin ice! When a square is moved to multiple times it breaks.",
+export const thinIce: ParameterRule<"thinIce"> = ({
+  "Square Durability": squareDurability,
+}) => ({
+  title: "Thin Ice",
+  description:
+    "You're skating on thin ice! When a square is moved to multiple times it breaks.",
 
-    onPieceDisplaced: ({ board, pieceDelta }): OnPieceDisplaced => {
-      const landingSquare = board.squareAt(pieceDelta.path.getEnd());
-      const squareDurability = ruleParams["Square Durability"];
+  onPieceDisplaced: ({ board, pieceDelta }): OnPieceDisplaced => {
+    const landingSquare = board.squareAt(pieceDelta.path.getEnd());
 
-      if (!landingSquare || !squareDurability) return { board, pieceDelta };
+    if (!landingSquare || !squareDurability) return { board, pieceDelta };
 
-      incrementThinIceToken(landingSquare, squareDurability);
+    incrementThinIceToken(landingSquare, squareDurability);
 
-      if (squareShouldBreak(landingSquare)) board.destroySquare(pieceDelta.path.getEnd());
+    if (squareShouldBreak(landingSquare)) board.destroySquare(pieceDelta.path.getEnd());
 
-      return { board, pieceDelta };
-    },
-  };
-};
+    return { board, pieceDelta };
+  },
+});
 
 function squareShouldBreak(square?: Square): boolean {
   return getStepAllowanceOnSquare(square) <= 0;

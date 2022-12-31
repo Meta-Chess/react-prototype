@@ -8,7 +8,7 @@ const [sin, cos] = [Math.sin, Math.cos];
 
 type ProjectionParameters = Parameters<Projection>[0];
 
-export const kleinProjection: Projection = ({
+export const kleinInverseProjection: Projection = ({
   file,
   rank,
   heightAdjustment = 0,

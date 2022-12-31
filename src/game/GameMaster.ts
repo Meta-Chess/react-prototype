@@ -17,7 +17,7 @@ import { SquareInfo, SquaresInfo } from "game/SquaresInfo";
 import { FormatName } from "game/formats";
 import { doesCapture } from "./CompactRules/utilities";
 import { Draw, PlayerAction, Resignation } from "./PlayerAction";
-import { isPresent, sleep, doAsync } from "utilities";
+import { doAsync, isPresent, sleep } from "utilities";
 import autoBind from "auto-bind";
 
 export class GameMaster {
@@ -249,6 +249,7 @@ export class GameMaster {
       this.doMove({ move });
       return move;
     }
+    this.render();
   }
 
   async setPositionInHistoryToLatest(): Promise<void> {
@@ -481,6 +482,10 @@ export class GameMaster {
     } else {
       this.render();
     }
+    this.interrupt.for.turnStartPreprocessing({
+      game: this.game,
+      gameClones: this.gameClones,
+    });
   }
 
   unselectAllPieces(): void {

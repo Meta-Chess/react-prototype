@@ -1,17 +1,16 @@
-import React, { FC, ReactElement, useMemo, useEffect } from "react";
-import { Path } from "react-native-svg";
+import React, { FC, ReactElement, useMemo } from "react";
+import { Path, Svg } from "react-native-svg";
 import { PieceDecorationName } from "components/shared/Board/Piece/getPieceDecorationNames";
 import { BsArrowClockwise, BsArrowCounterclockwise } from "react-icons/bs";
-import { GameMaster } from "game";
-import { TokenName, SquareShape } from "game/types";
-import { Svg } from "react-native-svg";
+import { SquareShape } from "game/types";
+
 interface Props {
   pieceDecorationNames?: PieceDecorationName[];
-  gameMaster?: GameMaster;
+  squareShape?: SquareShape | undefined;
 }
 
-// TODO: change this into a map...
-function CHOOSE_DECORATION(
+// TODO: consider changing this into a map...
+function getDecoration(
   name: PieceDecorationName,
   circularBoard: boolean
 ): ReactElement | void {
@@ -46,25 +45,16 @@ function CHOOSE_DECORATION(
 }
 
 // TODO: Probably better to extract decorations as components absolutely positioned on the PieceImage (rather than paths/svgs in here)
-const PieceDecorations: FC<Props> = ({ pieceDecorationNames, gameMaster }) => {
+const PieceDecorations: FC<Props> = ({ pieceDecorationNames, squareShape }) => {
   // change decorations when displaying a circular board
-  const circularBoard = useMemo(
-    () =>
-      gameMaster?.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape ===
-      SquareShape.Arc,
-    [gameMaster?.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape]
-  );
-  useEffect(
-    () => gameMaster?.render(),
-    [gameMaster?.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape]
-  );
+  const circularBoard = useMemo(() => squareShape === SquareShape.Arc, [squareShape]);
 
   if (pieceDecorationNames === undefined) return null;
 
   return (
     <>
       {pieceDecorationNames?.map((pieceDecorationName) => {
-        return CHOOSE_DECORATION(pieceDecorationName, circularBoard);
+        return getDecoration(pieceDecorationName, circularBoard);
       })}
     </>
   );
