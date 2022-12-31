@@ -2,8 +2,14 @@ import React, { FC } from "react";
 import { GameMaster, Square } from "game";
 import { getHighlightColorsAndTypes } from "./getHighlightColorsAndTypes";
 import { CircleGeometry, Euler, Quaternion, Vector3 } from "three";
-import { getSurfaceSquareGeometry, InverseProjection } from "primitives";
+import {
+  getSurfaceSquareGeometry,
+  InverseProjection,
+  TILE_GRANULARITY,
+} from "primitives";
 import { BoardMaterial } from "components/shared/Board/Square/BoardMaterial";
+
+const CIRCLE_RADIUS = 0.08;
 
 interface Props {
   gameMaster: GameMaster;
@@ -38,8 +44,8 @@ export const Highlights3D: FC<Props> = ({
             geometry={getSurfaceSquareGeometry({
               inverseProjection,
               ...coordinates,
-              rankGranularity: 64,
-              fileGranularity: 64,
+              rankGranularity: TILE_GRANULARITY,
+              fileGranularity: TILE_GRANULARITY,
             })}
             receiveShadow
           >
@@ -48,7 +54,7 @@ export const Highlights3D: FC<Props> = ({
         ) : (
           <mesh
             key={index}
-            geometry={new CircleGeometry(0.1, 20)}
+            geometry={new CircleGeometry(CIRCLE_RADIUS, 4 * TILE_GRANULARITY)}
             position={position}
             rotation={new Euler().setFromQuaternion(
               new Quaternion().setFromUnitVectors(new Vector3(0, 0, 1), normal)

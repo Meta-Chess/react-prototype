@@ -6,6 +6,7 @@ import {
   mobiusInverseProjection,
   SFC,
   sphereInverseProjection,
+  TILE_GRANULARITY,
   torusInverseProjection,
 } from "primitives";
 import { Square, SquareShape, Token } from "game";
@@ -70,8 +71,8 @@ export const Square3D: SFC<Props> = ({
           rank: positionRank,
           numberOfFiles,
           numberOfRanks,
-          fileGranularity: 64,
-          rankGranularity: 64,
+          fileGranularity: TILE_GRANULARITY,
+          rankGranularity: TILE_GRANULARITY,
         })}
         onClick={onClick}
         receiveShadow
