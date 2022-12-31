@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { View } from "react-native";
-import { Colors, SFC } from "primitives";
+import { SFC } from "primitives";
 import { Piece, PieceAnimation, ShadowPiece } from "../Piece";
 import { GridArrangement } from "./GridArrangement";
-import { RuleName, Square, SquareShape, TokenName } from "game";
+import { Square, SquareShape } from "game";
 import { TilePressableContainer } from "./TilePressableContainer";
 import { AnimationOverlays, LoadingOverlay } from "./AnimationOverlays";
-import { Highlight } from "./Highlight";
+import { Highlights } from "./Highlight";
 import { useModals } from "ui";
 import { Token } from "game/types";
 import { getDisplayPiecesAndTokens } from "./getDisplayPiecesAndTokens";
@@ -16,7 +16,7 @@ import { TileSchematic } from "ui/Tiles/TileProps";
 import { OuterContainer } from "./OuterContainer";
 import { TileBase } from "./TileBase";
 import { PositioningContainer } from "./PositioningContainer";
-import Color from "color";
+import { useGetSquareBackgroundColor } from "components/shared/Board/Square/useGetSquareBackgroundColor";
 
 interface Props {
   square: Square | undefined;
@@ -34,12 +34,11 @@ const SquareComponent: SFC<Props> = ({
 }) => {
   const modals = useModals();
   const { gameMaster } = useContext(GameContext);
-  const rules = gameMaster?.getRuleNames();
+
+  const backgroundColor = useGetSquareBackgroundColor(square, shape);
+
   if (!gameMaster) return null;
-
   if (!square) return <View style={[style, { width: size, height: size }]} />;
-
-  const backgroundColor = calculateBackgroundColor(square, shape, rules);
 
   const piecesOrPieceAnimationsOnSquare: (string | Token)[] =
     getDisplayPiecesAndTokens(square);
@@ -88,7 +87,7 @@ const SquareComponent: SFC<Props> = ({
             ))}
           </GridArrangement>
         </PositioningContainer>
-        <Highlight
+        <Highlights
           gameMaster={gameMaster}
           square={square}
           size={size}
@@ -130,36 +129,6 @@ const SquareComponent: SFC<Props> = ({
       )}
     </OuterContainer>
   );
-};
-
-function calculateBackgroundColor(
-  square: Square,
-  shape: SquareShape,
-  rules?: RuleName[]
-): Color {
-  return Colors.SQUARE[colorIndex({ ...square.getCoordinates(), shape })].mix(
-    Colors.DARK,
-    shouldMixSquare(square, rules) ? 0.4 : 0
-  );
-}
-
-function shouldMixSquare(square: Square, rules?: RuleName[]): boolean {
-  return (
-    !!rules?.includes("thinIce") &&
-    (square.firstTokenWithName(TokenName.ThinIce)?.data?.thinIceData ?? 2) <= 1
-  );
-}
-
-const colorIndex = ({
-  rank,
-  file,
-  shape,
-}: {
-  rank: number;
-  file: number;
-  shape?: SquareShape;
-}): number => {
-  return shape === SquareShape.Hex ? rank % 3 : (rank + file) % 2;
 };
 
 export { SquareComponent as Square };
