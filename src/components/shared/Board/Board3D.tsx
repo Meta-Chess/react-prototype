@@ -1,7 +1,13 @@
 import React, { useContext, useEffect, useMemo } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
-import { Colors, getSpherePolarCapsGeometry, SFC } from "primitives";
+import {
+  Colors,
+  getCylinderCapsGeometry,
+  getMobiusStripEdgeGeometry,
+  getSpherePolarCapsGeometry,
+  SFC,
+} from "primitives";
 import { objectMatches, range, wrapToCylinder } from "utilities";
 import { SquareShape, TokenName } from "game";
 import { BoardProps } from "components/shared/Board/Board";
@@ -13,8 +19,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { Square3D } from "./Square3D";
 import { BoardType3D } from "./useBoardType";
-import { getMobiusStripEdgeGeometry } from "primitives/surfaceSquares/getMobiusStripEdgeGeometry";
-import { use3dCylinderRotation } from "components/shared/Board/use3dCylinderRotation";
+import { use3dCylinderRotation } from "./use3dCylinderRotation";
 
 export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
   backboard = true,
@@ -51,6 +56,12 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
   const extraGeometry =
     type === "spherical"
       ? getSpherePolarCapsGeometry({
+          numberOfFiles,
+          numberOfRanks,
+          fileGranularity: 64,
+        })
+      : type === "cylindrical"
+      ? getCylinderCapsGeometry({
           numberOfFiles,
           numberOfRanks,
           fileGranularity: 64,

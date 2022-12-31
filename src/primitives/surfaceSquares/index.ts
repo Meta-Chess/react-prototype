@@ -1,4 +1,7 @@
 export * from "./Projection";
+export * from "./cylinderProjection";
+export * from "./getCylinderCapsGeometry";
+export * from "./getMobiusStripEdgeGeometry";
 export * from "./getSpherePolarCapsGeometry";
 export * from "./getSurfaceSquareGeometry";
 export * from "./mobiusProjection";

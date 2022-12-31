@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import {
   Colors,
+  cylinderProjection,
   getSurfaceSquareGeometry,
   mobiusProjection,
   Projection,
@@ -35,6 +36,7 @@ const PROJECTIONS: { [k in BoardType3D]: Projection } = {
   spherical: sphereProjection,
   toroidal: torusProjection,
   mobius: mobiusProjection,
+  cylindrical: cylinderProjection,
 };
 
 export const Square3D: SFC<Props> = ({
