@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import { SquareShape, TokenName } from "game";
 import { HexBoard } from "./HexBoard";
 import { BoardMeasurements } from "./calculateBoardMeasurements";
@@ -28,6 +28,7 @@ export const Board: FC<BoardProps> = (props) => {
       : undefined;
 
   const { boardType, possibleBoards } = useBoardType(boardTypeOverride);
+  useEffect(() => gameMaster?.render(), [boardType]);
 
   return (
     <>
