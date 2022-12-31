@@ -19,6 +19,7 @@ import {
 } from "./Square";
 import Color from "color";
 import { BoardType3D } from "./useBoardType";
+import { ThreeEvent } from "@react-three/fiber";
 
 interface Props {
   square: Square | undefined;
@@ -57,7 +58,8 @@ export const Square3D: SFC<Props> = ({
   const piecesOrPieceAnimationsOnSquare: (string | Token)[] =
     getDisplayPiecesAndTokens(square);
 
-  const onClick = (): void => {
+  const onClick = (event: ThreeEvent<MouseEvent>): void => {
+    event.stopPropagation();
     modals.hideAll();
     gameMaster.onSquarePress(square.location);
   };
