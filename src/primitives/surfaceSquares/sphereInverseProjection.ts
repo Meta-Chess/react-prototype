@@ -1,7 +1,7 @@
 import { Vector3 } from "three";
-import { Projection } from "./Projection";
+import { InverseProjection } from "./InverseProjection";
 
-export const sphereProjection: Projection = ({
+export const sphereInverseProjection: InverseProjection = ({
   file,
   rank,
   numberOfFiles,

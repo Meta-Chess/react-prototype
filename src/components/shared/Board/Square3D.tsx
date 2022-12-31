@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import {
   Colors,
-  cylinderProjection,
+  cylinderInverseProjection,
   getSurfaceSquareGeometry,
-  mobiusProjection,
-  Projection,
+  InverseProjection,
+  mobiusInverseProjection,
   SFC,
-  sphereProjection,
-  torusProjection,
+  sphereInverseProjection,
+  torusInverseProjection,
 } from "primitives";
 import { GameMaster, RuleName, Square, Token, TokenName } from "game";
 import { useModals } from "ui";
@@ -31,11 +31,11 @@ interface Props {
   type: BoardType3D;
 }
 
-const PROJECTIONS: { [k in BoardType3D]: Projection } = {
-  spherical: sphereProjection,
-  toroidal: torusProjection,
-  mobius: mobiusProjection,
-  cylindrical: cylinderProjection,
+const INVERSE_PROJECTIONS: { [k in BoardType3D]: InverseProjection } = {
+  spherical: sphereInverseProjection,
+  toroidal: torusInverseProjection,
+  mobius: mobiusInverseProjection,
+  cylindrical: cylinderInverseProjection,
 };
 
 export const Square3D: SFC<Props> = ({
@@ -65,13 +65,13 @@ export const Square3D: SFC<Props> = ({
     gameMaster.onSquarePress(square.location);
   };
 
-  const projection = PROJECTIONS[type];
+  const inverseProjection = INVERSE_PROJECTIONS[type];
 
   return (
     <>
       <mesh
         geometry={getSurfaceSquareGeometry({
-          projection,
+          inverseProjection,
           file: positionFile,
           rank: positionRank,
           numberOfFiles,
@@ -104,7 +104,7 @@ export const Square3D: SFC<Props> = ({
                 numberOfFiles,
               }}
               onClick={onClick}
-              projection={projection}
+              inverseProjection={inverseProjection}
             />
           ) : null // TODO: implement animation tokens
       )}
@@ -118,7 +118,7 @@ export const Square3D: SFC<Props> = ({
           numberOfRanks,
           numberOfFiles,
         }}
-        projection={projection}
+        inverseProjection={inverseProjection}
       />
     </>
   );

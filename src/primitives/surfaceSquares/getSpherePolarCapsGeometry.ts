@@ -1,5 +1,5 @@
 import { BufferGeometry } from "three";
-import { sphereProjection } from "./sphereProjection";
+import { sphereInverseProjection } from "./sphereInverseProjection";
 import { getCapGeometry } from "./getCapGeometry";
 
 export function getSpherePolarCapsGeometry(input: {
@@ -9,7 +9,7 @@ export function getSpherePolarCapsGeometry(input: {
 }): BufferGeometry {
   return getCapGeometry({
     ...input,
-    projection: sphereProjection,
+    inverseProjection: sphereInverseProjection,
     rankMinusOnePoint: [0, 1, 0],
     rankMaxPlusOnePoint: [0, -1, 0],
   });

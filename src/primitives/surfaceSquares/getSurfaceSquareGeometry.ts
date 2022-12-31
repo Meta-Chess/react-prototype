@@ -1,8 +1,8 @@
 import { BufferAttribute, BufferGeometry } from "three";
-import { Projection } from "./Projection";
+import { InverseProjection } from "./InverseProjection";
 
 export function getSurfaceSquareGeometry({
-  projection,
+  inverseProjection,
   file,
   rank,
   numberOfFiles,
@@ -10,7 +10,7 @@ export function getSurfaceSquareGeometry({
   fileGranularity,
   rankGranularity,
 }: {
-  projection: Projection;
+  inverseProjection: InverseProjection;
   file: number;
   rank: number;
   numberOfFiles: number;
@@ -22,7 +22,7 @@ export function getSurfaceSquareGeometry({
   const normals = [];
   for (let j = 0; j <= rankGranularity; j++) {
     for (let i = 0; i <= fileGranularity; i++) {
-      const { position, normal } = projection({
+      const { position, normal } = inverseProjection({
         file: file + i / fileGranularity,
         rank: rank + j / rankGranularity,
         numberOfFiles,

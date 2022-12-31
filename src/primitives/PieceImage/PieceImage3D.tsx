@@ -11,7 +11,7 @@ import {
   queenGeometry,
   rookGeometry,
 } from "./geometries";
-import { Projection } from "primitives";
+import { InverseProjection } from "primitives";
 import { ThreeEvent } from "@react-three/fiber";
 
 interface Props {
@@ -23,7 +23,7 @@ interface Props {
     numberOfRanks: number;
     numberOfFiles: number;
   };
-  projection: Projection;
+  inverseProjection: InverseProjection;
   size?: number;
   opacity?: number;
   animated?: boolean;
@@ -38,11 +38,11 @@ const PieceImage3D: FC<Props> = ({
   type,
   color,
   coordinates,
-  projection,
+  inverseProjection,
   onClick,
   opacity,
 }) => {
-  const { position, normal } = projection({
+  const { position, normal } = inverseProjection({
     ...coordinates,
     ...coordinates,
     rank: coordinates.rank + 0.5,

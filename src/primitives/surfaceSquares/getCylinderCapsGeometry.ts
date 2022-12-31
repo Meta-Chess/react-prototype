@@ -1,5 +1,5 @@
 import { BufferGeometry } from "three";
-import { cylinderProjection } from "./cylinderProjection";
+import { cylinderInverseProjection } from "./cylinderInverseProjection";
 import { getCapGeometry } from "./getCapGeometry";
 
 export function getCylinderCapsGeometry(input: {
@@ -9,7 +9,7 @@ export function getCylinderCapsGeometry(input: {
 }): BufferGeometry {
   return getCapGeometry({
     ...input,
-    projection: cylinderProjection,
+    inverseProjection: cylinderInverseProjection,
     rankMinusOnePoint: [0, 1, 0],
     rankMaxPlusOnePoint: [0, -1, 0],
   });
