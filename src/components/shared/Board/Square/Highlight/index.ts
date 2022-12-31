@@ -1,3 +1,3 @@
-export { Highlight } from "./Highlight";
-export * from "./CenterHighlights3D";
+export { Highlights } from "./Highlights";
+export * from "./Highlights3D";
 export * from "./getHighlightColorsAndTypes";

@@ -13,7 +13,7 @@ import { GameContext } from "components/shared/GameContext";
 import { AbsoluteView } from "ui";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { Square3D } from "./Square3D";
+import { Square3D } from "./Square";
 import { BoardType3D } from "./useBoardType";
 import { use3dCylinderRotation } from "./use3dCylinderRotation";
 import { Lighting } from "./Lighting";

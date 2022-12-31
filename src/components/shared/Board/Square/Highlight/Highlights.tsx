@@ -13,7 +13,7 @@ interface Props {
   tileSchematic?: TileSchematic;
 }
 
-export const Highlight: FC<Props> = ({
+export const Highlights: FC<Props> = ({
   gameMaster,
   square,
   size,

@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import {
-  Colors,
   cylinderInverseProjection,
   getSurfaceSquareGeometry,
   InverseProjection,
@@ -9,17 +8,16 @@ import {
   sphereInverseProjection,
   torusInverseProjection,
 } from "primitives";
-import { GameMaster, RuleName, Square, Token, TokenName } from "game";
+import { Square, SquareShape, Token } from "game";
 import { useModals } from "ui";
 import { GameContext, Piece3D } from "components/shared";
 import { TileSchematic } from "ui/Tiles/TileProps";
-import {
-  CenterHighlights3D,
-  getDisplayPiecesAndTokens,
-  getHighlightColorsAndTypes,
-} from "./Square";
-import { BoardType3D } from "./useBoardType";
+import { getDisplayPiecesAndTokens } from "./getDisplayPiecesAndTokens";
 import { ThreeEvent } from "@react-three/fiber";
+import { Highlights3D } from "./Highlight";
+import { BoardType3D } from "../useBoardType";
+import { useGetSquareBackgroundColor } from "./useGetSquareBackgroundColor";
+import { BoardMaterial } from "components/shared/Board/Square/BoardMaterial";
 
 interface Props {
   square: Square | undefined;
@@ -48,12 +46,9 @@ export const Square3D: SFC<Props> = ({
 }) => {
   const modals = useModals();
   const { gameMaster } = useContext(GameContext);
-  const rules = gameMaster?.getRuleNames();
-  if (!gameMaster) return null;
+  const backgroundColor = useGetSquareBackgroundColor(square, SquareShape.Square);
 
-  if (!square) return null;
-
-  const backgroundColor = calculateBackgroundColor(gameMaster, square, rules);
+  if (!gameMaster || !square) return null;
 
   const piecesOrPieceAnimationsOnSquare: (string | Token)[] =
     getDisplayPiecesAndTokens(square);
@@ -82,12 +77,7 @@ export const Square3D: SFC<Props> = ({
         receiveShadow
         castShadow
       >
-        <meshStandardMaterial
-          attach="material"
-          color={backgroundColor}
-          roughness={0.5}
-          metalness={0.2}
-        />
+        <BoardMaterial color={backgroundColor} />
       </mesh>
 
       {piecesOrPieceAnimationsOnSquare.map(
@@ -108,7 +98,7 @@ export const Square3D: SFC<Props> = ({
           ) : null // TODO: implement animation tokens
       )}
 
-      <CenterHighlights3D
+      <Highlights3D
         gameMaster={gameMaster}
         square={square}
         coordinates={{
@@ -121,32 +111,4 @@ export const Square3D: SFC<Props> = ({
       />
     </>
   );
-};
-
-function calculateBackgroundColor(
-  gameMaster: GameMaster,
-  square: Square,
-  rules?: RuleName[]
-): string {
-  let color = Colors.SQUARE[colorIndex({ ...square.getCoordinates() })].mix(
-    Colors.DARK,
-    shouldMixSquare(square, rules) ? 0.4 : 0
-  );
-
-  getHighlightColorsAndTypes({ gameMaster, square })
-    .filter(({ type }) => type === "tile")
-    .forEach(({ color: highlightColor }) => (color = color.mix(highlightColor)));
-
-  return color.toString();
-}
-
-function shouldMixSquare(square: Square, rules?: RuleName[]): boolean {
-  return (
-    !!rules?.includes("thinIce") &&
-    (square.firstTokenWithName(TokenName.ThinIce)?.data?.thinIceData ?? 2) <= 1
-  );
-}
-
-const colorIndex = ({ rank, file }: { rank: number; file: number }): number => {
-  return (rank + file) % 2;
 };
