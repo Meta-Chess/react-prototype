@@ -16,6 +16,7 @@ import { TileSchematic } from "ui/Tiles/TileProps";
 import { OuterContainer } from "./OuterContainer";
 import { TileBase } from "./TileBase";
 import { PositioningContainer } from "./PositioningContainer";
+import Color from "color";
 
 interface Props {
   square: Square | undefined;
@@ -135,11 +136,13 @@ function calculateBackgroundColor(
   square: Square,
   shape: SquareShape,
   rules?: RuleName[]
-): string {
-  return Colors.SQUARE[colorIndex({ ...square.getCoordinates(), shape })]
-    .mix(Colors.DARK, shouldMixSquare(square, rules) ? 0.4 : 0)
-    .string();
+): Color {
+  return Colors.SQUARE[colorIndex({ ...square.getCoordinates(), shape })].mix(
+    Colors.DARK,
+    shouldMixSquare(square, rules) ? 0.4 : 0
+  );
 }
+
 function shouldMixSquare(square: Square, rules?: RuleName[]): boolean {
   return (
     !!rules?.includes("thinIce") &&

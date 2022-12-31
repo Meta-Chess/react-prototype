@@ -8,7 +8,7 @@ export const getHighlightColorsAndTypes = ({
 }: {
   gameMaster: GameMaster;
   square: Square;
-}): { color: string; type: "center" | "tile" }[] => {
+}): { color: Color; type: "center" | "tile" }[] => {
   return gameMaster.squaresInfo
     .get(square.location) // TODO: sort highlights?
     .map((info) =>
@@ -17,10 +17,10 @@ export const getHighlightColorsAndTypes = ({
         SquareInfo.PossibleMoveAggressiveEndPoint,
         SquareInfo.PossibleOtherPlayerMoveEndPoint,
       ].includes(info) || square.hasPiece()
-        ? { type: "tile", color: HIGHLIGHT_COLORS[info].toString() }
+        ? { type: "tile", color: HIGHLIGHT_COLORS[info].fade(0.3) }
         : {
             type: "center",
-            color: HIGHLIGHT_COLORS[info].fade(0.3).toString(),
+            color: HIGHLIGHT_COLORS[info],
           }
     );
 };

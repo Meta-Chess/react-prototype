@@ -3,9 +3,10 @@ import styled from "styled-components/native";
 import { View } from "react-native";
 import { TileSchematic } from "ui/Tiles/TileProps";
 import { tileSchematicPositionViewProps } from "utilities";
+import Color from "color";
 
 interface Props {
-  color: string;
+  color: Color;
   tileSchematic: TileSchematic;
 }
 
@@ -17,8 +18,8 @@ const ArcTileCenterHighlight: FC<Props> = ({ color, tileSchematic }) => {
   );
 };
 
-const DefaultHighlight = styled(View)<{ color: string }>`
-  background-color: ${({ color }): string => color};
+const DefaultHighlight = styled(View)<{ color: Color }>`
+  background-color: ${({ color }): string => color.toString()};
   position: absolute;
   top: 30%;
   right: 30%;

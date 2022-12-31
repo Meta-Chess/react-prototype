@@ -2,7 +2,6 @@ import React, { FC } from "react";
 import { GameMaster, Square } from "game";
 import { getHighlightColorsAndTypes } from "./getHighlightColorsAndTypes";
 import { CircleGeometry, Euler, Quaternion, Vector3 } from "three";
-import Color from "color";
 import { Projection } from "primitives";
 
 interface Props {
@@ -46,7 +45,7 @@ export const CenterHighlights3D: FC<Props> = ({
           >
             <meshStandardMaterial
               attach="material"
-              color={Color(color).opaquer(1).toString()}
+              color={color.opaquer(1).toString()}
               roughness={0}
               transparent={true}
               opacity={0.7}
