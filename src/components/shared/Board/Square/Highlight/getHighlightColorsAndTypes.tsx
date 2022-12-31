@@ -12,11 +12,7 @@ export const getHighlightColorsAndTypes = ({
   return gameMaster.squaresInfo
     .get(square.location) // TODO: sort highlights?
     .map((info) =>
-      ![
-        SquareInfo.PossibleMovePassiveEndPoint,
-        SquareInfo.PossibleMoveAggressiveEndPoint,
-        SquareInfo.PossibleOtherPlayerMoveEndPoint,
-      ].includes(info) || square.hasPiece()
+      highlightShouldCoverWholeTile({ info, square })
         ? { type: "tile", color: HIGHLIGHT_COLORS[info].fade(0.3) }
         : {
             type: "center",
@@ -24,6 +20,22 @@ export const getHighlightColorsAndTypes = ({
           }
     );
 };
+
+function highlightShouldCoverWholeTile({
+  info,
+  square,
+}: {
+  info: SquareInfo;
+  square: Square;
+}): boolean {
+  return (
+    ![
+      SquareInfo.PossibleMovePassiveEndPoint,
+      SquareInfo.PossibleMoveAggressiveEndPoint,
+      SquareInfo.PossibleOtherPlayerMoveEndPoint,
+    ].includes(info) || square.hasPiece()
+  );
+}
 
 const HIGHLIGHT_COLORS: { [key in SquareInfo]: Color } = {
   [SquareInfo.PossibleMovePassiveEndPoint]: Colors.HIGHLIGHT.SUCCESS,
