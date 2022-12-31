@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "r
 import { GameMaster } from "game";
 import { GameContext } from "components/shared";
 import { uniq } from "lodash";
+import { Platform } from "react-native";
 
 export type BoardType3D = "spherical" | "toroidal" | "mobius" | "cylindrical";
 export type BoardType = BoardType3D | "flat" | "circular";
@@ -38,8 +39,10 @@ export const useBoardType = (
   );
   const defaultBoardType = useMemo(
     (): BoardType =>
-      gameMaster?.getRuleNames().includes("cylindrical") &&
-      gameMaster?.getRuleNames().includes("verticallyCylindrical")
+      Platform.OS !== "web"
+        ? "flat"
+        : gameMaster?.getRuleNames().includes("cylindrical") &&
+          gameMaster?.getRuleNames().includes("verticallyCylindrical")
         ? "toroidal"
         : gameMaster?.getRuleNames().includes("mobius")
         ? "mobius"
