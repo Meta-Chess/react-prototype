@@ -9,20 +9,19 @@ import {
   RankAndFileBounds,
   Region,
   Regions,
-  WithOptional,
-  Token, 
-  TokenName, 
   SquareShape,
+  Token,
+  TokenName,
+  WithOptional,
 } from "game/types";
 import { LocationPrefix, SpecialLocation } from "./location";
-import { isPresent } from "utilities";
+import { isPresent, keys } from "utilities";
 import { CompactRules } from "game/CompactRules/CompactRules";
 import { IdGenerator } from "utilities/IdGenerator";
 import { Move, PieceDelta } from "game/Move";
 import { clone } from "lodash";
 import { EventCenter } from "game/EventCenter";
 import { invisibilityToken } from "game/CompactRules/constants";
-import { keys } from "utilities";
 
 interface LocationMap {
   [location: string]: Square;
