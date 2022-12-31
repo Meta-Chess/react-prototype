@@ -20,7 +20,9 @@ export const getPossibleBoards = (gameMaster?: GameMaster): BoardType[] => {
   return uniq(possibleBoards);
 };
 
-export const useBoardType = (boardTypeOverride?: BoardType): BoardType => {
+export const useBoardType = (
+  boardTypeOverride?: BoardType
+): { boardType: BoardType; possibleBoards: BoardType[] } => {
   const { gameMaster } = useContext(GameContext);
 
   const possibleBoards = useMemo(
@@ -71,7 +73,10 @@ export const useBoardType = (boardTypeOverride?: BoardType): BoardType => {
     setBoardType(pressRef.current);
   }, [pressRef.current]);
 
-  return boardTypeOverride ?? boardType;
+  return {
+    boardType: boardTypeOverride ?? boardType,
+    possibleBoards,
+  };
 };
 
 function nextBoard(currentBoard: BoardType, possibleBoards: BoardType[]): BoardType {
