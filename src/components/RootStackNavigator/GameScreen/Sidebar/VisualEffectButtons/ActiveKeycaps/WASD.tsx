@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Row } from "ui";
 import { KeyCap } from "./KeyCap";
 import { SFC } from "primitives";
-import { GameContext } from "components/shared";
+import { BoardViewContext, GameContext } from "components/shared";
 import { getPossibleBoards } from "components/shared/Board/useBoardVisualisation";
 import { Tooltip } from "ui/Tooltip";
 import { isPresent } from "utilities";
@@ -16,6 +16,7 @@ export const WASD: SFC = ({ style }) => {
     ?.getRuleNames()
     .includes("verticallyCylindrical");
   const multipleBoardsAllowed = getPossibleBoards(gameMaster).length > 1;
+  const { changeBoardVisualisation } = useContext(BoardViewContext);
 
   if (!horizontalRotationAllowed && !verticalRotationAllowed && !multipleBoardsAllowed)
     return null;
@@ -38,7 +39,11 @@ export const WASD: SFC = ({ style }) => {
       <Row>
         <KeyCap />
         <KeyCap letter={"W"} active={verticalRotationAllowed} />
-        <KeyCap letter={"E"} active={multipleBoardsAllowed} />
+        <KeyCap
+          letter={"E"}
+          active={multipleBoardsAllowed}
+          onPress={multipleBoardsAllowed ? changeBoardVisualisation : undefined}
+        />
       </Row>
       <Row>
         <KeyCap letter={"A"} active={horizontalRotationAllowed} />
