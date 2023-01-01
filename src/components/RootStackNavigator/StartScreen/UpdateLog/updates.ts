@@ -5,6 +5,17 @@ export const updates: UpdateGroup[] = [
   // note js month counting starts from 0 = january
   {
     version: { major: 0, minor: 1, patch: 1 },
+    date: new Date(2022, 11, 31),
+    updates: [
+      {
+        label: "Feature",
+        description:
+          "3D board visualisations for spherical, toroidal, möbius, klein bottle, and cylindrical boards",
+      },
+    ],
+  },
+  {
+    version: { major: 0, minor: 1, patch: 1 },
     date: new Date(2022, 3, 1),
     updates: [
       {
