@@ -44,7 +44,7 @@ export const getPossibleBoards = (gameMaster?: GameMaster): BoardVisualisation[]
 export interface BoardVisualisationFields {
   boardVisualisation: BoardVisualisation;
   possibleBoardVisualisations: BoardVisualisation[];
-  changeBoardVisualisation: () => void;
+  changeBoardVisualisation?: () => void;
 }
 
 export const useBoardVisualisation = (): BoardVisualisationFields => {

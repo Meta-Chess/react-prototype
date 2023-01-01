@@ -12,7 +12,6 @@ type BoardView = BoardVisualisationFields & {
 export const BoardViewContext = createContext<BoardView>({
   boardVisualisation: "flat",
   possibleBoardVisualisations: ["flat"],
-  changeBoardVisualisation: () => {},
   autoRotateCamera: false,
   initialCameraPosition: [0, 0, 40],
   backgroundColor: Colors.BLACK,
@@ -30,7 +29,6 @@ export const StaticBoardViewProvider: FC<Partial<BoardView>> = ({
       value={{
         boardVisualisation,
         possibleBoardVisualisations: [boardVisualisation],
-        changeBoardVisualisation: () => {},
         autoRotateCamera,
         initialCameraPosition,
         backgroundColor,
