@@ -1,15 +1,20 @@
 import React from "react";
-import { Board, calculateBoardMeasurements } from "components/shared/Board";
+import {
+  Board,
+  BoardVisualisation,
+  calculateBoardMeasurements,
+} from "components/shared/Board";
 import { Colors, SFC, useHover } from "primitives";
 import { AbsoluteTouchableOpacity } from "ui";
 import { GameMaster, TokenName } from "game";
 import { View } from "react-native";
 import { SimpleGameProvider } from "./GameContext";
+import { StaticBoardViewProvider } from "components/shared/BoardViewContext";
 
 interface Props {
   gameMaster: GameMaster;
   flipBoard?: boolean;
-  circularBoard?: boolean;
+  boardVisualisation?: BoardVisualisation;
   onPress?: () => void;
   maxWidth?: number;
   maxHeight?: number;
@@ -18,7 +23,7 @@ interface Props {
 export const StaticBoard: SFC<Props> = ({
   gameMaster,
   flipBoard,
-  circularBoard,
+  boardVisualisation,
   onPress,
   maxWidth = 200,
   maxHeight = 200,
@@ -37,12 +42,13 @@ export const StaticBoard: SFC<Props> = ({
   return (
     <View style={[style, { overflow: "hidden" }]}>
       <SimpleGameProvider gameMaster={gameMaster}>
-        <Board
-          measurements={boardMeasurements}
-          flipBoard={flipBoard}
-          circularBoard={circularBoard}
-          backboard={false}
-        />
+        <StaticBoardViewProvider boardVisualisation={boardVisualisation}>
+          <Board
+            measurements={boardMeasurements}
+            flipBoard={flipBoard}
+            backboard={false}
+          />
+        </StaticBoardViewProvider>
       </SimpleGameProvider>
       <AbsoluteTouchableOpacity
         onPress={onPress}
