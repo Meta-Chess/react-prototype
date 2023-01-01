@@ -17,7 +17,7 @@ import { TileSchematic } from "ui/Tiles/TileProps";
 import { getDisplayPiecesAndTokens } from "./getDisplayPiecesAndTokens";
 import { ThreeEvent } from "@react-three/fiber";
 import { Highlights3D } from "./Highlight";
-import { BoardType3D } from "../useBoardType";
+import { BoardVisualisation3D } from "../useBoardVisualisation";
 import { useGetSquareBackgroundColor } from "./useGetSquareBackgroundColor";
 import { BoardMaterial } from "components/shared/Board/Square/BoardMaterial";
 
@@ -28,10 +28,10 @@ interface Props {
   positionFile: number;
   numberOfRanks: number;
   numberOfFiles: number;
-  type: BoardType3D;
+  type: BoardVisualisation3D;
 }
 
-const INVERSE_PROJECTIONS: { [k in BoardType3D]: InverseProjection } = {
+const INVERSE_PROJECTIONS: { [k in BoardVisualisation3D]: InverseProjection } = {
   spherical: sphereInverseProjection,
   toroidal: torusInverseProjection,
   mobius: mobiusInverseProjection,

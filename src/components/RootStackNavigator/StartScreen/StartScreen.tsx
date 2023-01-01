@@ -1,9 +1,14 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { Colors, DISCORD_URL, DiscordIcon, MChessLogo, TrackingPixel } from "primitives";
-import { defaultGameOptions, GameOptions } from "game";
+import { calculateGameOptions, GameOptions } from "game";
 import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
-import { GameProvider, HelpMenu, useAsyncStorage } from "components/shared";
+import {
+  GameProvider,
+  HelpMenu,
+  StaticBoardViewProvider,
+  useAsyncStorage,
+} from "components/shared";
 import { Lobby } from "./Lobby";
 import { PlayWithFriends } from "./PlayWithFriends";
 import { Linking, Platform, ScrollView, useWindowDimensions } from "react-native";
@@ -22,6 +27,7 @@ const StartScreen: FC = () => {
     async function setStateAsynchronously(): Promise<void> {
       setShowUpdateLog(await shouldShowUpdateLog(getLastViewedUpdateOn()));
     }
+
     setStateAsynchronously();
   }, []);
 
@@ -30,7 +36,7 @@ const StartScreen: FC = () => {
     setLastViewedUpdateOn(new Date(Date.now()));
   }, []);
 
-  const [gameOptions] = useState<GameOptions>(defaultGameOptions);
+  const [gameOptions] = useState<GameOptions>(calculateGameOptions({}, ["mobius"]));
 
   return (
     <>
@@ -50,7 +56,14 @@ const StartScreen: FC = () => {
               windowHeight={height}
               primaryComponent={
                 <>
-                  <ShadowBoard />
+                  <StaticBoardViewProvider
+                    boardVisualisation={"mobius"}
+                    autoRotateCamera={true}
+                    initialCameraPosition={[0, 10, 35]}
+                    backgroundColor={Colors.DARKEST}
+                  >
+                    <ShadowBoard />
+                  </StaticBoardViewProvider>
                   <MChessLogo />
                 </>
               }

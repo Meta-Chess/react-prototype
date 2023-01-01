@@ -3,6 +3,7 @@ import { Platform, useWindowDimensions, View } from "react-native";
 import {
   Board,
   BoardMeasurements,
+  BoardViewContext,
   calculateBoardMeasurements,
   GameContext,
   HelpMenu,
@@ -18,6 +19,7 @@ import { MoveDisambiguationModal } from "./MoveDisambiguationModal";
 import { getPromotionDisambiguationOpportunities } from "./getPromotionDisambiguationOpportunities";
 import { PromotionDisambiguationModal } from "./PromotionDisambiguationModal";
 import { TrackingPixel } from "primitives";
+import { ChangeViewsReminderModal } from "components/shared/Board/ChangeViewsReminderModal";
 
 export const GameScreenContent: FC = () => {
   const { height, width } = useWindowDimensions();
@@ -37,6 +39,8 @@ export const GameScreenContent: FC = () => {
         : [],
     [moveDisambiguationRequired, allowableMoves, allowableMoves?.length]
   );
+
+  const { possibleBoardVisualisations } = useContext(BoardViewContext);
 
   const { flipBoard } = useFlipBoard();
   const shape = gameMaster?.game.board.firstTokenWithName(TokenName.Shape)?.data?.shape;
@@ -80,9 +84,9 @@ export const GameScreenContent: FC = () => {
         <View>
           <Board
             measurements={boardMeasurements}
-            backboard={backboard}
-            flipBoard={flipBoard}
+            {...{ backboard, flipBoard, possibleBoardVisualisations }}
           />
+          {possibleBoardVisualisations.length > 1 && <ChangeViewsReminderModal />}
           {gameMaster?.gameOver && !winModalHidden ? (
             <AbsoluteView>
               <WinModal onClose={hideWinModal} />

@@ -3,7 +3,7 @@ import { Row } from "ui";
 import { KeyCap } from "./KeyCap";
 import { SFC } from "primitives";
 import { GameContext } from "components/shared";
-import { getPossibleBoards } from "components/shared/Board/useBoardType";
+import { getPossibleBoards } from "components/shared/Board/useBoardVisualisation";
 import { Tooltip } from "ui/Tooltip";
 import { isPresent } from "utilities";
 
