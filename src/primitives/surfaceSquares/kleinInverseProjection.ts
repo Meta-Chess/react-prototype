@@ -1,19 +1,19 @@
 import { Vector3 } from "three";
-import { Projection } from "./Projection";
+import { InverseProjection } from "./InverseProjection";
 
 const CENTRAL_RADIUS = 0.8;
 const TUBE_RADIUS = 0.4;
 
 const [sin, cos] = [Math.sin, Math.cos];
 
-type ProjectionParameters = Parameters<Projection>[0];
+type InverseProjectionParameters = Parameters<InverseProjection>[0];
 
-export const kleinInverseProjection: Projection = ({
+export const kleinInverseProjection: InverseProjection = ({
   file,
   rank,
   heightAdjustment = 0,
   ...rest
-}: ProjectionParameters) => {
+}: InverseProjectionParameters) => {
   rank = rank + 0.5;
   const position = kleinPosition({ rank, file, ...rest });
   const fileDirection = kleinPosition({ rank, file: file - 0.01, ...rest }).sub(
@@ -35,7 +35,7 @@ function kleinPosition({
   file,
   numberOfRanks,
   numberOfFiles,
-}: Omit<ProjectionParameters, "heightAdjustment">): Vector3 {
+}: Omit<InverseProjectionParameters, "heightAdjustment">): Vector3 {
   const centralAngle = (2 * (rank * 2 * Math.PI)) / numberOfRanks;
   const tubeAngle = (file * 2 * Math.PI) / numberOfFiles;
   const twistAngle = centralAngle / 2;
