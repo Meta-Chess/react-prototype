@@ -3,9 +3,11 @@ import { mobiusEdgeNormal, mobiusInverseProjection } from "./mobiusInverseProjec
 
 export function getMobiusStripEdgeGeometry({
   numberOfRanks,
+  numberOfFiles,
   rankGranularity,
 }: {
   numberOfRanks: number;
+  numberOfFiles: number;
   rankGranularity: number;
 }): BufferGeometry {
   const pointCount = 2 * numberOfRanks * rankGranularity;
@@ -17,7 +19,7 @@ export function getMobiusStripEdgeGeometry({
     vector = mobiusInverseProjection({
       file: 1,
       rank: i / rankGranularity,
-      numberOfFiles: 1,
+      numberOfFiles,
       numberOfRanks,
     }).position;
     vertices.push(vector.x, vector.y, vector.z);
@@ -25,9 +27,9 @@ export function getMobiusStripEdgeGeometry({
     normals.push(vector.x, vector.y, vector.z);
 
     vector = mobiusInverseProjection({
-      file: 2,
+      file: numberOfFiles + 1,
       rank: i / rankGranularity + numberOfRanks / 2,
-      numberOfFiles: 1,
+      numberOfFiles,
       numberOfRanks,
     }).position;
     vertices.push(vector.x, vector.y, vector.z);
