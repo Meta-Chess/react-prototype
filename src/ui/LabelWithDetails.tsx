@@ -51,6 +51,7 @@ export const LabelWithDetails: SFC<Props> = ({
 const LabelContainer = styled(TouchableOpacity)<{ color: Color }>`
   border-radius: 4px;
   padding-horizontal: 8px;
+  flex-direction: row;
   align-items: center;
   align-self: center;
   z-index: 9;
