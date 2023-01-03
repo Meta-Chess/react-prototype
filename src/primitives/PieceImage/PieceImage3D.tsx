@@ -42,7 +42,6 @@ const PieceImage3D: FC<Props> = ({
   inverseProjection,
   onClick,
   opacity,
-  hidden = false,
 }) => {
   const { position, normal } = inverseProjection({
     ...coordinates,
@@ -75,15 +74,15 @@ const PieceImage3D: FC<Props> = ({
       )}
       onClick={onClick}
       receiveShadow
-      castShadow={!hidden}
+      castShadow
     >
       <meshStandardMaterial
         attach="material"
         color={color}
         roughness={0.2}
         metalness={0.5}
-        transparent={opacity !== undefined || hidden}
-        opacity={(opacity ?? 1) * (hidden ? 0.4 : 1)}
+        transparent={opacity !== undefined}
+        opacity={opacity ?? 1}
       />
     </mesh>
   );

@@ -19,7 +19,7 @@ export const mobiusInverseProjection: InverseProjection = ({
 
   // u is the offset from the central circle of the mobius strip that gives the mobius strip its width
   const stripWidth = numberOfFiles * SQUARE_WIDTH;
-  const u = (stripWidth * (file - 1)) / numberOfFiles - stripWidth / 2;
+  const u = stripWidth / 2 - (stripWidth * (file - 1)) / numberOfFiles;
 
   const R = Math.max(GOAL_RADIUS, stripWidth / 1.5);
 

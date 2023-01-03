@@ -11,7 +11,7 @@ export const cylinderInverseProjection: InverseProjection = ({
   numberOfRanks,
   heightAdjustment = 0,
 }) => {
-  const angle = (file * 2 * Math.PI) / numberOfFiles;
+  const angle = -(file * 2 * Math.PI) / numberOfFiles;
 
   return {
     position: new Vector3(

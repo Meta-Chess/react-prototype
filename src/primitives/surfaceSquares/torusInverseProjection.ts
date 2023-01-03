@@ -12,7 +12,7 @@ export const torusInverseProjection: InverseProjection = ({
   heightAdjustment = 0,
 }) => {
   const centralAngle = (rank * 2 * Math.PI) / numberOfRanks;
-  const tubeAngle = (file * 2 * Math.PI) / numberOfFiles;
+  const tubeAngle = -(file * 2 * Math.PI) / numberOfFiles;
 
   return {
     position: new Vector3(

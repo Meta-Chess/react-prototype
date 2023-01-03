@@ -43,8 +43,8 @@ export function getMobiusStripEdgeGeometry({
   // Each set of three vertex indices determines a triangular face and its orientation
   const indices = [];
   for (let i = 0; i < pointCount; i += 2) {
-    indices.push(i, (i + 1) % pointCount, (i + 2) % pointCount);
-    indices.push((i + 2) % pointCount, (i + 1) % pointCount, (i + 3) % pointCount);
+    indices.push(i, (i + 2) % pointCount, (i + 1) % pointCount);
+    indices.push((i + 2) % pointCount, (i + 3) % pointCount, (i + 1) % pointCount);
   }
 
   const geometry = new BufferGeometry();

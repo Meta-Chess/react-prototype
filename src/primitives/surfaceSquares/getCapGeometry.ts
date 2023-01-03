@@ -44,8 +44,8 @@ export function getCapGeometry({
   // Each set of three vertex indices determines a triangular face and its orientation
   const indices = [];
   for (let i = 0; i < pointCount; i++) {
-    indices.push(0, i + 2, ((i + 1) % pointCount) + 2);
-    indices.push(1, ((i + 1) % pointCount) + 2 + pointCount, i + 2 + pointCount);
+    indices.push(0, ((i + 1) % pointCount) + 2, i + 2);
+    indices.push(1, i + 2 + pointCount, ((i + 1) % pointCount) + 2 + pointCount);
   }
 
   const geometry = new BufferGeometry();
