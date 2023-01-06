@@ -22,7 +22,7 @@ export const kleinInverseProjection: InverseProjection = ({
   const rankDirection = kleinPosition({ rank: rank - 0.01, file, ...rest }).sub(
     kleinPosition({ rank: rank + 0.01, file, ...rest })
   );
-  const normal = rankDirection.cross(fileDirection).setLength(1);
+  const normal = fileDirection.cross(rankDirection).setLength(1);
 
   return {
     position: position.add(normal.clone().setLength(0.03 + heightAdjustment)),
@@ -37,14 +37,14 @@ function kleinPosition({
   numberOfFiles,
 }: Omit<InverseProjectionParameters, "heightAdjustment">): Vector3 {
   const centralAngle = (2 * (rank * 2 * Math.PI)) / numberOfRanks;
-  const tubeAngle = (file * 2 * Math.PI) / numberOfFiles;
+  const tubeAngle = -(file * 2 * Math.PI) / numberOfFiles;
   const twistAngle = centralAngle / 2;
   const effectiveTubeRadius = TUBE_RADIUS;
   return new Vector3(
     CENTRAL_RADIUS * cos(centralAngle) +
-      effectiveTubeRadius * cos(tubeAngle) * cos(centralAngle + twistAngle),
+      effectiveTubeRadius * cos(tubeAngle) * cos(centralAngle - twistAngle),
     CENTRAL_RADIUS * sin(centralAngle) +
-      effectiveTubeRadius * cos(tubeAngle) * sin(centralAngle + twistAngle),
+      effectiveTubeRadius * cos(tubeAngle) * sin(centralAngle - twistAngle),
     TUBE_RADIUS * sin(tubeAngle)
   );
 }

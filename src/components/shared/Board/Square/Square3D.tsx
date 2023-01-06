@@ -64,6 +64,17 @@ export const Square3D: SFC<Props> = ({
 
   const inverseProjection = INVERSE_PROJECTIONS[type];
 
+  // TODO: Think about alternatives - this is a bit of a hack
+  // Hides pieces that are sitting on the inside on the klein bottle
+  const shouldHidePiece =
+    type === "klein" &&
+    ((positionFile <= numberOfFiles / 2 &&
+      positionRank >= numberOfRanks / 4 - 1 &&
+      positionRank <= (3 * numberOfRanks) / 4 - 1) ||
+      (positionFile > numberOfFiles / 2 &&
+        positionRank > numberOfRanks / 4 - 1 &&
+        positionRank < (3 * numberOfRanks) / 4 - 1));
+
   return (
     <>
       <mesh
@@ -83,23 +94,24 @@ export const Square3D: SFC<Props> = ({
         <BoardMaterial color={backgroundColor} />
       </mesh>
 
-      {piecesOrPieceAnimationsOnSquare.map(
-        (pieceOrToken, index) =>
-          typeof pieceOrToken === "string" ? (
-            <Piece3D
-              piece={gameMaster.game.board.findPieceById(pieceOrToken)}
-              key={index}
-              coordinates={{
-                rank: positionRank,
-                file: positionFile,
-                numberOfRanks,
-                numberOfFiles,
-              }}
-              onClick={onClick}
-              inverseProjection={inverseProjection}
-            />
-          ) : null // TODO: implement animation tokens
-      )}
+      {!shouldHidePiece &&
+        piecesOrPieceAnimationsOnSquare.map(
+          (pieceOrToken, index) =>
+            typeof pieceOrToken === "string" ? (
+              <Piece3D
+                piece={gameMaster.game.board.findPieceById(pieceOrToken)}
+                key={index}
+                coordinates={{
+                  rank: positionRank,
+                  file: positionFile,
+                  numberOfRanks,
+                  numberOfFiles,
+                }}
+                onClick={onClick}
+                inverseProjection={inverseProjection}
+              />
+            ) : null // TODO: implement animation tokens
+        )}
 
       <Highlights3D
         gameMaster={gameMaster}

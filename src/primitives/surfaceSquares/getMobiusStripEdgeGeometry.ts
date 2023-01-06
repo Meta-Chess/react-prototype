@@ -3,9 +3,11 @@ import { mobiusEdgeNormal, mobiusInverseProjection } from "./mobiusInverseProjec
 
 export function getMobiusStripEdgeGeometry({
   numberOfRanks,
+  numberOfFiles,
   rankGranularity,
 }: {
   numberOfRanks: number;
+  numberOfFiles: number;
   rankGranularity: number;
 }): BufferGeometry {
   const pointCount = 2 * numberOfRanks * rankGranularity;
@@ -17,7 +19,7 @@ export function getMobiusStripEdgeGeometry({
     vector = mobiusInverseProjection({
       file: 1,
       rank: i / rankGranularity,
-      numberOfFiles: 1,
+      numberOfFiles,
       numberOfRanks,
     }).position;
     vertices.push(vector.x, vector.y, vector.z);
@@ -25,9 +27,9 @@ export function getMobiusStripEdgeGeometry({
     normals.push(vector.x, vector.y, vector.z);
 
     vector = mobiusInverseProjection({
-      file: 2,
+      file: numberOfFiles + 1,
       rank: i / rankGranularity + numberOfRanks / 2,
-      numberOfFiles: 1,
+      numberOfFiles,
       numberOfRanks,
     }).position;
     vertices.push(vector.x, vector.y, vector.z);
@@ -41,8 +43,8 @@ export function getMobiusStripEdgeGeometry({
   // Each set of three vertex indices determines a triangular face and its orientation
   const indices = [];
   for (let i = 0; i < pointCount; i += 2) {
-    indices.push(i, (i + 1) % pointCount, (i + 2) % pointCount);
-    indices.push((i + 2) % pointCount, (i + 1) % pointCount, (i + 3) % pointCount);
+    indices.push(i, (i + 2) % pointCount, (i + 1) % pointCount);
+    indices.push((i + 2) % pointCount, (i + 3) % pointCount, (i + 1) % pointCount);
   }
 
   const geometry = new BufferGeometry();

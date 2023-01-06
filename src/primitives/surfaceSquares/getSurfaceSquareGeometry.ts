@@ -43,8 +43,8 @@ export function getSurfaceSquareGeometry({
         i + (j + 1) * (fileGranularity + 1),
         i + 1 + (j + 1) * (fileGranularity + 1),
       ];
-      indices.push(a, c, b); // top left triangle
-      indices.push(d, b, c); // bottom right triangle
+      indices.push(a, b, c); // top left triangle
+      indices.push(d, c, b); // bottom right triangle
     }
   }
 

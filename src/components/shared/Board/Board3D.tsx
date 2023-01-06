@@ -72,6 +72,7 @@ export const Board3D: SFC<BoardProps & { type: BoardVisualisation3D }> = ({
       : type === "mobius"
       ? getMobiusStripEdgeGeometry({
           numberOfRanks,
+          numberOfFiles,
           rankGranularity: TILE_GRANULARITY,
         })
       : null;

@@ -11,7 +11,7 @@ export const sphereInverseProjection: InverseProjection = ({
   const position = new Vector3().setFromSphericalCoords(
     1 + heightAdjustment,
     ((rank - 0.5) * Math.PI) / (numberOfRanks + 1), // the +1 is to leave room at the poles
-    (file * 2 * Math.PI) / numberOfFiles
+    -(file * 2 * Math.PI) / numberOfFiles
   );
 
   return {
