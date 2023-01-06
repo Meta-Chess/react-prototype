@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { ScrollView, TouchableOpacity, useWindowDimensions, View } from "react-native";
+import { ScrollView, useWindowDimensions, View } from "react-native";
 import { Button, Divider, useModals } from "ui";
 import { useGoBackOrToStartScreen } from "navigation";
 import { Colors, SFC } from "primitives";
@@ -78,20 +78,13 @@ const Sidebar: SFC = ({ style }) => {
         scrollEventThrottle={100}
         showsVerticalScrollIndicator={false}
       >
-        <TouchableOpacity
-          style={{ flex: 1, paddingBottom: 24 }}
-          onPress={(): void => modals.hideAll()}
-          activeOpacity={1}
-          accessible={false}
-        >
-          <View>
-            <RoomIdCard roomId={roomId} />
-            <VariantInfoCard />
-            <PlayersCard />
-            <VariantCards />
-            <SelectedPieceInfoCard pieces={pieces} key={key + 0.5} />
-          </View>
-        </TouchableOpacity>
+        <View>
+          <RoomIdCard roomId={roomId} />
+          <VariantInfoCard />
+          <PlayersCard />
+          <VariantCards />
+          <SelectedPieceInfoCard pieces={pieces} key={key + 0.5} />
+        </View>
       </ScrollView>
       <Divider>
         {!gameMaster?.getRuleNames().includes("longBoard") && (

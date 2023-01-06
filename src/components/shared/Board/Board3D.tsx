@@ -15,12 +15,13 @@ import { AbsoluteView } from "ui";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { Square3D } from "./Square";
-import { BoardType3D } from "./useBoardType";
+import { BoardVisualisation3D } from "./useBoardVisualisation";
 import { use3dCylinderRotation } from "./use3dCylinderRotation";
 import { Lighting } from "./Lighting";
 import { SquareBackboard } from "./SquareBackboard";
+import { BoardViewContext } from "components/shared";
 
-export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
+export const Board3D: SFC<BoardProps & { type: BoardVisualisation3D }> = ({
   backboard = true,
   measurements,
   type,
@@ -29,6 +30,9 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
   const { gameMaster } = useContext(GameContext);
   useEffect(() => gameMaster?.game.board.setVisualShapeToken(SquareShape.Square));
   const game = gameMaster?.game;
+
+  const { autoRotateCamera, initialCameraPosition, backgroundColor } =
+    useContext(BoardViewContext);
 
   const boardSize = Math.min(measurements.boardAreaWidth, measurements.boardAreaHeight);
   measurements.width = boardSize;
@@ -78,8 +82,8 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
         style={{ overflow: "hidden", margin: measurements.boardPaddingHorizontal }}
       >
         <Canvas
-          style={{ background: Colors.BLACK.toString() }}
-          camera={{ fov: 4, position: [0, 0, -40] }}
+          style={{ background: backgroundColor.toString() }}
+          camera={{ fov: 4, position: initialCameraPosition }}
           shadows
         >
           <Lighting />
@@ -116,7 +120,7 @@ export const Board3D: SFC<BoardProps & { type: BoardType3D }> = ({
               />
             </mesh>
           )}
-          <OrbitControls />
+          <OrbitControls autoRotate={autoRotateCamera} />
         </Canvas>
       </AbsoluteView>
     </SquareBackboard>
