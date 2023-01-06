@@ -78,12 +78,6 @@ const Sidebar: SFC = ({ style }) => {
         scrollEventThrottle={100}
         showsVerticalScrollIndicator={false}
       >
-        {/*<TouchableOpacity*/}
-        {/*  style={{ flex: 1, paddingBottom: 24 }}*/}
-        {/*  onPress={(): void => modals.hideAll()}*/}
-        {/*  activeOpacity={1}*/}
-        {/*  accessible={false}*/}
-        {/*>*/}
         <View>
           <RoomIdCard roomId={roomId} />
           <VariantInfoCard />
@@ -91,7 +85,6 @@ const Sidebar: SFC = ({ style }) => {
           <VariantCards />
           <SelectedPieceInfoCard pieces={pieces} key={key + 0.5} />
         </View>
-        {/*</TouchableOpacity>*/}
       </ScrollView>
       <Divider>
         {!gameMaster?.getRuleNames().includes("longBoard") && (
