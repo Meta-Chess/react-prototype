@@ -1,23 +1,22 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import {
-  SFC,
-  Colors,
-  HelpIcon,
-  Styles,
   BugIcon,
+  Colors,
   FeedbackIcon,
-  useHover,
+  HelpIcon,
   InfoIcon,
+  SFC,
+  Styles,
   TrackingPixel,
+  useHover,
 } from "primitives";
 import { HorizontalSeparator } from "ui";
 import { debounce } from "lodash";
-import { Screens, useRoute } from "navigation";
+import { Screens, useNavigation, useRoute } from "navigation";
 import { HelpMenuListItem, HelpMenuListItemProps } from "./HelpMenuListItem";
 import { BiNews } from "react-icons/bi";
-import { useNavigation } from "@react-navigation/core";
 
 const getMenuOptions = <T extends Exclude<HelpMenuListItemProps, "context">>(
   navigateToAboutScreen?: () => void,

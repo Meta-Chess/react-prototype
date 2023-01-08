@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { RootStackNavigator } from "components";
+import { LoginProvider, RootStackNavigator } from "components";
 import { KeyboardAvoidingView, Platform, SafeAreaView } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import styled from "styled-components/native";
@@ -15,7 +15,9 @@ export default function App(): ReactElement {
         <KeyboardAvoidingContainer behavior={Platform.OS == "ios" ? "padding" : "height"}>
           <SafeAreaProvider>
             <SafeAreaContainer>
-              <RootStackNavigator />
+              <LoginProvider>
+                <RootStackNavigator />
+              </LoginProvider>
             </SafeAreaContainer>
           </SafeAreaProvider>
         </KeyboardAvoidingContainer>

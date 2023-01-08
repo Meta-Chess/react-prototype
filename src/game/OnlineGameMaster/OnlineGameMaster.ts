@@ -3,7 +3,7 @@ import { Renderer } from "../Renderer";
 import { GameOptions, PlayerAssignment, TimestampMillis } from "game/types";
 import { GameClient } from "./GameClient";
 import { Move } from "game/Move";
-import { PlayerAction, Resignation, Draw } from "../PlayerAction";
+import { Draw, PlayerAction, Resignation } from "../PlayerAction";
 import { Connection } from "game/OnlineGameMaster/Connection";
 import { uniq } from "lodash";
 
@@ -219,5 +219,9 @@ export class OnlineGameMaster extends GameMaster {
 
   disconnect(): void {
     this.gameClient?.close();
+  }
+
+  isOnline(): boolean {
+    return true;
   }
 }

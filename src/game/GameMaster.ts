@@ -606,4 +606,8 @@ export class GameMaster {
   getFormatName(): FormatName {
     return this.gameOptions.format;
   }
+
+  isOnline(): boolean {
+    return false;
+  }
 }

@@ -10,7 +10,7 @@ const PlayersCard: SFC = ({ style }) => {
   const players = gameMaster?.game.players;
   const currentPlayerName = gameMaster?.game.getCurrentPlayerName();
 
-  if (!players || !players.length) return null;
+  if (!players || !players.length || !gameMaster.isOnline()) return null;
 
   return (
     <StyledCard style={style}>

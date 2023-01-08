@@ -4,11 +4,7 @@ import { Screens, useRoute } from "navigation";
 import { GameProvider } from "components/shared";
 import { GameScreenWrappedContent } from "./GameScreenWrappedContent";
 
-interface Props {
-  portrait: boolean;
-}
-
-export const GameScreen: FC<Props> = () => {
+export const GameScreen: FC = () => {
   const { params } = useRoute<Screens.GameScreen>();
   return (
     <GameProvider {...params}>
