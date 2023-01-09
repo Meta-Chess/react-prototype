@@ -5,7 +5,7 @@ import { Screens } from "./Screens";
 const useRoute = <T extends Screens>(): {
   key: string;
   name: T;
-  params: NavigatorParamList[T];
+  params?: NavigatorParamList[T];
 } => {
   return useRouteReact();
 };

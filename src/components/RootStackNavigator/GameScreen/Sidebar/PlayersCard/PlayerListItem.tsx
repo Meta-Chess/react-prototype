@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AbsoluteView, Row } from "ui";
 import { Colors, DrawIcon, PieceImage, SFC, Text } from "primitives";
 import { OnlineGameMaster, PieceName, PlayerName } from "game";
@@ -10,6 +10,7 @@ import { randomChoice, randomInt } from "utilities";
 import { RollingVariantsCounter } from "components/RootStackNavigator/GameScreen/Sidebar/PlayersCard/RollingVariantsCounter";
 import { PlayerPieceAdvantage } from "./PlayerPieceAdvantage";
 import Color from "color";
+import { LoginContext } from "components";
 
 interface Props {
   player: Player;
@@ -17,7 +18,8 @@ interface Props {
 }
 
 export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
-  const [name] = useState(
+  const { user, loading: userIsLoading } = useContext(LoginContext);
+  const [defaultName] = useState(
     randomChoice([
       "Emmanuel",
       "Gus",
@@ -32,15 +34,13 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
       "Rook",
     ])
   );
-  const [rating] = useState(
-    name === "Emmanuel" ? 200 : name === "Gus" ? 2000 : randomInt(100, 3000)
-  );
-
+  const [rating] = useState(randomInt(100, 3000));
   const { gameMaster } = useContext(GameContext);
   if (gameMaster === undefined) return null;
-  const ruleNames = gameMaster.getRuleNames();
   const assignedPlayer = gameMaster.assignedPlayer;
   const isYou = assignedPlayer === player.name;
+  const name = isYou ? user?.username ?? defaultName : defaultName;
+  const ruleNames = gameMaster.getRuleNames();
   const rowActive = player.name === currentPlayerName;
   const offeringDraw = player.wantsToDraw;
 
@@ -57,7 +57,9 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
           />
           <View style={{ marginLeft: 8 }}>
             <Row style={{ alignItems: "baseline" }}>
-              <Text cat={"BodyM"}>{name}</Text>
+              <Text cat={"BodyM"} loading={isYou && userIsLoading}>
+                {name}
+              </Text>
               {isYou && (
                 <Text
                   cat={"BodyS"}

@@ -16,8 +16,10 @@ import { ErrorBoundary } from "components/shared/ErrorBoundary";
 import { IconButton } from "ui/Buttons/IconButton";
 import { UpdateLog } from "./UpdateLog";
 import { recentUpdates } from "./UpdateLog/updates";
+import { useLogin } from "./useLogin";
 
 const StartScreen: FC = () => {
+  useLogin();
   const { height, width } = useWindowDimensions();
   const [setLastViewedUpdateOn, getLastViewedUpdateOn] =
     useAsyncStorage("lastViewedUpdateOn");

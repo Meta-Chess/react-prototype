@@ -1,8 +1,9 @@
 import { LinkingOptions } from "@react-navigation/native";
 import { Screens } from "./Screens";
 import { GameOptions } from "game/types";
+import { NavigatorParamList } from "navigation/NavigatorParamList";
 
-export const linking: LinkingOptions = {
+export const linking: LinkingOptions<NavigatorParamList> = {
   prefixes: [],
   config: {
     screens: {
