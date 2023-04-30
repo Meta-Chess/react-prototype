@@ -8,15 +8,17 @@ import { PlusIcon, MinusIcon } from "primitives/icons";
 interface CollapsableCardProps {
   title: string;
   titleComponent?: ReactNode;
+  startOpen?: boolean;
 }
 
 const CollapsableCard: SFC<CollapsableCardProps> = ({
   title,
   titleComponent,
+  startOpen = true,
   children,
   style,
 }) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(startOpen);
   const plusMinusColor = Colors.DARKISH.toString();
   return (
     <Container style={style}>

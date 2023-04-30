@@ -1,4 +1,5 @@
 export * from "./AdviceCard";
-export * from "./FormatCard";
+export * from "./VariantSelectCard";
 export * from "./FiltersCard";
 export * from "./GameOptionsCard";
+export * from "./FormatCard";

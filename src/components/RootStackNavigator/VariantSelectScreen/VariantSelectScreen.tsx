@@ -12,7 +12,13 @@ import { TraitName } from "game/variants/traitInfo";
 import { Screens, useGoBackOrToStartScreen, useNavigation, useRoute } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
-import { AdviceCard, FiltersCard, FormatCard, GameOptionsCard } from "./CollapsableCards";
+import {
+  AdviceCard,
+  FiltersCard,
+  FormatCard,
+  VariantSelectCard,
+  GameOptionsCard,
+} from "./CollapsableCards";
 import { AbsoluteView, Button, ButtonSecondary, Divider } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors, TrackingPixel } from "primitives";
@@ -81,24 +87,25 @@ const VariantSelectScreen: FC = () => {
             flex: 1,
           }}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 12 }}
+          contentContainerStyle={{ paddingBottom: 12, flexDirection: "column-reverse" }}
         >
-          <FormatCard
-            selectedFormat={gameOptions.format}
-            selectedVariants={selectedVariantsForFormat}
-            setSelectedVariants={setSelectedVariantsForFormat}
-            ruleNamesWithParams={gameOptions.ruleNamesWithParams}
+          <FiltersCard
+            activeFilters={activeFilters}
+            setActiveFilters={setActiveFilters}
           />
+          <GameOptionsCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
           <AdviceCard
             selectedVariants={selectedVariantsForFormat}
             variantConflicts={variantConflicts}
             gameOptions={gameOptions}
           />
-          <GameOptionsCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
-          <FiltersCard
-            activeFilters={activeFilters}
-            setActiveFilters={setActiveFilters}
+          <VariantSelectCard
+            selectedFormat={gameOptions.format}
+            selectedVariants={selectedVariantsForFormat}
+            setSelectedVariants={setSelectedVariantsForFormat}
+            ruleNamesWithParams={gameOptions.ruleNamesWithParams}
           />
+          <FormatCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
         </ScrollView>
         <Divider>
           <ButtonSecondary
