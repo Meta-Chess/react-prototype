@@ -6,7 +6,6 @@ import { CollapsableCard } from "ui/Containers";
 import { SFC, Text, Colors } from "primitives";
 import { FutureVariantName } from "game";
 import { FormatName, formats } from "game/formats";
-import { FormatIcon } from "components/shared";
 import { RuleNamesWithParams } from "game/CompactRules";
 import { VariantLabel } from "components/shared/Labels";
 
@@ -25,8 +24,7 @@ const VariantSelectCard: SFC<Props> = ({
 }) => {
   return (
     <CollapsableCard
-      title={formats[selectedFormat].title}
-      titleComponent={<FormatIcon format={selectedFormat} />}
+      title={selectedFormat === "variantComposition" ? "Selected Variants" : "Deck"}
     >
       <Text
         color={Colors.TEXT.LIGHT_SECONDARY.toString()}
