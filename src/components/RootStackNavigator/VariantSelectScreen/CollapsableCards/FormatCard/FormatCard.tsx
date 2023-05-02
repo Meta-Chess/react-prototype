@@ -1,9 +1,8 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { View } from "react-native";
 import { SFC } from "primitives";
 import { GameOptions } from "game";
 import { SelectInput } from "ui/Forms";
-import { Row } from "ui";
 import { FormatName, formats } from "game/formats";
 import { keys } from "utilities";
 import { FormatIcon } from "components/shared";
@@ -16,22 +15,25 @@ interface Props {
 }
 
 const FormatCard: SFC<Props> = ({ gameOptions, setGameOptions, style }) => {
-  const formatNames = keys(formats);
-
   const setFormat = useCallback(
     (format: FormatName): void => setGameOptions({ ...gameOptions, format }),
     [gameOptions, setGameOptions]
   );
 
-  const formatOptions = formatNames.flatMap((formatName) => [
-    {
-      label: formats[formatName].title,
-      value: formatName,
-    },
-  ]);
-  const defaultFormatOption = formatOptions.find(
-    (option) => option.value === gameOptions.format
-  );
+  const { formatOptions, currentFormatOption } = useMemo(() => {
+    const formatOptions = keys(formats).flatMap((formatName) => [
+      {
+        label: formats[formatName].title,
+        value: formatName,
+      },
+    ]);
+
+    const currentFormatOption = formatOptions.find(
+      (option) => option.value === gameOptions.format
+    );
+
+    return { formatOptions, currentFormatOption };
+  }, [gameOptions]);
 
   return (
     <CollapsableCard
@@ -40,25 +42,22 @@ const FormatCard: SFC<Props> = ({ gameOptions, setGameOptions, style }) => {
       startOpen={false}
       style={[style, { overflow: "visible" }]}
     >
-      <Row style={{ width: "50%" }}>
-        <View style={{ flex: 1, marginLeft: 8, marginVertical: 4 }}>
-          <SelectInput
-            style={{
-              flex: 1,
-              width: "100%",
-            }}
-            options={formatOptions}
-            defaultValue={defaultFormatOption}
-            onChange={(value): void => {
-              setFormat(value);
-            }}
-          />
-        </View>
-      </Row>
+      <View style={{ flex: 1, margin: 4, alignItems: "center" }}>
+        <SelectInput
+          style={{
+            width: "50%",
+          }}
+          options={formatOptions}
+          defaultOption={currentFormatOption}
+          onChange={(value): void => {
+            setFormat(value);
+          }}
+        />
+      </View>
       <Text
         color={Colors.TEXT.LIGHT_SECONDARY.toString()}
         cat="BodyXS"
-        style={{ marginVertical: 6, marginLeft: 8, paddingBottom: 4 }}
+        style={{ margin: 4 }}
       >
         {formats[gameOptions.format].description}
       </Text>

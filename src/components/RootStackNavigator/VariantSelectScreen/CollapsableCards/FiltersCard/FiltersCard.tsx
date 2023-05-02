@@ -40,7 +40,7 @@ const FiltersCard: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => 
         <Text
           color={Colors.TEXT.LIGHT_SECONDARY.toString()}
           cat="BodyXS"
-          style={{ fontStyle: "italic", marginVertical: 6, marginLeft: 8 }}
+          style={{ margin: 4 }}
         >
           {activeFilters[0] + ": " + traitInfo[activeFilters[0]].description}
         </Text>
