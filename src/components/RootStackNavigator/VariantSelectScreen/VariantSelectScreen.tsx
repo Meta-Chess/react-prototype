@@ -24,7 +24,6 @@ import { AbsoluteView, Button, ButtonSecondary, Divider } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors, TrackingPixel } from "primitives";
 import styled from "styled-components/native";
-import { Topbar } from "./Topbar";
 import { FormatName } from "game/formats";
 import { rollableVariants } from "game/formats/rollableVariants";
 import { randomVariants } from "game/formats/randomVariants";
@@ -142,13 +141,6 @@ const VariantSelectScreen: FC = () => {
           conflictLevel={conflictLevel}
           setVariantModalInfo={setVariantModalInfo}
           ruleNamesWithParams={gameOptions.ruleNamesWithParams}
-        />
-        <Topbar
-          displayVariants={displayVariants}
-          selectedVariants={selectedVariantsForFormat}
-          conflictLevel={conflictLevel}
-          gameOptions={gameOptions}
-          setGameOptions={setGameOptions}
         />
         {variantModalInfo.activated && (
           <AbsoluteView style={{ backgroundColor: Colors.BLACK.fade(0.4).toString() }}>
