@@ -41,6 +41,26 @@ export const getPossibleBoards = (gameMaster?: GameMaster): BoardVisualisation[]
   return uniq(possibleBoardVisualisations);
 };
 
+export function getDefaultBoardVisualisation(
+  gameMaster?: GameMaster
+): BoardVisualisation {
+  return Platform.OS !== "web"
+    ? "flat"
+    : gameMaster?.getRuleNames().includes("mobius")
+    ? "mobius"
+    : gameMaster?.getRuleNames().includes("cylindrical") &&
+      gameMaster?.getRuleNames().includes("verticallyCylindrical")
+    ? "toroidal"
+    : gameMaster?.getRuleNames().includes("longBoard") &&
+      gameMaster?.getRuleNames().includes("verticallyCylindrical")
+    ? "circular"
+    : gameMaster?.getRuleNames().includes("polar")
+    ? "spherical"
+    : gameMaster?.getRuleNames().includes("cylindrical")
+    ? "cylindrical"
+    : "flat";
+}
+
 export interface BoardVisualisationFields {
   boardVisualisation: BoardVisualisation;
   possibleBoardVisualisations: BoardVisualisation[];
@@ -56,22 +76,7 @@ export const useBoardVisualisation = (): BoardVisualisationFields => {
   );
 
   const defaultBoardVisualisation = useMemo(
-    (): BoardVisualisation =>
-      Platform.OS !== "web"
-        ? "flat"
-        : gameMaster?.getRuleNames().includes("mobius")
-        ? "mobius"
-        : gameMaster?.getRuleNames().includes("cylindrical") &&
-          gameMaster?.getRuleNames().includes("verticallyCylindrical")
-        ? "toroidal"
-        : gameMaster?.getRuleNames().includes("longBoard") &&
-          gameMaster?.getRuleNames().includes("verticallyCylindrical")
-        ? "circular"
-        : gameMaster?.getRuleNames().includes("polar")
-        ? "spherical"
-        : gameMaster?.getRuleNames().includes("cylindrical")
-        ? "cylindrical"
-        : "flat",
+    (): BoardVisualisation => getDefaultBoardVisualisation(gameMaster),
     [gameMaster?.getRuleNames()]
   );
 

@@ -105,7 +105,11 @@ const VariantSelectScreen: FC = () => {
             setSelectedVariants={setSelectedVariantsForFormat}
             ruleNamesWithParams={gameOptions.ruleNamesWithParams}
           />
-          <BoardCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
+          <BoardCard
+            selectedVariantsForFormat={selectedVariantsForFormat}
+            gameOptions={gameOptions}
+            setGameOptions={setGameOptions}
+          />
           <FormatCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
         </ScrollView>
         <Divider>
