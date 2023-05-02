@@ -6,7 +6,7 @@ import styled from "styled-components/native";
 import { TokenName } from "game";
 import { GameContext } from "components/shared";
 
-const ShadowBoard: FC<{ shadowFade?: number }> = ({ shadowFade = 0.1 }) => {
+const ShadowBoard: FC<{ shadowFade?: number }> = ({ shadowFade = 0.15 }) => {
   const { gameMaster } = useContext(GameContext);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const handleDimensions = useCallback(
