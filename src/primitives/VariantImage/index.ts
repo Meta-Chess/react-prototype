@@ -32,7 +32,6 @@ import completedKnightImage from "./completedKnightImage.png";
 import puppeteersImage from "./puppeteersImage.png";
 import squareBoardImage from "./squareBoardImage.png";
 import circleBoardImage from "./circleBoardImage.png";
-import hexBoardImage from "./hexBoardImage.png";
 
 export { threeCheckImage };
 
@@ -101,5 +100,3 @@ export { puppeteersImage };
 export { squareBoardImage };
 
 export { circleBoardImage };
-
-export { hexBoardImage };
