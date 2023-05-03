@@ -94,7 +94,6 @@ const VariantSelectScreen: FC = () => {
             activeFilters={activeFilters}
             setActiveFilters={setActiveFilters}
           />
-          <GameOptionsCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
           <AdviceCard
             selectedVariants={selectedVariantsForFormat}
             variantConflicts={variantConflicts}
@@ -113,6 +112,9 @@ const VariantSelectScreen: FC = () => {
           />
           <FormatCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
         </ScrollView>
+        <Divider>
+          <GameOptionsCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
+        </Divider>
         <Divider>
           <ButtonSecondary
             label="Back"
