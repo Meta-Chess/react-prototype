@@ -29,6 +29,7 @@ import { rollableVariants } from "game/formats/rollableVariants";
 import { randomVariants } from "game/formats/randomVariants";
 import { getConflictLevel } from "./getConflictLevel";
 import { VariantModal, VariantModalInfo } from "./Modals/VariantModal";
+import { HelpMenu } from "components/shared";
 
 const VariantSelectScreen: FC = () => {
   const playWithFriends = useRoute<Screens.VariantSelectScreen>().params?.playWithFriends;
@@ -156,6 +157,7 @@ const VariantSelectScreen: FC = () => {
             />
           </AbsoluteView>
         )}
+        <HelpMenu context={{ selectedVariants, displayVariants, conflictLevel }} />
       </LeftContainer>
       <TrackingPixel urlEnd={"VariantSelectScreen"} />
     </ScreenContainer>
