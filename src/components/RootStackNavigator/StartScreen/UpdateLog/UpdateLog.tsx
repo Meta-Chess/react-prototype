@@ -14,11 +14,19 @@ interface Props {
 
 export const UpdateLog: SFC<Props> = ({ updates, onDismiss, windowHeight, style }) => {
   return (
-    <AbsoluteView style={{ backgroundColor: Colors.BLACK.fade(0.2).toString() }}>
+    <AbsoluteView
+      style={{
+        backgroundColor: Colors.BLACK.fade(0.2).toString(),
+        padding: 16,
+      }}
+    >
       <Card
         style={[
           style,
-          { maxHeight: windowHeight * 0.8, width: 400, flexDirection: "column" },
+          {
+            maxHeight: windowHeight * 0.8,
+            flexDirection: "column",
+          },
         ]}
         title={"Recent Updates"}
       >
