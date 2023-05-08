@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { ScrollView } from "react-native";
 import { SFC, Colors } from "primitives";
 import { ButtonLight, ButtonSecondaryLight, Card, Divider } from "ui";
 import { GameOptions, RuleName } from "game";
@@ -13,7 +13,6 @@ import {
 import { ParamOptions } from "./ParamOptions";
 import { optionsChangeRuleParam } from "game/variantAndRuleProcessing";
 import { keys } from "utilities";
-
 export interface VariantModalInfo {
   activated: boolean;
   variant?: string;
@@ -51,7 +50,7 @@ export const VariantModal: SFC<Props> = ({
   return (
     <ModalCard style={style} title={variantModalInfo.variant}>
       <Divider style={{ padding: 0 }} />
-      <View style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         {ruleSettings &&
           keys(ruleSettings).flatMap((ruleName) => {
             const ruleSetting: RuleSetting | undefined = ruleSettings[ruleName];
@@ -74,7 +73,7 @@ export const VariantModal: SFC<Props> = ({
               );
             });
           })}
-      </View>
+      </ScrollView>
       <Divider>
         <ButtonSecondaryLight
           label={"Reset"}
