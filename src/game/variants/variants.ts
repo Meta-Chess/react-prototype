@@ -108,7 +108,7 @@ export const variants: { [name in VariantName]: Variant } = {
   mobius: {
     title: "Möbius Chess",
     description:
-      "Chess on a Möbius strip! You can move through the top and bottom edges, and you can see the pieces on the opposite side of the strip!",
+      "Chess on a Möbius strip! Pieces can phase through the board as a non-capturing move.",
     ruleNames: [
       "mobius",
       "passiveMoveThroughBoard",
@@ -408,7 +408,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   },
   toroidal: {
     title: "Toroidal",
-    shortDescription: "Double the cylinder and pawns!",
+    shortDescription: "Double the cylinder!",
     traits: ["Board"],
     imageName: "toroidalImage",
     implemented: true,
