@@ -12,7 +12,7 @@ const BOARD_IS_LONG = keys(futureVariants).filter((variantName) =>
 export const VARIANT_CATAGORIES: VariantCatagories = {
   triggersCheckCaringAboutPassiveMoves: ["chemicallyExcitedKnight"],
   heapsOfPassiveMoves: ["crazyhouse"],
-  highComputationalFreedom: ["kleinBottle", "toroidal", "mobius", "hex"],
+  highComputationalFreedom: ["kleinBottle", "toroidal", "mobius", "hex", "grandChess"],
   boardCantHavePoles: ["hex", "toroidal", "mobius", "kleinBottle"],
   boardHasPoles: ["polar", "spherical"],
   boardCantBeLong: ["hex"],
