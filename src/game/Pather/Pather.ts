@@ -23,13 +23,10 @@ export class Pather {
     private params: PatherParams = {}
   ) {}
 
-  findPaths({ filterPacifistMoves } = { filterPacifistMoves: false }): Move[] {
+  findPaths({ filterPacifistMoves = false }: { filterPacifistMoves?: boolean }): Move[] {
     filterPacifistMoves = this.interrupt.for.inFindPathsModifyInputParams({
       filterPacifistMoves: filterPacifistMoves,
     }).filterPacifistMoves;
-
-    const currentSquare = this.game.board.squareAt(this.piece.location);
-    if (!currentSquare) return [];
 
     const allGaits = getAllGaits(this.interrupt, this.game, this.piece);
 
@@ -37,7 +34,34 @@ export class Pather {
       ? allGaits.filter((g) => !g.mustNotCapture)
       : allGaits;
 
-    const moves: Move[] = flatMap(gaits, (gait) => {
+    const baseMoves = this.findBasePaths(gaits);
+
+    const specialPacifistMoves = filterPacifistMoves
+      ? []
+      : this.interrupt.for.generateSpecialPacifistMoves({
+          game: this.game,
+          piece: this.piece,
+          interrupt: this.interrupt,
+          moves: [],
+        }).moves;
+
+    const allMoves = baseMoves.concat(specialPacifistMoves);
+
+    const processedMoves = this.interrupt.for.processMoves({
+      moves: allMoves,
+      game: this.game,
+      gameClones: this.gameClones,
+      params: this.params,
+    }).moves;
+
+    return processedMoves.filter((m) => this.postMoveGenerationFilter(m));
+  }
+
+  findBasePaths(gaits: Gait[]): Move[] {
+    const currentSquare = this.game.board.squareAt(this.piece.location);
+    if (!currentSquare) return [];
+
+    const baseMoves: Move[] = flatMap(gaits, (gait) => {
       return this.path({ currentSquare, gait }).map((path) => ({ path, gait }));
     }).flatMap(({ path, gait }) =>
       this.handlePieceCollisions(
@@ -52,26 +76,7 @@ export class Pather {
         gait
       )
     );
-
-    const specialPacifistMoves = filterPacifistMoves
-      ? []
-      : this.interrupt.for.generateSpecialPacifistMoves({
-          game: this.game,
-          piece: this.piece,
-          interrupt: this.interrupt,
-          moves: [],
-        }).moves;
-
-    const allMoves = moves.concat(specialPacifistMoves);
-
-    const processedMoves = this.interrupt.for.processMoves({
-      moves: allMoves,
-      game: this.game,
-      gameClones: this.gameClones,
-      params: this.params,
-    }).moves;
-
-    return processedMoves.filter((m) => this.postMoveGenerationFilter(m));
+    return baseMoves;
   }
 
   path({

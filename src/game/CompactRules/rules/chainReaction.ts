@@ -65,7 +65,7 @@ function findNextLayerOfCaptures(input: layerData): layerData {
       noForkSearch: false,
       chainReactionSearch: false,
     });
-    return pather.findPaths().flatMap((m) => m.captures || []);
+    return pather.findPaths({}).flatMap((m) => m.captures || []);
   });
 
   input.captures.forEach((capture) =>

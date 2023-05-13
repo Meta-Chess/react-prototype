@@ -33,7 +33,7 @@ export const chemicallyExcitedKnight: ParameterRule<"chemicallyExcitedKnight"> =
           //but we should have a solution for if we wanted noForkSearch: true here.
           noForkSearch: false,
           chainReactionSearch: false,
-        }).findPaths();
+        }).findPaths({});
         const safeAttack = excitedAt - 1;
         if (moves.filter(doesCapture).length > safeAttack) {
           const knightSquarePieces = board.getPiecesAt(knight.location);

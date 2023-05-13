@@ -74,7 +74,7 @@ export const castling: TrivialParameterRule = () => ({
           checkDepth: 0,
           noForkSearch: false,
           chainReactionSearch: false,
-        }).findPaths();
+        }).findPaths({});
         const passivePath = passivePieceMoveSet.find(
           (move) => move.location === passiveDestination.location
         )?.pieceDeltas[0].path;

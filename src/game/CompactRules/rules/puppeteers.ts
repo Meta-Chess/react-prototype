@@ -27,7 +27,7 @@ export const puppeteers: TrivialParameterRule = (): Rule => {
 
       const newCompactRules = game.interrupt.cloneWithoutRule("puppeteers");
       const knightsScanMoves = friendlyKnights.map((knight) => {
-        return new Pather(game, gameClones, knight, newCompactRules).findPaths();
+        return new Pather(game, gameClones, knight, newCompactRules).findPaths({});
       });
 
       const board = game.board;

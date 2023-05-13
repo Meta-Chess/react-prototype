@@ -52,7 +52,7 @@ function isThereAnyKnightFork({
         checkDepth: 0,
         noForkSearch: false,
         chainReactionSearch: false,
-      }).findPaths();
+      }).findPaths({});
       return moves.filter(doesCapture).length > minFork;
     });
 }
