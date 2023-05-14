@@ -168,7 +168,8 @@ export type FutureVariantName =
   | "thinIce"
   | "threeCheck"
   | "toroidal"
-  | "zoneOfControl";
+  | "zoneOfControl"
+  | "push";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   grandChess: {
@@ -497,6 +498,15 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     implemented: true,
     ruleNames: ["completedKnight"],
     complexity: 1,
+  },
+  push: {
+    title: "Push",
+    shortDescription: "Push friendly pieces along a path.",
+    traits: ["Movement"],
+    imageName: "pushImage",
+    implemented: true,
+    ruleNames: ["push"],
+    complexity: 2,
   },
 };
 
