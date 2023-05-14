@@ -43,6 +43,7 @@ export class Pather {
           piece: this.piece,
           interrupt: this.interrupt,
           moves: [],
+          gaits,
         }).moves;
 
     const allMoves = baseMoves.concat(specialPacifistMoves);
