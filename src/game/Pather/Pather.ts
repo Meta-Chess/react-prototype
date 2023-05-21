@@ -23,7 +23,7 @@ export class Pather {
     private params: PatherParams = {}
   ) {}
 
-  findPaths({ filterPacifistMoves = false }: { filterPacifistMoves?: boolean }): Move[] {
+  findPaths({ filterPacifistMoves } = { filterPacifistMoves: false }): Move[] {
     filterPacifistMoves = this.interrupt.for.inFindPathsModifyInputParams({
       filterPacifistMoves: filterPacifistMoves,
     }).filterPacifistMoves;

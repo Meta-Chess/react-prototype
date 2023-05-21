@@ -510,7 +510,7 @@ export class GameMaster {
   calculateAllowableMovesForSelectedPieces(): void {
     this.locationSelected = false;
     this.allowableMoves = this.selectedPieces.flatMap((piece: Piece) =>
-      new Pather(this.game, this.gameClones, piece, this.interrupt).findPaths({})
+      new Pather(this.game, this.gameClones, piece, this.interrupt).findPaths()
     );
     // console.log(`// Expect allowable moves to be ... ??? \n expect(gameMaster.allowableMoves).toEqual(expect.arrayContaining([${this.allowableMoves.map((move) => `expect.objectContaining({ location: "${move.location}"})`)}])); \n expect(gameMaster.allowableMoves.length).toEqual(${this.allowableMoves.length});`); // TEST WRITING HELPER COMMENT
   }
@@ -522,7 +522,7 @@ export class GameMaster {
       this.gameClones,
       this.selectedPieces[0],
       this.interrupt
-    ).findPaths({});
+    ).findPaths();
   }
 
   checkGameEndConditions(): void {
