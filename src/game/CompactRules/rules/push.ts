@@ -13,6 +13,7 @@ export const push: TrivialParameterRule = () => ({
     interrupt,
     moves,
     gaits,
+    ...rest
   }): GenerateSpecialPacifistMoves => {
     const maxFriendlyPieceChainLength = game.board.piecesBelongingTo(piece.owner).length;
     const pushMoves = gaits.flatMap((gait) => {
@@ -40,7 +41,7 @@ export const push: TrivialParameterRule = () => ({
       });
     });
 
-    return { game, piece, interrupt, moves: [...moves, ...pushMoves], gaits };
+    return { game, piece, interrupt, moves: [...moves, ...pushMoves], gaits, ...rest };
   },
 });
 
