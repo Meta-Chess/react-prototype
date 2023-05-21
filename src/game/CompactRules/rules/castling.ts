@@ -28,7 +28,7 @@ export const castling: TrivialParameterRule = () => ({
   generateSpecialPacifistMoves: (input): GenerateSpecialPacifistMoves => {
     if (!input.piece.hasTokenWithName(TokenName.ActiveCastling)) return input;
 
-    const { game, piece: activePiece, interrupt, moves } = input;
+    const { game, piece: activePiece, interrupt, moves, gaits, ...rest } = input;
 
     const directions = activePiece
       .generateGaits()
@@ -102,7 +102,14 @@ export const castling: TrivialParameterRule = () => ({
       })
     );
 
-    return { game, piece: activePiece, interrupt, moves: [...moves, ...newMoves] };
+    return {
+      game,
+      piece: activePiece,
+      interrupt,
+      moves: [...moves, ...newMoves],
+      gaits,
+      ...rest,
+    };
   },
   afterBoardCreation: ({ board }): AfterBoardCreation => {
     board.addPieceTokensByRule((piece: Piece) =>

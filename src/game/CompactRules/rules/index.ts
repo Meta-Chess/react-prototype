@@ -33,3 +33,4 @@ export * from "./thinIce";
 export * from "./completedKnight";
 export * from "./grandChess";
 export * from "./clearCastlingTokens";
+export * from "./push";

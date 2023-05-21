@@ -33,6 +33,7 @@ import puppeteersImage from "./puppeteersImage.png";
 import squareBoardImage from "./squareBoardImage.png";
 import circleBoardImage from "./circleBoardImage.png";
 import hexBoardImage from "./hexBoardImage.png";
+import pushImage from "./pushImage.png";
 
 export { threeCheckImage };
 
@@ -103,3 +104,5 @@ export { squareBoardImage };
 export { circleBoardImage };
 
 export { hexBoardImage };
+
+export { pushImage };
