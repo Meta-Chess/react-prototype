@@ -1,7 +1,7 @@
 import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
 import { calculateGameOptions } from "game/variantAndRuleProcessing/calculateGameOptions";
-import { PieceName } from "game/types";
+import { PieceName, PlayerName } from "game/types";
 
 describe("In push chess", () => {
   let gameMaster: GameMaster;
@@ -157,6 +157,79 @@ describe("In push chess", () => {
 
     // There should be no allowable moves, as the white pawn blocks the forward push
     expect(gameMaster.allowableMoves.length).toEqual(0);
+  });
+
+  it("En passant works as expected for a pawn double-step push move", () => {
+    // Move the white bishop from F1 to D3, preparing for the pawn push move
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 6 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 3, file: 4 }));
+
+    // Move the black pawn from to E5
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 5 }));
+
+    // Passing move for white, pawn to H3
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 8 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 3, file: 8 }));
+
+    // Move the black pawn forward again to E4, preparing for en passant
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 5 }));
+
+    // Move D2 to D4, the double-step push move
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 4 }));
+
+    // The pawn on E4 can capture en passant
+    gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 3, file: 4 }));
+
+    // The white pawn has been captured
+    const piecesAtD4 = gameMaster.game.board.getPiecesAt(
+      toLocation({ rank: 4, file: 4 })
+    );
+    expect(piecesAtD4.length).toEqual(0);
+
+    // The white bishop is still alive
+    const piecesAtD5 = gameMaster.game.board.getPiecesAt(
+      toLocation({ rank: 5, file: 4 })
+    );
+    expect(piecesAtD5.length).toEqual(1);
+    expect(piecesAtD5[0].name).toEqual(PieceName.Bishop);
+  });
+
+  it("A piece double-step pushed by a pawn does not become interceptable", () => {
+    // Move the white bishop from F1 to D3, preparing for a pawn double-step push
+    gameMaster.handleSquarePressed(toLocation({ rank: 1, file: 6 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 3, file: 4 }));
+
+    // Move the black pawn from to E5, ready to try to intercept the bishop being pushed
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 5 }));
+
+    // Move D2 to D4, the double-step push move
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 4 }));
+
+    // Black captures the pawn on D4,
+    // this would also intercept capture the bishop if it were interceptable in the same way as the pawn
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 5 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 4 }));
+
+    // There is a black pawn on D4, the white pawn has been captured
+    const piecesAtD4 = gameMaster.game.board.getPiecesAt(
+      toLocation({ rank: 4, file: 4 })
+    );
+    expect(piecesAtD4.length).toEqual(1);
+    expect(piecesAtD4[0].name).toEqual(PieceName.Pawn);
+    expect(piecesAtD4[0].owner).toEqual(PlayerName.Black);
+
+    // The white bishop is still alive on D5
+    const piecesAtD5 = gameMaster.game.board.getPiecesAt(
+      toLocation({ rank: 5, file: 4 })
+    );
+    expect(piecesAtD5.length).toEqual(1);
+    expect(piecesAtD5[0].name).toEqual(PieceName.Bishop);
   });
 });
 
