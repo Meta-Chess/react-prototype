@@ -10,9 +10,9 @@ export const integrateWithOtherRules: {
     return ruleNames.includes("hex") ? ["hexCylindrical"] : ["cylindrical"];
   },
   standard: (rules: RuleName[]): RuleName[] => {
-    return rules.includes("hex") ||
-      rules.includes("longBoard") ||
-      rules.includes("grandChess")
+    return rules.some((rule) =>
+      ["hex", "longBoard", "grandChess", "capablancaChess"].includes(rule)
+    )
       ? []
       : ["standard"];
   },
@@ -151,6 +151,7 @@ export type FutureVariantName =
   | "fatigue"
   | "gambit"
   | "grandChess"
+  | "capablancaChess"
   | "hex"
   | "kingOfTheHill"
   | "kleinBottle"
@@ -175,7 +176,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   grandChess: {
     title: "Grand",
     shortDescription:
-      "A large-board chess variant invented by Dutch games designer Christian Freeling.",
+      "A 10x10 variant, with hybrid pieces and novel rules. Invented by Dutch games designer Christian Freeling.",
     traits: ["Board"],
     imageName: "squareBoardImage",
     implemented: true,
@@ -196,9 +197,32 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
         "Non Promotion Moves": true,
       },
     },
-    complexity: 1,
+    complexity: 4,
   },
-
+  capablancaChess: {
+    title: "Capablanca",
+    shortDescription:
+      "A 10x8 variant with hybrid pieces. Invented by World Champion José Raúl Capablanca.",
+    traits: ["Board"],
+    imageName: "squareBoardImage",
+    implemented: true,
+    ruleNames: ["capablancaChess"],
+    overrideRuleParams: {
+      promotion: {
+        "Promotion Pieces": [
+          [
+            PieceName.Knight,
+            PieceName.Bishop,
+            PieceName.Rook,
+            PieceName.Queen,
+            PieceName.BishopKnight,
+            PieceName.RookKnight,
+          ],
+        ],
+      },
+    },
+    complexity: 2,
+  },
   puppeteers: {
     title: "Puppeteers",
     shortDescription: "Pieces seen by friendly knights can move as the knights",
