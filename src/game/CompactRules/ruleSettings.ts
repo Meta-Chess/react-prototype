@@ -66,7 +66,7 @@ class AllRuleSettings implements AllRuleSettingsProto {
       paramType: ParamSettingType.Integer,
       defaultValue: 10,
       allowValue: (value: number): boolean => {
-        return value > 0 || value < 100;
+        return value > 0 && value < 100;
       },
     },
   };
@@ -75,7 +75,16 @@ class AllRuleSettings implements AllRuleSettingsProto {
       paramType: ParamSettingType.Integer,
       defaultValue: 3,
       allowValue: (value: number): boolean => {
-        return value > 0 || value < 100;
+        return value > 0 && value < 100;
+      },
+    },
+  };
+  castling = {
+    "Active Piece Steps": {
+      paramType: ParamSettingType.Integer,
+      defaultValue: 2,
+      allowValue: (value: number): boolean => {
+        return value > 1 && value < 10;
       },
     },
   };
@@ -84,7 +93,7 @@ class AllRuleSettings implements AllRuleSettingsProto {
       paramType: ParamSettingType.Integer,
       defaultValue: 3,
       allowValue: (value: number): boolean => {
-        return value > -1 || value < 100;
+        return value > -1 && value < 100;
       },
     },
   };
@@ -93,7 +102,7 @@ class AllRuleSettings implements AllRuleSettingsProto {
       paramType: ParamSettingType.Integer,
       defaultValue: 1,
       allowValue: (value: number): boolean => {
-        return value > -1 || value < 100;
+        return value > -1 && value < 100;
       },
     },
   };

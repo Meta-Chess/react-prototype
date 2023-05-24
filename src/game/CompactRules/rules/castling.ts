@@ -9,9 +9,12 @@ import {
   PostMove,
 } from "../CompactRules";
 import { Piece } from "game/Board";
-import { TrivialParameterRule } from "game";
+import { ParameterRule } from "game";
+import { range } from "utilities";
 
-export const castling: TrivialParameterRule = () => ({
+export const castling: ParameterRule<"castling"> = ({
+  "Active Piece Steps": activePieceSteps,
+}) => ({
   title: "Castling",
   description:
     "Can your king move two squares in some direction? Is this your king's first move? Is there a rook in this direction from your king? Can that rook get to the square your king moves through? Is this that rook's first move? If so, your king and rook can do those moves at the same time!",
@@ -40,29 +43,39 @@ export const castling: TrivialParameterRule = () => ({
       const paths = pather.path({
         gait: { pattern: [direction], repeats: true, phaser: true },
       });
+      // TODO (Extension): we aren't handling for multiple adjacencies of the same direction
+      const activePieceScanPath = paths[paths.length - 1];
       return game.board
-        .getPiecesAt(paths[paths.length - 1]?.getEnd())
+        .getPiecesAt(activePieceScanPath?.getEnd())
         .filter((p) => p.hasTokenWithName(TokenName.PassiveCastling))
-        .map((piece) => ({ piece, direction }));
+        .map((piece) => ({
+          piece,
+          direction,
+          activePieceScanPath: activePieceScanPath.getPath(),
+        }));
     });
 
     const castlePiecesAndLocations = castlePiecesAndDirections.flatMap(
-      ({ piece: passivePiece, direction }) => {
+      ({ piece: passivePiece, direction, activePieceScanPath }) => {
         const passiveDestinations = game.board.go({
           from: activePiece.location,
-          path: [direction],
+          path: range(0, activePieceSteps - 1).map((_step) => direction),
         });
+
         return passiveDestinations.flatMap((passiveDestination) =>
           game.board
             .go({ from: passiveDestination.location, path: [direction] })
-            .map((activeDestination) => ({
+            // TODO (Extension): allow for strange parameter castling where the destinations can be outside the scan path
+            .filter((activeDestination) =>
+              activePieceScanPath.includes(activeDestination.location)
+            )
+            .map((_activeDestination) => ({
               passivePiece,
               passiveDestination,
-              // the active piece moves from its start to the destination through the passive piece's destination
-              activePath: new Path(activePiece.location, [
-                passiveDestination.location,
-                activeDestination.location,
-              ]),
+              activePath: new Path(
+                activePiece.location,
+                activePieceScanPath.slice(1, activePieceSteps + 1)
+              ),
             }))
         );
       }
