@@ -49,6 +49,20 @@ export function movesAreEqual(m1: Move, m2: Move): boolean {
         delta.pieceId === m2.pieceDeltas[index].pieceId &&
         delta.path.getEnd() === m2.pieceDeltas[index].path.getEnd(),
       true
-    )
+    ) &&
+    moveCapturesAreEqual(m1.captures, m2.captures)
   );
+}
+
+function moveCapturesAreEqual(
+  m1captures: CaptureData[] | undefined,
+  m2captures: CaptureData[] | undefined
+): boolean {
+  const m1CapturedPieceIds = new Set(
+    (m1captures || []).flatMap((capture) => capture.pieceIds.map((pId) => pId))
+  );
+  const m2CapturedPieceIds = new Set(
+    (m2captures || []).flatMap((capture) => capture.pieceIds.map((pId) => pId))
+  );
+  return isEqual(m1CapturedPieceIds, m2CapturedPieceIds);
 }
