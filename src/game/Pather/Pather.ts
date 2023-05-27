@@ -249,12 +249,14 @@ export class Pather {
           }
         : undefined;
 
-    return [
-      passiveMove,
-      captureMove,
-      optionalCaptureMove,
-      optionalCaptureAndCaptureMove,
-    ].filter(isPresent);
+    const possibleMoves = [passiveMove, captureMove, optionalCaptureAndCaptureMove];
+
+    const canMakeOptionalCaptureWithoutNormalCapture =
+      optionalCaptureMove && (!captureMove || gait.phaser);
+    if (canMakeOptionalCaptureWithoutNormalCapture)
+      possibleMoves.push(optionalCaptureMove);
+
+    return possibleMoves.filter(isPresent);
   }
 
   go({ from, direction }: { from: Square; direction: Direction }): Square[] {
