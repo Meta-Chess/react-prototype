@@ -129,7 +129,7 @@ function amendLeadingPushMoves({
   return leadingMoves.map((move) => {
     // TODO (Extension): handling moves which initially have multiple pieceDeltas
     const leaderPath = move.pieceDeltas[0].path.getPath();
-    const orderedPiecesFromLeader = [...followers.reverse(), pusher];
+    const orderedPiecesFromLeader = [pusher, ...followers].reverse();
 
     const amendingDeltas = [];
     let succeedingPath = leaderPath;
