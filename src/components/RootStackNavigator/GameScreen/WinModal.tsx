@@ -39,7 +39,7 @@ export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
         showsVerticalScrollIndicator={false}
       >
         {gameMaster?.game.players
-          .filter((player) => !player.alive)
+          .filter((player) => player.endGameMessage)
           .map((player) => (
             <Row style={{ alignItems: "center", marginTop: 4 }} key={player.name}>
               <PieceImage

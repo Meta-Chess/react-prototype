@@ -13,6 +13,7 @@ export { fatigue } from "./fatigue";
 export { hex } from "./hex";
 export { hexCylindrical } from "./hexCylindrical";
 export { interception } from "./interception";
+export { kingOfTheHill } from "./kingOfTheHill";
 export { longBoard } from "./longBoard";
 export { loseWithNoKings } from "./loseWithNoKings";
 export { mobius } from "./mobius";
