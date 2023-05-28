@@ -77,6 +77,7 @@ export enum TokenName {
   CheckCounter,
   ThinIce,
   Puppeteered,
+  InterceptionPossible,
 }
 
 export interface Token {

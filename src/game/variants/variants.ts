@@ -170,7 +170,8 @@ export type FutureVariantName =
   | "threeCheck"
   | "toroidal"
   | "zoneOfControl"
-  | "push";
+  | "push"
+  | "forcedEnPassant";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   grandChess: {
@@ -534,6 +535,15 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     implemented: true,
     ruleNames: ["push"],
     complexity: 2,
+  },
+  forcedEnPassant: {
+    title: "Forced En Passant",
+    shortDescription: "En passant must be performed if possible.",
+    traits: ["Restriction"],
+    imageName: "forcedEnPassantImage",
+    implemented: true,
+    ruleNames: ["forcedEnPassant"],
+    complexity: 1,
   },
 };
 

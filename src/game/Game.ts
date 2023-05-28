@@ -109,6 +109,7 @@ export class Game {
   }
 
   removeExpiredTokens(): void {
+    this.board.removeExpiredTokens(this.currentTurn);
     this.board.getPieces().forEach((piece) => {
       piece.removeExpiredTokens(this.currentTurn);
     });

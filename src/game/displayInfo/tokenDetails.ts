@@ -66,4 +66,8 @@ export const tokenDetails: { [k in TokenName]: Details } = {
     name: "Puppeteered Token",
     description: "This piece can be controlled by a knight.",
   },
+  [TokenName.InterceptionPossible]: {
+    name: "Interception Possible Token",
+    description: "Flags whether there are any valid interception moves",
+  },
 };
