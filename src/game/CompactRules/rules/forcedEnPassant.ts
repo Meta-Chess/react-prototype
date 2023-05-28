@@ -3,7 +3,7 @@ import { Move } from "game";
 import { TokenName } from "game/types";
 import { TrivialParameterRule } from "../CompactRules";
 import { Board } from "game/Board";
-import { Pather } from "game";
+import { Pather } from "game/Pather";
 
 export const forcedEnPassant: TrivialParameterRule = () => ({
   title: "Forced En Passant",
