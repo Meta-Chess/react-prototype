@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { View } from "react-native";
 import { SFC, Text, Colors } from "primitives";
 import { TraitFilter } from "./TraitFilter";
@@ -6,15 +6,54 @@ import styled from "styled-components/native";
 import { getTraitInfoForSet } from "./getTraitInfoForSet";
 import { CollapsableCard } from "ui/Containers";
 import { TraitsInSetInfo } from "game";
-import { TraitName, traitInfo } from "game/variants/traitInfo";
+import type { Filter, FilterValue, FilterOption, FilterType } from "./filters";
+import { getFilterInfoText } from "./filters";
 
 interface Props {
-  activeFilters: TraitName[];
-  setActiveFilters: (x: TraitName[]) => void;
+  activeFilters: Filter[];
+  setActiveFilters: (x: Filter[]) => void;
 }
 
 const FiltersCard: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => {
   const traitsInSet: TraitsInSetInfo[] = getTraitInfoForSet();
+
+  const findFilter = useCallback(
+    (filterValue: FilterValue, filterOption?: FilterOption) => {
+      return activeFilters.find((filter) => {
+        const filterMatch = filter.value === filterValue;
+        return filterOption ? filter.option === filterOption && filterMatch : filterMatch;
+      });
+    },
+    [activeFilters]
+  );
+
+  const updateFilter = useCallback(
+    (filterType: FilterType, filterValue: FilterValue) => {
+      const filter = findFilter(filterValue);
+      if (!filter) {
+        setActiveFilters([
+          ...activeFilters,
+          { type: filterType, value: filterValue, option: "include" } as Filter,
+        ]);
+      } else if (filter.option == "include") {
+        setActiveFilters([
+          ...activeFilters.filter((activeFilter) => activeFilter.value !== filterValue),
+          { type: filterType, value: filterValue, option: "exclude" } as Filter,
+        ]);
+      } else {
+        setActiveFilters(
+          activeFilters.filter((activeFilter) => activeFilter.value !== filterValue)
+        );
+      }
+    },
+    [findFilter, activeFilters, setActiveFilters]
+  );
+
+  const filterMessage = useMemo(
+    () => activeFilters.map((filter) => getFilterInfoText(filter)).join(" AND "),
+    [activeFilters]
+  );
+
   return (
     <CollapsableCard title={"Filters"} style={style}>
       <Container>
@@ -25,12 +64,9 @@ const FiltersCard: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => 
                 key={info.name}
                 trait={info.name}
                 numberOfVariantsWithTrait={info.count}
-                selected={activeFilters.includes(info.name)}
-                onPress={(): void =>
-                  activeFilters.includes(info.name)
-                    ? setActiveFilters([])
-                    : setActiveFilters([info.name])
-                }
+                selected={!!findFilter(info.name)}
+                selectedFilterOption={findFilter(info.name)?.option}
+                onPress={(): void => updateFilter("trait", info.name)}
                 style={{ flexDirection: "row", margin: 4 }}
               />
             )
@@ -42,7 +78,7 @@ const FiltersCard: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => 
           cat="BodyXS"
           style={{ margin: 4 }}
         >
-          {activeFilters[0] + ": " + traitInfo[activeFilters[0]].description}
+          {filterMessage}
         </Text>
       )}
     </CollapsableCard>

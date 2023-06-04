@@ -4,12 +4,14 @@ import { TouchableOpacity, View } from "react-native";
 import { traitInfo, TraitName } from "game/variants/traitInfo";
 import styled from "styled-components/native";
 import Color from "color";
+import type { FilterOption } from "./filters";
 
 interface TraitFilterProps {
   trait: TraitName;
   numberOfVariantsWithTrait: number;
   selected: boolean;
   onPress: () => void;
+  selectedFilterOption?: FilterOption;
 }
 
 const TraitFilter: SFC<TraitFilterProps> = ({
@@ -17,6 +19,7 @@ const TraitFilter: SFC<TraitFilterProps> = ({
   numberOfVariantsWithTrait,
   style,
   selected,
+  selectedFilterOption,
   onPress,
 }) => {
   const color = traitInfo[trait].color.fade(0.4);
@@ -31,6 +34,9 @@ const TraitFilter: SFC<TraitFilterProps> = ({
       style={style}
       color={color}
       selected={selected}
+      selectedBorderColor={
+        selectedFilterOption === "exclude" ? Colors.ERROR : Colors.GREY
+      }
       onPress={onPress}
     >
       <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()} selectable={false}>
@@ -56,6 +62,7 @@ const TouchableLabel = styled(TouchableOpacity)<{
   counterPadding: number;
   verticalPadding: number;
   selected: boolean;
+  selectedBorderColor: Color;
 }>`
   flex-direction: row;
   border-radius: 4px;
@@ -65,7 +72,7 @@ const TouchableLabel = styled(TouchableOpacity)<{
     selected ? verticalPadding - 1 : verticalPadding}px;
   background-color: ${({ color }): string => color.string()};
   border-width: ${({ selected }): number => (selected ? 1 : 0)}px;
-  border-color: ${Colors.GREY.toString()};
+  border-color: ${({ selectedBorderColor }): string => selectedBorderColor.string()};
   overflow: hidden;
 `;
 
