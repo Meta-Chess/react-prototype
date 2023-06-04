@@ -31,6 +31,7 @@ export const Card: SFC<Props> = ({ title, subtitle, children, style }) => {
 
 const Container = styled(View)`
   width: 400px;
+  max-width: 100%;
   background-color: ${Colors.DARKER.toString()};
   border-color: ${Colors.DARKISH.toString()};
   border-width: 1px;

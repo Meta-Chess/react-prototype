@@ -10,7 +10,7 @@ import { rotate180 } from "../utilities";
 
 export const crazyhouse: TrivialParameterRule = () => ({
   title: "Crazyhouse",
-  description: "Replay captured pieces",
+  description: "Replay captured pieces.",
 
   //Captured pieces are morphed and added to piece bank.
   onSendPieceToGrave: ({ piece, mover, captured, destination }): OnSendPieceToGrave => {
@@ -39,10 +39,12 @@ export const crazyhouse: TrivialParameterRule = () => ({
     piece,
     interrupt,
     moves,
+    gaits,
+    ...rest
   }): GenerateSpecialPacifistMoves => {
     const pieceLocation = piece.location;
     if (piece === undefined || pieceLocation.slice(0, 3) !== LocationPrefix.pieceBank)
-      return { game, piece, interrupt, moves };
+      return { game, piece, interrupt, moves, gaits, ...rest };
     const newMoves = game.board
       .getSquares()
       .filter((square) => {
@@ -66,6 +68,6 @@ export const crazyhouse: TrivialParameterRule = () => ({
         ],
         playerName: parseInt(pieceLocation.charAt(pieceLocation.length - 1)),
       }));
-    return { game, piece, interrupt, moves: [...moves, ...newMoves] };
+    return { game, piece, interrupt, moves: [...moves, ...newMoves], gaits, ...rest };
   },
 });

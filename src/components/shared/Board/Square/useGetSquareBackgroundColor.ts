@@ -10,12 +10,16 @@ export function useGetSquareBackgroundColor(
 ): Color {
   const { gameMaster } = useContext(GameContext);
   const rules = gameMaster?.getRuleNames();
+  const board = gameMaster?.game.board;
   if (!gameMaster || !square) return Colors.MCHESS_BLUE;
 
-  return Colors.SQUARE[colorIndex({ ...square?.getCoordinates(), shape })].mix(
-    Colors.DARK,
-    shouldMixSquare(square, rules) ? 0.4 : 0
-  );
+  let baseColor = Colors.SQUARE[colorIndex({ ...square?.getCoordinates(), shape })];
+
+  if (!!rules?.includes("emptyCenter") && board?.squareInRegion(square, "center")) {
+    baseColor = baseColor.desaturate(1).mix(Color("red"), 0.2);
+  }
+
+  return baseColor.mix(Colors.DARK, shouldMixSquare(square, rules) ? 0.4 : 0);
 }
 
 function shouldMixSquare(square: Square, rules?: RuleName[]): boolean {
