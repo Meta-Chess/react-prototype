@@ -164,11 +164,6 @@ export interface Modal {
   fullScreen?: boolean;
 }
 
-export interface TraitsInSetInfo {
-  name: TraitName;
-  count: number;
-}
-
 const allRegions = ["center", "promotion"] as const;
 export type Region = typeof allRegions[number];
 

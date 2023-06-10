@@ -3,13 +3,13 @@ import type { FutureVariant } from "game/variants";
 
 export type Filter = TraitFilter | ComplexityFilter;
 
-interface TraitFilter {
+export interface TraitFilter {
   type: "trait";
   value: TraitName;
   option: FilterOption;
 }
 
-interface ComplexityFilter {
+export interface ComplexityFilter {
   type: "complexity";
   value: number;
   option: FilterOption;

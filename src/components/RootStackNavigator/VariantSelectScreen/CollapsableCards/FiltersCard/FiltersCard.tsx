@@ -1,13 +1,13 @@
 import React, { useCallback, useMemo } from "react";
 import { View } from "react-native";
 import { SFC, Text, Colors } from "primitives";
-import { TraitFilter } from "./TraitFilter";
+import { FilterButton } from "./FilterButton";
 import styled from "styled-components/native";
-import { getTraitInfoForSet } from "./getTraitInfoForSet";
+import { getOrderedFilterInfoForSet } from "./getOrdererdFilterInfoForSet";
 import { CollapsableCard } from "ui/Containers";
-import { TraitsInSetInfo } from "game";
-import type { Filter, FilterValue, FilterOption, FilterType } from "./filters";
+import type { Filter, FilterValue, FilterOption } from "./filters";
 import { getFilterInfoText } from "./filters";
+import type { TraitName } from "game/variants/traitInfo";
 
 interface Props {
   activeFilters: Filter[];
@@ -15,7 +15,8 @@ interface Props {
 }
 
 const FiltersCard: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => {
-  const traitsInSet: TraitsInSetInfo[] = getTraitInfoForSet();
+  const { trait: traitFilterInfo, complexity: complexityFilterInfo } =
+    getOrderedFilterInfoForSet();
 
   const findFilter = useCallback(
     (filterValue: FilterValue, filterOption?: FilterOption) => {
@@ -27,22 +28,39 @@ const FiltersCard: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => 
     [activeFilters]
   );
 
-  const updateFilter = useCallback(
-    (filterType: FilterType, filterValue: FilterValue) => {
-      const filter = findFilter(filterValue);
+  const updateTraitFilter = useCallback(
+    (trait: TraitName) => {
+      const filter = findFilter(trait);
       if (!filter) {
         setActiveFilters([
           ...activeFilters,
-          { type: filterType, value: filterValue, option: "include" } as Filter,
+          { type: "trait", value: trait, option: "include" },
         ]);
       } else if (filter.option == "include") {
         setActiveFilters([
-          ...activeFilters.filter((activeFilter) => activeFilter.value !== filterValue),
-          { type: filterType, value: filterValue, option: "exclude" } as Filter,
+          ...activeFilters.filter((activeFilter) => activeFilter.value !== trait),
+          { type: "trait", value: trait, option: "exclude" },
         ]);
       } else {
         setActiveFilters(
-          activeFilters.filter((activeFilter) => activeFilter.value !== filterValue)
+          activeFilters.filter((activeFilter) => activeFilter.value !== trait)
+        );
+      }
+    },
+    [findFilter, activeFilters, setActiveFilters]
+  );
+
+  const updateComplexityFilter = useCallback(
+    (complexity: number) => {
+      const filter = findFilter(complexity);
+      if (!filter) {
+        setActiveFilters([
+          ...activeFilters.filter((activeFilter) => activeFilter.type !== "complexity"),
+          { type: "complexity", value: complexity, option: "include" },
+        ]);
+      } else {
+        setActiveFilters(
+          activeFilters.filter((activeFilter) => activeFilter.type !== "complexity")
         );
       }
     },
@@ -57,16 +75,34 @@ const FiltersCard: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => 
   return (
     <CollapsableCard title={"Filters"} style={style}>
       <Container>
-        {Object.values(traitsInSet).map(
+        {Object.values(traitFilterInfo).map(
           (info) =>
             info.count > 0 && (
-              <TraitFilter
-                key={info.name}
-                trait={info.name}
-                numberOfVariantsWithTrait={info.count}
-                selected={!!findFilter(info.name)}
-                selectedFilterOption={findFilter(info.name)?.option}
-                onPress={(): void => updateFilter("trait", info.name)}
+              <FilterButton
+                key={info.value}
+                filterType={"trait"}
+                filterValue={info.value}
+                filterCount={info.count}
+                selected={!!findFilter(info.value)}
+                selectedFilterOption={findFilter(info.value)?.option}
+                onPress={(): void => updateTraitFilter(info.value)}
+                style={{ flexDirection: "row", margin: 4 }}
+              />
+            )
+        )}
+      </Container>
+      <Container style={{ marginTop: 4 }}>
+        {Object.values(complexityFilterInfo).map(
+          (info) =>
+            info.count > 0 && (
+              <FilterButton
+                key={info.value}
+                filterType={"complexity"}
+                filterValue={info.value}
+                filterCount={info.count}
+                selected={!!findFilter(info.value)}
+                selectedFilterOption={findFilter(info.value)?.option}
+                onPress={(): void => updateComplexityFilter(info.value)}
                 style={{ flexDirection: "row", margin: 4 }}
               />
             )

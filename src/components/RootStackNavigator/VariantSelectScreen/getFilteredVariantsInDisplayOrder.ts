@@ -12,11 +12,11 @@ export function getFilteredVariantsInDisplayOrder(
       const variant = futureVariants[variantName];
       return (
         variant.implemented &&
-        activeFilters.every((filter) =>
-          filter.option === "include"
+        activeFilters.every((filter) => {
+          return filter.option === "include"
             ? getFilterApplicator(filter)(variant)
-            : !getFilterApplicator(filter)(variant)
-        )
+            : !getFilterApplicator(filter)(variant);
+        })
       );
     })
     .sort((v1, v2) =>

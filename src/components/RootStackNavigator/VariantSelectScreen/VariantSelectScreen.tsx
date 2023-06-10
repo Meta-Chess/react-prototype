@@ -8,7 +8,6 @@ import {
   FutureVariantName,
   GameOptions,
 } from "game";
-import { TraitName } from "game/variants/traitInfo";
 import { Screens, useGoBackOrToStartScreen, useNavigation, useRoute } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
