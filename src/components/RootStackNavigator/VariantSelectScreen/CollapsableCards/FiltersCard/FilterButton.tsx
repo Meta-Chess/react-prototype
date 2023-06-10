@@ -60,9 +60,7 @@ const FilterButton: SFC<FilterButtonProps> = ({
       style={style}
       color={color}
       selected={selected}
-      selectedBorderColor={
-        selectedFilterOption === "exclude" ? Colors.ERROR : Colors.GREY
-      }
+      selectedBorderColor={selectedFilterOption === "exclude" ? Colors.RED : Colors.WHITE}
       onPress={onPress}
     >
       <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()} selectable={false}>
