@@ -145,6 +145,8 @@ const VariantSelectScreen: FC = () => {
           displayVariants={displayVariants}
           selectedVariants={selectedVariantsForFormat}
           setSelectedVariants={setSelectedVariantsForFormat}
+          activeFilters={activeFilters}
+          setActiveFilters={setActiveFilters}
           conflictLevel={conflictLevel}
           setVariantModalInfo={setVariantModalInfo}
           ruleNamesWithParams={gameOptions.ruleNamesWithParams}
