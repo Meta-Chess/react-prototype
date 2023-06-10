@@ -106,8 +106,8 @@ const BoardContainer = styled(View)`
 `;
 
 const DropdownContainer = styled(View)`
-  width: "56px";
-  margin-left: 32;
+  width: 56px;
+  margin-left: 32px;
 `;
 
 function getDisplayGameMaster(

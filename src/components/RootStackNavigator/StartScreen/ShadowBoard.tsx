@@ -48,30 +48,3 @@ const ShadowLayer = styled(AbsoluteView)<{ shadowFade: number }>`
 `;
 
 export { ShadowBoard };
-
-/*
-
-const PressableOption = styled(TouchableOpacity)<{
-  active: boolean;
-  flex: boolean;
-}>`
-  height: 28px;
-  width: 28px;
-  justify-content: center;
-  align-items: center;
-  margin-horizontal: ${({ active, flex }): number => (active && flex ? 3 : 4)}px;
-  background-color: ${({ active }): string =>
-    active
-      ? Colors.MCHESS_ORANGE.fade(0.85).toString()
-      : Colors.GREY.fade(0.9).toString()};
-  border-radius: 4px;
-  border-width: ${({ active }): number => (active ? 1 : 0)}px;
-  border-color: ${Colors.MCHESS_ORANGE.fade(0).toString()};
-`;
-
-const PressableOptionCover = styled(AbsoluteView)`
-  background-color: ${Colors.BLACK.fade(0.5).toString()};
-  border-radius: 4px;
-`;
-
-*/
