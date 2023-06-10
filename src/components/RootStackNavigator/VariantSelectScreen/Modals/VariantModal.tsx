@@ -12,7 +12,7 @@ import {
 } from "game/CompactRules";
 import { ParamOptions } from "./ParamOptions";
 import { optionsChangeRuleParam } from "game/variantAndRuleProcessing";
-import { keys } from "utilities";
+import { typecastKeys } from "utilities";
 
 export interface VariantModalInfo {
   activated: boolean;
@@ -53,10 +53,10 @@ export const VariantModal: SFC<Props> = ({
       <Divider style={{ padding: 0 }} />
       <View style={{ flex: 1 }}>
         {ruleSettings &&
-          keys(ruleSettings).flatMap((ruleName) => {
+          typecastKeys(ruleSettings).flatMap((ruleName) => {
             const ruleSetting: RuleSetting | undefined = ruleSettings[ruleName];
             if (ruleSetting === undefined) return;
-            return keys(ruleSetting).map((paramName) => {
+            return typecastKeys(ruleSetting).map((paramName) => {
               // if value not in game options, go with settings default
               const paramDefaultValue =
                 gameOptions.ruleNamesWithParams?.[ruleName]?.[paramName] ||
@@ -115,7 +115,7 @@ const buildDefaultRuleNamesWithParams = (
   ruleSettings: RuleNamesWithParamSettings,
   gameRuleNamesWithParams: RuleNamesWithParams = {}
 ): RuleNamesWithParams =>
-  keys(ruleSettings)
+  typecastKeys(ruleSettings)
     .filter((ruleName) => ruleSettings[ruleName])
     .reduce(buildDefaultRuleNamesWithParamForRule(ruleSettings), gameRuleNamesWithParams);
 
@@ -125,7 +125,7 @@ const buildDefaultRuleNamesWithParamForRule =
     ruleNameWithParamsPerRuleName: RuleNamesWithParams,
     ruleName: RuleName
   ): RuleNamesWithParams =>
-    keys(ruleSettings[ruleName]).reduce(
+    typecastKeys(ruleSettings[ruleName]).reduce(
       (ruleNameWithParamsPerParam, paramName) =>
         optionsChangeRuleParam({
           ruleName,

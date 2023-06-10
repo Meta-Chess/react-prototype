@@ -1,6 +1,6 @@
 import { isPresent } from "ts-is-present";
 import { Direction, Gait, GaitParams, PieceName, PlayerName } from "../types";
-import { applyInSequence, keys } from "utilities";
+import { applyInSequence, typecastKeys } from "utilities";
 import { Board, Piece, Square } from "../Board";
 import { Game } from "game/Game";
 import { Move, PieceDelta } from "game/Move";
@@ -54,7 +54,7 @@ export class CompactRules {
       baseRuleParams: this.ruleParams,
     });
 
-    const interruptionNames = keys(identityRule);
+    const interruptionNames = typecastKeys(identityRule);
 
     const buildRule = <R extends RuleName>(ruleName: R): Rule => {
       const rule = allRules[ruleName] as ParameterRule<R>;

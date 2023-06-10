@@ -1,6 +1,6 @@
 import { FutureVariant } from "game/variants";
 import { RuleNamesWithParams } from "game/CompactRules";
-import { keys } from "utilities";
+import { typecastKeys } from "utilities";
 
 export const doGameOptionsModifyVariant = (
   variant: FutureVariant,
@@ -8,6 +8,8 @@ export const doGameOptionsModifyVariant = (
 ): boolean => {
   return !!(
     ruleNamesWithParams &&
-    variant.ruleNames.some((ruleName) => keys(ruleNamesWithParams[ruleName]).length > 0)
+    variant.ruleNames.some(
+      (ruleName) => typecastKeys(ruleNamesWithParams[ruleName]).length > 0
+    )
   );
 };

@@ -1,12 +1,12 @@
 import { FutureVariantName, futureVariants } from "game";
-import { keys } from "utilities";
+import { typecastKeys } from "utilities";
 import { getFilterApplicator } from "./CollapsableCards/FiltersCard/filters";
 import type { Filter } from "./CollapsableCards/FiltersCard/filters";
 
 export function getFilteredVariantsInDisplayOrder(
   activeFilters: Filter[]
 ): FutureVariantName[] {
-  const variantNames = keys(futureVariants);
+  const variantNames = typecastKeys(futureVariants);
   return variantNames
     .filter((variantName) => {
       const variant = futureVariants[variantName];

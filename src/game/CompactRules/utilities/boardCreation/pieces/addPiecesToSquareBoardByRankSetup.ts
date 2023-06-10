@@ -1,10 +1,10 @@
 import { PIECE_SYMBOL_INFO, RankSetup } from "../Setup";
 import { createPiece } from "game/CompactRules/utilities";
 import type { Board } from "game/Board";
-import { keys, toLocation } from "utilities";
+import { typecastKeys, toLocation } from "utilities";
 
 export function addPiecesToSquareBoardByRankSetup(board: Board, setup: RankSetup): void {
-  keys(setup).map((rank) =>
+  typecastKeys(setup).map((rank) =>
     setup[rank].forEach((pieceSymbol, index) => {
       if (pieceSymbol in PIECE_SYMBOL_INFO) {
         const file = index + 1;

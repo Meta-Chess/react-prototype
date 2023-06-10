@@ -11,7 +11,7 @@ import {
   getGameOptionParamsForVariant,
 } from "game/variantAndRuleProcessing";
 import { pieceCyclesLabel } from "./pieceCyclesLabel";
-import { keys } from "utilities";
+import { typecastKeys } from "utilities";
 import { ParamSettingPieceCycles } from "game/CompactRules/RuleSettingTypes";
 
 export function getVariantLabelFromParams(
@@ -24,7 +24,7 @@ export function getVariantLabelFromParams(
       const ruleName = tuple[0] as RulesWithParams;
       const params = tuple[1];
       const ruleSetting = getDefaultSettings(ruleName);
-      keys(params).forEach((paramName) => {
+      typecastKeys(params).forEach((paramName) => {
         const paramSetting =
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           paramName in ruleSetting ? (ruleSetting as any)[paramName] : undefined;

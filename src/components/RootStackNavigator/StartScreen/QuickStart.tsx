@@ -4,7 +4,7 @@ import { SelectInput, LabeledCheckBox, DebouncedTextInput } from "ui";
 import { VariantName, variants, GameOptions, FutureVariantName, FormatName } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
-import { keys } from "utilities";
+import { typecastKeys } from "utilities";
 
 interface Props {
   gameOptions: GameOptions;
@@ -86,7 +86,7 @@ const GameOptionControls: SFC<Props> = ({
   );
 };
 
-const variantNames = keys(variants);
+const variantNames = typecastKeys(variants);
 const variantOptions = variantNames.map((k) => ({
   label: variants[k].title,
   value: k,

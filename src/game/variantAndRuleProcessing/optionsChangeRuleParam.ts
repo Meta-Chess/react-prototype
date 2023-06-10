@@ -6,7 +6,7 @@ import {
   RuleNamesWithParams,
 } from "game/CompactRules";
 import { cloneDeep } from "lodash";
-import { keys } from "utilities";
+import { typecastKeys } from "utilities";
 
 export const optionsChangeRuleParam = ({
   ruleName,
@@ -45,7 +45,7 @@ const omitParamValue = ({
 }): RuleNamesWithParams => {
   const newOptions = cloneDeep(tempParamOptions);
   delete newOptions[ruleName]?.[paramName];
-  if (!newOptions[ruleName] || keys(newOptions[ruleName]).length === 0) {
+  if (!newOptions[ruleName] || typecastKeys(newOptions[ruleName]).length === 0) {
     delete newOptions[ruleName];
   }
   return newOptions;
