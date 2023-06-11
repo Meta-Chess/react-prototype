@@ -17,13 +17,12 @@ export const formats: { [key in FormatName]: Format } = {
   },
   randomVariants: {
     title: "Random Variants",
-    description: "2 random variants have been selected for the entire game", // TODO: replace random choices with a constant when it exists
-    shortExplanation:
-      "A variant composition is chosen at random from the selected variants",
+    description: "2 random variants are selected for the entirety of a game", // TODO: replace random choices with a constant when it exists
+    shortExplanation: "Variants are chosen randomly from the deck",
   },
   rollingVariants: {
     title: "Rolling Variants",
-    description: `Every ${NUMBER_OF_TURNS} turns a new variant is introduced, changing the rules of the game.`,
+    description: `Every ${NUMBER_OF_TURNS} turns a new variant is introduced, changing the rules of the game`,
     shortExplanation: "Variants in play will change throughout the game",
     ruleNames: ["rollingVariants"],
   },

@@ -6,11 +6,18 @@ import { Option } from "./types";
 
 interface Props {
   options: Option[];
+  defaultOption?: Option;
   onChange?: (value?: any) => void; //eslint-disable-line @typescript-eslint/no-explicit-any
   zIndex?: number;
 }
 
-export const SelectInput: SFC<Props> = ({ options, style, onChange, zIndex }) => {
+export const SelectInput: SFC<Props> = ({
+  options,
+  defaultOption,
+  style,
+  onChange,
+  zIndex,
+}) => {
   const simplifiedOptions = options.map((o) => ({ label: o.label, value: o.label }));
   return (
     <View style={[style]}>
@@ -20,7 +27,7 @@ export const SelectInput: SFC<Props> = ({ options, style, onChange, zIndex }) =>
           onChange?.(value);
         }}
         items={simplifiedOptions}
-        defaultValue={options[0].label}
+        defaultValue={defaultOption?.label || options[0].label}
         style={{
           backgroundColor: "transparent",
           borderWidth: 2,

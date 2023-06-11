@@ -12,17 +12,24 @@ import { TraitName } from "game/variants/traitInfo";
 import { Screens, useGoBackOrToStartScreen, useNavigation, useRoute } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
-import { AdviceCard, FiltersCard, FormatCard, GameOptionsCard } from "./CollapsableCards";
+import {
+  AdviceCard,
+  FiltersCard,
+  FormatCard,
+  BoardCard,
+  VariantSelectCard,
+  GameOptionsCard,
+} from "./CollapsableCards";
 import { AbsoluteView, Button, ButtonSecondary, Divider } from "ui";
 import { ScreenContainer } from "components/shared";
 import { Colors, TrackingPixel } from "primitives";
 import styled from "styled-components/native";
-import { Topbar } from "./Topbar";
 import { FormatName } from "game/formats";
 import { rollableVariants } from "game/formats/rollableVariants";
 import { randomVariants } from "game/formats/randomVariants";
 import { getConflictLevel } from "./getConflictLevel";
 import { VariantModal, VariantModalInfo } from "./Modals/VariantModal";
+import { HelpMenu } from "components/shared";
 
 const VariantSelectScreen: FC = () => {
   const playWithFriends = useRoute<Screens.VariantSelectScreen>().params?.playWithFriends;
@@ -81,24 +88,30 @@ const VariantSelectScreen: FC = () => {
             flex: 1,
           }}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 12 }}
+          contentContainerStyle={{ paddingBottom: 12, flexDirection: "column-reverse" }}
         >
-          <FormatCard
-            selectedFormat={gameOptions.format}
-            selectedVariants={selectedVariantsForFormat}
-            setSelectedVariants={setSelectedVariantsForFormat}
-            ruleNamesWithParams={gameOptions.ruleNamesWithParams}
+          <FiltersCard
+            activeFilters={activeFilters}
+            setActiveFilters={setActiveFilters}
           />
+          <GameOptionsCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
           <AdviceCard
             selectedVariants={selectedVariantsForFormat}
             variantConflicts={variantConflicts}
             gameOptions={gameOptions}
           />
-          <GameOptionsCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
-          <FiltersCard
-            activeFilters={activeFilters}
-            setActiveFilters={setActiveFilters}
+          <VariantSelectCard
+            selectedFormat={gameOptions.format}
+            selectedVariants={selectedVariantsForFormat}
+            setSelectedVariants={setSelectedVariantsForFormat}
+            ruleNamesWithParams={gameOptions.ruleNamesWithParams}
           />
+          <BoardCard
+            selectedVariantsForFormat={selectedVariantsForFormat}
+            gameOptions={gameOptions}
+            setGameOptions={setGameOptions}
+          />
+          <FormatCard gameOptions={gameOptions} setGameOptions={setGameOptions} />
         </ScrollView>
         <Divider>
           <ButtonSecondary
@@ -134,13 +147,6 @@ const VariantSelectScreen: FC = () => {
           setVariantModalInfo={setVariantModalInfo}
           ruleNamesWithParams={gameOptions.ruleNamesWithParams}
         />
-        <Topbar
-          displayVariants={displayVariants}
-          selectedVariants={selectedVariantsForFormat}
-          conflictLevel={conflictLevel}
-          gameOptions={gameOptions}
-          setGameOptions={setGameOptions}
-        />
         {variantModalInfo.activated && (
           <AbsoluteView style={{ backgroundColor: Colors.BLACK.fade(0.4).toString() }}>
             <VariantModal
@@ -151,6 +157,7 @@ const VariantSelectScreen: FC = () => {
             />
           </AbsoluteView>
         )}
+        <HelpMenu context={{ selectedVariants, displayVariants, conflictLevel }} />
       </LeftContainer>
       <TrackingPixel urlEnd={"VariantSelectScreen"} />
     </ScreenContainer>
