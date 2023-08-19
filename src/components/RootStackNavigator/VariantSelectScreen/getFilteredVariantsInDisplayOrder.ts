@@ -1,6 +1,6 @@
 import { FutureVariantName, futureVariants } from "game";
 import { typecastKeys } from "utilities";
-import { getFilterApplicator } from "./CollapsableCards/FiltersCard/filters";
+import { getFilterCondition } from "./CollapsableCards/FiltersCard/filters";
 import type { Filter } from "./CollapsableCards/FiltersCard/filters";
 
 export function getFilteredVariantsInDisplayOrder(
@@ -14,8 +14,8 @@ export function getFilteredVariantsInDisplayOrder(
         variant.implemented &&
         activeFilters.every((filter) => {
           return filter.option === "include"
-            ? getFilterApplicator(filter)(variant)
-            : !getFilterApplicator(filter)(variant);
+            ? getFilterCondition(filter)(variant)
+            : !getFilterCondition(filter)(variant);
         })
       );
     })

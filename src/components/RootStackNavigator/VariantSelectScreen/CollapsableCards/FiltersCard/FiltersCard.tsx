@@ -68,7 +68,7 @@ const FiltersCard: SFC<Props> = ({ activeFilters, setActiveFilters, style }) => 
   );
 
   const filterMessage = useMemo(
-    () => activeFilters.map((filter) => getFilterInfoText(filter)).join(" AND "),
+    () => activeFilters.map((filter) => getFilterInfoText(filter)).join(" & "),
     [activeFilters]
   );
 
