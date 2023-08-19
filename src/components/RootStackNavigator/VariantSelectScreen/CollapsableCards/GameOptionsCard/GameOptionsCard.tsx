@@ -1,8 +1,8 @@
 import React from "react";
+import { View } from "react-native";
 import { SFC } from "primitives";
 import { LabeledCheckBox } from "ui";
 import { GameOptions } from "game";
-import { CollapsableCard } from "ui/Containers";
 import { TimeOptions } from "components/RootStackNavigator/VariantSelectScreen/CollapsableCards/GameOptionsCard/TimerOptions";
 
 interface Props {
@@ -25,7 +25,7 @@ const GameOptionsCard: SFC<Props> = ({ style, gameOptions, setGameOptions }) => 
     setGameOptions({ ...gameOptions, time });
 
   return (
-    <CollapsableCard title={"Options"} style={style}>
+    <View style={{ ...style, flex: 1 }}>
       <TimeOptions time={gameOptions.time} setTime={setTime} />
       <LabeledCheckBox
         value={!!gameOptions.checkEnabled}
@@ -43,9 +43,9 @@ const GameOptionsCard: SFC<Props> = ({ style, gameOptions, setGameOptions }) => 
         value={!!gameOptions.publicGame}
         setValue={setPublicGame}
         label={"Publicly listed on home screen"}
-        style={{ marginTop: 12, marginBottom: 8 }}
+        style={{ marginTop: 12, marginBottom: 4 }}
       />
-    </CollapsableCard>
+    </View>
   );
 };
 
