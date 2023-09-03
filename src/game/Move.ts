@@ -58,11 +58,23 @@ function moveCapturesAreEqual(
   m1captures: CaptureData[] | undefined,
   m2captures: CaptureData[] | undefined
 ): boolean {
-  const m1CapturedPieceIds = new Set(
-    (m1captures || []).flatMap((capture) => capture.pieceIds.map((pId) => pId))
+  if (!m1captures && !m2captures) {
+    return true;
+  }
+
+  if (!m1captures || !m2captures) {
+    return false;
+  }
+
+  return (
+    m1captures.length === m2captures.length &&
+    m1captures.reduce<boolean>(
+      (acc, capture, index) =>
+        acc &&
+        capture.at === m2captures[index].at &&
+        capture.capturer === m2captures[index].capturer &&
+        isEqual(capture.pieceIds, m2captures[index].pieceIds),
+      true
+    )
   );
-  const m2CapturedPieceIds = new Set(
-    (m2captures || []).flatMap((capture) => capture.pieceIds.map((pId) => pId))
-  );
-  return isEqual(m1CapturedPieceIds, m2CapturedPieceIds);
 }

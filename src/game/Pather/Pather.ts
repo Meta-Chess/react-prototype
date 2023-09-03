@@ -215,8 +215,9 @@ export class Pather {
       !gait.mustCapture && (gait.phaser || (!enemiesPresent && !friendliesPresent));
     const canCaptureNormally =
       !gait.mustNotCapture && (!friendliesPresent || gait.phaser) && enemiesPresent;
-    const mayMakeOptionalCapture =
-      !gait.mustNotCapture && (!friendliesPresent || gait.phaser);
+    const mayMakeOptionalCaptureWithoutCapturingNormally =
+      !gait.mustNotCapture && (!(friendliesPresent || enemiesPresent) || gait.phaser);
+    const mayMakeOptionalCaptureWithCapturingNormally = canCaptureNormally;
 
     // what moves are theoretically possible?
     const passiveMove = canMovePassively ? move : undefined;
@@ -234,29 +235,32 @@ export class Pather {
           ],
         }
       : undefined;
-    const optionalCaptureMove: Move | undefined =
-      mayMakeOptionalCapture && !!optionalCapturePossible
+    const optionalCaptureWithoutCaptureMove: Move | undefined =
+      mayMakeOptionalCaptureWithoutCapturingNormally && !!optionalCapturePossible
         ? {
             ...clone(move),
             captures: [{ ...optionalCapturePossible, capturer: move.playerName }],
           }
         : undefined;
-    const optionalCaptureAndCaptureMove =
-      optionalCaptureMove?.captures && captureMove?.captures
+    const optionalCaptureWithCaptureMove =
+      mayMakeOptionalCaptureWithCapturingNormally &&
+      !!optionalCapturePossible &&
+      captureMove?.captures
         ? {
             ...clone(move),
-            captures: [...captureMove.captures, ...optionalCaptureMove.captures],
+            captures: [
+              ...captureMove.captures,
+              { ...optionalCapturePossible, capturer: move.playerName },
+            ],
           }
         : undefined;
 
-    const possibleMoves = [passiveMove, captureMove, optionalCaptureAndCaptureMove];
-
-    const canMakeOptionalCaptureWithoutNormalCapture =
-      optionalCaptureMove && (!captureMove || gait.phaser);
-    if (canMakeOptionalCaptureWithoutNormalCapture)
-      possibleMoves.push(optionalCaptureMove);
-
-    return possibleMoves.filter(isPresent);
+    return [
+      passiveMove,
+      captureMove,
+      optionalCaptureWithoutCaptureMove,
+      optionalCaptureWithCaptureMove,
+    ].filter(isPresent);
   }
 
   go({ from, direction }: { from: Square; direction: Direction }): Square[] {
