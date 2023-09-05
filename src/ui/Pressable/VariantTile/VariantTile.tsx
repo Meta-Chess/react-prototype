@@ -10,7 +10,7 @@ import { VariantModalInfo } from "components/RootStackNavigator/VariantSelectScr
 import { VariantTileHeader } from "./VariantTileHeader";
 import { VariantTileTags } from "./VariantTileTags";
 import Color from "color";
-import { typecastKeys } from "utilities/typecastKeys";
+import { keys } from "utilities/keys";
 
 interface Props {
   variant: FutureVariant;
@@ -71,7 +71,7 @@ export const VariantTile: SFC<Props> = ({
 
   const onGearPress = useMemo(
     () =>
-      typecastKeys(ruleSettings).length > 0
+      keys(ruleSettings).length > 0
         ? (): void => {
             setVariantModalInfo({
               activated: true,

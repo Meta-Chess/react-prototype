@@ -1,7 +1,7 @@
 import { FutureVariant } from "game/variants";
 import { RuleNamesWithParams, RuleParamValues } from "game/CompactRules";
 import { RuleName } from "game";
-import { typecastKeys } from "utilities";
+import { keys } from "utilities";
 
 export const getGameOptionParamsForVariant = (
   variant: FutureVariant,
@@ -11,7 +11,7 @@ export const getGameOptionParamsForVariant = (
     ruleName,
     Object.assign(
       {},
-      ...typecastKeys(ruleNamesWithParams?.[ruleName])
+      ...keys(ruleNamesWithParams?.[ruleName])
         .map((paramName) => ({
           [paramName]: ruleNamesWithParams?.[ruleName]?.[paramName],
         }))

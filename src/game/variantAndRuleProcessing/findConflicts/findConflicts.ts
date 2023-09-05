@@ -9,14 +9,14 @@ import { boardConflicts } from "./boardConflicts";
 import { rollingFormatConflicts } from "./rollingFormatConflicts";
 import { randomFormatConflicts } from "./randomFormatConflicts";
 import { defaultMessage } from "./generalConflicts";
-import { typecastKeys } from "utilities";
+import { keys } from "utilities";
 
 export function processSelectedVariantCatagories(
   selectedVariants: FutureVariantName[]
 ): VariantCatagories {
   return Object.assign(
     {},
-    ...typecastKeys(VARIANT_CATAGORIES).map((group) => ({
+    ...keys(VARIANT_CATAGORIES).map((group) => ({
       [group]: selectedVariants.filter((variant) =>
         VARIANT_CATAGORIES[group].includes(variant)
       ),

@@ -1,5 +1,5 @@
 import { Colors } from "primitives";
-import { typecastKeys } from "utilities/typecastKeys";
+import { keys } from "utilities/keys";
 
 export type TraitName = keyof typeof traitInfo;
 
@@ -39,4 +39,4 @@ export const traitOrder: TraitName[] = [
   "Simulation",
 ];
 
-export const allTraitNames = typecastKeys<TraitName>(traitInfo);
+export const allTraitNames = keys<TraitName>(traitInfo);

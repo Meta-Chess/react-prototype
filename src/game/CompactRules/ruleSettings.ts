@@ -2,7 +2,7 @@ import { ParamName, ParamSetting, ParamSettingType } from "./RuleSettingTypes";
 import { PieceName } from "game/types";
 import { RuleName } from ".";
 import { propertyOf } from "lodash";
-import { typecastKeys } from "utilities/typecastKeys";
+import { keys } from "utilities/keys";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -169,7 +169,7 @@ class AllRuleSettings implements AllRuleSettingsProto {
     const settings = AllRuleSettings._getDefaultRuleSettings(rule);
     if (!settings) return undefined as any;
     const getSetting = propertyOf(settings);
-    return typecastKeys(settings).reduce(
+    return keys(settings).reduce(
       (acc, param) => ({
         ...acc,
         [param]: getSetting(`${param}.defaultValue`),

@@ -4,7 +4,7 @@ import { SFC } from "primitives";
 import { GameOptions } from "game";
 import { SelectInput } from "ui/Forms";
 import { FormatName, formats } from "game/formats";
-import { typecastKeys } from "utilities";
+import { keys } from "utilities";
 import { FormatIcon } from "components/shared";
 import { Text, Colors } from "primitives";
 import { CollapsableCard } from "ui";
@@ -21,7 +21,7 @@ const FormatCard: SFC<Props> = ({ gameOptions, setGameOptions, style }) => {
   );
 
   const { formatOptions, currentFormatOption } = useMemo(() => {
-    const formatOptions = typecastKeys(formats).flatMap((formatName) => [
+    const formatOptions = keys(formats).flatMap((formatName) => [
       {
         label: formats[formatName].title,
         value: formatName,

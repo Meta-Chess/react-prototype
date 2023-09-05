@@ -1,6 +1,6 @@
 import type { RuleName } from "game";
 import type { RuleNamesWithParams } from "game/CompactRules";
-import { typecastKeys } from "utilities";
+import { keys } from "utilities";
 import { injectParamValue } from "../optionsChangeRuleParam";
 
 export const overrideRuleParamsWithRuleParams = ({
@@ -13,9 +13,9 @@ export const overrideRuleParamsWithRuleParams = ({
   forRules: RuleName[];
 }): RuleNamesWithParams => {
   if (!overrideRuleParams) return baseRuleParams;
-  typecastKeys(overrideRuleParams).forEach((ruleName) => {
+  keys(overrideRuleParams).forEach((ruleName) => {
     if (forRules.includes(ruleName)) {
-      typecastKeys(overrideRuleParams[ruleName]).forEach((paramName) => {
+      keys(overrideRuleParams[ruleName]).forEach((paramName) => {
         baseRuleParams = injectParamValue({
           ruleName,
           paramName,

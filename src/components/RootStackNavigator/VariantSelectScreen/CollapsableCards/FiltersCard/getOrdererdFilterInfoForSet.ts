@@ -1,6 +1,6 @@
 import { futureVariants } from "game";
 import { allTraitNames, TraitName } from "game/variants/traitInfo";
-import { typecastKeys } from "utilities/typecastKeys";
+import { keys } from "utilities/keys";
 import type { TraitFilter, ComplexityFilter, Filter } from "./filters";
 import { traitOrder } from "game/variants/traitInfo";
 
@@ -21,7 +21,7 @@ export function getOrderedFilterInfoForSet(): FilterInfoForSet {
   } = Object.assign({}, ...allTraitNames.map((name) => ({ [name]: 0 })));
   const complexityCounter: { [key in number]: number } = {};
 
-  typecastKeys(futureVariants)
+  keys(futureVariants)
     .filter((variantName) => futureVariants[variantName].implemented)
     .map((variantName) => futureVariants[variantName])
     .forEach((variant) => {
@@ -33,7 +33,7 @@ export function getOrderedFilterInfoForSet(): FilterInfoForSet {
     });
 
   return {
-    trait: typecastKeys(traitCounter)
+    trait: keys(traitCounter)
       .sort((t1, t2) => (traitOrder.indexOf(t1) > traitOrder.indexOf(t2) ? 1 : -1))
       .map((trait) => ({
         value: trait,
