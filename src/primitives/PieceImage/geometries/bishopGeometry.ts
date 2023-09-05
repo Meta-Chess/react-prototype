@@ -1,5 +1,5 @@
 import { LatheGeometry, Vector2 } from "three";
-import { bishopBase } from "./shared";
+import { bishopBase } from "./parts";
 
 const bishopPoints = [...bishopBase];
 for (let i = 4; i < 21; i++) {

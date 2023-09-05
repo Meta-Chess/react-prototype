@@ -1,12 +1,7 @@
 import { LatheGeometry } from "three";
 import { mergeBufferGeometries } from "three/examples/jsm/utils/BufferGeometryUtils";
-import {
-  bishopBase,
-  horseNeckAndHead,
-  buildShape,
-  buildBeveledExtrudedGeometry,
-  getMinOrMaxY,
-} from "./shared";
+import { bishopBase, horseNeckAndHead } from "./parts";
+import { buildShape, buildBeveledExtrudedGeometry, getMinOrMaxY } from "./utilities";
 
 const bishopBaseGeometry = new LatheGeometry(bishopBase, 20).toNonIndexed();
 

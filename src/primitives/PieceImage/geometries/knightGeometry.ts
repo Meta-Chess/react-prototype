@@ -1,7 +1,8 @@
 import { LatheGeometry, Vector2 } from "three";
 import { mergeBufferGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import type { ShapePoints } from "./shared";
-import { horseNeckAndHead, buildShape, buildBeveledExtrudedGeometry } from "./shared";
+import type { ShapePoints } from "./parts";
+import { horseNeckAndHead } from "./parts";
+import { buildShape, buildBeveledExtrudedGeometry } from "./utilities";
 
 const horse = [
   ...horseNeckAndHead,

@@ -1,12 +1,7 @@
 import { LatheGeometry } from "three";
 import { mergeBufferGeometries } from "three/examples/jsm/utils/BufferGeometryUtils";
-import {
-  rook,
-  horseNeckAndHead,
-  buildShape,
-  buildBeveledExtrudedGeometry,
-  getMinOrMaxY,
-} from "./shared";
+import { rook, horseNeckAndHead } from "./parts";
+import { buildShape, buildBeveledExtrudedGeometry, getMinOrMaxY } from "./utilities";
 
 const rookGeometry = new LatheGeometry(rook.points, 20).toNonIndexed();
 
