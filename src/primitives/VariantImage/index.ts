@@ -34,6 +34,7 @@ import squareBoardImage from "./squareBoardImage.png";
 import circleBoardImage from "./circleBoardImage.png";
 import hexBoardImage from "./hexBoardImage.png";
 import pushImage from "./pushImage.png";
+import forcedEnPassantImage from "./forcedEnPassantImage.png";
 
 export { threeCheckImage };
 
@@ -106,3 +107,5 @@ export { circleBoardImage };
 export { hexBoardImage };
 
 export { pushImage };
+
+export { forcedEnPassantImage };

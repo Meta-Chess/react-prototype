@@ -38,5 +38,6 @@ export { grandChess } from "./grandChess";
 export { clearCastlingTokens } from "./clearCastlingTokens";
 export { push } from "./push";
 export { capablancaChess } from "./capablancaChess";
+export { forcedEnPassant } from "./forcedEnPassant";
 
 // Note: Only rules should be exported from this file
