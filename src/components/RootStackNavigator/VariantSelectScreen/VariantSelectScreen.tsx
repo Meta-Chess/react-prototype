@@ -8,7 +8,6 @@ import {
   FutureVariantName,
   GameOptions,
 } from "game";
-import { TraitName } from "game/variants/traitInfo";
 import { Screens, useGoBackOrToStartScreen, useNavigation, useRoute } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
@@ -30,6 +29,7 @@ import { randomVariants } from "game/formats/randomVariants";
 import { getConflictLevel } from "./getConflictLevel";
 import { VariantModal, VariantModalInfo } from "./Modals/VariantModal";
 import { HelpMenu } from "components/shared";
+import type { Filter } from "./CollapsableCards/FiltersCard/filters";
 
 const VariantSelectScreen: FC = () => {
   const playWithFriends = useRoute<Screens.VariantSelectScreen>().params?.playWithFriends;
@@ -42,7 +42,7 @@ const VariantSelectScreen: FC = () => {
     online: playWithFriends,
   });
 
-  const [activeFilters, setActiveFilters] = useState<TraitName[]>([]);
+  const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
   const displayVariants: FutureVariantName[] =
     getFilteredVariantsInDisplayOrder(activeFilters);
 
@@ -145,6 +145,8 @@ const VariantSelectScreen: FC = () => {
           displayVariants={displayVariants}
           selectedVariants={selectedVariantsForFormat}
           setSelectedVariants={setSelectedVariantsForFormat}
+          activeFilters={activeFilters}
+          setActiveFilters={setActiveFilters}
           conflictLevel={conflictLevel}
           setVariantModalInfo={setVariantModalInfo}
           ruleNamesWithParams={gameOptions.ruleNamesWithParams}

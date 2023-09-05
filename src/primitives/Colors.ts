@@ -3,6 +3,7 @@ import Color from "color";
 export const Colors = {
   WHITE: Color("#FFFFFF"),
   BLACK: Color("#161616"),
+  RED: Color("#FF0000"),
   TRANSPARENT: Color().fade(1),
   TEXT: {
     DARK: Color("#212121"),

@@ -9,8 +9,10 @@ import { doGameOptionsModifyVariant } from "game/variantAndRuleProcessing";
 import { IconButton } from "ui/Buttons/IconButton";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import { GiNinjaStar } from "react-icons/gi";
+import { FcClearFilters } from "react-icons/fc";
 import { useUserSettings } from "components/shared";
 import { useCalculatedDimensions } from "components/shared/useCalculatedDimensions";
+import type { Filter } from "./CollapsableCards/FiltersCard/filters";
 import styled from "styled-components/native";
 
 const TILE_SIZE = 200;
@@ -19,6 +21,8 @@ interface Props {
   displayVariants: FutureVariantName[];
   selectedVariants: FutureVariantName[];
   setSelectedVariants: (x: FutureVariantName[]) => void;
+  activeFilters: Filter[];
+  setActiveFilters: (x: Filter[]) => void;
   conflictLevel: ConflictLevel | undefined;
   setVariantModalInfo: (x: VariantModalInfo) => void;
   ruleNamesWithParams?: RuleNamesWithParams;
@@ -29,6 +33,8 @@ const VariantCardGrid: SFC<Props> = ({
   displayVariants,
   selectedVariants,
   setSelectedVariants,
+  activeFilters,
+  setActiveFilters,
   conflictLevel,
   setVariantModalInfo,
   ruleNamesWithParams = {},
@@ -95,7 +101,7 @@ const VariantCardGrid: SFC<Props> = ({
         </View>
       </ScrollView>
 
-      <FloatingButtonContainer>
+      <DetailViewButtonContainer>
         <IconButton
           size={30}
           color={Colors.WHITE}
@@ -106,21 +112,42 @@ const VariantCardGrid: SFC<Props> = ({
           }}
           onLongPress={(): void => setZenMode(!zenMode)}
         />
-      </FloatingButtonContainer>
+      </DetailViewButtonContainer>
+      {activeFilters.length !== 0 && (
+        <ActiveFilterButtonContainer>
+          <IconButton
+            size={20}
+            color={Colors.WHITE}
+            Icon={FcClearFilters}
+            onPress={(): void => {
+              setActiveFilters([]);
+            }}
+          />
+        </ActiveFilterButtonContainer>
+      )}
     </View>
   );
 };
 
 const FloatingButtonContainer = styled(View)`
   position: absolute;
-  align-self: center;
   align-items: center;
   justify-content: center;
   bottom: 20px;
-  width: 70px;
-  height: 40px;
   background-color: ${Colors.DARKISH.toString()};
   border-radius: 10px;
+`;
+
+const DetailViewButtonContainer = styled(FloatingButtonContainer)`
+  align-self: center;
+  width: 70px;
+  height: 40px;
+`;
+
+const ActiveFilterButtonContainer = styled(FloatingButtonContainer)`
+  right: 20px;
+  width: 40px;
+  height: 40px;
 `;
 
 export { VariantCardGrid };

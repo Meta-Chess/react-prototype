@@ -1,28 +1,57 @@
 import React from "react";
 import { Colors, SFC, Text } from "primitives";
 import { TouchableOpacity, View } from "react-native";
-import { traitInfo, TraitName } from "game/variants/traitInfo";
+import { traitInfo } from "game/variants/traitInfo";
 import styled from "styled-components/native";
 import Color from "color";
+import type { FilterOption, FilterType, FilterValue, TraitFilter } from "./filters";
+import { StarIcon } from "primitives/icons";
+import { TextIcon } from "ui";
 
-interface TraitFilterProps {
-  trait: TraitName;
-  numberOfVariantsWithTrait: number;
+interface FilterButtonProps {
+  filterType: FilterType;
+  filterValue: FilterValue;
+  filterCount: number;
   selected: boolean;
   onPress: () => void;
+  selectedFilterOption?: FilterOption;
 }
 
-const TraitFilter: SFC<TraitFilterProps> = ({
-  trait,
-  numberOfVariantsWithTrait,
+const getButtonColor = (filterType: FilterType, filterValue: FilterValue): Color => {
+  switch (filterType) {
+    case "trait":
+      return traitInfo[filterValue as TraitFilter["value"]].color;
+    case "complexity":
+      return Colors.MCHESS_BLUE;
+  }
+};
+
+const getButtonSizing = (
+  filterType: FilterType
+): {
+  labelPadding: number;
+  counterPadding: number;
+  verticalPadding: number;
+} => {
+  switch (filterType) {
+    case "trait":
+      return { labelPadding: 4, counterPadding: 4, verticalPadding: 1 };
+    case "complexity":
+      return { labelPadding: 5, counterPadding: 4, verticalPadding: 4 };
+  }
+};
+
+const FilterButton: SFC<FilterButtonProps> = ({
+  filterType,
+  filterValue,
+  filterCount,
   style,
   selected,
+  selectedFilterOption,
   onPress,
 }) => {
-  const color = traitInfo[trait].color.fade(0.4);
-  const labelPadding = 4;
-  const counterPadding = 4;
-  const verticalPadding = 1;
+  const color = getButtonColor(filterType, filterValue).fade(0.4);
+  const { labelPadding, counterPadding, verticalPadding } = getButtonSizing(filterType);
   return (
     <TouchableLabel
       labelPadding={labelPadding}
@@ -31,11 +60,16 @@ const TraitFilter: SFC<TraitFilterProps> = ({
       style={style}
       color={color}
       selected={selected}
+      selectedBorderColor={selectedFilterOption === "exclude" ? Colors.RED : Colors.WHITE}
       onPress={onPress}
     >
       <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()} selectable={false}>
-        {trait}
+        {filterValue.toString()}
       </Text>
+
+      {filterType === "complexity" && (
+        <TextIcon Icon={StarIcon} style={{ marginTop: 1 }} />
+      )}
       <CountContainer
         labelPadding={labelPadding}
         counterPadding={counterPadding}
@@ -43,7 +77,7 @@ const TraitFilter: SFC<TraitFilterProps> = ({
         selected={selected}
       >
         <Text cat={"BodyXS"} color={Colors.TEXT.LIGHT.toString()} selectable={false}>
-          {numberOfVariantsWithTrait.toString()}
+          {filterCount.toString()}
         </Text>
       </CountContainer>
     </TouchableLabel>
@@ -56,6 +90,7 @@ const TouchableLabel = styled(TouchableOpacity)<{
   counterPadding: number;
   verticalPadding: number;
   selected: boolean;
+  selectedBorderColor: Color;
 }>`
   flex-direction: row;
   border-radius: 4px;
@@ -65,7 +100,7 @@ const TouchableLabel = styled(TouchableOpacity)<{
     selected ? verticalPadding - 1 : verticalPadding}px;
   background-color: ${({ color }): string => color.string()};
   border-width: ${({ selected }): number => (selected ? 1 : 0)}px;
-  border-color: ${Colors.GREY.toString()};
+  border-color: ${({ selectedBorderColor }): string => selectedBorderColor.string()};
   overflow: hidden;
 `;
 
@@ -84,4 +119,4 @@ const CountContainer = styled(View)<{
   background-color: ${Colors.BLACK.fade(0.75).toString()};
 `;
 
-export { TraitFilter };
+export { FilterButton };
