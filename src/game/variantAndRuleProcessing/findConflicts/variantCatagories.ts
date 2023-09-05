@@ -17,7 +17,7 @@ export const VARIANT_CATAGORIES: VariantCatagories = {
   boardHasPoles: ["polar", "spherical"],
   boardCantBeLong: ["hex"],
   boardIsLong: BOARD_IS_LONG,
-  mutuallyExclusiveBoardSetups: ["grandChess", "hex"],
+  mutuallyExclusiveBoardSetups: ["capablancaChess", "grandChess", "hex"],
   noFork: ["noFork"],
   thatCanMakeNoForkStalemate: ["fatigue"],
   combinatoricHexCylinderPull: ["hex", "cylindrical", "pull"],
