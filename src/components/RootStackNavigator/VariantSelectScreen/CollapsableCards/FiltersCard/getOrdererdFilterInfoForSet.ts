@@ -40,10 +40,11 @@ export function getOrderedFilterInfoForSet(): FilterInfoForSet {
         count: traitCounter[trait] ?? 0,
       })),
     complexity: Object.keys(complexityCounter)
+      .map((complexity) => Number(complexity))
       .sort((c1, c2) => (c1 > c2 ? 1 : -1))
       .map((complexity) => ({
-        value: Number(complexity),
-        count: complexityCounter[Number(complexity)],
+        value: complexity,
+        count: complexityCounter[complexity],
       })),
   };
 }
