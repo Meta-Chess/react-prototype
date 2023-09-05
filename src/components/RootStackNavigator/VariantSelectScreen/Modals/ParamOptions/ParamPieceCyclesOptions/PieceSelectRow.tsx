@@ -23,7 +23,14 @@ export const PieceSelectRow: SFC<Props> = ({
 
   return (
     <View
-      style={[style, { flex: 1, flexDirection: "row", justifyContent: "space-evenly" }]}
+      style={[
+        style,
+        {
+          flex: 1,
+          flexDirection: "row",
+          flexWrap: "wrap",
+        },
+      ]}
     >
       {Object.values([...piecesToDisplay].reverse())
         .filter((name) => name !== undefined)
@@ -37,6 +44,7 @@ export const PieceSelectRow: SFC<Props> = ({
               onPress={onPieceButtonPress(name, optionPieceCycles, setOptionPieceCycles)}
               disabled={pieceUsed}
               pieceName={name}
+              style={{ margin: 2 }}
               size={40}
             />
           );

@@ -6,6 +6,7 @@ import { Conflict } from "./Conflict";
 import { checkConflicts } from "./checkConflicts";
 import { specialConflicts } from "./specialConflicts";
 import { boardConflicts } from "./boardConflicts";
+import { setupConflicts } from "./setupConflicts";
 import { rollingFormatConflicts } from "./rollingFormatConflicts";
 import { randomFormatConflicts } from "./randomFormatConflicts";
 import { defaultMessage } from "./generalConflicts";
@@ -40,6 +41,7 @@ export const findConflicts = (
   const checkConflictsList = checkConflicts(selectedVariantCatagories, selectedRules);
   const specialConflictsList = specialConflicts(selectedVariantCatagories);
   const boardConflictsList = boardConflicts(selectedVariantCatagories);
+  const setupConflictsList = setupConflicts(selectedVariantCatagories);
 
   switch (format) {
     case "randomVariants": {
@@ -65,5 +67,10 @@ export const findConflicts = (
     0
   )
     return [defaultMessage];
-  return [...checkConflictsList, ...specialConflictsList, ...boardConflictsList];
+  return [
+    ...checkConflictsList,
+    ...specialConflictsList,
+    ...boardConflictsList,
+    ...setupConflictsList,
+  ];
 };

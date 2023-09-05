@@ -10,6 +10,8 @@ import {
   pawnGeometry,
   queenGeometry,
   rookGeometry,
+  bishopKnightGeometry,
+  rookKnightGeometry,
 } from "./geometries";
 import { InverseProjection } from "primitives";
 import { ThreeEvent } from "@react-three/fiber";
@@ -62,6 +64,10 @@ const PieceImage3D: FC<Props> = ({
       ? rookGeometry
       : type === PieceName.Queen
       ? queenGeometry
+      : type === PieceName.BishopKnight
+      ? bishopKnightGeometry
+      : type === PieceName.RookKnight
+      ? rookKnightGeometry
       : kingGeometry;
 
   return (
