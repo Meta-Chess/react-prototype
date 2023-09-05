@@ -59,7 +59,7 @@ export const castling: ParameterRule<"castling"> = ({
       ({ piece: passivePiece, direction, activePieceScanPath }) => {
         const passiveDestinations = game.board.go({
           from: activePiece.location,
-          path: range(0, activePieceSteps - 1).map((_step) => direction),
+          path: range(0, activePieceSteps - 1).map(() => direction),
         });
 
         return passiveDestinations.flatMap((passiveDestination) =>
@@ -69,7 +69,7 @@ export const castling: ParameterRule<"castling"> = ({
             .filter((activeDestination) =>
               activePieceScanPath.includes(activeDestination.location)
             )
-            .map((_activeDestination) => ({
+            .map(() => ({
               passivePiece,
               passiveDestination,
               activePath: new Path(
