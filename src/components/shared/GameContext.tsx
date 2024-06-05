@@ -1,10 +1,10 @@
 import React, {
   createContext,
   FC,
+  useCallback,
   useEffect,
   useMemo,
   useState,
-  useCallback,
 } from "react";
 import { Renderer } from "game/Renderer";
 import { GameOptions } from "game/types";
@@ -12,6 +12,7 @@ import { GameMaster } from "game/GameMaster";
 import { OnlineGameMaster } from "game/OnlineGameMaster";
 import axios from "axios";
 import { Screens, useNavigation, useRoute } from "navigation";
+import { startAutomaticPlay } from "game";
 
 export const GameContext = createContext<{ gameMaster?: GameMaster }>({});
 
@@ -31,6 +32,7 @@ export const SimpleGameProvider: FC<SimpleProps> = ({ children, gameMaster }) =>
 
 interface Props {
   gameOptions?: GameOptions;
+  autoPlay?: boolean;
   roomId?: string;
 }
 
@@ -38,6 +40,7 @@ interface Props {
 export const GameProvider: FC<Props> = ({
   children,
   gameOptions,
+  autoPlay = false,
   roomId: receivedRoomId,
 }) => {
   const navigation = useNavigation();
@@ -58,6 +61,10 @@ export const GameProvider: FC<Props> = ({
     if (hasGameMaster && gameMaster instanceof OnlineGameMaster)
       setRoomId(gameMaster?.roomId);
   }, [hasGameMaster]);
+
+  useEffect(() => {
+    if (autoPlay && gameMaster) return startAutomaticPlay(gameMaster);
+  }, [autoPlay, gameMaster]);
 
   useEffect((): void => {
     if (hasGameMaster) return;

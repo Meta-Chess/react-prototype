@@ -38,13 +38,16 @@ const StartScreen: FC = () => {
     setLastViewedUpdateOn(new Date(Date.now()));
   }, []);
 
-  const [gameOptions] = useState<GameOptions>(calculateGameOptions({}, ["mobius"]));
+  const [gameOptions] = useState<GameOptions>(
+    calculateGameOptions(
+      { checkEnabled: false, time: undefined, online: false, flipBoard: false },
+      ["mobius"]
+    )
+  );
 
   return (
     <>
-      <GameProvider
-        gameOptions={{ ...gameOptions, time: undefined, online: false, flipBoard: false }}
-      >
+      <GameProvider gameOptions={gameOptions} autoPlay>
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
