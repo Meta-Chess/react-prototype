@@ -8,7 +8,7 @@ export const ChangeViewsReminderModal: FC = () => {
   const modalOpacity = useRef(new Animated.Value(0.75)).current;
   useEffect(() => {
     Animated.sequence([
-      Animated.delay(500),
+      Animated.delay(1500),
       Animated.timing(modalOpacity, {
         toValue: 0,
         duration: 1500,

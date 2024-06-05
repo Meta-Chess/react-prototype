@@ -21,9 +21,9 @@ export class AutomaticGameController {
     private gameMaster: GameMaster,
     private onEndGame: () => void,
     private options: AutomaticGameControllerOptions = {
-      selectDelayMillis: 100,
-      moveDelayMillis: 600,
-      resetDelayMillis: 5000,
+      selectDelayMillis: 300,
+      moveDelayMillis: 700,
+      resetDelayMillis: 4000,
     }
   ) {
     autoBind(this);

@@ -28,9 +28,13 @@ export class SlightlyImprovedRandomMovePlayer implements AutomaticPlayer {
       const captureValue =
         move.captures
           ?.flatMap((capture) => capture.pieceIds)
-          .map((pieceId) => this.gameMaster.game.board.getPiece(pieceId)?.name)
+          .map((pieceId) => this.gameMaster.game.board.getPiece(pieceId))
           .filter(isPresent)
-          .map((pieceName) => PIECE_VALUES[pieceName])
+          .map(
+            // TODO: Check if this is accounting for self-capture in atomic correctly
+            (piece) =>
+              PIECE_VALUES[piece.name] * (piece.owner === this.player.name ? -1 : 1)
+          )
           .reduce((v, acc) => acc + v, 0) ?? 0;
       return captureValue + Math.random() / 10;
     });
@@ -40,7 +44,7 @@ export class SlightlyImprovedRandomMovePlayer implements AutomaticPlayer {
 const PIECE_VALUES: { [name in PieceName]: number } = {
   [PieceName.Pawn]: 1,
   [PieceName.Rook]: 5,
-  [PieceName.King]: 100,
+  [PieceName.King]: 1000,
   [PieceName.Queen]: 8,
   [PieceName.Bishop]: 3,
   [PieceName.Knight]: 3,
