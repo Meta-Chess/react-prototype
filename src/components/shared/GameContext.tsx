@@ -63,7 +63,10 @@ export const GameProvider: FC<Props> = ({
   }, [hasGameMaster]);
 
   useEffect(() => {
-    if (autoPlay && gameMaster) return startAutomaticPlay(gameMaster);
+    if (autoPlay && gameMaster)
+      return startAutomaticPlay(gameMaster, () =>
+        setGameMasterToNewGame({ renderer, setGameMaster, roomId, gameOptions })
+      );
   }, [autoPlay, gameMaster]);
 
   useEffect((): void => {
@@ -92,7 +95,7 @@ export const GameProvider: FC<Props> = ({
           : undefined,
       });
     }
-  }, [gameOptions, roomId]);
+  }, [hasGameMaster, gameOptions, roomId]);
 
   useEffect((): (() => void) => {
     return (): void => {
