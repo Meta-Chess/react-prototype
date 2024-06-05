@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { Colors, DISCORD_URL, DiscordIcon, MChessLogo, TrackingPixel } from "primitives";
-import { calculateGameOptions, GameOptions } from "game";
+import { calculateGameOptions } from "game";
 import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
 import {
@@ -17,6 +17,7 @@ import { IconButton } from "ui/Buttons/IconButton";
 import { UpdateLog } from "./UpdateLog";
 import { recentUpdates } from "./UpdateLog/updates";
 import { useLogin } from "./useLogin";
+import { randomChoice } from "utilities";
 
 const StartScreen: FC = () => {
   useLogin();
@@ -39,16 +40,27 @@ const StartScreen: FC = () => {
     setLastViewedUpdateOn(new Date(Date.now()));
   }, []);
 
-  const [gameOptions] = useState<GameOptions>(
-    calculateGameOptions(
-      { checkEnabled: false, time: undefined, online: false, flipBoard: false },
-      ["mobius"]
-    )
+  const generateGameOptions = useCallback(
+    () =>
+      calculateGameOptions(
+        { checkEnabled: false, time: undefined, online: false, flipBoard: false },
+        [
+          randomChoice([
+            "mobius",
+            "spherical",
+            "cylindrical",
+            "hex",
+            "atomic",
+            "toroidal",
+          ]),
+        ]
+      ),
+    []
   );
 
   return (
     <>
-      <GameProvider gameOptions={gameOptions} autoPlay>
+      <GameProvider generateGameOptions={generateGameOptions} autoPlay>
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
@@ -63,7 +75,6 @@ const StartScreen: FC = () => {
               primaryComponent={
                 <>
                   <StaticBoardViewProvider
-                    boardVisualisation={"mobius"}
                     autoRotateCamera={true}
                     initialCameraPosition={[0, 10, 35]}
                     backgroundColor={Colors.DARKEST}
@@ -89,10 +100,7 @@ const StartScreen: FC = () => {
               }}
             />
 
-            <HelpMenu
-              context={{ gameOptions }}
-              openChangeLog={(): void => setShowUpdateLog(true)}
-            />
+            <HelpMenu openChangeLog={(): void => setShowUpdateLog(true)} />
           </ErrorBoundary>
         </ScrollView>
         {showUpdateLog && UPDATE_LOG_ENABLED && (

@@ -32,6 +32,7 @@ export const SimpleGameProvider: FC<SimpleProps> = ({ children, gameMaster }) =>
 
 interface Props {
   gameOptions?: GameOptions;
+  generateGameOptions?: () => GameOptions;
   autoPlay?: boolean;
   roomId?: string;
 }
@@ -39,7 +40,8 @@ interface Props {
 // TODO: Clean up
 export const GameProvider: FC<Props> = ({
   children,
-  gameOptions,
+  generateGameOptions,
+  gameOptions = generateGameOptions?.(),
   autoPlay = false,
   roomId: receivedRoomId,
 }) => {
@@ -65,7 +67,12 @@ export const GameProvider: FC<Props> = ({
   useEffect(() => {
     if (autoPlay && gameMaster)
       return startAutomaticPlay(gameMaster, () =>
-        setGameMasterToNewGame({ renderer, setGameMaster, roomId, gameOptions })
+        setGameMasterToNewGame({
+          renderer,
+          setGameMaster,
+          roomId,
+          gameOptions: generateGameOptions?.() ?? gameOptions,
+        })
       );
   }, [autoPlay, gameMaster]);
 
