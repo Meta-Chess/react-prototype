@@ -35,8 +35,18 @@ export class SlightlyImprovedRandomMovePlayer implements AutomaticPlayer {
             (piece) =>
               PIECE_VALUES[piece.name] * (piece.owner === this.player.name ? -1 : 1)
           )
-          .reduce((v, acc) => acc + v, 0) ?? 0;
-      return captureValue + Math.random() / 10;
+          .reduce((acc, v) => acc + v, 0) ?? 0;
+      const pawnForwardsValue = move.pieceDeltas
+        .filter(
+          ({ pieceId }) =>
+            this.gameMaster.game.board.getPiece(pieceId)?.name === PieceName.Pawn
+        )
+        .map(({ path }) => path.getLength() * 0.06)
+        .reduce((acc, v) => acc + v, 0);
+      const promotionValue = move.pieceDeltas
+        .map((delta) => (delta.promoteTo ? PIECE_VALUES[delta.promoteTo] : 0))
+        .reduce((acc, v) => acc + v, 0);
+      return captureValue + pawnForwardsValue + promotionValue + Math.random() / 10;
     });
   }
 }
