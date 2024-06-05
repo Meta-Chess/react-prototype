@@ -2,13 +2,14 @@ import { GameMaster } from "game/GameMaster";
 import { PlayerName } from "game/types";
 import { Move } from "game/Move";
 import { AutomaticPlayer } from "./AutomaticPlayer";
-import { RandomMovePlayer } from "./RandomMovePlayer";
 import autoBind from "auto-bind";
 import { doAsync } from "utilities";
+import { SlightlyImprovedRandomMovePlayer } from "./SlightlyImprovedRandomMovePlayer";
 
 interface AutomaticGameControllerOptions {
   selectDelayMillis: number;
   moveDelayMillis: number;
+  resetDelayMillis: number;
 }
 
 export class AutomaticGameController {
@@ -18,14 +19,19 @@ export class AutomaticGameController {
 
   constructor(
     private gameMaster: GameMaster,
+    private onEndGame: () => void,
     private options: AutomaticGameControllerOptions = {
-      selectDelayMillis: 100,
-      moveDelayMillis: 600,
+      selectDelayMillis: 300,
+      moveDelayMillis: 700,
+      resetDelayMillis: 4000,
     }
   ) {
     autoBind(this);
     gameMaster.game.getPlayers().forEach((player) => {
-      this.automaticPlayers[player.name] = new RandomMovePlayer(gameMaster, player);
+      this.automaticPlayers[player.name] = new SlightlyImprovedRandomMovePlayer(
+        gameMaster,
+        player
+      );
     });
   }
 
@@ -38,6 +44,11 @@ export class AutomaticGameController {
   }
 
   private async selectNextPiece(): Promise<void> {
+    if (this.gameMaster.gameOver) {
+      this.timer = setTimeout(this.onEndGame, this.options.resetDelayMillis);
+      return;
+    }
+
     const currentPlayer = this.gameMaster.game.getCurrentPlayer();
     this.nextMove = await doAsync(
       this.automaticPlayers[currentPlayer.name]?.getNextMove
