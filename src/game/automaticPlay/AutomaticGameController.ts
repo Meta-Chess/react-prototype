@@ -2,9 +2,9 @@ import { GameMaster } from "game/GameMaster";
 import { PlayerName } from "game/types";
 import { Move } from "game/Move";
 import { AutomaticPlayer } from "./AutomaticPlayer";
-import { RandomMovePlayer } from "./RandomMovePlayer";
 import autoBind from "auto-bind";
 import { doAsync } from "utilities";
+import { SlightlyImprovedRandomMovePlayer } from "./SlightlyImprovedRandomMovePlayer";
 
 interface AutomaticGameControllerOptions {
   selectDelayMillis: number;
@@ -25,7 +25,10 @@ export class AutomaticGameController {
   ) {
     autoBind(this);
     gameMaster.game.getPlayers().forEach((player) => {
-      this.automaticPlayers[player.name] = new RandomMovePlayer(gameMaster, player);
+      this.automaticPlayers[player.name] = new SlightlyImprovedRandomMovePlayer(
+        gameMaster,
+        player
+      );
     });
   }
 

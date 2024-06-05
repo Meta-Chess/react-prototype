@@ -1,5 +1,5 @@
 import { Move } from "game/Move";
 
 export interface AutomaticPlayer {
-  getNextMove: () => Move;
+  getNextMove: () => Move | undefined;
 }

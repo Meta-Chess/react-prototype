@@ -1,0 +1,49 @@
+import autoBind from "auto-bind";
+import { isPresent } from "utilities";
+import { GameMaster } from "game/GameMaster";
+import { Move } from "game/Move";
+import { Pather } from "game/Pather";
+import { Player } from "game/Player";
+import { AutomaticPlayer } from "./AutomaticPlayer";
+import { PieceName } from "game/types";
+import { maxBy } from "lodash";
+
+export class SlightlyImprovedRandomMovePlayer implements AutomaticPlayer {
+  constructor(private gameMaster: GameMaster, private player: Player) {
+    autoBind(this);
+  }
+
+  getNextMove(): Move | undefined {
+    const pieces = this.gameMaster.game.board.piecesBelongingTo(this.player.name);
+    const moves: Move[] = pieces.flatMap((pieceToMove) =>
+      new Pather(
+        this.gameMaster.game,
+        this.gameMaster.gameClones,
+        pieceToMove,
+        this.gameMaster.interrupt
+      ).findPaths()
+    );
+
+    return maxBy(moves, (move) => {
+      const captureValue =
+        move.captures
+          ?.flatMap((capture) => capture.pieceIds)
+          .map((pieceId) => this.gameMaster.game.board.getPiece(pieceId)?.name)
+          .filter(isPresent)
+          .map((pieceName) => PIECE_VALUES[pieceName])
+          .reduce((v, acc) => acc + v, 0) ?? 0;
+      return captureValue + Math.random() / 10;
+    });
+  }
+}
+
+const PIECE_VALUES: { [name in PieceName]: number } = {
+  [PieceName.Pawn]: 1,
+  [PieceName.Rook]: 5,
+  [PieceName.King]: 100,
+  [PieceName.Queen]: 8,
+  [PieceName.Bishop]: 3,
+  [PieceName.Knight]: 3,
+  [PieceName.BishopKnight]: 5,
+  [PieceName.RookKnight]: 6,
+};
