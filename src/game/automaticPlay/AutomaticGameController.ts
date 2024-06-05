@@ -9,6 +9,7 @@ import { SlightlyImprovedRandomMovePlayer } from "./SlightlyImprovedRandomMovePl
 interface AutomaticGameControllerOptions {
   selectDelayMillis: number;
   moveDelayMillis: number;
+  resetDelayMillis: number;
 }
 
 export class AutomaticGameController {
@@ -18,9 +19,11 @@ export class AutomaticGameController {
 
   constructor(
     private gameMaster: GameMaster,
+    private onEndGame: () => void,
     private options: AutomaticGameControllerOptions = {
       selectDelayMillis: 100,
       moveDelayMillis: 600,
+      resetDelayMillis: 5000,
     }
   ) {
     autoBind(this);
@@ -41,6 +44,11 @@ export class AutomaticGameController {
   }
 
   private async selectNextPiece(): Promise<void> {
+    if (this.gameMaster.gameOver) {
+      this.timer = setTimeout(this.onEndGame, this.options.resetDelayMillis);
+      return;
+    }
+
     const currentPlayer = this.gameMaster.game.getCurrentPlayer();
     this.nextMove = await doAsync(
       this.automaticPlayers[currentPlayer.name]?.getNextMove
