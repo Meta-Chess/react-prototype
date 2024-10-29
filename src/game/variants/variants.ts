@@ -172,7 +172,8 @@ export type FutureVariantName =
   | "zoneOfControl"
   | "push"
   | "forcedEnPassant"
-  | "doubleTurn";
+  | "doubleTurn"
+  | "nimbus";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   doubleTurn: {
@@ -182,6 +183,14 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     implemented: true,
     ruleNames: ["doubleTurn"],
     complexity: 2,
+  },
+  nimbus: {
+    title: "Nimbus",
+    shortDescription: "A game by xyz.",
+    traits: ["Board"],
+    implemented: true,
+    ruleNames: ["nimbus"],
+    complexity: 5,
   },
   grandChess: {
     title: "Grand",

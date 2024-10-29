@@ -40,5 +40,6 @@ export { push } from "./push";
 export { capablancaChess } from "./capablancaChess";
 export { forcedEnPassant } from "./forcedEnPassant";
 export { doubleTurn } from "./doubleTurn";
+export { nimbus } from "./nimbus";
 
 // Note: Only rules should be exported from this file
