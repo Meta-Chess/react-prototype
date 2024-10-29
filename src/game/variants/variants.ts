@@ -171,9 +171,19 @@ export type FutureVariantName =
   | "toroidal"
   | "zoneOfControl"
   | "push"
-  | "forcedEnPassant";
+  | "forcedEnPassant"
+  | "nimbus";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
+  nimbus: {
+    title: "Nimbus",
+    shortDescription: "A game by xyz.",
+    traits: ["Board"],
+    imageName: "squareBoardImage",
+    implemented: true,
+    ruleNames: ["nimbus"],
+    complexity: 5,
+  },
   grandChess: {
     title: "Grand",
     shortDescription:

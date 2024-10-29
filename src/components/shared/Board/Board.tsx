@@ -5,6 +5,7 @@ import { BoardMeasurements } from "./calculateBoardMeasurements";
 import { BoardViewContext, GameContext } from "components/shared";
 import { CircularBoard } from "./CircularBoard";
 import { SquareBoard } from "./SquareBoard";
+import { TriangularHexBoard } from "./TriangularHexBoard";
 import { Board3D } from "./Board3D";
 
 export interface BoardProps {
@@ -22,6 +23,8 @@ export const Board: FC<BoardProps> = (props) => {
     <>
       {shapeToken?.data?.shape === SquareShape.Hex ? (
         <HexBoard {...props} />
+      ) : shapeToken?.data?.shape === SquareShape.Triangle ? (
+        <TriangularHexBoard {...props} />
       ) : boardVisualisation === "circular" ? (
         <CircularBoard {...props} />
       ) : boardVisualisation === "flat" ? (

@@ -130,6 +130,7 @@ export enum SquareShape {
   Square,
   Hex,
   Arc,
+  Triangle,
 }
 
 export interface GameOptions {

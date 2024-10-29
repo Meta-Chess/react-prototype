@@ -28,6 +28,7 @@ const CONTAINERS: {
   [SquareShape.Square]: SquareContainer,
   [SquareShape.Hex]: HexContainer,
   [SquareShape.Arc]: NoContainer,
+  [SquareShape.Triangle]: NoContainer,
 };
 
 const TilePressableContainer: SFC<{
