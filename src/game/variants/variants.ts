@@ -11,7 +11,7 @@ export const integrateWithOtherRules: {
   },
   standard: (rules: RuleName[]): RuleName[] => {
     return rules.some((rule) =>
-      ["hex", "longBoard", "grandChess", "capablancaChess"].includes(rule)
+      ["hex", "nimbus", "longBoard", "grandChess", "capablancaChess"].includes(rule)
     )
       ? []
       : ["standard"];

@@ -54,12 +54,75 @@ const triangleShapeToken = {
 };
 
 const generateHexSquares = (): { location: string; square: Square }[] => {
-  return range(1, 7).map((x) => {
-    const rank = 1;
-    const location = toLocation({ rank, file: x });
-    return { location, square: new Square(location, { rank, file: x }) };
-  });
+  return [
+    ...range(3, 7).map((x) => {
+      const rank = 1;
+      const location = toLocation({ rank, file: x });
+      return { location, square: new Square(location, { rank, file: x }) };
+    }),
+    ...range(2, 9).map((x) => {
+      const rank = 2;
+      const location = toLocation({ rank, file: x });
+      return { location, square: new Square(location, { rank, file: x }) };
+    }),
+    ...range(1, 11).map((x) => {
+      const rank = 3;
+      const location = toLocation({ rank, file: x });
+      return { location, square: new Square(location, { rank, file: x }) };
+    }),
+    ...range(1, 11).map((x) => {
+      const rank = 4;
+      const location = toLocation({ rank, file: x });
+      return { location, square: new Square(location, { rank, file: x }) };
+    }),
+    ...range(2, 9).map((x) => {
+      const rank = 5;
+      const location = toLocation({ rank, file: x });
+      return { location, square: new Square(location, { rank, file: x }) };
+    }),
+    ...range(3, 7).map((x) => {
+      const rank = 6;
+      const location = toLocation({ rank, file: x });
+      return { location, square: new Square(location, { rank, file: x }) };
+    }),
+  ];
 };
+
+/*
+return [
+    ...range(1, 7).map((x) => {
+      const rank = 1;
+      const location = toLocation({ rank, file: x });
+      return { location, square: new Square(location, { rank, file: x }) };
+    }),
+    ...range(1, 9).map((x) => {
+      const rank = 2;
+      const location = toLocation({ rank, file: x });
+      return { location, square: new Square(location, { rank, file: x }) };
+    }),
+    ...range(1, 11).map((x) => {
+      const rank = 3;
+      const location = toLocation({ rank, file: x });
+      return { location, square: new Square(location, { rank, file: x }) };
+    }),
+    ...range(1, 11).map((x) => {
+      const rank = 4;
+      const location = toLocation({ rank, file: x });
+      return { location, square: new Square(location, { rank, file: x }) };
+    }),
+    ...range(1, 9).map((x) => {
+      const rank = 5;
+      const location = toLocation({ rank, file: x });
+      return { location, square: new Square(location, { rank, file: x }) };
+    }),
+    ...range(1, 7).map((x) => {
+      const rank = 6;
+      const location = toLocation({ rank, file: x });
+      return { location, square: new Square(location, { rank, file: x }) };
+    }),
+  ];
+
+*/
 
 const hexAdjacencies =
   (_bounds: RankAndFileBounds) =>
