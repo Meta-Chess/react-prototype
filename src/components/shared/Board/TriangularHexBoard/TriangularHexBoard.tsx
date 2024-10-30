@@ -27,7 +27,12 @@ export const TriangularHexBoard: FC<BoardProps> = ({
 }) => {
   const { gameMaster } = useContext(GameContext);
   useEffect(() => gameMaster?.game.board.setVisualShapeToken(SquareShape.Triangle)); //hmm..
+  const boardSize: PixelMeasurement = Math.min(
+    measurements.boardAreaWidth,
+    measurements.boardAreaHeight
+  );
 
+  // TODO: player rotation??
   // // rotation
   // const players = gameMaster?.game.players ?? [];
   // // TODO: extract into function... also used in useCylinderRotation
@@ -40,116 +45,51 @@ export const TriangularHexBoard: FC<BoardProps> = ({
   // const playerIndex = playerNames.indexOf(assignedPlayerName);
   // ////
 
-  // // revisit this... it's also in useCylinderRotation
-  // const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
-  // const numberOfColumns = useMemo(() => maxFile - minFile + 1, [minFile, maxFile]);
-  // const numberOfRows = useMemo(() => maxRank - minRank + 1, [minRank, maxRank]);
+  // TODO: we should useMemo all of this?
+  // TODO: change ARC/Schematic language to be more generic...
+  const allSquares = gameMaster?.game.board.getSquares() || [];
 
-  // //TODO: this calc nice
-  // const defaultRadialOffset = 0;
-  // const defaultCircularOffset = 4 * players.length + 5 - (playerIndex + 1) * 8;
+  const columnList = range(
+    1,
+    Math.max(...allSquares.map((square) => square.coordinates.file)) + 1
+  );
+  const rowList = range(
+    1,
+    Math.max(...allSquares.map((square) => square.coordinates.rank)) + 1
+  );
+  const topLeftTriangleFile = Math.min(
+    ...allSquares
+      .filter((square) => square.coordinates.rank === 1)
+      .map((square) => square.coordinates.file)
+  );
 
-  // const [radialOffset, setRadialOffset] = useState(defaultRadialOffset);
-  // const [circularOffset, setCircularOffset] = useState(defaultCircularOffset);
+  const fullWidthInTriangleUnits = (columnList.length + 1) / 2;
+  const fullHeightInTriangleUnits = (rowList.length * Math.sqrt(3)) / 2;
 
-  // useCircularRotation(
-  //   measurements,
-  //   radialOffset,
-  //   setRadialOffset,
-  //   circularOffset,
-  //   setCircularOffset,
-  //   numberOfColumns,
-  //   numberOfRows
-  // );
-
-  // //
-  // const svgBox: SvgMeasurement = ARC_TILE_WORKING_AREA;
-  // const pixelToSvg = (pixelLength: PixelMeasurement): SvgMeasurement => {
-  //   return pixelLength * (svgBox / boardSize);
-  // };
-  // const svgToPixel = (svgLength: SvgMeasurement): PixelMeasurement => {
-  //   return boardSize * (svgLength / svgBox);
-  // };
-
-  // const centerGapWidthAsColumnWidthMultiple = 2;
-  // const columnWidth: SvgMeasurement =
-  //   svgBox / (2 * (numberOfColumns + centerGapWidthAsColumnWidthMultiple));
-  // const rowWidth: Degrees = 360.0 / numberOfRows;
-
-  // // sizes
-  // const backboardRadialSize: PixelMeasurement = 8;
-  // const backboardShadowRadialSize: PixelMeasurement = 2;
-  // const totalBackboardRadialSize = backboardRadialSize + backboardShadowRadialSize;
-  // const boardSize: PixelMeasurement =
-  //   Math.min(measurements.boardAreaWidth, measurements.boardAreaHeight) -
-  //   2 * totalBackboardRadialSize;
-
-  // const columnList = range(1, numberOfColumns + 1);
-  // const rowList = range(1, numberOfRows + 1);
-  // const squareColumnList = rotateArray(columnList, radialOffset);
-  // const squareRowList = rotateArray(rowList, circularOffset).reverse();
-
-  // export type TileSchematic = {
-  //   topAdjustmentToTileCenter: number;
-  //   leftAdjustmentToTileCenter: number;
-  //   centerMaxEmbeddedDiameter: number;
-  // } & ArcTileSchematic; // extend with ... | OtherTileSchematic ...
-
-  // export interface ArcTileSchematic {
-  //   arcSvgDetails: ArcSvgDetails;
-  // }
-
-  // interface ArcSvgDetails {
-  //   tilePath: string;
-  //   tileWidth: number;
-  // }
-
-  // thoughts: looks like there is the SVG working area (1000x1000)
-  // and the pixel from board measurements
-  // we convert between the two to maximisze the size of the triangles...
-
-  const sideLength = 100;
-  const height = (Math.sqrt(3) / 2) * sideLength;
-  const offsetY = (100 - height) / 2; // Center the triangle vertically
-
-  const pointA = `${sideLength / 2},${offsetY}`;
-  const pointB = `0,${height + offsetY}`;
-  const pointC = `${sideLength},${height + offsetY}`;
-  const trianglePath = `M${pointA} L${pointB} L${pointC} Z`;
-
-  const tileSchematic = {
-    topAdjustmentToTileCenter: 0,
-    leftAdjustmentToTileCenter: 0,
-    centerMaxEmbeddedDiameter: 0,
-    arcSvgDetails: {
-      tilePath: trianglePath,
-      tileWidth: 1,
-    },
-  };
-
-  // don't do this...
-  // const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
-  // const numberOfColumns = useMemo(() => maxFile - minFile + 1, [minFile, maxFile]);
-  // const numberOfRows = useMemo(() => maxRank - minRank + 1, [minRank, maxRank]);
-
-  const columnList = range(1, 8);
-  const rowList = range(1, 2);
-
-  // const svgBox: SvgMeasurement = ARC_TILE_WORKING_AREA;
-  // const pixelToSvg = (pixelLength: PixelMeasurement): SvgMeasurement => {
-  //   return pixelLength * (svgBox / boardSize);
-  // };
-  // const svgToPixel = (svgLength: SvgMeasurement): PixelMeasurement => {
-  //   return boardSize * (svgLength / svgBox);
-  // };
-
-  //
+  let fullWidth: SvgMeasurement;
+  let fullHeight: SvgMeasurement;
+  let triangleSideLength: SvgMeasurement;
+  let triangleHeight: SvgMeasurement;
+  const boardIsMoreWideThanTall = fullWidthInTriangleUnits > fullHeightInTriangleUnits;
+  if (boardIsMoreWideThanTall) {
+    fullWidth = ARC_TILE_WORKING_AREA;
+    fullHeight =
+      (fullHeightInTriangleUnits / fullWidthInTriangleUnits) * ARC_TILE_WORKING_AREA;
+    triangleSideLength = fullWidth / fullWidthInTriangleUnits;
+    triangleHeight = (triangleSideLength * Math.sqrt(3)) / 2;
+  } else {
+    fullWidth =
+      (fullWidthInTriangleUnits / fullHeightInTriangleUnits) * ARC_TILE_WORKING_AREA;
+    fullHeight = ARC_TILE_WORKING_AREA;
+    triangleHeight = fullHeight / fullHeightInTriangleUnits;
+    triangleSideLength = (2 / Math.sqrt(3)) * triangleHeight;
+  }
 
   return (
     <View
       style={{
-        width: 100,
-        height: 100,
+        width: boardSize,
+        height: boardSize,
         justifyContent: "center",
         alignItems: "center",
         overflow: "visible",
@@ -157,20 +97,15 @@ export const TriangularHexBoard: FC<BoardProps> = ({
         borderWidth: 2,
       }}
     >
-      {/* {backboard && (
-        <HexBackboard
-          boardSize={pixelToSvg(boardSize)}
-          centerGapSize={centerGapWidthAsColumnWidthMultiple * columnWidth}
-          radialWidth={pixelToSvg(backboardRadialSize)}
-          shadowRadialWidth={pixelToSvg(backboardShadowRadialSize)}
-          color={Colors.DARK.toString()}
-          shadowColor={Colors.BLACK.fade(0.5).toString()}
-        />
-      )} */}
+      {/* TODO: a hex backboard? - remember to update boardSize above, see CircularBoard for reference.
+      {backboard && (
+        <HexBackboard color={Colors.DARK.toString()} measurements={measurements} />
+      )}
+      */}
       <View
         style={{
-          width: 100,
-          height: 100,
+          width: boardSize,
+          height: boardSize,
           justifyContent: "center",
           alignItems: "center",
           overflow: "visible",
@@ -184,29 +119,60 @@ export const TriangularHexBoard: FC<BoardProps> = ({
               pointerEvents={"none"}
             >
               {rowList.map((rowNum) => {
-                const leftAdjustmentToTileCenter = colNum * 50; // xTriangle width
-                const topAdjustmentToTileCenter = rowNum * 50; // xTriangle width
-                //approximating embedded circle with euclidean distance
-                const centerMaxEmbeddedDiameter = 0;
+                const matchingSquare = gameMaster?.game.board.firstSquareSatisfyingRule(
+                  (square) =>
+                    objectMatches({
+                      rank: rowNum,
+                      file: colNum,
+                    })(square.coordinates)
+                );
 
-                // const sideLength = 100;
-                // const height = (Math.sqrt(3) / 2) * sideLength;
-                // const offsetY = (100 - height) / 2 + leftAdjustmentToTileCenter; // Center the triangle vertically
+                if (matchingSquare === undefined) return <></>;
 
-                // const pointA = `${sideLength / 2},${offsetY}`;
-                // const pointB = `0,${height + offsetY}`;
-                // const pointC = `${sideLength},${height + offsetY}`;
-                // const trianglePath = `M${pointA} L${pointB} L${pointC} Z`;
+                let boardOffsetX: number;
+                let boardOffsetY: number;
+                if (boardIsMoreWideThanTall) {
+                  boardOffsetX = 0;
+                  boardOffsetY = ARC_TILE_WORKING_AREA / 2 - fullHeight / 2;
+                } else {
+                  boardOffsetX = ARC_TILE_WORKING_AREA / 2 - fullWidth / 2;
+                  boardOffsetY = 0;
+                }
 
-                const sideLength = 100;
-                const height = (Math.sqrt(3) / 2) * sideLength;
+                const leftAdjustmentToTileCenter =
+                  (triangleSideLength / 2) * (colNum - 1) + boardOffsetX; // /2 for alternating triangle orientation
+                const topAdjustmentToTileCenter =
+                  triangleHeight * (rowNum - 1) + boardOffsetY;
+
+                const centerMaxEmbeddedDiameter = 0; // huh ...? approximating embedded circle with euclidean distance
+
                 const offsetX = leftAdjustmentToTileCenter;
-                const offsetY = topAdjustmentToTileCenter; // Center the triangle vertically
+                const offsetY = topAdjustmentToTileCenter;
 
-                // Apply xOffset to each x-coordinate
-                const pointA = `${sideLength / 2 + offsetX},${offsetY}`;
-                const pointB = `${0 + offsetX},${height + offsetY}`;
-                const pointC = `${sideLength + offsetX},${height + offsetY}`;
+                const sideLength = triangleSideLength;
+                const height = (Math.sqrt(3) / 2) * sideLength;
+
+                let pointA: string;
+                let pointB: string;
+                let pointC: string;
+
+                const sharesRowParityWithFirstRow = rowNum % 2 === 1;
+                const sharesFileParityWithTopLeftTriangle =
+                  colNum % 2 === topLeftTriangleFile % 2;
+                const thisTriangleIsUpright =
+                  (sharesRowParityWithFirstRow && sharesFileParityWithTopLeftTriangle) ||
+                  (!sharesRowParityWithFirstRow && !sharesFileParityWithTopLeftTriangle);
+
+                if (thisTriangleIsUpright) {
+                  pointA = `${sideLength / 2 + offsetX},${offsetY}`;
+                  pointB = `${0 + offsetX},${height + offsetY}`;
+                  pointC = `${sideLength + offsetX},${height + offsetY}`;
+                } else {
+                  pointA = `${sideLength / 2 + offsetX},${height + offsetY}`;
+                  pointB = `${0 + offsetX},${offsetY}`;
+                  pointC = `${sideLength + offsetX},${offsetY}`;
+                }
+
                 const trianglePath = `M${pointA} L${pointB} L${pointC} Z`;
 
                 return (
@@ -234,32 +200,6 @@ export const TriangularHexBoard: FC<BoardProps> = ({
             </View>
           );
         })}
-
-        {/* <Square
-                key={1}
-                square={gameMaster?.game.board.firstSquareSatisfyingRule((square) =>
-                  objectMatches({
-                    rank: squareRowList[rowIndex],
-                    file: squareColumnList[colIndex],
-                  })(square.coordinates)
-                )}
-                shape={SquareShape.Arc}
-                tileSchematic={{
-                  arcSvgDetails: {
-                    tilePath: describeArc({
-                      x: boardCenter,
-                      y: boardCenter,
-                      radius: tileDistance,
-                      startAngle: tileStartAngle,
-                      endAngle: tileEndAngle,
-                    }),
-                    tileWidth: columnWidth + 2 * TILE_DISPLAY_OVERFLOW,
-                  },
-                  leftAdjustmentToTileCenter,
-                  topAdjustmentToTileCenter,
-                  centerMaxEmbeddedDiameter,
-                }}
-              /> */}
       </View>
     </View>
   );
