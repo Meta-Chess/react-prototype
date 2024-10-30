@@ -85,6 +85,10 @@ export const TriangularHexBoard: FC<BoardProps> = ({
     triangleSideLength = (2 / Math.sqrt(3)) * triangleHeight;
   }
 
+  const svgToPixel = (svgLength: SvgMeasurement): PixelMeasurement => {
+    return boardSize * (svgLength / ARC_TILE_WORKING_AREA);
+  };
+
   return (
     <View
       style={{
@@ -93,8 +97,6 @@ export const TriangularHexBoard: FC<BoardProps> = ({
         justifyContent: "center",
         alignItems: "center",
         overflow: "visible",
-        borderColor: "red",
-        borderWidth: 2,
       }}
     >
       {/* TODO: a hex backboard? - remember to update boardSize above, see CircularBoard for reference.
@@ -139,18 +141,19 @@ export const TriangularHexBoard: FC<BoardProps> = ({
                   boardOffsetY = 0;
                 }
 
-                const leftAdjustmentToTileCenter =
-                  (triangleSideLength / 2) * (colNum - 1) + boardOffsetX; // /2 for alternating triangle orientation
-                const topAdjustmentToTileCenter =
-                  triangleHeight * (rowNum - 1) + boardOffsetY;
-
-                const centerMaxEmbeddedDiameter = 0; // huh ...? approximating embedded circle with euclidean distance
-
-                const offsetX = leftAdjustmentToTileCenter;
-                const offsetY = topAdjustmentToTileCenter;
+                const offsetX = (triangleSideLength / 2) * (colNum - 1) + boardOffsetX; // /2 for alternating triangle orientation
+                const offsetY = triangleHeight * (rowNum - 1) + boardOffsetY;
 
                 const sideLength = triangleSideLength;
                 const height = (Math.sqrt(3) / 2) * sideLength;
+
+                const centroidX = 1 / 2;
+                const centroidY = Math.sqrt(3) / 6;
+
+                const leftAdjustmentToTileCenter = 3 * svgToPixel(sideLength); // svgToPixel(centroidX * sideLength);
+                const topAdjustmentToTileCenter =
+                  2.5 * centroidY * svgToPixel(sideLength); // svgToPixel(centroidY * sideLength);
+                const centerMaxEmbeddedDiameter = svgToPixel(2 * centroidY * sideLength);
 
                 let pointA: string;
                 let pointB: string;
