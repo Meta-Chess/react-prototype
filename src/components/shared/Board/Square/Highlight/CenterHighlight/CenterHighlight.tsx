@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 import { View } from "react-native";
 import { TileSchematic } from "ui/Tiles/TileProps";
 import { ArcTileCenterHighlight } from "./ArcTileCenterHighlight";
+import { TriangleTileCenterHighlight } from "./TriangleTileCenterHighlight";
 import Color from "color";
 
 interface Props {
@@ -16,6 +17,7 @@ const HIGHLIGHTS: {
   [key in SquareShape]?: FC<{ color: Color; tileSchematic: TileSchematic }>;
 } = {
   [SquareShape.Arc]: ArcTileCenterHighlight,
+  [SquareShape.Triangle]: TriangleTileCenterHighlight,
 };
 
 const CenterHighlight: FC<Props> = ({ color, shape, tileSchematic }) => {

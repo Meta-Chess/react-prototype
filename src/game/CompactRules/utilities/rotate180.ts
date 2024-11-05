@@ -45,6 +45,8 @@ export function rotate180(pattern: Direction[]): Direction[] {
         return Direction.H6;
       case Direction.Down:
         return Direction.Down;
+      default:
+        return direction;
     }
   });
 }

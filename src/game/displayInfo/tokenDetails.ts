@@ -70,4 +70,8 @@ export const tokenDetails: { [k in TokenName]: Details } = {
     name: "Interception Possible Token",
     description: "Flags whether there are any valid interception moves",
   },
+  [TokenName.NimbusPiece]: {
+    name: "Nimbus Piece",
+    description: "Pieces can change element type",
+  },
 };

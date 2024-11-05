@@ -94,6 +94,7 @@ const SquareComponent: SFC<Props> = ({
           shape={shape}
           tileSchematic={tileSchematic}
         />
+
         <PositioningContainer
           size={pieceScaleFactor * size}
           tileSchematic={tileSchematic}

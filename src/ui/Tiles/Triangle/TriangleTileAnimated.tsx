@@ -22,9 +22,9 @@ export const TriangleTileAnimated: FC<AnimatedTileProps> = ({
       >
         <AnimatedGroup stroke={color} pointerEvents={"none"}>
           <PathWithNoOutline
-            d={svgDetails.tilePath}
-            fill={"none"}
-            strokeWidth={svgDetails.tileWidth}
+            d={tileSchematic?.arcSvgDetails.tilePath}
+            fill={color.toString()}
+            stroke="none"
             pointerEvents={pressable ? "auto" : "none"}
           />
         </AnimatedGroup>

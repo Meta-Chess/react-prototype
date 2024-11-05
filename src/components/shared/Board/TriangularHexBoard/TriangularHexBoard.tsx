@@ -14,6 +14,7 @@ import { useCircularRotation } from "../useCircularRotation";
 import type { Point, Degrees } from "game/types";
 import { PlayerName } from "game/types";
 import { rotateArray } from "utilities/arrayHelper";
+import { thisTriangleIsUpright } from "game/CompactRules/rules/nimbus";
 
 export type SvgMeasurement = number;
 type SvgPointMeasurement = Point;
@@ -57,37 +58,46 @@ export const TriangularHexBoard: FC<BoardProps> = ({
     1,
     Math.max(...allSquares.map((square) => square.coordinates.rank)) + 1
   );
-  const topLeftTriangleFile = Math.min(
-    ...allSquares
-      .filter((square) => square.coordinates.rank === 1)
-      .map((square) => square.coordinates.file)
-  );
+  const topLeftTriangleRankFile = {
+    rank: 1,
+    file: Math.min(
+      ...allSquares
+        .filter((square) => square.coordinates.rank === 1)
+        .map((square) => square.coordinates.file)
+    ),
+  };
 
   const fullWidthInTriangleUnits = (columnList.length + 1) / 2;
   const fullHeightInTriangleUnits = (rowList.length * Math.sqrt(3)) / 2;
 
   let fullWidth: SvgMeasurement;
   let fullHeight: SvgMeasurement;
-  let triangleSideLength: SvgMeasurement;
-  let triangleHeight: SvgMeasurement;
   const boardIsMoreWideThanTall = fullWidthInTriangleUnits > fullHeightInTriangleUnits;
   if (boardIsMoreWideThanTall) {
     fullWidth = ARC_TILE_WORKING_AREA;
     fullHeight =
       (fullHeightInTriangleUnits / fullWidthInTriangleUnits) * ARC_TILE_WORKING_AREA;
-    triangleSideLength = fullWidth / fullWidthInTriangleUnits;
-    triangleHeight = (triangleSideLength * Math.sqrt(3)) / 2;
   } else {
     fullWidth =
       (fullWidthInTriangleUnits / fullHeightInTriangleUnits) * ARC_TILE_WORKING_AREA;
     fullHeight = ARC_TILE_WORKING_AREA;
-    triangleHeight = fullHeight / fullHeightInTriangleUnits;
-    triangleSideLength = (2 / Math.sqrt(3)) * triangleHeight;
   }
+  const triangleSideLength: SvgMeasurement = fullWidth / fullWidthInTriangleUnits;
+  const triangleHeight: SvgMeasurement = (triangleSideLength * Math.sqrt(3)) / 2;
 
   const svgToPixel = (svgLength: SvgMeasurement): PixelMeasurement => {
     return boardSize * (svgLength / ARC_TILE_WORKING_AREA);
   };
+
+  let boardOffsetX: number;
+  let boardOffsetY: number;
+  if (boardIsMoreWideThanTall) {
+    boardOffsetX = 0;
+    boardOffsetY = ARC_TILE_WORKING_AREA / 2 - fullHeight / 2;
+  } else {
+    boardOffsetX = ARC_TILE_WORKING_AREA / 2 - fullWidth / 2;
+    boardOffsetY = 0;
+  }
 
   return (
     <View
@@ -121,26 +131,6 @@ export const TriangularHexBoard: FC<BoardProps> = ({
               pointerEvents={"none"}
             >
               {rowList.map((rowNum) => {
-                const matchingSquare = gameMaster?.game.board.firstSquareSatisfyingRule(
-                  (square) =>
-                    objectMatches({
-                      rank: rowNum,
-                      file: colNum,
-                    })(square.coordinates)
-                );
-
-                if (matchingSquare === undefined) return <></>;
-
-                let boardOffsetX: number;
-                let boardOffsetY: number;
-                if (boardIsMoreWideThanTall) {
-                  boardOffsetX = 0;
-                  boardOffsetY = ARC_TILE_WORKING_AREA / 2 - fullHeight / 2;
-                } else {
-                  boardOffsetX = ARC_TILE_WORKING_AREA / 2 - fullWidth / 2;
-                  boardOffsetY = 0;
-                }
-
                 const offsetX = (triangleSideLength / 2) * (colNum - 1) + boardOffsetX; // /2 for alternating triangle orientation
                 const offsetY = triangleHeight * (rowNum - 1) + boardOffsetY;
 
@@ -150,37 +140,42 @@ export const TriangularHexBoard: FC<BoardProps> = ({
                 const centroidX = 1 / 2;
                 const centroidY = Math.sqrt(3) / 6;
 
-                const leftAdjustmentToTileCenter = 3 * svgToPixel(sideLength); // svgToPixel(centroidX * sideLength);
-                const topAdjustmentToTileCenter =
-                  2.5 * centroidY * svgToPixel(sideLength); // svgToPixel(centroidY * sideLength);
+                const leftAdjustmentToTileCenter = svgToPixel(
+                  offsetX + centroidX * triangleSideLength
+                );
                 const centerMaxEmbeddedDiameter = svgToPixel(2 * centroidY * sideLength);
 
                 let pointA: string;
                 let pointB: string;
                 let pointC: string;
 
-                const sharesRowParityWithFirstRow = rowNum % 2 === 1;
-                const sharesFileParityWithTopLeftTriangle =
-                  colNum % 2 === topLeftTriangleFile % 2;
-                const thisTriangleIsUpright =
-                  (sharesRowParityWithFirstRow && sharesFileParityWithTopLeftTriangle) ||
-                  (!sharesRowParityWithFirstRow && !sharesFileParityWithTopLeftTriangle);
-
-                if (thisTriangleIsUpright) {
+                let topAdjustmentToTileCenter: PixelMeasurement;
+                if (
+                  thisTriangleIsUpright(
+                    { rank: rowNum, file: colNum },
+                    topLeftTriangleRankFile
+                  )
+                ) {
                   pointA = `${sideLength / 2 + offsetX},${offsetY}`;
                   pointB = `${0 + offsetX},${height + offsetY}`;
                   pointC = `${sideLength + offsetX},${height + offsetY}`;
+                  topAdjustmentToTileCenter = svgToPixel(
+                    offsetY + triangleHeight - centroidY * triangleSideLength
+                  );
                 } else {
                   pointA = `${sideLength / 2 + offsetX},${height + offsetY}`;
                   pointB = `${0 + offsetX},${offsetY}`;
                   pointC = `${sideLength + offsetX},${offsetY}`;
+                  topAdjustmentToTileCenter = svgToPixel(
+                    offsetY + centroidY * triangleSideLength
+                  );
                 }
 
                 const trianglePath = `M${pointA} L${pointB} L${pointC} Z`;
 
                 return (
                   <Square
-                    key={colNum + 10 * rowNum}
+                    key={colNum.toString() + "," + rowNum.toString()}
                     square={gameMaster?.game.board.firstSquareSatisfyingRule((square) =>
                       objectMatches({
                         rank: rowNum,
@@ -191,7 +186,7 @@ export const TriangularHexBoard: FC<BoardProps> = ({
                     tileSchematic={{
                       arcSvgDetails: {
                         tilePath: trianglePath,
-                        tileWidth: 0, // this should be something- maybe triangle border size??
+                        tileWidth: 0,
                       },
                       leftAdjustmentToTileCenter,
                       topAdjustmentToTileCenter,

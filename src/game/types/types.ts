@@ -78,6 +78,7 @@ export enum TokenName {
   ThinIce,
   Puppeteered,
   InterceptionPossible,
+  NimbusPiece,
 }
 
 export interface Token {
@@ -92,6 +93,13 @@ export enum AnimationType {
 
 export enum PieceAnimationType {
   chemicallyExcited = "chemicallyExcited",
+}
+
+export enum NimbusPieceType {
+  fire,
+  water,
+  earth,
+  lightning,
 }
 
 interface TokenData {
@@ -109,6 +117,7 @@ interface TokenData {
   pieceVisualData?: PieceVisualData;
   extinctionData?: PieceName[][];
   thinIceData?: number;
+  nimbusPieceType?: NimbusPieceType;
 }
 
 export interface PieceVisualData {
