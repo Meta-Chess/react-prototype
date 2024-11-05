@@ -1,4 +1,4 @@
-import { hexGaits, standardGaits } from "../constants";
+import { nimbusGaits, hexGaits, standardGaits } from "../constants";
 import { Piece } from "game/Board";
 import { Gait, GaitParams, PieceName, PlayerName, Token } from "game/types";
 

@@ -159,7 +159,7 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
 
                 return (
                   <Square
-                    key={colNum + 10 * rowNum}
+                    key={colNum.toString() + "," + rowNum.toString()}
                     square={gameMaster?.game.board.firstSquareSatisfyingRule((square) =>
                       objectMatches({
                         rank: squareRowList[rowIndex],
