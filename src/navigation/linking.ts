@@ -2,7 +2,6 @@ import { LinkingOptions, getStateFromPath } from "@react-navigation/native";
 import { Screens } from "./Screens";
 import { GameOptions } from "game/types";
 import { NavigatorParamList } from "navigation/NavigatorParamList";
-import { FormatName } from "game/formats";
 import { FutureVariantName } from "game/variants";
 import { calculateGameOptions } from "game/variantAndRuleProcessing";
 
@@ -46,31 +45,55 @@ export const linking: LinkingOptions<NavigatorParamList> = {
 
 enum NamedGameMode {
   spherical = "spherical",
+  mobius = "mobius",
+  toroidal = "toroidal",
+  cylindrical = "cylindrical",
+  hex = "hex",
 }
-const pathToNamedGameMode = Object.keys(NamedGameMode).reduce((acc, gameMode) => {
-  acc[`/${gameMode}`] = gameMode as NamedGameMode;
-  acc[`/game/${gameMode}`] = gameMode as NamedGameMode;
-  return acc;
-}, {} as { [key: string]: NamedGameMode });
 
-const namedGameModeParams: {
-  [key in NamedGameMode]: NavigatorParamList[Screens.GameScreen];
-} = {
-  [NamedGameMode.spherical]: {
+const alternamePathNamings: { [key in NamedGameMode]?: string[] } = {
+  [NamedGameMode.spherical]: ["sphere"],
+  [NamedGameMode.cylindrical]: ["cylinder"],
+  [NamedGameMode.toroidal]: ["torus"],
+};
+const gameModeToVariants: { [key in NamedGameMode]: FutureVariantName[] } = {
+  spherical: ["spherical"],
+  mobius: ["mobius"],
+  toroidal: ["toroidal"],
+  cylindrical: ["cylindrical"],
+  hex: ["hex"],
+};
+
+const standardGameOptions = {
+  checkEnabled: true,
+  online: false,
+  publicGame: false,
+  numberOfPlayers: 2,
+  baseVariants: [],
+  ruleNamesWithParams: {},
+  time: undefined,
+};
+
+const namedGameModeParams = Object.keys(NamedGameMode).reduce((acc, gameMode) => {
+  const namedGameMode = gameMode as NamedGameMode;
+  acc[namedGameMode] = {
     gameOptions: calculateGameOptions(
-      {
-        checkEnabled: true,
-        online: false,
-        publicGame: false,
-        numberOfPlayers: 2,
-        format: "variantComposition" as FormatName,
-        baseVariants: [],
-        ruleNamesWithParams: {},
-        time: undefined,
-      },
-      ["spherical"] as FutureVariantName[]
+      standardGameOptions,
+      gameModeToVariants[namedGameMode]
     ),
     roomId: undefined,
-    namedGameMode: "spherical",
-  },
-};
+    namedGameMode: gameMode,
+  };
+  return acc;
+}, {} as { [key in NamedGameMode]: NavigatorParamList[Screens.GameScreen] });
+
+const pathToNamedGameMode = Object.keys(NamedGameMode).reduce((acc, gameMode) => {
+  const namedGameMode = gameMode as NamedGameMode;
+  acc[`/${gameMode}`] = namedGameMode;
+  acc[`/game/${gameMode}`] = namedGameMode;
+  alternamePathNamings[namedGameMode]?.forEach((pathName) => {
+    acc[`/${pathName}`] = namedGameMode;
+    acc[`/game/${pathName}`] = namedGameMode;
+  });
+  return acc;
+}, {} as { [key: string]: NamedGameMode });
