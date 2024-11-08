@@ -6,3 +6,4 @@ export * from "./King";
 export * from "./Queen";
 export * from "./BishopKnight";
 export * from "./RookKnight";
+export * from "./nimbus";

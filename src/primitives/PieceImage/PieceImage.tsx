@@ -5,6 +5,7 @@ import { Colors } from "../Colors";
 import {
   Bishop,
   BishopKnight,
+  FirePiece,
   King,
   Knight,
   Pawn,
@@ -42,6 +43,7 @@ const PIECE_SPRITE: { [name in PieceName]: React.ReactNode } = {
   [PieceName.King]: <King />,
   [PieceName.BishopKnight]: <BishopKnight />,
   [PieceName.RookKnight]: <RookKnight />,
+  [PieceName.FirePiece]: <FirePiece />,
 };
 
 const PieceImage: SFC<Props> = ({

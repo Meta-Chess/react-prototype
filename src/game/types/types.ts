@@ -50,6 +50,10 @@ export enum PieceName {
   Knight,
   BishopKnight,
   RookKnight,
+  FirePiece,
+  WaterPiece,
+  EarthPiece,
+  LightningPiece,
 }
 
 export const allPossiblePieceNames = getValues<PieceName>(PieceName);
