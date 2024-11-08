@@ -7,6 +7,7 @@ export interface NavigatorParamList extends ParamListBase {
   [Screens.GameScreen]?: {
     gameOptions?: GameOptions;
     roomId?: string;
+    namedGameMode?: string;
   };
   [Screens.StartScreen]: undefined;
   [Screens.VariantSelectScreen]?: {
