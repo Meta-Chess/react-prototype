@@ -132,6 +132,7 @@ export interface FutureVariant {
   imageName?: keyof typeof VariantImages;
   implemented: boolean;
   ruleNames: RuleName[];
+  overrideBaseRules?: RuleName[];
   overrideRuleParams?: RuleNamesWithParams;
   complexity: number;
 }
@@ -190,6 +191,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     traits: ["Board"],
     implemented: true,
     ruleNames: ["nimbus"],
+    overrideBaseRules: ["promotion", "stalemate"],
     complexity: 5,
   },
   grandChess: {

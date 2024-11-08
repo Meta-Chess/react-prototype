@@ -336,111 +336,102 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
       createPiece({
         location,
         owner,
-        set: PieceSet.Standard,
-        name: PieceName.King,
+        name: PieceName.FirePiece,
         gaitGenerators: noGaitGenerators,
         tokens: [earthToken],
       }),
     ];
-  if (rank === 1 && [5, 7].includes(file))
-    return [
-      createPiece({
-        location,
-        owner,
-        name: PieceName.Pawn,
-        set: PieceSet.Standard,
-        gaitGenerators: noGaitGenerators,
-        tokens: [waterToken],
-      }),
-    ];
-  if (rank === 1 && [4, 8].includes(file))
-    return [
-      createPiece({
-        location,
-        owner,
-        name: PieceName.Pawn,
-        set: PieceSet.Standard,
-        gaitGenerators: noGaitGenerators,
-        tokens: [fireToken],
-      }),
-    ];
-  if (rank === 2 && file === 6)
-    return [
-      createPiece({
-        location,
-        owner,
-        name: PieceName.Pawn,
-        gaitGenerators: noGaitGenerators,
-        tokens: [fireToken],
-      }),
-    ];
-  if (rank === 2 && [5, 7].includes(file))
-    return [
-      createPiece({
-        location,
-        owner,
-        name: PieceName.Pawn,
-        set: PieceSet.Standard,
-        gaitGenerators: noGaitGenerators,
-        tokens: [lightningToken],
-      }),
-    ];
+  // if (rank === 1 && [5, 7].includes(file))
+  //   return [
+  //     createPiece({
+  //       location,
+  //       owner,
+  //       name: PieceName.Pawn,
+  //       gaitGenerators: noGaitGenerators,
+  //       tokens: [waterToken],
+  //     }),
+  //   ];
+  // if (rank === 1 && [4, 8].includes(file))
+  //   return [
+  //     createPiece({
+  //       location,
+  //       owner,
+  //       name: PieceName.Pawn,
+  //       gaitGenerators: noGaitGenerators,
+  //       tokens: [fireToken],
+  //     }),
+  //   ];
+  // if (rank === 2 && file === 6)
+  //   return [
+  //     createPiece({
+  //       location,
+  //       owner,
+  //       name: PieceName.Pawn,
+  //       gaitGenerators: noGaitGenerators,
+  //       tokens: [fireToken],
+  //     }),
+  //   ];
+  // if (rank === 2 && [5, 7].includes(file))
+  //   return [
+  //     createPiece({
+  //       location,
+  //       owner,
+  //       name: PieceName.Pawn,
+  //       gaitGenerators: noGaitGenerators,
+  //       tokens: [lightningToken],
+  //     }),
+  //   ];
 
-  if (rank === 6 && file === 6)
-    return [
-      createPiece({
-        location,
-        owner,
-        name: PieceName.King,
-        set: PieceSet.Standard,
-        gaitGenerators: noGaitGenerators,
-        tokens: [earthToken],
-      }),
-    ];
-  if (rank === 6 && [5, 7].includes(file))
-    return [
-      createPiece({
-        location,
-        owner,
-        name: PieceName.Pawn,
-        set: PieceSet.Standard,
-        gaitGenerators: noGaitGenerators,
-        tokens: [waterToken],
-      }),
-    ];
-  if (rank === 6 && [4, 8].includes(file))
-    return [
-      createPiece({
-        location,
-        owner,
-        name: PieceName.Pawn,
-        set: PieceSet.Standard,
-        gaitGenerators: noGaitGenerators,
-        tokens: [fireToken],
-      }),
-    ];
-  if (rank === 5 && file === 6)
-    return [
-      createPiece({
-        location,
-        owner,
-        name: PieceName.Pawn,
-        set: PieceSet.Standard,
-        gaitGenerators: noGaitGenerators,
-        tokens: [fireToken],
-      }),
-    ];
-  if (rank === 5 && [5, 7].includes(file))
-    return [
-      createPiece({
-        location,
-        owner,
-        name: PieceName.Pawn,
-        set: PieceSet.Standard,
-        gaitGenerators: noGaitGenerators,
-        tokens: [lightningToken],
-      }),
-    ];
+  // if (rank === 6 && file === 6)
+  //   return [
+  //     createPiece({
+  //       location,
+  //       owner,
+  //       name: PieceName.King,
+  //       gaitGenerators: noGaitGenerators,
+  //       tokens: [earthToken],
+  //     }),
+  //   ];
+  // if (rank === 6 && [5, 7].includes(file))
+  //   return [
+  //     createPiece({
+  //       location,
+  //       owner,
+  //       name: PieceName.Pawn,
+  //       gaitGenerators: noGaitGenerators,
+  //       tokens: [waterToken],
+  //     }),
+  //   ];
+  // if (rank === 6 && [4, 8].includes(file))
+  //   return [
+  //     createPiece({
+  //       location,
+  //       owner,
+  //       name: PieceName.Pawn,
+  //       gaitGenerators: noGaitGenerators,
+  //       tokens: [fireToken],
+  //     }),
+  //   ];
+  // if (rank === 5 && file === 6)
+  //   return [
+  //     createPiece({
+  //       location,
+  //       owner,
+  //       name: PieceName.Pawn,
+  //       gaitGenerators: noGaitGenerators,
+  //       tokens: [fireToken],
+  //     }),
+  //   ];
+  // if (rank === 5 && [5, 7].includes(file))
+  //   return [
+  //     createPiece({
+  //       location,
+  //       owner,
+  //       name: PieceName.Pawn,
+  //       gaitGenerators: noGaitGenerators,
+  //       tokens: [lightningToken],
+  //     }),
+  //   ];
 
   return [];
 };
