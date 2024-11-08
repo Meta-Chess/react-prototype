@@ -5,13 +5,16 @@ import { Colors } from "../Colors";
 import {
   Bishop,
   BishopKnight,
-  FirePiece,
   King,
   Knight,
   Pawn,
   Queen,
   Rook,
   RookKnight,
+  FirePiece,
+  WaterPiece,
+  EarthPiece,
+  LightningPiece,
 } from "./sprites";
 import { SFC } from "primitives/SFC";
 import { Animated } from "react-native";
@@ -44,6 +47,9 @@ const PIECE_SPRITE: { [name in PieceName]: React.ReactNode } = {
   [PieceName.BishopKnight]: <BishopKnight />,
   [PieceName.RookKnight]: <RookKnight />,
   [PieceName.FirePiece]: <FirePiece />,
+  [PieceName.WaterPiece]: <WaterPiece />,
+  [PieceName.EarthPiece]: <EarthPiece />,
+  [PieceName.LightningPiece]: <LightningPiece />,
 };
 
 const PieceImage: SFC<Props> = ({
