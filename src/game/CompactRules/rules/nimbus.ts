@@ -51,41 +51,30 @@ export const nimbus: TrivialParameterRule = () => ({
     board.addToken(triangleShapeToken);
     return { board, numberOfPlayers };
   },
-  onGaitsGeneratedModify: ({ game, gaits, piece }): OnGaitsGeneratedModify => {
-    const nimbusPieceToken = piece.firstTokenWithName(TokenName.NimbusPiece);
-    const nimbusPieceType = nimbusPieceToken?.data?.nimbusPieceType;
-
-    if (nimbusPieceType === undefined) return { game, gaits, piece };
-    return {
-      game,
-      gaits: pieceTypeGaitMapping[nimbusPieceType],
-      piece,
-    };
-  },
   processMoves: ({ moves, game, gameClones, params }): ProcessMoves => {
-    const pilotPieceIds = moves.map((move) => move.pieceId);
-    const piecesWhichCanTypeChange = game.board
-      .piecesBelongingTo(game.currentPlayerIndex)
-      .filter(
-        (piece) => piece.name === PieceName.King || !pilotPieceIds.includes(piece.id)
-      );
-    const pieceDeltasChangingPieces = piecesWhichCanTypeChange.flatMap((piece) =>
-      [PieceName.King, PieceName.Rook, PieceName.Bishop].map((type) => {
-        return {
-          pieceId: piece.id,
-          path: new Path(piece.location, []),
-          promoteTo: type,
-        };
-      })
-    );
+    // const pilotPieceIds = moves.map((move) => move.pieceId);
+    // const piecesWhichCanTypeChange = game.board
+    //   .piecesBelongingTo(game.currentPlayerIndex)
+    //   .filter(
+    //     (piece) => piece.name === PieceName.King || !pilotPieceIds.includes(piece.id)
+    //   );
+    // const pieceDeltasChangingPieces = piecesWhichCanTypeChange.flatMap((piece) =>
+    //   [PieceName.King, PieceName.Rook, PieceName.Bishop].map((type) => {
+    //     return {
+    //       pieceId: piece.id,
+    //       path: new Path(piece.location, []),
+    //       promoteTo: type,
+    //     };
+    //   })
+    // );
 
-    // TODO: fix the pathing when the king would like to change
+    // // TODO: fix the pathing when the king would like to change
 
-    const movesWithPieceChange = moves.flatMap((move) =>
-      pieceDeltasChangingPieces.flatMap((newDelta) => {
-        return { ...move, pieceDeltas: [...move.pieceDeltas, newDelta] };
-      })
-    );
+    // const movesWithPieceChange = moves.flatMap((move) =>
+    //   pieceDeltasChangingPieces.flatMap((newDelta) => {
+    //     return { ...move, pieceDeltas: [...move.pieceDeltas, newDelta] };
+    //   })
+    // );
 
     // [
     //   NimbusPieceType.fire,
@@ -106,7 +95,7 @@ export const nimbus: TrivialParameterRule = () => ({
     //     };
     //   })
     // );
-    return { moves: movesWithPieceChange, game, gameClones, params };
+    return { moves: moves, game, gameClones, params };
   },
   // onPieceDisplaced: ({ board, pieceDelta }): OnPieceDisplaced => {
   //   if (pieceDelta.promoteTo !== undefined) {
@@ -319,11 +308,19 @@ const triangularHexBoardAdjacencies =
     }
   };
 
-const noGaitGenerators = [
-  (): Gait[] => {
-    return [];
-  },
-];
+// const noGaitGenerators = [
+//   (): Gait[] => {
+//     return [];
+//   },
+// ];
+
+// enum NimbusPieceType {
+//   fire = PieceName.FirePiece,
+//   water = PieceName.WaterPiece,
+//   earth = PieceName.EarthPiece,
+//   lightning = PieceName.LightningPiece,
+// }
+
 const triangularHexBoardSetupRule = (square: Square): Piece[] => {
   const { rank, file } = square.getCoordinates();
   const location = toLocation({ rank, file });
@@ -336,102 +333,92 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
       createPiece({
         location,
         owner,
-        name: PieceName.FirePiece,
-        gaitGenerators: noGaitGenerators,
-        tokens: [earthToken],
+        name: PieceName.EarthPiece,
+        gaitGenerators: [nimbusPieceGaitsGenerators.earth],
       }),
     ];
-  // if (rank === 1 && [5, 7].includes(file))
-  //   return [
-  //     createPiece({
-  //       location,
-  //       owner,
-  //       name: PieceName.Pawn,
-  //       gaitGenerators: noGaitGenerators,
-  //       tokens: [waterToken],
-  //     }),
-  //   ];
-  // if (rank === 1 && [4, 8].includes(file))
-  //   return [
-  //     createPiece({
-  //       location,
-  //       owner,
-  //       name: PieceName.Pawn,
-  //       gaitGenerators: noGaitGenerators,
-  //       tokens: [fireToken],
-  //     }),
-  //   ];
-  // if (rank === 2 && file === 6)
-  //   return [
-  //     createPiece({
-  //       location,
-  //       owner,
-  //       name: PieceName.Pawn,
-  //       gaitGenerators: noGaitGenerators,
-  //       tokens: [fireToken],
-  //     }),
-  //   ];
-  // if (rank === 2 && [5, 7].includes(file))
-  //   return [
-  //     createPiece({
-  //       location,
-  //       owner,
-  //       name: PieceName.Pawn,
-  //       gaitGenerators: noGaitGenerators,
-  //       tokens: [lightningToken],
-  //     }),
-  //   ];
+  if (rank === 1 && [5, 7].includes(file))
+    return [
+      createPiece({
+        location,
+        owner,
+        name: PieceName.WaterPiece,
+        gaitGenerators: [nimbusPieceGaitsGenerators.water],
+      }),
+    ];
+  if (rank === 1 && [4, 8].includes(file))
+    return [
+      createPiece({
+        location,
+        owner,
+        name: PieceName.FirePiece,
+        gaitGenerators: [nimbusPieceGaitsGenerators.fire],
+      }),
+    ];
+  if (rank === 2 && file === 6)
+    return [
+      createPiece({
+        location,
+        owner,
+        name: PieceName.FirePiece,
+        gaitGenerators: [nimbusPieceGaitsGenerators.fire],
+      }),
+    ];
+  if (rank === 2 && [5, 7].includes(file))
+    return [
+      createPiece({
+        location,
+        owner,
+        name: PieceName.LightningPiece,
+        gaitGenerators: [nimbusPieceGaitsGenerators.lightning],
+      }),
+    ];
 
-  // if (rank === 6 && file === 6)
-  //   return [
-  //     createPiece({
-  //       location,
-  //       owner,
-  //       name: PieceName.King,
-  //       gaitGenerators: noGaitGenerators,
-  //       tokens: [earthToken],
-  //     }),
-  //   ];
-  // if (rank === 6 && [5, 7].includes(file))
-  //   return [
-  //     createPiece({
-  //       location,
-  //       owner,
-  //       name: PieceName.Pawn,
-  //       gaitGenerators: noGaitGenerators,
-  //       tokens: [waterToken],
-  //     }),
-  //   ];
-  // if (rank === 6 && [4, 8].includes(file))
-  //   return [
-  //     createPiece({
-  //       location,
-  //       owner,
-  //       name: PieceName.Pawn,
-  //       gaitGenerators: noGaitGenerators,
-  //       tokens: [fireToken],
-  //     }),
-  //   ];
-  // if (rank === 5 && file === 6)
-  //   return [
-  //     createPiece({
-  //       location,
-  //       owner,
-  //       name: PieceName.Pawn,
-  //       gaitGenerators: noGaitGenerators,
-  //       tokens: [fireToken],
-  //     }),
-  //   ];
-  // if (rank === 5 && [5, 7].includes(file))
-  //   return [
-  //     createPiece({
-  //       location,
-  //       owner,
-  //       name: PieceName.Pawn,
-  //       gaitGenerators: noGaitGenerators,
-  //       tokens: [lightningToken],
-  //     }),
-  //   ];
+  if (rank === 6 && file === 6)
+    return [
+      createPiece({
+        location,
+        owner,
+        name: PieceName.EarthPiece,
+        gaitGenerators: [nimbusPieceGaitsGenerators.earth],
+      }),
+    ];
+  if (rank === 6 && [5, 7].includes(file))
+    return [
+      createPiece({
+        location,
+        owner,
+        name: PieceName.WaterPiece,
+        gaitGenerators: [nimbusPieceGaitsGenerators.water],
+      }),
+    ];
+  if (rank === 6 && [4, 8].includes(file))
+    return [
+      createPiece({
+        location,
+        owner,
+        name: PieceName.FirePiece,
+        gaitGenerators: [nimbusPieceGaitsGenerators.fire],
+      }),
+    ];
+  if (rank === 5 && file === 6)
+    return [
+      createPiece({
+        location,
+        owner,
+        name: PieceName.FirePiece,
+        gaitGenerators: [nimbusPieceGaitsGenerators.fire],
+      }),
+    ];
+  if (rank === 5 && [5, 7].includes(file))
+    return [
+      createPiece({
+        location,
+        owner,
+        name: PieceName.LightningPiece,
+        gaitGenerators: [nimbusPieceGaitsGenerators.lightning],
+      }),
+    ];
 
   return [];
 };
@@ -479,18 +466,19 @@ const turnDirections = (A: Direction): Direction[] => {
   }
 };
 
-const pieceTypeGaitMapping: { [type in NimbusPieceType]: Gait[] } = {
-  [NimbusPieceType.fire]: TriangularEdgeDirections.map((A) =>
-    TriangularEdgeDirections.map((B) => {
-      return {
-        pattern: [A, B, A, B],
-        interruptable: true,
-      };
-    })
-  )
-    .flat()
-    .flat(),
-  [NimbusPieceType.water]: [
+const nimbusPieceGaitsGenerators: { [type: string]: () => Gait[] } = {
+  fire: () =>
+    TriangularEdgeDirections.map((A) =>
+      TriangularEdgeDirections.map((B) => {
+        return {
+          pattern: [A, B, A, B],
+          interruptable: true,
+        };
+      })
+    )
+      .flat()
+      .flat(),
+  water: () => [
     {
       pattern: [Direction.TC1, Direction.TE1],
       repeats: true,
@@ -507,7 +495,7 @@ const pieceTypeGaitMapping: { [type in NimbusPieceType]: Gait[] } = {
       interruptable: true,
     },
   ],
-  [NimbusPieceType.earth]: [
+  earth: () => [
     ...[
       [Direction.TE1, Direction.TC1],
       [Direction.TE2, Direction.TC2],
@@ -524,7 +512,7 @@ const pieceTypeGaitMapping: { [type in NimbusPieceType]: Gait[] } = {
       .flat()
       .flat(),
   ],
-  [NimbusPieceType.lightning]: [
+  lightning: () => [
     ...TriangularHexagonalDirections.map((A) => ({
       pattern: [A, A],
       interruptable: true,

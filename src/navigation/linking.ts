@@ -28,6 +28,23 @@ export const linking: LinkingOptions<NavigatorParamList> = {
     },
   },
   getStateFromPath(path, options) {
+    if (path === "/game") {
+      return {
+        routes: [
+          {
+            name: Screens.GameScreen,
+            params: {
+              gameOptions: calculateGameOptions(standardGameOptions, [
+                "nimbus",
+              ] as FutureVariantName[]),
+              roomId: undefined,
+              namedGameMode: "nimbus",
+            },
+          },
+        ],
+      };
+    }
+
     if (Object.keys(pathToNamedGameMode).includes(path)) {
       return {
         routes: [
@@ -49,6 +66,7 @@ enum NamedGameMode {
   toroidal = "toroidal",
   cylindrical = "cylindrical",
   hex = "hex",
+  nimbus = "nimbus",
 }
 
 const alternamePathNamings: { [key in NamedGameMode]?: string[] } = {
@@ -62,6 +80,7 @@ const gameModeToVariants: { [key in NamedGameMode]: FutureVariantName[] } = {
   toroidal: ["toroidal"],
   cylindrical: ["cylindrical"],
   hex: ["hex"],
+  nimbus: ["nimbus"],
 };
 
 const standardGameOptions = {
