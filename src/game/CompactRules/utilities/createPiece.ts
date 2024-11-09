@@ -1,4 +1,4 @@
-import { nimbusGaits, hexGaits, standardGaits } from "../constants";
+import { hexGaits, standardGaits, nimbusGaits } from "../constants";
 import { Piece } from "game/Board";
 import { Gait, GaitParams, PieceName, PlayerName, Token } from "game/types";
 
@@ -7,6 +7,7 @@ type GaitGenerator = (p?: GaitParams) => Gait[];
 export enum PieceSet {
   Standard,
   HexStandard,
+  Nimbus,
 }
 
 interface PieceCreationInput {
@@ -61,10 +62,18 @@ const defaultGaitGenerator = ({
   if (name === PieceName.RookKnight)
     return (): Gait[] => [...gaits.ROOK_GAITS, ...gaits.KNIGHT_GAITS];
 
-  if (name === PieceName.FirePiece) return (): Gait[] => [];
-  if (name === PieceName.WaterPiece) return (): Gait[] => [];
-  if (name === PieceName.EarthPiece) return (): Gait[] => [];
-  if (name === PieceName.LightningPiece) return (): Gait[] => [];
+  if (name === PieceName.FirePiece) {
+    return "FIRE" in gaits ? (): Gait[] => gaits.FIRE : (): Gait[] => [];
+  }
+  if (name === PieceName.WaterPiece) {
+    return "WATER" in gaits ? (): Gait[] => gaits.WATER : (): Gait[] => [];
+  }
+  if (name === PieceName.EarthPiece) {
+    return "EARTH" in gaits ? (): Gait[] => gaits.EARTH : (): Gait[] => [];
+  }
+  if (name === PieceName.LightningPiece) {
+    return "LIGHTNING" in gaits ? (): Gait[] => gaits.LIGHTNING : (): Gait[] => [];
+  }
 
   throw new Error(
     `No default gait generator for this piece name ${name} and owner ${owner}`
@@ -74,4 +83,5 @@ const defaultGaitGenerator = ({
 const allGaits = {
   [PieceSet.Standard]: standardGaits,
   [PieceSet.HexStandard]: hexGaits,
+  [PieceSet.Nimbus]: nimbusGaits,
 };

@@ -115,23 +115,3 @@ export const hexGaits = {
   WHITE_PAWN_GAITS,
   BLACK_PAWN_GAITS,
 };
-
-const TriangularHexagonalDirections = [
-  Direction.TH1,
-  Direction.TH2,
-  Direction.TH3,
-  Direction.TH4,
-  Direction.TH5,
-  Direction.TH6,
-];
-const TriangularEdgeDirections = [Direction.TE1, Direction.TE2, Direction.TE3];
-
-export const nimbusGaits = {
-  KING_GAITS: [],
-  ROOK_GAITS: [],
-  BISHOP_GAITS: [],
-  KNIGHT_GAITS: [],
-  QUEEN_GAITS: [],
-  WHITE_PAWN_GAITS: [],
-  BLACK_PAWN_GAITS: [],
-};
