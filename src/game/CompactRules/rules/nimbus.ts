@@ -4,17 +4,12 @@ import {
   GetGaitGenerator,
   OnBoardCreate,
   TrivialParameterRule,
-  OnGaitsGeneratedModify,
-  PostMove,
   ProcessMoves,
-  OnPieceDisplaced,
   LossCondition,
 } from "../CompactRules";
 import { Adjacency, Coordinates, Piece, Square } from "game/Board";
 import {
   Direction,
-  Gait,
-  GaitParams,
   PieceName,
   PlayerName,
   RankAndFileBounds,
@@ -22,14 +17,8 @@ import {
   TokenName,
 } from "game/types";
 import { Move } from "game/Move";
-import {
-  createPiece,
-  GET_GAIT_GENERATOR,
-  HEX_CLOCKWISE_DIRECTIONS,
-  PieceSet,
-} from "../utilities";
+import { createPiece, GET_GAIT_GENERATOR, PieceSet } from "../utilities";
 import { Path } from "game/Pather";
-import { PieceDelta } from "game/Move";
 import { cloneDeep } from "lodash";
 
 export const nimbus: TrivialParameterRule = () => ({
@@ -292,7 +281,7 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
   // for board height 6
   const owner = rank > 3 ? PlayerName.White : PlayerName.Black;
 
-  // white pieces
+  // black pieces
   if (rank === 1 && file === 6)
     return [
       createPiece({
@@ -340,7 +329,7 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
       }),
     ];
 
-  // black pieces
+  // white pieces
   if (rank === 6 && file === 6)
     return [
       createPiece({
