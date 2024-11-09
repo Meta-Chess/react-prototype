@@ -40,6 +40,16 @@ export const GameScreenContent: FC = () => {
     [moveDisambiguationRequired, allowableMoves, allowableMoves?.length]
   );
 
+  /* NIMBUS TODO:
+  all the moves are in now- 
+
+  this is post gameMaster.locationSelected...
+  > play around with another board selection (highlighting pieces in some new way?- transparent green?)
+  > map selection to filtering of moves...?
+
+
+  */
+
   const { possibleBoardVisualisations } = useContext(BoardViewContext);
 
   const { flipBoard } = useFlipBoard();
