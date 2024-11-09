@@ -6,8 +6,6 @@ const LightningPiece: FC = () => {
     <>
       <Path
         d="M50 150 L0 100 L50 20 L100 100 Z"
-        fill="#D3D3D3" // Light Grey Fill
-        stroke="#000000" // Black Outline
         strokeWidth={4}
         scale={0.25}
         translate={[10, 3]}

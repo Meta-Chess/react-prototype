@@ -84,7 +84,7 @@ const gameModeToVariants: { [key in NamedGameMode]: FutureVariantName[] } = {
 };
 
 const standardGameOptions = {
-  checkEnabled: true,
+  checkEnabled: false,
   online: false,
   publicGame: false,
   numberOfPlayers: 2,
