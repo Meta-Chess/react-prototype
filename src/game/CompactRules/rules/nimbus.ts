@@ -47,40 +47,41 @@ export const nimbus: TrivialParameterRule = () => ({
     board.addToken(triangleShapeToken);
     return { board, numberOfPlayers };
   },
+  getGaitGenerator: ({ gaitGenerator, name, owner }): GetGaitGenerator => {
+    return GET_GAIT_GENERATOR({ gaitGenerator, name, owner, set: PieceSet.Nimbus });
+  },
   processMoves: ({ moves, game, gameClones, params }): ProcessMoves => {
-    const move = moves[0]; // TODO: could think about handling multiple moves
-    const pilotPieceId = move.pieceId;
-    const pilotPieceIsNimbus = game.board
-      .getPiece(pilotPieceId)
-      ?.hasTokenWithName(TokenName.Nimbus);
-    const piecesAllowedToChangeType = game.board
-      .piecesBelongingTo(game.currentPlayerIndex)
-      .filter(
-        (piece) => piece.id !== pilotPieceId || piece.hasTokenWithName(TokenName.Nimbus)
-      );
+    const newTypeChangeMoves: Move[] = [];
+    for (const move of moves) {
+      const pilotPieceId = move.pieceId;
+      const pilotPieceIsNimbus = game.board
+        .getPiece(pilotPieceId)
+        ?.hasTokenWithName(TokenName.Nimbus);
+      const piecesAllowedToChangeType = game.board
+        .piecesBelongingTo(game.currentPlayerIndex)
+        .filter(
+          (piece) => piece.id !== pilotPieceId || piece.hasTokenWithName(TokenName.Nimbus)
+        );
 
-    console.log("nimbus?", pilotPieceIsNimbus);
-    console.log("pieces allowed to change?", piecesAllowedToChangeType);
-
-    const newTypeChangeMoves = piecesAllowedToChangeType.flatMap((changingPiece) => {
-      return [
-        PieceName.FirePiece,
-        PieceName.WaterPiece,
-        PieceName.EarthPiece,
-        PieceName.LightningPiece,
-      ]
-        .map((newPieceType) => {
+      piecesAllowedToChangeType.forEach((changingPiece) => {
+        return [
+          PieceName.FirePiece,
+          PieceName.WaterPiece,
+          PieceName.EarthPiece,
+          PieceName.LightningPiece,
+        ].forEach((newPieceType) => {
           const changingPieceWontChangeType = newPieceType === changingPiece.name;
-          if (changingPieceWontChangeType) return undefined;
+          if (changingPieceWontChangeType) return;
 
-          const newMove = cloneDeep(move);
+          let newMove = cloneDeep(move);
           if (changingPiece.hasTokenWithName(TokenName.Nimbus) && pilotPieceIsNimbus) {
             // TODO: could think about handling multiple piece deltas
             newMove.pieceDeltas[0].promoteTo = newPieceType;
-            return newMove;
+            newTypeChangeMoves.push(newMove);
+            return;
           }
 
-          return {
+          newMove = {
             ...newMove,
             pieceDeltas: [
               ...newMove.pieceDeltas,
@@ -91,13 +92,10 @@ export const nimbus: TrivialParameterRule = () => ({
               },
             ],
           };
-        })
-        .filter((m) => m !== undefined);
-    });
-
-    console.log("num new moves", newTypeChangeMoves.length);
-    console.log(moves);
-    console.log([...moves, ...newTypeChangeMoves]);
+          newTypeChangeMoves.push(newMove);
+        });
+      });
+    }
 
     return { moves: [...moves, ...newTypeChangeMoves], game, gameClones, params };
   },
@@ -301,7 +299,7 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
         location,
         owner,
         name: PieceName.EarthPiece,
-        gaitGenerators: [nimbusPieceGaitsGenerators.earth],
+        set: PieceSet.Nimbus,
         tokens: [nimbusToken],
       }),
     ];
@@ -311,7 +309,7 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
         location,
         owner,
         name: PieceName.WaterPiece,
-        gaitGenerators: [nimbusPieceGaitsGenerators.water],
+        set: PieceSet.Nimbus,
       }),
     ];
   if (rank === 1 && [4, 8].includes(file))
@@ -320,7 +318,7 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
         location,
         owner,
         name: PieceName.FirePiece,
-        gaitGenerators: [nimbusPieceGaitsGenerators.fire],
+        set: PieceSet.Nimbus,
       }),
     ];
   if (rank === 2 && file === 6)
@@ -329,7 +327,7 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
         location,
         owner,
         name: PieceName.FirePiece,
-        gaitGenerators: [nimbusPieceGaitsGenerators.fire],
+        set: PieceSet.Nimbus,
       }),
     ];
   if (rank === 2 && [5, 7].includes(file))
@@ -338,7 +336,7 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
         location,
         owner,
         name: PieceName.LightningPiece,
-        gaitGenerators: [nimbusPieceGaitsGenerators.lightning],
+        set: PieceSet.Nimbus,
       }),
     ];
 
@@ -349,7 +347,7 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
         location,
         owner,
         name: PieceName.EarthPiece,
-        gaitGenerators: [nimbusPieceGaitsGenerators.earth],
+        set: PieceSet.Nimbus,
         tokens: [nimbusToken],
       }),
     ];
@@ -359,7 +357,7 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
         location,
         owner,
         name: PieceName.WaterPiece,
-        gaitGenerators: [nimbusPieceGaitsGenerators.water],
+        set: PieceSet.Nimbus,
       }),
     ];
   if (rank === 6 && [4, 8].includes(file))
@@ -368,7 +366,7 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
         location,
         owner,
         name: PieceName.FirePiece,
-        gaitGenerators: [nimbusPieceGaitsGenerators.fire],
+        set: PieceSet.Nimbus,
       }),
     ];
   if (rank === 5 && file === 6)
@@ -377,7 +375,7 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
         location,
         owner,
         name: PieceName.FirePiece,
-        gaitGenerators: [nimbusPieceGaitsGenerators.fire],
+        set: PieceSet.Nimbus,
       }),
     ];
   if (rank === 5 && [5, 7].includes(file))
@@ -386,109 +384,9 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
         location,
         owner,
         name: PieceName.LightningPiece,
-        gaitGenerators: [nimbusPieceGaitsGenerators.lightning],
+        set: PieceSet.Nimbus,
       }),
     ];
 
   return [];
-};
-
-// const centerRegion = [toLocation({ rank: 11, file: 6 })];
-
-const TriangularHexagonalDirections = [
-  Direction.TH1,
-  Direction.TH2,
-  Direction.TH3,
-  Direction.TH4,
-  Direction.TH5,
-  Direction.TH6,
-];
-const TriangularEdgeDirections = [Direction.TE1, Direction.TE2, Direction.TE3];
-
-const turnDirections = (A: Direction): Direction[] => {
-  switch (A) {
-    case Direction.TC1:
-      return [Direction.TE2, Direction.TE3];
-    case Direction.TC2:
-      return [Direction.TE1, Direction.TE3];
-    case Direction.TC3:
-      return [Direction.TE1, Direction.TE2];
-    case Direction.TE1:
-      return [Direction.TC2, Direction.TC3];
-    case Direction.TE2:
-      return [Direction.TC1, Direction.TC3];
-    case Direction.TE3:
-      return [Direction.TC1, Direction.TC2];
-    case Direction.TH1:
-      return [Direction.TH6, Direction.TH1];
-    case Direction.TH2:
-      return [Direction.TH1, Direction.TH3];
-    case Direction.TH3:
-      return [Direction.TH2, Direction.TH4];
-    case Direction.TH4:
-      return [Direction.TH3, Direction.TH5];
-    case Direction.TH5:
-      return [Direction.TH4, Direction.TH6];
-    case Direction.TH6:
-      return [Direction.TH5, Direction.TH1];
-    default:
-      throw new Error("Invalid direction");
-  }
-};
-
-const nimbusPieceGaitsGenerators: { [type: string]: () => Gait[] } = {
-  fire: () =>
-    TriangularEdgeDirections.map((A) =>
-      TriangularEdgeDirections.map((B) => {
-        return {
-          pattern: [A, B, A, B],
-          interruptable: true,
-        };
-      })
-    )
-      .flat()
-      .flat(),
-  water: () => [
-    {
-      pattern: [Direction.TC1, Direction.TE1],
-      repeats: true,
-      interruptable: true,
-    },
-    {
-      pattern: [Direction.TC2, Direction.TE2],
-      repeats: true,
-      interruptable: true,
-    },
-    {
-      pattern: [Direction.TC3, Direction.TE3],
-      repeats: true,
-      interruptable: true,
-    },
-  ],
-  earth: () => [
-    ...[
-      [Direction.TE1, Direction.TC1],
-      [Direction.TE2, Direction.TC2],
-      [Direction.TE3, Direction.TC3],
-    ]
-      .map((ds) => {
-        return [
-          { pattern: ds, nonBlocking: true },
-          ...turnDirections(ds[1]).map((d3) => [
-            { pattern: [...ds, d3], nonBlocking: true },
-          ]),
-        ];
-      })
-      .flat()
-      .flat(),
-  ],
-  lightning: () => [
-    ...TriangularHexagonalDirections.map((A) => ({
-      pattern: [A, A],
-      interruptable: true,
-    })),
-    ...TriangularHexagonalDirections.flatMap((A) =>
-      turnDirections(A).map((B) => [{ pattern: [A, B] }])
-    ).flat(),
-  ],
 };
