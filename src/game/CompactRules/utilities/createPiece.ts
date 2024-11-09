@@ -60,6 +60,12 @@ const defaultGaitGenerator = ({
     return (): Gait[] => [...gaits.BISHOP_GAITS, ...gaits.KNIGHT_GAITS];
   if (name === PieceName.RookKnight)
     return (): Gait[] => [...gaits.ROOK_GAITS, ...gaits.KNIGHT_GAITS];
+
+  if (name === PieceName.FirePiece) return (): Gait[] => [];
+  if (name === PieceName.WaterPiece) return (): Gait[] => [];
+  if (name === PieceName.EarthPiece) return (): Gait[] => [];
+  if (name === PieceName.LightningPiece) return (): Gait[] => [];
+
   throw new Error(
     `No default gait generator for this piece name ${name} and owner ${owner}`
   );

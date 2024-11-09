@@ -8,6 +8,7 @@ import {
   PostMove,
   ProcessMoves,
   OnPieceDisplaced,
+  LossCondition,
 } from "../CompactRules";
 import { Adjacency, Coordinates, Piece, Square } from "game/Board";
 import {
@@ -19,8 +20,8 @@ import {
   RankAndFileBounds,
   SquareShape,
   TokenName,
-  NimbusPieceType,
 } from "game/types";
+import { Move } from "game/Move";
 import {
   createPiece,
   GET_GAIT_GENERATOR,
@@ -29,19 +30,14 @@ import {
 } from "../utilities";
 import { Path } from "game/Pather";
 import { PieceDelta } from "game/Move";
+import { cloneDeep } from "lodash";
 
 export const nimbus: TrivialParameterRule = () => ({
   title: "Nimbus",
   description: "Core rules by xyz.",
   forSquareGenerationModify: ({ board, numberOfPlayers }): ForSquareGenerationModify => {
     board.addSquares(generateTriangularHexBoardSquares());
-
-    // board.defineRegion("center", centerRegion);
-    // board.defineRegion("promotion", promotionRegionWhite, PlayerName.White);
-    // board.defineRegion("promotion", promotionRegionBlack, PlayerName.Black);
-
-    // board.defineClockwiseDirections(HEX_CLOCKWISE_DIRECTIONS);
-
+    // TODO: could think about defining regions, like "center" and "promotion"
     return { board, numberOfPlayers };
   },
   onBoardCreate: ({ board, numberOfPlayers }): OnBoardCreate => {
@@ -52,79 +48,83 @@ export const nimbus: TrivialParameterRule = () => ({
     return { board, numberOfPlayers };
   },
   processMoves: ({ moves, game, gameClones, params }): ProcessMoves => {
-    // const pilotPieceIds = moves.map((move) => move.pieceId);
-    // const piecesWhichCanTypeChange = game.board
-    //   .piecesBelongingTo(game.currentPlayerIndex)
-    //   .filter(
-    //     (piece) => piece.name === PieceName.King || !pilotPieceIds.includes(piece.id)
-    //   );
-    // const pieceDeltasChangingPieces = piecesWhichCanTypeChange.flatMap((piece) =>
-    //   [PieceName.King, PieceName.Rook, PieceName.Bishop].map((type) => {
-    //     return {
-    //       pieceId: piece.id,
-    //       path: new Path(piece.location, []),
-    //       promoteTo: type,
-    //     };
-    //   })
-    // );
+    const move = moves[0]; // TODO: could think about handling multiple moves
+    const pilotPieceId = move.pieceId;
+    const pilotPieceIsNimbus = game.board
+      .getPiece(pilotPieceId)
+      ?.hasTokenWithName(TokenName.Nimbus);
+    const piecesAllowedToChangeType = game.board
+      .piecesBelongingTo(game.currentPlayerIndex)
+      .filter(
+        (piece) => piece.id !== pilotPieceId || piece.hasTokenWithName(TokenName.Nimbus)
+      );
 
-    // // TODO: fix the pathing when the king would like to change
+    console.log("nimbus?", pilotPieceIsNimbus);
+    console.log("pieces allowed to change?", piecesAllowedToChangeType);
 
-    // const movesWithPieceChange = moves.flatMap((move) =>
-    //   pieceDeltasChangingPieces.flatMap((newDelta) => {
-    //     return { ...move, pieceDeltas: [...move.pieceDeltas, newDelta] };
-    //   })
-    // );
+    const newTypeChangeMoves = piecesAllowedToChangeType.flatMap((changingPiece) => {
+      return [
+        PieceName.FirePiece,
+        PieceName.WaterPiece,
+        PieceName.EarthPiece,
+        PieceName.LightningPiece,
+      ]
+        .map((newPieceType) => {
+          const changingPieceWontChangeType = newPieceType === changingPiece.name;
+          if (changingPieceWontChangeType) return undefined;
 
-    // [
-    //   NimbusPieceType.fire,
-    //   NimbusPieceType.water,
-    //   NimbusPieceType.earth,
-    //   NimbusPieceType.lightning,
-    // ]
+          const newMove = cloneDeep(move);
+          if (changingPiece.hasTokenWithName(TokenName.Nimbus) && pilotPieceIsNimbus) {
+            // TODO: could think about handling multiple piece deltas
+            newMove.pieceDeltas[0].promoteTo = newPieceType;
+            return newMove;
+          }
 
-    // promoteTo: every other piece...
-    // and there is a promotion rule which catches it...
-    // const movesWithPieceChange = moves.flatMap((move) =>
-    //   [PieceName.King, PieceName.Rook, PieceName.Bishop].flatMap((type) => {
-    //     return {
-    //       ...move,
-    //       pieceDeltas: move.pieceDeltas.map((pieceDelta) => {
-    //         return { ...pieceDelta, promoteTo: type };
-    //       }),
-    //     };
-    //   })
-    // );
-    return { moves: moves, game, gameClones, params };
+          return {
+            ...newMove,
+            pieceDeltas: [
+              ...newMove.pieceDeltas,
+              {
+                pieceId: changingPiece.id,
+                path: new Path(changingPiece.location, []),
+                promoteTo: newPieceType,
+              },
+            ],
+          };
+        })
+        .filter((m) => m !== undefined);
+    });
+
+    console.log("num new moves", newTypeChangeMoves.length);
+    console.log(moves);
+    console.log([...moves, ...newTypeChangeMoves]);
+
+    return { moves: [...moves, ...newTypeChangeMoves], game, gameClones, params };
   },
-  // onPieceDisplaced: ({ board, pieceDelta }): OnPieceDisplaced => {
-  //   if (pieceDelta.promoteTo !== undefined) {
-  //     const piece = board.getPiece(pieceDelta.pieceId);
-  //     if (piece) {
-  //       piece.name = pieceDelta.promoteTo;
-  //       piece.generateGaits =
-  //         board.interrupt.for.getGaitGenerator({
-  //           name: pieceDelta.promoteTo,
-  //         }).gaitGenerator || ((): Gait[] => []);
-  //     }
-  //   }
-  //   return { board, pieceDelta };
-  // },
-  // postMove: ({ game, interrupt, board, move, currentTurn }): PostMove => {
-  //   if (!move) return { game, interrupt, board, move, currentTurn };
+  lossCondition: ({ playerName, game, gameClones, interrupt, dead }): LossCondition => {
+    if (dead || game.getCurrentPlayerName() !== playerName) {
+      return { playerName, game, gameClones, interrupt, dead };
+    }
 
-  //   const changablePieces = game.board
-  //     .piecesBelongingTo(game.currentPlayerIndex)
-  //     .filter((piece) => piece.name === PieceName.King || piece.id !== move.pieceId);
-  //   if (move.pieceId)
-  //     const piecesMoved = move.pieceDeltas
-  //       .map((delta) => board.pieces[delta.pieceId])
-  //       .filter((piece) => piece !== undefined);
-  //   piecesMoved.forEach((piece: Piece) => {
-  //     piece.removeTokensByNames([TokenName.ActiveCastling, TokenName.PassiveCastling]);
-  //   });
-  //   return { game, interrupt, board, move, currentTurn };
-  // },
+    const friendlyPieces = game.board.piecesBelongingTo(playerName);
+    const nimbusIsAlive =
+      friendlyPieces.filter((piece) => piece.hasTokenWithName(TokenName.Nimbus))
+        .length !== 0;
+
+    if (!nimbusIsAlive) {
+      return { playerName, game, gameClones, interrupt, dead: "has lost their Nimbus" };
+    }
+
+    const anyNonNimbusPiecesAreAlive =
+      friendlyPieces.filter((piece) => !piece.hasTokenWithName(TokenName.Nimbus))
+        .length !== 0;
+
+    if (!anyNonNimbusPiecesAreAlive) {
+      return { playerName, game, gameClones, interrupt, dead: "has lost all defenders" };
+    }
+
+    return { playerName, game, gameClones, interrupt, dead: false };
+  },
 });
 
 const triangleShapeToken = {
@@ -135,33 +135,12 @@ const triangleShapeToken = {
   data: { shape: SquareShape.Triangle },
 };
 
-const fireToken = {
-  name: TokenName.NimbusPiece,
+const nimbusToken = {
+  name: TokenName.Nimbus,
   expired: (): boolean => {
     return false;
   },
-  data: { nimbusPieceType: NimbusPieceType.fire },
-};
-const waterToken = {
-  name: TokenName.NimbusPiece,
-  expired: (): boolean => {
-    return false;
-  },
-  data: { nimbusPieceType: NimbusPieceType.water },
-};
-const earthToken = {
-  name: TokenName.NimbusPiece,
-  expired: (): boolean => {
-    return false;
-  },
-  data: { nimbusPieceType: NimbusPieceType.earth },
-};
-const lightningToken = {
-  name: TokenName.NimbusPiece,
-  expired: (): boolean => {
-    return false;
-  },
-  data: { nimbusPieceType: NimbusPieceType.lightning },
+  data: undefined,
 };
 
 export const thisTriangleIsUpright = (
@@ -308,19 +287,6 @@ const triangularHexBoardAdjacencies =
     }
   };
 
-// const noGaitGenerators = [
-//   (): Gait[] => {
-//     return [];
-//   },
-// ];
-
-// enum NimbusPieceType {
-//   fire = PieceName.FirePiece,
-//   water = PieceName.WaterPiece,
-//   earth = PieceName.EarthPiece,
-//   lightning = PieceName.LightningPiece,
-// }
-
 const triangularHexBoardSetupRule = (square: Square): Piece[] => {
   const { rank, file } = square.getCoordinates();
   const location = toLocation({ rank, file });
@@ -328,6 +294,7 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
   // for board height 6
   const owner = rank > 3 ? PlayerName.White : PlayerName.Black;
 
+  // white pieces
   if (rank === 1 && file === 6)
     return [
       createPiece({
@@ -335,6 +302,7 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
         owner,
         name: PieceName.EarthPiece,
         gaitGenerators: [nimbusPieceGaitsGenerators.earth],
+        tokens: [nimbusToken],
       }),
     ];
   if (rank === 1 && [5, 7].includes(file))
@@ -374,6 +342,7 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
       }),
     ];
 
+  // black pieces
   if (rank === 6 && file === 6)
     return [
       createPiece({
@@ -381,6 +350,7 @@ const triangularHexBoardSetupRule = (square: Square): Piece[] => {
         owner,
         name: PieceName.EarthPiece,
         gaitGenerators: [nimbusPieceGaitsGenerators.earth],
+        tokens: [nimbusToken],
       }),
     ];
   if (rank === 6 && [5, 7].includes(file))
