@@ -87,41 +87,43 @@ export const Board3D: SFC<BoardProps & { type: BoardVisualisation3D }> = ({
           camera={{ fov: 4, position: initialCameraPosition }}
           shadows
         >
-          <Lighting />
-          {fileCoordinates.map((file) =>
-            rankCoordinates.map((rank) => {
-              return (
-                <Square3D
-                  key={JSON.stringify([rank, file])}
-                  square={game.board.firstSquareSatisfyingRule(
-                    (square) =>
-                      objectMatches({
-                        rank: verticalWrap(rank),
-                        file: horizontalWrap(file),
-                      })(square.coordinates) &&
-                      !square.hasTokenWithName(TokenName.InvisibilityToken)
-                  )}
-                  positionRank={verticalWrap(rank + rankOffset)}
-                  positionFile={horizontalWrap(file + fileOffset)}
-                  numberOfRanks={numberOfRanks}
-                  numberOfFiles={numberOfFiles}
-                  type={type}
+          <group rotation={[Math.PI, Math.PI / 4, 0]}>
+            <Lighting />
+            {fileCoordinates.map((file) =>
+              rankCoordinates.map((rank) => {
+                return (
+                  <Square3D
+                    key={JSON.stringify([rank, file])}
+                    square={game.board.firstSquareSatisfyingRule(
+                      (square) =>
+                        objectMatches({
+                          rank: verticalWrap(rank),
+                          file: horizontalWrap(file),
+                        })(square.coordinates) &&
+                        !square.hasTokenWithName(TokenName.InvisibilityToken)
+                    )}
+                    positionRank={verticalWrap(rank + rankOffset)}
+                    positionFile={horizontalWrap(file + fileOffset)}
+                    numberOfRanks={numberOfRanks}
+                    numberOfFiles={numberOfFiles}
+                    type={type}
+                  />
+                );
+              })
+            )}
+            {extraGeometry && (
+              <mesh geometry={extraGeometry} receiveShadow>
+                <meshStandardMaterial
+                  attach="material"
+                  color={Colors.WHITE.toString()}
+                  emissive={Colors.WHITE.toString()}
+                  emissiveIntensity={1}
+                  roughness={0.5}
                 />
-              );
-            })
-          )}
-          {extraGeometry && (
-            <mesh geometry={extraGeometry} receiveShadow>
-              <meshStandardMaterial
-                attach="material"
-                color={Colors.WHITE.toString()}
-                emissive={Colors.WHITE.toString()}
-                emissiveIntensity={1}
-                roughness={0.5}
-              />
-            </mesh>
-          )}
-          <OrbitControls autoRotate={autoRotateCamera} />
+              </mesh>
+            )}
+            <OrbitControls autoRotate={autoRotateCamera} />
+          </group>
         </Canvas>
       </AbsoluteView>
     </SquareBackboard>
