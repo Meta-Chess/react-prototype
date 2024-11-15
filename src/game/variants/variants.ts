@@ -179,7 +179,6 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     shortDescription:
       "A 10x10 variant, with hybrid pieces and novel rules. Invented by Dutch games designer Christian Freeling.",
     traits: ["Board"],
-    imageName: "squareBoardImage",
     implemented: true,
     ruleNames: ["grandChess", "clearCastlingTokens"],
     overrideRuleParams: {
@@ -205,7 +204,6 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     shortDescription:
       "A 10x8 variant with hybrid pieces. Invented by World Champion José Raúl Capablanca.",
     traits: ["Board"],
-    imageName: "squareBoardImage",
     implemented: true,
     ruleNames: ["capablancaChess"],
     overrideRuleParams: {

@@ -30,9 +30,6 @@ import thinIceImage from "./thinIceImage.png";
 import diagonalMirrorImage from "./diagonalMirrorImage.png";
 import completedKnightImage from "./completedKnightImage.png";
 import puppeteersImage from "./puppeteersImage.png";
-import squareBoardImage from "./squareBoardImage.png";
-import circleBoardImage from "./circleBoardImage.png";
-import hexBoardImage from "./hexBoardImage.png";
 import pushImage from "./pushImage.png";
 import forcedEnPassantImage from "./forcedEnPassantImage.png";
 
@@ -99,12 +96,6 @@ export { diagonalMirrorImage };
 export { completedKnightImage };
 
 export { puppeteersImage };
-
-export { squareBoardImage };
-
-export { circleBoardImage };
-
-export { hexBoardImage };
 
 export { pushImage };
 

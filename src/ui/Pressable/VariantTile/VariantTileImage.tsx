@@ -1,9 +1,10 @@
 import React from "react";
-import { SFC, Colors, Text } from "primitives";
+import { SFC } from "primitives";
 import { Image, ViewStyle } from "react-native";
 import { FutureVariant } from "game";
 import * as VariantImages from "primitives/VariantImage";
 import { VariantTileImageFrame } from "./VariantTileImageFrame";
+import { DefaultVariantImageIcon } from "primitives";
 
 interface VariantTileImageProps {
   variant: FutureVariant;
@@ -21,14 +22,7 @@ const VariantTileImage: SFC<VariantTileImageProps> = ({
   if (variant.imageName === undefined) {
     return (
       <VariantTileImageFrame style={style} modified={modified}>
-        <Text
-          alignment="center"
-          cat="BodyXS"
-          color={Colors.TEXT.LIGHT_SECONDARY.toString()}
-          selectable={false}
-        >
-          {"Image\ncoming soon"}
-        </Text>
+        <DefaultVariantImageIcon size={96} />
       </VariantTileImageFrame>
     );
   }
