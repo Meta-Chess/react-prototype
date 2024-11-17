@@ -54,7 +54,7 @@ enum NamedGameMode {
 const alternamePathNamings: { [key in NamedGameMode]?: string[] } = {
   [NamedGameMode.spherical]: ["sphere"],
   [NamedGameMode.cylindrical]: ["cylinder"],
-  [NamedGameMode.toroidal]: ["torus"],
+  [NamedGameMode.toroidal]: ["torus", "donut"],
 };
 const gameModeToVariants: { [key in NamedGameMode]: FutureVariantName[] } = {
   spherical: ["spherical"],
