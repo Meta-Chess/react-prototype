@@ -12,7 +12,7 @@ export const linking: LinkingOptions<NavigatorParamList> = {
       [Screens.AboutScreen]: { path: "about" },
       [Screens.GameScreen]: {
         // `/:` precedes a route param name. `?` marks the preceding name as optional
-        path: "game/:roomId?/:gameOptions?/:namedGameMode?",
+        path: "game/:roomId?/:gameOptions?",
         stringify: {
           roomId: (roomId?: string): string => roomId || "",
           gameOptions: (_gameOptions: GameOptions): string => "", // Hide game options - they're ugly
@@ -27,13 +27,16 @@ export const linking: LinkingOptions<NavigatorParamList> = {
       },
     },
   },
+
   getStateFromPath(path, options) {
-    if (Object.keys(pathToNamedGameMode).includes(path)) {
+    if (path in pathToGameOptions) {
       return {
         routes: [
           {
             name: Screens.GameScreen,
-            params: namedGameModeParams[pathToNamedGameMode[path]],
+            params: {
+              gameOptions: pathToGameOptions[path],
+            },
           },
         ],
       };
@@ -51,11 +54,6 @@ enum NamedGameMode {
   hex = "hex",
 }
 
-const alternamePathNamings: { [key in NamedGameMode]?: string[] } = {
-  [NamedGameMode.spherical]: ["sphere"],
-  [NamedGameMode.cylindrical]: ["cylinder"],
-  [NamedGameMode.toroidal]: ["torus", "donut"],
-};
 const gameModeToVariants: { [key in NamedGameMode]: FutureVariantName[] } = {
   spherical: ["spherical"],
   mobius: ["mobius"],
@@ -64,36 +62,35 @@ const gameModeToVariants: { [key in NamedGameMode]: FutureVariantName[] } = {
   hex: ["hex"],
 };
 
-const standardGameOptions = {
+const alternamePathNamings: { [key in NamedGameMode]?: string[] } = {
+  [NamedGameMode.spherical]: ["sphere"],
+  [NamedGameMode.cylindrical]: ["cylinder"],
+  [NamedGameMode.toroidal]: ["torus", "donut"],
+};
+
+const offlineBaseGameOptions = {
   checkEnabled: true,
-  online: false,
-  publicGame: false,
   numberOfPlayers: 2,
   baseVariants: [],
   ruleNamesWithParams: {},
   time: undefined,
+  online: false,
+  publicGame: false,
 };
 
-const namedGameModeParams = Object.keys(NamedGameMode).reduce((acc, gameMode) => {
+const pathToGameOptions = Object.keys(NamedGameMode).reduce((acc, gameMode) => {
   const namedGameMode = gameMode as NamedGameMode;
-  acc[namedGameMode] = {
-    gameOptions: calculateGameOptions(
-      standardGameOptions,
-      gameModeToVariants[namedGameMode]
-    ),
-    roomId: undefined,
-    namedGameMode: gameMode,
-  };
-  return acc;
-}, {} as { [key in NamedGameMode]: NavigatorParamList[Screens.GameScreen] });
+  const gameOptions = calculateGameOptions(
+    offlineBaseGameOptions,
+    gameModeToVariants[namedGameMode]
+  );
 
-const pathToNamedGameMode = Object.keys(NamedGameMode).reduce((acc, gameMode) => {
-  const namedGameMode = gameMode as NamedGameMode;
-  acc[`/${gameMode}`] = namedGameMode;
-  acc[`/game/${gameMode}`] = namedGameMode;
+  acc[`/${gameMode}`] = gameOptions;
+  acc[`/${gameMode}/online`] = { ...gameOptions, online: true };
+
   alternamePathNamings[namedGameMode]?.forEach((pathName) => {
-    acc[`/${pathName}`] = namedGameMode;
-    acc[`/game/${pathName}`] = namedGameMode;
+    acc[`/${pathName}`] = gameOptions;
+    acc[`/${pathName}/online`] = { ...gameOptions, online: true };
   });
   return acc;
-}, {} as { [key: string]: NamedGameMode });
+}, {} as { [key: string]: GameOptions });
