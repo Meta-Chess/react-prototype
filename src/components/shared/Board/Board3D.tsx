@@ -77,6 +77,27 @@ export const Board3D: SFC<BoardProps & { type: BoardVisualisation3D }> = ({
         })
       : null;
 
+  const offset: {
+    forRank: (rank: number) => number;
+    forFile: (file: number) => number;
+  } =
+    type === "spherical"
+      ? {
+          forRank: (rank): number => -rank + 1,
+          forFile: (file): number => -file + Math.floor(numberOfFiles / 2),
+        }
+      : type === "cylindrical"
+      ? {
+          forRank: (rank): number => -rank + 1,
+          forFile: (file): number => -file + 2,
+        }
+      : type === "toroidal"
+      ? {
+          forRank: (rank): number => rank + 9,
+          forFile: (file): number => file + 3,
+        }
+      : { forRank: (rank): number => rank, forFile: (file): number => file };
+
   return (
     <SquareBackboard measurements={measurements} backboard={backboard}>
       <AbsoluteView
@@ -87,43 +108,41 @@ export const Board3D: SFC<BoardProps & { type: BoardVisualisation3D }> = ({
           camera={{ fov: 4, position: initialCameraPosition }}
           shadows
         >
-          <group rotation={[Math.PI, Math.PI / 4, 0]}>
-            <Lighting />
-            {fileCoordinates.map((file) =>
-              rankCoordinates.map((rank) => {
-                return (
-                  <Square3D
-                    key={JSON.stringify([rank, file])}
-                    square={game.board.firstSquareSatisfyingRule(
-                      (square) =>
-                        objectMatches({
-                          rank: verticalWrap(rank),
-                          file: horizontalWrap(file),
-                        })(square.coordinates) &&
-                        !square.hasTokenWithName(TokenName.InvisibilityToken)
-                    )}
-                    positionRank={verticalWrap(rank + rankOffset)}
-                    positionFile={horizontalWrap(file + fileOffset)}
-                    numberOfRanks={numberOfRanks}
-                    numberOfFiles={numberOfFiles}
-                    type={type}
-                  />
-                );
-              })
-            )}
-            {extraGeometry && (
-              <mesh geometry={extraGeometry} receiveShadow>
-                <meshStandardMaterial
-                  attach="material"
-                  color={Colors.WHITE.toString()}
-                  emissive={Colors.WHITE.toString()}
-                  emissiveIntensity={1}
-                  roughness={0.5}
+          <Lighting />
+          {fileCoordinates.map((file) =>
+            rankCoordinates.map((rank) => {
+              return (
+                <Square3D
+                  key={JSON.stringify([rank, file])}
+                  square={game.board.firstSquareSatisfyingRule(
+                    (square) =>
+                      objectMatches({
+                        rank: verticalWrap(offset.forRank(rank)),
+                        file: horizontalWrap(offset.forFile(file)),
+                      })(square.coordinates) &&
+                      !square.hasTokenWithName(TokenName.InvisibilityToken)
+                  )}
+                  positionRank={verticalWrap(rank + rankOffset)}
+                  positionFile={horizontalWrap(file + fileOffset)}
+                  numberOfRanks={numberOfRanks}
+                  numberOfFiles={numberOfFiles}
+                  type={type}
                 />
-              </mesh>
-            )}
-            <OrbitControls autoRotate={autoRotateCamera} />
-          </group>
+              );
+            })
+          )}
+          {extraGeometry && (
+            <mesh geometry={extraGeometry} receiveShadow>
+              <meshStandardMaterial
+                attach="material"
+                color={Colors.WHITE.toString()}
+                emissive={Colors.WHITE.toString()}
+                emissiveIntensity={1}
+                roughness={0.5}
+              />
+            </mesh>
+          )}
+          <OrbitControls autoRotate={autoRotateCamera} />
         </Canvas>
       </AbsoluteView>
     </SquareBackboard>
