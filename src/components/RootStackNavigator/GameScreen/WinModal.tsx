@@ -4,13 +4,13 @@ import { Colors, PieceImage, SFC, Text, TrackingPixel } from "primitives";
 import { PieceName, PlayerName } from "game";
 import styled from "styled-components/native";
 import { ButtonTertiaryLight, Row } from "ui";
-import { Screens, useNavigation } from "navigation";
+import { useGoBackOrToStartScreen } from "navigation";
 import { Styles } from "primitives/Styles";
 import { GameContext } from "components/shared";
 
 export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
   const { gameMaster } = useContext(GameContext);
-  const navigation = useNavigation();
+  const goBackOrToStartScreen = useGoBackOrToStartScreen();
 
   return (
     <Container>
@@ -58,7 +58,7 @@ export const WinModal: SFC<{ onClose: () => void }> = ({ onClose }) => {
         <ButtonTertiaryLight
           onPress={(): void => {
             gameMaster?.endGame();
-            navigation.navigate(Screens.StartScreen);
+            goBackOrToStartScreen();
           }}
           label={"Leave Game"}
           style={{ flex: 1, marginLeft: 8 }}
