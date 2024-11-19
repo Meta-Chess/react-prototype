@@ -12,6 +12,7 @@ import { GameMaster } from "game/GameMaster";
 import { OnlineGameMaster } from "game/OnlineGameMaster";
 import axios from "axios";
 import { Screens, useNavigation, useRoute } from "navigation";
+import { useAsyncStorage } from "./useAsyncStorage";
 
 export const GameContext = createContext<{ gameMaster?: GameMaster }>({});
 
@@ -48,6 +49,10 @@ export const GameProvider: FC<Props> = ({
   const [roomId, simpleSetRoomId] = useState(receivedRoomId);
   const renderer = useMemo(() => new Renderer(setUpdateCounter), []);
 
+  const [setMostRecentGameOptions, getMostRecentGameOptions] = useAsyncStorage(
+    "mostRecentGameOptions"
+  );
+
   const setRoomId = useCallback((roomId?: string): void => {
     navigation.setParams({ ...params, roomId }); // For url with roomId
     simpleSetRoomId(roomId);
@@ -66,7 +71,14 @@ export const GameProvider: FC<Props> = ({
         if (foundRoomId) {
           setRoomId(foundRoomId);
         } else {
-          setGameMasterToNewGame({ renderer, setGameMaster, roomId, gameOptions });
+          setGameMasterToNewGame({
+            renderer,
+            setGameMaster,
+            roomId,
+            gameOptions,
+            setMostRecentGameOptions,
+            getMostRecentGameOptions,
+          });
         }
       });
     } else {
@@ -78,6 +90,8 @@ export const GameProvider: FC<Props> = ({
         onSpectating: gameOptions?.spotlight
           ? (): void => setRoomId(undefined)
           : undefined,
+        setMostRecentGameOptions,
+        getMostRecentGameOptions,
       });
     }
   }, [gameOptions, roomId]);
@@ -97,17 +111,41 @@ async function setGameMasterToNewGame({
   roomId,
   gameOptions,
   onSpectating,
+  setMostRecentGameOptions,
+  getMostRecentGameOptions,
 }: {
   renderer: Renderer;
   setGameMaster: (gm: GameMaster | undefined) => void;
   roomId?: string;
   gameOptions?: GameOptions;
   onSpectating?: () => void;
+  setMostRecentGameOptions: (value: GameOptions | undefined) => void;
+  getMostRecentGameOptions: () => Promise<GameOptions | undefined>;
 }): Promise<void> {
-  const newGameMaster =
-    gameOptions?.online === true || (gameOptions?.online !== false && roomId)
-      ? await OnlineGameMaster.connectNewGame(renderer, gameOptions, roomId, onSpectating)
-      : new GameMaster(...GameMaster.processConstructorInputs({ gameOptions, renderer }));
+  let newGameMaster: GameMaster | OnlineGameMaster | undefined;
+  const onlineGame =
+    gameOptions?.online === true || (gameOptions?.online !== false && roomId);
+  if (onlineGame) {
+    newGameMaster = await OnlineGameMaster.connectNewGame(
+      renderer,
+      gameOptions,
+      roomId,
+      onSpectating
+    );
+    setMostRecentGameOptions(gameOptions);
+  } else {
+    const updatedGameOptions = gameOptions || {
+      ...(await getMostRecentGameOptions()),
+      online: false,
+    };
+    newGameMaster = new GameMaster(
+      ...GameMaster.processConstructorInputs({
+        gameOptions: updatedGameOptions,
+        renderer,
+      })
+    );
+  }
+
   setGameMaster(newGameMaster);
 }
 
