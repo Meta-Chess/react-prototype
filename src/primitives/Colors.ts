@@ -14,6 +14,8 @@ export const Colors = {
     DARK: Color("#000000"),
     LIGHT: Color("#FFFFFF"),
   },
+  LIGHTEST: "#EFEFEF",
+  LIGHTISH: "#C7C7C7",
   GREY: Color("#888888"),
   DARKEST: Color("#212121"),
   DARKER: Color("#2A2A2A"),
