@@ -1,4 +1,3 @@
-import { GameOptions } from "game/types";
 import { parseBooleanString, stringifyBoolean } from "./dataParsers";
 
 export type DataKey = keyof UserLocalData;
@@ -15,7 +14,6 @@ export interface UserLocalData {
   lastViewedUpdateOn: Date;
   showDetailedView: boolean;
   zenMode: boolean;
-  mostRecentGameOptions: GameOptions;
 }
 
 export const stringifyData: {
@@ -24,7 +22,6 @@ export const stringifyData: {
   lastViewedUpdateOn: (date) => date.toDateString(),
   showDetailedView: stringifyBoolean,
   zenMode: stringifyBoolean,
-  mostRecentGameOptions: (options) => JSON.stringify(options),
 };
 
 export const dataFromString: {
@@ -36,8 +33,4 @@ export const dataFromString: {
   },
   showDetailedView: parseBooleanString,
   zenMode: parseBooleanString,
-  mostRecentGameOptions: async (options) => {
-    const optionString = await options;
-    return optionString ? JSON.parse(optionString) : undefined;
-  },
 };
