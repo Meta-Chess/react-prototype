@@ -41,7 +41,7 @@ export const pathToParams = Object.keys(NamedGameMode).reduce((acc, gameMode) =>
     offlineBaseGameOptions,
     gameModeToVariants[namedGameMode]
   );
-  const onlineGameOptions = { ...gameOptions, online: true };
+  const onlineGameOptions = { ...gameOptions, online: true, time: 300000 };
   const mode = namedGameMode;
 
   acc[`/${gameMode}`] = { gameOptions, mode };
