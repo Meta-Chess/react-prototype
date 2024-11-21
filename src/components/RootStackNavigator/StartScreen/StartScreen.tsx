@@ -24,6 +24,7 @@ const StartScreen: FC = () => {
   const [setLastViewedUpdateOn, getLastViewedUpdateOn] =
     useAsyncStorage("lastViewedUpdateOn");
   const [showUpdateLog, setShowUpdateLog] = useState(false);
+  const UPDATE_LOG_ENABLED = false; // disabling UpdateLog for now, while it isn't being updated
 
   useEffect(() => {
     async function setStateAsynchronously(): Promise<void> {
@@ -91,7 +92,7 @@ const StartScreen: FC = () => {
             />
           </ErrorBoundary>
         </ScrollView>
-        {showUpdateLog && (
+        {showUpdateLog && UPDATE_LOG_ENABLED && (
           <UpdateLog
             updates={recentUpdates}
             onDismiss={onDismiss}

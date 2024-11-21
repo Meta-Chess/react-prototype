@@ -77,6 +77,27 @@ export const Board3D: SFC<BoardProps & { type: BoardVisualisation3D }> = ({
         })
       : null;
 
+  const offset: {
+    forRank: (rank: number) => number;
+    forFile: (file: number) => number;
+  } =
+    type === "spherical"
+      ? {
+          forRank: (rank): number => -rank + 1,
+          forFile: (file): number => -file + Math.floor(numberOfFiles / 2),
+        }
+      : type === "cylindrical"
+      ? {
+          forRank: (rank): number => -rank + 1,
+          forFile: (file): number => -file + 2,
+        }
+      : type === "toroidal"
+      ? {
+          forRank: (rank): number => rank + 9,
+          forFile: (file): number => file + 3,
+        }
+      : { forRank: (rank): number => rank, forFile: (file): number => file };
+
   return (
     <SquareBackboard measurements={measurements} backboard={backboard}>
       <AbsoluteView
@@ -96,8 +117,8 @@ export const Board3D: SFC<BoardProps & { type: BoardVisualisation3D }> = ({
                   square={game.board.firstSquareSatisfyingRule(
                     (square) =>
                       objectMatches({
-                        rank: verticalWrap(rank),
-                        file: horizontalWrap(file),
+                        rank: verticalWrap(offset.forRank(rank)),
+                        file: horizontalWrap(offset.forFile(file)),
                       })(square.coordinates) &&
                       !square.hasTokenWithName(TokenName.InvisibilityToken)
                   )}
