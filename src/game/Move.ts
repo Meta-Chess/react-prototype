@@ -1,12 +1,17 @@
-import { Piece } from "game/Board";
 import { Path } from "game/Pather/Path";
 import { PieceName, PlayerName, TimestampMillis } from "game/types";
 import { isEqual } from "lodash";
 import { Direction } from "game/types";
+import type { GaitData } from "game/types";
+import {
+  InterceptionConditionType,
+  InterceptionConditionBuilderParams,
+} from "game/types/InterceptionCondition";
 
-export interface MoveData {
+export interface MoveData extends GaitData {
   interceptable?: boolean;
-  interceptionCondition?: (piece: Piece) => boolean;
+  interceptionConditionType?: InterceptionConditionType;
+  interceptionConditionBuilderParams?: InterceptionConditionBuilderParams;
   interceptableAtStart?: boolean;
   linearMoverDirection?: Direction;
 }
@@ -17,6 +22,7 @@ export interface CaptureData {
   capturer: PlayerName;
 }
 
+// NOTE: the Move type and hence any attributes like MoveData, must remain JSON serializable/parsable (for online play). e.g. no functions
 export interface Move {
   pieceId: string;
   location: string;

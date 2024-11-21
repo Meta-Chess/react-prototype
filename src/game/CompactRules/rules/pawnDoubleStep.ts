@@ -8,6 +8,7 @@ import {
 } from "../CompactRules";
 import { pawnDoubleStepToken } from "../constants";
 import { isPresent } from "utilities";
+import { InterceptionConditionType } from "game/types/InterceptionCondition";
 
 export const pawnDoubleStep: TrivialParameterRule = () => ({
   title: "Pawn Double Step",
@@ -50,9 +51,8 @@ function doubleStep(originalPiece: Piece): (originalGait: Gait) => Gait {
     pattern: [...originalGait.pattern, ...originalGait.pattern],
     data: {
       interceptable: true,
-      interceptionCondition: (piece: Piece): boolean => {
-        return piece.name === PieceName.Pawn && piece.owner !== originalOwner;
-      },
+      interceptionConditionType: InterceptionConditionType.PawnDoubleStep,
+      interceptionConditionBuilderParams: { originalOwner },
     },
   });
 }

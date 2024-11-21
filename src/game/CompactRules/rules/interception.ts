@@ -1,5 +1,6 @@
 import { TokenName } from "game/types";
 import { PostMove, TrivialParameterRule } from "../CompactRules";
+import { interceptionConditionBuilders } from "game/types/InterceptionCondition";
 
 export const interception: TrivialParameterRule = () => ({
   title: "Interception",
@@ -16,6 +17,19 @@ export const interception: TrivialParameterRule = () => ({
         ?.path.getPath()
         .slice(start, -1)
         .forEach((location) => {
+          const interceptionConditionType = move.data?.interceptionConditionType;
+          const interceptionConditionBuildParams =
+            move.data?.interceptionConditionBuilderParams;
+          if (
+            interceptionConditionType === undefined ||
+            interceptionConditionBuildParams === undefined
+          )
+            return;
+
+          const interceptionCondition = interceptionConditionBuilders[
+            interceptionConditionType
+          ](interceptionConditionBuildParams);
+
           const interceptionToken = {
             name: TokenName.CaptureToken,
             expired: (turn: number): boolean => {
@@ -23,7 +37,7 @@ export const interception: TrivialParameterRule = () => ({
             },
             data: {
               pieceId: move.pieceId,
-              condition: move.data?.interceptionCondition,
+              condition: interceptionCondition,
             },
           };
 
