@@ -37,5 +37,5 @@ export const defaultGameOptions = {
   checkEnabled: true,
   online: false,
   publicGame: false,
-  time: undefined,
+  time: 300000,
 } as const;

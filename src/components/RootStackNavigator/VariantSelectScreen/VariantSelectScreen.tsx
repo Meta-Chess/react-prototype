@@ -40,7 +40,6 @@ const VariantSelectScreen: FC = () => {
   const [gameOptions, setGameOptions] = useState<GameOptions>({
     ...defaultGameOptions,
     online: playWithFriends,
-    time: playWithFriends ? 300000 : defaultGameOptions.time,
   });
 
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
