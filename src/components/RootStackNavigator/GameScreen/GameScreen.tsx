@@ -5,7 +5,8 @@ import { GameProvider } from "components/shared";
 import { GameScreenWrappedContent } from "./GameScreenWrappedContent";
 
 export const GameScreen: FC = () => {
-  const { params } = useRoute<Screens.GameScreen>();
+  const params = { ...useRoute<Screens.GameScreen>().params };
+
   return (
     <GameProvider {...params}>
       <GameScreenWrappedContent />

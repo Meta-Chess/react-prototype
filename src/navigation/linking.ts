@@ -1,7 +1,8 @@
-import { LinkingOptions } from "@react-navigation/native";
+import { LinkingOptions, getStateFromPath } from "@react-navigation/native";
 import { Screens } from "./Screens";
 import { GameOptions } from "game/types";
 import { NavigatorParamList } from "navigation/NavigatorParamList";
+import { pathToParams } from "./NamedGameMode";
 
 export const linking: LinkingOptions<NavigatorParamList> = {
   prefixes: [],
@@ -24,5 +25,20 @@ export const linking: LinkingOptions<NavigatorParamList> = {
         },
       },
     },
+  },
+
+  getStateFromPath(path, options) {
+    if (path in pathToParams) {
+      return {
+        routes: [
+          {
+            name: Screens.GameScreen,
+            params: pathToParams[path],
+          },
+        ],
+      };
+    }
+
+    return getStateFromPath(path, options);
   },
 };

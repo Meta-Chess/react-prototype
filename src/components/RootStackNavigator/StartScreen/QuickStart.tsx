@@ -1,7 +1,7 @@
 import React from "react";
 import { SFC } from "primitives";
 import { SelectInput, LabeledCheckBox, DebouncedTextInput } from "ui";
-import { VariantName, variants, GameOptions, FutureVariantName, FormatName } from "game";
+import { VariantName, variants, GameOptions } from "game";
 import styled from "styled-components/native";
 import { View } from "react-native";
 import { keys } from "utilities";
@@ -102,15 +102,9 @@ const timeOptions = [
   // { label: "3 hours", value: 7200000 },
 ];
 
-const defaultGameOptions = {
-  baseVariants: [] as FutureVariantName[],
-  format: "variantComposition" as FormatName,
-  checkEnabled: true,
-};
-
 const ControlsContainer = styled(View)`
   flex-direction: column-reverse;
   width: 300px;
 `;
 
-export { GameOptionControls, defaultGameOptions };
+export { GameOptionControls };

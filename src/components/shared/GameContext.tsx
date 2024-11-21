@@ -66,7 +66,12 @@ export const GameProvider: FC<Props> = ({
         if (foundRoomId) {
           setRoomId(foundRoomId);
         } else {
-          setGameMasterToNewGame({ renderer, setGameMaster, roomId, gameOptions });
+          setGameMasterToNewGame({
+            renderer,
+            setGameMaster,
+            roomId,
+            gameOptions,
+          });
         }
       });
     } else {
@@ -108,6 +113,7 @@ async function setGameMasterToNewGame({
     gameOptions?.online === true || (gameOptions?.online !== false && roomId)
       ? await OnlineGameMaster.connectNewGame(renderer, gameOptions, roomId, onSpectating)
       : new GameMaster(...GameMaster.processConstructorInputs({ gameOptions, renderer }));
+
   setGameMaster(newGameMaster);
 }
 
