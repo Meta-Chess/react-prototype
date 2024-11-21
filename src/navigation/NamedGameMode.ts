@@ -44,20 +44,30 @@ export const pathToParams = Object.keys(NamedGameMode).reduce((acc, gameMode) =>
   const onlineGameOptions = { ...gameOptions, online: true, time: 300000 };
   const mode = namedGameMode;
 
+  // TODO: clean up the repetition below
   acc[`/${gameMode}`] = { gameOptions, mode };
-  // handling refreshing with query param
-  acc[`/game/?mode=${gameMode}`] = { gameOptions, mode };
   // online route doesn't need a mode param- it has a lobby on refresh
   acc[`/${gameMode}/online`] = {
     gameOptions: onlineGameOptions,
   };
+  // also catching trailing slash- the behavior is different in prod, Amplify(?) would map /mode -> /mode/
+  acc[`/${gameMode}/`] = { gameOptions, mode };
+  acc[`/${gameMode}/online/`] = {
+    gameOptions: onlineGameOptions,
+  };
+  // handling refreshing with query param
+  acc[`/game/?mode=${gameMode}`] = { gameOptions, mode };
 
   alternamePathNamings[namedGameMode]?.forEach((pathName) => {
     acc[`/${pathName}`] = { gameOptions, mode };
-    acc[`/game/?mode=${pathName}`] = { gameOptions, mode };
     acc[`/${pathName}/online`] = {
       gameOptions: onlineGameOptions,
     };
+    acc[`/${pathName}/`] = { gameOptions, mode };
+    acc[`/${pathName}/online/`] = {
+      gameOptions: onlineGameOptions,
+    };
+    acc[`/game/?mode=${pathName}`] = { gameOptions, mode };
   });
   return acc;
 }, {} as { [key: string]: NavigatorParamList[Screens.GameScreen] });
