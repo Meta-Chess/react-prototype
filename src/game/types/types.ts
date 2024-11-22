@@ -4,10 +4,16 @@ import { FutureVariantName, Piece, VariantName } from "game";
 import { FormatName } from "game/formats";
 import { getValues } from "utilities";
 import { RuleNamesWithParams } from "game/CompactRules";
+import {
+  InterceptionCondition,
+  InterceptionConditionType,
+  InterceptionConditionBuilderParams,
+} from "game/types/InterceptionCondition";
 
 export interface GaitData {
   interceptable?: boolean;
-  interceptionCondition?: (piece: Piece) => boolean;
+  interceptionConditionType?: InterceptionConditionType;
+  interceptionConditionBuilderParams?: InterceptionConditionBuilderParams;
   linearMoverDirection?: Direction;
 }
 
@@ -99,7 +105,7 @@ interface TokenData {
   history?: string[];
   shape?: SquareShape;
   pieceId?: string;
-  condition?: (piece: Piece) => boolean;
+  condition?: InterceptionCondition;
   type?: AnimationType; // TODO: type is a special word, maybe this key should be animationType?
   createdAt?: number;
   duration?: number;

@@ -11,6 +11,7 @@ import {
 import { Piece } from "game/Board";
 import { ParameterRule } from "game";
 import { range } from "utilities";
+import { InterceptionConditionType } from "game/types/InterceptionCondition";
 
 export const castling: ParameterRule<"castling"> = ({
   "Active Piece Steps": activePieceSteps,
@@ -106,10 +107,8 @@ export const castling: ParameterRule<"castling"> = ({
         playerName: activePiece.owner,
         data: {
           interceptable: true,
-          interceptionCondition: (piece: Piece): boolean => {
-            const originalOwner = activePiece.owner;
-            return piece.owner !== originalOwner;
-          },
+          interceptionConditionType: InterceptionConditionType.Generic,
+          interceptionConditionBuilderParams: { originalOwner: activePiece.owner },
           interceptableAtStart: true,
         },
       })
