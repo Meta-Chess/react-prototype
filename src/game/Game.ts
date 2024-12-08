@@ -8,8 +8,12 @@ import { CompactRules } from "./CompactRules";
 import { createPieceBank } from "./CompactRules/utilities";
 import { cloneDeep } from "lodash";
 
-interface TurnInfo {
-  turnName: string;
+export enum SubTurnName {
+  Standard = "standard",
+}
+
+export interface SubTurnInfo {
+  name: SubTurnName;
 }
 
 interface ClockInfo {
@@ -22,8 +26,8 @@ export class TurnController {
     public currentTurn: number = 1, // only increments on player handover
     public currentPlayerIndex: number = 0,
     public inFirstSubTurnOfCurrentTurn: boolean = true,
-    public upcomingSubTurnInfoForCurrentTurn: TurnInfo[] = [],
-    public currentSubTurnInfo: TurnInfo | undefined
+    public upcomingSubTurnInfoForCurrentTurn: SubTurnInfo[] = [],
+    public currentSubTurnInfo: SubTurnInfo | undefined
   ) {}
 
   clone(): TurnController {
@@ -63,8 +67,16 @@ export class TurnController {
     return this.currentSubTurn;
   }
 
-  getCurrentSubTurnInfo(): TurnInfo | undefined {
+  getCurrentSubTurnInfo(): SubTurnInfo | undefined {
     return this.currentSubTurnInfo;
+  }
+
+  getUpcomingSubTurns(): SubTurnInfo[] {
+    return this.upcomingSubTurnInfoForCurrentTurn;
+  }
+
+  updateSubTurns(subTurnInfo: SubTurnInfo[]): void {
+    this.upcomingSubTurnInfoForCurrentTurn = subTurnInfo;
   }
 
   nextTurn(
@@ -75,11 +87,14 @@ export class TurnController {
   ): void {
     if (this.inFirstSubTurnOfCurrentTurn) {
       this.inFirstSubTurnOfCurrentTurn = false;
-      this.upcomingSubTurnInfoForCurrentTurn = [];
-      // create interruption point here...
+      this.updateSubTurns([]);
+      interrupt.for.generateSubTurns({
+        turnController: this,
+      });
     }
 
-    if (this.upcomingSubTurnInfoForCurrentTurn.length === 0) {
+    const upcomingSubTurns = this.getUpcomingSubTurns();
+    if (upcomingSubTurns.length === 0) {
       const nextPlayerIndex = (this.currentPlayerIndex + 1) % players.length;
       if (nextPlayerIndex !== undefined) {
         this.currentPlayerIndex = nextPlayerIndex;
@@ -94,7 +109,8 @@ export class TurnController {
       }
     }
 
-    this.currentSubTurnInfo = this.upcomingSubTurnInfoForCurrentTurn.shift();
+    this.currentSubTurnInfo = upcomingSubTurns[0];
+    this.updateSubTurns(upcomingSubTurns.slice(1));
     this.currentSubTurn++;
   }
 }

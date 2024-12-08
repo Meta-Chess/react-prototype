@@ -2,7 +2,7 @@ import { isPresent } from "ts-is-present";
 import { Direction, Gait, GaitParams, PieceName, PlayerName } from "../types";
 import { applyInSequence, keys } from "utilities";
 import { Board, Piece, Square } from "../Board";
-import { Game } from "game/Game";
+import { Game, TurnController } from "game/Game";
 import { Move, PieceDelta } from "game/Move";
 import { EventCenter } from "game/EventCenter";
 import { Pather, PatherParams } from "game/Pather";
@@ -132,6 +132,7 @@ const identityRule = {
   processMoves: (x: ProcessMoves) => x,
   subscribeToEvents: (x: SubscribeToEvents) => x,
   inFindPathsModifyInputParams: (x: InFindPathsModifyInputParams) => x,
+  generateSubTurns: (x: GenerateSubTurns) => x,
 };
 
 export type CompleteRule = typeof identityRule;
@@ -312,4 +313,8 @@ export interface SubscribeToEvents {
 
 export interface InFindPathsModifyInputParams {
   filterPacifistMoves: boolean;
+}
+
+export interface GenerateSubTurns {
+  turnController: TurnController;
 }
