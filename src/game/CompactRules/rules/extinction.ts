@@ -66,14 +66,14 @@ function updateExtinctionToken(game: Game, player: Player, species: PieceName[][
   const oldExtinctionData = player.firstTokenWithName(extinction)?.data;
   const tokenIsOld =
     !oldExtinctionData?.turnNumber ||
-    game.currentTurn - oldExtinctionData.turnNumber >= game.players.length;
+    game.getCurrentTurn() - oldExtinctionData.turnNumber >= game.players.length;
 
   player.removeTokensByName(extinction);
   player.addToken({
     name: extinction,
     expired: () => false,
     data: {
-      turnNumber: game.currentTurn,
+      turnNumber: game.getCurrentTurn(),
       extinctionData: tokenIsOld
         ? findSpeciesBelongingToPlayer(species, game.board, player.name)
         : oldExtinctionData.extinctionData,

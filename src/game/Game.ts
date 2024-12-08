@@ -6,6 +6,98 @@ import { Move } from "./Move";
 import { allPossiblePlayerNames, PlayerName, TimestampMillis } from "./types";
 import { CompactRules } from "./CompactRules";
 import { createPieceBank } from "./CompactRules/utilities";
+import { cloneDeep } from "lodash";
+
+interface TurnInfo {
+  turnName: string;
+}
+
+interface ClockInfo {
+  asOf: TimestampMillis;
+  doClocks: boolean;
+}
+export class TurnController {
+  constructor(
+    public currentSubTurn: number = 1, // game loop happens for every sub-turn
+    public currentTurn: number = 1, // only increments on player handover
+    public currentPlayerIndex: number = 0,
+    public inFirstSubTurnOfCurrentTurn: boolean = true,
+    public upcomingSubTurnInfoForCurrentTurn: TurnInfo[] = [],
+    public currentSubTurnInfo: TurnInfo | undefined
+  ) {}
+
+  clone(): TurnController {
+    const cloneConstructorInput: Required<ConstructorParameters<typeof TurnController>> =
+      [
+        this.currentSubTurn,
+        this.currentTurn,
+        this.currentPlayerIndex,
+        this.inFirstSubTurnOfCurrentTurn,
+        cloneDeep(this.upcomingSubTurnInfoForCurrentTurn),
+        cloneDeep(this.currentSubTurnInfo),
+      ];
+
+    return new TurnController(...cloneConstructorInput);
+  }
+
+  resetTo(savePoint: TurnController): void {
+    this.currentSubTurn = savePoint.currentSubTurn;
+    this.currentTurn = savePoint.currentTurn;
+    this.currentPlayerIndex = savePoint.currentPlayerIndex;
+    this.inFirstSubTurnOfCurrentTurn = savePoint.inFirstSubTurnOfCurrentTurn;
+    this.upcomingSubTurnInfoForCurrentTurn = cloneDeep(
+      savePoint.upcomingSubTurnInfoForCurrentTurn
+    );
+    this.currentSubTurnInfo = cloneDeep(savePoint.currentSubTurnInfo);
+  }
+
+  getCurrentPlayerIndex(): number {
+    return this.currentPlayerIndex;
+  }
+
+  getCurrentTurn(): number {
+    return this.currentTurn;
+  }
+
+  getCurrentSubTurn(): number {
+    return this.currentSubTurn;
+  }
+
+  getCurrentSubTurnInfo(): TurnInfo | undefined {
+    return this.currentSubTurnInfo;
+  }
+
+  nextTurn(
+    interrupt: CompactRules,
+    players: Player[],
+    clock?: Clock,
+    clockInfo?: ClockInfo
+  ): void {
+    if (this.inFirstSubTurnOfCurrentTurn) {
+      this.inFirstSubTurnOfCurrentTurn = false;
+      this.upcomingSubTurnInfoForCurrentTurn = [];
+      // create interruption point here...
+    }
+
+    if (this.upcomingSubTurnInfoForCurrentTurn.length === 0) {
+      const nextPlayerIndex = (this.currentPlayerIndex + 1) % players.length;
+      if (nextPlayerIndex !== undefined) {
+        this.currentPlayerIndex = nextPlayerIndex;
+        if (clockInfo && clockInfo.doClocks) {
+          const asOf = clockInfo.asOf;
+          clock?.setActivePlayers([players[nextPlayerIndex].name], asOf);
+        }
+        this.currentTurn++;
+        this.currentSubTurn++;
+        this.inFirstSubTurnOfCurrentTurn = true;
+        this.currentSubTurnInfo = undefined;
+      }
+    }
+
+    this.currentSubTurnInfo = this.upcomingSubTurnInfoForCurrentTurn.shift();
+    this.currentSubTurn++;
+  }
+}
 
 export class Game {
   constructor(
@@ -17,8 +109,14 @@ export class Game {
       new Player(PlayerName.White),
       new Player(PlayerName.Black),
     ],
-    public currentPlayerIndex: number = 0,
-    public currentTurn: number = 1
+    public turnController: TurnController = new TurnController(
+      1,
+      1,
+      0,
+      true,
+      [],
+      undefined
+    )
   ) {}
 
   clone(): Game {
@@ -28,8 +126,7 @@ export class Game {
       undefined, // Clones don't need a clock at the moment
       this.events.clone(),
       this.players.map((p) => p.clone()),
-      this.currentPlayerIndex,
-      this.currentTurn,
+      this.turnController.clone(),
     ];
     return new Game(...cloneConstructorInput);
   }
@@ -40,8 +137,7 @@ export class Game {
     for (let i = 0; i < savePoint.players.length; i++) {
       this.players[i].resetTo(savePoint.players[i]);
     }
-    this.currentPlayerIndex = savePoint.currentPlayerIndex;
-    this.currentTurn = savePoint.currentTurn;
+    this.turnController.resetTo(savePoint.turnController);
   }
 
   static createGame(
@@ -87,21 +183,13 @@ export class Game {
       interrupt: this.interrupt,
       board: this.board,
       move,
-      currentTurn: this.currentTurn,
+      currentTurn: this.turnController.getCurrentTurn(),
     });
     this.removeExpiredTokens();
   }
 
-  nextTurn(clockInfo?: { asOf: TimestampMillis; doClocks: boolean }): void {
-    const nextPlayerIndex = (this.currentPlayerIndex + 1) % this.players.length;
-    if (nextPlayerIndex !== undefined) {
-      this.currentPlayerIndex = nextPlayerIndex;
-      if (clockInfo && clockInfo.doClocks) {
-        const asOf = clockInfo.asOf;
-        this.clock?.setActivePlayers([this.players[nextPlayerIndex].name], asOf);
-      }
-      this.currentTurn++;
-    }
+  nextTurn(clockInfo?: ClockInfo): void {
+    this.turnController.nextTurn(this.interrupt, this.players, this.clock, clockInfo);
   }
 
   updateClocks(asOf: TimestampMillis): void {
@@ -109,12 +197,13 @@ export class Game {
   }
 
   removeExpiredTokens(): void {
-    this.board.removeExpiredTokens(this.currentTurn);
+    const currentTurn = this.turnController.getCurrentTurn();
+    this.board.removeExpiredTokens(currentTurn);
     this.board.getPieces().forEach((piece) => {
-      piece.removeExpiredTokens(this.currentTurn);
+      piece.removeExpiredTokens(currentTurn);
     });
     Object.values(this.board.squares).forEach((square) =>
-      square.removeExpiredTokens(this.currentTurn)
+      square.removeExpiredTokens(currentTurn)
     );
   }
 
@@ -141,11 +230,19 @@ export class Game {
   }
 
   getCurrentPlayerName(): PlayerName {
-    return this.players[this.currentPlayerIndex].name;
+    return this.players[this.turnController.getCurrentPlayerIndex()].name;
   }
 
   getCurrentPlayer(): Player {
-    return this.players[this.currentPlayerIndex];
+    return this.players[this.turnController.getCurrentPlayerIndex()];
+  }
+
+  getCurrentPlayerIndex(): number {
+    return this.turnController.getCurrentPlayerIndex();
+  }
+
+  getCurrentTurn(): number {
+    return this.turnController.getCurrentTurn();
   }
 
   getPlayers(): Player[] {
