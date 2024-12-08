@@ -155,6 +155,10 @@ export class Game {
     return this.turnController.getCurrentTurn();
   }
 
+  getCurrentSubTurn(): number {
+    return this.turnController.getCurrentSubTurn();
+  }
+
   getPlayers(): Player[] {
     return this.players;
   }
