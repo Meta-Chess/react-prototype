@@ -1,7 +1,7 @@
 import { Rule } from "../CompactRules";
 import { TrivialParameterRule } from "game";
 import { GenerateSubTurns } from "../CompactRules";
-import { SubTurnName } from "game";
+import { SubTurnName } from "game/TurnController";
 import { cloneDeep } from "lodash";
 
 export const doubleMove: TrivialParameterRule = (): Rule => {
