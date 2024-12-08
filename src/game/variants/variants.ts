@@ -171,9 +171,18 @@ export type FutureVariantName =
   | "toroidal"
   | "zoneOfControl"
   | "push"
-  | "forcedEnPassant";
+  | "forcedEnPassant"
+  | "doubleMove";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
+  doubleMove: {
+    title: "Double Move",
+    shortDescription: "Double the number of moves for each player",
+    traits: ["Reaction"],
+    implemented: true,
+    ruleNames: ["doubleMove"],
+    complexity: 2,
+  },
   grandChess: {
     title: "Grand",
     shortDescription:
