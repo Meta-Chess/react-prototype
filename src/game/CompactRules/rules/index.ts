@@ -34,4 +34,4 @@ export * from "./completedKnight";
 export * from "./grandChess";
 export * from "./clearCastlingTokens";
 export * from "./push";
-export * from "./doubleMove";
+export * from "./doubleTurn";

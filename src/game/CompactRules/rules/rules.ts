@@ -39,6 +39,6 @@ export { clearCastlingTokens } from "./clearCastlingTokens";
 export { push } from "./push";
 export { capablancaChess } from "./capablancaChess";
 export { forcedEnPassant } from "./forcedEnPassant";
-export { doubleMove } from "./doubleMove";
+export { doubleTurn } from "./doubleTurn";
 
 // Note: Only rules should be exported from this file

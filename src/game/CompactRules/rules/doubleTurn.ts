@@ -4,10 +4,10 @@ import { GenerateSubTurns } from "../CompactRules";
 import { SubTurnName } from "game/TurnController";
 import { cloneDeep } from "lodash";
 
-export const doubleMove: TrivialParameterRule = (): Rule => {
+export const doubleTurn: TrivialParameterRule = (): Rule => {
   return {
-    title: "Double Move",
-    description: "Double the number of moves for each player",
+    title: "Double Turn",
+    description: "Double the number of turns for each player",
     generateSubTurns: ({ turnController }): GenerateSubTurns => {
       const upcomingSubTurns = turnController.getUpcomingSubTurns();
       const duplicatedAdditionalSubTurnInfo = cloneDeep(upcomingSubTurns);

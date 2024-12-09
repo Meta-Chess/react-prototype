@@ -23,9 +23,9 @@ function initGameMasterAndBoard(variants: FutureVariantName[]): {
 }
 
 describe("In double turn chess", () => {
-  let { gameMaster, board } = initGameMasterAndBoard(["doubleMove"]);
+  let { gameMaster, board } = initGameMasterAndBoard(["doubleTurn"]);
   beforeEach(() => {
-    ({ gameMaster, board } = initGameMasterAndBoard(["doubleMove"]));
+    ({ gameMaster, board } = initGameMasterAndBoard(["doubleTurn"]));
   });
 
   it("White moves twice, then black moves twice, then white moves twice again", () => {
@@ -144,9 +144,9 @@ describe("In double turn chess", () => {
 });
 
 describe("In double turn chess, when ending a game via king capture", () => {
-  let { gameMaster, board } = initGameMasterAndBoard(["doubleMove"]);
+  let { gameMaster, board } = initGameMasterAndBoard(["doubleTurn"]);
   beforeEach(() => {
-    ({ gameMaster, board } = initGameMasterAndBoard(["doubleMove"]));
+    ({ gameMaster, board } = initGameMasterAndBoard(["doubleTurn"]));
 
     // Killing all pieces other than kings
     board
@@ -211,13 +211,13 @@ describe("In double turn chess, when ending a game via king capture", () => {
 
 describe("In double turn chess, when ending a game via stalemate", () => {
   let { gameMaster, board } = initGameMasterAndBoard([
-    "doubleMove",
+    "doubleTurn",
     "brick",
     "chemicallyExcitedKnight",
   ]);
   beforeEach(() => {
     ({ gameMaster, board } = initGameMasterAndBoard([
-      "doubleMove",
+      "doubleTurn",
       "brick",
       "chemicallyExcitedKnight",
     ]));
