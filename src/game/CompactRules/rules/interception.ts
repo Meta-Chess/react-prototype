@@ -19,7 +19,7 @@ export const interception: TrivialParameterRule = () => ({
           const interceptionToken = {
             name: TokenName.CaptureToken,
             expired: (turn: number): boolean => {
-              return turn >= currentTurn + game.players.length;
+              return turn > currentTurn;
             },
             data: {
               pieceId: move.pieceId,

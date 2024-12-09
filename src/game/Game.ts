@@ -93,7 +93,7 @@ export class Game {
       interrupt: this.interrupt,
       board: this.board,
       move,
-      currentTurn: this.turnController.getCurrentHandoverTurn(),
+      currentTurn: this.turnController.getCurrentTurn(),
     });
     this.removeExpiredTokens();
   }
@@ -107,7 +107,7 @@ export class Game {
   }
 
   removeExpiredTokens(): void {
-    const currentTurn = this.turnController.getCurrentHandoverTurn();
+    const currentTurn = this.turnController.getCurrentTurn();
     this.board.removeExpiredTokens(currentTurn);
     this.board.getPieces().forEach((piece) => {
       piece.removeExpiredTokens(currentTurn);

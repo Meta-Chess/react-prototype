@@ -66,7 +66,7 @@ describe("In double turn chess", () => {
     expect(board.getPiecesAt(toLocation({ rank: 4, file: 8 })).length).toEqual(1);
   });
 
-  it("En-passant is only possible on the next turn, and not possible via a double turn", () => {
+  it("En-passant is only possible on the next turn, and not possible via a second consecutive turn", () => {
     // White move 1 - E4
     gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 5 }));
     gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 5 }));
