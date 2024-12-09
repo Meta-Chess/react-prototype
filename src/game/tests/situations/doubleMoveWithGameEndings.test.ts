@@ -22,7 +22,7 @@ function initGameMasterAndBoard(variants: FutureVariantName[]): {
   };
 }
 
-describe("In double move chess", () => {
+describe("In double turn chess", () => {
   let { gameMaster, board } = initGameMasterAndBoard(["doubleMove"]);
   beforeEach(() => {
     ({ gameMaster, board } = initGameMasterAndBoard(["doubleMove"]));
@@ -66,8 +66,7 @@ describe("In double move chess", () => {
     expect(board.getPiecesAt(toLocation({ rank: 4, file: 8 })).length).toEqual(1);
   });
 
-  // Note- we may decide we want different behavior at some point...
-  it("En-passant is possible, capturing enemy pawn moved on either previous sub-move, for either sub-move", () => {
+  it("En-passant is only possible on the next turn, and not possible via a double turn", () => {
     // White move 1 - E4
     gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 5 }));
     gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 5 }));
@@ -80,47 +79,71 @@ describe("In double move chess", () => {
     expect(board.getPiecesAt(toLocation({ rank: 4, file: 5 })).length).toEqual(0);
     expect(board.getPiecesAt(toLocation({ rank: 5, file: 5 })).length).toEqual(1);
 
-    // Black move 1 - D5
-    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 4 }));
-    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 4 }));
-    expect(board.getPiecesAt(toLocation({ rank: 7, file: 4 })).length).toEqual(0);
-    expect(board.getPiecesAt(toLocation({ rank: 5, file: 4 })).length).toEqual(1);
+    // Black wastes moves - A6, A5
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 1 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 6, file: 1 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 6, file: 1 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 1 }));
 
-    // Black move 2 - F5
+    // White prepares the C pawn - C4
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 3 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 3 }));
+    expect(board.getPiecesAt(toLocation({ rank: 2, file: 3 })).length).toEqual(0);
+    expect(board.getPiecesAt(toLocation({ rank: 4, file: 3 })).length).toEqual(1);
+
+    // White wastes a move -  A3
+    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 1 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 3, file: 1 }));
+
+    // Black move 1 - F5 would be vulnerable to en-passant, but will expire before white's first move
     gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 6 }));
     gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 6 }));
     expect(board.getPiecesAt(toLocation({ rank: 7, file: 6 })).length).toEqual(0);
     expect(board.getPiecesAt(toLocation({ rank: 5, file: 6 })).length).toEqual(1);
 
-    // Select white pawn at E5, can en-passant either black pawn (moved on blacks 1st and 2nd sub-turn)
+    // Black move 2 - D5 vulnerable to en-passant
+    gameMaster.handleSquarePressed(toLocation({ rank: 7, file: 4 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 4 }));
+    expect(board.getPiecesAt(toLocation({ rank: 7, file: 4 })).length).toEqual(0);
+    expect(board.getPiecesAt(toLocation({ rank: 5, file: 4 })).length).toEqual(1);
+
+    // Select white pawn at E5, can only en-passant the D pawn
     gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 5 }));
+    expect(gameMaster.allowableMoves.length).toEqual(2);
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ location: toLocation({ rank: 6, file: 5 }) }), // moving forwards
         expect.objectContaining({ location: toLocation({ rank: 6, file: 4 }) }), // en-passant D pawn
-        expect.objectContaining({ location: toLocation({ rank: 6, file: 6 }) }), // en-passant F pawn
       ])
     );
 
-    // White makes a random move
-    gameMaster.handleSquarePressed(toLocation({ rank: 2, file: 1 }));
-    gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 1 }));
-    expect(board.getPiecesAt(toLocation({ rank: 2, file: 1 })).length).toEqual(0);
-    expect(board.getPiecesAt(toLocation({ rank: 4, file: 1 })).length).toEqual(1);
+    // White moves the C pawn again
+    gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 3 }));
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 3 }));
+    expect(board.getPiecesAt(toLocation({ rank: 4, file: 3 })).length).toEqual(0);
+    expect(board.getPiecesAt(toLocation({ rank: 5, file: 3 })).length).toEqual(1);
 
-    // Can still en-passant either black pawn
+    // Now no en-passant is possible with the pawn at E5
     gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 5 }));
+    expect(gameMaster.allowableMoves.length).toEqual(1);
     expect(gameMaster.allowableMoves).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ location: toLocation({ rank: 6, file: 5 }) }), // moving forwards
-        expect.objectContaining({ location: toLocation({ rank: 6, file: 4 }) }), // en-passant D pawn
-        expect.objectContaining({ location: toLocation({ rank: 6, file: 6 }) }), // en-passant F pawn
+      ])
+    );
+
+    // Also no en-passant is possible with the C pawn (it could capture the capture token if it were there)
+    gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 3 }));
+    expect(gameMaster.allowableMoves.length).toEqual(1);
+    expect(gameMaster.allowableMoves).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ location: toLocation({ rank: 6, file: 3 }) }), // moving forwards
       ])
     );
   });
 });
 
-describe("In double move chess, when ending a game via king capture", () => {
+describe("In double turn chess, when ending a game via king capture", () => {
   let { gameMaster, board } = initGameMasterAndBoard(["doubleMove"]);
   beforeEach(() => {
     ({ gameMaster, board } = initGameMasterAndBoard(["doubleMove"]));
@@ -147,7 +170,7 @@ describe("In double move chess, when ending a game via king capture", () => {
     });
   });
 
-  it("A win is recognized on the first sub-move", () => {
+  it("A win is recognized on a players first turn", () => {
     // White king captures black king immediately
     gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 4 }));
     gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 5 }));
@@ -163,7 +186,7 @@ describe("In double move chess, when ending a game via king capture", () => {
     ).toEqual("lost their king");
   });
 
-  it("A win is recognized on the second sub-move", () => {
+  it("A win is recognized on a players second turn", () => {
     // White king takes a step
     gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 4 }));
     gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 5 }));
@@ -186,7 +209,7 @@ describe("In double move chess, when ending a game via king capture", () => {
   });
 });
 
-describe("In double move chess, when ending a game via stalemate", () => {
+describe("In double turn chess, when ending a game via stalemate", () => {
   let { gameMaster, board } = initGameMasterAndBoard([
     "doubleMove",
     "brick",
@@ -232,7 +255,7 @@ describe("In double move chess, when ending a game via stalemate", () => {
     expect(gameMaster.gameOver).toEqual(false);
   });
 
-  it("A draw is recognized on the first sub-move", () => {
+  it("A draw is recognized on a players first turn", () => {
     // White knight at R5F7 moves to R4F5
     gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 7 }));
     gameMaster.handleSquarePressed(toLocation({ rank: 4, file: 5 }));
@@ -250,7 +273,7 @@ describe("In double move chess, when ending a game via stalemate", () => {
     ).toEqual("stalemated");
   });
 
-  it("A draw is recognized on the second sub-move", () => {
+  it("A draw is recognized on a players second turn", () => {
     // White knight at R5F7 moves to R6F5 then to R4F6
     gameMaster.handleSquarePressed(toLocation({ rank: 5, file: 7 }));
     gameMaster.handleSquarePressed(toLocation({ rank: 6, file: 5 }));
