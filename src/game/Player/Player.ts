@@ -13,9 +13,9 @@ export class Player extends TokenOwner {
     public tokens: Token[] = [],
     public wantsToDraw: boolean = false,
     public endGameMessage: string = "",
-    public hasLegalMoves: { value: boolean; subTurn: number } = {
+    public hasLegalMoves: { value: boolean; turn: number } = {
       value: false,
-      subTurn: -1,
+      turn: -1,
     }
   ) {
     super(tokens);
@@ -41,7 +41,7 @@ export class Player extends TokenOwner {
     this.endGameMessage = savePoint.endGameMessage;
     this.hasLegalMoves = {
       value: savePoint.hasLegalMoves.value,
-      subTurn: savePoint.hasLegalMoves.subTurn,
+      turn: savePoint.hasLegalMoves.turn,
     };
   }
 

@@ -133,7 +133,7 @@ const identityRule = {
   processMoves: (x: ProcessMoves) => x,
   subscribeToEvents: (x: SubscribeToEvents) => x,
   inFindPathsModifyInputParams: (x: InFindPathsModifyInputParams) => x,
-  generateSubTurns: (x: GenerateSubTurns) => x,
+  generateAdditionalTurns: (x: GenerateAdditionalTurns) => x,
 };
 
 export type CompleteRule = typeof identityRule;
@@ -316,6 +316,6 @@ export interface InFindPathsModifyInputParams {
   filterPacifistMoves: boolean;
 }
 
-export interface GenerateSubTurns {
+export interface GenerateAdditionalTurns {
   turnController: TurnController;
 }

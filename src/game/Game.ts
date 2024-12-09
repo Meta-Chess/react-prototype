@@ -93,7 +93,7 @@ export class Game {
       interrupt: this.interrupt,
       board: this.board,
       move,
-      currentTurn: this.turnController.getCurrentTurn(),
+      currentTurn: this.turnController.getCurrentHandoverTurn(),
     });
     this.removeExpiredTokens();
   }
@@ -107,7 +107,7 @@ export class Game {
   }
 
   removeExpiredTokens(): void {
-    const currentTurn = this.turnController.getCurrentTurn();
+    const currentTurn = this.turnController.getCurrentHandoverTurn();
     this.board.removeExpiredTokens(currentTurn);
     this.board.getPieces().forEach((piece) => {
       piece.removeExpiredTokens(currentTurn);
@@ -151,12 +151,12 @@ export class Game {
     return this.turnController.getCurrentPlayerIndex();
   }
 
-  getCurrentTurn(): number {
-    return this.turnController.getCurrentTurn();
+  getCurrentHandoverTurn(): number {
+    return this.turnController.getCurrentHandoverTurn();
   }
 
-  getCurrentSubTurn(): number {
-    return this.turnController.getCurrentSubTurn();
+  getCurrentTurn(): number {
+    return this.turnController.getCurrentTurn();
   }
 
   getPlayers(): Player[] {

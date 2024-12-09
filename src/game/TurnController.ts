@@ -3,71 +3,69 @@ import type { CompactRules } from "./CompactRules";
 import type { Player } from "./Player";
 import { cloneDeep } from "lodash";
 
-export enum SubTurnName {
+export enum TurnName {
   Standard = "standard",
 }
 
-export interface SubTurnInfo {
-  name: SubTurnName;
+export interface TurnInfo {
+  name: TurnName;
 }
 
 export class TurnController {
   constructor(
-    public currentSubTurn: number = 1, // game loop happens for every sub-turn
-    public currentTurn: number = 1, // only increments on player handover
+    public currentTurn: number = 1, // game loop happens for every turn
+    public currentHandoverTurn: number = 1, // only increments on player handover
     public currentPlayerIndex: number = 0,
-    public inFirstSubTurnOfCurrentTurn: boolean = true,
-    public upcomingSubTurnInfoForCurrentTurn: SubTurnInfo[] = [],
-    public currentSubTurnInfo: SubTurnInfo | undefined
+    public inFirstTurnAfterHandover: boolean = true,
+    public additionalTurnInfo: TurnInfo[] = [],
+    public currentTurnInfo: TurnInfo | undefined
   ) {}
 
   clone(): TurnController {
     const cloneConstructorInput: Required<ConstructorParameters<typeof TurnController>> =
       [
-        this.currentSubTurn,
         this.currentTurn,
+        this.currentHandoverTurn,
         this.currentPlayerIndex,
-        this.inFirstSubTurnOfCurrentTurn,
-        cloneDeep(this.upcomingSubTurnInfoForCurrentTurn),
-        cloneDeep(this.currentSubTurnInfo),
+        this.inFirstTurnAfterHandover,
+        cloneDeep(this.additionalTurnInfo),
+        cloneDeep(this.currentTurnInfo),
       ];
 
     return new TurnController(...cloneConstructorInput);
   }
 
   resetTo(savePoint: TurnController): void {
-    this.currentSubTurn = savePoint.currentSubTurn;
     this.currentTurn = savePoint.currentTurn;
+    this.currentHandoverTurn = savePoint.currentHandoverTurn;
     this.currentPlayerIndex = savePoint.currentPlayerIndex;
-    this.inFirstSubTurnOfCurrentTurn = savePoint.inFirstSubTurnOfCurrentTurn;
-    this.upcomingSubTurnInfoForCurrentTurn = cloneDeep(
-      savePoint.upcomingSubTurnInfoForCurrentTurn
-    );
-    this.currentSubTurnInfo = cloneDeep(savePoint.currentSubTurnInfo);
-  }
-
-  getCurrentPlayerIndex(): number {
-    return this.currentPlayerIndex;
+    this.inFirstTurnAfterHandover = savePoint.inFirstTurnAfterHandover;
+    this.additionalTurnInfo = cloneDeep(savePoint.additionalTurnInfo);
+    this.currentTurnInfo = cloneDeep(savePoint.currentTurnInfo);
   }
 
   getCurrentTurn(): number {
     return this.currentTurn;
   }
 
-  getCurrentSubTurn(): number {
-    return this.currentSubTurn;
+  getCurrentTurnInfo(): TurnInfo | undefined {
+    return this.currentTurnInfo;
   }
 
-  getCurrentSubTurnInfo(): SubTurnInfo | undefined {
-    return this.currentSubTurnInfo;
+  getCurrentPlayerIndex(): number {
+    return this.currentPlayerIndex;
   }
 
-  getUpcomingSubTurns(): SubTurnInfo[] {
-    return this.upcomingSubTurnInfoForCurrentTurn;
+  getCurrentHandoverTurn(): number {
+    return this.currentHandoverTurn;
   }
 
-  updateSubTurns(subTurnInfo: SubTurnInfo[]): void {
-    this.upcomingSubTurnInfoForCurrentTurn = subTurnInfo;
+  getAdditionalTurns(): TurnInfo[] {
+    return this.additionalTurnInfo;
+  }
+
+  updateAdditionalTurns(additionalTurnInfo: TurnInfo[]): void {
+    this.additionalTurnInfo = additionalTurnInfo;
   }
 
   nextTurn(
@@ -76,16 +74,16 @@ export class TurnController {
     clock?: Clock,
     clockInfo?: ClockInfo
   ): void {
-    if (this.inFirstSubTurnOfCurrentTurn) {
-      this.inFirstSubTurnOfCurrentTurn = false;
-      this.updateSubTurns([]);
-      interrupt.for.generateSubTurns({
+    if (this.inFirstTurnAfterHandover) {
+      this.inFirstTurnAfterHandover = false;
+      this.updateAdditionalTurns([]);
+      interrupt.for.generateAdditionalTurns({
         turnController: this,
       });
     }
 
-    const upcomingSubTurns = this.getUpcomingSubTurns();
-    if (upcomingSubTurns.length === 0) {
+    const additionalTurns = this.getAdditionalTurns();
+    if (additionalTurns.length === 0) {
       const nextPlayerIndex = (this.currentPlayerIndex + 1) % players.length;
       if (nextPlayerIndex !== undefined) {
         this.currentPlayerIndex = nextPlayerIndex;
@@ -93,15 +91,15 @@ export class TurnController {
           const asOf = clockInfo.asOf;
           clock?.setActivePlayers([players[nextPlayerIndex].name], asOf);
         }
+        this.currentHandoverTurn++;
         this.currentTurn++;
-        this.currentSubTurn++;
-        this.inFirstSubTurnOfCurrentTurn = true;
-        this.currentSubTurnInfo = undefined;
+        this.inFirstTurnAfterHandover = true;
+        this.currentTurnInfo = undefined;
       }
     }
 
-    this.currentSubTurnInfo = upcomingSubTurns[0];
-    this.updateSubTurns(upcomingSubTurns.slice(1));
-    this.currentSubTurn++;
+    this.currentTurnInfo = additionalTurns[0];
+    this.updateAdditionalTurns(additionalTurns.slice(1));
+    this.currentTurn++;
   }
 }

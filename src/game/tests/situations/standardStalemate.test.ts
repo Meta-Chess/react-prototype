@@ -17,7 +17,7 @@ describe("In standard chess", () => {
     });
 
     // Forget results of hasLegalMove()
-    gameMaster.game.players.forEach((p) => (p.hasLegalMoves.subTurn = -1));
+    gameMaster.game.players.forEach((p) => (p.hasLegalMoves.turn = -1));
 
     // Game should be stalemate
     gameMaster.checkGameEndConditions();
