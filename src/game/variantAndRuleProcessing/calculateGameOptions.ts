@@ -34,7 +34,7 @@ export const defaultGameOptions = {
   baseVariants: [] as FutureVariantName[],
   ruleNamesWithParams: {},
   numberOfPlayers: 2,
-  checkEnabled: true,
+  checkEnabled: false,
   online: false,
   publicGame: false,
   time: undefined,
