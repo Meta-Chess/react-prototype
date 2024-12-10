@@ -178,7 +178,7 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   doubleTurn: {
     title: "Double Turn",
     shortDescription: "Double the number of turns for each player",
-    traits: ["Reaction"],
+    traits: ["Turn"],
     implemented: true,
     ruleNames: ["doubleTurn"],
     complexity: 2,
