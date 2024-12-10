@@ -3,7 +3,6 @@ import { Screens } from "./Screens";
 import { GameOptions } from "game/types";
 import { NavigatorParamList } from "navigation/NavigatorParamList";
 import { pathToParams } from "./NamedGameMode";
-import { P } from "primitives/typography";
 
 export const linking: LinkingOptions<NavigatorParamList> = {
   prefixes: [],

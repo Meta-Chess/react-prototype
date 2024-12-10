@@ -5,8 +5,8 @@ export const interception: TrivialParameterRule = () => ({
   title: "Interception",
   description:
     "Enables interceptable moves where pieces can be captured by moving to a square that they moved through",
-  postMove: ({ game, interrupt, board, move, currentTurn }): PostMove => {
-    if (!move) return { game, interrupt, board, move, currentTurn };
+  postMove: ({ game, interrupt, board, move, turnIndexes }): PostMove => {
+    if (!move) return { game, interrupt, board, move, turnIndexes };
 
     if (move.data?.interceptable) {
       const start = move.data?.interceptableAtStart ? 0 : 1;
@@ -19,7 +19,7 @@ export const interception: TrivialParameterRule = () => ({
           const interceptionToken = {
             name: TokenName.CaptureToken,
             expired: (turn: number): boolean => {
-              return turn > currentTurn;
+              return turn > turnIndexes.currentTurn;
             },
             data: {
               pieceId: move.pieceId,
@@ -31,6 +31,6 @@ export const interception: TrivialParameterRule = () => ({
         });
     }
 
-    return { game, interrupt, board, move, currentTurn };
+    return { game, interrupt, board, move, turnIndexes };
   },
 });

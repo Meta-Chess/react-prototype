@@ -11,10 +11,14 @@ export interface TurnInfo {
   name: TurnName;
 }
 
+export interface TurnIndexes {
+  currentTurn: number;
+  currentHandoverTurn: number;
+}
 export class TurnController {
   constructor(
-    public currentTurn: number = 1, // game loop happens for every turn
-    public currentHandoverTurn: number = 1, // only increments on player handover
+    public currentTurn: number = 1,
+    public currentHandoverTurn: number = 1,
     public currentPlayerIndex: number = 0,
     public inFirstTurnAfterHandover: boolean = true,
     public additionalTurnInfo: TurnInfo[] = [],
@@ -42,6 +46,13 @@ export class TurnController {
     this.inFirstTurnAfterHandover = savePoint.inFirstTurnAfterHandover;
     this.additionalTurnInfo = cloneDeep(savePoint.additionalTurnInfo);
     this.currentTurnInfo = cloneDeep(savePoint.currentTurnInfo);
+  }
+
+  getTurnIndexes(): TurnIndexes {
+    return {
+      currentTurn: this.getCurrentTurn(),
+      currentHandoverTurn: this.getCurrentHandoverTurn(),
+    };
   }
 
   getCurrentTurn(): number {

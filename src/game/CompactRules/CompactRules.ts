@@ -24,6 +24,7 @@ import { variantsToRules } from "game/variantAndRuleProcessing/variantsToRules";
 import { overrideRuleParamsForVariants } from "game/variantAndRuleProcessing";
 import { uniq } from "lodash";
 import { Player } from "game/Player";
+import type { TurnIndexes } from "game/TurnController";
 
 const allRules: AllParameterRules = rules;
 
@@ -292,7 +293,7 @@ export interface PostMove {
   interrupt: CompactRules;
   board: Board;
   move?: Move;
-  currentTurn: number;
+  turnIndexes: TurnIndexes;
 }
 
 export interface ProcessMoves {

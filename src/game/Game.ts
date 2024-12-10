@@ -93,7 +93,7 @@ export class Game {
       interrupt: this.interrupt,
       board: this.board,
       move,
-      currentTurn: this.turnController.getCurrentTurn(),
+      turnIndexes: this.turnController.getTurnIndexes(),
     });
     this.removeExpiredTokens();
   }
