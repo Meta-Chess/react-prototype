@@ -24,7 +24,7 @@ export const forcedEnPassant: TrivialParameterRule = () => ({
     });
 
     if (isInterceptionPossible) {
-      const currentTurn = game.currentTurn;
+      const currentTurn = game.getCurrentTurn();
       const interceptionPossibleToken = {
         name: TokenName.InterceptionPossible,
         expired: (turn: number): boolean => {

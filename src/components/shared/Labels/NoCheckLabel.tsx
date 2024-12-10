@@ -8,7 +8,7 @@ export const NoCheckLabel: SFC = ({ style }) => {
       label={"No Check"}
       details={"Check and Checkmate do not apply to this game!"}
       key={"noCheck"}
-      color={Colors.GREY}
+      color={Colors.MCHESS_ORANGE}
       style={style}
     />
   );

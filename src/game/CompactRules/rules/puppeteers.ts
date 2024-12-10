@@ -19,7 +19,7 @@ export const puppeteers: TrivialParameterRule = (): Rule => {
       ...rest
     }): PreprocessingAtTurnStart => {
       const friendlyKnights = game.board.getPiecesByRule(
-        (p) => p.name === PieceName.Knight && p.owner === game.currentPlayerIndex
+        (p) => p.name === PieceName.Knight && p.owner === game.getCurrentPlayerIndex()
       );
       const rememberedGaits = friendlyKnights.map((knight) => knight.generateGaits());
 
@@ -42,7 +42,7 @@ export const puppeteers: TrivialParameterRule = (): Rule => {
             const endLocation = delta.path.getEnd();
             const pieces = board.getPiecesAt(endLocation);
             const friendlyPieces = pieces.filter(
-              (piece) => piece.owner === game.currentPlayerIndex
+              (piece) => piece.owner === game.getCurrentPlayerIndex()
             );
             return friendlyPieces;
           })
@@ -59,7 +59,7 @@ export const puppeteers: TrivialParameterRule = (): Rule => {
           const puppeteeredToken = {
             name: TokenName.Puppeteered,
             expired: (turn: number): boolean => {
-              return turn >= game.currentTurn;
+              return turn >= game.getCurrentTurn();
             },
             data: {
               pieceId: friendlyKnights[i].id,

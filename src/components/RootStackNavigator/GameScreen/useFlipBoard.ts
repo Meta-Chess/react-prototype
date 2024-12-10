@@ -10,7 +10,7 @@ export const useFlipBoard = (delay = 400): { flipBoard: boolean } => {
   const [flipBoard, setFlipBoard] = useState(false);
   const flipBoardEnabled = !!gameMaster?.flipBoard;
 
-  const currentPlayerIndex = gameMaster?.game.currentPlayerIndex;
+  const currentPlayerIndex = gameMaster?.game.getCurrentPlayerIndex();
 
   useEffect((): (() => void) | undefined => {
     const boardShouldBeFlipped = flipBoardEnabled && currentPlayerIndex !== 0;

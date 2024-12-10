@@ -55,7 +55,7 @@ describe("On a klein bottle with 3 players", () => {
     expect(gameMaster.game.alivePlayers().length).toEqual(2);
     expect(gameMaster.game.players[1].alive).toEqual(false);
     expect(gameMaster.gameOver).toEqual(false);
-    expect(gameMaster.game.currentPlayerIndex).toEqual(2);
+    expect(gameMaster.game.getCurrentPlayerIndex()).toEqual(2);
   });
   it("should be a win for white if they check the other two players 3 times", () => {
     const gameMaster = new GameMaster(
