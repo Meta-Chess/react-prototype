@@ -8,6 +8,7 @@ import { Move } from "./Move";
 import { allPossiblePlayerNames, PlayerName, TimestampMillis } from "./types";
 import { CompactRules } from "./CompactRules";
 import { createPieceBank } from "./CompactRules/utilities";
+import type { TurnInfo } from "./TurnController";
 
 export class Game {
   constructor(
@@ -157,6 +158,10 @@ export class Game {
 
   getCurrentTurn(): number {
     return this.turnController.getCurrentTurn();
+  }
+
+  getCurrentTurnInfo(): TurnInfo | undefined {
+    return this.turnController.getCurrentTurnInfo();
   }
 
   getPlayers(): Player[] {

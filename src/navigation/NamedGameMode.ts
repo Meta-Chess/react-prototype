@@ -9,6 +9,7 @@ export enum NamedGameMode {
   toroidal = "toroidal",
   cylindrical = "cylindrical",
   hex = "hex",
+  nimbus = "nimbus",
 }
 
 const gameModeToVariants: { [key in NamedGameMode]: FutureVariantName[] } = {
@@ -17,6 +18,7 @@ const gameModeToVariants: { [key in NamedGameMode]: FutureVariantName[] } = {
   toroidal: ["toroidal"],
   cylindrical: ["cylindrical"],
   hex: ["hex"],
+  nimbus: ["nimbus"],
 };
 
 const alternamePathNamings: { [key in NamedGameMode]?: string[] } = {

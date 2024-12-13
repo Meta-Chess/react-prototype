@@ -89,6 +89,7 @@ export enum TokenName {
   Puppeteered,
   InterceptionPossible,
   Nimbus,
+  NimbusPieceCannotPromote,
 }
 
 export interface Token {

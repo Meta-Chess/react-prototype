@@ -28,6 +28,27 @@ export const linking: LinkingOptions<NavigatorParamList> = {
   },
 
   getStateFromPath(path, options) {
+    if (path === "/game" || path === "game") {
+      return {
+        routes: [
+          {
+            name: Screens.GameScreen,
+            params: {
+              gameOptions: {
+                checkEnabled: true,
+                numberOfPlayers: 2,
+                baseVariants: ["nimbus"],
+                ruleNamesWithParams: {},
+                time: undefined,
+                online: false,
+                publicGame: false,
+              },
+            },
+          },
+        ],
+      };
+    }
+
     if (path in pathToParams) {
       return {
         routes: [

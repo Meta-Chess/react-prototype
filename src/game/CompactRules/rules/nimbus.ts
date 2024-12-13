@@ -16,10 +16,15 @@ import {
   SquareShape,
   TokenName,
 } from "game/types";
-import { Move } from "game/Move";
 import { createPiece, GET_GAIT_GENERATOR, PieceSet } from "../utilities";
 import { Path } from "game/Pather";
-import { cloneDeep } from "lodash";
+import {
+  PostMove,
+  GenerateSpecialPacifistMoves,
+  GenerateAdditionalTurns,
+} from "../CompactRules";
+import { TurnName } from "game/TurnController";
+import { isPresent } from "utilities";
 
 export const nimbus: TrivialParameterRule = () => ({
   title: "Nimbus",
@@ -40,53 +45,89 @@ export const nimbus: TrivialParameterRule = () => ({
     return GET_GAIT_GENERATOR({ gaitGenerator, name, owner, set: PieceSet.Nimbus });
   },
   processMoves: ({ moves, game, gameClones, params }): ProcessMoves => {
-    const newTypeChangeMoves: Move[] = [];
-    for (const move of moves) {
-      const pilotPieceId = move.pieceId;
-      const pilotPieceIsNimbus = game.board
-        .getPiece(pilotPieceId)
-        ?.hasTokenWithName(TokenName.Nimbus);
-      const piecesAllowedToChangeType = game.board
-        .piecesBelongingTo(game.currentPlayerIndex)
-        .filter(
-          (piece) => piece.id !== pilotPieceId || piece.hasTokenWithName(TokenName.Nimbus)
-        );
-
-      piecesAllowedToChangeType.forEach((changingPiece) => {
-        return [
-          PieceName.FirePiece,
-          PieceName.WaterPiece,
-          PieceName.EarthPiece,
-          PieceName.LightningPiece,
-        ].forEach((newPieceType) => {
-          const changingPieceWontChangeType = newPieceType === changingPiece.name;
-          if (changingPieceWontChangeType) return;
-
-          let newMove = cloneDeep(move);
-          if (changingPiece.hasTokenWithName(TokenName.Nimbus) && pilotPieceIsNimbus) {
-            // TODO: could think about handling multiple piece deltas
-            newMove.pieceDeltas[0].promoteTo = newPieceType;
-            newTypeChangeMoves.push(newMove);
-            return;
-          }
-
-          newMove = {
-            ...newMove,
-            pieceDeltas: [
-              ...newMove.pieceDeltas,
-              {
-                pieceId: changingPiece.id,
-                path: new Path(changingPiece.location, []),
-                promoteTo: newPieceType,
-              },
-            ],
-          };
-          newTypeChangeMoves.push(newMove);
-        });
-      });
+    if (game.getCurrentTurnInfo()?.name === TurnName.NimbusPromotion) {
+      return {
+        moves: moves.filter((move) => move.pieceDeltas?.[0]?.promoteTo !== undefined),
+        game,
+        gameClones,
+        params,
+      };
     }
 
-    return { moves: [...moves, ...newTypeChangeMoves], game, gameClones, params };
+    return { moves, game, gameClones, params };
+  },
+  generateSpecialPacifistMoves: ({
+    game,
+    piece,
+    interrupt,
+    moves,
+    gaits,
+    ...rest
+  }): GenerateSpecialPacifistMoves => {
+    const pieceCannotPromote = piece.hasTokenWithName(TokenName.NimbusPieceCannotPromote);
+    const nimbusPromotionTurn =
+      game.getCurrentTurnInfo()?.name === TurnName.NimbusPromotion;
+
+    if (!nimbusPromotionTurn || pieceCannotPromote)
+      return {
+        game,
+        piece,
+        interrupt,
+        moves,
+        gaits,
+        ...rest,
+      };
+
+    const promotionMoves = [
+      PieceName.FirePiece,
+      PieceName.WaterPiece,
+      PieceName.EarthPiece,
+      PieceName.LightningPiece,
+    ]
+      .filter((newPieceType) => newPieceType !== piece.name)
+      .map((newPieceType) => {
+        return {
+          pieceId: piece.id,
+          location: undefined,
+          playerName: piece.owner,
+          pieceDeltas: [
+            {
+              pieceId: piece.id,
+              path: new Path(piece.location, []),
+              promoteTo: newPieceType,
+            },
+          ],
+        };
+      });
+
+    return {
+      game,
+      piece,
+      interrupt,
+      moves: promotionMoves,
+      gaits,
+      ...rest,
+    };
+  },
+  postMove: ({ game, interrupt, board, move, turnIndexes }): PostMove => {
+    if (!move) return { game, interrupt, board, move, turnIndexes };
+
+    // TODO: utility for logic on moved pieces
+    const piecesMoved = move.pieceDeltas
+      .map((delta) => board.pieces[delta.pieceId])
+      .filter(isPresent);
+    piecesMoved.forEach((piece: Piece) => {
+      if (piece.hasTokenWithName(TokenName.Nimbus)) return;
+      const cannotPromoteToken = {
+        name: TokenName.NimbusPieceCannotPromote,
+        expired: (currentTurn: number): boolean => {
+          return currentTurn > turnIndexes.currentTurn + 1;
+        },
+        data: undefined,
+      };
+      piece.addToken(cannotPromoteToken, true);
+    });
+    return { game, interrupt, board, move, turnIndexes };
   },
   lossCondition: ({ playerName, game, gameClones, interrupt, dead }): LossCondition => {
     if (dead || game.getCurrentPlayerName() !== playerName) {
@@ -111,6 +152,18 @@ export const nimbus: TrivialParameterRule = () => ({
     }
 
     return { playerName, game, gameClones, interrupt, dead: false };
+  },
+  generateAdditionalTurns: ({ turnController }): GenerateAdditionalTurns => {
+    const currentAdditionalTurns = turnController.getAdditionalTurns();
+    const nimbusPromotionTurn = { name: TurnName.NimbusPromotion };
+
+    turnController.updateAdditionalTurns([
+      ...currentAdditionalTurns,
+      nimbusPromotionTurn,
+    ]);
+    return {
+      turnController,
+    };
   },
 });
 
