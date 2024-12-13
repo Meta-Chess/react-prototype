@@ -1,10 +1,9 @@
 import React, { FC } from "react";
-import { Svg } from "react-native-svg";
+import { Svg, G } from "react-native-svg";
 import { AbsoluteView } from "ui/Containers";
-import { ARC_TILE_WORKING_AREA } from ".";
 import { PathWithNoOutline } from "primitives/OutlinelessComponents";
 import type { TileProps } from "../TileProps";
-import { View } from "react-native";
+import { ARC_TILE_WORKING_AREA } from "../Arc/describeArcTile";
 
 export const TriangleTile: FC<TileProps> = ({
   tileSchematic,
@@ -20,12 +19,33 @@ export const TriangleTile: FC<TileProps> = ({
         viewBox={`0 0 ${ARC_TILE_WORKING_AREA} ${ARC_TILE_WORKING_AREA}`}
         pointerEvents={"none"}
       >
-        <PathWithNoOutline
-          d={tileSchematic?.arcSvgDetails.tilePath}
-          fill={color.toString()}
-          stroke="none"
-          pointerEvents={pressable ? "auto" : "none"}
-        />
+        <G
+          translate={[
+            tileSchematic?.scale ? tileSchematic?.leftAdjustmentToTileCenterSvg || 0 : 0,
+            tileSchematic?.scale ? tileSchematic?.topAdjustmentToTileCenterSvg || 0 : 0,
+          ]}
+        >
+          <G scale={tileSchematic?.scale}>
+            <G
+              translate={[
+                tileSchematic?.scale
+                  ? -1 * (tileSchematic?.leftAdjustmentToTileCenterSvg || 0)
+                  : 0,
+                tileSchematic?.scale
+                  ? -1 * (tileSchematic?.topAdjustmentToTileCenterSvg || 0)
+                  : 0,
+              ]}
+            >
+              <PathWithNoOutline
+                d={tileSchematic?.arcSvgDetails.tilePath}
+                fill={color.toString()}
+                stroke="none"
+                strokeWidth={0.5}
+                pointerEvents={pressable ? "auto" : "none"}
+              />
+            </G>
+          </G>
+        </G>
       </Svg>
     </AbsoluteView>
   );

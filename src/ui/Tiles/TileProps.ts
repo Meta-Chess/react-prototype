@@ -15,7 +15,10 @@ export type AnimatedTileProps = {
 export type TileSchematic = {
   topAdjustmentToTileCenter: number;
   leftAdjustmentToTileCenter: number;
+  topAdjustmentToTileCenterSvg?: number;
+  leftAdjustmentToTileCenterSvg?: number;
   centerMaxEmbeddedDiameter: number;
+  scale?: number;
 } & ArcTileSchematic; // extend with ... | OtherTileSchematic ...
 
 export interface ArcTileSchematic {

@@ -4,28 +4,16 @@ import { View } from "react-native";
 import { TileSchematic } from "ui/Tiles/TileProps";
 import { tileSchematicPositionViewProps } from "utilities";
 import Color from "color";
+import { TriangleTile } from "ui/Tiles/Triangle";
 
 interface Props {
   color: Color;
   tileSchematic: TileSchematic;
 }
 
+// style={}
 const TriangleTileCenterHighlight: FC<Props> = ({ color, tileSchematic }) => {
-  return (
-    <View style={tileSchematicPositionViewProps(tileSchematic)} pointerEvents={"none"}>
-      <DefaultHighlight color={color} pointerEvents={"none"} />
-    </View>
-  );
+  return <TriangleTile tileSchematic={{ ...tileSchematic, scale: 0.6 }} color={color} />;
 };
-
-const DefaultHighlight = styled(View)<{ color: Color }>`
-  background-color: ${({ color }): string => color.toString()};
-  position: absolute;
-  top: 30%;
-  right: 30%;
-  bottom: 30%;
-  left: 30%;
-  border-radius: 50px;
-`;
 
 export { TriangleTileCenterHighlight };

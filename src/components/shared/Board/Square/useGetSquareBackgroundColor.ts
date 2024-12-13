@@ -15,6 +15,10 @@ export function useGetSquareBackgroundColor(
 
   let baseColor = Colors.SQUARE[colorIndex({ ...square?.getCoordinates(), shape })];
 
+  if (rules?.includes("nimbus")) {
+    baseColor = Colors.NIMBUS.SQUARE[colorIndex({ ...square?.getCoordinates(), shape })];
+  }
+
   if (!!rules?.includes("emptyCenter") && board?.squareInRegion(square, "center")) {
     baseColor = baseColor.desaturate(1).mix(Color("red"), 0.2);
   }

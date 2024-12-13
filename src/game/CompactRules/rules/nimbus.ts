@@ -88,7 +88,7 @@ export const nimbus: TrivialParameterRule = () => ({
       .map((newPieceType) => {
         return {
           pieceId: piece.id,
-          location: undefined,
+          location: piece.location,
           playerName: piece.owner,
           pieceDeltas: [
             {
@@ -130,7 +130,7 @@ export const nimbus: TrivialParameterRule = () => ({
     return { game, interrupt, board, move, turnIndexes };
   },
   lossCondition: ({ playerName, game, gameClones, interrupt, dead }): LossCondition => {
-    if (dead || game.getCurrentPlayerName() !== playerName) {
+    if (dead) {
       return { playerName, game, gameClones, interrupt, dead };
     }
 

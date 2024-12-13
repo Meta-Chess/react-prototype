@@ -60,4 +60,8 @@ export const Colors = {
     NEUTRAL: Color("#E5CCE5"),
     COLD: Color("#CCCCFF"),
   },
+  NIMBUS: {
+    SQUARE: [Color("#AB7E4C"), Color("#C49E78")],
+    PLAYER: [Color("#FFFFFF").fade(0.1), Color("#000000").fade(0.1)],
+  },
 };

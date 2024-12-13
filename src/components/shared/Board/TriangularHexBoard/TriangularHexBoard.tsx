@@ -85,6 +85,9 @@ export const TriangularHexBoard: FC<BoardProps> = ({
   const triangleSideLength: SvgMeasurement = fullWidth / fullWidthInTriangleUnits;
   const triangleHeight: SvgMeasurement = (triangleSideLength * Math.sqrt(3)) / 2;
 
+  const pixelToSvg = (pixelLength: PixelMeasurement): SvgMeasurement => {
+    return pixelLength * (ARC_TILE_WORKING_AREA / boardSize);
+  };
   const svgToPixel = (svgLength: SvgMeasurement): PixelMeasurement => {
     return boardSize * (svgLength / ARC_TILE_WORKING_AREA);
   };
@@ -190,6 +193,10 @@ export const TriangularHexBoard: FC<BoardProps> = ({
                       },
                       leftAdjustmentToTileCenter,
                       topAdjustmentToTileCenter,
+                      leftAdjustmentToTileCenterSvg: pixelToSvg(
+                        leftAdjustmentToTileCenter
+                      ),
+                      topAdjustmentToTileCenterSvg: pixelToSvg(topAdjustmentToTileCenter),
                       centerMaxEmbeddedDiameter,
                     }}
                   />

@@ -3,7 +3,7 @@ import { Svg } from "react-native-svg";
 import type { AnimatedTileProps } from "../TileProps";
 import { AnimatedGroup } from "primitives";
 import { AbsoluteView } from "ui/Containers";
-import { ARC_TILE_WORKING_AREA } from ".";
+import { ARC_TILE_WORKING_AREA } from "../Arc/describeArcTile";
 import { PathWithNoOutline } from "primitives/OutlinelessComponents";
 
 export const TriangleTileAnimated: FC<AnimatedTileProps> = ({
@@ -20,11 +20,10 @@ export const TriangleTileAnimated: FC<AnimatedTileProps> = ({
         viewBox={`0 0 ${ARC_TILE_WORKING_AREA} ${ARC_TILE_WORKING_AREA}`}
         pointerEvents={"none"}
       >
-        <AnimatedGroup stroke={color} pointerEvents={"none"}>
+        <AnimatedGroup fill={color} pointerEvents={"none"}>
           <PathWithNoOutline
             d={tileSchematic?.arcSvgDetails.tilePath}
-            fill={color.toString()}
-            stroke="none"
+            stroke={"none"}
             pointerEvents={pressable ? "auto" : "none"}
           />
         </AnimatedGroup>
