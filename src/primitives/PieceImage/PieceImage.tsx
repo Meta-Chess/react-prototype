@@ -74,6 +74,13 @@ const PieceImage: SFC<Props> = ({
   const alphaModifier = opacity === undefined ? 1 : opacity;
   const paths = (
     <>
+      {
+        <PieceDecorations
+          pieceDecorationNames={pieceDecorationNames}
+          squareShape={squareShape}
+          belowPiece={true}
+        />
+      }
       {PIECE_SPRITE[type]}
       {
         <PieceDecorations

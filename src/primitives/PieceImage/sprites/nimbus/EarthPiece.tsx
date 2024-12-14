@@ -7,9 +7,8 @@ const EarthPiece: FC = () => {
       <Svg viewBox="0 0 1567 1547.42">
         <G scale={0.8} translate={[156.7, 140]}>
           <Polygon
-            fill="#88B147"
-            stroke="#000000"
-            strokeWidth="7"
+            stroke="#88B147"
+            strokeWidth="10"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeMiterlimit="10"
@@ -17,8 +16,9 @@ const EarthPiece: FC = () => {
 		1371.067,1029.243 780.941,7.113 190.815,1029.243 780.941,1540.308 	"
           />
           <Path
-            stroke="#FFFFFF"
-            strokeWidth="0"
+            fill="#88B147"
+            stroke="#88B147"
+            strokeWidth="20"
             strokeMiterlimit="10"
             d="M881.804,1378.911l64.515-52.397l22.988-22.486
 		l15.992-15.996l30.855-33.778l33.17-40.961l14.148-18.187l9.213-12.556l15.163-21.428l9.608-13.864l15.662-24.907l7.991-14.384

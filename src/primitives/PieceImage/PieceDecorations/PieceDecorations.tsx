@@ -1,51 +1,23 @@
-import React, { FC, ReactElement, useMemo } from "react";
-import { Path, Svg } from "react-native-svg";
+import React, { FC, useMemo } from "react";
 import { PieceDecorationName } from "components/shared/Board/Piece/getPieceDecorationNames";
-import { BsArrowClockwise, BsArrowCounterclockwise } from "react-icons/bs";
 import { SquareShape } from "game/types";
+import {
+  getDecorationsBelowPiece,
+  getDecorationsAbovePiece,
+} from "./getPieceDecorations";
 
 interface Props {
   pieceDecorationNames?: PieceDecorationName[];
   squareShape?: SquareShape | undefined;
-}
-
-// TODO: consider changing this into a map...
-function getDecoration(
-  name: PieceDecorationName,
-  circularBoard: boolean
-): ReactElement | void {
-  if (name === PieceDecorationName.UpDirectionArrow) {
-    if (circularBoard)
-      return (
-        <Svg viewBox={"-17 -15.5 45 45"}>
-          <BsArrowCounterclockwise key={name} viewBox={"0 0 25 25"} />
-        </Svg>
-      );
-    return (
-      <Path
-        key={name}
-        d="M 22.5,17.5 22.5,24.5 22.5,24.5 M 22.5,17.5 20,20 M 22.5,17.5 25,20"
-      />
-    );
-  } else if (name === PieceDecorationName.DownDirectionArrow) {
-    if (circularBoard)
-      return (
-        <Svg viewBox={"-17 -15.5 45 45"}>
-          <BsArrowClockwise key={name} viewBox={"0 0 25 25"} />
-        </Svg>
-      );
-    return (
-      <Path
-        key={name}
-        d="M 22.5,17.5 22.5,24.5 22.5,24.5 M 22.5,24.5 20,22 M 22.5,24.5 25,22"
-      />
-    );
-  }
-  return;
+  belowPiece?: boolean;
 }
 
 // TODO: Probably better to extract decorations as components absolutely positioned on the PieceImage (rather than paths/svgs in here)
-const PieceDecorations: FC<Props> = ({ pieceDecorationNames, squareShape }) => {
+const PieceDecorations: FC<Props> = ({
+  pieceDecorationNames,
+  squareShape,
+  belowPiece = false,
+}) => {
   // change decorations when displaying a circular board
   const circularBoard = useMemo(() => squareShape === SquareShape.Arc, [squareShape]);
 
@@ -54,7 +26,9 @@ const PieceDecorations: FC<Props> = ({ pieceDecorationNames, squareShape }) => {
   return (
     <>
       {pieceDecorationNames?.map((pieceDecorationName) => {
-        return getDecoration(pieceDecorationName, circularBoard);
+        return belowPiece
+          ? getDecorationsBelowPiece(pieceDecorationName)
+          : getDecorationsAbovePiece(pieceDecorationName, circularBoard);
       })}
     </>
   );

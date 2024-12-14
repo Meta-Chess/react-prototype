@@ -4,6 +4,7 @@ import { AbsoluteView } from "ui/Containers";
 import { PathWithNoOutline } from "primitives/OutlinelessComponents";
 import type { TileProps } from "../TileProps";
 import { ARC_TILE_WORKING_AREA } from "../Arc/describeArcTile";
+import Color from "color";
 
 export const TriangleTile: FC<TileProps> = ({
   tileSchematic,
@@ -39,8 +40,8 @@ export const TriangleTile: FC<TileProps> = ({
               <PathWithNoOutline
                 d={tileSchematic?.arcSvgDetails.tilePath}
                 fill={color.toString()}
-                stroke="none"
-                strokeWidth={0.5}
+                stroke={"none"}
+                strokeWidth={1}
                 pointerEvents={pressable ? "auto" : "none"}
               />
             </G>

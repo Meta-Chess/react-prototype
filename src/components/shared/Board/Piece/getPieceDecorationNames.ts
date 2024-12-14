@@ -1,12 +1,14 @@
 import { Piece, PieceName } from "game";
 import { Direction } from "game/types";
 import { GameMaster } from "game";
+import { TokenName } from "game/types";
 
 export enum PieceDecorationName {
   UpDirectionArrow,
   DownDirectionArrow,
   ClockwiseDirectionArrow,
   AnticlockwiseDirectionArrow,
+  NimbusSymbol,
 }
 
 export function getPieceDecorationNames(
@@ -28,6 +30,10 @@ export function getPieceDecorationNames(
     if (southGait) {
       pieceDecorations.push(PieceDecorationName.DownDirectionArrow);
     }
+  }
+
+  if (ruleNames.includes("nimbus") && piece.hasTokenWithName(TokenName.Nimbus)) {
+    pieceDecorations.push(PieceDecorationName.NimbusSymbol);
   }
 
   return pieceDecorations;

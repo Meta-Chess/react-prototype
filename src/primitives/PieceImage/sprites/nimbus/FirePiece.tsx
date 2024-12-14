@@ -7,9 +7,8 @@ const FirePiece: FC = () => {
       <Svg viewBox="0 0 1567 1547.42">
         <G scale={0.8} translate={[156.7, 140]}>
           <Polygon
-            fill="#EF0750"
-            stroke="#000000"
-            strokeWidth="7"
+            stroke="#EF0750"
+            strokeWidth="10"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeMiterlimit="10"
@@ -17,8 +16,9 @@ const FirePiece: FC = () => {
 		1378.826,1031.494 783.5,0.359 188.173,1031.494 783.5,1547.062 	"
           />
           <Path
-            stroke="#FFFFFF"
-            strokeWidth="0"
+            fill="#EF0750"
+            stroke="#EF0750"
+            strokeWidth="20"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeMiterlimit="10"

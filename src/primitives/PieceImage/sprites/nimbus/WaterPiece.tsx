@@ -7,9 +7,8 @@ const WaterPiece: FC = () => {
       <Svg viewBox="0 0 1567 1547.42">
         <G scale={0.8} translate={[156.7, 140]}>
           <Polygon
-            fill="#00B3FF"
-            stroke="#000000"
-            strokeWidth="7"
+            stroke="#00B3FF"
+            strokeWidth="10"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeMiterlimit="10"
@@ -17,8 +16,9 @@ const WaterPiece: FC = () => {
 		1372.599,1028.798 783.5,8.447 194.401,1028.798 783.5,1538.973 	"
           />
           <Path
-            stroke="#FFFFFF"
-            strokeWidth="0"
+            fill="#00B3FF"
+            stroke="#00B3FF"
+            strokeWidth="20"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeMiterlimit="10"
@@ -39,8 +39,9 @@ const WaterPiece: FC = () => {
           />
 
           <Polygon
-            stroke="#FFFFFF"
-            strokeWidth="0"
+            fill="#00B3FF"
+            stroke="#00B3FF"
+            strokeWidth="20"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeMiterlimit="10"

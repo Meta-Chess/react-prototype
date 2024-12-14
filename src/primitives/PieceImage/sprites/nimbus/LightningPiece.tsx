@@ -7,9 +7,8 @@ const LightningPiece: FC = () => {
       <Svg viewBox="0 0 1567 1547.42">
         <G scale={0.8} translate={[156.7, 140]}>
           <Polygon
-            fill="#80179E"
-            stroke="#000000"
-            strokeWidth="7"
+            stroke="#80179E"
+            strokeWidth="10"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeMiterlimit="10"
@@ -18,8 +17,9 @@ const LightningPiece: FC = () => {
           />
 
           <Path
-            stroke="#FFFFFF"
-            strokeWidth="0"
+            fill="#80179E"
+            stroke="#80179E"
+            strokeWidth="20"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeMiterlimit="10"

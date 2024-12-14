@@ -11,7 +11,6 @@ interface Props {
   tileSchematic: TileSchematic;
 }
 
-// style={}
 const TriangleTileCenterHighlight: FC<Props> = ({ color, tileSchematic }) => {
   return <TriangleTile tileSchematic={{ ...tileSchematic, scale: 0.6 }} color={color} />;
 };
