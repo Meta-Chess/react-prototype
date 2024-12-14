@@ -40,9 +40,10 @@ export function getDecorationsAbovePiece(
 
 export function getDecorationsBelowPiece(name: PieceDecorationName): ReactElement | void {
   if (name === PieceDecorationName.NimbusSymbol) {
+    // Note- this doesn't actually need to be below the piece anymore
     return (
       <Svg viewBox="0 0 3061.42 3061.42">
-        <G scale={0.4} translate={[914, 20]}>
+        <G scale={0.3} translate={[1814, 220]}>
           <Path
             fill="#F5BF03"
             stroke="#996515"
