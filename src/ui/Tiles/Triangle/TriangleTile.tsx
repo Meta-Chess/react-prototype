@@ -4,7 +4,6 @@ import { AbsoluteView } from "ui/Containers";
 import { PathWithNoOutline } from "primitives/OutlinelessComponents";
 import type { TileProps } from "../TileProps";
 import { ARC_TILE_WORKING_AREA } from "../Arc/describeArcTile";
-import Color from "color";
 
 export const TriangleTile: FC<TileProps> = ({
   tileSchematic,
@@ -14,38 +13,29 @@ export const TriangleTile: FC<TileProps> = ({
   const svgDetails = tileSchematic?.arcSvgDetails;
   if (svgDetails === undefined) return <></>;
 
+  const scaleTransform = tileSchematic?.scale
+    ? `translate(
+    ${tileSchematic?.leftAdjustmentToTileCenterSvg || 0}, 
+    ${tileSchematic?.topAdjustmentToTileCenterSvg || 0}
+  ) scale(${tileSchematic?.scale}) translate(
+    ${-1 * (tileSchematic?.leftAdjustmentToTileCenterSvg || 0)}, 
+    ${-1 * (tileSchematic?.topAdjustmentToTileCenterSvg || 0)}
+  )`
+    : "";
   return (
     <AbsoluteView pointerEvents={"none"}>
       <Svg
         viewBox={`0 0 ${ARC_TILE_WORKING_AREA} ${ARC_TILE_WORKING_AREA}`}
         pointerEvents={"none"}
       >
-        <G
-          translate={[
-            tileSchematic?.scale ? tileSchematic?.leftAdjustmentToTileCenterSvg || 0 : 0,
-            tileSchematic?.scale ? tileSchematic?.topAdjustmentToTileCenterSvg || 0 : 0,
-          ]}
-        >
-          <G scale={tileSchematic?.scale}>
-            <G
-              translate={[
-                tileSchematic?.scale
-                  ? -1 * (tileSchematic?.leftAdjustmentToTileCenterSvg || 0)
-                  : 0,
-                tileSchematic?.scale
-                  ? -1 * (tileSchematic?.topAdjustmentToTileCenterSvg || 0)
-                  : 0,
-              ]}
-            >
-              <PathWithNoOutline
-                d={tileSchematic?.arcSvgDetails.tilePath}
-                fill={color.toString()}
-                stroke={"none"}
-                strokeWidth={1}
-                pointerEvents={pressable ? "auto" : "none"}
-              />
-            </G>
-          </G>
+        <G transform={scaleTransform}>
+          <PathWithNoOutline
+            d={tileSchematic?.arcSvgDetails.tilePath}
+            fill={color.toString()}
+            stroke={"none"}
+            strokeWidth={1}
+            pointerEvents={pressable ? "auto" : "none"}
+          />
         </G>
       </Svg>
     </AbsoluteView>
