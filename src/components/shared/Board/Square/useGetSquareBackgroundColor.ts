@@ -15,6 +15,12 @@ export function useGetSquareBackgroundColor(
 
   let baseColor = Colors.SQUARE[colorIndex({ ...square?.getCoordinates(), shape })];
 
+  // TODO: Think about having this logic move into interruption points within the rules
+  // keep in mind ordering, e.g. emptyCenter should be before kingOfTheHill
+  if (!!rules?.includes("kingOfTheHill") && board?.squareInRegion(square, "center")) {
+    baseColor = baseColor.desaturate(1).mix(Color("green"), 0.2);
+  }
+
   if (!!rules?.includes("emptyCenter") && board?.squareInRegion(square, "center")) {
     baseColor = baseColor.desaturate(1).mix(Color("red"), 0.2);
   }
