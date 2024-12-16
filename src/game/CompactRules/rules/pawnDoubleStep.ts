@@ -14,8 +14,8 @@ export const pawnDoubleStep: TrivialParameterRule = () => ({
   title: "Pawn Double Step",
   description:
     "For their first move, pawns can do two steps in their direction of travel!",
-  postMove: ({ game, interrupt, board, move, currentTurn }): PostMove => {
-    if (!move) return { game, interrupt, board, move, currentTurn };
+  postMove: ({ game, interrupt, board, move, turnIndexes }): PostMove => {
+    if (!move) return { game, interrupt, board, move, turnIndexes };
 
     const piecesMoved = move.pieceDeltas
       .map((delta) => board.pieces[delta.pieceId])
@@ -24,7 +24,7 @@ export const pawnDoubleStep: TrivialParameterRule = () => ({
       if (piece?.name === PieceName.Pawn)
         piece.removeTokensByName(TokenName.PawnDoubleStep);
     });
-    return { game, interrupt, board, move, currentTurn };
+    return { game, interrupt, board, move, turnIndexes };
   },
   onGaitsGeneratedModify: ({ game, gaits, piece }): OnGaitsGeneratedModify => ({
     game,

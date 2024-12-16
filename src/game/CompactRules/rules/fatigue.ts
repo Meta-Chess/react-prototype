@@ -10,10 +10,13 @@ import { isPresent } from "utilities";
 
 export const fatigue: ParameterRule<"fatigue"> = ({ "True Fatigue": trueFatigue }) => ({
   title: "Fatigue",
-  description:
-    "Moving is hard work! If you moved one of your pieces last turn, it's too tired to move this turn (unless you can capture the king!)",
-  postMove: ({ game, interrupt, board, move, currentTurn }): PostMove => {
-    if (!move) return { game, interrupt, board, move, currentTurn };
+  description: "Pieces can't be moved twice in a row, unless they can kill the king.",
+  postMove: ({ game, interrupt, board, move, turnIndexes }): PostMove => {
+    board
+      .piecesBelongingTo(game.getCurrentPlayerName())
+      .forEach((piece) => piece.removeTokensByName(TokenName.Fatigue));
+
+    if (!move) return { game, interrupt, board, move, turnIndexes };
 
     const piecesMoved = move.pieceDeltas
       .map((delta) => board.pieces[delta.pieceId])
@@ -21,14 +24,12 @@ export const fatigue: ParameterRule<"fatigue"> = ({ "True Fatigue": trueFatigue 
     piecesMoved.forEach((piece: Piece) => {
       const fatigueToken = {
         name: TokenName.Fatigue,
-        expired: (turn: number): boolean => {
-          return turn >= currentTurn + game.players.length;
-        },
+        expired: (): boolean => false,
         data: undefined,
       };
       piece.addToken(fatigueToken, true);
     });
-    return { game, interrupt, board, move, currentTurn };
+    return { game, interrupt, board, move, turnIndexes };
   },
   onGaitsGeneratedModify: ({ game, piece, gaits }): OnGaitsGeneratedModify =>
     /* Fatigued pieces can only move to capture king */

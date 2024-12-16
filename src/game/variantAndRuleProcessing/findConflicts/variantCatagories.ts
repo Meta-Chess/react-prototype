@@ -9,6 +9,10 @@ const BOARD_IS_LONG = keys(futureVariants).filter((variantName) =>
   futureVariants[variantName].ruleNames.includes("longBoard")
 );
 
+const HAS_TURN_TRAIT = keys(futureVariants).filter((variantName) =>
+  futureVariants[variantName].traits.includes("Turn")
+);
+
 export const VARIANT_CATAGORIES: VariantCatagories = {
   triggersCheckCaringAboutPassiveMoves: ["chemicallyExcitedKnight"],
   heapsOfPassiveMoves: ["crazyhouse"],
@@ -31,4 +35,6 @@ export const VARIANT_CATAGORIES: VariantCatagories = {
     "kleinBottle",
     "mobius",
   ],
+  threeCheck: ["threeCheck"],
+  turnVariants: HAS_TURN_TRAIT,
 };

@@ -4,6 +4,7 @@ import { CompactRules } from "game/CompactRules";
 import { VariantCatagories, VARIANT_CATAGORIES } from "./variantCatagories";
 import { Conflict } from "./Conflict";
 import { checkConflicts } from "./checkConflicts";
+import { noCheckConflicts } from "./noCheckConflicts";
 import { specialConflicts } from "./specialConflicts";
 import { boardConflicts } from "./boardConflicts";
 import { setupConflicts } from "./setupConflicts";
@@ -39,6 +40,7 @@ export const findConflicts = (
   const selectedVariantCatagories = processSelectedVariantCatagories(selectedVariants);
 
   const checkConflictsList = checkConflicts(selectedVariantCatagories, selectedRules);
+  const noCheckConflictList = noCheckConflicts(selectedVariantCatagories, selectedRules);
   const specialConflictsList = specialConflicts(selectedVariantCatagories);
   const boardConflictsList = boardConflicts(selectedVariantCatagories);
   const setupConflictsList = setupConflicts(selectedVariantCatagories);
@@ -60,17 +62,14 @@ export const findConflicts = (
     }
   }
 
-  if (
-    checkConflictsList.length +
-      specialConflictsList.length +
-      boardConflictsList.length ===
-    0
-  )
-    return [defaultMessage];
-  return [
+  const allConflicts = [
     ...checkConflictsList,
+    ...noCheckConflictList,
     ...specialConflictsList,
     ...boardConflictsList,
     ...setupConflictsList,
   ];
+
+  if (allConflicts.length === 0) return [defaultMessage];
+  return allConflicts;
 };
