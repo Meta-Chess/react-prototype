@@ -1,3 +1,4 @@
+export * from "./automaticPlay";
 export * from "./Board";
 export * from "./displayInfo";
 export * from "./EventCenter";
