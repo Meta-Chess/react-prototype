@@ -121,7 +121,7 @@ export const Board3D: SFC<BoardProps & { type: BoardVisualisation3D }> = ({
               />
             </mesh>
           )}
-          <OrbitControls autoRotate={autoRotateCamera} />
+          <OrbitControls autoRotate={autoRotateCamera} autoRotateSpeed={0.6} />
         </Canvas>
       </AbsoluteView>
     </SquareBackboard>
