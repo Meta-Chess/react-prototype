@@ -13,6 +13,6 @@ export const AdjustHexSvg: FC<{ size: number }> = ({ size, children }) => {
 
 const Container = styled(View)<{ size: number }>`
   position: absolute;
-  margin-left: ${({ size }): number => ((1 - size) * (hexSvgScaleFactor - 1)) / 2};
-  margin-top: ${({ size }): number => ((1 - size) * (hexSvgScaleFactor - 1)) / 2};
+  margin-left: ${({ size }): number => ((1 - size) * (hexSvgScaleFactor - 1)) / 2}px;
+  margin-top: ${({ size }): number => ((1 - size) * (hexSvgScaleFactor - 1)) / 2}px;
 `;

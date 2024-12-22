@@ -50,7 +50,7 @@ const Header = styled(TouchableOpacity)<{ includeSeperator: boolean }>`
   align-items: center;
   height: ${({ includeSeperator }): number => (includeSeperator ? 38 : 36)}px;
   background-color: ${Colors.DARK.toString()};
-  border-bottom-width: ${({ includeSeperator }): number => (includeSeperator ? 2 : 0)};
+  border-bottom-width: ${({ includeSeperator }): number => (includeSeperator ? 2 : 0)}px;
   border-bottom-color: ${Colors.DARKER.toString()};
 `;
 
