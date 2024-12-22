@@ -65,7 +65,7 @@ export const GameProvider: FC<Props> = ({
   }, [hasGameMaster]);
 
   useEffect(() => {
-    if (autoPlay && gameMaster)
+    if (autoPlay && gameMaster) {
       return startAutomaticPlay(gameMaster, () =>
         setGameMasterToNewGame({
           renderer,
@@ -74,6 +74,7 @@ export const GameProvider: FC<Props> = ({
           gameOptions: generateGameOptions?.() ?? gameOptions,
         })
       );
+    }
   }, [autoPlay, gameMaster]);
 
   useEffect((): void => {
