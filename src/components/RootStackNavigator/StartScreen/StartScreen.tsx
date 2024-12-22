@@ -1,6 +1,6 @@
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { Colors, DISCORD_URL, DiscordIcon, MChessLogo, TrackingPixel } from "primitives";
-import { calculateGameOptions } from "game";
+import { calculateGameOptions, FutureVariantName } from "game";
 import { ShadowBoard } from "./ShadowBoard";
 import { StartScreenLayoutContainer } from "./StartScreenLayoutContainer";
 import {
@@ -17,8 +17,17 @@ import { IconButton } from "ui/Buttons/IconButton";
 import { UpdateLog } from "./UpdateLog";
 import { recentUpdates } from "./UpdateLog/updates";
 import { useLogin } from "./useLogin";
-import { randomChoice } from "utilities";
+import { shuffleInPlace } from "utilities";
 import { useIsFocused } from "@react-navigation/native";
+
+const BACKGROUND_VARIANTS: FutureVariantName[] = [
+  "mobius",
+  "spherical",
+  "cylindrical",
+  "hex",
+  "atomic",
+  "toroidal",
+];
 
 const StartScreen: FC = () => {
   useLogin();
@@ -27,6 +36,7 @@ const StartScreen: FC = () => {
     useAsyncStorage("lastViewedUpdateOn");
   const [showUpdateLog, setShowUpdateLog] = useState(false);
   const screenIsFocused = useIsFocused();
+  const unusedBackgroundVariantsRef = useRef<FutureVariantName[]>([]);
 
   useEffect(() => {
     async function setStateAsynchronously(): Promise<void> {
@@ -41,23 +51,16 @@ const StartScreen: FC = () => {
     setLastViewedUpdateOn(new Date(Date.now()));
   }, []);
 
-  const generateGameOptions = useCallback(
-    () =>
-      calculateGameOptions(
-        { checkEnabled: false, time: undefined, online: false, flipBoard: false },
-        [
-          randomChoice([
-            "mobius",
-            "spherical",
-            "cylindrical",
-            "hex",
-            "atomic",
-            "toroidal",
-          ]),
-        ]
-      ),
-    []
-  );
+  const generateGameOptions = useCallback(() => {
+    if (!unusedBackgroundVariantsRef.current.length) {
+      unusedBackgroundVariantsRef.current = shuffleInPlace([...BACKGROUND_VARIANTS]);
+    }
+    const variant = unusedBackgroundVariantsRef.current.pop();
+    return calculateGameOptions(
+      { checkEnabled: false, time: undefined, online: false, flipBoard: false },
+      variant ? [variant] : []
+    );
+  }, []);
 
   return (
     <>
