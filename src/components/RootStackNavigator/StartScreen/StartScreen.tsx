@@ -18,6 +18,7 @@ import { UpdateLog } from "./UpdateLog";
 import { recentUpdates } from "./UpdateLog/updates";
 import { useLogin } from "./useLogin";
 import { randomChoice } from "utilities";
+import { useIsFocused } from "@react-navigation/native";
 
 const StartScreen: FC = () => {
   useLogin();
@@ -25,6 +26,7 @@ const StartScreen: FC = () => {
   const [setLastViewedUpdateOn, getLastViewedUpdateOn] =
     useAsyncStorage("lastViewedUpdateOn");
   const [showUpdateLog, setShowUpdateLog] = useState(false);
+  const screenIsFocused = useIsFocused();
   const UPDATE_LOG_ENABLED = false; // disabling UpdateLog for now, while it isn't being updated
 
   useEffect(() => {
@@ -60,20 +62,20 @@ const StartScreen: FC = () => {
 
   return (
     <>
-      <GameProvider generateGameOptions={generateGameOptions} autoPlay>
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            backgroundColor: Colors.DARKEST.toString(),
-          }}
-          showsVerticalScrollIndicator={false}
-        >
-          <ErrorBoundary>
-            <StartScreenLayoutContainer
-              windowWidth={width}
-              windowHeight={height}
-              primaryComponent={
-                <>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          backgroundColor: Colors.DARKEST.toString(),
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        <ErrorBoundary>
+          <StartScreenLayoutContainer
+            windowWidth={width}
+            windowHeight={height}
+            primaryComponent={
+              screenIsFocused ? (
+                <GameProvider generateGameOptions={generateGameOptions} autoPlay>
                   <StaticBoardViewProvider
                     autoRotateCamera={true}
                     initialCameraPosition={[0, 10, 35]}
@@ -82,23 +84,24 @@ const StartScreen: FC = () => {
                     <ShadowBoard />
                   </StaticBoardViewProvider>
                   <MChessLogo />
-                </>
-              }
-              secondaryComponent={
-                <>
-                  <PlayWithFriends style={{ marginTop: 12 }} />
-                  <Lobby style={{ marginTop: 12 }} />
-                </>
-              }
-            />
-            <IconButton
-              style={{ position: "absolute", top: 44, right: 9 }}
-              Icon={DiscordIcon}
-              onPress={(): void => {
-                if (Platform.OS == "web") window.open(DISCORD_URL, "_blank");
-                else Linking.openURL(DISCORD_URL);
-              }}
-            />
+                </GameProvider>
+              ) : null
+            }
+            secondaryComponent={
+              <>
+                <PlayWithFriends style={{ marginTop: 12 }} />
+                <Lobby style={{ marginTop: 12 }} />
+              </>
+            }
+          />
+          <IconButton
+            style={{ position: "absolute", top: 44, right: 9 }}
+            Icon={DiscordIcon}
+            onPress={(): void => {
+              if (Platform.OS == "web") window.open(DISCORD_URL, "_blank");
+              else Linking.openURL(DISCORD_URL);
+            }}
+          />
 
             <HelpMenu openChangeLog={(): void => setShowUpdateLog(true)} />
           </ErrorBoundary>
@@ -110,7 +113,6 @@ const StartScreen: FC = () => {
             windowHeight={height}
           />
         )}
-      </GameProvider>
       <TrackingPixel urlEnd={"StartScreen"} />
     </>
   );

@@ -3,14 +3,7 @@ import { PlayerName } from "game/types";
 import { Move } from "game/Move";
 import { AutomaticPlayer } from "./AutomaticPlayer";
 import autoBind from "auto-bind";
-import { doAsync } from "utilities";
 import { SlightlyImprovedRandomMovePlayer } from "./SlightlyImprovedRandomMovePlayer";
-
-interface AutomaticGameControllerOptions {
-  selectDelayMillis: number;
-  moveDelayMillis: number;
-  resetDelayMillis: number;
-}
 
 export class AutomaticGameController {
   private automaticPlayers: { [name in PlayerName]?: AutomaticPlayer } = {};
@@ -20,10 +13,12 @@ export class AutomaticGameController {
   constructor(
     private gameMaster: GameMaster,
     private onEndGame: () => void,
-    private options: AutomaticGameControllerOptions = {
+    private options = {
       selectDelayMillis: 300,
       moveDelayMillis: 700,
       resetDelayMillis: 4000,
+      endEarlyMinTurns: 40,
+      endEarlyMaxPiecesPerPlayer: 1,
     }
   ) {
     autoBind(this);
@@ -44,15 +39,13 @@ export class AutomaticGameController {
   }
 
   private async selectNextPiece(): Promise<void> {
-    if (this.gameMaster.gameOver) {
+    if (this.gameMaster.gameOver || this.shouldEndEarly()) {
       this.timer = setTimeout(this.onEndGame, this.options.resetDelayMillis);
       return;
     }
 
     const currentPlayer = this.gameMaster.game.getCurrentPlayer();
-    this.nextMove = await doAsync(
-      this.automaticPlayers[currentPlayer.name]?.getNextMove
-    )();
+    this.nextMove = this.automaticPlayers[currentPlayer.name]?.getNextMove();
     if (this.nextMove !== undefined) {
       const piece = this.gameMaster.game.board.getPiece(this.nextMove?.pieceId);
       if (piece) await this.gameMaster.onSquarePress(piece.location, piece.id);
@@ -62,8 +55,18 @@ export class AutomaticGameController {
 
   private executeNextMove(): void {
     if (this.nextMove !== undefined) {
-      this.gameMaster.onSquarePress(this.nextMove.location);
+      this.gameMaster.doMove({ move: this.nextMove });
       this.timer = setTimeout(this.selectNextPiece, this.options.selectDelayMillis);
     }
+  }
+
+  private shouldEndEarly(): boolean {
+    if (this.gameMaster.game.currentTurn < this.options.endEarlyMinTurns) return false;
+
+    const piecePlayerRatio =
+      this.gameMaster.game.board.getPieces().length / this.gameMaster.game.players.length;
+    if (piecePlayerRatio > this.options.endEarlyMaxPiecesPerPlayer) return false;
+
+    return true;
   }
 }

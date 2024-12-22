@@ -1,12 +1,12 @@
-import React, { FC, ReactElement } from "react";
+import React, { FC, ReactNode } from "react";
 import { View, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { Row } from "ui";
 interface Props {
   windowWidth: number;
   windowHeight: number;
-  primaryComponent: ReactElement;
-  secondaryComponent: ReactElement;
+  primaryComponent: ReactNode;
+  secondaryComponent: ReactNode;
 }
 
 export const StartScreenLayoutContainer: FC<Props> = ({
