@@ -41,7 +41,7 @@ interface Props {
 export const GameProvider: FC<Props> = ({
   children,
   generateGameOptions,
-  gameOptions = generateGameOptions?.(),
+  gameOptions: explicitGameOptions,
   autoPlay = false,
   roomId: receivedRoomId,
 }) => {
@@ -52,6 +52,10 @@ export const GameProvider: FC<Props> = ({
   const [gameMaster, setGameMaster] = useState<GameMaster | undefined>();
   const [roomId, simpleSetRoomId] = useState(receivedRoomId);
   const renderer = useMemo(() => new Renderer(setUpdateCounter), []);
+  const gameOptions = useMemo(
+    () => explicitGameOptions ?? generateGameOptions?.(),
+    [explicitGameOptions]
+  );
 
   const setRoomId = useCallback((roomId?: string): void => {
     navigation.setParams({ ...params, roomId }); // For url with roomId
