@@ -10,7 +10,7 @@ import { GameContext } from "components/shared/GameContext";
 import { AbsoluteView } from "ui";
 import { useCylinderRotation } from "./useCylinderRotation";
 import { SquareBackboard } from "./SquareBackboard";
-import { GridOverlay } from "./GridOverlay";
+import { GridOverlay } from "./GridOverlay/GridOverlay";
 
 const SquareBoard: SFC<BoardProps> = ({
   backboard = true,
@@ -46,6 +46,8 @@ const SquareBoard: SFC<BoardProps> = ({
 
   return (
     <SquareBackboard measurements={measurements} backboard={backboard}>
+      <GridOverlay />
+
       <AbsoluteView
         style={{ overflow: "hidden", margin: measurements.boardPaddingHorizontal }}
       >
@@ -77,7 +79,6 @@ const SquareBoard: SFC<BoardProps> = ({
           ))}
         </Animated.View>
       </AbsoluteView>
-      <GridOverlay />
     </SquareBackboard>
   );
 };
