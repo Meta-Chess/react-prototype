@@ -9,7 +9,6 @@ import {
 } from "primitives";
 import { BoardMaterial } from "components/shared/Board/Square/BoardMaterial";
 import { ThreeElements } from "@react-three/fiber";
-import { Mesh } from "primitives/three";
 
 const CIRCLE_RADIUS = 0.08;
 
@@ -48,7 +47,7 @@ export const Highlights3D: FC<Props> = ({
       {getHighlightColorsAndTypes({ gameMaster, square }).map(
         ({ type, color }, index): ReactNode =>
           type === "tile" ? (
-            <Mesh
+            <mesh
               key={index}
               geometry={getSurfaceSquareGeometry({
                 inverseProjection,
@@ -59,9 +58,9 @@ export const Highlights3D: FC<Props> = ({
               receiveShadow
             >
               <BoardMaterial color={color} />
-            </Mesh>
+            </mesh>
           ) : (
-            <Mesh
+            <mesh
               key={index}
               geometry={new CircleGeometry(CIRCLE_RADIUS, 4 * TILE_GRANULARITY)}
               position={position}
@@ -71,7 +70,7 @@ export const Highlights3D: FC<Props> = ({
               receiveShadow
             >
               <BoardMaterial color={color} />
-            </Mesh>
+            </mesh>
           )
       )}
     </>
