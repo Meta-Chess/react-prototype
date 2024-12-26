@@ -8,7 +8,7 @@ export const ForwardHistoryButton: SFC = ({ style }) => {
   const { gameMaster } = useContext(GameContext);
   const disabled = gameMaster?.stateIsCurrent();
 
-  const onKeyDownEvent = useCallback((event) => {
+  const onKeyDownEvent = useCallback((event: KeyboardEvent) => {
     if (event.key === "ArrowRight") {
       gameMaster?.goForwardsInHistory();
     }

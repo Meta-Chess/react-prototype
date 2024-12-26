@@ -34,7 +34,7 @@ export interface Modal {
   content: ReactNode;
 }
 
-export const ModalProvider: FC = ({ children }) => {
+export const ModalProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [modals, setModals] = useState<Modal[]>([]);
 
   const contextMethods = useMemo(() => {

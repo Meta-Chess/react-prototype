@@ -120,23 +120,25 @@ interface SidebarContainerProps {
   boardMeasurements: BoardMeasurements;
 }
 
-const Container = styled(View)<{ portrait: boolean }>`
-  ${({ portrait }): string => (portrait ? "width: 100%; height: 100%;" : "flex: 1;")}
+const Container = styled(View)`
+  ${({ portrait }: { portrait: boolean }): string =>
+    portrait ? "width: 100%; height: 100%;" : "flex: 1;"}
   justify-content: center;
   align-items: center;
-  ${({ portrait }): string =>
+  ${({ portrait }: { portrait: boolean }): string =>
     "flex-direction: " + (portrait ? "column-reverse" : "row-reverse") + ";"}
 `;
 
-const SidebarContainer = styled(View)<SidebarContainerProps>`
+const SidebarContainer = styled(View)`
   flex: 1;
-  ${({ portrait }): string => (portrait ? "margin-top: 24px;" : "")}
-  ${({ portrait, boardMeasurements }): string =>
+  ${({ portrait }: SidebarContainerProps): string =>
+    portrait ? "margin-top: 24px;" : ""}
+  ${({ portrait, boardMeasurements }: SidebarContainerProps): string =>
     portrait ? "" : `height: ${boardMeasurements.height}px;`}
-  ${({ portrait, boardMeasurements }): string =>
+  ${({ portrait, boardMeasurements }: SidebarContainerProps): string =>
     portrait ? `width: ${boardMeasurements.width}px;` : ""}
   min-width: 280px;
   max-width: 450px;
   padding: ${Platform.OS === "web" ? 0 : 8}px;
-  margin-left: ${({ portrait }): number => (portrait ? 0 : 16)}px;
+  margin-left: ${({ portrait }: SidebarContainerProps): number => (portrait ? 0 : 16)}px;
 `;

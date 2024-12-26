@@ -43,18 +43,18 @@ const SquareBoard: SFC<BoardProps> = ({
   const horizontalWrap = wrapToCylinder(minFile, maxFile);
   const verticalWrap = wrapToCylinder(minRank, maxRank);
 
+  const animatedMarginsStyle: Animated.Animated = {
+    marginLeft: rotationMarginLeft,
+    marginBottom: rotationMarginBottom,
+    flexDirection: flipBoard ? "row-reverse" : "row",
+  };
+
   return (
     <SquareBackboard measurements={measurements} backboard={backboard}>
       <AbsoluteView
         style={{ overflow: "hidden", margin: measurements.boardPaddingHorizontal }}
       >
-        <Animated.View
-          style={{
-            marginLeft: rotationMarginLeft,
-            marginBottom: rotationMarginBottom,
-            flexDirection: flipBoard ? "row-reverse" : "row",
-          }}
-        >
+        <Animated.View style={animatedMarginsStyle}>
           {fileCoordinates.map((file) => (
             <ColumnContainer flipBoard={flipBoard} key={file}>
               {rankCoordinates.map((rank) => (

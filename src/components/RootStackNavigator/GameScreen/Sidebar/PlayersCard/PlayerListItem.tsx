@@ -39,7 +39,7 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
   if (gameMaster === undefined) return null;
   const assignedPlayer = gameMaster.assignedPlayer;
   const isYou = assignedPlayer === player.name;
-  const name = isYou ? user?.username ?? defaultName : defaultName;
+  const name = isYou ? (user?.username ?? defaultName) : defaultName;
   const ruleNames = gameMaster.getRuleNames();
   const rowActive = player.name === currentPlayerName;
   const offeringDraw = player.wantsToDraw;
@@ -107,17 +107,17 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
   );
 };
 
-const Container = styled(Row)<{ active: boolean }>`
+const Container = styled(Row)`
   justify-content: space-between;
   align-items: center;
   padding-horizontal: 16px;
-  ${({ active }): string =>
+  ${({ active }: { active: boolean }): string =>
     active ? `background-color: ${Colors.WHITE.fade(0.92).toString()};` : ""}
 `;
 
-const Dot = styled(View)<{ color: Color }>`
+const Dot = styled(View)`
   width: 8px;
   height: 8px;
   border-radius: 4px;
-  background-color: ${({ color }): string => color.toString()};
+  background-color: ${({ color }: { color: Color }): string => color.toString()};
 `;

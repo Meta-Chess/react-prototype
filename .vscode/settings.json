@@ -1,7 +1,4 @@
 {
-  "cSpell.words": [
-    "chainable",
-    "mchess",
-    "pather"
-  ]
+  "cSpell.words": ["chainable", "mchess", "pather"],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

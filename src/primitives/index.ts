@@ -10,5 +10,6 @@ export * from "./icons";
 export * from "./images";
 export * from "./links";
 export * from "./surfaceSquares";
+export * from "./three";
 export * from "./typography";
 export * from "./useHover";

@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, ReactNode } from "react";
 import { View } from "react-native";
 import Select, { IndicatorProps, components, Theme } from "react-select";
 import { Colors, Text, SFC } from "primitives";
@@ -64,8 +64,8 @@ export const SelectInput: SFC<Props> = ({ options, defaultOption, style, onChang
             backgroundColor: isSelected
               ? Colors.GREY.fade(0.8).toString()
               : isFocused
-              ? Colors.GREY.fade(0.9).toString()
-              : Colors.DARK.toString(),
+                ? Colors.GREY.fade(0.9).toString()
+                : Colors.DARK.toString(),
             height: 36,
           }),
           indicatorSeparator: (baseStyle): CSSProperties => ({
@@ -82,7 +82,7 @@ export const SelectInput: SFC<Props> = ({ options, defaultOption, style, onChang
   );
 };
 
-const OptionLabel: React.FC<Option> = ({ label }) => {
+const OptionLabel = ({ label }: Option): ReactNode => {
   return (
     <Text
       alignment="center"
@@ -96,7 +96,9 @@ const OptionLabel: React.FC<Option> = ({ label }) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const DropdownIndicator: React.FC<IndicatorProps<any>> = (props: IndicatorProps<any>) => {
+const DropdownIndicator: React.FC<IndicatorProps<any, false>> = (
+  props: IndicatorProps<any, false>
+) => {
   return (
     <components.DropdownIndicator {...props}>
       <DownCaretIcon color={Colors.MCHESS_ORANGE.toString()} />

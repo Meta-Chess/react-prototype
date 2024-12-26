@@ -1,9 +1,13 @@
-import React, { FC } from "react";
-import { View } from "react-native";
+import React, { FC, PropsWithChildren, ReactNode } from "react";
 import styled from "styled-components/native";
 import { hexSvgScaleFactor } from "primitives/Tiles";
 
-export const AdjustHexSvg: FC<{ size: number }> = ({ size, children }) => {
+interface Props {
+  size: number;
+  children?: ReactNode;
+}
+
+export const AdjustHexSvg: FC<Props> = ({ size, children }) => {
   return (
     <Container size={size} pointerEvents={"none"}>
       {children}
@@ -11,7 +15,7 @@ export const AdjustHexSvg: FC<{ size: number }> = ({ size, children }) => {
   );
 };
 
-const Container = styled(View)<{ size: number }>`
+const Container = styled.View<{ size: number }>`
   position: absolute;
   margin-left: ${({ size }): number => ((1 - size) * (hexSvgScaleFactor - 1)) / 2}px;
   margin-top: ${({ size }): number => ((1 - size) * (hexSvgScaleFactor - 1)) / 2}px;

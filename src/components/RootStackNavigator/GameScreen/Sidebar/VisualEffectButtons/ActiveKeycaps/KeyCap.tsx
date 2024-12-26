@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { Colors, Text } from "primitives";
-import { TouchableOpacity } from "react-native";
 import Color from "color";
 import styled from "styled-components/native";
 
@@ -29,7 +28,7 @@ export const KeyCap: FC<Props> = ({
   );
 };
 
-const Container = styled(TouchableOpacity)<{ color?: Color }>`
+const Container = styled.TouchableOpacity<{ color?: Color }>`
   border: 1px solid ${({ color }): string => (color ? color.toString() : "transparent")};
   border-radius: 4px;
   width: 16px;
