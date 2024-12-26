@@ -2,7 +2,6 @@ import Color from "color";
 import React, { FC } from "react";
 
 export const BoardMaterial: FC<{ color: Color }> = ({ color }) => (
-  // @ts-ignore
   <meshStandardMaterial
     attach="material"
     color={color.toString()}

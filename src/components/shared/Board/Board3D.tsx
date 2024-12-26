@@ -132,9 +132,7 @@ export const Board3D: SFC<BoardProps & { type: BoardVisualisation3D }> = ({
             })
           )}
           {extraGeometry && (
-            // @ts-ignore
             <mesh geometry={extraGeometry} receiveShadow>
-              {/* @ts-ignore */}
               <meshStandardMaterial
                 attach="material"
                 color={Colors.WHITE.toString()}
@@ -142,7 +140,6 @@ export const Board3D: SFC<BoardProps & { type: BoardVisualisation3D }> = ({
                 emissiveIntensity={1}
                 roughness={0.5}
               />
-              {/* @ts-ignore */}
             </mesh>
           )}
           <OrbitControls autoRotate={autoRotateCamera} />

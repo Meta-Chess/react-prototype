@@ -36,6 +36,5 @@
       "CompactRules": ["./src/game/CompactRules/*"],
       "CompactRules/*": ["./src/game/CompactRules"]
     }
-  },
-  "extends": "expo/tsconfig.base"
+  }
 }
