@@ -21,6 +21,10 @@ export class Path {
     return this.path;
   }
 
+  getLength(): number {
+    return this.path.length;
+  }
+
   push(location: string): number {
     return this.path.push(location);
   }

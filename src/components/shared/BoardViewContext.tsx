@@ -1,7 +1,12 @@
-import React, { createContext, FC } from "react";
-import { BoardVisualisationFields, useBoardVisualisation } from "./Board";
+import React, { createContext, FC, useContext } from "react";
+import {
+  BoardVisualisationFields,
+  getDefaultBoardVisualisation,
+  useBoardVisualisation,
+} from "./Board";
 import { Colors } from "primitives";
 import Color from "color";
+import { GameContext } from "components/shared/GameContext";
 
 type BoardView = BoardVisualisationFields & {
   autoRotateCamera: boolean;
@@ -18,12 +23,15 @@ export const BoardViewContext = createContext<BoardView>({
 });
 
 export const StaticBoardViewProvider: FC<Partial<BoardView>> = ({
-  boardVisualisation = "flat",
+  boardVisualisation,
   autoRotateCamera = false,
   initialCameraPosition = [0, 0, 40],
   backgroundColor = Colors.BLACK,
   children,
 }) => {
+  const { gameMaster } = useContext(GameContext);
+  boardVisualisation = boardVisualisation ?? getDefaultBoardVisualisation(gameMaster);
+
   return (
     <BoardViewContext.Provider
       value={{

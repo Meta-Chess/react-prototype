@@ -4,12 +4,15 @@ import { GameContext } from "components/shared";
 import { uniq } from "lodash";
 import { Platform } from "react-native";
 
-export type BoardVisualisation3D =
-  | "spherical"
-  | "toroidal"
-  | "mobius"
-  | "cylindrical"
-  | "klein";
+export const BOARD_VISUALISATIONS_3D = [
+  "spherical",
+  "toroidal",
+  "mobius",
+  "cylindrical",
+  "klein",
+] as const;
+
+export type BoardVisualisation3D = typeof BOARD_VISUALISATIONS_3D[number];
 export type BoardVisualisation = BoardVisualisation3D | "flat" | "circular";
 
 // TODO: This logic should be within each variant, and here we should just have an interruption point

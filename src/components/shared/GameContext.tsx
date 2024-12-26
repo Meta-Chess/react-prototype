@@ -32,6 +32,7 @@ export const SimpleGameProvider: FC<SimpleProps> = ({ children, gameMaster }) =>
 
 interface Props {
   gameOptions?: GameOptions;
+  generateGameOptions?: () => GameOptions;
   autoPlay?: boolean;
   roomId?: string;
 }
@@ -39,7 +40,8 @@ interface Props {
 // TODO: Clean up
 export const GameProvider: FC<Props> = ({
   children,
-  gameOptions,
+  generateGameOptions,
+  gameOptions: explicitGameOptions,
   autoPlay = false,
   roomId: receivedRoomId,
 }) => {
@@ -50,6 +52,10 @@ export const GameProvider: FC<Props> = ({
   const [gameMaster, setGameMaster] = useState<GameMaster | undefined>();
   const [roomId, simpleSetRoomId] = useState(receivedRoomId);
   const renderer = useMemo(() => new Renderer(setUpdateCounter), []);
+  const gameOptions = useMemo(
+    () => explicitGameOptions ?? generateGameOptions?.(),
+    [explicitGameOptions]
+  );
 
   const setRoomId = useCallback((roomId?: string): void => {
     navigation.setParams({ ...params, roomId }); // For url with roomId
@@ -63,7 +69,16 @@ export const GameProvider: FC<Props> = ({
   }, [hasGameMaster]);
 
   useEffect(() => {
-    if (autoPlay && gameMaster) return startAutomaticPlay(gameMaster);
+    if (autoPlay && gameMaster) {
+      return startAutomaticPlay(gameMaster, () =>
+        setGameMasterToNewGame({
+          renderer,
+          setGameMaster,
+          roomId,
+          gameOptions: generateGameOptions?.() ?? gameOptions,
+        })
+      );
+    }
   }, [autoPlay, gameMaster]);
 
   useEffect((): void => {
@@ -92,7 +107,7 @@ export const GameProvider: FC<Props> = ({
           : undefined,
       });
     }
-  }, [gameOptions, roomId]);
+  }, [hasGameMaster, gameOptions, roomId]);
 
   useEffect((): (() => void) => {
     return (): void => {
