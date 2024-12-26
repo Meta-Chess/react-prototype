@@ -105,17 +105,12 @@ const StartScreen: FC = () => {
               else Linking.openURL(DISCORD_URL);
             }}
           />
-
-            <HelpMenu openChangeLog={(): void => setShowUpdateLog(true)} />
-          </ErrorBoundary>
-        </ScrollView>
-        {showUpdateLog && UPDATE_LOG_ENABLED && (
-          <UpdateLog
-            updates={recentUpdates}
-            onDismiss={onDismiss}
-            windowHeight={height}
-          />
-        )}
+          <HelpMenu openChangeLog={(): void => setShowUpdateLog(true)} />
+        </ErrorBoundary>
+      </ScrollView>
+      {showUpdateLog && UPDATE_LOG_ENABLED && (
+        <UpdateLog updates={recentUpdates} onDismiss={onDismiss} windowHeight={height} />
+      )}
       <TrackingPixel urlEnd={"StartScreen"} />
     </>
   );
