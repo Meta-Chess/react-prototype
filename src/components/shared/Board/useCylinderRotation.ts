@@ -44,7 +44,7 @@ export const useCylinderRotation = (
   const animationTargetX = useRef(0);
   const animationTargetY = useRef(defaultYOffset);
 
-  const onKeyDownEvent = useCallback((event) => {
+  const onKeyDownEvent = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
       case "w":
       case "W":

@@ -1,17 +1,26 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { TileSchematic } from "ui/Tiles/TileProps";
 import { tileSchematicPositionViewProps } from "utilities/tileSchematicHelpers";
 
-export const PositioningContainer: FC<{ size?: number; tileSchematic?: TileSchematic }> =
-  ({ size = 0, tileSchematic, children }) => {
-    return tileSchematic === undefined ? (
-      <Container size={size}>{children}</Container>
-    ) : (
-      <View style={[tileSchematicPositionViewProps(tileSchematic)]}>{children}</View>
-    );
-  };
+type Props = {
+  size?: number;
+  tileSchematic?: TileSchematic;
+  children?: ReactNode;
+};
+
+export const PositioningContainer: FC<Props> = ({
+  size = 0,
+  tileSchematic,
+  children,
+}) => {
+  return tileSchematic === undefined ? (
+    <Container size={size}>{children}</Container>
+  ) : (
+    <View style={[tileSchematicPositionViewProps(tileSchematic)]}>{children}</View>
+  );
+};
 
 const Container = styled(View)<{ size: number }>`
   position: absolute;

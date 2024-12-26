@@ -1,4 +1,4 @@
-import React, { createContext, FC, useState } from "react";
+import React, { createContext, FC, ReactNode, useState } from "react";
 import { User } from "./User";
 
 interface LoginInformation {
@@ -27,7 +27,7 @@ export const LoginContext = createContext<LoginInformation & LoginSetters>({
   setToken: defaultSetMethod,
 });
 
-export const LoginProvider: FC = ({ children }) => {
+export const LoginProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);

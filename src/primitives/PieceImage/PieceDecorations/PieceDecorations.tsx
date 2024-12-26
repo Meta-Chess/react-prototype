@@ -13,7 +13,7 @@ interface Props {
 function getDecoration(
   name: PieceDecorationName,
   circularBoard: boolean
-): ReactElement | void {
+): ReactElement | undefined {
   if (name === PieceDecorationName.UpDirectionArrow) {
     if (circularBoard)
       return (

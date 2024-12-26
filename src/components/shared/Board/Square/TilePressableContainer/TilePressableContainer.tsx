@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 import { SFC } from "primitives";
 import { TouchableOpacity } from "react-native";
 import { SquareShape } from "game";
@@ -18,7 +18,7 @@ const HexContainer = styled(TouchableOpacity)<{ size: number }>`
   border-radius: 50px;
 `;
 
-const NoContainer: FC = ({ children }) => {
+const NoContainer: FC<{ children?: ReactNode }> = ({ children }) => {
   return <>{children}</>;
 };
 

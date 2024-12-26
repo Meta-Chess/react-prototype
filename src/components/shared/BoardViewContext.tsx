@@ -1,4 +1,4 @@
-import React, { createContext, FC } from "react";
+import React, { createContext, FC, ReactNode } from "react";
 import { BoardVisualisationFields, useBoardVisualisation } from "./Board";
 import { Colors } from "primitives";
 import Color from "color";
@@ -17,7 +17,9 @@ export const BoardViewContext = createContext<BoardView>({
   backgroundColor: Colors.BLACK,
 });
 
-export const StaticBoardViewProvider: FC<Partial<BoardView>> = ({
+export const StaticBoardViewProvider: FC<
+  Partial<BoardView> & { children?: ReactNode }
+> = ({
   boardVisualisation = "flat",
   autoRotateCamera = false,
   initialCameraPosition = [0, 0, 40],
@@ -39,7 +41,7 @@ export const StaticBoardViewProvider: FC<Partial<BoardView>> = ({
   );
 };
 
-export const BoardViewProvider: FC = ({ children }) => {
+export const BoardViewProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const boardVisualisationFields = useBoardVisualisation();
 
   return (

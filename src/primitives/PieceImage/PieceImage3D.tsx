@@ -29,8 +29,8 @@ interface Props {
   size?: number;
   opacity?: number;
   animated?: boolean;
-  animatedColor?: Animated.AnimatedInterpolation | undefined;
-  animatedOutlineColor?: Animated.AnimatedInterpolation | undefined;
+  animatedColor?: Animated.AnimatedInterpolation<number> | undefined;
+  animatedOutlineColor?: Animated.AnimatedInterpolation<number> | undefined;
   pieceDecorationNames?: PieceDecorationName[];
   onClick?: (event: ThreeEvent<MouseEvent>) => void;
   hidden?: boolean;
@@ -57,18 +57,18 @@ const PieceImage3D: FC<Props> = ({
     type === PieceName.Pawn
       ? pawnGeometry
       : type === PieceName.Bishop
-      ? bishopGeometry
-      : type === PieceName.Knight
-      ? knightGeometry
-      : type === PieceName.Rook
-      ? rookGeometry
-      : type === PieceName.Queen
-      ? queenGeometry
-      : type === PieceName.BishopKnight
-      ? bishopKnightGeometry
-      : type === PieceName.RookKnight
-      ? rookKnightGeometry
-      : kingGeometry;
+        ? bishopGeometry
+        : type === PieceName.Knight
+          ? knightGeometry
+          : type === PieceName.Rook
+            ? rookGeometry
+            : type === PieceName.Queen
+              ? queenGeometry
+              : type === PieceName.BishopKnight
+                ? bishopKnightGeometry
+                : type === PieceName.RookKnight
+                  ? rookKnightGeometry
+                  : kingGeometry;
 
   return (
     <mesh

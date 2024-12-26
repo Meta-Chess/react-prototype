@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 import { GameMaster, Square } from "game";
 import { getHighlightColorsAndTypes } from "./getHighlightColorsAndTypes";
 import { CircleGeometry, Euler, Quaternion, Vector3 } from "three";
@@ -8,8 +8,16 @@ import {
   TILE_GRANULARITY,
 } from "primitives";
 import { BoardMaterial } from "components/shared/Board/Square/BoardMaterial";
+import { ThreeElements } from "@react-three/fiber";
+import { Mesh } from "primitives/three";
 
 const CIRCLE_RADIUS = 0.08;
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements extends ThreeElements {}
+  }
+}
 
 interface Props {
   gameMaster: GameMaster;
@@ -37,33 +45,34 @@ export const Highlights3D: FC<Props> = ({
   });
   return (
     <>
-      {getHighlightColorsAndTypes({ gameMaster, square }).map(({ type, color }, index) =>
-        type === "tile" ? (
-          <mesh
-            key={index}
-            geometry={getSurfaceSquareGeometry({
-              inverseProjection,
-              ...coordinates,
-              rankGranularity: TILE_GRANULARITY,
-              fileGranularity: TILE_GRANULARITY,
-            })}
-            receiveShadow
-          >
-            <BoardMaterial color={color} />
-          </mesh>
-        ) : (
-          <mesh
-            key={index}
-            geometry={new CircleGeometry(CIRCLE_RADIUS, 4 * TILE_GRANULARITY)}
-            position={position}
-            rotation={new Euler().setFromQuaternion(
-              new Quaternion().setFromUnitVectors(new Vector3(0, 0, 1), normal)
-            )}
-            receiveShadow
-          >
-            <BoardMaterial color={color} />
-          </mesh>
-        )
+      {getHighlightColorsAndTypes({ gameMaster, square }).map(
+        ({ type, color }, index): ReactNode =>
+          type === "tile" ? (
+            <Mesh
+              key={index}
+              geometry={getSurfaceSquareGeometry({
+                inverseProjection,
+                ...coordinates,
+                rankGranularity: TILE_GRANULARITY,
+                fileGranularity: TILE_GRANULARITY,
+              })}
+              receiveShadow
+            >
+              <BoardMaterial color={color} />
+            </Mesh>
+          ) : (
+            <Mesh
+              key={index}
+              geometry={new CircleGeometry(CIRCLE_RADIUS, 4 * TILE_GRANULARITY)}
+              position={position}
+              rotation={new Euler().setFromQuaternion(
+                new Quaternion().setFromUnitVectors(new Vector3(0, 0, 1), normal)
+              )}
+              receiveShadow
+            >
+              <BoardMaterial color={color} />
+            </Mesh>
+          )
       )}
     </>
   );

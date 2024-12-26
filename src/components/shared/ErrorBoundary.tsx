@@ -5,6 +5,7 @@ import { View, Image } from "react-native";
 
 interface Props {
   fallback?: ReactNode;
+  children?: ReactNode;
 }
 
 interface State {

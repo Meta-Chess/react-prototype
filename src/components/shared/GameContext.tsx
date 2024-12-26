@@ -5,6 +5,7 @@ import React, {
   useMemo,
   useState,
   useCallback,
+  ReactNode,
 } from "react";
 import { Renderer } from "game/Renderer";
 import { GameOptions } from "game/types";
@@ -17,6 +18,7 @@ export const GameContext = createContext<{ gameMaster?: GameMaster }>({});
 
 interface SimpleProps {
   gameMaster: GameMaster;
+  children?: ReactNode;
 }
 
 export const SimpleGameProvider: FC<SimpleProps> = ({ children, gameMaster }) => {
@@ -32,6 +34,7 @@ export const SimpleGameProvider: FC<SimpleProps> = ({ children, gameMaster }) =>
 interface Props {
   gameOptions?: GameOptions;
   roomId?: string;
+  children?: ReactNode;
 }
 
 // TODO: Clean up

@@ -3,6 +3,14 @@
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
     "lib": ["dom", "esnext"],
+    "types": [
+      "@types/styled-components-react-native",
+      "jest",
+      "node",
+      "@types/three",
+      "three",
+      "@react-three/fiber"
+    ],
     "moduleResolution": "node",
     "noEmit": true,
     "skipLibCheck": true,
@@ -28,5 +36,6 @@
       "CompactRules": ["./src/game/CompactRules/*"],
       "CompactRules/*": ["./src/game/CompactRules"]
     }
-  }
+  },
+  "extends": "expo/tsconfig.base"
 }

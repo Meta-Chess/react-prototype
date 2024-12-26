@@ -47,18 +47,18 @@ export function getDefaultBoardVisualisation(
   return Platform.OS !== "web"
     ? "flat"
     : gameMaster?.getRuleNames().includes("mobius")
-    ? "mobius"
-    : gameMaster?.getRuleNames().includes("cylindrical") &&
-      gameMaster?.getRuleNames().includes("verticallyCylindrical")
-    ? "toroidal"
-    : gameMaster?.getRuleNames().includes("longBoard") &&
-      gameMaster?.getRuleNames().includes("verticallyCylindrical")
-    ? "circular"
-    : gameMaster?.getRuleNames().includes("polar")
-    ? "spherical"
-    : gameMaster?.getRuleNames().includes("cylindrical")
-    ? "cylindrical"
-    : "flat";
+      ? "mobius"
+      : gameMaster?.getRuleNames().includes("cylindrical") &&
+          gameMaster?.getRuleNames().includes("verticallyCylindrical")
+        ? "toroidal"
+        : gameMaster?.getRuleNames().includes("longBoard") &&
+            gameMaster?.getRuleNames().includes("verticallyCylindrical")
+          ? "circular"
+          : gameMaster?.getRuleNames().includes("polar")
+            ? "spherical"
+            : gameMaster?.getRuleNames().includes("cylindrical")
+              ? "cylindrical"
+              : "flat";
 }
 
 export interface BoardVisualisationFields {
@@ -95,7 +95,7 @@ export const useBoardVisualisation = (): BoardVisualisationFields => {
 
   // TODO: extract this keypressing logic from here (and other places)
   const onKeypressEvent = useCallback(
-    (event) => {
+    (event: KeyboardEvent) => {
       switch (event.key) {
         case "e":
         case "E":

@@ -2,6 +2,11 @@
   "cSpell.words": [
     "chainable",
     "mchess",
-    "pather"
-  ]
+    "mobius",
+    "pather",
+    "pressable",
+    "visualisation",
+    "Visualisations"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

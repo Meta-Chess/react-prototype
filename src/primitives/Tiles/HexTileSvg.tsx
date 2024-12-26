@@ -7,7 +7,7 @@ import Color from "color";
 interface Props {
   size: number;
   color?: Color;
-  animatedColor?: Animated.AnimatedInterpolation | undefined;
+  animatedColor?: Animated.AnimatedInterpolation<number> | undefined;
 }
 
 const TilePath: FC = () => {

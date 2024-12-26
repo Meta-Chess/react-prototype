@@ -5,12 +5,13 @@ import { AbsoluteView } from "ui";
 import styled from "styled-components/native";
 import { TokenName } from "game";
 import { GameContext } from "components/shared";
+import { LayoutChangeEvent } from "react-native";
 
 const ShadowBoard: FC<{ shadowFade?: number }> = ({ shadowFade = 0.15 }) => {
   const { gameMaster } = useContext(GameContext);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const handleDimensions = useCallback(
-    (event) => {
+    (event: LayoutChangeEvent) => {
       const { width, height } = event.nativeEvent.layout;
       if (dimensions.width !== width || dimensions.height !== height)
         setDimensions({ width, height: height });
@@ -42,8 +43,8 @@ const Container = styled(AbsoluteView)`
   justify-content: center;
 `;
 
-const ShadowLayer = styled(AbsoluteView)<{ shadowFade: number }>`
-  background-color: ${({ shadowFade }): string =>
+const ShadowLayer = styled(AbsoluteView)`
+  background-color: ${({ shadowFade }: { shadowFade: number }): string =>
     Colors.DARKEST.fade(shadowFade).toString()}};
 `;
 

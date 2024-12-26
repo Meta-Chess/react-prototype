@@ -7,8 +7,8 @@ import { GameContext } from "components/shared";
 import { ThreeEvent } from "@react-three/fiber";
 
 interface animatedData {
-  animatedColor: Animated.AnimatedInterpolation;
-  animatedOutlineColor: Animated.AnimatedInterpolation;
+  animatedColor: Animated.AnimatedInterpolation<number>;
+  animatedOutlineColor: Animated.AnimatedInterpolation<number>;
 }
 
 interface Props {
@@ -47,8 +47,8 @@ export const Piece3D: FC<Props> = ({
   const chosenColor = color
     ? color
     : animated
-    ? undefined
-    : Colors.PLAYER[piece.owner].string();
+      ? undefined
+      : Colors.PLAYER[piece.owner].string();
   return (
     <PieceImage3D
       type={piece.name}

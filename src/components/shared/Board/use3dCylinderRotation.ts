@@ -16,7 +16,7 @@ export const use3dCylinderRotation = (): {
   const [rankOffset, setRankOffset] = useState(0);
   const [fileOffset, setFileOffset] = useState(0);
 
-  const onKeyDownEvent = useCallback((event) => {
+  const onKeyDownEvent = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
       case "w":
       case "W":

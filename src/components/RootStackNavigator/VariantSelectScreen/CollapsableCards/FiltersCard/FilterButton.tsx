@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC, ReactNode } from "react";
 import { Colors, SFC, Text } from "primitives";
 import { TouchableOpacity, View } from "react-native";
 import { traitInfo } from "game/variants/traitInfo";
@@ -7,6 +7,7 @@ import Color from "color";
 import type { FilterOption, FilterType, FilterValue, TraitFilter } from "./filters";
 import { StarIcon } from "primitives/icons";
 import { TextIcon } from "ui";
+import { StyledComponent } from "styled-components";
 
 interface FilterButtonProps {
   filterType: FilterType;
@@ -84,14 +85,16 @@ const FilterButton: SFC<FilterButtonProps> = ({
   );
 };
 
-const TouchableLabel = styled(TouchableOpacity)<{
+interface TouchableLabelProps {
   color: Color;
   labelPadding: number;
   counterPadding: number;
   verticalPadding: number;
   selected: boolean;
   selectedBorderColor: Color;
-}>`
+}
+
+const TouchableLabel = styled(TouchableOpacity)<TouchableLabelProps>`
   flex-direction: row;
   border-radius: 4px;
   padding-left: ${({ labelPadding, selected }): number =>
