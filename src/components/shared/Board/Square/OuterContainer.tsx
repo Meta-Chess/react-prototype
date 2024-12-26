@@ -1,14 +1,16 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 
 import { TileSchematic } from "ui/Tiles/TileProps";
 
-export const OuterContainer: FC<{ tileSchematic?: TileSchematic; size?: number }> = ({
-  tileSchematic,
-  size = 0,
-  children,
-}) => {
+interface Props {
+  tileSchematic?: TileSchematic;
+  size?: number;
+  children?: ReactNode;
+}
+
+export const OuterContainer: FC<Props> = ({ tileSchematic, size = 0, children }) => {
   return tileSchematic === undefined ? (
     <Container size={size}>{children}</Container>
   ) : (

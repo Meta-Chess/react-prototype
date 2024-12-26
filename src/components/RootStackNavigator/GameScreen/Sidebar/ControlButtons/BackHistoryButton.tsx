@@ -9,7 +9,7 @@ export const BackHistoryButton: SFC = ({ style }) => {
   const disabled = !gameMaster?.positionInHistory;
 
   const backCommand = useCallback(() => gameMaster?.resetToStartOfGame(), []);
-  const onKeyDownEvent = useCallback((event) => {
+  const onKeyDownEvent = useCallback((event: KeyboardEvent) => {
     if (event.key === "ArrowLeft") {
       backCommand();
     }

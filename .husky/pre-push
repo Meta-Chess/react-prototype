@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+concurrently yarn:lint yarn:format:check yarn:type-check yarn:test

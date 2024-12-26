@@ -1,10 +1,8 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { SFC, Text, Colors } from "primitives";
 import { Row } from "..";
-
-class ReactElement {}
 
 interface Props {
   title?: string;

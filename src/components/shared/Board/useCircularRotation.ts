@@ -51,7 +51,7 @@ export const useCircularRotation = (
   };
 
   //TODO: extract from here and useCylindricalRotation
-  const onKeypressEvent = useCallback((event) => {
+  const onKeypressEvent = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
       case "d":
       case "D":

@@ -25,7 +25,7 @@ export const DebouncedTextInput: SFC<Props> = ({
   );
 
   const onChangeText = useCallback(
-    (text) => {
+    (text: string) => {
       setText(text);
       debouncedAfterChange(text);
     },

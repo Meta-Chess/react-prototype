@@ -1,5 +1,5 @@
 import { ExtrudeGeometry, LatheGeometry, Shape, Vector2 } from "three";
-import { mergeBufferGeometries } from "three/examples/jsm/utils/BufferGeometryUtils";
+import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils";
 
 const lathePoints = [
   new Vector2(0, 0),
@@ -41,4 +41,4 @@ const blockGeometry = new ExtrudeGeometry(blockShape, {
   bevelSegments: 1,
 }).translate(0, 0, -0.01);
 
-export const kingGeometry = mergeBufferGeometries([latheGeometry, blockGeometry], false);
+export const kingGeometry = mergeGeometries([latheGeometry, blockGeometry], false);

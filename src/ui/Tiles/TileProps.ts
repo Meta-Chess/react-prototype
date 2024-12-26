@@ -1,15 +1,17 @@
 import Color from "color";
+import { ReactNode } from "react";
 import { Animated } from "react-native";
 
 interface CoreTileProps {
   size?: number;
   tileSchematic?: TileSchematic;
   pressable?: boolean;
+  children?: ReactNode;
 }
 
 export type TileProps = { color: Color } & CoreTileProps;
 export type AnimatedTileProps = {
-  color: Animated.AnimatedInterpolation;
+  color: Animated.AnimatedInterpolation<number>;
 } & CoreTileProps;
 
 export type TileSchematic = {

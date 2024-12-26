@@ -64,18 +64,18 @@ export const Board3D: SFC<BoardProps & { type: BoardVisualisation3D }> = ({
           fileGranularity: TILE_GRANULARITY,
         })
       : type === "cylindrical"
-      ? getCylinderCapsGeometry({
-          numberOfFiles,
-          numberOfRanks,
-          fileGranularity: TILE_GRANULARITY,
-        })
-      : type === "mobius"
-      ? getMobiusStripEdgeGeometry({
-          numberOfRanks,
-          numberOfFiles,
-          rankGranularity: TILE_GRANULARITY,
-        })
-      : null;
+        ? getCylinderCapsGeometry({
+            numberOfFiles,
+            numberOfRanks,
+            fileGranularity: TILE_GRANULARITY,
+          })
+        : type === "mobius"
+          ? getMobiusStripEdgeGeometry({
+              numberOfRanks,
+              numberOfFiles,
+              rankGranularity: TILE_GRANULARITY,
+            })
+          : null;
 
   const offset: {
     forRank: (rank: number) => number;
@@ -87,16 +87,16 @@ export const Board3D: SFC<BoardProps & { type: BoardVisualisation3D }> = ({
           forFile: (file): number => -file + Math.floor(numberOfFiles / 2),
         }
       : type === "cylindrical"
-      ? {
-          forRank: (rank): number => -rank + 1,
-          forFile: (file): number => -file + 2,
-        }
-      : type === "toroidal"
-      ? {
-          forRank: (rank): number => rank + 9,
-          forFile: (file): number => file + 3,
-        }
-      : { forRank: (rank): number => rank, forFile: (file): number => file };
+        ? {
+            forRank: (rank): number => -rank + 1,
+            forFile: (file): number => -file + 2,
+          }
+        : type === "toroidal"
+          ? {
+              forRank: (rank): number => rank + 9,
+              forFile: (file): number => file + 3,
+            }
+          : { forRank: (rank): number => rank, forFile: (file): number => file };
 
   return (
     <SquareBackboard measurements={measurements} backboard={backboard}>
@@ -132,7 +132,9 @@ export const Board3D: SFC<BoardProps & { type: BoardVisualisation3D }> = ({
             })
           )}
           {extraGeometry && (
+            // @ts-ignore
             <mesh geometry={extraGeometry} receiveShadow>
+              {/* @ts-ignore */}
               <meshStandardMaterial
                 attach="material"
                 color={Colors.WHITE.toString()}
@@ -140,6 +142,7 @@ export const Board3D: SFC<BoardProps & { type: BoardVisualisation3D }> = ({
                 emissiveIntensity={1}
                 roughness={0.5}
               />
+              {/* @ts-ignore */}
             </mesh>
           )}
           <OrbitControls autoRotate={autoRotateCamera} />

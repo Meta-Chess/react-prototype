@@ -27,8 +27,8 @@ interface Props {
   rotatePiece?: boolean;
   glowColor?: string;
   animated?: boolean;
-  animatedColor?: Animated.AnimatedInterpolation | undefined;
-  animatedOutlineColor?: Animated.AnimatedInterpolation | undefined;
+  animatedColor?: Animated.AnimatedInterpolation<number> | undefined;
+  animatedOutlineColor?: Animated.AnimatedInterpolation<number> | undefined;
   pieceDecorationNames?: PieceDecorationName[];
   squareShape?: SquareShape | undefined;
 }

@@ -30,7 +30,7 @@ export const FeedbackModal: FC<Props> = ({ category, context, onClose }) => {
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
   const submit = useCallback(
-    (message): void => {
+    (message: string): void => {
       setLoading(true);
       setError(false);
       fetch("https://6hgisa1jjk.execute-api.ap-southeast-2.amazonaws.com/dev/feedback", {

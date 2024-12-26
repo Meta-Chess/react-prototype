@@ -1,5 +1,5 @@
 import { LatheGeometry, Vector2 } from "three";
-import { mergeBufferGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import type { ShapePoints } from "./parts";
 import { horseNeckAndHead } from "./parts";
 import { buildShape, buildBeveledExtrudedGeometry } from "./utilities";
@@ -20,4 +20,4 @@ const basePoints = [
 ];
 const baseGeometry = new LatheGeometry(basePoints, 20).toNonIndexed();
 
-export const knightGeometry = mergeBufferGeometries([horseGeometry, baseGeometry], false);
+export const knightGeometry = mergeGeometries([horseGeometry, baseGeometry], false);

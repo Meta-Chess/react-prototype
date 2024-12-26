@@ -7,8 +7,8 @@ import { getPieceDecorationNames } from "./getPieceDecorationNames";
 import { GameContext } from "components/shared";
 
 interface animatedData {
-  animatedColor: Animated.AnimatedInterpolation;
-  animatedOutlineColor: Animated.AnimatedInterpolation;
+  animatedColor: Animated.AnimatedInterpolation<number>;
+  animatedOutlineColor: Animated.AnimatedInterpolation<number>;
 }
 
 interface Props {
@@ -44,8 +44,8 @@ const Piece: FC<Props> = ({
   const chosenColor = color
     ? color
     : animated
-    ? undefined
-    : Colors.PLAYER[piece.owner].string();
+      ? undefined
+      : Colors.PLAYER[piece.owner].string();
   const PieceImageComponent = (
     <PieceImage
       type={piece.name}

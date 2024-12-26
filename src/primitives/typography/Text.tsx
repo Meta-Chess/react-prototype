@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 import { StyleProp, Text as NativeText, TextStyle, View } from "react-native";
 import { randomInt } from "utilities";
 import { Skeleton } from "../Skeleton";
@@ -82,6 +82,7 @@ const Text: FC<Props> = (props) => {
 
 interface LoadingProps {
   height: number;
+  children?: ReactNode;
 }
 
 const LoadingText: FC<LoadingProps> = ({ height, children }) => {
@@ -110,8 +111,8 @@ const MonospaceNumbers: FC<MonospaceNumbersProps> = (props) => {
           props.alignment === "center"
             ? "center"
             : props.alignment === "right"
-            ? "flex-end"
-            : "flex-start",
+              ? "flex-end"
+              : "flex-start",
       }}
     >
       {props.children.split("").map((char, index) => {

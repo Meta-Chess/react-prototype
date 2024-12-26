@@ -1,2 +1,3 @@
 printWidth: 90
 endOfLine: "auto"
+trailingComma: "es5" # I'd like to change this to "all" at some stage
