@@ -67,13 +67,6 @@ const Arrow: React.FC<ArrowProps> = ({
   containerStyle,
   overlay = false,
 }) => {
-  // The total width of the SVG = tail + head
-  const svgWidth = arrowLength + arrowHeadWidth;
-
-  // The total height of the SVG.
-  // We need enough vertical space for the larger of (arrowBodyHeight, arrowHeadHeight).
-  const svgHeight = Math.max(arrowBodyHeight, arrowHeadHeight);
-
   /**
    * Construct the points for the polygon (pointing to the right):
    *
@@ -109,7 +102,7 @@ const Arrow: React.FC<ArrowProps> = ({
     <Polygon
       points={points}
       fill={color}
-      transform={`rotate(${rotation}, ${x}, ${y})`} // Apply rotation around x, y
+      transform={`rotate(${rotation}, ${x}, ${y + arrowBodyHeight / 2})`} // Apply rotation around x, y
       pointerEvents={"none"}
     />
   );
