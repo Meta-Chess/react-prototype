@@ -6,6 +6,7 @@ import { range } from "lodash";
 import { TilePressable } from "../Square/TileBase/TilePressable";
 import Color from "color";
 import { BoardMeasurements } from "../calculateBoardMeasurements";
+import { Colors } from "primitives/Colors";
 
 interface Props {
   measurements: BoardMeasurements;
@@ -66,7 +67,7 @@ export const GridOverlay: React.FC<Props> = ({ measurements }) => {
    */
   const widthRatio = DESIGN_WIDTH / measurements.width;
   const heightRatio = DESIGN_HEIGHT / measurements.height;
-  const ratio = Math.min(widthRatio, heightRatio);
+  const ratio = Math.min(widthRatio, heightRatio); // .max gets sizing correct for tall grid?- possibly change DESIGN_WIDTH/HEIGHT?
 
   const GRID_SIZE = ratio * measurements.squareSize;
   const X_OFFSET = ratio * measurements.boardPaddingHorizontal + GRID_SIZE / 2;
@@ -90,7 +91,7 @@ export const GridOverlay: React.FC<Props> = ({ measurements }) => {
         })
       )
     );
-  }, []);
+  }, [measurements]);
 
   return (
     <View style={styles.overlay}>
@@ -114,8 +115,8 @@ export const GridOverlay: React.FC<Props> = ({ measurements }) => {
                 <Circle
                   cx={X_OFFSET + vals.x * GRID_SIZE}
                   cy={Y_OFFSET + vals.y * GRID_SIZE}
-                  r={5}
-                  fill={"red"}
+                  r={GRID_SIZE / 2}
+                  fill={"transparent"}
                   pointerEvents={"auto"}
                 />
               </Svg>
@@ -133,6 +134,7 @@ export const GridOverlay: React.FC<Props> = ({ measurements }) => {
 
             const scaleFactor = 0.6;
             const arrowHeadWidth = 25 * scaleFactor;
+            let arrowCenterOffset = 18 * scaleFactor;
 
             const p1 = [
               selectionDetailMap[info.startKey].cx,
@@ -142,19 +144,38 @@ export const GridOverlay: React.FC<Props> = ({ measurements }) => {
               selectionDetailMap[info.endKey].cx,
               selectionDetailMap[info.endKey].cy,
             ];
-            const distance = euclideanDistance(p1, p2) - arrowHeadWidth;
             const rotation = rotationAngle(p1, p2);
+            let tanAngle =
+              Math.floor(rotation / 90) % 2 === 0
+                ? positiveMod(rotation, 90)
+                : 90 - positiveMod(rotation, 90);
 
-            const arrowBodyHeight = 12 * scaleFactor;
+            if (tanAngle % 90 !== 0) {
+              tanAngle = Math.round(tanAngle) === 45 ? 45 : positiveMod(tanAngle, 45);
+              const scaleIncreaseToProjectFromSquare = Math.sqrt(
+                1 + Math.pow(Math.tan(degreesToRadians(tanAngle)), 2)
+              );
+              console.log(tanAngle);
+              console.log(scaleIncreaseToProjectFromSquare);
+              arrowCenterOffset *= scaleIncreaseToProjectFromSquare;
+            }
+
+            const distance =
+              euclideanDistance(p1, p2) - arrowHeadWidth - 2 * arrowCenterOffset;
+
+            const arrowBodyHeight = 14 * scaleFactor;
+
             return (
               <Arrow
-                rotation={rotation}
-                arrowLength={distance}
+                rotationInDegrees={rotation}
+                arrowBodyLength={distance}
+                arrowBodyHeight={arrowBodyHeight}
                 arrowHeadWidth={arrowHeadWidth}
                 arrowHeadHeight={arrowBodyHeight * 2.5}
-                arrowBodyHeight={arrowBodyHeight}
                 x={X_OFFSET + parseInt(x) * GRID_SIZE}
                 y={Y_OFFSET + parseInt(y) * GRID_SIZE - arrowBodyHeight / 2}
+                color={Colors.MCHESS_ORANGE.fade(0.4).toString()}
+                centerOffset={arrowCenterOffset}
                 key={i}
               />
             );
@@ -184,9 +205,16 @@ function rotationAngle(a: number[], b: number[]): number {
   return angleInDegrees;
 }
 
+function positiveMod(a: number, m: number): number {
+  return ((a % m) + m) % m;
+}
+
+function degreesToRadians(degrees: number): number {
+  return degrees * (Math.PI / 180);
+}
+
 const styles = StyleSheet.create({
   overlay: {
-    /** Covers the entire screen */
     position: "absolute",
     top: 0,
     left: 0,
@@ -194,10 +222,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     zIndex: 9999,
 
-    /** Semi-transparent black background */
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-
-    /** Center the arrow in the middle of the screen */
     justifyContent: "center",
     alignItems: "center",
   },

@@ -7,6 +7,7 @@ import styled from "styled-components/native";
 import { Colors } from "primitives";
 import { ModalProvider } from "ui";
 import { linking } from "navigation";
+import "./App.css";
 
 export default function App(): ReactElement {
   return (
