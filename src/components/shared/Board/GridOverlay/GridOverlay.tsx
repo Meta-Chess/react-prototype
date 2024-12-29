@@ -7,8 +7,10 @@ import { TilePressable } from "../Square/TileBase/TilePressable";
 import Color from "color";
 import { BoardMeasurements } from "../calculateBoardMeasurements";
 import { Colors } from "primitives/Colors";
+import { GameMaster } from "game/GameMaster";
 
 interface Props {
+  gameMaster: GameMaster;
   measurements: BoardMeasurements;
 }
 
@@ -16,7 +18,7 @@ const DESIGN_WIDTH = 375;
 const DESIGN_HEIGHT = 812;
 
 // currently just working for square boards, wider than they are tall
-export const GridOverlay: React.FC<Props> = ({ measurements }) => {
+export const GridOverlay: React.FC<Props> = ({ gameMaster, measurements }) => {
   /* 
     arrow state management
    */
@@ -50,6 +52,13 @@ export const GridOverlay: React.FC<Props> = ({ measurements }) => {
         setArrowData([]);
       } else if (event.key.toLowerCase() === "q") {
         popArrow();
+      } else if (event.key.toLowerCase() === "u") {
+        if (gameMaster === undefined) return;
+        gameMaster.goBackwardsInHistory();
+        gameMaster.playerActionHistory = gameMaster.playerActionHistory.slice(
+          0,
+          gameMaster.positionInHistory
+        );
       }
     };
 
@@ -62,7 +71,7 @@ export const GridOverlay: React.FC<Props> = ({ measurements }) => {
         window.removeEventListener("keydown", handleKeyDown);
       }
     };
-  }, [arrowData.length, useOverlay]);
+  }, [arrowData.length, useOverlay, gameMaster.playerActionHistory.length]);
 
   /* 
     grid arrangement details

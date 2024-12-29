@@ -8,7 +8,9 @@ export const BackHistoryButton: SFC = ({ style }) => {
   const { gameMaster } = useContext(GameContext);
   const disabled = !gameMaster?.positionInHistory;
 
-  const backCommand = useCallback(() => gameMaster?.goBackwardsInHistory(), []);
+  const backCommand = useCallback(() => {
+    gameMaster?.goBackwardsInHistory();
+  }, []);
   const onKeyDownEvent = useCallback((event) => {
     if (event.key === "ArrowLeft") {
       backCommand();

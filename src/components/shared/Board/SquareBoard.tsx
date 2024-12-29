@@ -46,7 +46,7 @@ const SquareBoard: SFC<BoardProps> = ({
 
   return (
     <SquareBackboard measurements={measurements} backboard={backboard}>
-      <GridOverlay measurements={measurements} />
+      <GridOverlay gameMaster={gameMaster} measurements={measurements} />
 
       <AbsoluteView
         style={{ overflow: "hidden", margin: measurements.boardPaddingHorizontal }}
