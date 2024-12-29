@@ -1,14 +1,14 @@
 import React, { useContext, useCallback, useEffect } from "react";
 import { ButtonSecondary } from "ui";
 import { SFC } from "primitives";
-import { SkipBackIcon } from "primitives/icons";
+import { ArrowBackIcon } from "primitives/icons";
 import { GameContext } from "components/shared";
 
 export const BackHistoryButton: SFC = ({ style }) => {
   const { gameMaster } = useContext(GameContext);
   const disabled = !gameMaster?.positionInHistory;
 
-  const backCommand = useCallback(() => gameMaster?.resetToStartOfGame(), []);
+  const backCommand = useCallback(() => gameMaster?.goBackwardsInHistory(), []);
   const onKeyDownEvent = useCallback((event) => {
     if (event.key === "ArrowLeft") {
       backCommand();
@@ -24,7 +24,7 @@ export const BackHistoryButton: SFC = ({ style }) => {
 
   return (
     <ButtonSecondary
-      label={SkipBackIcon}
+      label={ArrowBackIcon}
       style={style}
       disabled={disabled}
       onPress={backCommand}
