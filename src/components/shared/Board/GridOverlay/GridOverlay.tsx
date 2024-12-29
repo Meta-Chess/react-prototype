@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { StyleSheet, View, Platform } from "react-native";
-import Svg, { Circle, Polygon, Rect } from "react-native-svg";
+import Svg, { Circle, Rect } from "react-native-svg";
 import Arrow from "./Arrow";
 import { range } from "lodash";
 import { TilePressable } from "../Square/TileBase/TilePressable";
@@ -15,10 +15,12 @@ interface Props {
 const DESIGN_WIDTH = 375;
 const DESIGN_HEIGHT = 812;
 
+// currently just working for square boards, wider than they are tall
 export const GridOverlay: React.FC<Props> = ({ measurements }) => {
   /* 
     arrow state management
    */
+  const [useOverlay, setUseOverlay] = useState(false);
   const [arrowStartSelected, setArrowStartSelected] = useState<string | undefined>(
     undefined
   );
@@ -41,13 +43,13 @@ export const GridOverlay: React.FC<Props> = ({ measurements }) => {
     key presses
    */
   useEffect(() => {
-    const handleKeyDown = (event: any): any => {
+    const handleKeyDown = (event: KeyboardEvent): void => {
       if (event.key.toLowerCase() === "p") {
-        // setPresIsToggled(!presIsToggled); // move to other screen- const [presIsToggled, setPresIsToggled] = useState(true);
+        setUseOverlay(!useOverlay);
       } else if (event.key.toLowerCase() === "o") {
-        popArrow();
-      } else if (event.key.toLowerCase() === "i") {
         setArrowData([]);
+      } else if (event.key.toLowerCase() === "q") {
+        popArrow();
       }
     };
 
@@ -55,19 +57,19 @@ export const GridOverlay: React.FC<Props> = ({ measurements }) => {
       window.addEventListener("keydown", handleKeyDown);
     }
 
-    return (): any => {
+    return (): void => {
       if (Platform.OS === "web") {
         window.removeEventListener("keydown", handleKeyDown);
       }
     };
-  }, [arrowData.length]);
+  }, [arrowData.length, useOverlay]);
 
   /* 
     grid arrangement details
    */
   const widthRatio = DESIGN_WIDTH / measurements.width;
   const heightRatio = DESIGN_HEIGHT / measurements.height;
-  const ratio = Math.min(widthRatio, heightRatio); // .max gets sizing correct for tall grid?- possibly change DESIGN_WIDTH/HEIGHT?
+  const ratio = Math.min(widthRatio, heightRatio);
 
   const GRID_SIZE = ratio * measurements.squareSize;
   const X_OFFSET = ratio * measurements.boardPaddingHorizontal + GRID_SIZE / 2;
@@ -92,6 +94,10 @@ export const GridOverlay: React.FC<Props> = ({ measurements }) => {
       )
     );
   }, [measurements]);
+
+  if (!useOverlay) {
+    return <View></View>;
+  }
 
   return (
     <View style={styles.overlay}>
@@ -143,7 +149,7 @@ export const GridOverlay: React.FC<Props> = ({ measurements }) => {
                   y={y - GRID_SIZE / 2 - 0.1}
                   width={GRID_SIZE + 0.2}
                   height={GRID_SIZE + 0.2}
-                  fill={Colors.WARNING.fade(0.8).toString()}
+                  fill={Colors.WARNING.fade(0.7).toString()}
                   stroke={Colors.WARNING.fade(0.4).toString()}
                   strokeWidth={GRID_SIZE / 10}
                   strokeLinejoin="miter"
@@ -215,14 +221,6 @@ function rotationAngle(a: number[], b: number[]): number {
   const angleInDegrees = angleInRadians * (180 / Math.PI);
 
   return angleInDegrees;
-}
-
-function positiveMod(a: number, m: number): number {
-  return ((a % m) + m) % m;
-}
-
-function degreesToRadians(degrees: number): number {
-  return degrees * (Math.PI / 180);
 }
 
 const styles = StyleSheet.create({
