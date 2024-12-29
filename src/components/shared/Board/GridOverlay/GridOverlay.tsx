@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { StyleSheet, View, Platform } from "react-native";
-import Svg, { Circle } from "react-native-svg";
+import Svg, { Circle, Polygon, Rect } from "react-native-svg";
 import Arrow from "./Arrow";
 import { range } from "lodash";
 import { TilePressable } from "../Square/TileBase/TilePressable";
@@ -129,57 +129,69 @@ export const GridOverlay: React.FC<Props> = ({ measurements }) => {
           preserveAspectRatio="xMinYMin meet"
           pointerEvents={"none"}
         >
-          {arrowData.map((info, i) => {
-            const [x, y] = info.startKey.split(",");
-
-            const scaleFactor = 0.6;
-            const arrowHeadWidth = 25 * scaleFactor;
-            let arrowCenterOffset = 18 * scaleFactor;
-
-            const p1 = [
-              selectionDetailMap[info.startKey].cx,
-              selectionDetailMap[info.startKey].cy,
-            ];
-            const p2 = [
-              selectionDetailMap[info.endKey].cx,
-              selectionDetailMap[info.endKey].cy,
-            ];
-            const rotation = rotationAngle(p1, p2);
-            let tanAngle =
-              Math.floor(rotation / 90) % 2 === 0
-                ? positiveMod(rotation, 90)
-                : 90 - positiveMod(rotation, 90);
-
-            if (tanAngle % 90 !== 0) {
-              tanAngle = Math.round(tanAngle) === 45 ? 45 : positiveMod(tanAngle, 45);
-              const scaleIncreaseToProjectFromSquare = Math.sqrt(
-                1 + Math.pow(Math.tan(degreesToRadians(tanAngle)), 2)
+          {arrowData
+            .filter((info) => {
+              return info.startKey === info.endKey; // square highlights
+            })
+            .map((info, i) => {
+              let [x, y] = info.startKey.split(",").map((v) => parseInt(v));
+              x = X_OFFSET + x * GRID_SIZE;
+              y = Y_OFFSET + y * GRID_SIZE;
+              return (
+                <Rect
+                  x={x - GRID_SIZE / 2 - 0.1}
+                  y={y - GRID_SIZE / 2 - 0.1}
+                  width={GRID_SIZE + 0.2}
+                  height={GRID_SIZE + 0.2}
+                  fill={Colors.WARNING.fade(0.8).toString()}
+                  stroke={Colors.WARNING.fade(0.4).toString()}
+                  strokeWidth={GRID_SIZE / 10}
+                  strokeLinejoin="miter"
+                  pointerEvents={"none"}
+                  key={i}
+                />
               );
-              console.log(tanAngle);
-              console.log(scaleIncreaseToProjectFromSquare);
-              arrowCenterOffset *= scaleIncreaseToProjectFromSquare;
-            }
+            })}
+          {arrowData
+            .filter((info) => {
+              return info.startKey !== info.endKey; // arrows
+            })
+            .map((info, i) => {
+              let [x, y] = info.startKey.split(",").map((v) => parseInt(v));
+              x = X_OFFSET + x * GRID_SIZE;
+              y = Y_OFFSET + y * GRID_SIZE;
 
-            const distance =
-              euclideanDistance(p1, p2) - arrowHeadWidth - 2 * arrowCenterOffset;
+              const scaleFactor = 0.6;
+              const arrowHeadWidth = 25 * scaleFactor;
+              const arrowCenterOffset = arrowHeadWidth;
 
-            const arrowBodyHeight = 14 * scaleFactor;
+              const p1 = [
+                selectionDetailMap[info.startKey].cx,
+                selectionDetailMap[info.startKey].cy,
+              ];
+              const p2 = [
+                selectionDetailMap[info.endKey].cx,
+                selectionDetailMap[info.endKey].cy,
+              ];
+              const rotation = rotationAngle(p1, p2);
+              const distance = euclideanDistance(p1, p2) - 2 * arrowCenterOffset;
+              const arrowBodyHeight = 14 * scaleFactor;
 
-            return (
-              <Arrow
-                rotationInDegrees={rotation}
-                arrowBodyLength={distance}
-                arrowBodyHeight={arrowBodyHeight}
-                arrowHeadWidth={arrowHeadWidth}
-                arrowHeadHeight={arrowBodyHeight * 2.5}
-                x={X_OFFSET + parseInt(x) * GRID_SIZE}
-                y={Y_OFFSET + parseInt(y) * GRID_SIZE - arrowBodyHeight / 2}
-                color={Colors.MCHESS_ORANGE.fade(0.4).toString()}
-                centerOffset={arrowCenterOffset}
-                key={i}
-              />
-            );
-          })}
+              return (
+                <Arrow
+                  rotationInDegrees={rotation}
+                  arrowBodyLength={distance}
+                  arrowBodyHeight={arrowBodyHeight}
+                  arrowHeadWidth={arrowHeadWidth}
+                  arrowHeadHeight={arrowBodyHeight * 2.5}
+                  x={x}
+                  y={y - arrowBodyHeight / 2}
+                  color={Colors.MCHESS_ORANGE.fade(0.3).toString()}
+                  centerOffset={arrowCenterOffset}
+                  key={i}
+                />
+              );
+            })}
         </Svg>
       </>
     </View>

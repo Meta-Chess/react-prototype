@@ -11,6 +11,7 @@ interface ArrowProps {
   x?: number;
   y?: number;
   centerOffset?: number;
+  zIndex?: number;
 }
 
 const Arrow: React.FC<ArrowProps> = ({
@@ -23,6 +24,7 @@ const Arrow: React.FC<ArrowProps> = ({
   x = 0,
   y = 0,
   centerOffset = 0,
+  zIndex = 0,
 }) => {
   /**
    * Construct the points for the polygon (pointing to the right):
