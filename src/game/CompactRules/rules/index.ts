@@ -12,6 +12,7 @@ export * from "./fatigue";
 export * from "./hex";
 export * from "./hexCylindrical";
 export * from "./interception";
+export * from "./kingOfTheHill";
 export * from "./longBoard";
 export * from "./loseWithNoKings";
 export * from "./mobius";
