@@ -21,7 +21,7 @@ export const promotion: ParameterRule<"promotion"> = ({
     if (onlyFriendlyDeadPieces) {
       const deadPieces = game.board
         .getPieces([PieceStatus.Dead])
-        .filter((piece) => piece.owner === game.currentPlayerIndex)
+        .filter((piece) => piece.owner === game.getCurrentPlayerIndex())
         .map((piece) => piece.name);
 
       promotionPieces = promotionPieces.filter((pieceName) =>

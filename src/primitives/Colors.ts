@@ -38,6 +38,7 @@ export const Colors = {
     REACTION: Color("#FF5D00"),
     RESTRICTION: Color("#DF2000"),
     ENDING: Color("#D4AF37"),
+    TURN: Color("#D4AF37"),
     SIMULATION: Color("#8C51FC"),
   },
   PLAYER: [

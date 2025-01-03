@@ -15,8 +15,8 @@ export const chemicallyExcitedKnight: ParameterRule<"chemicallyExcitedKnight"> =
     filterPacifistMoves: false,
   }),
 
-  postMove: ({ game, interrupt, board, move, currentTurn }): PostMove => {
-    if (!move) return { game, interrupt, board, move, currentTurn };
+  postMove: ({ game, interrupt, board, move, turnIndexes }): PostMove => {
+    if (!move) return { game, interrupt, board, move, turnIndexes };
 
     const triggeredKnights: { knightId: string; positionOnSquare: number }[] = [];
     const deadPieces: { deadPieceId: string; positionOnSquare: number }[] = [];
@@ -122,7 +122,7 @@ export const chemicallyExcitedKnight: ParameterRule<"chemicallyExcitedKnight"> =
       });
     });
 
-    return { game, interrupt, board, move, currentTurn };
+    return { game, interrupt, board, move, turnIndexes };
   },
 });
 

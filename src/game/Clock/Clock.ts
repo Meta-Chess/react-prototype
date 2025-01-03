@@ -2,6 +2,10 @@ import { PlayerName, TimestampMillis } from "game/types";
 import { Timer } from "./Timer";
 import { Map } from "utilities";
 
+export interface ClockInfo {
+  asOf: TimestampMillis;
+  doClocks: boolean;
+}
 export class Clock {
   private timers: Map<PlayerName, Timer>;
 

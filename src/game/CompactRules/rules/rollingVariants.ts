@@ -36,7 +36,7 @@ export const rollingVariants: TrivialParameterRule = () => ({
       moveCounterToPreviousOrLastPlayer(gameMaster, NUMBER_OF_TURNS);
     } else if (
       counterValue === 1 &&
-      gameMaster.game.currentPlayerIndex ===
+      gameMaster.game.getCurrentPlayerIndex() ===
         gameMaster.game.getPreviousAlivePlayer(playerIndex)?.name
     ) {
       if (atVariantLimit) {
@@ -46,14 +46,17 @@ export const rollingVariants: TrivialParameterRule = () => ({
           VARIANTS_ROLLING_OUT
         );
       }
-    } else if (counterValue === 1 && gameMaster.game.currentPlayerIndex === playerIndex) {
+    } else if (
+      counterValue === 1 &&
+      gameMaster.game.getCurrentPlayerIndex() === playerIndex
+    ) {
       rollVariants({
         gameMaster,
         rollingInNumber: VARIANTS_ROLLING_IN,
         rollingOffNumber: atVariantLimit ? VARIANTS_ROLLING_OUT : 0,
       });
       moveCounterToPreviousOrLastPlayer(gameMaster, NUMBER_OF_TURNS);
-    } else if (gameMaster.game.currentPlayerIndex === playerIndex) {
+    } else if (gameMaster.game.getCurrentPlayerIndex() === playerIndex) {
       playerWithRollCounter.setRuleData({
         key: "rollingVariantsCounter",
         value: counterValue - 1,

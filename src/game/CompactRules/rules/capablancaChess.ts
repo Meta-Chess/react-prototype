@@ -46,10 +46,10 @@ const standardSetup: RankSetup = {
 };
 
 const centerRegion = [
-  toLocation({ rank: 4, file: 4 }),
   toLocation({ rank: 4, file: 5 }),
-  toLocation({ rank: 5, file: 4 }),
+  toLocation({ rank: 4, file: 6 }),
   toLocation({ rank: 5, file: 5 }),
+  toLocation({ rank: 5, file: 6 }),
 ];
 const promotionRegionWhite = range(1, 10).map((file) => toLocation({ rank: 8, file }));
 const promotionRegionBlack = range(1, 10).map((file) => toLocation({ rank: 1, file }));
