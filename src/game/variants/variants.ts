@@ -332,9 +332,9 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     shortDescription: "Win the game with a king reaching the center.",
     traits: ["Ending"],
     imageName: "kingOfTheHillImage",
-    implemented: false,
-    ruleNames: [],
-    complexity: 0,
+    implemented: true,
+    ruleNames: ["kingOfTheHill"],
+    complexity: 1,
   },
   kleinBottle: {
     title: "Klein Bottle",

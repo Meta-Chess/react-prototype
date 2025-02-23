@@ -120,6 +120,7 @@ const identityRule = {
   generateSpecialPacifistMoves: (x: GenerateSpecialPacifistMoves) => x,
   lossCondition: (x: LossCondition) => x,
   drawCondition: (x: DrawCondition) => x,
+  winCondition: (x: WinCondition) => x,
   formatControlAtTurnStart: (x: FormatControlAtTurnStart) => x,
   inPostMoveGenerationFilter: (x: InPostMoveGenerationFilter) => x,
   lethalCondition: (x: LethalCondition) => x,
@@ -230,6 +231,11 @@ export interface DrawCondition {
   gameClones: Game[];
   interrupt: CompactRules;
   draw: string | false;
+}
+
+export interface WinCondition {
+  game: Game;
+  winners: PlayerName[];
 }
 
 export interface FormatControlAtTurnStart {

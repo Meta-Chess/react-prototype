@@ -569,7 +569,29 @@ export class GameMaster {
       this.result = PlayerName[remainingPlayers[0].name] + " won!";
       this.endGame();
     }
-    // TODO: once there are other win conditions check those with an interruption point
+    const { winners } = this.interrupt.for.winCondition({ game: this.game, winners: [] });
+
+    if (winners.length) {
+      this.result = winners
+        .slice(1, -1)
+        .reduce(
+          (listOfWinners, winner) => `${listOfWinners}, ${PlayerName[winner]}`,
+          `${PlayerName[winners[0]]}`
+        );
+      this.result =
+        winners.length > 1
+          ? `${this.result}, and ${PlayerName[winners[winners.length - 1]]}`
+          : this.result;
+      this.result += " won!";
+
+      this.game
+        .alivePlayers()
+        .filter((player) => !winners.includes(player.name))
+        .forEach((player) => {
+          player.alive = false;
+        });
+      this.endGame();
+    }
   }
 
   checkDrawConditions(): void {
