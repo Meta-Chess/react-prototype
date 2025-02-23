@@ -15,28 +15,51 @@ export interface TurnIndexes {
   currentTurn: number;
   currentHandoverTurn: number;
 }
+
+interface TurnControllerParams {
+  currentTurn?: number;
+  currentHandoverTurn?: number;
+  currentPlayerIndex?: number;
+  inFirstTurnAfterHandover?: boolean;
+  additionalTurnInfo?: TurnInfo[];
+  currentTurnInfo?: TurnInfo;
+}
+
 export class TurnController {
-  constructor(
-    public currentTurn: number = 1,
-    public currentHandoverTurn: number = 1,
-    public currentPlayerIndex: number = 0,
-    public inFirstTurnAfterHandover: boolean = true,
-    public additionalTurnInfo: TurnInfo[] = [],
-    public currentTurnInfo: TurnInfo | undefined
-  ) {}
+  public currentTurn: number;
+  public currentHandoverTurn: number;
+  public currentPlayerIndex: number;
+  public inFirstTurnAfterHandover: boolean;
+  public additionalTurnInfo: TurnInfo[];
+  public currentTurnInfo?: TurnInfo;
+
+  constructor({
+    currentTurn = 1,
+    currentHandoverTurn = 1,
+    currentPlayerIndex = 0,
+    inFirstTurnAfterHandover = true,
+    additionalTurnInfo = [],
+    currentTurnInfo,
+  }: TurnControllerParams = {}) {
+    this.currentTurn = currentTurn;
+    this.currentHandoverTurn = currentHandoverTurn;
+    this.currentPlayerIndex = currentPlayerIndex;
+    this.inFirstTurnAfterHandover = inFirstTurnAfterHandover;
+    this.additionalTurnInfo = additionalTurnInfo;
+    this.currentTurnInfo = currentTurnInfo;
+  }
 
   clone(): TurnController {
-    const cloneConstructorInput: Required<ConstructorParameters<typeof TurnController>> =
-      [
-        this.currentTurn,
-        this.currentHandoverTurn,
-        this.currentPlayerIndex,
-        this.inFirstTurnAfterHandover,
-        cloneDeep(this.additionalTurnInfo),
-        cloneDeep(this.currentTurnInfo),
-      ];
+    const cloneConstructorInput: TurnControllerParams = {
+      currentTurn: this.currentTurn,
+      currentHandoverTurn: this.currentHandoverTurn,
+      currentPlayerIndex: this.currentPlayerIndex,
+      inFirstTurnAfterHandover: this.inFirstTurnAfterHandover,
+      additionalTurnInfo: cloneDeep(this.additionalTurnInfo),
+      currentTurnInfo: cloneDeep(this.currentTurnInfo),
+    };
 
-    return new TurnController(...cloneConstructorInput);
+    return new TurnController(cloneConstructorInput);
   }
 
   resetTo(savePoint: TurnController): void {

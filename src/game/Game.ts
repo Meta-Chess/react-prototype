@@ -19,14 +19,14 @@ export class Game {
       new Player(PlayerName.White),
       new Player(PlayerName.Black),
     ],
-    public turnController: TurnController = new TurnController(
-      1,
-      1,
-      0,
-      true,
-      [],
-      undefined
-    )
+    public turnController: TurnController = new TurnController({
+      currentTurn: 1,
+      currentHandoverTurn: 1,
+      currentPlayerIndex: 0,
+      inFirstTurnAfterHandover: true,
+      additionalTurnInfo: [],
+      currentTurnInfo: undefined,
+    })
   ) {}
 
   clone(): Game {
