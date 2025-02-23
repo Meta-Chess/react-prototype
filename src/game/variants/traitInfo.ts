@@ -28,6 +28,10 @@ export const traitInfo = {
     color: Colors.TRAIT.SIMULATION,
     description: "Variants that involve simulation of future game states",
   },
+  Turn: {
+    color: Colors.TRAIT.TURN,
+    description: "Variants that modify turn structure",
+  },
 };
 
 export const traitOrder: TraitName[] = [
@@ -36,6 +40,7 @@ export const traitOrder: TraitName[] = [
   "Reaction",
   "Restriction",
   "Ending",
+  "Turn",
   "Simulation",
 ];
 

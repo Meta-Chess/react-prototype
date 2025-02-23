@@ -1,5 +1,7 @@
 import { Board } from "./Board";
 import { Clock } from "./Clock";
+import type { ClockInfo } from "./Clock";
+import { TurnController } from "./TurnController";
 import { EventCenter } from "./EventCenter";
 import { Player } from "./Player";
 import { Move } from "./Move";
@@ -17,8 +19,14 @@ export class Game {
       new Player(PlayerName.White),
       new Player(PlayerName.Black),
     ],
-    public currentPlayerIndex: number = 0,
-    public currentTurn: number = 1
+    public turnController: TurnController = new TurnController({
+      currentTurn: 1,
+      currentHandoverTurn: 1,
+      currentPlayerIndex: 0,
+      inFirstTurnAfterHandover: true,
+      additionalTurnInfo: [],
+      currentTurnInfo: undefined,
+    })
   ) {}
 
   clone(): Game {
@@ -28,8 +36,7 @@ export class Game {
       undefined, // Clones don't need a clock at the moment
       this.events.clone(),
       this.players.map((p) => p.clone()),
-      this.currentPlayerIndex,
-      this.currentTurn,
+      this.turnController.clone(),
     ];
     return new Game(...cloneConstructorInput);
   }
@@ -40,8 +47,7 @@ export class Game {
     for (let i = 0; i < savePoint.players.length; i++) {
       this.players[i].resetTo(savePoint.players[i]);
     }
-    this.currentPlayerIndex = savePoint.currentPlayerIndex;
-    this.currentTurn = savePoint.currentTurn;
+    this.turnController.resetTo(savePoint.turnController);
   }
 
   static createGame(
@@ -87,21 +93,13 @@ export class Game {
       interrupt: this.interrupt,
       board: this.board,
       move,
-      currentTurn: this.currentTurn,
+      turnIndexes: this.turnController.getTurnIndexes(),
     });
     this.removeExpiredTokens();
   }
 
-  nextTurn(clockInfo?: { asOf: TimestampMillis; doClocks: boolean }): void {
-    const nextPlayerIndex = (this.currentPlayerIndex + 1) % this.players.length;
-    if (nextPlayerIndex !== undefined) {
-      this.currentPlayerIndex = nextPlayerIndex;
-      if (clockInfo && clockInfo.doClocks) {
-        const asOf = clockInfo.asOf;
-        this.clock?.setActivePlayers([this.players[nextPlayerIndex].name], asOf);
-      }
-      this.currentTurn++;
-    }
+  nextTurn(clockInfo?: ClockInfo): void {
+    this.turnController.nextTurn(this.interrupt, this.players, this.clock, clockInfo);
   }
 
   updateClocks(asOf: TimestampMillis): void {
@@ -109,12 +107,13 @@ export class Game {
   }
 
   removeExpiredTokens(): void {
-    this.board.removeExpiredTokens(this.currentTurn);
+    const currentTurn = this.turnController.getCurrentTurn();
+    this.board.removeExpiredTokens(currentTurn);
     this.board.getPieces().forEach((piece) => {
-      piece.removeExpiredTokens(this.currentTurn);
+      piece.removeExpiredTokens(currentTurn);
     });
     Object.values(this.board.squares).forEach((square) =>
-      square.removeExpiredTokens(this.currentTurn)
+      square.removeExpiredTokens(currentTurn)
     );
   }
 
@@ -141,11 +140,23 @@ export class Game {
   }
 
   getCurrentPlayerName(): PlayerName {
-    return this.players[this.currentPlayerIndex].name;
+    return this.players[this.turnController.getCurrentPlayerIndex()].name;
   }
 
   getCurrentPlayer(): Player {
-    return this.players[this.currentPlayerIndex];
+    return this.players[this.turnController.getCurrentPlayerIndex()];
+  }
+
+  getCurrentPlayerIndex(): number {
+    return this.turnController.getCurrentPlayerIndex();
+  }
+
+  getCurrentHandoverTurn(): number {
+    return this.turnController.getCurrentHandoverTurn();
+  }
+
+  getCurrentTurn(): number {
+    return this.turnController.getCurrentTurn();
   }
 
   getPlayers(): Player[] {

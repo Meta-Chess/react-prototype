@@ -28,6 +28,14 @@ export function checkConflicts(
         )} may slow down check.`,
         level: "WARNING",
       });
+    else if (selectedVariants.turnVariants.length > 0) {
+      conflicts.push({
+        message: `${englishList(
+          selectedVariants.turnVariants.map(nameToTitle)
+        )} (variants that modify turn structure) are not supported with Check enabled.`,
+        level: "ERROR",
+      });
+    }
   }
   return conflicts;
 }

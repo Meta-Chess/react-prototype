@@ -102,6 +102,7 @@ export enum PieceAnimationType {
 
 interface TokenData {
   turnNumber?: number;
+  handoverTurnNumber?: number;
   history?: string[];
   shape?: SquareShape;
   pieceId?: string;

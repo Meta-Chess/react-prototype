@@ -8,8 +8,8 @@ export const royallyScrewed: ParameterRule<"royallyScrewed"> = ({
 }) => ({
   title: "Royally Screwed",
   description: "After every move, friendly kings and queens swap places.",
-  postMove: ({ game, interrupt, board, move, currentTurn }): PostMove => {
-    if (!pieceCycleParam) return { game, interrupt, board, move, currentTurn };
+  postMove: ({ game, interrupt, board, move, turnIndexes }): PostMove => {
+    if (!pieceCycleParam) return { game, interrupt, board, move, turnIndexes };
 
     const piecesToChange = board.getPiecesByRule((piece: Piece) => {
       const playerName = move?.playerName || game.getCurrentPlayerName();
@@ -20,6 +20,6 @@ export const royallyScrewed: ParameterRule<"royallyScrewed"> = ({
       const newPieceName = createPieceMutator(pieceCycleParam)[piece.name];
       mutatePiece(piece, newPieceName, board);
     });
-    return { game, interrupt, board, move, currentTurn };
+    return { game, interrupt, board, move, turnIndexes };
   },
 });

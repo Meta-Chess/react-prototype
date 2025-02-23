@@ -198,7 +198,7 @@ export class GameMaster {
         });
       }
     }
-    const currentPlayerName = this.game.players[this.game.currentPlayerIndex].name;
+    const currentPlayerName = this.game.players[this.game.getCurrentPlayerIndex()].name;
     this.selectedPieces.forEach((piece) => {
       if (
         piece.owner !== currentPlayerName ||
@@ -349,7 +349,7 @@ export class GameMaster {
       movesAreEqual
     );
     const isSelectedPieceOwnersTurn =
-      this.game.players[this.game.currentPlayerIndex].name ===
+      this.game.players[this.game.getCurrentPlayerIndex()].name ===
       this.selectedPieces[0]?.owner;
     const canMoveSelectedPiece =
       isSelectedPieceOwnersTurn &&
@@ -531,7 +531,7 @@ export class GameMaster {
     this.applyLossConditions();
     if (
       !this.gameOver &&
-      !this.game.players[this.game.currentPlayerIndex].alive &&
+      !this.game.players[this.game.getCurrentPlayerIndex()].alive &&
       this.game.alivePlayers().length > 0 &&
       this.stateIsCurrent()
     ) {

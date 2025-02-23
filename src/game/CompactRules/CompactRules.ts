@@ -3,6 +3,7 @@ import { Direction, Gait, GaitParams, PieceName, PlayerName } from "../types";
 import { applyInSequence, keys } from "utilities";
 import { Board, Piece, Square } from "../Board";
 import { Game } from "game/Game";
+import { TurnController } from "game/TurnController";
 import { Move, PieceDelta } from "game/Move";
 import { EventCenter } from "game/EventCenter";
 import { Pather, PatherParams } from "game/Pather";
@@ -23,6 +24,7 @@ import { variantsToRules } from "game/variantAndRuleProcessing/variantsToRules";
 import { overrideRuleParamsForVariants } from "game/variantAndRuleProcessing";
 import { uniq } from "lodash";
 import { Player } from "game/Player";
+import type { TurnIndexes } from "game/TurnController";
 
 const allRules: AllParameterRules = rules;
 
@@ -132,6 +134,7 @@ const identityRule = {
   processMoves: (x: ProcessMoves) => x,
   subscribeToEvents: (x: SubscribeToEvents) => x,
   inFindPathsModifyInputParams: (x: InFindPathsModifyInputParams) => x,
+  generateAdditionalTurns: (x: GenerateAdditionalTurns) => x,
 };
 
 export type CompleteRule = typeof identityRule;
@@ -290,7 +293,7 @@ export interface PostMove {
   interrupt: CompactRules;
   board: Board;
   move?: Move;
-  currentTurn: number;
+  turnIndexes: TurnIndexes;
 }
 
 export interface ProcessMoves {
@@ -312,4 +315,8 @@ export interface SubscribeToEvents {
 
 export interface InFindPathsModifyInputParams {
   filterPacifistMoves: boolean;
+}
+
+export interface GenerateAdditionalTurns {
+  turnController: TurnController;
 }
