@@ -41,7 +41,7 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
   const numberOfColumns = useMemo(() => maxFile - minFile + 1, [minFile, maxFile]);
   const numberOfRows = useMemo(() => maxRank - minRank + 1, [minRank, maxRank]);
 
-  // TODO: make this calc nice
+  // TODO: make this calc clear/nice
   const defaultRadialOffset = 0;
   const defaultCircularOffset = 4 * players.length + 5 - (playerIndex + 1) * 8;
 

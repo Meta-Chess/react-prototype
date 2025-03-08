@@ -187,9 +187,9 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   },
   nimbus: {
     title: "Nimbus",
-    shortDescription: "A game by xyz.",
-    traits: ["Board"],
-    implemented: true,
+    shortDescription: "A game by ...",
+    traits: ["Board", "Movement", "Turn", "Ending"], // TODO: Make a new hybrid trait?
+    implemented: false,
     ruleNames: ["nimbus"],
     overrideBaseRules: ["promotion", "stalemate"],
     complexity: 5,

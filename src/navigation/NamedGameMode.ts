@@ -27,7 +27,7 @@ const alternamePathNamings: { [key in NamedGameMode]?: string[] } = {
   [NamedGameMode.toroidal]: ["torus", "donut"],
 };
 
-const offlineBaseGameOptions = {
+const defaultGameOptions = {
   checkEnabled: true,
   numberOfPlayers: 2,
   baseVariants: [],
@@ -39,6 +39,12 @@ const offlineBaseGameOptions = {
 
 export const pathToParams = Object.keys(NamedGameMode).reduce((acc, gameMode) => {
   const namedGameMode = gameMode as NamedGameMode;
+
+  const offlineBaseGameOptions =
+    gameMode === "nimbus"
+      ? { ...defaultGameOptions, checkEnabled: false }
+      : defaultGameOptions;
+
   const gameOptions = calculateGameOptions(
     offlineBaseGameOptions,
     gameModeToVariants[namedGameMode]
