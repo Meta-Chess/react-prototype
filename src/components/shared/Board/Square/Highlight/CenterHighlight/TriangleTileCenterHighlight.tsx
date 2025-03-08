@@ -1,8 +1,5 @@
 import React, { FC } from "react";
-import styled from "styled-components/native";
-import { View } from "react-native";
 import { TileSchematic } from "ui/Tiles/TileProps";
-import { tileSchematicPositionViewProps } from "utilities";
 import Color from "color";
 import { TriangleTile } from "ui/Tiles/Triangle";
 

@@ -6,7 +6,6 @@ import styled from "styled-components/native";
 import { getPieceDecorationNames } from "./getPieceDecorationNames";
 import { GameContext } from "components/shared";
 import type { GameMaster } from "game";
-import Color from "color";
 
 interface animatedData {
   animatedColor: Animated.AnimatedInterpolation;

@@ -12,10 +12,11 @@ import { thisTriangleIsUpright } from "game/CompactRules/rules/nimbus";
 export type SvgMeasurement = number;
 type PixelMeasurement = number;
 
-export const TriangularHexBoard: FC<BoardProps> = ({
-  backboard = true,
-  measurements,
-}) => {
+/* TODO:
+  it would be nice to support a hex backboard
+  boardSize will need to be updated (see how it is done in CircularBoard for reference)
+*/
+export const TriangularHexBoard: FC<BoardProps> = ({ measurements }) => {
   const { gameMaster } = useContext(GameContext);
   useEffect(() => gameMaster?.game.board.setVisualShapeToken(SquareShape.Triangle)); //hmm..
   const boardSize: PixelMeasurement = Math.min(
