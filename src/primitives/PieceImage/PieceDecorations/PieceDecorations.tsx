@@ -30,7 +30,7 @@ const PieceDecorations: FC<Props> = ({
           ? getDecorationsBelowPiece(pieceDecorationName)
           : getDecorationsAbovePiece(pieceDecorationName, circularBoard);
 
-        return <React.Fragment key={index}>{decorations}</React.Fragment>;
+        return <React.Fragment key={index}>{decorations ?? null}</React.Fragment>;
       })}
     </>
   );

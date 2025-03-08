@@ -61,7 +61,8 @@ export class AutomaticGameController {
   }
 
   private shouldEndEarly(): boolean {
-    if (this.gameMaster.game.currentTurn < this.options.endEarlyMinTurns) return false;
+    if (this.gameMaster.game.getCurrentTurn() < this.options.endEarlyMinTurns)
+      return false;
 
     const piecePlayerRatio =
       this.gameMaster.game.board.getPieces().length / this.gameMaster.game.players.length;

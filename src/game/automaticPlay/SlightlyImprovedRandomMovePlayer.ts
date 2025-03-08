@@ -60,4 +60,8 @@ const PIECE_VALUES: { [name in PieceName]: number } = {
   [PieceName.Knight]: 3,
   [PieceName.BishopKnight]: 5,
   [PieceName.RookKnight]: 6,
+  [PieceName.EarthPiece]: 1,
+  [PieceName.FirePiece]: 1,
+  [PieceName.LightningPiece]: 1,
+  [PieceName.WaterPiece]: 1,
 };
