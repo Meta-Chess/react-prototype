@@ -25,10 +25,12 @@ const PieceDecorations: FC<Props> = ({
 
   return (
     <>
-      {pieceDecorationNames?.map((pieceDecorationName) => {
-        return belowPiece
+      {pieceDecorationNames?.map((pieceDecorationName, index) => {
+        const decorations = belowPiece
           ? getDecorationsBelowPiece(pieceDecorationName)
           : getDecorationsAbovePiece(pieceDecorationName, circularBoard);
+
+        return <React.Fragment key={index}>{decorations}</React.Fragment>;
       })}
     </>
   );
