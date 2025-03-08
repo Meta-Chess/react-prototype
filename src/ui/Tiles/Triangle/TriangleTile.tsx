@@ -3,7 +3,7 @@ import { Svg, G } from "react-native-svg";
 import { AbsoluteView } from "ui/Containers";
 import { PathWithNoOutline } from "primitives/OutlinelessComponents";
 import type { TileProps } from "../TileProps";
-import { ARC_TILE_WORKING_AREA } from "..";
+import { SVG_TILE_WORKING_AREA } from "..";
 
 export const TriangleTile: FC<TileProps> = ({
   tileSchematic,
@@ -15,17 +15,17 @@ export const TriangleTile: FC<TileProps> = ({
 
   const scaleTransform = tileSchematic?.scale
     ? `translate(
-    ${tileSchematic?.leftAdjustmentToTileCenterSvg || 0}, 
-    ${tileSchematic?.topAdjustmentToTileCenterSvg || 0}
+    ${tileSchematic?.leftAdjustmentToTileCenter || 0}, 
+    ${tileSchematic?.topAdjustmentToTileCenter || 0}
   ) scale(${tileSchematic?.scale}) translate(
-    ${-1 * (tileSchematic?.leftAdjustmentToTileCenterSvg || 0)}, 
-    ${-1 * (tileSchematic?.topAdjustmentToTileCenterSvg || 0)}
+    ${-1 * (tileSchematic?.leftAdjustmentToTileCenter || 0)}, 
+    ${-1 * (tileSchematic?.topAdjustmentToTileCenter || 0)}
   )`
     : "";
   return (
     <AbsoluteView pointerEvents={"none"}>
       <Svg
-        viewBox={`0 0 ${ARC_TILE_WORKING_AREA} ${ARC_TILE_WORKING_AREA}`}
+        viewBox={`0 0 ${SVG_TILE_WORKING_AREA} ${SVG_TILE_WORKING_AREA}`}
         pointerEvents={"none"}
       >
         <G transform={scaleTransform}>

@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Svg } from "react-native-svg";
 import { AbsoluteView } from "ui/Containers";
-import { ARC_TILE_WORKING_AREA } from "..";
+import { SVG_TILE_WORKING_AREA } from "..";
 import { PathWithNoOutline } from "primitives/OutlinelessComponents";
 import type { TileProps } from "../TileProps";
 
@@ -12,7 +12,7 @@ export const ArcTile: FC<TileProps> = ({ tileSchematic, color, pressable = false
   return (
     <AbsoluteView pointerEvents={"none"}>
       <Svg
-        viewBox={`0 0 ${ARC_TILE_WORKING_AREA} ${ARC_TILE_WORKING_AREA}`}
+        viewBox={`0 0 ${SVG_TILE_WORKING_AREA} ${SVG_TILE_WORKING_AREA}`}
         pointerEvents={"none"}
       >
         <PathWithNoOutline

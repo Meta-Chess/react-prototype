@@ -10,7 +10,7 @@ import { objectMatches } from "utilities";
 import { CircularBackboard } from "./CircularBackboard";
 import { polarToCartesian, euclideanDistance } from "utilities";
 import { describeArc } from "ui/Tiles/Arc";
-import { ARC_TILE_WORKING_AREA } from "ui/Tiles";
+import { SVG_TILE_WORKING_AREA } from "ui/Tiles";
 import { useCircularRotation } from "../useCircularRotation";
 import type { Point, Degrees } from "game/types";
 import { PlayerName } from "game/types";
@@ -61,7 +61,7 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
   );
 
   //
-  const svgBox: SvgMeasurement = ARC_TILE_WORKING_AREA;
+  const svgBox: SvgMeasurement = SVG_TILE_WORKING_AREA;
   const pixelToSvg = (pixelLength: PixelMeasurement): SvgMeasurement => {
     return pixelLength * (svgBox / boardSize);
   };

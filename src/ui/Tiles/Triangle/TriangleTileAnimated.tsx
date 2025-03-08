@@ -3,7 +3,7 @@ import { Svg } from "react-native-svg";
 import type { AnimatedTileProps } from "../TileProps";
 import { AnimatedGroup } from "primitives";
 import { AbsoluteView } from "ui/Containers";
-import { ARC_TILE_WORKING_AREA } from "..";
+import { SVG_TILE_WORKING_AREA } from "..";
 import { PathWithNoOutline } from "primitives/OutlinelessComponents";
 
 export const TriangleTileAnimated: FC<AnimatedTileProps> = ({
@@ -17,7 +17,7 @@ export const TriangleTileAnimated: FC<AnimatedTileProps> = ({
   return (
     <AbsoluteView pointerEvents={"none"}>
       <Svg
-        viewBox={`0 0 ${ARC_TILE_WORKING_AREA} ${ARC_TILE_WORKING_AREA}`}
+        viewBox={`0 0 ${SVG_TILE_WORKING_AREA} ${SVG_TILE_WORKING_AREA}`}
         pointerEvents={"none"}
       >
         <AnimatedGroup fill={color} pointerEvents={"none"}>

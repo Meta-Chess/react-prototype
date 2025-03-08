@@ -6,7 +6,7 @@ import { BoardProps } from "components/shared/Board/Board";
 import { Square } from "../Square";
 import { SquareShape } from "game";
 import { objectMatches } from "utilities";
-import { ARC_TILE_WORKING_AREA } from "ui/Tiles";
+import { SVG_TILE_WORKING_AREA } from "ui/Tiles";
 import { thisTriangleIsUpright } from "game/CompactRules/rules/nimbus";
 
 export type SvgMeasurement = number;
@@ -64,31 +64,31 @@ export const TriangularHexBoard: FC<BoardProps> = ({
   let fullHeight: SvgMeasurement;
   const boardIsMoreWideThanTall = fullWidthInTriangleUnits > fullHeightInTriangleUnits;
   if (boardIsMoreWideThanTall) {
-    fullWidth = ARC_TILE_WORKING_AREA;
+    fullWidth = SVG_TILE_WORKING_AREA;
     fullHeight =
-      (fullHeightInTriangleUnits / fullWidthInTriangleUnits) * ARC_TILE_WORKING_AREA;
+      (fullHeightInTriangleUnits / fullWidthInTriangleUnits) * SVG_TILE_WORKING_AREA;
   } else {
     fullWidth =
-      (fullWidthInTriangleUnits / fullHeightInTriangleUnits) * ARC_TILE_WORKING_AREA;
-    fullHeight = ARC_TILE_WORKING_AREA;
+      (fullWidthInTriangleUnits / fullHeightInTriangleUnits) * SVG_TILE_WORKING_AREA;
+    fullHeight = SVG_TILE_WORKING_AREA;
   }
   const triangleSideLength: SvgMeasurement = fullWidth / fullWidthInTriangleUnits;
   const triangleHeight: SvgMeasurement = (triangleSideLength * Math.sqrt(3)) / 2;
 
   const pixelToSvg = (pixelLength: PixelMeasurement): SvgMeasurement => {
-    return pixelLength * (ARC_TILE_WORKING_AREA / boardSize);
+    return pixelLength * (SVG_TILE_WORKING_AREA / boardSize);
   };
   const svgToPixel = (svgLength: SvgMeasurement): PixelMeasurement => {
-    return boardSize * (svgLength / ARC_TILE_WORKING_AREA);
+    return boardSize * (svgLength / SVG_TILE_WORKING_AREA);
   };
 
   let boardOffsetX: number;
   let boardOffsetY: number;
   if (boardIsMoreWideThanTall) {
     boardOffsetX = 0;
-    boardOffsetY = ARC_TILE_WORKING_AREA / 2 - fullHeight / 2;
+    boardOffsetY = SVG_TILE_WORKING_AREA / 2 - fullHeight / 2;
   } else {
-    boardOffsetX = ARC_TILE_WORKING_AREA / 2 - fullWidth / 2;
+    boardOffsetX = SVG_TILE_WORKING_AREA / 2 - fullWidth / 2;
     boardOffsetY = 0;
   }
 
