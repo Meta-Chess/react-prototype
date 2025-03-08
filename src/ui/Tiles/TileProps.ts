@@ -1,5 +1,6 @@
 import Color from "color";
 import { Animated } from "react-native";
+import type { PixelMeasurement, SvgMeasurement } from "./SvgTileUtilities";
 
 interface CoreTileProps {
   size?: number;
@@ -13,19 +14,12 @@ export type AnimatedTileProps = {
 } & CoreTileProps;
 
 export type TileSchematic = {
-  topAdjustmentToTileCenter: number;
-  leftAdjustmentToTileCenter: number;
-  topAdjustmentToTileCenterSvg?: number;
-  leftAdjustmentToTileCenterSvg?: number;
-  centerMaxEmbeddedDiameter: number;
-  scale?: number;
-} & ArcTileSchematic; // extend with ... | OtherTileSchematic ...
-
-export interface ArcTileSchematic {
-  arcSvgDetails: ArcSvgDetails;
-}
-
-interface ArcSvgDetails {
+  topAdjustmentToTileCenter: PixelMeasurement;
+  leftAdjustmentToTileCenter: PixelMeasurement;
+  centerMaxEmbeddedDiameter: PixelMeasurement;
   tilePath: string;
-  tileWidth: number;
-}
+  scale?: number;
+  arcTileWidth?: number;
+  topAdjustmentToTileCenterSvg?: SvgMeasurement;
+  leftAdjustmentToTileCenterSvg?: SvgMeasurement;
+};

@@ -11,9 +11,7 @@ export const TriangleTileAnimated: FC<AnimatedTileProps> = ({
   color,
   pressable,
 }) => {
-  const svgDetails = tileSchematic?.arcSvgDetails;
-  if (svgDetails === undefined) return <></>;
-
+  if (tileSchematic === undefined) return <></>;
   return (
     <AbsoluteView pointerEvents={"none"}>
       <Svg
@@ -22,7 +20,7 @@ export const TriangleTileAnimated: FC<AnimatedTileProps> = ({
       >
         <AnimatedGroup fill={color} pointerEvents={"none"}>
           <PathWithNoOutline
-            d={tileSchematic?.arcSvgDetails.tilePath}
+            d={tileSchematic.tilePath}
             stroke={"none"}
             pointerEvents={pressable ? "auto" : "none"}
           />

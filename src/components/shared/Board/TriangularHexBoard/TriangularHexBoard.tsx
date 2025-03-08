@@ -6,7 +6,7 @@ import { BoardProps } from "components/shared/Board/Board";
 import { Square } from "../Square";
 import { SquareShape } from "game";
 import { objectMatches } from "utilities";
-import { SVG_TILE_WORKING_AREA } from "ui/Tiles";
+import { SVG_TILE_WORKING_AREA, pixelToSvg, svgToPixel } from "ui/Tiles";
 import { thisTriangleIsUpright } from "game/CompactRules/rules/nimbus";
 
 export type SvgMeasurement = number;
@@ -75,13 +75,6 @@ export const TriangularHexBoard: FC<BoardProps> = ({
   const triangleSideLength: SvgMeasurement = fullWidth / fullWidthInTriangleUnits;
   const triangleHeight: SvgMeasurement = (triangleSideLength * Math.sqrt(3)) / 2;
 
-  const pixelToSvg = (pixelLength: PixelMeasurement): SvgMeasurement => {
-    return pixelLength * (SVG_TILE_WORKING_AREA / boardSize);
-  };
-  const svgToPixel = (svgLength: SvgMeasurement): PixelMeasurement => {
-    return boardSize * (svgLength / SVG_TILE_WORKING_AREA);
-  };
-
   let boardOffsetX: number;
   let boardOffsetY: number;
   if (boardIsMoreWideThanTall) {
@@ -134,9 +127,13 @@ export const TriangularHexBoard: FC<BoardProps> = ({
                 const centroidY = Math.sqrt(3) / 6;
 
                 const leftAdjustmentToTileCenter = svgToPixel(
-                  offsetX + centroidX * triangleSideLength
+                  offsetX + centroidX * triangleSideLength,
+                  boardSize
                 );
-                const centerMaxEmbeddedDiameter = svgToPixel(2 * centroidY * sideLength);
+                const centerMaxEmbeddedDiameter = svgToPixel(
+                  2 * centroidY * sideLength,
+                  boardSize
+                );
 
                 let pointA: string;
                 let pointB: string;
@@ -153,14 +150,16 @@ export const TriangularHexBoard: FC<BoardProps> = ({
                   pointB = `${0 + offsetX},${height + offsetY}`;
                   pointC = `${sideLength + offsetX},${height + offsetY}`;
                   topAdjustmentToTileCenter = svgToPixel(
-                    offsetY + triangleHeight - centroidY * triangleSideLength
+                    offsetY + triangleHeight - centroidY * triangleSideLength,
+                    boardSize
                   );
                 } else {
                   pointA = `${sideLength / 2 + offsetX},${height + offsetY}`;
                   pointB = `${0 + offsetX},${offsetY}`;
                   pointC = `${sideLength + offsetX},${offsetY}`;
                   topAdjustmentToTileCenter = svgToPixel(
-                    offsetY + centroidY * triangleSideLength
+                    offsetY + centroidY * triangleSideLength,
+                    boardSize
                   );
                 }
 
@@ -177,17 +176,18 @@ export const TriangularHexBoard: FC<BoardProps> = ({
                     )}
                     shape={SquareShape.Triangle}
                     tileSchematic={{
-                      arcSvgDetails: {
-                        tilePath: trianglePath,
-                        tileWidth: 0,
-                      },
                       leftAdjustmentToTileCenter,
                       topAdjustmentToTileCenter,
                       leftAdjustmentToTileCenterSvg: pixelToSvg(
-                        leftAdjustmentToTileCenter
+                        leftAdjustmentToTileCenter,
+                        boardSize
                       ),
-                      topAdjustmentToTileCenterSvg: pixelToSvg(topAdjustmentToTileCenter),
+                      topAdjustmentToTileCenterSvg: pixelToSvg(
+                        topAdjustmentToTileCenter,
+                        boardSize
+                      ),
                       centerMaxEmbeddedDiameter,
+                      tilePath: trianglePath,
                     }}
                   />
                 );

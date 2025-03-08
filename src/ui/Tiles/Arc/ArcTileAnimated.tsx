@@ -11,8 +11,7 @@ export const ArcTileAnimated: FC<AnimatedTileProps> = ({
   color,
   pressable,
 }) => {
-  const svgDetails = tileSchematic?.arcSvgDetails;
-  if (svgDetails === undefined) return <></>;
+  if (tileSchematic === undefined) return <></>;
 
   return (
     <AbsoluteView pointerEvents={"none"}>
@@ -22,9 +21,9 @@ export const ArcTileAnimated: FC<AnimatedTileProps> = ({
       >
         <AnimatedGroup stroke={color} pointerEvents={"none"}>
           <PathWithNoOutline
-            d={svgDetails.tilePath}
+            d={tileSchematic.tilePath}
             fill={"none"}
-            strokeWidth={svgDetails.tileWidth}
+            strokeWidth={tileSchematic.arcTileWidth || 0}
             pointerEvents={pressable ? "auto" : "none"}
           />
         </AnimatedGroup>

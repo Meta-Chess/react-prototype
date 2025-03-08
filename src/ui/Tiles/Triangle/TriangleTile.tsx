@@ -10,16 +10,15 @@ export const TriangleTile: FC<TileProps> = ({
   color,
   pressable = false,
 }) => {
-  const svgDetails = tileSchematic?.arcSvgDetails;
-  if (svgDetails === undefined) return <></>;
+  if (tileSchematic === undefined) return <></>;
 
-  const scaleTransform = tileSchematic?.scale
+  const scaleTransform = tileSchematic.scale
     ? `translate(
-    ${tileSchematic?.leftAdjustmentToTileCenter || 0}, 
-    ${tileSchematic?.topAdjustmentToTileCenter || 0}
-  ) scale(${tileSchematic?.scale}) translate(
-    ${-1 * (tileSchematic?.leftAdjustmentToTileCenter || 0)}, 
-    ${-1 * (tileSchematic?.topAdjustmentToTileCenter || 0)}
+    ${tileSchematic.leftAdjustmentToTileCenterSvg || 0}, 
+    ${tileSchematic.topAdjustmentToTileCenterSvg || 0}
+  ) scale(${tileSchematic.scale}) translate(
+    ${-1 * (tileSchematic.leftAdjustmentToTileCenterSvg || 0)}, 
+    ${-1 * (tileSchematic.topAdjustmentToTileCenterSvg || 0)}
   )`
     : "";
   return (
@@ -30,7 +29,7 @@ export const TriangleTile: FC<TileProps> = ({
       >
         <G transform={scaleTransform}>
           <PathWithNoOutline
-            d={tileSchematic?.arcSvgDetails.tilePath}
+            d={tileSchematic.tilePath}
             fill={color.toString()}
             stroke={"none"}
             strokeWidth={1}

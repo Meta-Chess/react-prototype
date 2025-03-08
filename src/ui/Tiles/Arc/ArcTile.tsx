@@ -6,8 +6,7 @@ import { PathWithNoOutline } from "primitives/OutlinelessComponents";
 import type { TileProps } from "../TileProps";
 
 export const ArcTile: FC<TileProps> = ({ tileSchematic, color, pressable = false }) => {
-  const svgDetails = tileSchematic?.arcSvgDetails;
-  if (svgDetails === undefined) return <></>;
+  if (tileSchematic === undefined) return <></>;
 
   return (
     <AbsoluteView pointerEvents={"none"}>
@@ -16,10 +15,10 @@ export const ArcTile: FC<TileProps> = ({ tileSchematic, color, pressable = false
         pointerEvents={"none"}
       >
         <PathWithNoOutline
-          d={svgDetails.tilePath}
+          d={tileSchematic.tilePath}
           fill={"none"}
           stroke={color.toString()}
-          strokeWidth={svgDetails.tileWidth}
+          strokeWidth={tileSchematic.arcTileWidth || 0}
           pointerEvents={pressable ? "auto" : "none"}
         />
       </Svg>
