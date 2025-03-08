@@ -9,6 +9,7 @@ export function useGetSquareBackgroundColor(
   shape: SquareShape
 ): Color {
   const { gameMaster } = useContext(GameContext);
+  // TODO: Should use interruption points or something similar to handle rule based logic
   const rules = gameMaster?.getRuleNames();
   const board = gameMaster?.game.board;
   if (!gameMaster || !square) return Colors.MCHESS_BLUE;

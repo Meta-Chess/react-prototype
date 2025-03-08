@@ -159,9 +159,8 @@ export class Pather {
   }
 
   canStay({ gait, remainingSteps }: HypotheticalDisplacement): boolean {
-    if (gait.interruptable) return true;
-    if (remainingSteps.length <= 1) return true;
-    return false;
+    if (!gait.interruptable && remainingSteps.length > 1) return false;
+    return true;
   }
 
   canContinue({ gait, square }: HypotheticalDisplacement): boolean {

@@ -91,6 +91,7 @@ function getPieceColor(
 ): string | undefined {
   const playerColors = [...Colors.PLAYER];
 
+  // TODO: Should use interruption points or something similar to handle rule based logic
   const rules = gameMaster?.getRuleNames();
   if (rules?.includes("nimbus")) {
     playerColors[0] = Colors.NIMBUS.PLAYER[0];

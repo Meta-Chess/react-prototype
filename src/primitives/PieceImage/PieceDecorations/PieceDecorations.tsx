@@ -18,10 +18,12 @@ const PieceDecorations: FC<Props> = ({
   squareShape,
   belowPiece = false,
 }) => {
-  // change decorations when displaying a circular board
-  const circularBoard = useMemo(() => squareShape === SquareShape.Arc, [squareShape]);
+  if (pieceDecorationNames === undefined || pieceDecorationNames.length === 0) {
+    return null;
+  }
 
-  if (pieceDecorationNames === undefined) return null;
+  // change decorations when displaying a circular board
+  const circularBoard = squareShape === SquareShape.Arc;
 
   return (
     <>
@@ -30,7 +32,7 @@ const PieceDecorations: FC<Props> = ({
           ? getDecorationsBelowPiece(pieceDecorationName)
           : getDecorationsAbovePiece(pieceDecorationName, circularBoard);
 
-        return <React.Fragment key={index}>{decorations ?? null}</React.Fragment>;
+        return <React.Fragment key={index}>{decorations}</React.Fragment>;
       })}
     </>
   );

@@ -132,7 +132,7 @@ export interface FutureVariant {
   imageName?: keyof typeof VariantImages;
   implemented: boolean;
   ruleNames: RuleName[];
-  overrideBaseRules?: RuleName[];
+  overrideBaseRules?: boolean;
   overrideRuleParams?: RuleNamesWithParams;
   complexity: number;
 }
@@ -190,8 +190,8 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     shortDescription: "A game by ...",
     traits: ["Board", "Movement", "Turn", "Ending"], // TODO: Make a new hybrid trait?
     implemented: false,
-    ruleNames: ["nimbus"],
-    overrideBaseRules: ["promotion", "stalemate"],
+    ruleNames: ["nimbus", "promotion", "stalemate"],
+    overrideBaseRules: true,
     complexity: 5,
   },
   grandChess: {
