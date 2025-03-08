@@ -11,16 +11,14 @@ import { CircularBackboard } from "./CircularBackboard";
 import { polarToCartesian, euclideanDistance } from "utilities";
 import { describeArc } from "ui/Tiles/Arc";
 import { SVG_TILE_WORKING_AREA, pixelToSvg, svgToPixel } from "ui/Tiles";
+import type { SvgMeasurement, PixelMeasurement } from "ui/Tiles";
 import { useCircularRotation } from "../useCircularRotation";
 import type { Point, Degrees } from "game/types";
 import { PlayerName } from "game/types";
 import { rotateArray } from "utilities/arrayHelper";
 
-export type SvgMeasurement = number;
 type SvgPointMeasurement = Point;
-type PixelMeasurement = number;
-
-export const TILE_DISPLAY_OVERFLOW: SvgMeasurement = 0.5; // svgs which are supposed to be flush with each other will have a small gap, which can be dealt with by adding size
+const TILE_DISPLAY_OVERFLOW: SvgMeasurement = 0.5; // svgs which are supposed to be flush with each other will have a small gap, which can be dealt with by adding size
 
 export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }) => {
   const { gameMaster } = useContext(GameContext);

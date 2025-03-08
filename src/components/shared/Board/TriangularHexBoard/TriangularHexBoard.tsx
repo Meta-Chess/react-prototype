@@ -7,15 +7,14 @@ import { Square } from "../Square";
 import { SquareShape } from "game";
 import { objectMatches } from "utilities";
 import { SVG_TILE_WORKING_AREA, pixelToSvg, svgToPixel } from "ui/Tiles";
+import type { SvgMeasurement, PixelMeasurement } from "ui/Tiles";
 import { thisTriangleIsUpright } from "game/CompactRules/rules/nimbus";
-
-export type SvgMeasurement = number;
-type PixelMeasurement = number;
 
 /* TODO:
   it would be nice to support a hex backboard
   boardSize will need to be updated (see how it is done in CircularBoard for reference)
 */
+// TODO: implement board rotation for online play (i.e. black will see the black pieces at the bottom)
 export const TriangularHexBoard: FC<BoardProps> = ({ measurements }) => {
   const { gameMaster } = useContext(GameContext);
   useEffect(() => gameMaster?.game.board.setVisualShapeToken(SquareShape.Triangle)); //hmm..
@@ -24,23 +23,7 @@ export const TriangularHexBoard: FC<BoardProps> = ({ measurements }) => {
     measurements.boardAreaHeight
   );
 
-  // TODO: player rotation??
-  // // rotation
-  // const players = gameMaster?.game.players ?? [];
-  // // TODO: extract into function... also used in useCylinderRotation
-  // const assignedPlayer = gameMaster?.assignedPlayer ?? (0 as PlayerName);
-  // const assignedPlayerName =
-  //   assignedPlayer === "all" || assignedPlayer === "spectator"
-  //     ? PlayerName.White
-  //     : assignedPlayer || PlayerName.White;
-  // const playerNames = players?.map((p) => p.name) || [PlayerName.White];
-  // const playerIndex = playerNames.indexOf(assignedPlayerName);
-  // ////
-
-  // TODO: we should useMemo all of this?
-  // TODO: change ARC/Schematic language to be more generic...
   const allSquares = gameMaster?.game.board.getSquares() || [];
-
   const columnList = range(
     1,
     Math.max(...allSquares.map((square) => square.coordinates.file)) + 1
@@ -96,11 +79,6 @@ export const TriangularHexBoard: FC<BoardProps> = ({ measurements }) => {
         overflow: "visible",
       }}
     >
-      {/* TODO: a hex backboard? - remember to update boardSize above, see CircularBoard for reference.
-      {backboard && (
-        <HexBackboard color={Colors.DARK.toString()} measurements={measurements} />
-      )}
-      */}
       <View
         style={{
           width: boardSize,
