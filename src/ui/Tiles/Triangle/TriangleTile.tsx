@@ -3,7 +3,7 @@ import { Svg, G } from "react-native-svg";
 import { AbsoluteView } from "ui/Containers";
 import { PathWithNoOutline } from "primitives/OutlinelessComponents";
 import type { TileProps } from "../TileProps";
-import { ARC_TILE_WORKING_AREA } from "../Arc/describeArcTile";
+import { ARC_TILE_WORKING_AREA } from "..";
 
 export const TriangleTile: FC<TileProps> = ({
   tileSchematic,

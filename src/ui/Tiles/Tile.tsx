@@ -6,6 +6,8 @@ import { HexTile } from "./Hex";
 import { ArcTile } from "./Arc";
 import { TriangleTile } from "./Triangle";
 
+export const ARC_TILE_WORKING_AREA = 1000;
+
 const TILES: { [shape in SquareShape]: FC<TileProps> } = {
   [SquareShape.Square]: SquareTile,
   [SquareShape.Hex]: HexTile,

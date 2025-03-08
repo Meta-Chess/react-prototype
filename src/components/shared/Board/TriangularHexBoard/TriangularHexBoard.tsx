@@ -1,26 +1,16 @@
-import React, { FC, useContext, useEffect, useMemo, useState } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import { GameContext } from "components/shared";
-import { Colors } from "primitives";
 import { View } from "react-native";
 import { range } from "lodash";
 import { BoardProps } from "components/shared/Board/Board";
 import { Square } from "../Square";
 import { SquareShape } from "game";
 import { objectMatches } from "utilities";
-import { HexBackboard } from "../HexBackboard";
-import { polarToCartesian, euclideanDistance } from "utilities";
-import { describeArc, ARC_TILE_WORKING_AREA } from "ui/Tiles/Arc";
-import { useCircularRotation } from "../useCircularRotation";
-import type { Point, Degrees } from "game/types";
-import { PlayerName } from "game/types";
-import { rotateArray } from "utilities/arrayHelper";
+import { ARC_TILE_WORKING_AREA } from "ui/Tiles";
 import { thisTriangleIsUpright } from "game/CompactRules/rules/nimbus";
 
 export type SvgMeasurement = number;
-type SvgPointMeasurement = Point;
 type PixelMeasurement = number;
-
-export const TILE_DISPLAY_OVERFLOW: SvgMeasurement = 0.5; // svgs which are supposed to be flush with each other will have a small gap, which can be dealt with by adding size
 
 export const TriangularHexBoard: FC<BoardProps> = ({
   backboard = true,

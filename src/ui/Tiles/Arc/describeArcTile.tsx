@@ -1,8 +1,6 @@
 import { polarToCartesian } from "utilities";
 import type { Degrees } from "game/types";
 
-export const ARC_TILE_WORKING_AREA = 1000;
-
 export function describeArc({
   x,
   y,

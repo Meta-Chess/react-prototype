@@ -3,7 +3,7 @@ import { Svg } from "react-native-svg";
 import type { AnimatedTileProps } from "../TileProps";
 import { AnimatedGroup } from "primitives";
 import { AbsoluteView } from "ui/Containers";
-import { ARC_TILE_WORKING_AREA } from ".";
+import { ARC_TILE_WORKING_AREA } from "..";
 import { PathWithNoOutline } from "primitives/OutlinelessComponents";
 
 export const ArcTileAnimated: FC<AnimatedTileProps> = ({

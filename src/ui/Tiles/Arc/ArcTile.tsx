@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Svg } from "react-native-svg";
 import { AbsoluteView } from "ui/Containers";
-import { ARC_TILE_WORKING_AREA } from ".";
+import { ARC_TILE_WORKING_AREA } from "..";
 import { PathWithNoOutline } from "primitives/OutlinelessComponents";
 import type { TileProps } from "../TileProps";
 
