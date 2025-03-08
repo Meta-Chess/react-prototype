@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactNode } from "react";
 import { Path, Svg, G } from "react-native-svg";
 import { PieceDecorationName } from "components/shared/Board/Piece/getPieceDecorationNames";
 import { BsArrowClockwise, BsArrowCounterclockwise } from "react-icons/bs";
@@ -7,7 +7,7 @@ import { BsArrowClockwise, BsArrowCounterclockwise } from "react-icons/bs";
 export function getDecorationsAbovePiece(
   name: PieceDecorationName,
   circularBoard: boolean
-): ReactElement | void {
+): ReactNode {
   if (name === PieceDecorationName.UpDirectionArrow) {
     if (circularBoard)
       return (
@@ -35,10 +35,10 @@ export function getDecorationsAbovePiece(
       />
     );
   }
-  return;
+  return null;
 }
 
-export function getDecorationsBelowPiece(name: PieceDecorationName): ReactElement | void {
+export function getDecorationsBelowPiece(name: PieceDecorationName): ReactNode {
   if (name === PieceDecorationName.NimbusSymbol) {
     // Note- this doesn't actually need to be below the piece anymore
     return (
@@ -61,7 +61,7 @@ export function getDecorationsBelowPiece(name: PieceDecorationName): ReactElemen
       </Svg>
     );
   }
-  return;
+  return null;
 }
 
 //

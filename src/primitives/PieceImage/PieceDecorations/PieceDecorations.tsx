@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from "react";
+import React, { FC, Fragment } from "react";
 import { PieceDecorationName } from "components/shared/Board/Piece/getPieceDecorationNames";
 import { SquareShape } from "game/types";
 import {
@@ -32,7 +32,7 @@ const PieceDecorations: FC<Props> = ({
           ? getDecorationsBelowPiece(pieceDecorationName)
           : getDecorationsAbovePiece(pieceDecorationName, circularBoard);
 
-        return <React.Fragment key={index}>{decorations}</React.Fragment>;
+        return <Fragment key={index}>{decorations}</Fragment>;
       })}
     </>
   );
