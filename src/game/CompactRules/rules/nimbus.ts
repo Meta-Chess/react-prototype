@@ -231,6 +231,10 @@ const generateTriangularHexBoardSquares = (): { location: string; square: Square
 const triangularHexBoardAdjacencies =
   (bounds: RankAndFileBounds) =>
   (square: Square): Adjacency[] => {
+    /* TODO:
+      Directions/Adjacencies can be re-done in a way which preserves linearity (allowing compatibility with Push/Pull)
+      see definitions in commit 6d22cd1
+    */
     const { rank, file } = square.getCoordinates();
 
     const uprightTriangle = thisTriangleIsUpright(square.getCoordinates(), {
