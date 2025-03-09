@@ -70,4 +70,13 @@ export const tokenDetails: { [k in TokenName]: Details } = {
     name: "Interception Possible Token",
     description: "Flags whether there are any valid interception moves",
   },
+  [TokenName.Nimbus]: {
+    name: "Nimbus",
+    description: "This piece is your Nimbus, the game is lost if it is captured.",
+  },
+  [TokenName.NimbusPieceCannotPromote]: {
+    name: "Cannot Change",
+    description:
+      "A piece cannot change immediately after moving, unless it is the Nimbus.",
+  },
 };

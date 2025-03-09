@@ -51,7 +51,7 @@ const SquareComponent: SFC<Props> = ({
 
   const pieceGridDimension =
     Math.ceil(Math.sqrt(piecesOrPieceAnimationsOnSquare.length)) || 1;
-  const hexGridScaleFactor = 1 + (hexSvgScaleFactor - 1) / 3; //further scaling for hex svg overflowing hex tile
+  const hexGridScaleFactor = 1 + (hexSvgScaleFactor - 1) / 3; // further scaling for hex svg overflowing hex tile
   const pieceScaleFactor = shape === SquareShape.Hex ? 0.9 * hexGridScaleFactor : 1;
   const pieceSize =
     tileSchematic?.centerMaxEmbeddedDiameter ??
@@ -94,6 +94,7 @@ const SquareComponent: SFC<Props> = ({
           shape={shape}
           tileSchematic={tileSchematic}
         />
+
         <PositioningContainer
           size={pieceScaleFactor * size}
           tileSchematic={tileSchematic}

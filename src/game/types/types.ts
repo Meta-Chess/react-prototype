@@ -56,6 +56,10 @@ export enum PieceName {
   Knight,
   BishopKnight,
   RookKnight,
+  FirePiece,
+  WaterPiece,
+  EarthPiece,
+  LightningPiece,
 }
 
 export const allPossiblePieceNames = getValues<PieceName>(PieceName);
@@ -84,6 +88,8 @@ export enum TokenName {
   ThinIce,
   Puppeteered,
   InterceptionPossible,
+  Nimbus,
+  NimbusPieceCannotPromote,
 }
 
 export interface Token {
@@ -137,6 +143,7 @@ export enum SquareShape {
   Square,
   Hex,
   Arc,
+  Triangle,
 }
 
 export interface GameOptions {

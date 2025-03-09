@@ -25,6 +25,18 @@ export const pieceDetails: { [name in PieceName]: { name: string } } = {
   [PieceName.BishopKnight]: {
     name: "Cardinal",
   },
+  [PieceName.FirePiece]: {
+    name: "Fire Piece",
+  },
+  [PieceName.WaterPiece]: {
+    name: "Water Piece",
+  },
+  [PieceName.EarthPiece]: {
+    name: "Earth Piece",
+  },
+  [PieceName.LightningPiece]: {
+    name: "Lightning Piece",
+  },
 };
 
 export const pieceDisplayOrder = [

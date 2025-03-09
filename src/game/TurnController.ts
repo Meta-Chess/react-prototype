@@ -5,6 +5,7 @@ import { cloneDeep } from "lodash";
 
 export enum TurnName {
   Standard = "standard",
+  NimbusPromotion = "nimbusPromotion",
 }
 
 export interface TurnInfo {

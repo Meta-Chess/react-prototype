@@ -11,12 +11,16 @@ import {
   Queen,
   Rook,
   RookKnight,
+  FirePiece,
+  WaterPiece,
+  EarthPiece,
+  LightningPiece,
 } from "./sprites";
 import { SFC } from "primitives/SFC";
 import { Animated } from "react-native";
 import { AnimatedGroup } from "primitives";
 import { PieceDecorationName } from "components/shared/Board/Piece/getPieceDecorationNames";
-import { PieceDecorations } from "./PieceDecorations";
+import { DecorationsAbovePiece, DecorationsBelowPiece } from "./PieceDecorations";
 
 interface Props {
   type: PieceName;
@@ -42,6 +46,10 @@ const PIECE_SPRITE: { [name in PieceName]: React.ReactNode } = {
   [PieceName.King]: <King />,
   [PieceName.BishopKnight]: <BishopKnight />,
   [PieceName.RookKnight]: <RookKnight />,
+  [PieceName.FirePiece]: <FirePiece />,
+  [PieceName.WaterPiece]: <WaterPiece />,
+  [PieceName.EarthPiece]: <EarthPiece />,
+  [PieceName.LightningPiece]: <LightningPiece />,
 };
 
 const PieceImage: SFC<Props> = ({
@@ -66,9 +74,10 @@ const PieceImage: SFC<Props> = ({
   const alphaModifier = opacity === undefined ? 1 : opacity;
   const paths = (
     <>
+      {<DecorationsBelowPiece pieceDecorationNames={pieceDecorationNames} />}
       {PIECE_SPRITE[type]}
       {
-        <PieceDecorations
+        <DecorationsAbovePiece
           pieceDecorationNames={pieceDecorationNames}
           squareShape={squareShape}
         />

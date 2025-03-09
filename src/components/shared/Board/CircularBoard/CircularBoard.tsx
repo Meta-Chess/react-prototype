@@ -9,17 +9,16 @@ import { SquareShape } from "game";
 import { objectMatches } from "utilities";
 import { CircularBackboard } from "./CircularBackboard";
 import { polarToCartesian, euclideanDistance } from "utilities";
-import { describeArc, ARC_TILE_WORKING_AREA } from "ui/Tiles/Arc";
+import { describeArc } from "ui/Tiles/Arc";
+import { SVG_TILE_WORKING_AREA, pixelToSvg, svgToPixel } from "ui/Tiles";
+import type { SvgMeasurement, PixelMeasurement } from "ui/Tiles";
 import { useCircularRotation } from "../useCircularRotation";
 import type { Point, Degrees } from "game/types";
 import { PlayerName } from "game/types";
 import { rotateArray } from "utilities/arrayHelper";
 
-export type SvgMeasurement = number;
 type SvgPointMeasurement = Point;
-type PixelMeasurement = number;
-
-export const TILE_DISPLAY_OVERFLOW: SvgMeasurement = 0.5; // svgs which are supposed to be flush with each other will have a small gap, which can be dealt with by adding size
+const TILE_DISPLAY_OVERFLOW: SvgMeasurement = 0.5; // svgs which are supposed to be flush with each other will have a small gap, which can be dealt with by adding size
 
 export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }) => {
   const { gameMaster } = useContext(GameContext);
@@ -42,7 +41,7 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
   const numberOfColumns = useMemo(() => maxFile - minFile + 1, [minFile, maxFile]);
   const numberOfRows = useMemo(() => maxRank - minRank + 1, [minRank, maxRank]);
 
-  //TODO: this calc nice
+  // TODO: make this calc clear/nice
   const defaultRadialOffset = 0;
   const defaultCircularOffset = 4 * players.length + 5 - (playerIndex + 1) * 8;
 
@@ -59,14 +58,7 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
     numberOfRows
   );
 
-  //
-  const svgBox: SvgMeasurement = ARC_TILE_WORKING_AREA;
-  const pixelToSvg = (pixelLength: PixelMeasurement): SvgMeasurement => {
-    return pixelLength * (svgBox / boardSize);
-  };
-  const svgToPixel = (svgLength: SvgMeasurement): PixelMeasurement => {
-    return boardSize * (svgLength / svgBox);
-  };
+  const svgBox: SvgMeasurement = SVG_TILE_WORKING_AREA;
 
   const centerGapWidthAsColumnWidthMultiple = 2;
   const columnWidth: SvgMeasurement =
@@ -98,10 +90,10 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
     >
       {backboard && (
         <CircularBackboard
-          boardSize={pixelToSvg(boardSize)}
+          boardSize={SVG_TILE_WORKING_AREA}
           centerGapSize={centerGapWidthAsColumnWidthMultiple * columnWidth}
-          radialWidth={pixelToSvg(backboardRadialSize)}
-          shadowRadialWidth={pixelToSvg(backboardShadowRadialSize)}
+          radialWidth={pixelToSvg(backboardRadialSize, boardSize)}
+          shadowRadialWidth={pixelToSvg(backboardShadowRadialSize, boardSize)}
           color={Colors.DARK.toString()}
           shadowColor={Colors.BLACK.fade(0.5).toString()}
         />
@@ -150,16 +142,23 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
                   angle: tileEndAngle,
                 });
 
-                const leftAdjustmentToTileCenter = svgToPixel(tileCenterPoint.x);
-                const topAdjustmentToTileCenter = svgToPixel(tileCenterPoint.y);
-                //approximating embedded circle with euclidean distance
+                const leftAdjustmentToTileCenter = svgToPixel(
+                  tileCenterPoint.x,
+                  boardSize
+                );
+                const topAdjustmentToTileCenter = svgToPixel(
+                  tileCenterPoint.y,
+                  boardSize
+                );
+                // approximating embedded circle with euclidean distance
                 const centerMaxEmbeddedDiameter = svgToPixel(
-                  Math.min(columnWidth, euclideanDistance(tileStartPoint, tileEndPoint))
+                  Math.min(columnWidth, euclideanDistance(tileStartPoint, tileEndPoint)),
+                  boardSize
                 );
 
                 return (
                   <Square
-                    key={colNum + 10 * rowNum}
+                    key={colNum.toString() + "," + rowNum.toString()}
                     square={gameMaster?.game.board.firstSquareSatisfyingRule((square) =>
                       objectMatches({
                         rank: squareRowList[rowIndex],
@@ -168,19 +167,17 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
                     )}
                     shape={SquareShape.Arc}
                     tileSchematic={{
-                      arcSvgDetails: {
-                        tilePath: describeArc({
-                          x: boardCenter,
-                          y: boardCenter,
-                          radius: tileDistance,
-                          startAngle: tileStartAngle,
-                          endAngle: tileEndAngle,
-                        }),
-                        tileWidth: columnWidth + 2 * TILE_DISPLAY_OVERFLOW,
-                      },
                       leftAdjustmentToTileCenter,
                       topAdjustmentToTileCenter,
                       centerMaxEmbeddedDiameter,
+                      tilePath: describeArc({
+                        x: boardCenter,
+                        y: boardCenter,
+                        radius: tileDistance,
+                        startAngle: tileStartAngle,
+                        endAngle: tileEndAngle,
+                      }),
+                      arcTileWidth: columnWidth + 2 * TILE_DISPLAY_OVERFLOW,
                     }}
                   />
                 );

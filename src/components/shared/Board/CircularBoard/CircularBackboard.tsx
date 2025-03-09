@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { AbsoluteView } from "ui/Containers";
-import type { SvgMeasurement } from "./CircularBoard";
+import type { SvgMeasurement } from "ui/Tiles";
 import { SvgAnnulus } from "primitives/Shapes";
 import styled from "styled-components/native";
 

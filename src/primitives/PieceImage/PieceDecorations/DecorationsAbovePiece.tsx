@@ -1,19 +1,41 @@
-import React, { FC, ReactElement, useMemo } from "react";
-import { Path, Svg } from "react-native-svg";
+import React, { FC, Fragment, ReactNode } from "react";
 import { PieceDecorationName } from "components/shared/Board/Piece/getPieceDecorationNames";
-import { BsArrowClockwise, BsArrowCounterclockwise } from "react-icons/bs";
 import { SquareShape } from "game/types";
+import { Path, Svg } from "react-native-svg";
+import { BsArrowClockwise, BsArrowCounterclockwise } from "react-icons/bs";
 
 interface Props {
   pieceDecorationNames?: PieceDecorationName[];
   squareShape?: SquareShape | undefined;
 }
 
-// TODO: consider changing this into a map...
-function getDecoration(
+// TODO: Probably better to extract decorations as components absolutely positioned on the PieceImage (rather than paths/svgs in here)
+export const DecorationsAbovePiece: FC<Props> = ({
+  pieceDecorationNames,
+  squareShape,
+}) => {
+  if (pieceDecorationNames === undefined || pieceDecorationNames.length === 0) {
+    return null;
+  }
+
+  // change decorations when displaying a circular board
+  const circularBoard = squareShape === SquareShape.Arc;
+
+  return (
+    <>
+      {pieceDecorationNames?.map((pieceDecorationName, index) => {
+        const decorations = getDecorationsAbovePiece(pieceDecorationName, circularBoard);
+
+        return <Fragment key={index}>{decorations}</Fragment>;
+      })}
+    </>
+  );
+};
+
+function getDecorationsAbovePiece(
   name: PieceDecorationName,
   circularBoard: boolean
-): ReactElement | void {
+): ReactNode {
   if (name === PieceDecorationName.UpDirectionArrow) {
     if (circularBoard)
       return (
@@ -41,23 +63,5 @@ function getDecoration(
       />
     );
   }
-  return;
+  return null;
 }
-
-// TODO: Probably better to extract decorations as components absolutely positioned on the PieceImage (rather than paths/svgs in here)
-const PieceDecorations: FC<Props> = ({ pieceDecorationNames, squareShape }) => {
-  // change decorations when displaying a circular board
-  const circularBoard = useMemo(() => squareShape === SquareShape.Arc, [squareShape]);
-
-  if (pieceDecorationNames === undefined) return null;
-
-  return (
-    <>
-      {pieceDecorationNames?.map((pieceDecorationName) => {
-        return getDecoration(pieceDecorationName, circularBoard);
-      })}
-    </>
-  );
-};
-
-export { PieceDecorations };

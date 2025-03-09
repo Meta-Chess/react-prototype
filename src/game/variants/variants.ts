@@ -11,7 +11,7 @@ export const integrateWithOtherRules: {
   },
   standard: (rules: RuleName[]): RuleName[] => {
     return rules.some((rule) =>
-      ["hex", "longBoard", "grandChess", "capablancaChess"].includes(rule)
+      ["hex", "nimbus", "longBoard", "grandChess", "capablancaChess"].includes(rule)
     )
       ? []
       : ["standard"];
@@ -132,6 +132,7 @@ export interface FutureVariant {
   imageName?: keyof typeof VariantImages;
   implemented: boolean;
   ruleNames: RuleName[];
+  overrideBaseRules?: boolean;
   overrideRuleParams?: RuleNamesWithParams;
   complexity: number;
 }
@@ -172,7 +173,8 @@ export type FutureVariantName =
   | "zoneOfControl"
   | "push"
   | "forcedEnPassant"
-  | "doubleTurn";
+  | "doubleTurn"
+  | "nimbus";
 
 export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   doubleTurn: {
@@ -182,6 +184,15 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
     implemented: true,
     ruleNames: ["doubleTurn"],
     complexity: 2,
+  },
+  nimbus: {
+    title: "Nimbus",
+    shortDescription: "A game by ...",
+    traits: ["Board", "Movement", "Turn", "Ending"], // TODO: Make a new hybrid trait?
+    implemented: false,
+    ruleNames: ["nimbus", "promotion", "stalemate"],
+    overrideBaseRules: true,
+    complexity: 5,
   },
   grandChess: {
     title: "Grand",
