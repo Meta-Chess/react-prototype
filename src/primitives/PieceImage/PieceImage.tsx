@@ -20,7 +20,7 @@ import { SFC } from "primitives/SFC";
 import { Animated } from "react-native";
 import { AnimatedGroup } from "primitives";
 import { PieceDecorationName } from "components/shared/Board/Piece/getPieceDecorationNames";
-import { PieceDecorations } from "./PieceDecorations";
+import { DecorationsAbovePiece, DecorationsBelowPiece } from "./PieceDecorations";
 
 interface Props {
   type: PieceName;
@@ -74,16 +74,10 @@ const PieceImage: SFC<Props> = ({
   const alphaModifier = opacity === undefined ? 1 : opacity;
   const paths = (
     <>
-      {
-        <PieceDecorations
-          pieceDecorationNames={pieceDecorationNames}
-          squareShape={squareShape}
-          belowPiece={true}
-        />
-      }
+      {<DecorationsBelowPiece pieceDecorationNames={pieceDecorationNames} />}
       {PIECE_SPRITE[type]}
       {
-        <PieceDecorations
+        <DecorationsAbovePiece
           pieceDecorationNames={pieceDecorationNames}
           squareShape={squareShape}
         />

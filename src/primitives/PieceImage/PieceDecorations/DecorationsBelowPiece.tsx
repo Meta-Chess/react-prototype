@@ -1,42 +1,27 @@
-import React, { ReactNode } from "react";
-import { Path, Svg, G } from "react-native-svg";
+import React, { FC, Fragment, ReactNode } from "react";
 import { PieceDecorationName } from "components/shared/Board/Piece/getPieceDecorationNames";
-import { BsArrowClockwise, BsArrowCounterclockwise } from "react-icons/bs";
+import { Path, Svg, G } from "react-native-svg";
 
-// TODO: consider changing functions to maps
-export function getDecorationsAbovePiece(
-  name: PieceDecorationName,
-  circularBoard: boolean
-): ReactNode {
-  if (name === PieceDecorationName.UpDirectionArrow) {
-    if (circularBoard)
-      return (
-        <Svg viewBox={"-17 -15.5 45 45"}>
-          <BsArrowCounterclockwise key={name} viewBox={"0 0 25 25"} />
-        </Svg>
-      );
-    return (
-      <Path
-        key={name}
-        d="M 22.5,17.5 22.5,24.5 22.5,24.5 M 22.5,17.5 20,20 M 22.5,17.5 25,20"
-      />
-    );
-  } else if (name === PieceDecorationName.DownDirectionArrow) {
-    if (circularBoard)
-      return (
-        <Svg viewBox={"-17 -15.5 45 45"}>
-          <BsArrowClockwise key={name} viewBox={"0 0 25 25"} />
-        </Svg>
-      );
-    return (
-      <Path
-        key={name}
-        d="M 22.5,17.5 22.5,24.5 22.5,24.5 M 22.5,24.5 20,22 M 22.5,24.5 25,22"
-      />
-    );
-  }
-  return null;
+interface Props {
+  pieceDecorationNames?: PieceDecorationName[];
 }
+
+// TODO: Probably better to extract decorations as components absolutely positioned on the PieceImage (rather than paths/svgs in here)
+export const DecorationsBelowPiece: FC<Props> = ({ pieceDecorationNames }) => {
+  if (pieceDecorationNames === undefined || pieceDecorationNames.length === 0) {
+    return null;
+  }
+
+  return (
+    <>
+      {pieceDecorationNames?.map((pieceDecorationName, index) => {
+        const decorations = getDecorationsBelowPiece(pieceDecorationName);
+
+        return <Fragment key={index}>{decorations}</Fragment>;
+      })}
+    </>
+  );
+};
 
 export function getDecorationsBelowPiece(name: PieceDecorationName): ReactNode {
   if (name === PieceDecorationName.NimbusSymbol) {
@@ -63,5 +48,3 @@ export function getDecorationsBelowPiece(name: PieceDecorationName): ReactNode {
   }
   return null;
 }
-
-//
