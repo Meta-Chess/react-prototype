@@ -110,5 +110,5 @@ const IconPositioningContainer = styled(View)`
   align-items: center;
   justify-content: center;
   top: 8px;
-  right: 8px;
+  right: 6px;
 `;
