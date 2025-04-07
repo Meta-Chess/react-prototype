@@ -10,6 +10,7 @@ import { GameOptions } from "game";
 import { PlayOnline } from "./PlayOnline";
 import { PlayNow } from "./PlayNow";
 import { Links } from "./Links";
+import { NimbusLogo } from "primitives";
 
 const NimbusStartScreen: FC = () => {
   const { height, width } = useWindowDimensions();
@@ -48,7 +49,7 @@ const NimbusStartScreen: FC = () => {
                   >
                     <ShadowBoard />
                   </StaticBoardViewProvider>
-                  {/* <MChessLogo /> TODO: use Nimbus logo*/}
+                  <NimbusLogo />
                 </GameProvider>
               ) : null
             }
