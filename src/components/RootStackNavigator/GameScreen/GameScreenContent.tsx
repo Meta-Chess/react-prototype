@@ -29,6 +29,11 @@ export const GameScreenContent: FC = () => {
   const [winModalHidden, setWinModalHidden] = useState(false);
   const hideWinModal = useCallback(() => setWinModalHidden(true), []);
 
+  const isNimbusGame = useMemo(() => {
+    const ruleNames = gameMaster?.getRuleNames() || [];
+    return ruleNames.some((name) => name === "nimbus");
+  }, [gameMaster?.getRuleNames()]);
+
   const allowableMoves = gameMaster?.allowableMoves;
   const moveDisambiguationRequired =
     gameMaster?.locationSelected && (allowableMoves?.length || 0) > 1;
@@ -105,7 +110,10 @@ export const GameScreenContent: FC = () => {
           ) : null}
         </View>
       </Container>
-      <HelpMenu context={{ gameMaster }} />
+      <HelpMenu
+        context={{ gameMaster }}
+        aboutConfig={isNimbusGame ? ["nimbus", "mchess"] : undefined}
+      />
     </StyledContainer>
   );
 };

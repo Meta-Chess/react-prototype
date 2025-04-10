@@ -23,7 +23,7 @@ export const JoinDiscordButton: FC<{ buttonText: string }> = ({ buttonText }) =>
       <Text
         style={{ marginBottom: 16 }}
         cat={"BodyXS"}
-        color={Colors.DISCORD.toString()}
+        color={Colors.TEXT.LIGHT_SECONDARY.toString()}
         alignment={"center"}
       >
         {buttonText}

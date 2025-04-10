@@ -16,11 +16,10 @@ import { HorizontalSeparator } from "ui";
 import { debounce } from "lodash";
 import { Screens, useNavigation, useRoute } from "navigation";
 import { HelpMenuListItem, HelpMenuListItemProps } from "./HelpMenuListItem";
-import { BiNews } from "react-icons/bi";
+import { InfoSection } from "components/RootStackNavigator/AboutScreen";
 
 const getMenuOptions = <T extends Exclude<HelpMenuListItemProps, "context">>(
-  navigateToAboutScreen?: () => void,
-  openChangeLog?: () => void
+  navigateToAboutScreen?: () => void
 ): T[] => {
   return [
     {
@@ -38,20 +37,15 @@ const getMenuOptions = <T extends Exclude<HelpMenuListItemProps, "context">>(
       IconComponent: FeedbackIcon,
       category: "SUGGESTION",
     },
-    {
-      label: "Change log",
-      IconComponent: BiNews,
-      onPress: openChangeLog,
-    },
   ].filter((option) => option.category || option.onPress) as T[];
 };
 
 interface Props {
   context?: Record<string, unknown>;
-  openChangeLog?: () => void;
+  aboutConfig?: InfoSection[];
 }
 
-export const HelpMenu: SFC<Props> = ({ context, style, openChangeLog }) => {
+export const HelpMenu: SFC<Props> = ({ context, style, aboutConfig }) => {
   const [iconRef, iconHovered] = useHover();
   const [menuRef, menuHovered] = useHover();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -70,7 +64,7 @@ export const HelpMenu: SFC<Props> = ({ context, style, openChangeLog }) => {
 
   const navigation = useNavigation();
   const navigateToAboutScreen = useCallback(() => {
-    navigation.navigate(Screens.AboutScreen);
+    navigation.navigate(Screens.AboutScreen, { sections: aboutConfig });
   }, [navigation]);
 
   return (
@@ -80,7 +74,7 @@ export const HelpMenu: SFC<Props> = ({ context, style, openChangeLog }) => {
         <>
           <TrackingPixel urlEnd={"HelpMenuHover"} />
           <MenuContainer ref={menuRef}>
-            {getMenuOptions(navigateToAboutScreen, openChangeLog).map((option) => (
+            {getMenuOptions(navigateToAboutScreen).map((option) => (
               <View key={option.label}>
                 <HelpMenuListItem {...option} context={contextWithRoute} />
                 <HorizontalSeparator />
@@ -110,5 +104,5 @@ const IconPositioningContainer = styled(View)`
   align-items: center;
   justify-content: center;
   top: 8px;
-  right: 8px;
+  right: 6px;
 `;

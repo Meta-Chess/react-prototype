@@ -83,22 +83,20 @@ export const nimbus: TrivialParameterRule = () => ({
       PieceName.WaterPiece,
       PieceName.EarthPiece,
       PieceName.LightningPiece,
-    ]
-      .filter((newPieceType) => newPieceType !== piece.name)
-      .map((newPieceType) => {
-        return {
-          pieceId: piece.id,
-          location: piece.location,
-          playerName: piece.owner,
-          pieceDeltas: [
-            {
-              pieceId: piece.id,
-              path: new Path(piece.location, []),
-              promoteTo: newPieceType,
-            },
-          ],
-        };
-      });
+    ].map((newPieceType) => {
+      return {
+        pieceId: piece.id,
+        location: piece.location,
+        playerName: piece.owner,
+        pieceDeltas: [
+          {
+            pieceId: piece.id,
+            path: new Path(piece.location, []),
+            promoteTo: newPieceType,
+          },
+        ],
+      };
+    });
 
     return {
       game,
