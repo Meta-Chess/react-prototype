@@ -187,7 +187,8 @@ export const futureVariants: { [key in FutureVariantName]: FutureVariant } = {
   },
   nimbus: {
     title: "Nimbus",
-    shortDescription: "A game by ...",
+    shortDescription:
+      "A triangular board variant inspired by chess, with new pieces that can change their type throughout the game.",
     traits: ["Board", "Movement", "Turn", "Ending"], // TODO: Make a new hybrid trait?
     implemented: false,
     ruleNames: ["nimbus", "promotion", "stalemate"],
