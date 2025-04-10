@@ -16,12 +16,10 @@ import { HorizontalSeparator } from "ui";
 import { debounce } from "lodash";
 import { Screens, useNavigation, useRoute } from "navigation";
 import { HelpMenuListItem, HelpMenuListItemProps } from "./HelpMenuListItem";
-import { FcRules } from "react-icons/fc";
 import { InfoSection } from "components/RootStackNavigator/AboutScreen";
 
 const getMenuOptions = <T extends Exclude<HelpMenuListItemProps, "context">>(
-  navigateToAboutScreen?: () => void,
-  ruleConfig?: string[]
+  navigateToAboutScreen?: () => void
 ): T[] => {
   return [
     {
@@ -29,12 +27,6 @@ const getMenuOptions = <T extends Exclude<HelpMenuListItemProps, "context">>(
       IconComponent: InfoIcon,
       onPress: navigateToAboutScreen,
     },
-    {
-      label: "Rules",
-      IconComponent: FcRules,
-      onPress: undefined,
-    },
-
     {
       label: "Bug report",
       IconComponent: BugIcon,
@@ -45,21 +37,15 @@ const getMenuOptions = <T extends Exclude<HelpMenuListItemProps, "context">>(
       IconComponent: FeedbackIcon,
       category: "SUGGESTION",
     },
-  ].filter(
-    (option) =>
-      option.category ||
-      option.onPress ||
-      (option.label === "Rules" && ruleConfig && ruleConfig?.length)
-  ) as T[];
+  ].filter((option) => option.category || option.onPress) as T[];
 };
 
 interface Props {
   context?: Record<string, unknown>;
   aboutConfig?: InfoSection[];
-  ruleConfig?: string[];
 }
 
-export const HelpMenu: SFC<Props> = ({ context, style, aboutConfig, ruleConfig }) => {
+export const HelpMenu: SFC<Props> = ({ context, style, aboutConfig }) => {
   const [iconRef, iconHovered] = useHover();
   const [menuRef, menuHovered] = useHover();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -88,7 +74,7 @@ export const HelpMenu: SFC<Props> = ({ context, style, aboutConfig, ruleConfig }
         <>
           <TrackingPixel urlEnd={"HelpMenuHover"} />
           <MenuContainer ref={menuRef}>
-            {getMenuOptions(navigateToAboutScreen, ruleConfig).map((option) => (
+            {getMenuOptions(navigateToAboutScreen).map((option) => (
               <View key={option.label}>
                 <HelpMenuListItem {...option} context={contextWithRoute} />
                 <HorizontalSeparator />
