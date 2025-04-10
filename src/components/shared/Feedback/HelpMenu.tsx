@@ -17,6 +17,7 @@ import { debounce } from "lodash";
 import { Screens, useNavigation, useRoute } from "navigation";
 import { HelpMenuListItem, HelpMenuListItemProps } from "./HelpMenuListItem";
 import { FcRules } from "react-icons/fc";
+import { InfoSection } from "components/RootStackNavigator/AboutScreen";
 
 const getMenuOptions = <T extends Exclude<HelpMenuListItemProps, "context">>(
   navigateToAboutScreen?: () => void,
@@ -28,15 +29,12 @@ const getMenuOptions = <T extends Exclude<HelpMenuListItemProps, "context">>(
       IconComponent: InfoIcon,
       onPress: navigateToAboutScreen,
     },
-    ...(ruleConfig && ruleConfig.length > 0
-      ? [
-          {
-            label: "Rules",
-            IconComponent: FcRules,
-            onPress: undefined,
-          },
-        ]
-      : []),
+    {
+      label: "Rules",
+      IconComponent: FcRules,
+      onPress: undefined,
+    },
+
     {
       label: "Bug report",
       IconComponent: BugIcon,
@@ -51,16 +49,17 @@ const getMenuOptions = <T extends Exclude<HelpMenuListItemProps, "context">>(
     (option) =>
       option.category ||
       option.onPress ||
-      (option.label === "Rules" && ruleConfig?.length)
+      (option.label === "Rules" && ruleConfig && ruleConfig?.length)
   ) as T[];
 };
 
 interface Props {
   context?: Record<string, unknown>;
+  aboutConfig?: InfoSection[];
   ruleConfig?: string[];
 }
 
-export const HelpMenu: SFC<Props> = ({ context, style, ruleConfig }) => {
+export const HelpMenu: SFC<Props> = ({ context, style, aboutConfig, ruleConfig }) => {
   const [iconRef, iconHovered] = useHover();
   const [menuRef, menuHovered] = useHover();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -79,7 +78,7 @@ export const HelpMenu: SFC<Props> = ({ context, style, ruleConfig }) => {
 
   const navigation = useNavigation();
   const navigateToAboutScreen = useCallback(() => {
-    navigation.navigate(Screens.AboutScreen);
+    navigation.navigate(Screens.AboutScreen, { sections: aboutConfig });
   }, [navigation]);
 
   return (
