@@ -30,7 +30,6 @@ export const AboutScreen: FC = () => {
           </React.Fragment>
         ))}
       </ScrollView>
-      <HelpMenu style={{ margin: 8 }} />
       <View style={{ position: "absolute", top: 16, left: 16 }}>
         <IconButton Icon={ArrowBackWithStemIcon} onPress={goBackOrToStartScreen} />
       </View>
