@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { ScrollView } from "react-native";
-import { HelpMenu, ScreenContainer } from "components/shared";
 import { ArrowBackWithStemIcon } from "primitives";
 import { View } from "react-native";
 import { IconButton } from "ui/Buttons/IconButton";
@@ -17,23 +16,35 @@ export const AboutScreen: FC = () => {
   const sections = params.sections || ["mchess"];
 
   return (
-    <ScreenContainer style={{ alignItems: "center", paddingVertical: 0 }}>
-      <ScrollView
-        style={{ marginTop: 48 }}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ maxWidth: 800, paddingBottom: 40 }}
+    <>
+      <View
+        style={{
+          width: "100%",
+          minWidth: 400,
+          padding: 24,
+          alignItems: "center",
+        }}
       >
-        {sections.map((section, index) => (
-          <React.Fragment key={index}>
-            {InfoSectionComponents[section]}
-            {index < sections.length - 1 && <Divider />}
-          </React.Fragment>
-        ))}
-      </ScrollView>
+        <ScrollView
+          style={{ marginTop: 48 }}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            maxWidth: 800,
+            paddingBottom: 40,
+          }}
+        >
+          {sections.map((section, index) => (
+            <React.Fragment key={index}>
+              {InfoSectionComponents[section]}
+              {index < sections.length - 1 && <Divider />}
+            </React.Fragment>
+          ))}
+        </ScrollView>
+      </View>
       <View style={{ position: "absolute", top: 16, left: 16 }}>
         <IconButton Icon={ArrowBackWithStemIcon} onPress={goBackOrToStartScreen} />
       </View>
-    </ScreenContainer>
+    </>
   );
 };
 
