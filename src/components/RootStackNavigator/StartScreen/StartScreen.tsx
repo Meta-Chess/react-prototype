@@ -105,7 +105,7 @@ const StartScreen: FC = () => {
               else Linking.openURL(DISCORD_URL);
             }}
           />
-          <HelpMenu openChangeLog={(): void => setShowUpdateLog(true)} />
+          <HelpMenu />
         </ErrorBoundary>
       </ScrollView>
       {showUpdateLog && UPDATE_LOG_ENABLED && (

@@ -16,11 +16,11 @@ import { HorizontalSeparator } from "ui";
 import { debounce } from "lodash";
 import { Screens, useNavigation, useRoute } from "navigation";
 import { HelpMenuListItem, HelpMenuListItemProps } from "./HelpMenuListItem";
-import { BiNews } from "react-icons/bi";
+import { FcRules } from "react-icons/fc";
 
 const getMenuOptions = <T extends Exclude<HelpMenuListItemProps, "context">>(
   navigateToAboutScreen?: () => void,
-  openChangeLog?: () => void
+  ruleConfig?: string[]
 ): T[] => {
   return [
     {
@@ -28,6 +28,15 @@ const getMenuOptions = <T extends Exclude<HelpMenuListItemProps, "context">>(
       IconComponent: InfoIcon,
       onPress: navigateToAboutScreen,
     },
+    ...(ruleConfig && ruleConfig.length > 0
+      ? [
+          {
+            label: "Rules",
+            IconComponent: FcRules,
+            onPress: undefined,
+          },
+        ]
+      : []),
     {
       label: "Bug report",
       IconComponent: BugIcon,
@@ -38,20 +47,20 @@ const getMenuOptions = <T extends Exclude<HelpMenuListItemProps, "context">>(
       IconComponent: FeedbackIcon,
       category: "SUGGESTION",
     },
-    {
-      label: "Change log",
-      IconComponent: BiNews,
-      onPress: openChangeLog,
-    },
-  ].filter((option) => option.category || option.onPress) as T[];
+  ].filter(
+    (option) =>
+      option.category ||
+      option.onPress ||
+      (option.label === "Rules" && ruleConfig?.length)
+  ) as T[];
 };
 
 interface Props {
   context?: Record<string, unknown>;
-  openChangeLog?: () => void;
+  ruleConfig?: string[];
 }
 
-export const HelpMenu: SFC<Props> = ({ context, style, openChangeLog }) => {
+export const HelpMenu: SFC<Props> = ({ context, style, ruleConfig }) => {
   const [iconRef, iconHovered] = useHover();
   const [menuRef, menuHovered] = useHover();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -80,7 +89,7 @@ export const HelpMenu: SFC<Props> = ({ context, style, openChangeLog }) => {
         <>
           <TrackingPixel urlEnd={"HelpMenuHover"} />
           <MenuContainer ref={menuRef}>
-            {getMenuOptions(navigateToAboutScreen, openChangeLog).map((option) => (
+            {getMenuOptions(navigateToAboutScreen, ruleConfig).map((option) => (
               <View key={option.label}>
                 <HelpMenuListItem {...option} context={contextWithRoute} />
                 <HorizontalSeparator />
