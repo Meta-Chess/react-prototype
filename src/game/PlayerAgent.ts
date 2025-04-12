@@ -1,34 +1,32 @@
 import { PlayerAction } from ".";
 
-export interface PlayerActionInterface {
-  doPlayerAction: (input: { playerAction: PlayerAction; received: boolean }) => void;
-  setOnPlayerAction: (onPlayerAction: (playerAction: PlayerAction) => void) => void;
+export interface PlayerActionConduit {
+  receivePlayerAction: (playerAction: PlayerAction) => void;
+  setSendPlayerAction: (sendPlayerAction: (playerAction: PlayerAction) => void) => void;
 }
 
-export abstract class PlayerAgent implements PlayerActionInterface {
-  protected onPlayerAction?: (playerAction: PlayerAction) => void;
+export abstract class PlayerAgent implements PlayerActionConduit {
+  protected sendPlayerAction?: (playerAction: PlayerAction) => void;
 
-  public setOnPlayerAction(onPlayerAction: (playerAction: PlayerAction) => void): void {
-    this.onPlayerAction = onPlayerAction;
+  public setSendPlayerAction(
+    sendPlayerAction: (playerAction: PlayerAction) => void,
+  ): void {
+    this.sendPlayerAction = sendPlayerAction;
   }
 
-  public doPlayerAction({
-    playerAction,
-  }: {
-    playerAction: PlayerAction;
-    received: boolean;
-  }): void {
-    this.doPlayerActionLocally(playerAction);
+  public receivePlayerAction(playerAction: PlayerAction): void {
+    this.doPlayerAction(playerAction);
 
-    if (this.isItMyTurn()) {
+    if (this.sendPlayerAction && this.isItMyTurn()) {
       const newPlayerAction = this.comeUpWithPlayerAction();
-      this.onPlayerAction?.(newPlayerAction);
+      this.doPlayerAction(newPlayerAction);
+      this.sendPlayerAction(newPlayerAction);
     }
   }
 
   protected abstract isItMyTurn(): boolean;
 
-  protected abstract doPlayerActionLocally(playerAction: PlayerAction): void;
+  protected abstract doPlayerAction(playerAction: PlayerAction): void;
 
   protected abstract comeUpWithPlayerAction(): PlayerAction;
 }

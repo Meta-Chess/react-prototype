@@ -55,7 +55,7 @@ export const GameProvider: FC<Props> = ({
   const renderer = useMemo(() => new Renderer(setUpdateCounter), []);
   const gameOptions = useMemo(
     () => explicitGameOptions ?? generateGameOptions?.(),
-    [explicitGameOptions]
+    [explicitGameOptions],
   );
 
   const setRoomId = useCallback((roomId?: string): void => {
@@ -77,7 +77,7 @@ export const GameProvider: FC<Props> = ({
           setGameMaster,
           roomId,
           gameOptions: generateGameOptions?.() ?? gameOptions,
-        })
+        }),
       );
     }
   }, [autoPlay, gameMaster]);
@@ -152,19 +152,19 @@ function initialisePlayerActionBroadcasterAndGameMaster({
   playerActionBroadcaster: PlayerActionBroadcaster;
 } {
   const gameMaster = new GameMaster(
-    ...GameMaster.processConstructorInputs({ gameOptions, renderer })
+    ...GameMaster.processConstructorInputs({ gameOptions, renderer }),
   );
   const playerActionBroadcaster = new PlayerActionBroadcaster();
 
   const gameMasterConnectionId = playerActionBroadcaster.addConnection((playerAction) =>
-    gameMaster.doPlayerAction({ playerAction, received: true })
+    gameMaster.doPlayerAction({ playerAction, received: true }),
   );
 
-  gameMaster.setOnPlayerAction((playerAction) =>
-    playerActionBroadcaster.onPlayerAction({
+  gameMaster.setSendPlayerAction((playerAction) =>
+    playerActionBroadcaster.broadcastPlayerAction({
       playerAction,
       sourceConnectionId: gameMasterConnectionId,
-    })
+    }),
   );
 
   // TODO: loop through players and set up AI players

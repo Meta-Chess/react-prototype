@@ -7,10 +7,26 @@ import { Player } from "game/Player";
 import { AutomaticPlayer } from "./AutomaticPlayer";
 import { PieceName } from "game/types";
 import { maxBy } from "lodash";
+import { PlayerAgent } from "game/PlayerAgent";
+import { PlayerAction } from "game/PlayerAction";
 
-export class SlightlyImprovedRandomMovePlayer implements AutomaticPlayer {
+export class SlightlyImprovedRandomMovePlayer extends PlayerAgent implements AutomaticPlayer {
   constructor(private gameMaster: GameMaster, private player: Player) {
+    super();
     autoBind(this);
+  }
+
+
+  protected isItMyTurn(): boolean {
+    throw new Error("Method not implemented.");
+  }
+
+  protected doPlayerAction(playerAction: PlayerAction): void {
+    throw new Error("Method not implemented.");
+  }
+
+  protected comeUpWithPlayerAction(): PlayerAction {
+    throw new Error("Method not implemented.");
   }
 
   getNextMove(): Move | undefined {

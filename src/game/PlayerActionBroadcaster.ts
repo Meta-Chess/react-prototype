@@ -3,30 +3,30 @@ import { IdGenerator } from "utilities/IdGenerator";
 
 interface Connection {
   id: number;
-  onPlayerAction: (playerAction: PlayerAction) => void;
+  sendPlayerAction: (playerAction: PlayerAction) => void;
 }
 
 export class PlayerActionBroadcaster {
   private connections: Connection[] = [];
   private idGenerator = new IdGenerator();
 
-  onPlayerAction({
+  broadcastPlayerAction({
     playerAction,
     sourceConnectionId,
   }: {
     playerAction: PlayerAction;
     sourceConnectionId: number;
   }): void {
-    this.connections.forEach(({ id: destinationConnectionId, onPlayerAction }) => {
+    this.connections.forEach(({ id: destinationConnectionId, sendPlayerAction }) => {
       if (sourceConnectionId !== destinationConnectionId) {
-        onPlayerAction(playerAction);
+        sendPlayerAction(playerAction);
       }
     });
   }
 
-  addConnection(onPlayerAction: (playerAction: PlayerAction) => void): number {
+  addConnection(sendPlayerAction: (playerAction: PlayerAction) => void): number {
     const id = this.idGenerator.getId();
-    this.connections.push({ id, onPlayerAction });
+    this.connections.push({ id, sendPlayerAction });
     return id;
   }
 }
