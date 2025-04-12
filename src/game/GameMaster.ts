@@ -19,8 +19,9 @@ import { doesCapture } from "./CompactRules/utilities";
 import { Draw, PlayerAction, Resignation } from "./PlayerAction";
 import { doAsync, isPresent, sleep } from "utilities";
 import autoBind from "auto-bind";
+import { PlayerAgent } from "./PlayerAgent";
 
-export class GameMaster {
+export class GameMaster implements PlayerAgent {
   // WARNING: Default values exist both here and in `GameMaster.resetToStartOfGame`
   public gameClones: Game[];
   public result: string | undefined;
@@ -386,9 +387,11 @@ export class GameMaster {
   doPlayerAction({
     playerAction,
     unselect = true,
+    received = false,
   }: {
     playerAction: PlayerAction;
     unselect?: boolean;
+    received?: boolean;
   }): void {
     if (playerAction?.type === "move") {
       this.doMove({
@@ -404,7 +407,7 @@ export class GameMaster {
     }
     this.calculateAllowableMovesForSelectedPieces();
     this.render();
-    this.onPlayerAction();
+    if (!received) this.onPlayerAction?.(playerAction);
   }
 
   doMove({

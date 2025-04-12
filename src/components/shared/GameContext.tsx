@@ -157,7 +157,7 @@ function initialisePlayerActionBroadcasterAndGameMaster({
   const playerActionBroadcaster = new PlayerActionBroadcaster();
 
   const gameMasterConnectionId = playerActionBroadcaster.addConnection((playerAction) =>
-    gameMaster.doPlayerAction({ playerAction })
+    gameMaster.doPlayerAction({ playerAction, received: true })
   );
 
   gameMaster.setOnPlayerAction((playerAction) =>
