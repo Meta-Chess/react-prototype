@@ -44,6 +44,8 @@ export class GameMaster {
   public flipBoard: boolean;
   public overTheBoard: boolean;
 
+  private onPlayerAction: ((playerAction: PlayerAction) => void) | undefined;
+
   constructor(
     public game: Game,
     public interrupt: CompactRules, // This should probably be private
@@ -163,6 +165,10 @@ export class GameMaster {
   render(): void {
     this.recalculateSquaresInfo();
     this.renderer?.render();
+  }
+
+  setOnPlayerAction(onPlayerAction: (playerAction: PlayerAction) => void): void {
+    this.onPlayerAction = onPlayerAction;
   }
 
   setActiveVariants(variants: FutureVariantName[]): void {
@@ -398,6 +404,7 @@ export class GameMaster {
     }
     this.calculateAllowableMovesForSelectedPieces();
     this.render();
+    this.onPlayerAction();
   }
 
   doMove({

@@ -13,6 +13,7 @@ import { OnlineGameMaster } from "game/OnlineGameMaster";
 import axios from "axios";
 import { Screens, useNavigation, useRoute } from "navigation";
 import { startAutomaticPlay } from "game";
+import { PlayerActionBroadcaster } from "game/PlayerActionBroadcaster";
 
 export const GameContext = createContext<{ gameMaster?: GameMaster }>({});
 
@@ -134,9 +135,41 @@ async function setGameMasterToNewGame({
   const newGameMaster =
     gameOptions?.online === true || (gameOptions?.online !== false && roomId)
       ? await OnlineGameMaster.connectNewGame(renderer, gameOptions, roomId, onSpectating)
-      : new GameMaster(...GameMaster.processConstructorInputs({ gameOptions, renderer }));
+      : initialisePlayerActionBroadcasterAndGameMaster({ gameOptions, renderer })
+          .gameMaster;
 
   setGameMaster(newGameMaster);
+}
+
+function initialisePlayerActionBroadcasterAndGameMaster({
+  renderer,
+  gameOptions,
+}: {
+  renderer: Renderer;
+  gameOptions?: GameOptions;
+}): {
+  gameMaster: GameMaster;
+  playerActionBroadcaster: PlayerActionBroadcaster;
+} {
+  const gameMaster = new GameMaster(
+    ...GameMaster.processConstructorInputs({ gameOptions, renderer })
+  );
+  const playerActionBroadcaster = new PlayerActionBroadcaster();
+
+  const gameMasterConnectionId = playerActionBroadcaster.addConnection((playerAction) =>
+    gameMaster.doPlayerAction({ playerAction })
+  );
+
+  gameMaster.setOnPlayerAction((playerAction) =>
+    playerActionBroadcaster.onPlayerAction({
+      playerAction,
+      sourceConnectionId: gameMasterConnectionId,
+    })
+  );
+
+  // TODO: loop through players and set up AI players
+
+  return { gameMaster, playerActionBroadcaster };
 }
 
 // TODO: default url context?
