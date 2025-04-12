@@ -19,9 +19,9 @@ import { doesCapture } from "./CompactRules/utilities";
 import { Draw, PlayerAction, Resignation } from "./PlayerAction";
 import { doAsync, isPresent, sleep } from "utilities";
 import autoBind from "auto-bind";
-import { PlayerAgent } from "./PlayerAgent";
+import { PlayerActionInterface } from "./PlayerAgent";
 
-export class GameMaster implements PlayerAgent {
+export class GameMaster implements PlayerActionInterface {
   // WARNING: Default values exist both here and in `GameMaster.resetToStartOfGame`
   public gameClones: Game[];
   public result: string | undefined;
