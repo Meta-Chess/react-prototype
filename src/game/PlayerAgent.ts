@@ -1,6 +1,6 @@
 import { PlayerAction } from ".";
 
 export interface PlayerAgent {
-  doPlayerAction: (playerAction: PlayerAction) => void;
+  doPlayerAction: (input: { playerAction: PlayerAction; received: boolean }) => void;
   setOnPlayerAction: (onPlayerAction: (playerAction: PlayerAction) => void) => void;
 }
