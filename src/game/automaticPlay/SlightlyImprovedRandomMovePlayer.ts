@@ -10,23 +10,25 @@ import { maxBy } from "lodash";
 import { PlayerAgent } from "game/PlayerAgent";
 import { PlayerAction } from "game/PlayerAction";
 
-export class SlightlyImprovedRandomMovePlayer extends PlayerAgent implements AutomaticPlayer {
+export class SlightlyImprovedRandomMovePlayer
+  extends PlayerAgent
+  implements AutomaticPlayer
+{
   constructor(private gameMaster: GameMaster, private player: Player) {
     super();
     autoBind(this);
   }
 
-
   protected isItMyTurn(): boolean {
-    throw new Error("Method not implemented.");
+    return this.player.name === this.gameMaster.game.getCurrentPlayerName();
   }
 
   protected doPlayerAction(playerAction: PlayerAction): void {
-    throw new Error("Method not implemented.");
+    this.gameMaster.receivePlayerAction(playerAction);
   }
 
   protected comeUpWithPlayerAction(): PlayerAction {
-    throw new Error("Method not implemented.");
+    return { type: "move", data: this.getNextMove() };
   }
 
   getNextMove(): Move | undefined {
