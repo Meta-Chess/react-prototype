@@ -26,16 +26,14 @@ export class PlayerActionBroadcaster {
     });
   }
 
-  private addConnection(sendPlayerAction: (playerAction: PlayerAction) => void): number {
-    const id = this.idGenerator.getId();
-    this.connections.push({ id, sendPlayerAction });
-    return id;
-  }
+  public addConnection(communicator: PlayerActionCommunicator): void {
+    const sourceConnectionId = this.idGenerator.getId();
+    this.connections.push({
+      id: sourceConnectionId,
+      sendPlayerAction: communicator.receivePlayerAction,
+    });
 
-  public addConduit(conduit: PlayerActionCommunicator): void {
-    const sourceConnectionId = this.addConnection(conduit.receivePlayerAction);
-
-    conduit.setSendPlayerAction((playerAction) => {
+    communicator.setSendPlayerAction((playerAction) => {
       this.broadcastPlayerAction({ playerAction, sourceConnectionId });
     });
   }

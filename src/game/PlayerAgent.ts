@@ -1,5 +1,6 @@
 import { GameMaster, PlayerAction } from ".";
 import { Player } from "./Player";
+import autoBind from "auto-bind";
 
 export interface PlayerActionCommunicator {
   receivePlayerAction: (playerAction: PlayerAction) => void;
@@ -9,13 +10,12 @@ export interface PlayerActionCommunicator {
 export abstract class PlayerAgent implements PlayerActionCommunicator {
   protected sendPlayerAction?: (playerAction: PlayerAction) => void;
 
-  constructor(
-    protected gameMaster: GameMaster,
-    protected player: Player,
-  ) {}
+  constructor(protected gameMaster: GameMaster, protected player: Player) {
+    autoBind(this);
+  }
 
   public setSendPlayerAction(
-    sendPlayerAction: (playerAction: PlayerAction) => void,
+    sendPlayerAction: (playerAction: PlayerAction) => void
   ): void {
     this.sendPlayerAction = sendPlayerAction;
   }
