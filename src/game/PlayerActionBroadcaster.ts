@@ -1,7 +1,6 @@
 import { PlayerAction } from "game/PlayerAction";
 import { IdGenerator } from "utilities/IdGenerator";
 import { PlayerActionCommunicator } from "./PlayerAgent";
-import autoBind from "auto-bind";
 
 interface Connection {
   id: number;

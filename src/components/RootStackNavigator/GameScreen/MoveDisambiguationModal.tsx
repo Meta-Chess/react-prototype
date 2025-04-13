@@ -45,7 +45,11 @@ export const MoveDisambiguationModal: FC<Props> = ({ flipBoard }) => {
                 gameMaster={moveDemoGameMaster}
                 flipBoard={flipBoard}
                 boardVisualisation={shape === SquareShape.Arc ? "circular" : "flat"}
-                onPress={(): void => gameMaster.doPlayerAction({ playerAction: { type: "move", data: move } })}
+                onPress={(): void =>
+                  gameMaster.doPlayerAction({
+                    playerAction: { type: "move", data: move },
+                  })
+                }
                 style={{ marginLeft: index > 0 ? 12 : undefined }}
               />
               <Text

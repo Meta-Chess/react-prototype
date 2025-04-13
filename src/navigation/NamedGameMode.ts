@@ -2,7 +2,7 @@ import { NavigatorParamList } from "./NavigatorParamList";
 import { FutureVariantName } from "game/variants";
 import { calculateGameOptions } from "game/variantAndRuleProcessing";
 import { Screens } from "./Screens";
-import { GameOptions, PlayerType } from "game/types";
+import { PlayerType } from "game/types";
 
 export enum NamedGameMode {
   spherical = "spherical",
