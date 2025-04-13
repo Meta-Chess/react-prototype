@@ -2,11 +2,14 @@ import { toLocation } from "utilities";
 import { GameMaster } from "game/GameMaster";
 
 import { PlayerName } from "game/types";
+import { calculateGameOptions } from "../../variantAndRuleProcessing/calculateGameOptions";
 
 describe("In standard chess", () => {
   it("Fool's mate should end game", () => {
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ gameOptions: { checkEnabled: true } })
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: true }, []),
+      })
     );
     const board = gameMaster.game.board;
 

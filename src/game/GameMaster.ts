@@ -20,6 +20,7 @@ import { Draw, PlayerAction, Resignation } from "./PlayerAction";
 import { doAsync, isPresent, sleep } from "utilities";
 import autoBind from "auto-bind";
 import { PlayerActionCommunicator } from "./PlayerAgent";
+import { calculateGameOptions } from "./variantAndRuleProcessing";
 
 export class GameMaster implements PlayerActionCommunicator {
   // WARNING: Default values exist both here and in `GameMaster.resetToStartOfGame`
@@ -55,7 +56,7 @@ export class GameMaster implements PlayerActionCommunicator {
     protected renderer?: Renderer,
     public playerActionHistory: PlayerAction[] = [],
     protected evaluateEndGameConditions = true,
-    public positionInHistory = 0,
+    public positionInHistory = 0
   ) {
     autoBind(this);
     this.gameClones = evaluateEndGameConditions
@@ -64,7 +65,7 @@ export class GameMaster implements PlayerActionCommunicator {
 
     this.drawOffers = game.players.reduce(
       (acc: { [n in PlayerName]?: boolean }, p) => ({ ...acc, [p.name]: false }),
-      {},
+      {}
     );
 
     this.flipBoard = !!gameOptions?.flipBoard;
@@ -99,49 +100,27 @@ export class GameMaster implements PlayerActionCommunicator {
   }
 
   static processConstructorInputs({
-    gameOptions = {},
+    gameOptions,
     assignedPlayer = "all",
     renderer,
     playerActionHistory = [],
   }: {
-    gameOptions?: Partial<GameOptions>;
+    gameOptions: GameOptions;
     assignedPlayer?: PlayerAssignment;
     renderer?: Renderer;
     playerActionHistory?: PlayerAction[];
-  } = {}): ConstructorParameters<typeof GameMaster> {
-    const {
-      time,
-      checkEnabled,
-      format = "variantComposition",
-      baseVariants = [],
-      numberOfPlayers = 2,
-    } = gameOptions;
-
-    const completeGameOptions: GameOptions = {
-      ...gameOptions,
-      format,
-      baseVariants,
-      numberOfPlayers,
-    };
-
+  }): ConstructorParameters<typeof GameMaster> {
     const interrupt = new CompactRules(
-      baseVariants,
-      [format],
-      checkEnabled ? ["check"] : [],
-      gameOptions.ruleNamesWithParams,
+      gameOptions.baseVariants,
+      [gameOptions.format],
+      gameOptions.checkEnabled ? ["check"] : [],
+      gameOptions.ruleNamesWithParams
     );
     const game = interrupt.for.afterGameCreation({
-      game: Game.createGame(interrupt, time, numberOfPlayers),
+      game: Game.createGame(interrupt, gameOptions.time, gameOptions.numberOfPlayers),
     }).game;
 
-    return [
-      game,
-      interrupt,
-      completeGameOptions,
-      assignedPlayer,
-      renderer,
-      playerActionHistory,
-    ];
+    return [game, interrupt, gameOptions, assignedPlayer, renderer, playerActionHistory];
   }
 
   clone({
@@ -159,7 +138,7 @@ export class GameMaster implements PlayerActionCommunicator {
       renderer || new Renderer(),
       cloneDeep(this.playerActionHistory),
       evaluateEndGameConditions,
-      this.positionInHistory,
+      this.positionInHistory
     );
   }
 
@@ -181,7 +160,7 @@ export class GameMaster implements PlayerActionCommunicator {
     this.interrupt.constructor(
       [...this.formatVariants, ...(this.gameOptions.baseVariants || [])],
       this.gameOptions.format ? [this.gameOptions.format] : [],
-      this.gameOptions.checkEnabled ? ["check"] : [],
+      this.gameOptions.checkEnabled ? ["check"] : []
     );
     this.game.setInterrupt(this.interrupt);
   }
@@ -200,7 +179,7 @@ export class GameMaster implements PlayerActionCommunicator {
           path
             .slice(1, path.length - 1)
             .forEach((pathSquare) =>
-              this.squaresInfo.add(pathSquare, SquareInfo.LastMovePath),
+              this.squaresInfo.add(pathSquare, SquareInfo.LastMovePath)
             );
         });
       }
@@ -353,7 +332,7 @@ export class GameMaster implements PlayerActionCommunicator {
     // console.log(`${this.selectedPieces.length ? "" : "\n\n// Move ... ???\n"}gameMaster.handleSquarePressed("${location}");`); // TEST WRITING HELPER COMMENT
     const moves = uniqWith(
       this.allowableMoves.filter((m) => m.location === location),
-      movesAreEqual,
+      movesAreEqual
     );
     const isSelectedPieceOwnersTurn =
       this.game.players[this.game.getCurrentPlayerIndex()].name ===
@@ -378,7 +357,7 @@ export class GameMaster implements PlayerActionCommunicator {
     ) {
       // pressing again on a selected piece
       this.unselectPieces(
-        pieceId ? [pieceId] : this.game.board.squareAt(location)?.pieces,
+        pieceId ? [pieceId] : this.game.board.squareAt(location)?.pieces
       );
     } else {
       this.unselectAllPieces();
@@ -439,7 +418,7 @@ export class GameMaster implements PlayerActionCommunicator {
         this.playerActionHistory
           .slice(0, this.positionInHistory)
           .map((m) => m.data?.playerName)
-          .filter(isPresent),
+          .filter(isPresent)
       ).length === this.game.players.length;
     if (everyoneWillHaveDoneSomething) this.game.updateClocks(asOf);
   }
@@ -527,7 +506,7 @@ export class GameMaster implements PlayerActionCommunicator {
   calculateAllowableMovesForSelectedPieces(): void {
     this.locationSelected = false;
     this.allowableMoves = this.selectedPieces.flatMap((piece: Piece) =>
-      new Pather(this.game, this.gameClones, piece, this.interrupt).findPaths(),
+      new Pather(this.game, this.gameClones, piece, this.interrupt).findPaths()
     );
     // console.log(`// Expect allowable moves to be ... ??? \n expect(gameMaster.allowableMoves).toEqual(expect.arrayContaining([${this.allowableMoves.map((move) => `expect.objectContaining({ location: "${move.location}"})`)}])); \n expect(gameMaster.allowableMoves.length).toEqual(${this.allowableMoves.length});`); // TEST WRITING HELPER COMMENT
   }
@@ -538,7 +517,7 @@ export class GameMaster implements PlayerActionCommunicator {
       this.game,
       this.gameClones,
       this.selectedPieces[0],
-      this.interrupt,
+      this.interrupt
     ).findPaths();
   }
 

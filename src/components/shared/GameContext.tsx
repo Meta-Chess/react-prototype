@@ -12,7 +12,7 @@ import { GameMaster } from "game/GameMaster";
 import { OnlineGameMaster } from "game/OnlineGameMaster";
 import axios from "axios";
 import { Screens, useNavigation, useRoute } from "navigation";
-import { startAutomaticPlay } from "game";
+import { calculateGameOptions, startAutomaticPlay } from "game";
 import { PlayerActionBroadcaster } from "game/PlayerActionBroadcaster";
 import { SlightlyImprovedRandomMovePlayer } from "game/automaticPlay/SlightlyImprovedRandomMovePlayer";
 
@@ -55,7 +55,7 @@ export const GameProvider: FC<Props> = ({
   const [roomId, simpleSetRoomId] = useState(receivedRoomId);
   const renderer = useMemo(() => new Renderer(setUpdateCounter), []);
   const gameOptions = useMemo(
-    () => explicitGameOptions ?? generateGameOptions?.(),
+    () => explicitGameOptions ?? generateGameOptions?.() ?? calculateGameOptions({}, []),
     [explicitGameOptions]
   );
 
@@ -85,7 +85,7 @@ export const GameProvider: FC<Props> = ({
 
   useEffect((): void => {
     if (hasGameMaster) return;
-    if (gameOptions?.spotlight && !roomId) {
+    if (gameOptions.spotlight && !roomId) {
       findSpotlightGameRoom().then((foundRoomId) => {
         if (foundRoomId) {
           setRoomId(foundRoomId);
@@ -104,7 +104,7 @@ export const GameProvider: FC<Props> = ({
         setGameMaster,
         roomId,
         gameOptions,
-        onSpectating: gameOptions?.spotlight
+        onSpectating: gameOptions.spotlight
           ? (): void => setRoomId(undefined)
           : undefined,
       });
@@ -130,11 +130,11 @@ async function setGameMasterToNewGame({
   renderer: Renderer;
   setGameMaster: (gm: GameMaster | undefined) => void;
   roomId?: string;
-  gameOptions?: GameOptions;
+  gameOptions: GameOptions;
   onSpectating?: () => void;
 }): Promise<void> {
   const newGameMaster =
-    gameOptions?.online === true || (gameOptions?.online !== false && roomId)
+    gameOptions.online === true || (gameOptions.online !== false && roomId)
       ? await OnlineGameMaster.connectNewGame(renderer, gameOptions, roomId, onSpectating)
       : initialisePlayerActionBroadcasterAndGameMaster({ gameOptions, renderer })
           .gameMaster;
@@ -147,7 +147,7 @@ function initialisePlayerActionBroadcasterAndGameMaster({
   gameOptions,
 }: {
   renderer: Renderer;
-  gameOptions?: GameOptions;
+  gameOptions: GameOptions;
 }): {
   gameMaster: GameMaster;
   playerActionBroadcaster: PlayerActionBroadcaster;
@@ -160,6 +160,7 @@ function initialisePlayerActionBroadcasterAndGameMaster({
     })
   );
 
+  gameOptions?.playerTypes.map;
   const aiGameMaster = new GameMaster(
     ...GameMaster.processConstructorInputs({
       gameOptions,

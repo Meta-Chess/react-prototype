@@ -2,12 +2,15 @@ import { GameMaster } from "game/GameMaster";
 
 import { Gait, PlayerName } from "game/types";
 import { toLocation } from "utilities";
+import { calculateGameOptions } from "../../variantAndRuleProcessing/calculateGameOptions";
 
 describe("In standard chess", () => {
   it("It should be a draw by stalemate if a player has no legal moves", () => {
     // Setup standard board
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ gameOptions: { checkEnabled: true } })
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: true }, []),
+      })
     );
 
     // Make all pieces unable to move
@@ -27,7 +30,9 @@ describe("In standard chess", () => {
   it("After moving... It should be a draw by stalemate if a player has no legal moves", () => {
     // Setup standard board
     const gameMaster = new GameMaster(
-      ...GameMaster.processConstructorInputs({ gameOptions: { checkEnabled: true } })
+      ...GameMaster.processConstructorInputs({
+        gameOptions: calculateGameOptions({ checkEnabled: true }, []),
+      })
     );
 
     // Make all black pieces unable to move
@@ -50,10 +55,7 @@ describe("In atomic chess", () => {
   it("The following sequence of moves is stalemate", () => {
     const gameMaster = new GameMaster(
       ...GameMaster.processConstructorInputs({
-        gameOptions: {
-          checkEnabled: true,
-          baseVariants: ["atomic"],
-        },
+        gameOptions: calculateGameOptions({ checkEnabled: true }, ["atomic"]),
       })
     );
     const board = gameMaster.game.board;
