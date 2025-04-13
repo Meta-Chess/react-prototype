@@ -38,7 +38,7 @@ const VariantSelectScreen: FC = () => {
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
 
   const [gameOptions, setGameOptions] = useState<GameOptions>({
-    ...defaultGameOptions,
+    ...calculateGameOptions(defaultGameOptions, []),
     online: playWithFriends,
     time: playWithFriends ? 300000 : defaultGameOptions.time,
   });

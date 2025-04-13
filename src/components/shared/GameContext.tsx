@@ -156,11 +156,13 @@ function initialisePlayerActionBroadcasterAndGameMaster({
     ...GameMaster.processConstructorInputs({
       gameOptions,
       renderer,
-      assignedPlayer: PlayerName.White,
+      assignedPlayers: [PlayerName.White],
     })
   );
 
-  gameOptions?.playerTypes.map;
+  // gameOptions.playerTypes.map((playerType, index) => {
+
+  // });
   const aiGameMaster = new GameMaster(
     ...GameMaster.processConstructorInputs({
       gameOptions,

@@ -22,7 +22,7 @@ export class OnlineGameMaster extends GameMaster {
     super(
       ...GameMaster.processConstructorInputs({
         gameOptions,
-        assignedPlayer,
+        assignedPlayers: assignedPlayer,
         renderer,
         playerActionHistory,
       })
@@ -49,14 +49,14 @@ export class OnlineGameMaster extends GameMaster {
       throw new Error("Game options should be set already");
     }
 
-    if (gameClient.assignedPlayer === "spectator") {
+    if (gameClient.assignedPlayers.length === 0) {
       onSpectating?.();
     }
 
     const onlineGameMaster = new OnlineGameMaster(
       renderer,
       gameClient.gameOptions,
-      gameClient.assignedPlayer,
+      gameClient.assignedPlayers,
       roomId,
       gameClient,
       gameClient.playerActions

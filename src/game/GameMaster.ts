@@ -51,7 +51,7 @@ export class GameMaster implements PlayerActionCommunicator {
     public game: Game,
     public interrupt: CompactRules, // This should probably be private
     public gameOptions: GameOptions,
-    public assignedPlayer: PlayerAssignment = "all",
+    public assignedPlayers: PlayerAssignment,
     protected renderer?: Renderer,
     public playerActionHistory: PlayerAction[] = [],
     protected evaluateEndGameConditions = true,
@@ -88,7 +88,7 @@ export class GameMaster implements PlayerActionCommunicator {
     this.timersAsOf = undefined;
     const [game, interrupt, { deck }] = GameMaster.processConstructorInputs({
       gameOptions: this.gameOptions,
-      assignedPlayer: this.assignedPlayer,
+      assignedPlayers: this.assignedPlayers,
       renderer: this.renderer,
     });
     this.deck = deck;
@@ -100,12 +100,12 @@ export class GameMaster implements PlayerActionCommunicator {
 
   static processConstructorInputs({
     gameOptions,
-    assignedPlayer = "all",
+    assignedPlayers = gameOptions.players, // i.e. all players
     renderer,
     playerActionHistory = [],
   }: {
     gameOptions: GameOptions;
-    assignedPlayer?: PlayerAssignment;
+    assignedPlayers?: PlayerAssignment;
     renderer?: Renderer;
     playerActionHistory?: PlayerAction[];
   }): ConstructorParameters<typeof GameMaster> {
@@ -119,7 +119,7 @@ export class GameMaster implements PlayerActionCommunicator {
       game: Game.createGame(interrupt, gameOptions.time, gameOptions.numberOfPlayers),
     }).game;
 
-    return [game, interrupt, gameOptions, assignedPlayer, renderer, playerActionHistory];
+    return [game, interrupt, gameOptions, assignedPlayers, renderer, playerActionHistory];
   }
 
   clone({
@@ -133,7 +133,7 @@ export class GameMaster implements PlayerActionCommunicator {
       this.game.clone(),
       this.interrupt.clone(),
       cloneDeep(this.gameOptions),
-      this.assignedPlayer,
+      this.assignedPlayers,
       renderer || new Renderer(),
       cloneDeep(this.playerActionHistory),
       evaluateEndGameConditions,
@@ -187,7 +187,7 @@ export class GameMaster implements PlayerActionCommunicator {
     this.selectedPieces.forEach((piece) => {
       if (
         piece.owner !== currentPlayerName ||
-        (this.assignedPlayer !== "all" && this.assignedPlayer !== piece.owner) ||
+        !this.assignedPlayers.includes(piece.owner) ||
         this.positionInHistory !== this.playerActionHistory.length
       ) {
         this.squaresInfo.add(piece.location, SquareInfo.SelectedOtherPlayerPiece);
@@ -198,7 +198,7 @@ export class GameMaster implements PlayerActionCommunicator {
     this.allowableMoves.forEach((move) => {
       if (
         move.playerName !== currentPlayerName ||
-        (this.assignedPlayer !== "all" && this.assignedPlayer !== currentPlayerName) ||
+        !this.assignedPlayers.includes(currentPlayerName) ||
         this.positionInHistory !== this.playerActionHistory.length
       ) {
         this.squaresInfo.add(move.location, SquareInfo.PossibleOtherPlayerMoveEndPoint);
@@ -339,8 +339,7 @@ export class GameMaster implements PlayerActionCommunicator {
     const canMoveSelectedPiece =
       isSelectedPieceOwnersTurn &&
       this.stateIsCurrent() &&
-      (this.assignedPlayer === "all" ||
-        this.assignedPlayer === this.selectedPieces[0]?.owner);
+      this.assignedPlayers.includes(this.selectedPieces[0]?.owner);
 
     if (moves.length === 1 && canMoveSelectedPiece) {
       this.doPlayerAction({

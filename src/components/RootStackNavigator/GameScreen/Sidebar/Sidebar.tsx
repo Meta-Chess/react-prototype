@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { ScrollView, useWindowDimensions, View } from "react-native";
 import { Button, Divider, useModals } from "ui";
 import { useGoBackOrToStartScreen } from "navigation";
 import { Colors, SFC } from "primitives";
-import { OnlineGameMaster } from "game";
+import { OnlineGameMaster, PlayerName } from "game";
 import { RoomIdCard } from "./RoomIdCard";
 import { VariantInfoCard } from "./VariantInfoCard";
 import { SelectedPieceInfoCard } from "./SelectedPieceInfoCard";
@@ -37,38 +37,32 @@ const Sidebar: SFC = ({ style }) => {
   }
 
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
+  const getRelevantPlayerNames = useCallback((): PlayerName[] => {
+    if (!gameMaster) return [];
+    const assignedPlayers = gameMaster.assignedPlayers;
+    const currentPlayer = gameMaster.game.getCurrentPlayerName();
+
+    if (assignedPlayers.length === 1) return [assignedPlayers[0]];
+    else if (assignedPlayers.includes(currentPlayer)) return [currentPlayer];
+    else return assignedPlayers;
+  }, [gameMaster]);
   const doResign = (): void => {
-    const assignedPlayer = gameMaster?.assignedPlayer;
-    if (assignedPlayer !== undefined && assignedPlayer !== "spectator") {
-      gameMaster?.doResign({
-        resignation: {
-          playerName:
-            assignedPlayer === "all"
-              ? gameMaster.game.getCurrentPlayerName()
-              : assignedPlayer,
-        },
-      });
-    }
+    getRelevantPlayerNames().forEach((playerName) =>
+      gameMaster?.doResign({ resignation: { playerName } })
+    );
   };
-  const toggleOfferDraw = (): void => {
-    const assignedPlayer = gameMaster?.assignedPlayer;
-    if (assignedPlayer !== undefined && assignedPlayer !== "spectator") {
-      gameMaster?.toggleOfferDraw({
-        playerName:
-          assignedPlayer === "all"
-            ? gameMaster.game.getCurrentPlayerName()
-            : assignedPlayer,
-      });
-    }
-  };
+  const toggleOfferDraw = useCallback((): void => {
+    getRelevantPlayerNames().forEach((playerName) =>
+      gameMaster?.toggleOfferDraw({ playerName })
+    );
+  }, [gameMaster]);
   const isGameOver = gameMaster?.gameOver;
-  const isDead =
-    gameMaster?.assignedPlayer === "all" ||
-    gameMaster?.assignedPlayer === "spectator" ||
-    !gameMaster?.game
-      .alivePlayers()
-      .map((p) => p.name)
-      .includes(gameMaster?.assignedPlayer);
+  const userIsAlive = gameMaster?.game
+    .alivePlayers()
+    .some((alivePlayer) => gameMaster?.assignedPlayers.includes(alivePlayer.name));
+  const othersAreAlive = gameMaster?.game
+    .alivePlayers()
+    .some((alivePlayer) => !gameMaster?.assignedPlayers.includes(alivePlayer.name));
 
   return (
     <Container style={style}>
@@ -94,7 +88,7 @@ const Sidebar: SFC = ({ style }) => {
           </HalfContainer>
         )}
         <HalfContainer>
-          {isGameOver || isDead ? (
+          {isGameOver || !userIsAlive || !othersAreAlive ? (
             <Button
               label="Leave Game"
               style={{ flex: 1 }}
