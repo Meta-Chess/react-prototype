@@ -19,8 +19,9 @@ import { doesCapture } from "./CompactRules/utilities";
 import { Draw, PlayerAction, Resignation } from "./PlayerAction";
 import { doAsync, isPresent, sleep } from "utilities";
 import autoBind from "auto-bind";
+import { PlayerActionCommunicator } from "./automaticPlay/PlayerAgent";
 
-export class GameMaster {
+export class GameMaster implements PlayerActionCommunicator {
   // WARNING: Default values exist both here and in `GameMaster.resetToStartOfGame`
   public gameClones: Game[];
   public result: string | undefined;
@@ -44,11 +45,13 @@ export class GameMaster {
   public flipBoard: boolean;
   public overTheBoard: boolean;
 
+  private onPlayerAction: ((playerAction: PlayerAction) => void) | undefined;
+
   constructor(
     public game: Game,
     public interrupt: CompactRules, // This should probably be private
     public gameOptions: GameOptions,
-    public assignedPlayer: PlayerAssignment = "all",
+    public assignedPlayers: PlayerAssignment,
     protected renderer?: Renderer,
     public playerActionHistory: PlayerAction[] = [],
     protected evaluateEndGameConditions = true,
@@ -85,7 +88,7 @@ export class GameMaster {
     this.timersAsOf = undefined;
     const [game, interrupt, { deck }] = GameMaster.processConstructorInputs({
       gameOptions: this.gameOptions,
-      assignedPlayer: this.assignedPlayer,
+      assignedPlayers: this.assignedPlayers,
       renderer: this.renderer,
     });
     this.deck = deck;
@@ -96,49 +99,27 @@ export class GameMaster {
   }
 
   static processConstructorInputs({
-    gameOptions = {},
-    assignedPlayer = "all",
+    gameOptions,
+    assignedPlayers = gameOptions.players, // i.e. all players
     renderer,
     playerActionHistory = [],
   }: {
-    gameOptions?: Partial<GameOptions>;
-    assignedPlayer?: PlayerAssignment;
+    gameOptions: GameOptions;
+    assignedPlayers?: PlayerAssignment;
     renderer?: Renderer;
     playerActionHistory?: PlayerAction[];
-  } = {}): ConstructorParameters<typeof GameMaster> {
-    const {
-      time,
-      checkEnabled,
-      format = "variantComposition",
-      baseVariants = [],
-      numberOfPlayers = 2,
-    } = gameOptions;
-
-    const completeGameOptions: GameOptions = {
-      ...gameOptions,
-      format,
-      baseVariants,
-      numberOfPlayers,
-    };
-
+  }): ConstructorParameters<typeof GameMaster> {
     const interrupt = new CompactRules(
-      baseVariants,
-      [format],
-      checkEnabled ? ["check"] : [],
+      gameOptions.baseVariants,
+      [gameOptions.format],
+      gameOptions.checkEnabled ? ["check"] : [],
       gameOptions.ruleNamesWithParams
     );
     const game = interrupt.for.afterGameCreation({
-      game: Game.createGame(interrupt, time, numberOfPlayers),
+      game: Game.createGame(interrupt, gameOptions.time, gameOptions.numberOfPlayers),
     }).game;
 
-    return [
-      game,
-      interrupt,
-      completeGameOptions,
-      assignedPlayer,
-      renderer,
-      playerActionHistory,
-    ];
+    return [game, interrupt, gameOptions, assignedPlayers, renderer, playerActionHistory];
   }
 
   clone({
@@ -152,7 +133,7 @@ export class GameMaster {
       this.game.clone(),
       this.interrupt.clone(),
       cloneDeep(this.gameOptions),
-      this.assignedPlayer,
+      this.assignedPlayers,
       renderer || new Renderer(),
       cloneDeep(this.playerActionHistory),
       evaluateEndGameConditions,
@@ -163,6 +144,10 @@ export class GameMaster {
   render(): void {
     this.recalculateSquaresInfo();
     this.renderer?.render();
+  }
+
+  setSendPlayerAction(sendPlayerAction: (playerAction: PlayerAction) => void): void {
+    this.onPlayerAction = sendPlayerAction;
   }
 
   setActiveVariants(variants: FutureVariantName[]): void {
@@ -202,7 +187,7 @@ export class GameMaster {
     this.selectedPieces.forEach((piece) => {
       if (
         piece.owner !== currentPlayerName ||
-        (this.assignedPlayer !== "all" && this.assignedPlayer !== piece.owner) ||
+        !this.assignedPlayers.includes(piece.owner) ||
         this.positionInHistory !== this.playerActionHistory.length
       ) {
         this.squaresInfo.add(piece.location, SquareInfo.SelectedOtherPlayerPiece);
@@ -213,7 +198,7 @@ export class GameMaster {
     this.allowableMoves.forEach((move) => {
       if (
         move.playerName !== currentPlayerName ||
-        (this.assignedPlayer !== "all" && this.assignedPlayer !== currentPlayerName) ||
+        !this.assignedPlayers.includes(currentPlayerName) ||
         this.positionInHistory !== this.playerActionHistory.length
       ) {
         this.squaresInfo.add(move.location, SquareInfo.PossibleOtherPlayerMoveEndPoint);
@@ -246,7 +231,7 @@ export class GameMaster {
     this.allowableMoves = this.allowableMoves.filter(filter);
     if (this.allowableMoves.length === 1) {
       const move = this.allowableMoves[0];
-      this.doMove({ move });
+      this.doPlayerAction({ playerAction: { type: "move", data: move } });
       return move;
     }
     this.render();
@@ -354,11 +339,12 @@ export class GameMaster {
     const canMoveSelectedPiece =
       isSelectedPieceOwnersTurn &&
       this.stateIsCurrent() &&
-      (this.assignedPlayer === "all" ||
-        this.assignedPlayer === this.selectedPieces[0]?.owner);
+      this.assignedPlayers.includes(this.selectedPieces[0]?.owner);
 
     if (moves.length === 1 && canMoveSelectedPiece) {
-      this.doMove({ move: moves[0] });
+      this.doPlayerAction({
+        playerAction: { type: "move", data: moves[0] },
+      });
       return moves[0];
     } else if (moves.length > 1 && canMoveSelectedPiece) {
       this.allowableMoves = moves;
@@ -377,12 +363,18 @@ export class GameMaster {
     }
   }
 
+  receivePlayerAction(playerAction: PlayerAction): void {
+    return this.doPlayerAction({ playerAction, received: true });
+  }
+
   doPlayerAction({
     playerAction,
     unselect = true,
+    received = false,
   }: {
     playerAction: PlayerAction;
     unselect?: boolean;
+    received?: boolean;
   }): void {
     if (playerAction?.type === "move") {
       this.doMove({
@@ -398,6 +390,7 @@ export class GameMaster {
     }
     this.calculateAllowableMovesForSelectedPieces();
     this.render();
+    if (!received) this.onPlayerAction?.(playerAction);
   }
 
   doMove({

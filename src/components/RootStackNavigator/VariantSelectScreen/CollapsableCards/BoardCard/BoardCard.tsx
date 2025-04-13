@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { View } from "react-native";
 import { SFC } from "primitives";
-import { GameOptions } from "game";
+import { calculatePlayerTypes, GameOptions } from "game";
 import { SelectInput } from "ui/Forms";
 import { Row } from "ui";
 import { FormatName } from "game/formats";
@@ -32,8 +32,10 @@ const BoardCard: SFC<Props> = ({
   style,
 }) => {
   const setNumberOfPlayers = useCallback(
-    (numberOfPlayers: number): void =>
-      setGameOptions({ ...gameOptions, numberOfPlayers }),
+    (numberOfPlayers: number): void => {
+      const playerTypes = calculatePlayerTypes(numberOfPlayers, gameOptions.playerTypes);
+      return setGameOptions({ ...gameOptions, numberOfPlayers, playerTypes });
+    },
     [gameOptions, setGameOptions]
   );
 

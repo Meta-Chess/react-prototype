@@ -37,8 +37,9 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
   const [rating] = useState(randomInt(100, 3000));
   const { gameMaster } = useContext(GameContext);
   if (gameMaster === undefined) return null;
-  const assignedPlayer = gameMaster.assignedPlayer;
-  const isYou = assignedPlayer === player.name;
+  const assignedPlayers = gameMaster.assignedPlayers;
+  const isYou = assignedPlayers.includes(player.name);
+  const everyoneIsYou = assignedPlayers.length === gameMaster.game.getPlayers().length;
   const name = isYou ? user?.username ?? defaultName : defaultName;
   const ruleNames = gameMaster.getRuleNames();
   const rowActive = player.name === currentPlayerName;
@@ -60,7 +61,7 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
               <Text cat={"BodyM"} loading={isYou && userIsLoading}>
                 {name}
               </Text>
-              {isYou && (
+              {isYou && !everyoneIsYou && (
                 <Text
                   cat={"BodyS"}
                   color={Colors.TEXT.LIGHT_SECONDARY.toString()}

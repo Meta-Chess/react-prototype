@@ -7,12 +7,15 @@ import React, {
   useState,
 } from "react";
 import { Renderer } from "game/Renderer";
-import { GameOptions } from "game/types";
+import { GameOptions, PlayerName } from "game/types";
 import { GameMaster } from "game/GameMaster";
 import { OnlineGameMaster } from "game/OnlineGameMaster";
 import axios from "axios";
 import { Screens, useNavigation, useRoute } from "navigation";
-import { startAutomaticPlay } from "game";
+import { calculateGameOptions, startAutomaticPlay } from "game";
+import { PlayerActionBroadcaster } from "game/PlayerActionBroadcaster";
+import { SlightlyImprovedRandomMovePlayer } from "game/automaticPlay/SlightlyImprovedRandomMovePlayer";
+import { isPresent } from "utilities/isPresent";
 
 export const GameContext = createContext<{ gameMaster?: GameMaster }>({});
 
@@ -53,7 +56,7 @@ export const GameProvider: FC<Props> = ({
   const [roomId, simpleSetRoomId] = useState(receivedRoomId);
   const renderer = useMemo(() => new Renderer(setUpdateCounter), []);
   const gameOptions = useMemo(
-    () => explicitGameOptions ?? generateGameOptions?.(),
+    () => explicitGameOptions ?? generateGameOptions?.() ?? calculateGameOptions({}, []),
     [explicitGameOptions]
   );
 
@@ -83,7 +86,7 @@ export const GameProvider: FC<Props> = ({
 
   useEffect((): void => {
     if (hasGameMaster) return;
-    if (gameOptions?.spotlight && !roomId) {
+    if (gameOptions.spotlight && !roomId) {
       findSpotlightGameRoom().then((foundRoomId) => {
         if (foundRoomId) {
           setRoomId(foundRoomId);
@@ -102,7 +105,7 @@ export const GameProvider: FC<Props> = ({
         setGameMaster,
         roomId,
         gameOptions,
-        onSpectating: gameOptions?.spotlight
+        onSpectating: gameOptions.spotlight
           ? (): void => setRoomId(undefined)
           : undefined,
       });
@@ -128,15 +131,61 @@ async function setGameMasterToNewGame({
   renderer: Renderer;
   setGameMaster: (gm: GameMaster | undefined) => void;
   roomId?: string;
-  gameOptions?: GameOptions;
+  gameOptions: GameOptions;
   onSpectating?: () => void;
 }): Promise<void> {
   const newGameMaster =
-    gameOptions?.online === true || (gameOptions?.online !== false && roomId)
+    gameOptions.online === true || (gameOptions.online !== false && roomId)
       ? await OnlineGameMaster.connectNewGame(renderer, gameOptions, roomId, onSpectating)
-      : new GameMaster(...GameMaster.processConstructorInputs({ gameOptions, renderer }));
+      : initialisePlayerActionBroadcasterAndGameMaster({ gameOptions, renderer })
+          .gameMaster;
 
   setGameMaster(newGameMaster);
+}
+
+function initialisePlayerActionBroadcasterAndGameMaster({
+  renderer,
+  gameOptions,
+}: {
+  renderer: Renderer;
+  gameOptions: GameOptions;
+}): {
+  gameMaster: GameMaster;
+  playerActionBroadcaster: PlayerActionBroadcaster;
+} {
+  // The game master that will be used to display and interact with things locally
+  const gameMaster = new GameMaster(
+    ...GameMaster.processConstructorInputs({
+      gameOptions,
+      renderer,
+      assignedPlayers: gameOptions.playerTypes
+        .map((type, index) =>
+          type === "local_human" ? (index as PlayerName) : undefined
+        )
+        .filter(isPresent),
+    })
+  );
+
+  const playerActionBroadcaster = new PlayerActionBroadcaster();
+  playerActionBroadcaster.addConnection(gameMaster);
+
+  gameOptions.playerTypes.forEach((playerType, playerName: PlayerName) => {
+    if (playerType === "local_ai") {
+      const aiGameMaster = new GameMaster(
+        ...GameMaster.processConstructorInputs({
+          gameOptions,
+        })
+      );
+      const player = aiGameMaster.game.players.find((p) => p.name === playerName);
+      if (!player) throw new Error(`Player ${playerName} not found`);
+
+      const aiPlayer = new SlightlyImprovedRandomMovePlayer(aiGameMaster, player);
+
+      playerActionBroadcaster.addConnection(aiPlayer);
+    }
+  });
+
+  return { gameMaster, playerActionBroadcaster };
 }
 
 // TODO: default url context?

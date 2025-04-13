@@ -43,9 +43,11 @@ export enum PlayerName {
   Green,
 }
 
+export type PlayerType = "local_human" | "online_human" | "local_ai" | "online_ai";
+
 export const allPossiblePlayerNames = getValues<PlayerName>(PlayerName);
 
-export type PlayerAssignment = PlayerName | "spectator" | "all";
+export type PlayerAssignment = PlayerName[];
 
 export enum PieceName {
   Pawn,
@@ -148,7 +150,8 @@ export enum SquareShape {
 
 export interface GameOptions {
   numberOfPlayers: number;
-  players?: PlayerName[]; // The back end cares about this variable and its name!
+  players: PlayerName[]; // The back end cares about this variable and its name!
+  playerTypes: PlayerType[];
   variant?: VariantName;
   customTitle?: string;
   time?: number | undefined;

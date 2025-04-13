@@ -1,3 +1,5 @@
 {
-  "cSpell.words": ["chainable", "interceptable", "mchess", "millis", "pather"]
+  "cSpell.words": ["chainable", "interceptable", "mchess", "millis", "pather"],
+  "eslint.format.enable": true,
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint"
 }

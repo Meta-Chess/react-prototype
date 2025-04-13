@@ -12,7 +12,7 @@ export const DrawButton: SFC<Props> = ({ onPress, style }) => {
   const { gameMaster } = useContext(GameContext);
   const depressed = gameMaster?.game
     .getPlayers()
-    .find((p) => p.name === gameMaster.assignedPlayer)?.wantsToDraw;
+    .find((p) => gameMaster.assignedPlayers.includes(p.name))?.wantsToDraw;
   return (
     <Button label={DrawIcon} style={style} onPress={onPress} depressed={depressed} />
   );

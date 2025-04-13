@@ -17,7 +17,7 @@ class GameClient {
   private listeners: Partial<Listeners> = {};
   private messageListener: ((event: MessageEvent) => void) | undefined;
   public playerActions: PlayerAction[] = [];
-  public assignedPlayer: PlayerAssignment = "spectator";
+  public assignedPlayers: PlayerAssignment = [];
   public connectedPlayers: PlayerName[] = [];
 
   constructor(url: string, private roomId?: string, public gameOptions?: GameOptions) {
@@ -54,7 +54,7 @@ class GameClient {
       this.gameOptions = gameOptions;
     };
     const setAssignedPlayer = (assignedPlayer: PlayerAssignment): void => {
-      this.assignedPlayer = assignedPlayer;
+      this.assignedPlayers = assignedPlayer;
     };
     const setConnectedPlayers = (connectedPlayers: PlayerName[]): void => {
       this.connectedPlayers = connectedPlayers;
