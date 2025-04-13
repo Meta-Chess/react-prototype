@@ -14,17 +14,9 @@ export class SlightlyImprovedRandomMovePlayer
   extends PlayerAgent
   implements AutomaticPlayer
 {
-  constructor(private gameMaster: GameMaster, private player: Player) {
-    super();
+  constructor(gameMaster: GameMaster, player: Player) {
+    super(gameMaster, player);
     autoBind(this);
-  }
-
-  protected isItMyTurn(): boolean {
-    return this.player.name === this.gameMaster.game.getCurrentPlayerName();
-  }
-
-  protected doPlayerAction(playerAction: PlayerAction): void {
-    this.gameMaster.receivePlayerAction(playerAction);
   }
 
   protected comeUpWithPlayerAction(): PlayerAction {

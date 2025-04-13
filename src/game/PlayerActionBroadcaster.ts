@@ -1,5 +1,7 @@
 import { PlayerAction } from "game/PlayerAction";
 import { IdGenerator } from "utilities/IdGenerator";
+import { PlayerActionCommunicator } from "./PlayerAgent";
+import autoBind from "auto-bind";
 
 interface Connection {
   id: number;
@@ -10,7 +12,7 @@ export class PlayerActionBroadcaster {
   private connections: Connection[] = [];
   private idGenerator = new IdGenerator();
 
-  broadcastPlayerAction({
+  private broadcastPlayerAction({
     playerAction,
     sourceConnectionId,
   }: {
@@ -19,14 +21,22 @@ export class PlayerActionBroadcaster {
   }): void {
     this.connections.forEach(({ id: destinationConnectionId, sendPlayerAction }) => {
       if (sourceConnectionId !== destinationConnectionId) {
-        sendPlayerAction(playerAction);
+        setTimeout(() => sendPlayerAction(playerAction), 0);
       }
     });
   }
 
-  addConnection(sendPlayerAction: (playerAction: PlayerAction) => void): number {
+  private addConnection(sendPlayerAction: (playerAction: PlayerAction) => void): number {
     const id = this.idGenerator.getId();
     this.connections.push({ id, sendPlayerAction });
     return id;
+  }
+
+  public addConduit(conduit: PlayerActionCommunicator): void {
+    const sourceConnectionId = this.addConnection(conduit.receivePlayerAction);
+
+    conduit.setSendPlayerAction((playerAction) => {
+      this.broadcastPlayerAction({ playerAction, sourceConnectionId });
+    });
   }
 }

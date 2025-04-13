@@ -1,12 +1,18 @@
-import { PlayerAction } from ".";
+import { GameMaster, PlayerAction } from ".";
+import { Player } from "./Player";
 
-export interface PlayerActionConduit {
+export interface PlayerActionCommunicator {
   receivePlayerAction: (playerAction: PlayerAction) => void;
   setSendPlayerAction: (sendPlayerAction: (playerAction: PlayerAction) => void) => void;
 }
 
-export abstract class PlayerAgent implements PlayerActionConduit {
+export abstract class PlayerAgent implements PlayerActionCommunicator {
   protected sendPlayerAction?: (playerAction: PlayerAction) => void;
+
+  constructor(
+    protected gameMaster: GameMaster,
+    protected player: Player,
+  ) {}
 
   public setSendPlayerAction(
     sendPlayerAction: (playerAction: PlayerAction) => void,
@@ -17,16 +23,23 @@ export abstract class PlayerAgent implements PlayerActionConduit {
   public receivePlayerAction(playerAction: PlayerAction): void {
     this.doPlayerAction(playerAction);
 
-    if (this.sendPlayerAction && this.isItMyTurn()) {
+    while (this.sendPlayerAction && this.isItMyTurn()) {
       const newPlayerAction = this.comeUpWithPlayerAction();
       this.doPlayerAction(newPlayerAction);
       this.sendPlayerAction(newPlayerAction);
     }
   }
 
-  protected abstract isItMyTurn(): boolean;
+  protected isItMyTurn(): boolean {
+    return (
+      !this.gameMaster.gameOver &&
+      this.player.name === this.gameMaster.game.getCurrentPlayerName()
+    );
+  }
 
-  protected abstract doPlayerAction(playerAction: PlayerAction): void;
+  protected doPlayerAction(playerAction: PlayerAction): void {
+    this.gameMaster.receivePlayerAction(playerAction);
+  }
 
   protected abstract comeUpWithPlayerAction(): PlayerAction;
 }

@@ -19,9 +19,9 @@ import { doesCapture } from "./CompactRules/utilities";
 import { Draw, PlayerAction, Resignation } from "./PlayerAction";
 import { doAsync, isPresent, sleep } from "utilities";
 import autoBind from "auto-bind";
-import { PlayerActionConduit } from "./PlayerAgent";
+import { PlayerActionCommunicator } from "./PlayerAgent";
 
-export class GameMaster implements PlayerActionConduit {
+export class GameMaster implements PlayerActionCommunicator {
   // WARNING: Default values exist both here and in `GameMaster.resetToStartOfGame`
   public gameClones: Game[];
   public result: string | undefined;
@@ -253,7 +253,7 @@ export class GameMaster implements PlayerActionConduit {
     this.allowableMoves = this.allowableMoves.filter(filter);
     if (this.allowableMoves.length === 1) {
       const move = this.allowableMoves[0];
-      this.doMove({ move });
+      this.doPlayerAction({ playerAction: { type: "move", data: move } });
       return move;
     }
     this.render();
@@ -365,7 +365,9 @@ export class GameMaster implements PlayerActionConduit {
         this.assignedPlayer === this.selectedPieces[0]?.owner);
 
     if (moves.length === 1 && canMoveSelectedPiece) {
-      this.doMove({ move: moves[0] });
+      this.doPlayerAction({
+        playerAction: { type: "move", data: moves[0] },
+      });
       return moves[0];
     } else if (moves.length > 1 && canMoveSelectedPiece) {
       this.allowableMoves = moves;

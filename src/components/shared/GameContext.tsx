@@ -7,13 +7,14 @@ import React, {
   useState,
 } from "react";
 import { Renderer } from "game/Renderer";
-import { GameOptions } from "game/types";
+import { GameOptions, PlayerName } from "game/types";
 import { GameMaster } from "game/GameMaster";
 import { OnlineGameMaster } from "game/OnlineGameMaster";
 import axios from "axios";
 import { Screens, useNavigation, useRoute } from "navigation";
 import { startAutomaticPlay } from "game";
 import { PlayerActionBroadcaster } from "game/PlayerActionBroadcaster";
+import { SlightlyImprovedRandomMovePlayer } from "game/automaticPlay/SlightlyImprovedRandomMovePlayer";
 
 export const GameContext = createContext<{ gameMaster?: GameMaster }>({});
 
@@ -152,20 +153,27 @@ function initialisePlayerActionBroadcasterAndGameMaster({
   playerActionBroadcaster: PlayerActionBroadcaster;
 } {
   const gameMaster = new GameMaster(
-    ...GameMaster.processConstructorInputs({ gameOptions, renderer }),
-  );
-  const playerActionBroadcaster = new PlayerActionBroadcaster();
-
-  const gameMasterConnectionId = playerActionBroadcaster.addConnection((playerAction) =>
-    gameMaster.doPlayerAction({ playerAction, received: true }),
-  );
-
-  gameMaster.setSendPlayerAction((playerAction) =>
-    playerActionBroadcaster.broadcastPlayerAction({
-      playerAction,
-      sourceConnectionId: gameMasterConnectionId,
+    ...GameMaster.processConstructorInputs({
+      gameOptions,
+      renderer,
+      assignedPlayer: PlayerName.White,
     }),
   );
+
+  const aiGameMaster = new GameMaster(
+    ...GameMaster.processConstructorInputs({
+      gameOptions,
+    }),
+  );
+
+  const aiPlayerConduit = new SlightlyImprovedRandomMovePlayer(
+    aiGameMaster,
+    aiGameMaster.game.players.find((p) => p.name === PlayerName.Black)!,
+  );
+
+  const playerActionBroadcaster = new PlayerActionBroadcaster();
+  playerActionBroadcaster.addConduit(gameMaster);
+  playerActionBroadcaster.addConduit(aiPlayerConduit);
 
   // TODO: loop through players and set up AI players
 
