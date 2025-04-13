@@ -15,6 +15,7 @@ import { Screens, useNavigation, useRoute } from "navigation";
 import { calculateGameOptions, startAutomaticPlay } from "game";
 import { PlayerActionBroadcaster } from "game/PlayerActionBroadcaster";
 import { SlightlyImprovedRandomMovePlayer } from "game/automaticPlay/SlightlyImprovedRandomMovePlayer";
+import { isPresent } from "utilities/isPresent";
 
 export const GameContext = createContext<{ gameMaster?: GameMaster }>({});
 
@@ -152,33 +153,37 @@ function initialisePlayerActionBroadcasterAndGameMaster({
   gameMaster: GameMaster;
   playerActionBroadcaster: PlayerActionBroadcaster;
 } {
+  // The game master that will be used to display and interact with things locally
   const gameMaster = new GameMaster(
     ...GameMaster.processConstructorInputs({
       gameOptions,
       renderer,
-      assignedPlayers: [PlayerName.White],
+      assignedPlayers: gameOptions.playerTypes
+        .map((type, index) =>
+          type === "local_human" ? (index as PlayerName) : undefined
+        )
+        .filter(isPresent),
     })
-  );
-
-  // gameOptions.playerTypes.map((playerType, index) => {
-
-  // });
-  const aiGameMaster = new GameMaster(
-    ...GameMaster.processConstructorInputs({
-      gameOptions,
-    })
-  );
-
-  const aiPlayerConduit = new SlightlyImprovedRandomMovePlayer(
-    aiGameMaster,
-    aiGameMaster.game.players.find((p) => p.name === PlayerName.Black)!
   );
 
   const playerActionBroadcaster = new PlayerActionBroadcaster();
   playerActionBroadcaster.addConnection(gameMaster);
-  playerActionBroadcaster.addConnection(aiPlayerConduit);
 
-  // TODO: loop through players and set up AI players
+  gameOptions.playerTypes.forEach((playerType, playerName: PlayerName) => {
+    if (playerType === "local_ai") {
+      const aiGameMaster = new GameMaster(
+        ...GameMaster.processConstructorInputs({
+          gameOptions,
+        })
+      );
+      const player = aiGameMaster.game.players.find((p) => p.name === playerName);
+      if (!player) throw new Error(`Player ${playerName} not found`);
+
+      const aiPlayer = new SlightlyImprovedRandomMovePlayer(aiGameMaster, player);
+
+      playerActionBroadcaster.addConnection(aiPlayer);
+    }
+  });
 
   return { gameMaster, playerActionBroadcaster };
 }

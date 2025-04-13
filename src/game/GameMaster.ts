@@ -19,7 +19,7 @@ import { doesCapture } from "./CompactRules/utilities";
 import { Draw, PlayerAction, Resignation } from "./PlayerAction";
 import { doAsync, isPresent, sleep } from "utilities";
 import autoBind from "auto-bind";
-import { PlayerActionCommunicator } from "./PlayerAgent";
+import { PlayerActionCommunicator } from "./automaticPlay/PlayerAgent";
 
 export class GameMaster implements PlayerActionCommunicator {
   // WARNING: Default values exist both here and in `GameMaster.resetToStartOfGame`

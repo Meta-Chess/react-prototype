@@ -1,5 +1,6 @@
-import { GameMaster, PlayerAction } from ".";
-import { Player } from "./Player";
+import { GameMaster } from "game/GameMaster";
+import { PlayerAction } from "game/PlayerAction";
+import { Player } from "game/Player";
 import autoBind from "auto-bind";
 
 export interface PlayerActionCommunicator {

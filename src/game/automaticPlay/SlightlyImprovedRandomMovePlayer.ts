@@ -1,14 +1,14 @@
 import autoBind from "auto-bind";
+import { maxBy } from "lodash";
 import { isPresent } from "utilities";
 import { GameMaster } from "game/GameMaster";
 import { Move } from "game/Move";
 import { Pather } from "game/Pather";
 import { Player } from "game/Player";
-import { AutomaticPlayer } from "./AutomaticPlayer";
 import { PieceName } from "game/types";
-import { maxBy } from "lodash";
-import { PlayerAgent } from "game/PlayerAgent";
 import { PlayerAction } from "game/PlayerAction";
+import { AutomaticPlayer } from "./AutomaticPlayer";
+import { PlayerAgent } from "./PlayerAgent";
 
 export class SlightlyImprovedRandomMovePlayer
   extends PlayerAgent
