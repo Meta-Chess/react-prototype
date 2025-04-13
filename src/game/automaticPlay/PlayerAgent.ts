@@ -13,6 +13,7 @@ export abstract class PlayerAgent implements PlayerActionCommunicator {
 
   constructor(protected gameMaster: GameMaster, protected player: Player) {
     autoBind(this);
+    setTimeout(() => this.maybeTakeTurns(), 1000);
   }
 
   public setSendPlayerAction(
@@ -23,7 +24,10 @@ export abstract class PlayerAgent implements PlayerActionCommunicator {
 
   public receivePlayerAction(playerAction: PlayerAction): void {
     this.doPlayerAction(playerAction);
+    this.maybeTakeTurns();
+  }
 
+  private maybeTakeTurns(): void {
     while (this.sendPlayerAction && this.isItMyTurn()) {
       const newPlayerAction = this.comeUpWithPlayerAction();
       this.doPlayerAction(newPlayerAction);
