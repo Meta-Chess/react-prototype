@@ -2,6 +2,7 @@ import { NavigatorParamList } from "./NavigatorParamList";
 import { FutureVariantName } from "game/variants";
 import { calculateGameOptions } from "game/variantAndRuleProcessing";
 import { Screens } from "./Screens";
+import { GameOptions } from "game/types";
 
 export enum NamedGameMode {
   spherical = "spherical",
@@ -30,6 +31,7 @@ const alternamePathNamings: { [key in NamedGameMode]?: string[] } = {
 const defaultGameOptions = {
   checkEnabled: true,
   numberOfPlayers: 2,
+  playerTypes: ["local_human", "local_ai"],
   baseVariants: [],
   ruleNamesWithParams: {},
   time: undefined,
