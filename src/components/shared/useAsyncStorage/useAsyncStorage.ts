@@ -9,12 +9,10 @@ export function useAsyncStorage<K extends DataKey>(
 ): [set: (value: Data<K>) => void, get: () => Promise<Data<K>>] {
   return [
     useCallback((value) => {
-      console.log(`Saving ${key}: ${value}`);
       if (value === undefined) AsyncStorage.removeItem(key);
       else AsyncStorage.setItem(key, stringifyData[key](value as SetData<any>));
     }, []),
     useCallback(() => {
-      console.log(`Loading ${key}`);
       return dataFromString[key](AsyncStorage.getItem(key)) as Data<any>;
     }, []),
   ];

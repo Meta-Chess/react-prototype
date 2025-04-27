@@ -33,7 +33,7 @@ export const FeedbackModal: FC<Props> = ({ category, context, onClose }) => {
     (message): void => {
       setLoading(true);
       setError(false);
-      fetch("https://6hgisa1jjk.execute-api.ap-southeast-2.amazonaws.com/dev/feedback", {
+      fetch("https://5yk67fvoqf.execute-api.ap-southeast-2.amazonaws.com/dev/feedback", {
         method: "POST",
         body: JSON.stringify({
           category,

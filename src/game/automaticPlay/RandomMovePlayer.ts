@@ -28,6 +28,7 @@ export class RandomMovePlayer extends PlayerAgent implements AutomaticPlayer {
         this.gameMaster.interrupt
       ).findPaths()
     );
+    // TODO: use a seed for randomness?
     return randomChoice(moves);
   }
 }

@@ -5,7 +5,7 @@ import axios from "axios";
 
 const DEV_GET_USER_URL =
   process.env.DEV_GET_USER_URL ||
-  "https://6hgisa1jjk.execute-api.ap-southeast-2.amazonaws.com/dev/userByCode";
+  "https://5yk67fvoqf.execute-api.ap-southeast-2.amazonaws.com/dev/userByCode";
 
 export function useLogin(): void {
   const { setLoading, setError, setToken, setUser } = useContext(LoginContext);

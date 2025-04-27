@@ -19,7 +19,7 @@ export const useCylinderRotation = (
     ?.getRuleNames()
     .includes("verticallyCylindrical");
 
-  const assignedPlayer = gameMaster?.assignedPlayers;
+  const assignedPlayers = gameMaster?.assignedPlayers;
   const players = gameMaster?.game.players;
 
   const { minRank, maxRank, minFile, maxFile } = measurements.rankAndFileBounds;
@@ -27,13 +27,13 @@ export const useCylinderRotation = (
   const numberOfRanks = useMemo(() => maxRank - minRank + 1, [minRank, maxRank]);
 
   const defaultYOffset = useMemo(() => {
-    const perspectivePlayerName = gameMaster?.assignedPlayers[0] ?? PlayerName.White;
+    const perspectivePlayerName = assignedPlayers?.[0] ?? PlayerName.White;
     const playerNames = players?.map((p) => p.name) || [PlayerName.White];
     const playerIndex = playerNames.indexOf(perspectivePlayerName);
     return verticalRotationAllowed
       ? (numberOfRanks * playerIndex) / playerNames?.length
       : 0;
-  }, [assignedPlayer, players, verticalRotationAllowed, numberOfRanks]);
+  }, [assignedPlayers, players, verticalRotationAllowed, numberOfRanks]);
 
   const animationOffset = useRef(
     new Animated.ValueXY({ x: 0, y: defaultYOffset })

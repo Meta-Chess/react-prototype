@@ -1,19 +1,24 @@
 import { GameMaster } from "../GameMaster";
 import { Renderer } from "../Renderer";
-import { GameOptions, PlayerAssignment, TimestampMillis } from "game/types";
+import { GameOptions, PlayerName, TimestampMillis } from "game/types";
 import { GameClient } from "./GameClient";
 import { Move } from "game/Move";
 import { Draw, PlayerAction, Resignation } from "../PlayerAction";
 import { Connection } from "game/OnlineGameMaster/Connection";
 import { uniq } from "lodash";
 
+// TODO: we should be able to remove this class by connecting a normal GameMaster and a
+// GameClient directly to the PlayerActionBroadcaster. This will require the broadcaster
+// to start handling timer updates (accounting for network lag), and possibly other logic
+// from this class.
+// When doing this, `receivedFromBroadcaster` and `receivedFromGameClient` can be merged.
 export class OnlineGameMaster extends GameMaster {
   public clockUpdatePendingSince?: TimestampMillis;
 
   constructor(
     renderer: Renderer,
     gameOptions: GameOptions,
-    assignedPlayer: PlayerAssignment,
+    assignedPlayers: PlayerName[],
     public roomId: string,
     private gameClient: GameClient,
     playerActionHistory: PlayerAction[] = [],
@@ -22,7 +27,7 @@ export class OnlineGameMaster extends GameMaster {
     super(
       ...GameMaster.processConstructorInputs({
         gameOptions,
-        assignedPlayers: assignedPlayer,
+        assignedPlayers,
         renderer,
         playerActionHistory,
       })
@@ -35,10 +40,11 @@ export class OnlineGameMaster extends GameMaster {
     gameOptions?: GameOptions,
     roomId?: string | undefined,
     onSpectating?: () => void
-  ): Promise<OnlineGameMaster | undefined> {
+  ): Promise<OnlineGameMaster> {
     const gameClient = new GameClient(
+      // use "ws://localhost:3001/dev" if running the backend locally
       process.env.REACT_APP_SERVER ||
-        "wss://fik1wh1ttf.execute-api.ap-southeast-2.amazonaws.com/dev",
+        "https://eiojalycmc.execute-api.ap-southeast-2.amazonaws.com/dev",
       roomId,
       gameOptions
     );
@@ -67,7 +73,7 @@ export class OnlineGameMaster extends GameMaster {
       onPlayerAction: (playerAction: PlayerAction) => {
         onlineGameMaster.doPlayerAction({
           playerAction,
-          received: true,
+          receivedFromGameClient: true,
           unselect: false,
         });
       },
@@ -80,7 +86,7 @@ export class OnlineGameMaster extends GameMaster {
         }
       },
       onRoomConnectionsUpdated: (connections: Connection[]) => {
-        const connectedPlayers = uniq(connections.map((c) => c.assignedPlayer));
+        const connectedPlayers = uniq(connections.flatMap((c) => c.assignedPlayers));
         onlineGameMaster.game.players.forEach((player) => {
           player.setConnected(connectedPlayers.includes(player.name));
         });
@@ -102,34 +108,37 @@ export class OnlineGameMaster extends GameMaster {
     });
   }
 
-  doPlayerAction({
+  override doPlayerAction({
     playerAction,
     unselect = true,
-    received = false,
+    receivedFromGameClient = false,
+    receivedFromBroadcaster = false,
   }: {
     playerAction: PlayerAction;
     unselect?: boolean;
-    received?: boolean;
+    receivedFromGameClient?: boolean;
+    receivedFromBroadcaster?: boolean;
   }): void {
     if (playerAction.type === "move") {
       this.doMove({
         move: playerAction.data,
         timestamp: playerAction.timestamp,
         unselect,
-        received,
+        receivedFromGameClient,
       });
     } else if (playerAction.type === "resign") {
       this.doResign({
         resignation: playerAction.data,
         timestamp: playerAction.timestamp,
-        received,
+        receivedFromGameClient,
       });
     } else if (playerAction.type === "draw") {
-      this.toggleOfferDraw(playerAction.data, received);
+      this.toggleOfferDraw(playerAction.data, receivedFromGameClient);
     }
     this.calculateAllowableMovesForSelectedPieces();
     if (this.gameOver) this.disconnect();
     this.render();
+    if (!receivedFromBroadcaster) this.onPlayerAction?.(playerAction);
   }
 
   toggleOfferDraw(draw: Draw, received = false): void {
@@ -142,13 +151,13 @@ export class OnlineGameMaster extends GameMaster {
   doResign({
     resignation,
     timestamp,
-    received = false,
+    receivedFromGameClient = false,
   }: {
     resignation: Resignation;
     timestamp?: TimestampMillis;
-    received?: boolean;
+    receivedFromGameClient?: boolean;
   }): void {
-    if (!received) {
+    if (!receivedFromGameClient) {
       this.sendResign(resignation);
     }
     super.doResign({ resignation, timestamp });
@@ -158,16 +167,17 @@ export class OnlineGameMaster extends GameMaster {
     move,
     timestamp,
     unselect,
-    received = false,
+    receivedFromGameClient = false,
   }: {
     move?: Move;
     timestamp?: TimestampMillis;
     unselect?: boolean;
-    received?: boolean;
+    receivedFromGameClient?: boolean;
   } = {}): void {
-    if (received) this.setPositionInHistory(this.playerActionHistory.length);
+    if (receivedFromGameClient)
+      this.setPositionInHistory(this.playerActionHistory.length);
     const moveIsNew = this.stateIsCurrent();
-    if (move && !received && moveIsNew)
+    if (move && !receivedFromGameClient && moveIsNew)
       this.sendMove({ ...move, nextPlayerName: this.game.getCurrentPlayerName() });
     super.doMove({ move, timestamp, unselect });
   }

@@ -56,6 +56,8 @@ export class SlightlyImprovedRandomMovePlayer
       const promotionValue = move.pieceDeltas
         .map((delta) => (delta.promoteTo ? PIECE_VALUES[delta.promoteTo] : 0))
         .reduce((acc, v) => acc + v, 0);
+
+      // TODO: use a seed for randomness?
       return captureValue + pawnForwardsValue + promotionValue + Math.random() / 10;
     });
   }

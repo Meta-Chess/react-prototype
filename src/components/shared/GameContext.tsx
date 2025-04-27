@@ -134,42 +134,26 @@ async function setGameMasterToNewGame({
   gameOptions: GameOptions;
   onSpectating?: () => void;
 }): Promise<void> {
-  const newGameMaster =
-    gameOptions.online === true || (gameOptions.online !== false && roomId)
-      ? await OnlineGameMaster.connectNewGame(renderer, gameOptions, roomId, onSpectating)
-      : initialisePlayerActionBroadcasterAndGameMaster({ gameOptions, renderer })
-          .gameMaster;
-
-  setGameMaster(newGameMaster);
-}
-
-function initialisePlayerActionBroadcasterAndGameMaster({
-  renderer,
-  gameOptions,
-}: {
-  renderer: Renderer;
-  gameOptions: GameOptions;
-}): {
-  gameMaster: GameMaster;
-  playerActionBroadcaster: PlayerActionBroadcaster;
-} {
   // The game master that will be used to display and interact with things locally
-  const gameMaster = new GameMaster(
-    ...GameMaster.processConstructorInputs({
-      gameOptions,
-      renderer,
-      assignedPlayers: gameOptions.playerTypes
-        .map((type, index) =>
-          type === "local_human" ? (index as PlayerName) : undefined
-        )
-        .filter(isPresent),
-    })
-  );
+  const gameMaster =
+    gameOptions.online || roomId
+      ? await OnlineGameMaster.connectNewGame(renderer, gameOptions, roomId, onSpectating)
+      : new GameMaster(
+          ...GameMaster.processConstructorInputs({
+            gameOptions,
+            renderer,
+            assignedPlayers: gameOptions.playerTypes
+              .map((type, index) =>
+                type === "local_human" ? (index as PlayerName) : undefined
+              )
+              .filter(isPresent),
+          })
+        );
 
   const playerActionBroadcaster = new PlayerActionBroadcaster();
   playerActionBroadcaster.addConnection(gameMaster);
 
-  gameOptions.playerTypes.forEach((playerType, playerName: PlayerName) => {
+  gameMaster.gameOptions.playerTypes.forEach((playerType, playerName: PlayerName) => {
     if (playerType === "local_ai") {
       const aiGameMaster = new GameMaster(
         ...GameMaster.processConstructorInputs({
@@ -185,13 +169,26 @@ function initialisePlayerActionBroadcasterAndGameMaster({
     }
   });
 
+  setGameMaster(gameMaster);
+}
+
+async function initialisePlayerActionBroadcasterAndGameMaster({
+  renderer,
+  gameOptions,
+}: {
+  renderer: Renderer;
+  gameOptions: GameOptions;
+}): Promise<{
+  gameMaster: GameMaster;
+  playerActionBroadcaster: PlayerActionBroadcaster;
+}> {
   return { gameMaster, playerActionBroadcaster };
 }
 
 // TODO: default url context?
 const DEV_LOBBY_URL =
   process.env.DEV_LOBBY_URL ||
-  "https://6hgisa1jjk.execute-api.ap-southeast-2.amazonaws.com/dev/lobby";
+  "https://5yk67fvoqf.execute-api.ap-southeast-2.amazonaws.com/dev/lobby";
 
 async function findSpotlightGameRoom(): Promise<string | undefined> {
   let roomId: string | undefined | null;

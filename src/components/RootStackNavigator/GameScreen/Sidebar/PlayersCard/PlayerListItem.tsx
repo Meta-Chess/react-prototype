@@ -44,6 +44,7 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
   const ruleNames = gameMaster.getRuleNames();
   const rowActive = player.name === currentPlayerName;
   const offeringDraw = player.wantsToDraw;
+  const playerType = gameMaster.gameOptions.playerTypes[player.name];
 
   return (
     <View>
@@ -73,8 +74,15 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
             </Row>
             <Row>
               {gameMaster instanceof OnlineGameMaster && (
+                // TODO: robot icon for AI players?
                 <Dot
-                  color={player.connected ? Colors.SUCCESS : Colors.WARNING}
+                  color={
+                    player.connected
+                      ? Colors.SUCCESS
+                      : playerType === "local_ai" || playerType === "online_ai"
+                      ? Colors.LIGHTISH
+                      : Colors.WARNING
+                  }
                   style={{ marginRight: 8 }}
                 />
               )}

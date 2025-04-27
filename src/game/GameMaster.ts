@@ -1,12 +1,6 @@
 import { Piece } from "./Board";
 import { Renderer } from "./Renderer";
-import {
-  GameOptions,
-  PlayerAssignment,
-  PlayerName,
-  TimestampMillis,
-  VariantLabelInfo,
-} from "./types";
+import { GameOptions, PlayerName, TimestampMillis, VariantLabelInfo } from "./types";
 import { Pather } from "./Pather";
 import { Game } from "./Game";
 import { CompactRules, RuleName } from "./CompactRules";
@@ -45,13 +39,13 @@ export class GameMaster implements PlayerActionCommunicator {
   public flipBoard: boolean;
   public overTheBoard: boolean;
 
-  private onPlayerAction: ((playerAction: PlayerAction) => void) | undefined;
+  protected onPlayerAction: ((playerAction: PlayerAction) => void) | undefined;
 
   constructor(
     public game: Game,
     public interrupt: CompactRules, // This should probably be private
     public gameOptions: GameOptions,
-    public assignedPlayers: PlayerAssignment,
+    public assignedPlayers: PlayerName[],
     protected renderer?: Renderer,
     public playerActionHistory: PlayerAction[] = [],
     protected evaluateEndGameConditions = true,
@@ -105,7 +99,7 @@ export class GameMaster implements PlayerActionCommunicator {
     playerActionHistory = [],
   }: {
     gameOptions: GameOptions;
-    assignedPlayers?: PlayerAssignment;
+    assignedPlayers?: PlayerName[];
     renderer?: Renderer;
     playerActionHistory?: PlayerAction[];
   }): ConstructorParameters<typeof GameMaster> {
@@ -364,17 +358,17 @@ export class GameMaster implements PlayerActionCommunicator {
   }
 
   receivePlayerAction(playerAction: PlayerAction): void {
-    return this.doPlayerAction({ playerAction, received: true });
+    return this.doPlayerAction({ playerAction, receivedFromBroadcaster: true });
   }
 
   doPlayerAction({
     playerAction,
     unselect = true,
-    received = false,
+    receivedFromBroadcaster: received = false,
   }: {
     playerAction: PlayerAction;
     unselect?: boolean;
-    received?: boolean;
+    receivedFromBroadcaster?: boolean;
   }): void {
     if (playerAction?.type === "move") {
       this.doMove({
