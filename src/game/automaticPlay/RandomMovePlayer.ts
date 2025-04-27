@@ -4,11 +4,18 @@ import { GameMaster } from "game/GameMaster";
 import { Move } from "game/Move";
 import { Pather } from "game/Pather";
 import { Player } from "game/Player";
+import { PlayerAction } from "game/PlayerAction";
 import { AutomaticPlayer } from "./AutomaticPlayer";
+import { PlayerAgent } from "./PlayerAgent";
 
-export class RandomMovePlayer implements AutomaticPlayer {
-  constructor(private gameMaster: GameMaster, private player: Player) {
+export class RandomMovePlayer extends PlayerAgent implements AutomaticPlayer {
+  constructor(protected gameMaster: GameMaster, protected player: Player) {
+    super(gameMaster, player);
     autoBind(this);
+  }
+
+  protected comeUpWithPlayerAction(): PlayerAction {
+    return { type: "move", data: this.getNextMove() };
   }
 
   getNextMove(): Move {
@@ -21,6 +28,7 @@ export class RandomMovePlayer implements AutomaticPlayer {
         this.gameMaster.interrupt
       ).findPaths()
     );
+    // TODO: use a seed for randomness?
     return randomChoice(moves);
   }
 }

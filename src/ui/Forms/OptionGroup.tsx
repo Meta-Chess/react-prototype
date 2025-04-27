@@ -5,17 +5,17 @@ import { Colors, Text } from "primitives";
 import { AbsoluteView } from "ui";
 
 interface Option<T> {
-  label: ReactElement;
+  label: ReactElement | string;
   value: T;
   flex?: number;
   disabled?: boolean;
 }
 
 interface Props<T> {
-  options: Option<T>[];
+  options: readonly Option<T>[];
   setSelected: (selected: T) => void;
   selected: T;
-  style: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle>;
   title?: string;
 }
 
@@ -43,7 +43,11 @@ export function OptionGroup<T>({
             disabled={option.disabled}
             onPress={(): void => setSelected(option.value)}
           >
-            {option.label}
+            {typeof option.label === "string" ? (
+              <Text cat={"BodyS"}>{option.label}</Text>
+            ) : (
+              option.label
+            )}
             {option.disabled && <PressableOptionCover />}
           </PressableOption>
         );

@@ -1,10 +1,15 @@
 import { createPiece } from "game/CompactRules/utilities";
 import { PieceName, PlayerName } from "game/types";
+import { calculateGameOptions } from "game/variantAndRuleProcessing";
 import { toLocation } from "utilities";
 import { GameMaster } from "../../GameMaster";
 
 describe("In standard chess", () => {
-  const gameMaster = new GameMaster(...GameMaster.processConstructorInputs());
+  const gameMaster = new GameMaster(
+    ...GameMaster.processConstructorInputs({
+      gameOptions: calculateGameOptions({ checkEnabled: true }, ["atomic"]),
+    })
+  );
   const board = gameMaster.game.board;
   beforeEach(() => {
     board

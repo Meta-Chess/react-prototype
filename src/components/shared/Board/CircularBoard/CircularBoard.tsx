@@ -27,13 +27,9 @@ export const CircularBoard: FC<BoardProps> = ({ backboard = true, measurements }
   // rotation
   const players = gameMaster?.game.players ?? [];
   // TODO: extract into function... also used in useCylinderRotation
-  const assignedPlayer = gameMaster?.assignedPlayer ?? (0 as PlayerName);
-  const assignedPlayerName =
-    assignedPlayer === "all" || assignedPlayer === "spectator"
-      ? PlayerName.White
-      : assignedPlayer || PlayerName.White;
+  const perspectivePlayerName = gameMaster?.assignedPlayers[0] ?? PlayerName.White;
   const playerNames = players?.map((p) => p.name) || [PlayerName.White];
-  const playerIndex = playerNames.indexOf(assignedPlayerName);
+  const playerIndex = playerNames.indexOf(perspectivePlayerName);
   ////
 
   // revisit this... it's also in useCylinderRotation

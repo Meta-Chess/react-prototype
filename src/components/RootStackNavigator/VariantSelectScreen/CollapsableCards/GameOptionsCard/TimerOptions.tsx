@@ -1,5 +1,5 @@
 import React from "react";
-import { SFC, Text } from "primitives";
+import { SFC } from "primitives";
 import { OptionGroup } from "ui";
 
 const TIME_OPTIONS = [
@@ -17,12 +17,12 @@ interface Props {
 }
 
 export const TimeOptions: SFC<Props> = ({ time, setTime, style }) => {
-  const options = TIME_OPTIONS.map((option) => ({
-    ...option,
-    label: <Text cat={"BodyS"}>{option.label}</Text>,
-  }));
-
   return (
-    <OptionGroup options={options} setSelected={setTime} selected={time} style={style} />
+    <OptionGroup
+      options={TIME_OPTIONS}
+      setSelected={setTime}
+      selected={time}
+      style={style}
+    />
   );
 };

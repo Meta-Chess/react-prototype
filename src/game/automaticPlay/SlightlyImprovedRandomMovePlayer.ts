@@ -1,16 +1,26 @@
 import autoBind from "auto-bind";
+import { maxBy } from "lodash";
 import { isPresent } from "utilities";
 import { GameMaster } from "game/GameMaster";
 import { Move } from "game/Move";
 import { Pather } from "game/Pather";
 import { Player } from "game/Player";
-import { AutomaticPlayer } from "./AutomaticPlayer";
 import { PieceName } from "game/types";
-import { maxBy } from "lodash";
+import { PlayerAction } from "game/PlayerAction";
+import { AutomaticPlayer } from "./AutomaticPlayer";
+import { PlayerAgent } from "./PlayerAgent";
 
-export class SlightlyImprovedRandomMovePlayer implements AutomaticPlayer {
-  constructor(private gameMaster: GameMaster, private player: Player) {
+export class SlightlyImprovedRandomMovePlayer
+  extends PlayerAgent
+  implements AutomaticPlayer
+{
+  constructor(gameMaster: GameMaster, player: Player) {
+    super(gameMaster, player);
     autoBind(this);
+  }
+
+  protected comeUpWithPlayerAction(): PlayerAction {
+    return { type: "move", data: this.getNextMove() };
   }
 
   getNextMove(): Move | undefined {
@@ -46,6 +56,8 @@ export class SlightlyImprovedRandomMovePlayer implements AutomaticPlayer {
       const promotionValue = move.pieceDeltas
         .map((delta) => (delta.promoteTo ? PIECE_VALUES[delta.promoteTo] : 0))
         .reduce((acc, v) => acc + v, 0);
+
+      // TODO: use a seed for randomness?
       return captureValue + pawnForwardsValue + promotionValue + Math.random() / 10;
     });
   }

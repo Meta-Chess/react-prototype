@@ -1,4 +1,4 @@
-import { GameOptions, PlayerAssignment, PlayerName } from "game/types";
+import { GameOptions, PlayerName } from "game/types";
 import { Path } from "game/Pather";
 import { sleep } from "utilities/sleep";
 import { PlayerAction } from "game/PlayerAction";
@@ -17,7 +17,7 @@ class GameClient {
   private listeners: Partial<Listeners> = {};
   private messageListener: ((event: MessageEvent) => void) | undefined;
   public playerActions: PlayerAction[] = [];
-  public assignedPlayer: PlayerAssignment = "spectator";
+  public assignedPlayers: PlayerName[] = [];
   public connectedPlayers: PlayerName[] = [];
 
   constructor(url: string, private roomId?: string, public gameOptions?: GameOptions) {
@@ -53,8 +53,10 @@ class GameClient {
     const setGameOptions = (gameOptions: GameOptions): void => {
       this.gameOptions = gameOptions;
     };
-    const setAssignedPlayer = (assignedPlayer: PlayerAssignment): void => {
-      this.assignedPlayer = assignedPlayer;
+    const setAssignedPlayers = (assignedPlayers: PlayerName[]): void => {
+      if (assignedPlayers != null) {
+        this.assignedPlayers = assignedPlayers;
+      }
     };
     const setConnectedPlayers = (connectedPlayers: PlayerName[]): void => {
       this.connectedPlayers = connectedPlayers;
@@ -78,7 +80,7 @@ class GameClient {
           setRoomId(data.roomId);
           setGameOptions(data.gameOptions);
           setPlayerActions(data.playerActions);
-          setAssignedPlayer(data.assignedPlayer);
+          setAssignedPlayers(data.assignedPlayers);
           setConnectedPlayers(data.connectedPlayers);
           setRoomJoined(true);
           break;

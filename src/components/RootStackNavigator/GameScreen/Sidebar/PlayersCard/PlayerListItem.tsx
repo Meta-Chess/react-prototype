@@ -37,12 +37,14 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
   const [rating] = useState(randomInt(100, 3000));
   const { gameMaster } = useContext(GameContext);
   if (gameMaster === undefined) return null;
-  const assignedPlayer = gameMaster.assignedPlayer;
-  const isYou = assignedPlayer === player.name;
+  const assignedPlayers = gameMaster.assignedPlayers;
+  const isYou = assignedPlayers.includes(player.name);
+  const everyoneIsYou = assignedPlayers.length === gameMaster.game.getPlayers().length;
   const name = isYou ? user?.username ?? defaultName : defaultName;
   const ruleNames = gameMaster.getRuleNames();
   const rowActive = player.name === currentPlayerName;
   const offeringDraw = player.wantsToDraw;
+  const playerType = gameMaster.gameOptions.playerTypes[player.name];
 
   return (
     <View>
@@ -60,7 +62,7 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
               <Text cat={"BodyM"} loading={isYou && userIsLoading}>
                 {name}
               </Text>
-              {isYou && (
+              {isYou && !everyoneIsYou && (
                 <Text
                   cat={"BodyS"}
                   color={Colors.TEXT.LIGHT_SECONDARY.toString()}
@@ -72,8 +74,15 @@ export const PlayerListItem: SFC<Props> = ({ player, currentPlayerName }) => {
             </Row>
             <Row>
               {gameMaster instanceof OnlineGameMaster && (
+                // TODO: robot icon for AI players?
                 <Dot
-                  color={player.connected ? Colors.SUCCESS : Colors.WARNING}
+                  color={
+                    player.connected
+                      ? Colors.SUCCESS
+                      : playerType === "local_ai" || playerType === "online_ai"
+                      ? Colors.LIGHTISH
+                      : Colors.WARNING
+                  }
                   style={{ marginRight: 8 }}
                 />
               )}
