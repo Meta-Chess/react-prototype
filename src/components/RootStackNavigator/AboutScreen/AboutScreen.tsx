@@ -4,16 +4,13 @@ import { ArrowBackWithStemIcon } from "primitives";
 import { View } from "react-native";
 import { IconButton } from "ui/Buttons/IconButton";
 import { useGoBackOrToStartScreen } from "navigation";
-import { InfoSectionComponents } from "./InfoSection";
-import { useRoute } from "navigation";
-import { Screens } from "navigation/Screens";
+import { InfoSectionComponents, InfoSection } from "./InfoSection";
 import { Colors } from "primitives";
 import styled from "styled-components/native";
 
 export const AboutScreen: FC = () => {
   const goBackOrToStartScreen = useGoBackOrToStartScreen();
-  const params = { ...useRoute<Screens.AboutScreen>().params };
-  const sections = params.sections || ["mchess"];
+  const sections: InfoSection[] = ["mchess"];
 
   return (
     <>

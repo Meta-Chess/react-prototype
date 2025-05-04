@@ -2,12 +2,9 @@ import { ParamListBase } from "@react-navigation/native";
 import { Screens } from "./Screens";
 import { GameOptions } from "game";
 import { NamedGameMode } from "./NamedGameMode";
-import { InfoSection } from "components/RootStackNavigator/AboutScreen";
 
 export interface NavigatorParamList extends ParamListBase {
-  [Screens.AboutScreen]?: {
-    sections?: InfoSection[];
-  };
+  [Screens.AboutScreen]: undefined;
   [Screens.GameScreen]?: {
     gameOptions?: GameOptions;
     roomId?: string;
@@ -17,4 +14,7 @@ export interface NavigatorParamList extends ParamListBase {
   [Screens.VariantSelectScreen]?: {
     playWithFriends?: boolean;
   };
+  [Screens.NimbusStartScreen]: undefined;
+  [Screens.NimbusGameScreen]?: NavigatorParamList[Screens.GameScreen];
+  [Screens.NimbusAboutScreen]?: NavigatorParamList[Screens.AboutScreen];
 }
