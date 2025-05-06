@@ -20,7 +20,7 @@ export const PlayOnline: SFC = ({ style }) => {
       },
       ["nimbus"]
     );
-    navigation.navigate(Screens.GameScreen, { gameOptions });
+    navigation.navigate(Screens.NimbusGameScreen, { gameOptions });
   };
 
   return (

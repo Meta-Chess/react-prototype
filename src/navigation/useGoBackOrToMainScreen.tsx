@@ -3,17 +3,15 @@ import { Spaces } from "navigation/Spaces";
 import { useNavigation } from "navigation/useNavigation";
 import { useRoute } from "navigation/useRoute";
 import { useCallback } from "react";
+import { getSpaceFromRouteName } from "navigation/Spaces";
 
 export function useGoBackOrToMainScreen(): () => void {
   const navigation = useNavigation();
   const route = useRoute();
 
   return useCallback((): void => {
-    const routePrefix = route.name.split("/")[0];
-    const mainScreen =
-      routePrefix in MAIN_SCREENS
-        ? MAIN_SCREENS[routePrefix as Spaces]
-        : Screens.StartScreen;
+    const space = getSpaceFromRouteName(route.name);
+    const mainScreen = space === undefined ? Screens.AboutScreen : MAIN_SCREENS[space];
 
     if (navigation.canGoBack()) navigation.goBack();
     else navigation.replace(mainScreen);
