@@ -8,7 +8,7 @@ import {
   FutureVariantName,
   GameOptions,
 } from "game";
-import { Screens, useGoBackOrToStartScreen, useNavigation, useRoute } from "navigation";
+import { Screens, useGoBackOrToMainScreen, useNavigation, useRoute } from "navigation";
 import { VariantCardGrid } from "./VariantCardGrid";
 import { getFilteredVariantsInDisplayOrder } from "./getFilteredVariantsInDisplayOrder";
 import {
@@ -35,7 +35,7 @@ const VariantSelectScreen: FC = () => {
   const playWithFriends = useRoute<Screens.VariantSelectScreen>().params?.playWithFriends;
 
   const navigation = useNavigation();
-  const goBackOrToStartScreen = useGoBackOrToStartScreen();
+  const goBackOrToMainScreen = useGoBackOrToMainScreen();
 
   const [gameOptions, setGameOptions] = useState<GameOptions>({
     ...defaultGameOptions,
@@ -119,7 +119,7 @@ const VariantSelectScreen: FC = () => {
         <Divider>
           <ButtonSecondary
             label="Back"
-            onPress={goBackOrToStartScreen}
+            onPress={goBackOrToMainScreen}
             style={{ flex: 1 }}
           />
           <Button
