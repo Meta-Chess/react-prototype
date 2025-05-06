@@ -1,9 +1,9 @@
 import React, { FC } from "react";
-import { Colors, TrackingPixel } from "primitives";
+import { Colors, TrackingPixel, MChessLogo } from "primitives";
 import { ShadowBoard } from "../../StartScreen/ShadowBoard";
 import { StartScreenLayoutContainer } from "../../StartScreen/StartScreenLayoutContainer";
 import { GameProvider, StaticBoardViewProvider } from "components/shared";
-import { ScrollView, useWindowDimensions } from "react-native";
+import { ScrollView, useWindowDimensions, TouchableOpacity } from "react-native";
 import { ErrorBoundary } from "components/shared/ErrorBoundary";
 import { useIsFocused } from "@react-navigation/native";
 import { GameOptions } from "game";
@@ -12,8 +12,12 @@ import { PlayNow } from "./PlayNow";
 import { Links } from "./Links";
 import { NimbusLogo } from "primitives";
 import { HelpMenu } from "components/shared";
+import { useNavigation } from "navigation/useNavigation";
+import { Screens } from "navigation/Screens";
 
 const NimbusStartScreen: FC = () => {
+  const navigation = useNavigation();
+
   const { height, width } = useWindowDimensions();
   const screenIsFocused = useIsFocused();
 
@@ -65,6 +69,13 @@ const NimbusStartScreen: FC = () => {
           <HelpMenu />
         </ErrorBoundary>
       </ScrollView>
+      <TouchableOpacity
+        style={{ position: "absolute", top: 10, left: 10, zIndex: 99 }}
+        onPress={(): void => navigation.navigate(Screens.StartScreen)}
+      >
+        <MChessLogo size={80} />
+      </TouchableOpacity>
+
       <TrackingPixel urlEnd={"NimbusStartScreen"} />
     </>
   );

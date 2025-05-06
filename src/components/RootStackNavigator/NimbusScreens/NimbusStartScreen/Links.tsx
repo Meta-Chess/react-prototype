@@ -13,16 +13,24 @@ export const Links: SFC = ({ style }) => {
     <Card style={style} title={"Links"}>
       <Divider style={{ padding: 0 }} />
       <View>
-        <LinkContainer onPress={(): void => openURL(DISCORD_URL)}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+        <LinkContainer onPress={(): void => openURL(KICKSTARTER_AFFILIATE_URL)}>
+          <IconContainer>
+            <KickstarterTextIcon size={300} />
+          </IconContainer>
+
+          <Text
+            cat="BodyXS"
+            color={Colors.TEXT.LIGHT_SECONDARY.toString()}
+            alignment="center"
           >
+            Campaign for a Nimbus board game!
+          </Text>
+        </LinkContainer>
+        <Divider style={{ padding: 0 }} />
+        <LinkContainer onPress={(): void => openURL(DISCORD_URL)}>
+          <IconContainer>
             <DiscordWithTextIcon size={300} />
-          </View>
+          </IconContainer>
 
           <Text
             cat="BodyXS"
@@ -30,27 +38,6 @@ export const Links: SFC = ({ style }) => {
             alignment="center"
           >
             Looking for opponents? Try the mchess Discord
-          </Text>
-        </LinkContainer>
-        <Divider style={{ padding: 0 }} />
-
-        <LinkContainer onPress={(): void => openURL(KICKSTARTER_AFFILIATE_URL)}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <KickstarterTextIcon size={300} />
-          </View>
-
-          <Text
-            cat="BodyXS"
-            color={Colors.TEXT.LIGHT_SECONDARY.toString()}
-            alignment="center"
-          >
-            Campaign for the Nimbus board game starting soon!
           </Text>
         </LinkContainer>
       </View>
@@ -63,4 +50,10 @@ const LinkContainer = styled(TouchableOpacity)`
   background-color: ${Colors.DARKER.toString()};
   padding: 4px;
   margin: 4px;
+`;
+
+const IconContainer = styled(View)`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 `;
