@@ -4,22 +4,21 @@ import { useNavigation } from "navigation/useNavigation";
 import { useRoute } from "navigation/useRoute";
 import { useCallback } from "react";
 
-export function useGoBackOrToMainScreen(): () => void {
+export function useNavigateToAboutScreen(): () => void {
   const navigation = useNavigation();
   const route = useRoute();
 
   return useCallback((): void => {
     const routePrefix = route.name.split("/")[0];
-    const mainScreen =
-      routePrefix in MAIN_SCREENS
-        ? MAIN_SCREENS[routePrefix as Spaces]
-        : Screens.StartScreen;
+    const aboutScreen =
+      routePrefix in ABOUT_SCREENS
+        ? ABOUT_SCREENS[routePrefix as Spaces]
+        : Screens.AboutScreen;
 
-    if (navigation.canGoBack()) navigation.goBack();
-    else navigation.replace(mainScreen);
+    navigation.navigate(aboutScreen);
   }, [navigation, route.name]);
 }
 
-const MAIN_SCREENS: { [space in Spaces]: Screens } = {
-  nimbus: Screens.NimbusStartScreen,
+const ABOUT_SCREENS: { [space in Spaces]: Screens } = {
+  nimbus: Screens.NimbusAboutScreen,
 };

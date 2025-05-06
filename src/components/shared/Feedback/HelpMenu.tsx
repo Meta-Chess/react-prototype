@@ -14,7 +14,7 @@ import {
 } from "primitives";
 import { HorizontalSeparator } from "ui";
 import { debounce } from "lodash";
-import { Screens, useNavigation, useRoute } from "navigation";
+import { useNavigateToAboutScreen, useRoute } from "navigation";
 import { HelpMenuListItem, HelpMenuListItemProps } from "./HelpMenuListItem";
 import { InfoSection } from "components/RootStackNavigator/AboutScreen";
 
@@ -45,7 +45,7 @@ interface Props {
   aboutConfig?: InfoSection[];
 }
 
-export const HelpMenu: SFC<Props> = ({ context, style, aboutConfig }) => {
+export const HelpMenu: SFC<Props> = ({ context, style }) => {
   const [iconRef, iconHovered] = useHover();
   const [menuRef, menuHovered] = useHover();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -62,10 +62,7 @@ export const HelpMenu: SFC<Props> = ({ context, style, aboutConfig }) => {
 
   const contextWithRoute = { route: useRoute(), ...context };
 
-  const navigation = useNavigation();
-  const navigateToAboutScreen = useCallback(() => {
-    navigation.navigate(Screens.AboutScreen, { sections: aboutConfig });
-  }, [navigation]);
+  const navigateToAboutScreen = useNavigateToAboutScreen();
 
   return (
     <IconPositioningContainer ref={iconRef} style={style}>
