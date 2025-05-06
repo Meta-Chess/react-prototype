@@ -11,6 +11,7 @@ import { PlayOnline } from "./PlayOnline";
 import { PlayNow } from "./PlayNow";
 import { Links } from "./Links";
 import { NimbusLogo } from "primitives";
+import { HelpMenu } from "components/shared";
 
 const NimbusStartScreen: FC = () => {
   const { height, width } = useWindowDimensions();
@@ -61,7 +62,7 @@ const NimbusStartScreen: FC = () => {
               </>
             }
           />
-          {/* <NimbusHelpMenu /> TODO: parameterize existing HelpMenu? */}
+          <HelpMenu />
         </ErrorBoundary>
       </ScrollView>
       <TrackingPixel urlEnd={"NimbusStartScreen"} />
