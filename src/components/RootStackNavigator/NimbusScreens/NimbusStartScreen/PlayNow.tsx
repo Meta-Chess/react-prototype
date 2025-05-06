@@ -2,17 +2,15 @@ import React from "react";
 import { SFC } from "primitives";
 import { Button, Card, Divider } from "ui";
 import { Screens, useNavigation } from "navigation";
-import { calculateGameOptions } from "game";
+import { defaultNimbusGameOptions } from "../NimbusGameScreen";
 
 export const PlayNow: SFC = ({ style }) => {
   const navigation = useNavigation();
 
   const handleCreateLocalGame = (): void => {
-    const gameOptions = calculateGameOptions(
-      { checkEnabled: false, time: undefined, online: false, flipBoard: false },
-      ["nimbus"]
-    );
-    navigation.navigate(Screens.GameScreen, { gameOptions });
+    navigation.navigate(Screens.NimbusGameScreen, {
+      gameOptions: defaultNimbusGameOptions,
+    });
   };
 
   return (

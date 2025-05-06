@@ -8,9 +8,12 @@ import { InfoSectionComponents, InfoSection } from "./InfoSection";
 import { Colors } from "primitives";
 import styled from "styled-components/native";
 
-export const AboutScreen: FC = () => {
+interface Props {
+  sections?: InfoSection[];
+}
+
+export const AboutScreen: FC<Props> = ({ sections = ["mchess"] }) => {
   const goBackOrToMainScreen = useGoBackOrToMainScreen();
-  const sections: InfoSection[] = ["mchess"];
 
   return (
     <>

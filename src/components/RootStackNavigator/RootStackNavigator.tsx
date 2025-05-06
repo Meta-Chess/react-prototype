@@ -3,7 +3,7 @@ import { AboutScreen } from "./AboutScreen";
 import { GameScreen } from "./GameScreen";
 import { StartScreen } from "./StartScreen";
 import { VariantSelectScreen } from "./VariantSelectScreen";
-import { NimbusStartScreen, NimbusGameScreen } from "./NimbusScreens";
+import { NimbusStartScreen, NimbusGameScreen, NimbusAboutScreen } from "./NimbusScreens";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Screens } from "navigation/Screens";
 import { Colors } from "primitives/Colors";
@@ -49,11 +49,11 @@ export const RootStackNavigator: FC = () => {
         component={NimbusGameScreen}
         options={{ title: "Nimbus • Powered by mchess!" }}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name={Screens.NimbusAboutScreen}
-        component={StartScreen}
+        component={NimbusAboutScreen}
         options={{ title: "Nimbus • Powered by mchess!" }}
-      /> */}
+      />
     </Stack.Navigator>
   );
 };
