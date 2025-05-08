@@ -3,24 +3,27 @@ import { View } from "react-native";
 import { SFC } from "primitives";
 import { ButtonLight, ButtonSecondaryLight, Card, Divider, TextInput } from "ui";
 import { Screens, useNavigation } from "navigation";
-import { calculateGameOptions } from "game";
+import { calculateGameOptions, defaultGameOptions } from "game";
 
 export const PlayOnline: SFC = ({ style }) => {
   const navigation = useNavigation();
   const [roomId, setRoomId] = useState("");
 
   const handleCreateGame = (): void => {
-    const gameOptions = calculateGameOptions(
-      {
+    const onlineNimbusGameOptions = {
+      ...defaultGameOptions,
+      ...{
         checkEnabled: false,
         time: 1200000,
         online: true,
         flipBoard: false,
         publicGame: false,
       },
-      ["nimbus"]
-    );
-    navigation.navigate(Screens.NimbusGameScreen, { gameOptions });
+    };
+    const gameOptions = calculateGameOptions(onlineNimbusGameOptions, ["nimbus"]);
+    navigation.navigate(Screens.NimbusGameScreen, {
+      gameOptions,
+    });
   };
 
   return (
@@ -39,7 +42,7 @@ export const PlayOnline: SFC = ({ style }) => {
           style={{ flex: 3, marginLeft: 8 }}
           disabled={roomId.length < 3}
           onPress={(): void => {
-            navigation.navigate(Screens.GameScreen, { roomId });
+            navigation.navigate(Screens.NimbusGameScreen, { roomId });
           }}
         />
         <ButtonLight

@@ -13,7 +13,7 @@ export const defaultNimbusGameOptions = calculateGameOptions(
 export const NimbusGameScreen: FC = () => {
   const params = { ...useRoute<Screens.NimbusGameScreen>().params };
 
-  if (params.gameOptions === undefined) {
+  if (!params.roomId && params.gameOptions === undefined) {
     params.gameOptions = defaultNimbusGameOptions;
   }
 
