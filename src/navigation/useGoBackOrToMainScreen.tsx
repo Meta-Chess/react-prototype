@@ -11,7 +11,7 @@ export function useGoBackOrToMainScreen(): () => void {
 
   return useCallback((): void => {
     const space = getSpaceFromRouteName(route.name);
-    const mainScreen = space === undefined ? Screens.AboutScreen : MAIN_SCREENS[space];
+    const mainScreen = space === undefined ? Screens.StartScreen : MAIN_SCREENS[space];
 
     if (navigation.canGoBack()) navigation.goBack();
     else navigation.replace(mainScreen);
