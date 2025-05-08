@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { ScrollView, useWindowDimensions, View } from "react-native";
 import { Button, Divider, useModals } from "ui";
-import { useGoBackOrToStartScreen } from "navigation";
+import { useGoBackOrToMainScreen } from "navigation";
 import { Colors, SFC } from "primitives";
 import { OnlineGameMaster } from "game";
 import { RoomIdCard } from "./RoomIdCard";
@@ -36,7 +36,7 @@ const Sidebar: SFC = ({ style }) => {
     setKey(k);
   }
 
-  const goBackOrToStartScreen = useGoBackOrToStartScreen();
+  const goBackOrToMainScreen = useGoBackOrToMainScreen();
   const doResign = (): void => {
     const assignedPlayer = gameMaster?.assignedPlayer;
     if (assignedPlayer !== undefined && assignedPlayer !== "spectator") {
@@ -98,7 +98,7 @@ const Sidebar: SFC = ({ style }) => {
             <Button
               label="Leave Game"
               style={{ flex: 1 }}
-              onPress={goBackOrToStartScreen}
+              onPress={goBackOrToMainScreen}
             />
           ) : (
             <>

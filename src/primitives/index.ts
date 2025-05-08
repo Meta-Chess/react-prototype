@@ -12,3 +12,5 @@ export * from "./links";
 export * from "./surfaceSquares";
 export * from "./typography";
 export * from "./useHover";
+export * from "./openURL";
+export * from "./NimbusLogo";

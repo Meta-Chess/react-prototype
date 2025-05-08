@@ -3,17 +3,17 @@ import { ScrollView } from "react-native";
 import { ArrowBackWithStemIcon } from "primitives";
 import { View } from "react-native";
 import { IconButton } from "ui/Buttons/IconButton";
-import { useGoBackOrToStartScreen } from "navigation";
-import { InfoSectionComponents } from "./InfoSection";
-import { useRoute } from "navigation";
-import { Screens } from "navigation/Screens";
+import { useGoBackOrToMainScreen } from "navigation";
+import { InfoSectionComponents, InfoSection } from "./InfoSection";
 import { Colors } from "primitives";
 import styled from "styled-components/native";
 
-export const AboutScreen: FC = () => {
-  const goBackOrToStartScreen = useGoBackOrToStartScreen();
-  const params = { ...useRoute<Screens.AboutScreen>().params };
-  const sections = params.sections || ["mchess"];
+interface Props {
+  sections?: InfoSection[];
+}
+
+export const AboutScreen: FC<Props> = ({ sections = ["mchess"] }) => {
+  const goBackOrToMainScreen = useGoBackOrToMainScreen();
 
   return (
     <>
@@ -42,7 +42,7 @@ export const AboutScreen: FC = () => {
         </ScrollView>
       </View>
       <View style={{ position: "absolute", top: 16, left: 16 }}>
-        <IconButton Icon={ArrowBackWithStemIcon} onPress={goBackOrToStartScreen} />
+        <IconButton Icon={ArrowBackWithStemIcon} onPress={goBackOrToMainScreen} />
       </View>
     </>
   );

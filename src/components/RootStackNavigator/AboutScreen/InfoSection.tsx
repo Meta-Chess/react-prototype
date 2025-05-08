@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { MchessSection } from "./MchessSection";
-import { NimbusSection } from "./NimbusSection";
+import { NimbusSection } from "../NimbusScreens/NimbusAboutScreen/NimbusSection";
 
 export type InfoSection = "mchess" | "nimbus";
 
